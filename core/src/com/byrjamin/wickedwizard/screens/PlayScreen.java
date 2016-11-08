@@ -2,22 +2,33 @@ package com.byrjamin.wickedwizard.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.cards.Card;
+import com.byrjamin.wickedwizard.cards.Spell;
+import com.byrjamin.wickedwizard.cards.SpellManager;
+import com.byrjamin.wickedwizard.cards.Sword;
+import com.byrjamin.wickedwizard.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.Player;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
+import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
 
 import java.util.ArrayList;
+
+
+//TODO
 
 
 /**
@@ -48,6 +59,10 @@ public class PlayScreen implements Screen {
     private Blob blob1;
     private Blob blob2;
 
+    private float timeAux;
+
+    private Projectile projectile;
+
 
     Texture texture;
 
@@ -55,13 +70,22 @@ public class PlayScreen implements Screen {
     Sprite swordCard;
     Sprite spellCard;
 
-    ArrayList<Enemy> enemyArray;
+    SpellManager spellManager;
+
+    ShapeRenderer sr;
+
+    EnemySpawner enemySpawner;
+
+    ArrayList<Card> deck;
 
     public PlayScreen(MainGame game){
         this.game = game;
         //texture = new Texture("rockbackground.png");
 
        gamecam = new OrthographicCamera();
+        sr = new ShapeRenderer();
+
+        projectile = new Projectile();
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 
@@ -72,20 +96,25 @@ public class PlayScreen implements Screen {
 
         gestureDetector = new GestureDetector(new gestures());
 
-        img = new Texture("badlogic.jpg");
+        atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
 
-        atlas = new TextureAtlas(Gdx.files.internal("card.atlas"));
-        swordCard = atlas.createSprite("card_sword");
-        spellCard = atlas.createSprite("card_spell");
+        spellManager = new SpellManager();
+
 
 
         player = new Player();
-        blob1 = new Blob(600, 400);
-        blob2 = new Blob(900, 400);
 
-        enemyArray = new ArrayList<Enemy>();
-        enemyArray.add(blob1);
-        enemyArray.add(blob2);
+        enemySpawner = new EnemySpawner();
+        enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) player.getPosition().y);
+
+        Spell spell = new Spell(600,0, Card.CardType.FIRE);
+        Sword sword = new Sword(300,0, Card.CardType.FIRE);
+
+
+        deck = new ArrayList<Card>();
+        deck.add(spell);
+        deck.add(sword);
+
 
 
 
@@ -100,9 +129,7 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         handleInput(dt);
-
-        gamecam.update();
-
+        enemySpawner.update(dt, player);
     }
 
     @Override
@@ -112,11 +139,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        TextureAtlas atlas;
-        atlas = new TextureAtlas(Gdx.files.internal("test.atlas"));
         //System.out.println(atlas.getRegions().toString());
-        TextureAtlas.AtlasRegion region = atlas.findRegion("wiz");
-        sprite = atlas.createSprite("wiz");
         //Updates the positions of all elements on the screen before they are redrawn.
         update(delta);
 
@@ -125,31 +148,21 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(gamecam.combined);
-
         game.batch.begin();
+        player.draw(game.batch);
 
-        game.batch.draw(img, -10, 0);
 
-
-        game.batch.draw(region.getTexture(), 200,200);
-
-        player.getSprite().draw(game.batch);
-
-        for (Enemy e : enemyArray){
-            e.draw(game.batch);
+        for(Card c : deck){
+            c.draw(game.batch);
         }
-/*        blob1.getSprite().draw(game.batch);
-        blob2.getSprite().draw(game.batch);*/
 
-        //game.batch.draw(pl);
-
-
-        //game.batch.draw
-        game.batch.draw(swordCard, 300,0, MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 15);
-        game.batch.draw(spellCard, 600,0, MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 15);
-
+        enemySpawner.draw(game.batch);
 
         game.batch.end();
+
+
+        sr.setProjectionMatrix(gamecam.combined);
+        spellManager.drawSpellSlots(sr);
 
     }
 
@@ -191,19 +204,32 @@ public class PlayScreen implements Screen {
             int x1 = Gdx.input.getX();
             int y1 = Gdx.input.getY();
             Vector3 input = new Vector3(x1, y1, 0);
+
+            //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
             System.out.println(input.x);
-            System.out.println(enemyArray.get(0).getPosition().x);
 
-            for(int i = 0; i < enemyArray.size(); i++){
+            projectile.calculateAngle(player.getPosition().x, player.getPosition().y, input.x, input.y);
+            projectile.calculateLine(player.getPosition().x, player.getPosition().y, input.x, input.y);
+
+
+            //TODO when spells are cast that fire at their target,
+            //Therefor they have their own properties and can check if they hit or not
+            //this is temporary but will most liley not be used.
+            if(enemySpawner.hitScan(spellManager.castSpells(),input.x, input.y)){
+                spellManager.resetSpell();
+            };
+
+            //Checks which card the player tapped on
+            //Stores the card inside the spell Manager.
+            for(int i = 0; i < deck.size(); i++){
                 System.out.println("inside");
-                if(enemyArray.get(i).getSprite().getBoundingRectangle().contains(input.x, input.y)){
-                    System.out.println("OW said Blob " + i);
-                    enemyArray.get(i).reduceHealth(1);
+                if(deck.get(i).getSprite().getBoundingRectangle().contains(input.x, input.y)){
+                    System.out.println("You used me said Card " + i);
+                    spellManager.add(deck.get(i));
                 }
             }
-
 
             System.out.println("Button:" + button);
             System.out.println("TOUCH DOWN PERFORMED");

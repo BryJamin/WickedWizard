@@ -13,6 +13,13 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 //TODO Global texture region? so it is easier to access the same one through the whole file.
 
 
+//TODO Add Projectile and instance spell casts.
+
+//TODO allow each spell to have an aoe component to them (If two enemies overlap both get hit).
+
+//TODO Add enemy management (spawn management etc).
+
+
 public class MainGame extends Game {
 
 	public static final int GAME_HEIGHT = 1200;
