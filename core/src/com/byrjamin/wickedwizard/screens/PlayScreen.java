@@ -85,7 +85,7 @@ public class PlayScreen implements Screen {
        gamecam = new OrthographicCamera();
         sr = new ShapeRenderer();
 
-        projectile = new Projectile();
+        //projectile = new Projectile();
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 
@@ -130,6 +130,9 @@ public class PlayScreen implements Screen {
     public void update(float dt){
         handleInput(dt);
         enemySpawner.update(dt, player);
+        if(projectile != null){
+            projectile.update(dt);
+        }
     }
 
     @Override
@@ -154,6 +157,10 @@ public class PlayScreen implements Screen {
 
         for(Card c : deck){
             c.draw(game.batch);
+        }
+
+        if(projectile != null){
+            projectile.draw(game.batch);
         }
 
         enemySpawner.draw(game.batch);
@@ -210,8 +217,7 @@ public class PlayScreen implements Screen {
 
             System.out.println(input.x);
 
-            projectile.calculateAngle(player.getPosition().x, player.getPosition().y, input.x, input.y);
-            projectile.calculateLine(player.getPosition().x, player.getPosition().y, input.x, input.y);
+            projectile = new Projectile(player.getPosition().x, player.getPosition().y, input.x, input.y);
 
 
             //TODO when spells are cast that fire at their target,

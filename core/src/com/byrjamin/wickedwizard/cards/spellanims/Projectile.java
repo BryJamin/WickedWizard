@@ -1,6 +1,9 @@
 package com.byrjamin.wickedwizard.cards.spellanims;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
  * Created by Home on 07/11/2016.
@@ -9,12 +12,21 @@ public class Projectile {
 
     double projectAngle;
 
+    float gradient;
+
     float initial_x;
+    float initial_y;
 
     Sprite sprite;
 
-    public Projectile(){
+    public Projectile(float x1,float y1, float x2, float y2){
 
+        sprite = PlayScreen.atlas.createSprite("blob_0");
+        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        sprite.setPosition(x1, y1);
+        initial_x = x1;
+        initial_y = y1;
+        calculateGradient(x1,y1,x2,y2);
     }
 
 
@@ -26,6 +38,7 @@ public class Projectile {
         projectAngle = (Math.atan2(y2 - y1, x2 - x1));
 
         initial_x = x1;
+        initial_y = y1;
 
         System.out.println("Angle is: " + projectAngle);
 
@@ -37,6 +50,11 @@ public class Projectile {
 
         System.out.println("Angle is: " + projectAngle);*/
 
+    }
+
+
+    public void calculateGradient(float x1,float y1, float x2, float y2){
+        gradient = (y2 - y1) / (x2 - x1);
     }
 
     public void calculateLine(float x1, float y1, float x2, float y2){
@@ -63,12 +81,27 @@ public class Projectile {
 
 
     public void update(float dt){
-
-
-
-
+        this.getSprite().translateX(1000f * dt);
+        this.getSprite().setY(calculateY());
+        //this.getSprite()
     }
 
+
+    /**
+     * Uses the y = mx + c formula to calculate the new y position after x has been translated
+     *
+     * @return
+     */
+    public float calculateY(){
+        float return_x_to_zero = this.getSprite().getX() - initial_x;
+        float new_y = return_x_to_zero * gradient;
+        return initial_y + new_y;
+    }
+
+
+    public void draw(SpriteBatch batch){
+        this.getSprite().draw(batch);
+    }
 
     public Sprite getSprite() {
         return sprite;

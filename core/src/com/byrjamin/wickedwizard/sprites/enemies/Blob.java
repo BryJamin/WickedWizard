@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -17,9 +18,13 @@ public class Blob extends Enemy {
     private int HEIGHT = MainGame.GAME_UNITS * 10;
     private int WIDTH = MainGame.GAME_UNITS * 10;
 
+    private Vector3 position;
+
     private Animation walk;
     private Animation attack;
     private Animation current;
+
+    private int MOVEMENT = MainGame.GAME_UNITS * 10;
 
     private float time;
 
@@ -64,6 +69,7 @@ public class Blob extends Enemy {
 
         sprite.setSize((float) HEIGHT, (float) WIDTH);
         sprite.flip(true, false);
+        position = new Vector3(posX, posY, 0);
         sprite.setPosition(posX, posY);
         this.setSprite(sprite);
         this.setHealth(10);
@@ -75,8 +81,17 @@ public class Blob extends Enemy {
 
         time += dt;
 
+
+
         if(this.getBlob_state() == blob.WALKING){
-            this.getSprite().translateX(-1.5f);
+
+            //this.getSprite().setPosition(getSprite().getX() - MOVEMENT * dt, getSprite().getY());
+
+            getSprite().setX(getSprite().getX() - MOVEMENT * dt);
+
+            //this.getSprite().translateX(-1.5f);
+            //System.out.println(this.getSprite().getOriginX());
+
 
             if(this.getSprite().getBoundingRectangle().overlaps(player.getSprite().getBoundingRectangle())) {
                 if(current != attack) {
