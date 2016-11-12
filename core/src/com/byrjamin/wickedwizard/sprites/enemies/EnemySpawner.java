@@ -34,7 +34,7 @@ public class EnemySpawner {
                            public void run() {
                                spawnBlob(posX, posY);
                            }
-                       }, 0, 0, 0
+                       }, 0, 3
         );
     }
 
@@ -72,6 +72,19 @@ public class EnemySpawner {
         }
 
         return isHit;
+
+    }
+
+
+    public Array<Enemy> getSpawnedEnemies() {
+        return spawnedEnemies;
+    }
+
+    public void setSpawnedEnemies(Array<Enemy> spawnedEnemies) {
+        this.spawnedEnemies = spawnedEnemies;
+    }
+
+    public void projectileHitCheck(int damage){
 
     }
 

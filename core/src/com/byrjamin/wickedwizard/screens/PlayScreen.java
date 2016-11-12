@@ -2,7 +2,6 @@ package com.byrjamin.wickedwizard.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,14 +14,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.cards.Card;
-import com.byrjamin.wickedwizard.cards.Spell;
-import com.byrjamin.wickedwizard.cards.SpellManager;
-import com.byrjamin.wickedwizard.cards.Sword;
-import com.byrjamin.wickedwizard.cards.spellanims.Projectile;
+import com.byrjamin.wickedwizard.deck.cards.Card;
+import com.byrjamin.wickedwizard.deck.cards.Spell;
+import com.byrjamin.wickedwizard.deck.cards.SpellManager;
+import com.byrjamin.wickedwizard.deck.cards.Sword;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.ActiveBullets;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.Player;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
-import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
 import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
 
 import java.util.ArrayList;
@@ -40,6 +39,8 @@ public class PlayScreen implements Screen {
     private MainGame game;
 
     private OrthographicCamera gamecam;
+
+    public static int GROUND_Y = 400;
 
     Texture img;
 
@@ -62,6 +63,8 @@ public class PlayScreen implements Screen {
     private float timeAux;
 
     private Projectile projectile;
+
+    private ActiveBullets activeBullets;
 
 
     Texture texture;
@@ -93,6 +96,8 @@ public class PlayScreen implements Screen {
 
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        activeBullets = new ActiveBullets();
 
         gestureDetector = new GestureDetector(new gestures());
 
@@ -130,9 +135,7 @@ public class PlayScreen implements Screen {
     public void update(float dt){
         handleInput(dt);
         enemySpawner.update(dt, player);
-        if(projectile != null){
-            projectile.update(dt);
-        }
+        activeBullets.update(dt,gamecam, enemySpawner);
     }
 
     @Override
@@ -152,24 +155,18 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-        player.draw(game.batch);
-
 
         for(Card c : deck){
             c.draw(game.batch);
         }
 
-        if(projectile != null){
-            projectile.draw(game.batch);
-        }
-
         enemySpawner.draw(game.batch);
 
+        player.draw(game.batch);
+        activeBullets.draw(game.batch);
+
+
         game.batch.end();
-
-
-        sr.setProjectionMatrix(gamecam.combined);
-        spellManager.drawSpellSlots(sr);
 
     }
 
@@ -217,15 +214,8 @@ public class PlayScreen implements Screen {
 
             System.out.println(input.x);
 
-            projectile = new Projectile(player.getPosition().x, player.getPosition().y, input.x, input.y);
-
-
-            //TODO when spells are cast that fire at their target,
-            //Therefor they have their own properties and can check if they hit or not
-            //this is temporary but will most liley not be used.
-            if(enemySpawner.hitScan(spellManager.castSpells(),input.x, input.y)){
-                spellManager.resetSpell();
-            };
+            activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
+                    player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
 
             //Checks which card the player tapped on
             //Stores the card inside the spell Manager.

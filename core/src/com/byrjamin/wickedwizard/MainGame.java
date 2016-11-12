@@ -19,6 +19,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 //TODO Add enemy management (spawn management etc).
 
+//TODO Add a tracker, if the projectile goes off screen stop drawing it
+
 
 public class MainGame extends Game {
 

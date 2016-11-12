@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.cards;
+package com.byrjamin.wickedwizard.deck.cards;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

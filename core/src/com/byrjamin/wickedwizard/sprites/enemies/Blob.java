@@ -18,13 +18,18 @@ public class Blob extends Enemy {
     private int HEIGHT = MainGame.GAME_UNITS * 10;
     private int WIDTH = MainGame.GAME_UNITS * 10;
 
+
+
     private Vector3 position;
+    private Vector3 velocity;
+
 
     private Animation walk;
     private Animation attack;
     private Animation current;
 
-    private int MOVEMENT = MainGame.GAME_UNITS * 10;
+    private int MOVEMENT = MainGame.GAME_UNITS * 30;
+    private static final int GRAVITY = -7;
 
     private float time;
 
@@ -70,6 +75,7 @@ public class Blob extends Enemy {
         sprite.setSize((float) HEIGHT, (float) WIDTH);
         sprite.flip(true, false);
         position = new Vector3(posX, posY, 0);
+        velocity = new Vector3(0, 100, 0);
         sprite.setPosition(posX, posY);
         this.setSprite(sprite);
         this.setHealth(10);
@@ -81,6 +87,14 @@ public class Blob extends Enemy {
 
         time += dt;
 
+
+        if(this.getSprite().getY() > PlayScreen.GROUND_Y) {
+            this.velocity.add(0, GRAVITY, 0);
+            this.getSprite().translateY(velocity.y);
+            if (this.getSprite().getY() <= PlayScreen.GROUND_Y) {
+                this.getSprite().setY(PlayScreen.GROUND_Y);
+            }
+        }
 
 
         if(this.getBlob_state() == blob.WALKING){

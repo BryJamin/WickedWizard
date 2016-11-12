@@ -1,11 +1,8 @@
-package com.byrjamin.wickedwizard.cards;
+package com.byrjamin.wickedwizard.deck.cards;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
-
-import java.util.ArrayList;
 
 /**
  * Created by Home on 05/11/2016.
