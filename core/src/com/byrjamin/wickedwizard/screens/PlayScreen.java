@@ -14,11 +14,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.deck.Deck;
 import com.byrjamin.wickedwizard.deck.cards.Card;
 import com.byrjamin.wickedwizard.deck.cards.Spell;
 import com.byrjamin.wickedwizard.deck.cards.SpellManager;
 import com.byrjamin.wickedwizard.deck.cards.Sword;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.ActiveBullets;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.InstantCast;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.Player;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
@@ -46,7 +48,7 @@ public class PlayScreen implements Screen {
 
     private Viewport gamePort;
 
-    private Vector2 backgroundMovement;
+    private Vector3 test;
 
     public static TextureAtlas atlas;
 
@@ -79,7 +81,9 @@ public class PlayScreen implements Screen {
 
     EnemySpawner enemySpawner;
 
-    ArrayList<Card> deck;
+    private InstantCast instantCast;
+
+    Deck deck;
 
     public PlayScreen(MainGame game){
         this.game = game;
@@ -110,15 +114,10 @@ public class PlayScreen implements Screen {
         player = new Player();
 
         enemySpawner = new EnemySpawner();
-        enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) player.getPosition().y);
+        //+ 100 so it looks like the blob is jumpoing into action.
+        enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) player.getPosition().y + 100);
 
-        Spell spell = new Spell(600,0, Card.CardType.FIRE);
-        Sword sword = new Sword(300,0, Card.CardType.FIRE);
-
-
-        deck = new ArrayList<Card>();
-        deck.add(spell);
-        deck.add(sword);
+        deck = new Deck();
 
 
 
@@ -136,6 +135,10 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         enemySpawner.update(dt, player);
         activeBullets.update(dt,gamecam, enemySpawner);
+        if(instantCast != null) {
+            instantCast.update(dt);
+
+        }
     }
 
     @Override
@@ -156,12 +159,14 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        for(Card c : deck){
-            c.draw(game.batch);
-        }
+        deck.draw(game.batch);
 
         enemySpawner.draw(game.batch);
 
+        if(instantCast != null) {
+            instantCast.draw(game.batch);
+
+        }
         player.draw(game.batch);
         activeBullets.draw(game.batch);
 
@@ -212,23 +217,12 @@ public class PlayScreen implements Screen {
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
-            System.out.println(input.x);
+            instantCast = new InstantCast(input.x, input.y);
 
             activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
                     player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
 
-            //Checks which card the player tapped on
-            //Stores the card inside the spell Manager.
-            for(int i = 0; i < deck.size(); i++){
-                System.out.println("inside");
-                if(deck.get(i).getSprite().getBoundingRectangle().contains(input.x, input.y)){
-                    System.out.println("You used me said Card " + i);
-                    spellManager.add(deck.get(i));
-                }
-            }
-
-            System.out.println("Button:" + button);
-            System.out.println("TOUCH DOWN PERFORMED");
+            deck.cardSelect(input.x, input.y);
             return true;
         }
 

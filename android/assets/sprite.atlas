@@ -1,54 +1,82 @@
 
 sprite.png
-size: 256,1024
+size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 blob_0
   rotate: false
-  xy: 2, 70
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_1
   rotate: false
-  xy: 2, 36
+  xy: 860, 451
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_2
   rotate: false
-  xy: 36, 70
+  xy: 296, 149
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 card_default
   rotate: false
-  xy: 2, 708
+  xy: 2, 183
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_spell
   rotate: false
-  xy: 2, 406
+  xy: 239, 183
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_sword
   rotate: false
-  xy: 2, 104
+  xy: 476, 183
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
+explosion0
+  rotate: false
+  xy: 2, 36
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+explosion1
+  rotate: false
+  xy: 713, 338
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+explosion2
+  rotate: false
+  xy: 149, 36
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
+explosion3
+  rotate: false
+  xy: 713, 191
+  size: 145, 145
+  orig: 145, 145
+  offset: 0, 0
+  index: -1
 wiz
   rotate: false
-  xy: 2, 2
+  xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

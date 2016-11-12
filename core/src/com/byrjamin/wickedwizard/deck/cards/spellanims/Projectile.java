@@ -26,7 +26,7 @@ public class Projectile {
 
         sprite = PlayScreen.atlas.createSprite("blob_0");
         sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-        sprite.setPosition(x1, y1);
+        sprite.setCenter(x1, y1);
         calculateAngle(x1,y1,x2,y2);
     }
 

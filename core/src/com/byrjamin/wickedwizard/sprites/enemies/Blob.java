@@ -48,7 +48,6 @@ public class Blob extends Enemy {
 
         walkAnimation = new Array<TextureRegion>();
 
-        // Rotate Up Animation
         // Create an array of TextureRegions
         walkAnimation.add(PlayScreen.atlas.findRegion("blob_0"));
         walkAnimation.add(PlayScreen.atlas.findRegion("blob_1"));
@@ -87,7 +86,7 @@ public class Blob extends Enemy {
 
         time += dt;
 
-
+        //Applying Gravity
         if(this.getSprite().getY() > PlayScreen.GROUND_Y) {
             this.velocity.add(0, GRAVITY, 0);
             this.getSprite().translateY(velocity.y);
@@ -97,15 +96,10 @@ public class Blob extends Enemy {
         }
 
 
+        //Changing state of blob to walking or attacking
         if(this.getBlob_state() == blob.WALKING){
 
-            //this.getSprite().setPosition(getSprite().getX() - MOVEMENT * dt, getSprite().getY());
-
             getSprite().setX(getSprite().getX() - MOVEMENT * dt);
-
-            //this.getSprite().translateX(-1.5f);
-            //System.out.println(this.getSprite().getOriginX());
-
 
             if(this.getSprite().getBoundingRectangle().overlaps(player.getSprite().getBoundingRectangle())) {
                 if(current != attack) {

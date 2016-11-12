@@ -3,6 +3,8 @@ package com.byrjamin.wickedwizard.deck.cards;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
  * Created by Home on 23/10/2016.
@@ -13,13 +15,15 @@ public abstract class Card {
         FIRE, ICE, ARCANE, LIGHTNING;
     }
 
+    public enum ProjectileType {
+        INSTANT, PROJECTILE
+    }
+
     private Sprite sprite;
 
     private int manaCost;
 
     private int baseDamage;
-
-    private boolean clicked = false;
 
     private Vector3 position;
 
@@ -28,14 +32,10 @@ public abstract class Card {
     public Card(int posX, int posY, CardType ct){
         this.cardType = ct;
         position = new Vector3(posX, posY, 0);
-    }
-
-    public boolean isClicked() {
-        return clicked;
-    }
-
-    public void setClicked(boolean clicked) {
-        this.clicked = clicked;
+        Sprite sprite = PlayScreen.atlas.createSprite("card_sword");
+        sprite.setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 15);
+        sprite.setPosition(posX, posY);
+        this.setSprite(sprite);
     }
 
     public int getManaCost() {

@@ -9,13 +9,9 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Sword extends Card {
 
-    public Sword(int posX, int posY, CardType ct) {
-        super(posX, posY, ct);
-        Sprite sprite = PlayScreen.atlas.createSprite("card_sword");
-        sprite.setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 15);
-        sprite.setPosition(posX, posY);
-        this.setSprite(sprite);
-        this.setBaseDamage(2);
-        this.setCardType(CardType.ICE);
+    public Sword(int posX, int posY) {
+        super(posX, posY, CardType.ARCANE);
+        this.getSprite().setRegion(PlayScreen.atlas.findRegion("card_sword"));
+        this.setBaseDamage(3);
     }
 }
