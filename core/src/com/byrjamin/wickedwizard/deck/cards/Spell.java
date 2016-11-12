@@ -14,5 +14,6 @@ public class Spell extends Card {
         super(posX, posY, CardType.FIRE);
         this.getSprite().setRegion(PlayScreen.atlas.findRegion("card_spell"));
         this.setBaseDamage(3);
+        this.setProjectileType(ProjectileType.PROJECTILE);
     }
 }

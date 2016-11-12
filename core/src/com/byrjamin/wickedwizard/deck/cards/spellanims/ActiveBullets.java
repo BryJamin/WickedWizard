@@ -14,7 +14,7 @@ import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
 public class ActiveBullets {
 
     private Array<Projectile> activeBullets;
-    private Array<InstantCast> activeExplosions;
+    private Array<Explosion> activeExplosions;
 
     private float max_x;
     private float max_y;
@@ -24,11 +24,13 @@ public class ActiveBullets {
 
     public ActiveBullets(){
         activeBullets = new Array<Projectile>();
+        activeExplosions = new Array<Explosion>();
     }
 
     public ActiveBullets(float minimum_x, float minimum_y, float max_x, float max_y){
-        activeBullets = new Array<Projectile>();
 
+        activeBullets = new Array<Projectile>();
+        activeBullets = new Array<Projectile>();
         min_x = minimum_x;
         min_y = minimum_y;
         this.max_x = max_x;
@@ -40,13 +42,17 @@ public class ActiveBullets {
         activeBullets.add(p);
     }
 
-    public void addExplosion(InstantCast i){
+    public void addExplosion(Explosion i){
         activeExplosions.add(i);
     }
 
 
     public void addProjectile(float x1,float y1, float x2, float y2){
         activeBullets.add(new Projectile(x1,y1,x2,y2));
+    }
+
+    public void addExplosion(float posX, float posY){
+        activeExplosions.add(new Explosion(posX, posY));
     }
 
 
@@ -61,7 +67,7 @@ public class ActiveBullets {
         //TODO If the sprite ever moves instead of the world moving This needs to be changed
         //TODO to use the camera position.
         updateProjectile(dt, o, e);
-
+        updateExplosions(dt, o, e);
     }
 
 
@@ -89,14 +95,32 @@ public class ActiveBullets {
     }
 
 
-    public void updateExplosions(float dt, OrthographicCamera o, EnemySpawner e){
+    public void updateExplosions(float dt, OrthographicCamera o, EnemySpawner enemyspawned){
+       for(Explosion exp : activeExplosions){
+            if(exp.isAnimationFinished()){
+                activeExplosions.removeValue(exp, true);
+            }
+           if(!exp.hasHit()){
+               exp.sethasHit(true);
+               for (Enemy e : enemyspawned.getSpawnedEnemies()) {
+                   if(exp.getSprite().getBoundingRectangle().overlaps(e.getSprite().getBoundingRectangle())){
+                       e.reduceHealth(2);
+                   }
+               }
+           }
 
+           exp.update(dt);
+       }
     }
 
 
     public void draw(SpriteBatch batch){
         for(Projectile p : activeBullets){
             p.draw(batch);
+        }
+
+        for(Explosion e : activeExplosions){
+            e.draw(batch);
         }
     }
 

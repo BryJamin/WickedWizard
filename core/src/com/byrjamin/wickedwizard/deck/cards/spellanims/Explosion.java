@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 /**
  * Created by Home on 07/11/2016.
  */
-public class InstantCast {
+public class Explosion {
 
     private Animation explosion_animation;
     private Sprite sprite;
@@ -19,9 +19,9 @@ public class InstantCast {
 
     private boolean animationFinished = false;
 
-    private boolean damageFlag = false;
+    private boolean hasHit = false;
 
-    public InstantCast(float posX, float posY){
+    public Explosion(float posX, float posY){
 
         sprite = PlayScreen.atlas.createSprite("explosion0");
         sprite.setSize((float) MainGame.GAME_UNITS * 12, MainGame.GAME_UNITS * 12);
@@ -38,7 +38,7 @@ public class InstantCast {
         animation.add(PlayScreen.atlas.findRegion("explosion2"));
         animation.add(PlayScreen.atlas.findRegion("explosion3"));
 
-        explosion_animation = new Animation(0.05f / 1f, animation);
+        explosion_animation = new Animation(0.07f / 1f, animation);
 
         time = 0;
 
@@ -79,11 +79,11 @@ public class InstantCast {
         this.animationFinished = animationFinished;
     }
 
-    public boolean isDamageFlag() {
-        return damageFlag;
+    public boolean hasHit() {
+        return hasHit;
     }
 
-    public void setDamageFlag(boolean damageFlag) {
-        this.damageFlag = damageFlag;
+    public void sethasHit(boolean damageFlag) {
+        this.hasHit = damageFlag;
     }
 }

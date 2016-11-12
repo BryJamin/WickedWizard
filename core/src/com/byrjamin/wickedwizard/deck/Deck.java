@@ -37,6 +37,8 @@ public class Deck {
         playerCards.add(new Sword(900, 0));
         playerCards.add(new Spell(1200, 0));
         playerCards.add(new Sword(1500, 0));
+
+        selectedCard = playerCards.get(0);
     }
 
 

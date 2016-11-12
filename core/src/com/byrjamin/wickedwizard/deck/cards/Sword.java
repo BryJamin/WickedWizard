@@ -13,5 +13,6 @@ public class Sword extends Card {
         super(posX, posY, CardType.ARCANE);
         this.getSprite().setRegion(PlayScreen.atlas.findRegion("card_sword"));
         this.setBaseDamage(3);
+        this.setProjectileType(ProjectileType.INSTANT);
     }
 }

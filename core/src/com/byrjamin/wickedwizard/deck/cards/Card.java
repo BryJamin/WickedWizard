@@ -29,6 +29,8 @@ public abstract class Card {
 
     private CardType cardType;
 
+    private ProjectileType projectileType;
+
     public Card(int posX, int posY, CardType ct){
         this.cardType = ct;
         position = new Vector3(posX, posY, 0);
@@ -76,6 +78,14 @@ public abstract class Card {
 
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
+    }
+
+    public ProjectileType getProjectileType() {
+        return projectileType;
+    }
+
+    public void setProjectileType(ProjectileType projectileType) {
+        this.projectileType = projectileType;
     }
 
     public void draw(SpriteBatch batch){

@@ -16,17 +16,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.Deck;
 import com.byrjamin.wickedwizard.deck.cards.Card;
-import com.byrjamin.wickedwizard.deck.cards.Spell;
 import com.byrjamin.wickedwizard.deck.cards.SpellManager;
-import com.byrjamin.wickedwizard.deck.cards.Sword;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.ActiveBullets;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.InstantCast;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.Explosion;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.Player;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
 import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
-
-import java.util.ArrayList;
 
 
 //TODO
@@ -81,9 +77,11 @@ public class PlayScreen implements Screen {
 
     EnemySpawner enemySpawner;
 
-    private InstantCast instantCast;
+    private Explosion instantCast;
 
     Deck deck;
+
+    //TODO IF you ever click in the deck area don't cast any spells
 
     public PlayScreen(MainGame game){
         this.game = game;
@@ -217,10 +215,18 @@ public class PlayScreen implements Screen {
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
-            instantCast = new InstantCast(input.x, input.y);
+           // activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
+             //       player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
 
-            activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
-                    player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
+
+
+            if(deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE){
+                 activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
+                       player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
+            } else if(deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT){
+                activeBullets.addExplosion(input.x, input.y);
+            }
+
 
             deck.cardSelect(input.x, input.y);
             return true;
