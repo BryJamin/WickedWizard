@@ -126,6 +126,43 @@ public class PlayScreen implements Screen {
 
         Gdx.input.setInputProcessor(gestureDetector);
 
+        if(Gdx.input.isTouched()) {
+        int x1 = Gdx.input.getX();
+        int y1 = Gdx.input.getY();
+        Vector3 input = new Vector3(x1, y1, 0);
+
+        //This is so inputs match up to the game co-ordinates.
+        gamecam.unproject(input);
+
+        // activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
+        //       player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
+
+
+        if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
+
+/*
+            activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
+                    player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
+
+
+*/
+
+
+
+            activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
+                    player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y));
+
+
+
+
+        } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
+            activeBullets.addExplosion(input.x, input.y);
+        }
+
+
+        deck.cardSelect(input.x, input.y);
+
+    }
 
     }
 
@@ -133,10 +170,7 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         enemySpawner.update(dt, player);
         activeBullets.update(dt,gamecam, enemySpawner);
-        if(instantCast != null) {
-            instantCast.update(dt);
-
-        }
+        deck.update(dt);
     }
 
     @Override
@@ -207,28 +241,6 @@ public class PlayScreen implements Screen {
         @Override
         public boolean touchDown(float x, float y, int pointer, int button) {
 
-
-            int x1 = Gdx.input.getX();
-            int y1 = Gdx.input.getY();
-            Vector3 input = new Vector3(x1, y1, 0);
-
-            //This is so inputs match up to the game co-ordinates.
-            gamecam.unproject(input);
-
-           // activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
-             //       player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
-
-
-
-            if(deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE){
-                 activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
-                       player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
-            } else if(deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT){
-                activeBullets.addExplosion(input.x, input.y);
-            }
-
-
-            deck.cardSelect(input.x, input.y);
             return true;
         }
 
@@ -240,7 +252,8 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean longPress(float x, float y) {
-            System.out.println("LONGPRESS PERFORMED");
+
+            System.out.println("LONG PRESS PERFORMED");
             return true;
         }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.cards.Card;
+import com.byrjamin.wickedwizard.deck.cards.Icicle;
 import com.byrjamin.wickedwizard.deck.cards.Spell;
 import com.byrjamin.wickedwizard.deck.cards.Sword;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -40,7 +41,7 @@ public class Deck {
 
         playerCards.add(new Sword(300, 200));
         playerCards.add(new Spell(600, 200));
-        playerCards.add(new Sword(900, 200));
+        playerCards.add(new Icicle(900, 200));
         playerCards.add(new Spell(1200, 200));
         playerCards.add(new Sword(1500, 200));
 
@@ -65,7 +66,7 @@ public class Deck {
 
         playerCards.add(new Sword(300, 200));
         playerCards.add(new Spell(600, 200));
-        playerCards.add(new Sword(900, 50));
+        playerCards.add(new Icicle(900, 50));
         playerCards.add(new Spell(1200, 50));
         playerCards.add(new Sword(1500, 50));
 
@@ -74,10 +75,7 @@ public class Deck {
 
 
     public void update(float dt){
-
-        if(selectedCard != null) {
-            System.out.println("Selectedcard is " + selectedCard.getCardType().name());
-        }
+        selectedCard.update(dt);
     }
 
 

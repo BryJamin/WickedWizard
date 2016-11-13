@@ -1,7 +1,5 @@
 package com.byrjamin.wickedwizard.deck.cards;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -15,5 +13,6 @@ public class Spell extends Card {
         this.getSprite().setRegion(PlayScreen.atlas.findRegion("card_spell"));
         this.setBaseDamage(3);
         this.setProjectileType(ProjectileType.PROJECTILE);
+        this.setProjectileSpriteName("fire");
     }
 }

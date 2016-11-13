@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.deck.cards.spellanims;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -28,6 +29,16 @@ public class Projectile {
         sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         sprite.setCenter(x1, y1);
         calculateAngle(x1,y1,x2,y2);
+        sprite.setRotation((float) Math.toDegrees(projectAngle));
+    }
+
+    public Projectile(float x1,float y1, float x2, float y2, String s){
+
+        sprite = PlayScreen.atlas.createSprite(s);
+        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        sprite.setCenter(x1, y1);
+        calculateAngle(x1,y1,x2,y2);
+        sprite.setRotation((float) Math.toDegrees(projectAngle));
     }
 
 
@@ -62,5 +73,10 @@ public class Projectile {
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
+    }
+
+
+    public void setSpriteRegion(TextureRegion r){
+        sprite.setRegion(r);
     }
 }

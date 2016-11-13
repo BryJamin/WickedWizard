@@ -1,89 +1,110 @@
 
 sprite.png
-size: 1024,512
+size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 blob_0
   rotate: false
-  xy: 970, 477
+  xy: 164, 130
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_1
   rotate: false
-  xy: 2, 2
+  xy: 1207, 296
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_2
   rotate: false
-  xy: 590, 175
+  xy: 1957, 458
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 card_border
   rotate: false
-  xy: 2, 183
+  xy: 2, 164
   size: 255, 326
   orig: 255, 326
   offset: 0, 0
   index: -1
 card_default
   rotate: false
-  xy: 259, 209
+  xy: 259, 190
+  size: 235, 300
+  orig: 235, 300
+  offset: 0, 0
+  index: -1
+card_frost
+  rotate: false
+  xy: 496, 190
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_spell
   rotate: false
-  xy: 496, 209
+  xy: 733, 190
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_sword
   rotate: false
-  xy: 733, 209
+  xy: 970, 190
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 explosion0
   rotate: false
-  xy: 2, 36
+  xy: 1369, 345
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion1
   rotate: false
-  xy: 149, 36
+  xy: 1516, 345
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion2
   rotate: false
-  xy: 296, 62
+  xy: 1663, 345
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion3
   rotate: false
-  xy: 443, 62
+  xy: 1810, 345
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
+fire
+  rotate: false
+  xy: 2, 2
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+frost
+  rotate: false
+  xy: 1207, 330
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
 wiz
   rotate: false
-  xy: 970, 443
+  xy: 164, 96
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

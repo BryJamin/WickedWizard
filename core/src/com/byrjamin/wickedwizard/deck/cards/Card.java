@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -19,11 +20,20 @@ public abstract class Card {
         INSTANT, PROJECTILE
     }
 
+    private String projectileSpriteName;
+
     private Sprite sprite;
 
     private int manaCost;
 
     private int baseDamage;
+
+    private float fireTracker;
+
+    private float fireRate;
+
+    private boolean canFire;
+
 
     private Vector3 position;
 
@@ -38,6 +48,7 @@ public abstract class Card {
         sprite.setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 15);
         sprite.setCenter(posX, posY);
         this.setSprite(sprite);
+        this.setFireRate(0.2f);
     }
 
     public int getManaCost() {
@@ -87,6 +98,47 @@ public abstract class Card {
     public void setProjectileType(ProjectileType projectileType) {
         this.projectileType = projectileType;
     }
+
+    public boolean isCanFire() {
+        return canFire;
+    }
+
+    public void setCanFire(boolean canFire) {
+        this.canFire = canFire;
+    }
+
+    public float getFireRate() {
+        return fireRate;
+    }
+
+    public void setFireRate(float fireRate) {
+        this.fireRate = fireRate;
+    }
+
+    public void update(float dt){
+        fireTracker -= dt;
+            if (fireTracker <= 0) {
+                canFire = true;
+                System.out.println("Can fire");
+                fireTracker += fireRate;
+            } else {
+                canFire = false;
+            }
+    }
+
+    public String getProjectileSpriteName() {
+        return projectileSpriteName;
+    }
+
+    public void setProjectileSpriteName(String projectileSpriteName) {
+        this.projectileSpriteName = projectileSpriteName;
+    }
+
+    public Projectile generateProjectile(float x1, float y1, float x2, float y2){
+        return new Projectile(x1, y1, x2, y2, projectileSpriteName);
+    }
+
+
 
     public void draw(SpriteBatch batch){
         this.getSprite().draw(batch);
