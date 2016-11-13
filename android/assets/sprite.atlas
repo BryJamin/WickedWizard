@@ -6,42 +6,49 @@ filter: Nearest,Nearest
 repeat: none
 blob_0
   rotate: false
-  xy: 2, 2
+  xy: 970, 477
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_1
   rotate: false
-  xy: 860, 451
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_2
   rotate: false
-  xy: 296, 149
+  xy: 590, 175
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-card_default
+card_border
   rotate: false
   xy: 2, 183
+  size: 255, 326
+  orig: 255, 326
+  offset: 0, 0
+  index: -1
+card_default
+  rotate: false
+  xy: 259, 209
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_spell
   rotate: false
-  xy: 239, 183
+  xy: 496, 209
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_sword
   rotate: false
-  xy: 476, 183
+  xy: 733, 209
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
@@ -55,28 +62,28 @@ explosion0
   index: -1
 explosion1
   rotate: false
-  xy: 713, 338
+  xy: 149, 36
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion2
   rotate: false
-  xy: 149, 36
+  xy: 296, 62
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion3
   rotate: false
-  xy: 713, 191
+  xy: 443, 62
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 wiz
   rotate: false
-  xy: 36, 2
+  xy: 970, 443
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

@@ -27,7 +27,7 @@ public class Player {
     public Player() {
         sprite = PlayScreen.atlas.createSprite("wiz");
         sprite.setSize((float) HEIGHT, (float) WIDTH);
-        position = new Vector3(600, 400, 0);
+        position = new Vector3(300, 400, 0);
         sprite.setPosition(position.x, PlayScreen.GROUND_Y);
     }
 

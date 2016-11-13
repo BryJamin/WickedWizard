@@ -36,7 +36,7 @@ public abstract class Card {
         position = new Vector3(posX, posY, 0);
         Sprite sprite = PlayScreen.atlas.createSprite("card_sword");
         sprite.setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 15);
-        sprite.setPosition(posX, posY);
+        sprite.setCenter(posX, posY);
         this.setSprite(sprite);
     }
 
