@@ -74,22 +74,11 @@ public class ActiveBullets {
     public void updateProjectile(float dt, OrthographicCamera o, EnemySpawner e){
 
         for(Projectile p : activeBullets) {
-
-            //If bullet is offscreen Remove.
-            if(p.getSprite().getX() > MainGame.GAME_WIDTH || p.getSprite().getX() < 0
-                    || p.getSprite().getY() > MainGame.GAME_HEIGHT
-                    || p.getSprite().getY() < 0){
+            if(p.getSTATE() != Projectile.DEAD) {
+                p.update(dt, e.getSpawnedEnemies());
+            } else {
                 activeBullets.removeValue(p, true);
             }
-
-            //TODO if bullet hits the ground it shoudl run it's death animation
-            if(p.getSprite().getY() < PlayScreen.GROUND_Y){
-                activeBullets.removeValue(p, true);
-            }
-
-            singleTargetProjectileDamageCheck(p,e);
-
-            p.update(dt);
         }
 
     }

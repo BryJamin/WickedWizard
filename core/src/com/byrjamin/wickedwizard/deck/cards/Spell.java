@@ -7,7 +7,6 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Spell extends Card {
 
-
     public Spell(int posX, int posY) {
         super(posX, posY, CardType.FIRE);
         this.getSprite().setRegion(PlayScreen.atlas.findRegion("card_spell"));
