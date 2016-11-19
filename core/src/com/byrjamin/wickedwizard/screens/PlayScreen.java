@@ -124,14 +124,18 @@ public class PlayScreen implements Screen {
             int y1 = Gdx.input.getY();
             input = new Vector3(x1, y1, 0);
 
+
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
-            if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
-                activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(wizard.getSprite().getX() + wizard.getSprite().getWidth() / 2,
-                        wizard.getSprite().getY() + wizard.getSprite().getHeight() / 2, input.x, input.y));
-            } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
-                activeBullets.addExplosion(input.x, input.y);
+            if(input.y > PlayScreen.GROUND_Y) {
+
+                if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
+                    activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(wizard.getSprite().getX() + wizard.getSprite().getWidth() / 2,
+                            wizard.getSprite().getY() + wizard.getSprite().getHeight() / 2, input.x, input.y));
+                } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
+                    activeBullets.addExplosion(input.x, input.y);
+                }
             }
 
     }

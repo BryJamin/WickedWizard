@@ -17,10 +17,12 @@ import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
  */
 public class Projectile {
 
-    public int STATE;
-    public final static int DEAD = 1;
-    public final static int EXPLODING = 2;
-    public final static int ALIVE = 3;
+    public enum STATE {
+        DEAD, EXPLODING, ALIVE
+    }
+
+
+    STATE state;
 
     double projectAngle;
 
@@ -94,7 +96,7 @@ public class Projectile {
 
         time = 0;
 
-        STATE = ALIVE;
+        state = STATE.ALIVE;
 
     }
 
@@ -124,7 +126,7 @@ public class Projectile {
 
         time = 0;
 
-        STATE = ALIVE;
+        state = STATE.ALIVE;
 
     }
 
@@ -147,12 +149,12 @@ public class Projectile {
 
     public void update(float dt, Array<Enemy> e){
 
-        if(STATE == Projectile.ALIVE) {
+        if(getState() == STATE.ALIVE) {
             aliveUpdate(dt, e);
-        } else if(STATE == Projectile.EXPLODING){
+        } else if(getState() == STATE.EXPLODING){
             time += dt;
             if(explosion_animation.isAnimationFinished(time)){
-                this.setSTATE(Projectile.DEAD);
+                this.setState(STATE.DEAD);
             }
             explosion = explosion_animation.getKeyFrame(time);
         }
@@ -174,12 +176,11 @@ public class Projectile {
         if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
                 || getSprite().getY() > MainGame.GAME_HEIGHT
                 || getSprite().getY() < 0){
-            this.setSTATE(Projectile.DEAD);
+            this.setState(STATE.DEAD);
         }
     }
 
     public void travelUpdate(){
-        System.out.println("Old");
         this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
         this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
     }
@@ -190,7 +191,7 @@ public class Projectile {
             if(damageRadius != null){
                 explosionHit(getSprite(), getDamageRadius(), e);
             }
-            this.setSTATE(Projectile.EXPLODING);
+            this.setState(STATE.EXPLODING);
         }
 
         if(damageRadius == null) {
@@ -207,7 +208,7 @@ public class Projectile {
         for (Enemy enemy : e) {
             if(getSprite().getBoundingRectangle().overlaps(enemy.getSprite().getBoundingRectangle())){
                 enemy.reduceHealth(damage);
-                this.setSTATE(EXPLODING);
+                this.setState(STATE.EXPLODING);
                 return;
             }
         }
@@ -233,12 +234,11 @@ public class Projectile {
         Vector2 temp = new Vector2();
         bullet.getBoundingRectangle().getCenter(temp);
         explosionRadius.setCenter(temp);
-        System.out.println(temp.x);
         //damageRadius = new Rectangle(temp.x, temp.y, MainGame.GAME_UNITS * 15, MainGame.GAME_UNITS * 15);
         for(Enemy enemy: e){
             if(explosionRadius.overlaps(enemy.getSprite().getBoundingRectangle())){
                 enemy.reduceHealth(damage);
-                this.setSTATE(EXPLODING);
+                this.setState(STATE.EXPLODING);
             }
 
         }
@@ -247,11 +247,15 @@ public class Projectile {
 
     public void draw(SpriteBatch batch){
 
-        if(getSTATE() == Projectile.ALIVE){
+        if(getState() == STATE.ALIVE){
             this.getSprite().draw(batch);
-        } else if (getSTATE() == Projectile.EXPLODING){
-            if(explosion != null){
+        } else if (getState() == STATE.EXPLODING){
+            if(damageRadius != null && explosion != null){
                 batch.draw(explosion, damageRadius.getX(), damageRadius.getY(), damageRadius.getWidth(), damageRadius.getHeight());
+            } else {
+                if(explosion != null) {
+                    batch.draw(explosion, sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+                }
             }
         }
 
@@ -278,12 +282,12 @@ public class Projectile {
         this.damage = damage;
     }
 
-    public int getSTATE() {
-        return STATE;
+    public Projectile.STATE getState() {
+        return state;
     }
 
-    public void setSTATE(int STATE) {
-        this.STATE = STATE;
+    public void setState(Projectile.STATE state) {
+        this.state = state;
     }
 
     public Rectangle getDamageRadius() {

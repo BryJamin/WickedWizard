@@ -30,7 +30,7 @@ public class Blob extends Enemy {
     private int MOVEMENT = MainGame.GAME_UNITS * 30;
     private static final int GRAVITY = -7;
 
-    private float time;
+ //   private float time;
 
     private enum blob_state {
         WALKING, ATTACKING
@@ -63,6 +63,21 @@ public class Blob extends Enemy {
         attackAnimation.add(PlayScreen.atlas.findRegion("blob_1"));
 
 
+        Array<TextureRegion> dyingAnimationAr = new Array<TextureRegion>();
+
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying00"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying01"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying02"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying03"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying04"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying05"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying06"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying07"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying08"));
+        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying09"));
+
+        this.setDyingAnimation(new Animation(0.5f / 1f, dyingAnimationAr));
+
         walk = new Animation(0.25f / 1f, walkAnimation, Animation.PlayMode.LOOP);
         attack = new Animation(0.25f / 1f, attackAnimation);
 
@@ -83,8 +98,34 @@ public class Blob extends Enemy {
     @Override
     public void update(float dt, Wizard wizard) {
 
+        if(this.getState() == STATE.ALIVE){
+            aliveUpdate(dt, wizard);
+        } else if(this.getState() == STATE.DYING){
+            dyingUpdate(dt);
+        }
+
+
+    }
+
+    @Override
+    public void update(float dt) {
+
+    }
+
+    public void dyingUpdate(float dt){
+        time+=dt;
+        this.getSprite().setRegion(this.getDyingAnimation().getKeyFrame(time));
+        if(this.getDyingAnimation().isAnimationFinished(time)){
+            this.setState(STATE.DEAD);
+        }
+    }
+
+
+    public void aliveUpdate(float dt,  Wizard wizard){
+
+
         if(wizard.getSprite().getX() > this.getSprite().getX()){
-           MOVEMENT = -MainGame.GAME_UNITS * 10;
+            MOVEMENT = -MainGame.GAME_UNITS * 10;
         } else {
             MOVEMENT = MainGame.GAME_UNITS * 10;
         }
@@ -127,18 +168,10 @@ public class Blob extends Enemy {
                 System.out.println(wizard.getHealth());
                 time = 0;
             }
-
-
-
         }
-
-
         //this.getSprite().setPosition(this.getSprite().getPosition().x + (5f * dt), this.getPosition().y);
         this.getSprite().setRegion(current.getKeyFrame(time));
-    }
 
-    @Override
-    public void update(float dt) {
 
     }
 

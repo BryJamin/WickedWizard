@@ -30,48 +30,17 @@ public class ArcProjectile extends  Projectile {
         velocity = new Vector2(0,(float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));
     }
 
-/*    @Override
-    public void aliveUpdate(float dt, Array<Enemy> e){
-
-*//*        if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
-                || getSprite().getY() < 0){
-            this.setSTATE(Projectile.DEAD);
-        }
-
-        //TODO if bullet hits the ground it shoudl run it's death animation
-        if(getSprite().getY() < PlayScreen.GROUND_Y){
-            this.getSprite().setY(PlayScreen.GROUND_Y);
-            this.setSTATE(Projectile.EXPLODING);
-        }
-
-        velocity.add(0, GRAVITY);
-        this.getSprite().setY(this.getSprite().getY() + velocity.y);
-        this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
-        this.getSprite().setY(this.getSprite().getY() + velocity.y);
-
-        if(getDamageRadius() == null) {
-            singleTargetProjectileDamageCheck(e);
-        } else {
-            multipleTargetProjectileDamageCheck(e);
-        }*//*
-
-        super.aliveUpdate(dt, e);
-
-
-    }*/
     @Override
     public void outOfBoundsCheck(){
         if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
                 || getSprite().getY() < 0) {
-            this.setSTATE(Projectile.DEAD);
+            this.setState(STATE.DEAD);
         }
     }
 
     @Override
     public void travelUpdate(){
-        System.out.println("Arc");
         velocity.add(0, GRAVITY);
-        System.out.println(velocity.y);
         this.getSprite().setY(this.getSprite().getY() + velocity.y);
         this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
         this.getSprite().setY(this.getSprite().getY() + velocity.y);

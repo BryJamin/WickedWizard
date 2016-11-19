@@ -6,23 +6,93 @@ filter: Nearest,Nearest
 repeat: none
 blob_0
   rotate: false
-  xy: 1990, 458
+  xy: 2005, 458
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_1
   rotate: false
-  xy: 458, 156
+  xy: 1886, 134
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_2
   rotate: false
-  xy: 1990, 424
+  xy: 2005, 424
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+blob_dying00
+  rotate: false
+  xy: 2, 2
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying01
+  rotate: false
+  xy: 1681, 330
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying02
+  rotate: false
+  xy: 1843, 330
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying03
+  rotate: false
+  xy: 1681, 168
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying04
+  rotate: false
+  xy: 1843, 168
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying05
+  rotate: false
+  xy: 164, 2
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying06
+  rotate: false
+  xy: 326, 28
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying07
+  rotate: false
+  xy: 488, 28
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying08
+  rotate: false
+  xy: 650, 28
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+blob_dying09
+  rotate: false
+  xy: 812, 28
+  size: 160, 160
+  orig: 160, 160
   offset: 0, 0
   index: -1
 card_arc
@@ -76,49 +146,49 @@ card_tele
   index: -1
 explosion0
   rotate: false
-  xy: 1843, 345
+  xy: 1298, 43
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion1
   rotate: false
-  xy: 1681, 183
+  xy: 1445, 43
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion2
   rotate: false
-  xy: 164, 17
+  xy: 1592, 21
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion3
   rotate: false
-  xy: 311, 43
+  xy: 1739, 21
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 fire
   rotate: false
-  xy: 2, 2
+  xy: 974, 28
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
   index: -1
 frost
   rotate: false
-  xy: 1681, 330
+  xy: 1136, 28
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
   index: -1
 wiz
   rotate: false
-  xy: 458, 122
+  xy: 1886, 100
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

@@ -69,7 +69,7 @@ public class ActiveBullets {
     public void updateProjectile(float dt, OrthographicCamera o, EnemySpawner e){
 
         for(Projectile p : activeBullets) {
-            if(p.getSTATE() != Projectile.DEAD) {
+            if(p.getState() != Projectile.STATE.DEAD) {
                 p.update(dt, e.getSpawnedEnemies());
             } else {
                 activeBullets.removeValue(p, true);
