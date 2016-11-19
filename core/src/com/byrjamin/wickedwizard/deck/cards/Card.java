@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.ArcProjectile;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
@@ -17,7 +18,23 @@ public abstract class Card {
     }
 
     public enum ProjectileType {
-        INSTANT, PROJECTILE
+        INSTANT, PROJECTILE, HUMAN, ARC
+    }
+
+
+    private Projectile projectile;
+
+    public Projectile getProjectile() {
+        return projectile;
+    }
+
+    public void setProjectile(Projectile projectile) {
+        this.projectile = projectile;
+    }
+
+    public Projectile returnProjectile(float x1,float y1, float x2, float y2){
+        this.projectile.projectileSetup(x1, y1, x2, y2);
+        return projectile;
     }
 
     private String projectileSpriteName;
@@ -119,7 +136,6 @@ public abstract class Card {
         fireTracker -= dt;
             if (fireTracker <= 0) {
                 canFire = true;
-                System.out.println("Can fire");
                 fireTracker += fireRate;
             } else {
                 canFire = false;
@@ -136,6 +152,10 @@ public abstract class Card {
 
     public Projectile generateProjectile(float x1, float y1, float x2, float y2){
         return new Projectile(x1, y1, x2, y2, projectileSpriteName);
+    }
+
+    public Projectile generateArcProjectile(float x1, float y1, float x2, float y2){
+        return new ArcProjectile(x1, y1, x2, y2, projectileSpriteName);
     }
 
 

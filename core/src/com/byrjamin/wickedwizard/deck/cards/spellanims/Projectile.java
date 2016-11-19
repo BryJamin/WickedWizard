@@ -38,6 +38,33 @@ public class Projectile {
 
     private float HORIZONTAL_VELOCITY = 20f;
 
+
+    public Projectile(){
+        sprite = PlayScreen.atlas.createSprite("blob_0");
+        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        sprite.setRotation((float) Math.toDegrees(projectAngle));
+
+        Array<TextureRegion> animation;
+
+        animation = new Array<TextureRegion>();
+
+        // Create an array of TextureRegions
+        animation.add(PlayScreen.atlas.findRegion("explosion0"));
+        animation.add(PlayScreen.atlas.findRegion("explosion1"));
+        animation.add(PlayScreen.atlas.findRegion("explosion2"));
+        animation.add(PlayScreen.atlas.findRegion("explosion3"));
+
+        explosion_animation = new Animation(0.07f / 1f, animation);
+
+        time = 0;
+    }
+
+
+    public void projectileSetup(float x1,float y1, float x2, float y2){
+        sprite.setCenter(x1, y1);
+        calculateAngle(x1,y1,x2,y2);
+    }
+
     public Projectile(float x1,float y1, float x2, float y2){
 
         sprite = PlayScreen.atlas.createSprite("blob_0");
@@ -145,9 +172,9 @@ public class Projectile {
 
         for (Enemy enemy : e) {
             if(getSprite().getBoundingRectangle().overlaps(enemy.getSprite().getBoundingRectangle())){
-                System.out.println("print something");
                 enemy.reduceHealth(2);
                 this.setSTATE(EXPLODING);
+                return;
             }
         }
     }

@@ -2,13 +2,12 @@ package com.byrjamin.wickedwizard.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.sprites.Player;
+import com.byrjamin.wickedwizard.sprites.Wizard;
 
 /**
  * Basic starter enemy, used for testing purposes.
@@ -72,9 +71,9 @@ public class Blob extends Enemy {
         time = 0f;
 
         sprite.setSize((float) HEIGHT, (float) WIDTH);
-        sprite.flip(true, false);
+        sprite.flip(true, true);
         position = new Vector3(posX, posY, 0);
-        velocity = new Vector3(0, 100, 0);
+        velocity = new Vector3(0, 50, 0);
         sprite.setPosition(posX, posY);
         this.setSprite(sprite);
         this.setHealth(10);
@@ -82,10 +81,16 @@ public class Blob extends Enemy {
     }
 
     @Override
-    public void update(float dt, Player player) {
+    public void update(float dt, Wizard wizard) {
+
+        if(wizard.getSprite().getX() > this.getSprite().getX()){
+           MOVEMENT = -MainGame.GAME_UNITS * 30;
+        } else {
+            MOVEMENT = MainGame.GAME_UNITS * 30;
+        }
+
 
         time += dt;
-
         //Applying Gravity
         if(this.getSprite().getY() > PlayScreen.GROUND_Y) {
             this.velocity.add(0, GRAVITY, 0);
@@ -95,13 +100,12 @@ public class Blob extends Enemy {
             }
         }
 
-
         //Changing state of blob to walking or attacking
         if(this.getBlob_state() == blob.WALKING){
 
             getSprite().setX(getSprite().getX() - MOVEMENT * dt);
 
-            if(this.getSprite().getBoundingRectangle().overlaps(player.getSprite().getBoundingRectangle())) {
+            if(this.getSprite().getBoundingRectangle().overlaps(wizard.getSprite().getBoundingRectangle())) {
                 if(current != attack) {
                     current = attack;
                     time = 0;
@@ -110,9 +114,17 @@ public class Blob extends Enemy {
             }
         } else {
 
+            if(!this.getSprite().getBoundingRectangle().overlaps(wizard.getSprite().getBoundingRectangle())) {
+                if(current != walk) {
+                    current = walk;
+                    time = 0;
+                }
+                this.setBlob_state(blob.WALKING);
+            }
+
             if(current.isAnimationFinished(time)){
-                player.reduceHealth(2);
-                System.out.println(player.getHealth());
+                wizard.reduceHealth(2);
+                System.out.println(wizard.getHealth());
                 time = 0;
             }
 
@@ -129,6 +141,13 @@ public class Blob extends Enemy {
     public void update(float dt) {
 
     }
+
+
+
+    public void multX(){
+        MOVEMENT = MOVEMENT * -1;
+    }
+
 
     public void startAttackAnimation(){
         if(current != attack) {

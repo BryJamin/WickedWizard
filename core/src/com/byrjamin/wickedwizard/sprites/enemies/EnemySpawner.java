@@ -3,7 +3,7 @@ package com.byrjamin.wickedwizard.sprites.enemies;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.byrjamin.wickedwizard.sprites.Player;
+import com.byrjamin.wickedwizard.sprites.Wizard;
 
 /**
  * Created by Home on 06/11/2016.
@@ -38,7 +38,7 @@ public class EnemySpawner {
         );
     }
 
-    public void update(float dt, Player player){
+    public void update(float dt, Wizard wizard){
         for(int i = 0; i < spawnedEnemies.size; i++){
             if(spawnedEnemies.get(i).getHealth() <= 0){
                 spawnedEnemies.removeIndex(i);
@@ -46,7 +46,7 @@ public class EnemySpawner {
         }
 
         for(Enemy e : spawnedEnemies){
-            e.update(dt, player);
+            e.update(dt, wizard);
         }
     }
 

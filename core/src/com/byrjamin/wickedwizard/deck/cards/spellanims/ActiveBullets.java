@@ -137,15 +137,7 @@ public class ActiveBullets {
                     isHit = true;
                 }
             }
-
-          //  if(isHit)
-
-
-
         }
-
-
-
     }
 
 

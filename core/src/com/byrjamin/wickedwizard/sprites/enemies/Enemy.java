@@ -3,7 +3,7 @@ package com.byrjamin.wickedwizard.sprites.enemies;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.byrjamin.wickedwizard.sprites.Player;
+import com.byrjamin.wickedwizard.sprites.Wizard;
 
 /**
  * Abstract class for enemies within the game
@@ -71,7 +71,7 @@ public abstract class Enemy {
 
     public abstract void update(float dt);
 
-    public abstract void update(float dt, Player player);
+    public abstract void update(float dt, Wizard wizard);
 
 
 

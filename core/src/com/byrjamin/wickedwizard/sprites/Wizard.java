@@ -10,12 +10,15 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 /**
  * Created by Home on 23/10/2016.
  */
-public class Player {
+public class Wizard {
 
     private int HEIGHT = MainGame.GAME_UNITS * 10;
     private int WIDTH = MainGame.GAME_UNITS * 10;
+    private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private Vector3 position;
+
+    private Vector3 velocity;
 
     private int health = 10;
 
@@ -24,7 +27,7 @@ public class Player {
     private Sprite sprite;
 
 
-    public Player() {
+    public Wizard() {
         sprite = PlayScreen.atlas.createSprite("wiz");
         sprite.setSize((float) HEIGHT, (float) WIDTH);
         position = new Vector3(300, 400, 0);
@@ -34,8 +37,24 @@ public class Player {
 
     public void update(float deltaTime){
 
+       // sprite.flip(true, false);
+
+        if(this.getSprite().getY() > PlayScreen.GROUND_Y) {
+            this.getSprite().translateY(GRAVITY);
+            if (this.getSprite().getY() <= PlayScreen.GROUND_Y) {
+                this.getSprite().setY(PlayScreen.GROUND_Y);
+            }
+        }
 
 
+
+    }
+
+
+    public void teleport(float posX, float posY){
+        if(posY > PlayScreen.GROUND_Y) {
+            this.getSprite().setCenter(posX, posY);
+        }
     }
 
     public void reduceHealth(int i){

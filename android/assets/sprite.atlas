@@ -6,23 +6,30 @@ filter: Nearest,Nearest
 repeat: none
 blob_0
   rotate: false
-  xy: 164, 130
+  xy: 1990, 458
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_1
   rotate: false
-  xy: 1207, 296
+  xy: 458, 156
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 blob_2
   rotate: false
-  xy: 1957, 458
+  xy: 1990, 424
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+card_arc
+  rotate: false
+  xy: 259, 190
+  size: 235, 300
+  orig: 235, 300
   offset: 0, 0
   index: -1
 card_border
@@ -34,56 +41,63 @@ card_border
   index: -1
 card_default
   rotate: false
-  xy: 259, 190
+  xy: 496, 190
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_frost
   rotate: false
-  xy: 496, 190
+  xy: 733, 190
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_spell
   rotate: false
-  xy: 733, 190
+  xy: 970, 190
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 card_sword
   rotate: false
-  xy: 970, 190
+  xy: 1207, 190
+  size: 235, 300
+  orig: 235, 300
+  offset: 0, 0
+  index: -1
+card_tele
+  rotate: false
+  xy: 1444, 190
   size: 235, 300
   orig: 235, 300
   offset: 0, 0
   index: -1
 explosion0
   rotate: false
-  xy: 1369, 345
+  xy: 1843, 345
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion1
   rotate: false
-  xy: 1516, 345
+  xy: 1681, 183
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion2
   rotate: false
-  xy: 1663, 345
+  xy: 164, 17
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion3
   rotate: false
-  xy: 1810, 345
+  xy: 311, 43
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
@@ -97,14 +111,14 @@ fire
   index: -1
 frost
   rotate: false
-  xy: 1207, 330
+  xy: 1681, 330
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
   index: -1
 wiz
   rotate: false
-  xy: 164, 96
+  xy: 458, 122
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

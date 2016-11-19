@@ -20,7 +20,7 @@ import com.byrjamin.wickedwizard.deck.cards.SpellManager;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.ActiveBullets;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Explosion;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
-import com.byrjamin.wickedwizard.sprites.Player;
+import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
 import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
 
@@ -53,7 +53,7 @@ public class PlayScreen implements Screen {
 
     private boolean up;
 
-    private Player player;
+    private Wizard wizard;
 
     private Blob blob1;
     private Blob blob2;
@@ -107,13 +107,11 @@ public class PlayScreen implements Screen {
 
         spellManager = new SpellManager();
 
-
-
-        player = new Player();
+        wizard = new Wizard();
 
         enemySpawner = new EnemySpawner();
         //+ 100 so it looks like the blob is jumpoing into action.
-        enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) player.getPosition().y + 100);
+        enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) wizard.getPosition().y + 100);
 
         deck = new Deck();
 
@@ -127,40 +125,22 @@ public class PlayScreen implements Screen {
         Gdx.input.setInputProcessor(gestureDetector);
 
         if(Gdx.input.isTouched()) {
-        int x1 = Gdx.input.getX();
-        int y1 = Gdx.input.getY();
-        Vector3 input = new Vector3(x1, y1, 0);
+            int x1 = Gdx.input.getX();
+            int y1 = Gdx.input.getY();
+            Vector3 input = new Vector3(x1, y1, 0);
 
-        //This is so inputs match up to the game co-ordinates.
-        gamecam.unproject(input);
+            //This is so inputs match up to the game co-ordinates.
+            gamecam.unproject(input);
 
-        // activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
-        //       player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
-
-
-        if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
-
-/*
-            activeBullets.addProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
-                    player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y);
-
-
-*/
-
-
-
-            activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(player.getPosition().x + player.getSprite().getWidth() / 2,
-                    player.getPosition().y + player.getSprite().getHeight() / 2, input.x, input.y));
-
-
-
-
-        } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
-            activeBullets.addExplosion(input.x, input.y);
-        }
-
-
-        deck.cardSelect(input.x, input.y);
+            if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
+                activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(wizard.getSprite().getX() + wizard.getSprite().getWidth() / 2,
+                        wizard.getSprite().getY() + wizard.getSprite().getHeight() / 2, input.x, input.y));
+            } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.ARC && deck.getSelectedCard().isCanFire()){
+                activeBullets.addProjectile(deck.getSelectedCard().generateArcProjectile(wizard.getSprite().getX() + wizard.getSprite().getWidth() / 2,
+                        wizard.getSprite().getY() + wizard.getSprite().getHeight() / 2, input.x, input.y));
+            } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
+                activeBullets.addExplosion(input.x, input.y);
+            }
 
     }
 
@@ -168,9 +148,11 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         handleInput(dt);
-        enemySpawner.update(dt, player);
+        wizard.update(dt);
+        enemySpawner.update(dt, wizard);
         activeBullets.update(dt,gamecam, enemySpawner);
         deck.update(dt);
+
     }
 
     @Override
@@ -199,7 +181,7 @@ public class PlayScreen implements Screen {
             instantCast.draw(game.batch);
 
         }
-        player.draw(game.batch);
+        wizard.draw(game.batch);
         activeBullets.draw(game.batch);
 
 
@@ -246,7 +228,24 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean tap(float x, float y, int count, int button) {
-            System.out.println("TAP PERFORMED");
+
+
+            int x1 = Gdx.input.getX();
+            int y1 = Gdx.input.getY();
+            Vector3 input = new Vector3(x1, y1, 0);
+
+            //This is so inputs match up to the game co-ordinates.
+            gamecam.unproject(input);
+
+            deck.cardSelect(input.x, input.y);
+
+/*            if(count == 2){
+                wizard.teleport(input.x, input.y);
+            }*/
+
+/*            if(deck.getSelectedCard().getProjectileType() == Card.ProjectileType.HUMAN && input.y > PlayScreen.GROUND_Y){
+                wizard.teleport(input.x, input.y);
+            }*/
             return true;
         }
 
