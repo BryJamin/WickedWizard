@@ -68,20 +68,26 @@ public abstract class Card {
         this.setFireRate(0.2f);
     }
 
+    public void update(float dt){
+        fireTracker -= dt;
+        if (fireTracker <= 0) {
+            canFire = true;
+            fireTracker += fireRate;
+        } else {
+            canFire = false;
+        }
+    }
+
+    public Projectile generateProjectile(float x1, float y1, float x2, float y2){
+        return new Projectile(x1, y1, x2, y2, projectileSpriteName, baseDamage);
+    }
+
     public int getManaCost() {
         return manaCost;
     }
 
     public void setManaCost(int manaCost) {
         this.manaCost = manaCost;
-    }
-
-    public Vector3 getPosition() {
-        return position;
-    }
-
-    public void setPosition(Vector3 position) {
-        this.position = position;
     }
 
     public Sprite getSprite() {
@@ -132,16 +138,6 @@ public abstract class Card {
         this.fireRate = fireRate;
     }
 
-    public void update(float dt){
-        fireTracker -= dt;
-            if (fireTracker <= 0) {
-                canFire = true;
-                fireTracker += fireRate;
-            } else {
-                canFire = false;
-            }
-    }
-
     public String getProjectileSpriteName() {
         return projectileSpriteName;
     }
@@ -149,16 +145,6 @@ public abstract class Card {
     public void setProjectileSpriteName(String projectileSpriteName) {
         this.projectileSpriteName = projectileSpriteName;
     }
-
-    public Projectile generateProjectile(float x1, float y1, float x2, float y2){
-        return new Projectile(x1, y1, x2, y2, projectileSpriteName);
-    }
-
-    public Projectile generateArcProjectile(float x1, float y1, float x2, float y2){
-        return new ArcProjectile(x1, y1, x2, y2, projectileSpriteName);
-    }
-
-
 
     public void draw(SpriteBatch batch){
         this.getSprite().draw(batch);

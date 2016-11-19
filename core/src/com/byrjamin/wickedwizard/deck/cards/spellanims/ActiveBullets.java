@@ -46,11 +46,6 @@ public class ActiveBullets {
         activeExplosions.add(i);
     }
 
-
-    public void addProjectile(float x1,float y1, float x2, float y2){
-        activeBullets.add(new Projectile(x1,y1,x2,y2));
-    }
-
     public void addExplosion(float posX, float posY){
         activeExplosions.add(new Explosion(posX, posY));
     }

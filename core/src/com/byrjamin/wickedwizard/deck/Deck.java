@@ -1,15 +1,15 @@
 package com.byrjamin.wickedwizard.deck;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.deck.cards.ArcSpell;
+import com.byrjamin.wickedwizard.deck.cards.fire.FireBlast;
+import com.byrjamin.wickedwizard.deck.cards.fire.Molotov;
 import com.byrjamin.wickedwizard.deck.cards.Card;
 import com.byrjamin.wickedwizard.deck.cards.Icicle;
-import com.byrjamin.wickedwizard.deck.cards.Spell;
+import com.byrjamin.wickedwizard.deck.cards.fire.Fireball;
 import com.byrjamin.wickedwizard.deck.cards.Sword;
 import com.byrjamin.wickedwizard.deck.cards.Teleport;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -41,10 +41,10 @@ public class Deck {
 
         playerCards = new Array<Card>();
 
-        playerCards.add(new Teleport(300, 200));
-        playerCards.add(new Spell(600, 200));
+        playerCards.add(new FireBlast(300, 200));
+        playerCards.add(new Fireball(600, 200));
         playerCards.add(new Icicle(900, 200));
-        playerCards.add(new ArcSpell(1200, 200));
+        playerCards.add(new Molotov(1200, 200));
         playerCards.add(new Sword(1500, 200));
 
         selectedCard = playerCards.get(0);
@@ -67,9 +67,9 @@ public class Deck {
         deckPositions[4] = new Vector2(1500,50);
 
         playerCards.add(new Teleport(300, 200));
-        playerCards.add(new Spell(600, 200));
+        playerCards.add(new Fireball(600, 200));
         playerCards.add(new Icicle(900, 50));
-        playerCards.add(new Spell(1200, 50));
+        playerCards.add(new Fireball(1200, 50));
         playerCards.add(new Sword(1500, 50));
 
     }

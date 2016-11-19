@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.Deck;
 import com.byrjamin.wickedwizard.deck.cards.Card;
-import com.byrjamin.wickedwizard.deck.cards.SpellManager;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.ActiveBullets;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Explosion;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
@@ -71,7 +70,7 @@ public class PlayScreen implements Screen {
     Sprite swordCard;
     Sprite spellCard;
 
-    SpellManager spellManager;
+    Vector3 input;
 
     ShapeRenderer sr;
 
@@ -90,8 +89,6 @@ public class PlayScreen implements Screen {
        gamecam = new OrthographicCamera();
         sr = new ShapeRenderer();
 
-        //projectile = new Projectile();
-
         //Starts in the middle of the screen, on the 1/4 thingie.
 
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
@@ -104,8 +101,6 @@ public class PlayScreen implements Screen {
         gestureDetector = new GestureDetector(new gestures());
 
         atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
-
-        spellManager = new SpellManager();
 
         wizard = new Wizard();
 
@@ -127,16 +122,13 @@ public class PlayScreen implements Screen {
         if(Gdx.input.isTouched()) {
             int x1 = Gdx.input.getX();
             int y1 = Gdx.input.getY();
-            Vector3 input = new Vector3(x1, y1, 0);
+            input = new Vector3(x1, y1, 0);
 
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
             if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
                 activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(wizard.getSprite().getX() + wizard.getSprite().getWidth() / 2,
-                        wizard.getSprite().getY() + wizard.getSprite().getHeight() / 2, input.x, input.y));
-            } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.ARC && deck.getSelectedCard().isCanFire()){
-                activeBullets.addProjectile(deck.getSelectedCard().generateArcProjectile(wizard.getSprite().getX() + wizard.getSprite().getWidth() / 2,
                         wizard.getSprite().getY() + wizard.getSprite().getHeight() / 2, input.x, input.y));
             } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
                 activeBullets.addExplosion(input.x, input.y);
@@ -152,7 +144,6 @@ public class PlayScreen implements Screen {
         enemySpawner.update(dt, wizard);
         activeBullets.update(dt,gamecam, enemySpawner);
         deck.update(dt);
-
     }
 
     @Override
@@ -173,8 +164,6 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        deck.draw(game.batch);
-
         enemySpawner.draw(game.batch);
 
         if(instantCast != null) {
@@ -183,6 +172,7 @@ public class PlayScreen implements Screen {
         }
         wizard.draw(game.batch);
         activeBullets.draw(game.batch);
+        deck.draw(game.batch);
 
 
         game.batch.end();

@@ -34,7 +34,7 @@ public class EnemySpawner {
                            public void run() {
                                spawnBlob(posX, posY);
                            }
-                       }, 0, 3
+                       }, 0, 1
         );
     }
 

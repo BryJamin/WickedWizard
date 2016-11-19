@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.sprites.enemies;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -65,6 +66,7 @@ public abstract class Enemy {
      * @param i -
      */
     public void reduceHealth(int i){
+        System.out.println("Enemy took: "+i+" damage");
         this.setHealth(this.getHealth() - i);
     }
 

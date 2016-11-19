@@ -84,9 +84,9 @@ public class Blob extends Enemy {
     public void update(float dt, Wizard wizard) {
 
         if(wizard.getSprite().getX() > this.getSprite().getX()){
-           MOVEMENT = -MainGame.GAME_UNITS * 30;
+           MOVEMENT = -MainGame.GAME_UNITS * 10;
         } else {
-            MOVEMENT = MainGame.GAME_UNITS * 30;
+            MOVEMENT = MainGame.GAME_UNITS * 10;
         }
 
 
