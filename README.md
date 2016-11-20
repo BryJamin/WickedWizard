@@ -56,6 +56,8 @@ It really is a tricky thing
 
 - Make it so, when you click in the 'deck' area you don't fire any bullets - Done
 
+- Enemy blinks when hit - Done
+
 - Add animations to the wizard character 
 
 - Add a crappy background so my eyes aren't blinded by red all the time 
