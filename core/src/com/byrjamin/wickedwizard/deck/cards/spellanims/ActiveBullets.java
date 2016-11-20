@@ -28,16 +28,18 @@ public class ActiveBullets {
     }
 
     public ActiveBullets(float minimum_x, float minimum_y, float max_x, float max_y){
-
         activeBullets = new Array<Projectile>();
         activeBullets = new Array<Projectile>();
         min_x = minimum_x;
         min_y = minimum_y;
         this.max_x = max_x;
         this.max_y = max_y;
-
     }
 
+    /**
+     * Adds a bullet to the active ActiveBullets array
+     * @param p - Projectile
+     */
     public void addProjectile(Projectile p){
         activeBullets.add(p);
     }
@@ -66,6 +68,13 @@ public class ActiveBullets {
     }
 
 
+    /**
+     * Checks if the Projectile has changed to the 'DEAD' state. If the projectile is dead
+     * it is no longer tracked by this class.
+     * @param dt - delta time
+     * @param o - camera
+     * @param e - Enemy Spawned (could be changed to just the enemy array)
+     */
     public void updateProjectile(float dt, OrthographicCamera o, EnemySpawner e){
 
         for(Projectile p : activeBullets) {
@@ -107,36 +116,5 @@ public class ActiveBullets {
             e.draw(batch);
         }
     }
-
-
-    public void singleTargetProjectileDamageCheck(Projectile p, EnemySpawner enemyspawned){
-
-        for (Enemy e : enemyspawned.getSpawnedEnemies()) {
-            if(p.getSprite().getBoundingRectangle().overlaps(e.getSprite().getBoundingRectangle())){
-                System.out.println("print something");
-                e.reduceHealth(2);
-                activeBullets.removeValue(p, true);
-            }
-        }
-    }
-
-    public void multipleTargetProjecTileDamageCheck(EnemySpawner enemyspawned){
-
-        boolean isHit = false;
-
-        for(Projectile p : activeBullets) {
-            for (Enemy e : enemyspawned.getSpawnedEnemies()) {
-                if(p.getSprite().getBoundingRectangle().overlaps(e.getSprite().getBoundingRectangle())){
-                    System.out.println("print something");
-                    e.reduceHealth(2);
-                    isHit = true;
-                }
-            }
-        }
-    }
-
-
-
-
 
 }

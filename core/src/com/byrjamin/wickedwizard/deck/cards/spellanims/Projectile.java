@@ -172,6 +172,9 @@ public class Projectile {
     }
 
 
+    /**
+     * Checks if the bullets go offScreen, if they do, Remove them.
+     */
     public void outOfBoundsCheck(){
         if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
                 || getSprite().getY() > MainGame.GAME_HEIGHT

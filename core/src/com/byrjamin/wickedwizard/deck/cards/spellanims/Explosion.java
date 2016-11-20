@@ -9,7 +9,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
- * Created by Home on 07/11/2016.
+ * This class is soon to be irrelevant.
  */
 public class Explosion {
 

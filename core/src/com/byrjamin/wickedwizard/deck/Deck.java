@@ -28,7 +28,16 @@ public class Deck {
     private Array<Card> playerCards;
 
 
-
+    /**
+     * Default Constructor for the Deck Class
+     *
+     * Currently, being used as a way to test different spells.
+     *
+     * In future the player will most likley have a loadout and the constructor will take
+     * that load out.
+     *
+     *
+     */
     public Deck(){
 
         deckPositions = new Vector2[5];
@@ -75,14 +84,24 @@ public class Deck {
     }
 
 
-
+    /**
+     * Runs the update of the selected Card class, As currently the deck doesn't have any
+     * animations for anything to update accross the board.
+     * @param dt
+     */
     public void update(float dt){
         selectedCard.update(dt);
     }
 
 
+    /**
+     * Uses the player input to see which card has been selected.
+     * When a card has been selected it updates the selected Card and
+     * the selected card Texture.
+     * @param posX - Input X
+     * @param posY - Input y
+     */
     public void cardSelect(float posX, float posY){
-
         int counter = 0;
         for(Card c : playerCards){
             if(c.getSprite().getBoundingRectangle().contains(posX, posY)){
@@ -114,6 +133,11 @@ public class Deck {
     }
 
 
+    /**
+     * //TODO Probably needs a major refactor
+     * uses the Position Vectos to move the Center of the selected Card Texture.
+     * @param selectedCardTexturePositions -
+     */
     public void setSelectedCardTexturePositions(int selectedCardTexturePositions) {
        // this.selectedCardTexturePositions = selectedCardTexturePositions;
 

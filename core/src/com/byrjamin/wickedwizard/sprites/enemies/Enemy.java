@@ -50,7 +50,7 @@ public abstract class Enemy {
 
         if(isFlashing) {
             Color color = getSprite().getColor();
-            this.getSprite().setColor(new Color(1,0,0,0.95f));
+            this.getSprite().setColor(new Color(0.0f,0.0f,0.0f,0.95f));
             this.getSprite().draw(batch);
             batch.setColor(color);
             getSprite().setColor(color);
