@@ -76,7 +76,7 @@ public class Blob extends Enemy {
         dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying08"));
         dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying09"));
 
-        this.setDyingAnimation(new Animation(0.5f / 1f, dyingAnimationAr));
+        this.setDyingAnimation(new Animation(0.05f / 1f, dyingAnimationAr));
 
         walk = new Animation(0.25f / 1f, walkAnimation, Animation.PlayMode.LOOP);
         attack = new Animation(0.25f / 1f, attackAnimation);
@@ -97,6 +97,8 @@ public class Blob extends Enemy {
 
     @Override
     public void update(float dt, Wizard wizard) {
+
+        flashTimer(dt);
 
         if(this.getState() == STATE.ALIVE){
             aliveUpdate(dt, wizard);

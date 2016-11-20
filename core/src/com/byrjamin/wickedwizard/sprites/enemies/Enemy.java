@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.Wizard;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 /**
  * Abstract class for enemies within the game
@@ -31,6 +32,9 @@ public abstract class Enemy {
 
     private Vector3 position;
 
+    private boolean isFlashing;
+    private float flashTimer;
+
     public float time;
 
     private Animation dyingAnimation;
@@ -39,10 +43,20 @@ public abstract class Enemy {
     public Enemy(int posX, int posY){
         position = new Vector3(posX, posY, 0);
         state = STATE.ALIVE;
+        isFlashing = true;
     }
 
     public void draw(SpriteBatch batch){
-        this.getSprite().draw(batch);
+
+        if(isFlashing) {
+            Color color = getSprite().getColor();
+            this.getSprite().setColor(new Color(1,0,0,0.95f));
+            this.getSprite().draw(batch);
+            batch.setColor(color);
+            getSprite().setColor(color);
+        } else {
+            this.getSprite().draw(batch);
+        }
     }
 
 
@@ -58,7 +72,26 @@ public abstract class Enemy {
         if(this.getHealth() <= 0 && getState() != STATE.DYING){
             time = 0;
             this.setState(STATE.DYING);
+            //return;
         }
+
+        resetFlashTimer();
+
+
+    }
+
+    public void flashTimer(float dt){
+        if(flashTimer <= 0) {
+            flashTimer = 0;
+            isFlashing = false;
+        } else {
+            isFlashing = true;
+            flashTimer -= dt;
+        }
+    }
+
+    public void resetFlashTimer(){
+        flashTimer += 0.05f;
     }
 
 
