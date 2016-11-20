@@ -50,11 +50,11 @@ It really is a tricky thing
 
 #Things to do next 
 
--  Add another projectile type that arcs and on land explodes 
+-  Add another projectile type that arcs and on land explodes - Done
 
-- Figure out how to do death animations for enemies and bullets. 
+- Figure out how to do death animations for enemies and bullets. - Done
 
-- Make it so, when you click in the 'deck' area you don't fire any bullets 
+- Make it so, when you click in the 'deck' area you don't fire any bullets - Done
 
 - Add animations to the wizard character 
 
