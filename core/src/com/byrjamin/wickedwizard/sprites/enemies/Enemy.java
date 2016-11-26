@@ -140,7 +140,13 @@ public abstract class Enemy {
         this.state = state;
     }
 
-
+    public void dyingUpdate(float dt){
+        time+=dt;
+        this.getSprite().setRegion(this.getDyingAnimation().getKeyFrame(time));
+        if(this.getDyingAnimation().isAnimationFinished(time)){
+            this.setState(STATE.DEAD);
+        }
+    }
     /**
      * Checks if the enemies health is less than 0,
      * if so it doesn't draw it.

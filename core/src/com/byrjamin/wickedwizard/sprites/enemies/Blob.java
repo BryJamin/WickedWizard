@@ -114,13 +114,6 @@ public class Blob extends Enemy {
 
     }
 
-    public void dyingUpdate(float dt){
-        time+=dt;
-        this.getSprite().setRegion(this.getDyingAnimation().getKeyFrame(time));
-        if(this.getDyingAnimation().isAnimationFinished(time)){
-            this.setState(STATE.DEAD);
-        }
-    }
 
 
     //TODO The way this blob attacks is slightly incorrect, just in the animation is finished no matter
@@ -170,7 +163,6 @@ public class Blob extends Enemy {
 
             if(currentAnimation.isAnimationFinished(time)){
                 wizard.reduceHealth(2);
-                System.out.println(wizard.getHealth());
                 time = 0;
             }
         }

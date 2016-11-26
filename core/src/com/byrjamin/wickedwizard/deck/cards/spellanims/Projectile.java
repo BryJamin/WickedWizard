@@ -11,7 +11,6 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
-import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
 
 /**
  * Created by Home on 07/11/2016.
@@ -22,6 +21,9 @@ public class Projectile {
         DEAD, EXPLODING, ALIVE
     }
 
+    public enum DISPELL {
+        VERTICAL, HORIZONTAL, NONE
+    }
 
     STATE state;
 
@@ -30,22 +32,38 @@ public class Projectile {
     private Animation explosion_animation;
 
     private boolean animationFinished = false;
+    private boolean dispellable;
 
-    float gradient;
     float time;
-    Sprite sprite;
 
-    TextureRegion explosion;
+    TextureRegion explosionTextureRegion;
 
 
     private Vector2 position;
-    private Rectangle damageRadius;
 
-    private int damage;
-
+    private float GRAVITY = -0.5f;
     private float HORIZONTAL_VELOCITY = 20f;
+    private float VERTICAL_VELOCITY = 30f;
+
+    private Vector2 velocity;
+
+    //Required Parameters
+    private final float x1;
+    private final float y1;
+    private final float x2;
+    private final float y2;
+
+    //Optional Parameters
+    private int damage;
+    private boolean gravity;
+    private Animation explosionAnimation;
+    private DISPELL dispell;
+    private Sprite sprite;
+    private String spriteString;
+    private Rectangle areaOfEffect;
 
 
+/*
     public Projectile(){
         sprite = PlayScreen.atlas.createSprite("blob_0");
         sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
@@ -65,72 +83,105 @@ public class Projectile {
 
         time = 0;
     }
+*/
 
+
+    public static class ProjectileBuilder{
+
+        //Required Parameters
+        private final float x1;
+        private final float y1;
+        private final float x2;
+        private final float y2;
+
+        //Optional Parameters
+        private int damage = 0;
+        private boolean gravity = false;
+        private Animation explosionAnimation;
+        private DISPELL dispell = DISPELL.NONE;
+        private Sprite sprite;
+        private String spriteString = "fire";
+        private Rectangle areaOfEffect;
+
+
+        public ProjectileBuilder(float x1, float y1, float x2, float y2) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+        }
+
+        public ProjectileBuilder damage(int val)
+        { damage = val; return this; }
+
+        public ProjectileBuilder gravity(boolean val)
+        { gravity = val; return this; }
+
+        public ProjectileBuilder explosionAnimation(Animation val)
+        { explosionAnimation = val; return this; }
+
+        public ProjectileBuilder dispell(DISPELL val)
+        { dispell = val; return this; }
+
+        public ProjectileBuilder sprite(Sprite val)
+        { sprite = val; return this; }
+
+        public ProjectileBuilder spriteString(String val)
+        { spriteString = val; return this; }
+
+        public ProjectileBuilder areaOfEffect(Rectangle val)
+        { areaOfEffect = val; return this; }
+
+        public Projectile build() {
+            return new Projectile(this);
+        }
+
+
+    }
+
+    public Projectile(ProjectileBuilder builder){
+        x1 = builder.x1;
+        x2 = builder.x2;
+        y1 = builder.y1;
+        y2 = builder.y2;
+        damage = builder.damage;
+        gravity = builder.gravity;
+        explosionAnimation = builder.explosionAnimation;
+        dispell = builder.dispell;
+        sprite = builder.sprite;
+        spriteString = builder.spriteString;
+        //TODO fix this crap
+        sprite = PlayScreen.atlas.createSprite(spriteString);
+        sprite.setCenter(x1, y1);
+        calculateAngle(x1,y1,x2,y2);
+        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        sprite.setRotation((float) Math.toDegrees(projectAngle));
+        areaOfEffect = builder.areaOfEffect;
+        time = 0;
+        state = STATE.ALIVE;
+
+        Array<TextureRegion> animation;
+
+        animation = new Array<TextureRegion>();
+
+        // Create an array of TextureRegions
+        animation.add(PlayScreen.atlas.findRegion("explosion0"));
+        animation.add(PlayScreen.atlas.findRegion("explosion1"));
+        animation.add(PlayScreen.atlas.findRegion("explosion2"));
+        animation.add(PlayScreen.atlas.findRegion("explosion3"));
+
+        explosion_animation = new Animation(0.07f / 1f, animation);
+
+        if(gravity) {
+            velocity = new Vector2(0, (float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));
+        }
+
+    }
 
     public void projectileSetup(float x1,float y1, float x2, float y2){
         sprite.setCenter(x1, y1);
         calculateAngle(x1,y1,x2,y2);
-
     }
-
-    public Projectile(float x1,float y1, float x2, float y2, String s, int damage){
-
-        sprite = PlayScreen.atlas.createSprite(s);
-        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-        sprite.setCenter(x1, y1);
-        calculateAngle(x1,y1,x2,y2);
-        sprite.setRotation((float) Math.toDegrees(projectAngle));
-
-        this.damage = damage;
-
-        Array<TextureRegion> animation;
-
-        animation = new Array<TextureRegion>();
-
-        // Create an array of TextureRegions
-        animation.add(PlayScreen.atlas.findRegion("explosion0"));
-        animation.add(PlayScreen.atlas.findRegion("explosion1"));
-        animation.add(PlayScreen.atlas.findRegion("explosion2"));
-        animation.add(PlayScreen.atlas.findRegion("explosion3"));
-
-        explosion_animation = new Animation(0.07f / 1f, animation);
-
-        time = 0;
-
-        state = STATE.ALIVE;
-
-    }
-
-    public Projectile(float x1,float y1, float x2, float y2, String s, int damage, Rectangle radius){
-
-        sprite = PlayScreen.atlas.createSprite(s);
-        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-        sprite.setCenter(x1, y1);
-        calculateAngle(x1,y1,x2,y2);
-        sprite.setRotation((float) Math.toDegrees(projectAngle));
-
-        damageRadius = radius;
-
-        this.damage = damage;
-
-        Array<TextureRegion> animation;
-
-        animation = new Array<TextureRegion>();
-
-        // Create an array of TextureRegions
-        animation.add(PlayScreen.atlas.findRegion("explosion0"));
-        animation.add(PlayScreen.atlas.findRegion("explosion1"));
-        animation.add(PlayScreen.atlas.findRegion("explosion2"));
-        animation.add(PlayScreen.atlas.findRegion("explosion3"));
-
-        explosion_animation = new Animation(0.07f / 1f, animation);
-
-        time = 0;
-
-        state = STATE.ALIVE;
-
-    }
-
 
 //TODO More math T---T
 
@@ -157,7 +208,7 @@ public class Projectile {
             if(explosion_animation.isAnimationFinished(time)){
                 this.setState(STATE.DEAD);
             }
-            explosion = explosion_animation.getKeyFrame(time);
+            explosionTextureRegion = explosion_animation.getKeyFrame(time);
         }
 
     }
@@ -171,7 +222,7 @@ public class Projectile {
             if(explosion_animation.isAnimationFinished(time)){
                 this.setState(STATE.DEAD);
             }
-            explosion = explosion_animation.getKeyFrame(time);
+            explosionTextureRegion = explosion_animation.getKeyFrame(time);
         }
 
     }
@@ -200,28 +251,44 @@ public class Projectile {
      * Checks if the bullets go offScreen, if they do, Remove them.
      */
     public void outOfBoundsCheck(){
-        if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
+        if((getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
                 || getSprite().getY() > MainGame.GAME_HEIGHT
-                || getSprite().getY() < 0){
+                || getSprite().getY() < 0) && !gravity){
+            this.setState(STATE.DEAD);
+        } else if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
+                || getSprite().getY() < 0) {
             this.setState(STATE.DEAD);
         }
     }
 
     public void travelUpdate(){
         this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
-        this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
+        if(gravity){
+            velocity.add(0, GRAVITY);
+            this.getSprite().setY(this.getSprite().getY() + velocity.y);
+        } else {
+            this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
+        }
+    }
+
+    public void dispell(DISPELL dispell){
+
+        if(dispell == getDispell()) {
+            time = 0;
+            this.setState(STATE.EXPLODING);
+        }
     }
 
     public void damageCheck(Array<Enemy> e){
         if(getSprite().getY() <= PlayScreen.GROUND_Y){
             this.getSprite().setY(PlayScreen.GROUND_Y);
-            if(damageRadius != null){
-                explosionHit(getSprite(), getDamageRadius(), e);
+            if(areaOfEffect != null){
+                explosionHit(getSprite(), getAreaOfEffect(), e);
             }
             this.setState(STATE.EXPLODING);
         }
 
-        if(damageRadius == null) {
+        if(areaOfEffect == null) {
             singleTargetProjectileDamageCheck(e);
         } else {
             multipleTargetProjectileDamageCheck(e);
@@ -231,13 +298,13 @@ public class Projectile {
     public void damageCheck(Wizard w){
         if(getSprite().getY() <= PlayScreen.GROUND_Y){
             this.getSprite().setY(PlayScreen.GROUND_Y);
-            if(damageRadius != null){
-                explosionHit(getSprite(), getDamageRadius(), w);
+            if(areaOfEffect != null){
+                explosionHit(getSprite(), getAreaOfEffect(), w);
             }
             this.setState(STATE.EXPLODING);
         }
 
-        if(damageRadius == null) {
+        if(areaOfEffect == null) {
             singleTargetProjectileDamageCheck(w);
         } else {
             multipleTargetProjectileDamageCheck(w);
@@ -272,7 +339,7 @@ public class Projectile {
     public void multipleTargetProjectileDamageCheck(Array<Enemy> e) {
         for (Enemy enemy : e) {
             if(getSprite().getBoundingRectangle().overlaps(enemy.getSprite().getBoundingRectangle())){
-                explosionHit(getSprite(), getDamageRadius(), e);
+                explosionHit(getSprite(), getAreaOfEffect(), e);
                 return;
             }
         }
@@ -280,7 +347,7 @@ public class Projectile {
 
     public void multipleTargetProjectileDamageCheck(Wizard w) {
         if(getSprite().getBoundingRectangle().overlaps(w.getSprite().getBoundingRectangle())){
-                explosionHit(getSprite(), getDamageRadius(), w);
+                explosionHit(getSprite(), getAreaOfEffect(), w);
         }
     }
 
@@ -309,20 +376,16 @@ public class Projectile {
         }
     }
 
-
-
-
-
     public void draw(SpriteBatch batch){
 
         if(getState() == STATE.ALIVE){
             this.getSprite().draw(batch);
         } else if (getState() == STATE.EXPLODING){
-            if(damageRadius != null && explosion != null){
-                batch.draw(explosion, damageRadius.getX(), damageRadius.getY(), damageRadius.getWidth(), damageRadius.getHeight());
+            if(areaOfEffect != null && explosionTextureRegion != null){
+                batch.draw(explosionTextureRegion, areaOfEffect.getX(), areaOfEffect.getY(), areaOfEffect.getWidth(), areaOfEffect.getHeight());
             } else {
-                if(explosion != null) {
-                    batch.draw(explosion, sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
+                if(explosionTextureRegion != null) {
+                    batch.draw(explosionTextureRegion, sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
                 }
             }
         }
@@ -358,11 +421,22 @@ public class Projectile {
         this.state = state;
     }
 
-    public Rectangle getDamageRadius() {
-        return damageRadius;
+    public Rectangle getAreaOfEffect() {
+        return areaOfEffect;
     }
 
-    public void setDamageRadius(Rectangle damageRadius) {
-        this.damageRadius = damageRadius;
+    public void setAreaOfEffect(Rectangle areaOfEffect) {
+        this.areaOfEffect = areaOfEffect;
     }
+
+    public DISPELL getDispell() {
+        return dispell;
+    }
+
+    public void setDispell(DISPELL dispell) {
+        this.dispell = dispell;
+    }
+
+
+
 }

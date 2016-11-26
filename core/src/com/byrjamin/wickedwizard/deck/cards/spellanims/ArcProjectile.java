@@ -7,6 +7,8 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
 
+import javafx.scene.shape.Arc;
+
 /**
  * This class extends projectile but this fires a projectile that respects Gravity.
  * This could be used for 'Grenade' type spells.
@@ -19,12 +21,11 @@ public class ArcProjectile extends  Projectile {
 
     private Vector2 velocity;
 
-
-
-    public ArcProjectile(float x1, float y1, float x2, float y2, String s, int damage) {
-        super(x1, y1, x2, y2, s, damage);
+    private ArcProjectile(ProjectileBuilder builder) {
+        super(builder);
         velocity = new Vector2(0,(float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));
     }
+
 
     /**
      *  This constructor is for projectiles that explode on landing.
@@ -37,10 +38,10 @@ public class ArcProjectile extends  Projectile {
      * @param damage - The damage the Projectile deals when it hits the enemy
      * @param r - The radius of the explosion produced by this Projectile
      */
-    public ArcProjectile(float x1, float y1, float x2, float y2, String s, int damage, Rectangle r) {
+/*    public ArcProjectile(float x1, float y1, float x2, float y2, String s, int damage, Rectangle r) {
         super(x1, y1, x2, y2, s, damage, r);
         velocity = new Vector2(0,(float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));
-    }
+    }*/
 
     @Override
     public void outOfBoundsCheck(){
@@ -60,7 +61,6 @@ public class ArcProjectile extends  Projectile {
         this.getSprite().setY(this.getSprite().getY() + velocity.y);
         this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
         this.getSprite().setY(this.getSprite().getY() + velocity.y);
-
     }
 
 

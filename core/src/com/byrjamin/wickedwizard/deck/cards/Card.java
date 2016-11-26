@@ -79,7 +79,11 @@ public abstract class Card {
     }
 
     public Projectile generateProjectile(float x1, float y1, float x2, float y2){
-        return new Projectile(x1, y1, x2, y2, projectileSpriteName, baseDamage);
+
+        return new Projectile.ProjectileBuilder(x1, y1, x2, y2)
+                .spriteString(projectileSpriteName)
+                .damage(getBaseDamage())
+                .build();
     }
 
     public int getManaCost() {

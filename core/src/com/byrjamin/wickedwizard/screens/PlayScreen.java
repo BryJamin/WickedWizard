@@ -76,7 +76,7 @@ public class PlayScreen implements Screen {
     ShapeRenderer sr;
 
     EnemySpawner enemySpawner;
-    EnemyBullets ememyBullets;
+    EnemyBullets enemyBullets;
 
     private Explosion instantCast;
 
@@ -107,7 +107,7 @@ public class PlayScreen implements Screen {
         wizard = new Wizard();
 
         enemySpawner = new EnemySpawner();
-        ememyBullets = new EnemyBullets();
+        enemyBullets = new EnemyBullets();
         //+ 100 so it looks like the blob is jumpoing into action.
         enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) wizard.getPosition().y + 100);
 
@@ -150,7 +150,7 @@ public class PlayScreen implements Screen {
         wizard.update(dt);
         enemySpawner.update(dt, wizard);
         activeBullets.update(dt,gamecam, enemySpawner);
-        ememyBullets.update(dt, gamecam, wizard);
+        enemyBullets.update(dt, gamecam, wizard);
         deck.update(dt);
     }
 
@@ -180,7 +180,7 @@ public class PlayScreen implements Screen {
         }
         wizard.draw(game.batch);
         activeBullets.draw(game.batch);
-        ememyBullets.draw(game.batch);
+        enemyBullets.draw(game.batch);
         deck.draw(game.batch);
 
 
@@ -238,6 +238,7 @@ public class PlayScreen implements Screen {
 
             deck.cardSelect(input.x, input.y);
 
+            //enemyBullets.dispellProjectiles();
 /*            if(count == 2){
                 wizard.teleport(input.x, input.y);
             }*/
@@ -257,6 +258,13 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
+
+
+            if(Math.abs(velocityY)> 500){
+                enemyBullets.dispellProjectiles();
+            } else if(Math.abs(velocityX) > 500){
+                enemyBullets.dispellProjectiles();
+            }
             System.out.println("FLING PERFORMED");
             System.out.println("VELOCITY X IS" + velocityX);
             System.out.println("VELOCITY Y IS" + velocityY);
@@ -266,11 +274,17 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean pan(float x, float y, float deltaX, float deltaY) {
+
+            System.out.println("PAN PERFORMED");
+
             return true;
         }
 
+
         @Override
         public boolean panStop(float x, float y, int pointer, int button) {
+            System.out.println("PAN STOP PERFORMED");
+
             return false;
         }
 

@@ -31,7 +31,7 @@ public class EnemyBullets {
      * Either way to destroys the projectile
      * @param dt - delta time
      * @param o - camera
-     * @param e - enemyspawner
+     * @param w - enemyspawner
      */
     public void update(float dt, OrthographicCamera o, Wizard w){
         //TODO If the sprite ever moves instead of the world moving This needs to be changed
@@ -57,6 +57,14 @@ public class EnemyBullets {
             }
         }
 
+    }
+
+    public void dispellProjectiles(){
+        for(Projectile p : activeBullets) {
+            if(p.getState() == Projectile.STATE.ALIVE) {
+                //p.dispell();
+            }
+        }
     }
 
     public void draw(SpriteBatch batch){

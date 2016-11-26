@@ -107,7 +107,6 @@ public class Deck {
             if(c.getSprite().getBoundingRectangle().contains(posX, posY)){
                 setSelectedCard(c);
                 setSelectedCardTexturePositions(counter);
-                System.out.println("Selectedcard is " + selectedCard.getCardType().name());
             }
             counter++;
         }

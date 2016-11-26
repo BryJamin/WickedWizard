@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.sprites.enemies;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.EnemyBullets;
@@ -18,6 +19,12 @@ public class Turret extends Enemy{
     private enum movement {
         WALKING, ATTACKING
     }
+
+    private float MOVEMENT = MainGame.GAME_UNITS * 30;
+
+    private float reloadTimer;
+
+    private float fireRate = 1f;
 
     private Projectile projectile;
 
@@ -46,7 +53,7 @@ public class Turret extends Enemy{
 
         this.setDyingAnimation(new Animation(0.05f / 1f, dyingAnimationAr));
 
-        activeBullets = new Array<Projectile>();
+        reloadTimer = 3.0f;
 
 
     }
@@ -57,45 +64,49 @@ public class Turret extends Enemy{
     public void update(float dt) {
 
 
+
+
     }
 
     @Override
     public void update(float dt, Wizard wizard) {
-
-
         flashTimer(dt);
-
+        updateMovement(dt);
         if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
-
-
-        EnemyBullets.activeBullets.add(new Projectile(this.getSprite().getX(), this.getSprite().getY(), wizard.getSprite().getX(),wizard.getSprite().getY(),
-                "fire", 1));
-
-
-        for(Projectile p : activeBullets){
-            p.update(dt);
-        }
-
-
+        fire(dt,wizard);
     }
 
 
-    public void dyingUpdate(float dt){
-        time+=dt;
-        this.getSprite().setRegion(this.getDyingAnimation().getKeyFrame(time));
-        if(this.getDyingAnimation().isAnimationFinished(time)){
-            this.setState(STATE.DEAD);
+    public void updateMovement(float dt){
+        if(this.getSprite().getX() + this.getSprite().getWidth() > MainGame.GAME_WIDTH){
+            MOVEMENT = -MainGame.GAME_UNITS * 10;
+        } else if(this.getSprite().getX() <= 0){
+            MOVEMENT = MainGame.GAME_UNITS * 10;
+        }
+        this.getSprite().translateX(MOVEMENT * dt);
+    }
+
+
+    //public void flipX()
+
+
+
+    public void fire(float dt, Wizard wizard){
+        reloadTimer -= dt;
+        if (reloadTimer <= 0) {
+            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), wizard.getSprite().getX(),wizard.getSprite().getY())
+                    .spriteString("fire")
+                    .damage(1)
+                    .build());
+            reloadTimer += fireRate;
         }
     }
 
     @Override
     public void draw(SpriteBatch batch){
         super.draw(batch);
-        for(Projectile p : activeBullets){
-            p.draw(batch);
-        }
     }
 
 }
