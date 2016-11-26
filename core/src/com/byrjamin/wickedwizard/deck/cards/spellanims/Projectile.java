@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
 import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
 
@@ -161,12 +162,35 @@ public class Projectile {
 
     }
 
+    public void update(float dt, Wizard w){
+
+        if(getState() == STATE.ALIVE) {
+            aliveUpdate(dt, w);
+        } else if(getState() == STATE.EXPLODING){
+            time += dt;
+            if(explosion_animation.isAnimationFinished(time)){
+                this.setState(STATE.DEAD);
+            }
+            explosion = explosion_animation.getKeyFrame(time);
+        }
+
+    }
+
 
     public void aliveUpdate(float dt, Array<Enemy> e){
 
         outOfBoundsCheck();
         //TODO if bullet hits the ground it shoudl run it's death animation
         damageCheck(e);
+        travelUpdate();
+
+    }
+
+    public void aliveUpdate(float dt, Wizard w){
+
+        outOfBoundsCheck();
+        //TODO if bullet hits the ground it shoudl run it's death animation
+        damageCheck(w);
         travelUpdate();
 
     }
@@ -204,6 +228,22 @@ public class Projectile {
         }
     }
 
+    public void damageCheck(Wizard w){
+        if(getSprite().getY() <= PlayScreen.GROUND_Y){
+            this.getSprite().setY(PlayScreen.GROUND_Y);
+            if(damageRadius != null){
+                explosionHit(getSprite(), getDamageRadius(), w);
+            }
+            this.setState(STATE.EXPLODING);
+        }
+
+        if(damageRadius == null) {
+            singleTargetProjectileDamageCheck(w);
+        } else {
+            multipleTargetProjectileDamageCheck(w);
+        }
+    }
+
 
     //TODO This effect multiple enemies
     public void singleTargetProjectileDamageCheck(Array<Enemy> e){
@@ -217,20 +257,31 @@ public class Projectile {
         }
     }
 
+    public void singleTargetProjectileDamageCheck(Wizard w){
+        if(getSprite().getBoundingRectangle().overlaps(w.getSprite().getBoundingRectangle())){
+            w.reduceHealth(damage);
+            this.setState(STATE.EXPLODING);
+        }
+    }
+
     /**
      * For reach enemy that exists check if the bullet hit the enemy,
      * If this is the case check to see if the rectangle hits any other enemies
      * @param e
      */
     public void multipleTargetProjectileDamageCheck(Array<Enemy> e) {
-
         for (Enemy enemy : e) {
             if(getSprite().getBoundingRectangle().overlaps(enemy.getSprite().getBoundingRectangle())){
                 explosionHit(getSprite(), getDamageRadius(), e);
                 return;
             }
         }
+    }
 
+    public void multipleTargetProjectileDamageCheck(Wizard w) {
+        if(getSprite().getBoundingRectangle().overlaps(w.getSprite().getBoundingRectangle())){
+                explosionHit(getSprite(), getDamageRadius(), w);
+        }
     }
 
     public void explosionHit(Sprite bullet, Rectangle explosionRadius, Array<Enemy> e){
@@ -246,6 +297,20 @@ public class Projectile {
 
         }
     }
+
+    public void explosionHit(Sprite bullet, Rectangle explosionRadius, Wizard w) {
+        Vector2 temp = new Vector2();
+        bullet.getBoundingRectangle().getCenter(temp);
+        explosionRadius.setCenter(temp);
+        //damageRadius = new Rectangle(temp.x, temp.y, MainGame.GAME_UNITS * 15, MainGame.GAME_UNITS * 15);
+        if (explosionRadius.overlaps(w.getSprite().getBoundingRectangle())) {
+            w.reduceHealth(damage);
+            this.setState(STATE.EXPLODING);
+        }
+    }
+
+
+
 
 
     public void draw(SpriteBatch batch){

@@ -17,6 +17,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.Deck;
 import com.byrjamin.wickedwizard.deck.cards.Card;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.ActiveBullets;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.EnemyBullets;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Explosion;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.Wizard;
@@ -75,6 +76,7 @@ public class PlayScreen implements Screen {
     ShapeRenderer sr;
 
     EnemySpawner enemySpawner;
+    EnemyBullets ememyBullets;
 
     private Explosion instantCast;
 
@@ -105,6 +107,7 @@ public class PlayScreen implements Screen {
         wizard = new Wizard();
 
         enemySpawner = new EnemySpawner();
+        ememyBullets = new EnemyBullets();
         //+ 100 so it looks like the blob is jumpoing into action.
         enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) wizard.getPosition().y + 100);
 
@@ -147,6 +150,7 @@ public class PlayScreen implements Screen {
         wizard.update(dt);
         enemySpawner.update(dt, wizard);
         activeBullets.update(dt,gamecam, enemySpawner);
+        ememyBullets.update(dt, gamecam, wizard);
         deck.update(dt);
     }
 
@@ -176,6 +180,7 @@ public class PlayScreen implements Screen {
         }
         wizard.draw(game.batch);
         activeBullets.draw(game.batch);
+        ememyBullets.draw(game.batch);
         deck.draw(game.batch);
 
 

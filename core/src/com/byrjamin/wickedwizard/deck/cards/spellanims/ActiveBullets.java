@@ -88,6 +88,7 @@ public class ActiveBullets {
     }
 
 
+    //TODO Relic of the past needs to be removed
     public void updateExplosions(float dt, OrthographicCamera o, EnemySpawner enemyspawned){
        for(Explosion exp : activeExplosions){
             if(exp.isAnimationFinished()){

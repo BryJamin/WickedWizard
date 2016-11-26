@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.sprites.enemies;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 
 /**
@@ -25,6 +26,11 @@ public class EnemySpawner {
         spawnedEnemies.add(b);
     }
 
+    public void spawnTurret(int posX, int posY){
+        Turret t = new Turret(posX, posY);
+        spawnedEnemies.add(t);
+    }
+
 
     public void startSpawningBlobs(int x, int y){
 
@@ -35,35 +41,29 @@ public class EnemySpawner {
                            @Override
                            public void run() {
                                spawnBlob(posX, posY);
+                               spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
+
                            }
                        }, 0, 1
         );
     }
 
     public void update(float dt, Wizard wizard){
-        for(int i = 0; i < spawnedEnemies.size; i++){
-            if(spawnedEnemies.get(i).getState() == Enemy.STATE.DYING){
-                dyingEnemies.add(spawnedEnemies.get(i));
-                spawnedEnemies.removeIndex(i);
-            }
-        }
-
-        for(int i = 0; i < dyingEnemies.size; i++){
-            if(dyingEnemies.get(i).getState() == Enemy.STATE.DEAD){
-                dyingEnemies.removeIndex(i);
-            }
-        }
-
-        for(Enemy e : dyingEnemies){
-
-        }
-
         for(Enemy e : spawnedEnemies){
-            e.update(dt, wizard);
+            if(e.getState() == Enemy.STATE.DYING){
+                dyingEnemies.add(e);
+                spawnedEnemies.removeValue(e, true);
+            } else {
+                e.update(dt, wizard);
+            }
         }
 
         for(Enemy e : dyingEnemies){
-            e.update(dt, wizard);
+            if(e.getState() == Enemy.STATE.DEAD){
+                dyingEnemies.removeValue(e, true);
+            } else {
+                e.update(dt, wizard);
+            }
         }
     }
 

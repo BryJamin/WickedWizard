@@ -40,10 +40,11 @@ public abstract class Enemy {
     private Animation dyingAnimation;
 
 
-    public Enemy(int posX, int posY){
+    public Enemy(float posX, float posY){
+        sprite = new Sprite();
         position = new Vector3(posX, posY, 0);
         state = STATE.ALIVE;
-        isFlashing = true;
+        isFlashing = false;
     }
 
     public void draw(SpriteBatch batch){

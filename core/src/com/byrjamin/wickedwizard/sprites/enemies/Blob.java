@@ -25,21 +25,21 @@ public class Blob extends Enemy {
 
     private Animation walk;
     private Animation attack;
-    private Animation current;
+    private Animation currentAnimation;
 
     private int MOVEMENT = MainGame.GAME_UNITS * 30;
     private static final int GRAVITY = -7;
 
  //   private float time;
 
-    private enum blob_state {
+    private enum movement {
         WALKING, ATTACKING
     }
 
-    private blob_state blob;
+    private movement blob;
 
 
-    public Blob(int posX, int posY) {
+    public Blob(float posX, float posY) {
         super(posX, posY);
         Sprite sprite = PlayScreen.atlas.createSprite("blob_0");
 
@@ -81,7 +81,7 @@ public class Blob extends Enemy {
         walk = new Animation(0.25f / 1f, walkAnimation, Animation.PlayMode.LOOP);
         attack = new Animation(0.25f / 1f, attackAnimation);
 
-        current = walk;
+        currentAnimation = walk;
 
         time = 0f;
 
@@ -123,6 +123,9 @@ public class Blob extends Enemy {
     }
 
 
+    //TODO The way this blob attacks is slightly incorrect, just in the animation is finished no matter
+    //TODO where the wizard is it takes damage.
+    //TODO what should happen is that it attack an area infront of it, which I guess can count as a projectile
     public void aliveUpdate(float dt,  Wizard wizard){
 
 
@@ -144,35 +147,35 @@ public class Blob extends Enemy {
         }
 
         //Changing state of blob to walking or attacking
-        if(this.getBlob_state() == blob.WALKING){
+        if(this.getBlob_state() == movement.WALKING ){
 
             getSprite().setX(getSprite().getX() - MOVEMENT * dt);
 
             if(this.getSprite().getBoundingRectangle().overlaps(wizard.getSprite().getBoundingRectangle())) {
-                if(current != attack) {
-                    current = attack;
+                if(currentAnimation != attack) {
+                    currentAnimation = attack;
                     time = 0;
                 }
-                this.setBlob_state(blob.ATTACKING);
+                this.setBlob_state(movement.ATTACKING);
             }
         } else {
 
             if(!this.getSprite().getBoundingRectangle().overlaps(wizard.getSprite().getBoundingRectangle())) {
-                if(current != walk) {
-                    current = walk;
+                if(currentAnimation != walk) {
+                    currentAnimation = walk;
                     time = 0;
                 }
-                this.setBlob_state(blob.WALKING);
+                this.setBlob_state(movement.WALKING);
             }
 
-            if(current.isAnimationFinished(time)){
+            if(currentAnimation.isAnimationFinished(time)){
                 wizard.reduceHealth(2);
                 System.out.println(wizard.getHealth());
                 time = 0;
             }
         }
         //this.getSprite().setPosition(this.getSprite().getPosition().x + (5f * dt), this.getPosition().y);
-        this.getSprite().setRegion(current.getKeyFrame(time));
+        this.getSprite().setRegion(currentAnimation.getKeyFrame(time));
 
 
     }
@@ -185,16 +188,16 @@ public class Blob extends Enemy {
 
 
     public void startAttackAnimation(){
-        if(current != attack) {
-            current = attack;
+        if(currentAnimation != attack) {
+            currentAnimation = attack;
         }
     }
 
-    public blob_state getBlob_state() {
+    public movement getBlob_state() {
         return blob;
     }
 
-    public void setBlob_state(blob_state blob_state) {
+    public void setBlob_state(movement blob_state) {
         this.blob = blob_state;
     }
 
