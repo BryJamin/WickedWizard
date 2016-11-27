@@ -14,15 +14,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.deck.Deck;
 import com.byrjamin.wickedwizard.deck.cards.Card;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.ActiveBullets;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.EnemyBullets;
+import com.byrjamin.wickedwizard.arenas.ActiveBullets;
+import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Explosion;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
-import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
+import com.byrjamin.wickedwizard.arenas.EnemySpawner;
 
 
 //TODO
@@ -75,7 +76,8 @@ public class PlayScreen implements Screen {
 
     ShapeRenderer sr;
 
-    EnemySpawner enemySpawner;
+    Arena arena;
+
     EnemyBullets enemyBullets;
 
     private Explosion instantCast;
@@ -106,11 +108,8 @@ public class PlayScreen implements Screen {
 
         wizard = new Wizard();
 
-        enemySpawner = new EnemySpawner();
+        arena = new Arena(wizard);
         enemyBullets = new EnemyBullets();
-        //+ 100 so it looks like the blob is jumpoing into action.
-        enemySpawner.startSpawningBlobs(MainGame.GAME_WIDTH, (int) wizard.getPosition().y + 100);
-
         deck = new Deck();
 
 
@@ -148,9 +147,10 @@ public class PlayScreen implements Screen {
     public void update(float dt){
         handleInput(dt);
         wizard.update(dt);
-        enemySpawner.update(dt, wizard);
-        activeBullets.update(dt,gamecam, enemySpawner);
+        arena.update(dt, wizard);
+        activeBullets.update(dt,gamecam, arena.getEnemies());
         enemyBullets.update(dt, gamecam, wizard);
+
         deck.update(dt);
     }
 
@@ -172,7 +172,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        enemySpawner.draw(game.batch);
+        arena.draw(game.batch);
 
         if(instantCast != null) {
             instantCast.draw(game.batch);

@@ -1,10 +1,13 @@
-package com.byrjamin.wickedwizard.sprites.enemies;
+package com.byrjamin.wickedwizard.arenas;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.sprites.Wizard;
+import com.byrjamin.wickedwizard.sprites.enemies.Blob;
+import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
+import com.byrjamin.wickedwizard.sprites.enemies.Turret;
 
 /**
  * Created by Home on 06/11/2016.
@@ -21,31 +24,29 @@ public class EnemySpawner {
     }
 
 
-    public void spawnBlob(int posX, int posY){
+    public void spawnBlob(float posX, float posY){
         Blob b = new Blob(posX, posY);
         spawnedEnemies.add(b);
     }
 
-    public void spawnTurret(int posX, int posY){
+    public void spawnBlob(Blob b){
+        spawnedEnemies.add(b);
+    }
+
+    public void spawnTurret(float posX, float posY){
         Turret t = new Turret(posX, posY);
         spawnedEnemies.add(t);
     }
 
+    public void spawnTurret(Turret t){
+        spawnedEnemies.add(t);
+    }
 
-    public void startSpawningBlobs(int x, int y){
 
-        final int posX = x;
-        final int posY = y;
+    public void startSpawningBlobs(float x, float y){
 
-        Timer.schedule(new Timer.Task(){
-                           @Override
-                           public void run() {
-                               spawnBlob(posX, posY);
-                               spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
-
-                           }
-                       }, 0, 1
-        );
+        spawnBlob(x, y);
+        spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
     }
 
     public void update(float dt, Wizard wizard){
@@ -97,6 +98,10 @@ public class EnemySpawner {
 
     }
 
+
+    public boolean areAllEnemiesKilled(){
+        return dyingEnemies.size == 0 && spawnedEnemies.size == 0;
+    }
 
     public Array<Enemy> getSpawnedEnemies() {
         return spawnedEnemies;

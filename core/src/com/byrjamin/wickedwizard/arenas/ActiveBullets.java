@@ -1,12 +1,12 @@
-package com.byrjamin.wickedwizard.deck.cards.spellanims;
+package com.byrjamin.wickedwizard.arenas;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.Explosion;
+import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
-import com.byrjamin.wickedwizard.sprites.enemies.EnemySpawner;
+import com.byrjamin.wickedwizard.arenas.EnemySpawner;
 
 /**
  * Created by Home on 10/11/2016.
@@ -60,7 +60,7 @@ public class ActiveBullets {
      * @param o - camera
      * @param e - enemyspawner
      */
-    public void update(float dt, OrthographicCamera o, EnemySpawner e){
+    public void update(float dt, OrthographicCamera o, Array<Enemy> e){
         //TODO If the sprite ever moves instead of the world moving This needs to be changed
         //TODO to use the camera position.
         updateProjectile(dt, o, e);
@@ -75,11 +75,11 @@ public class ActiveBullets {
      * @param o - camera
      * @param e - Enemy Spawned (could be changed to just the enemy array)
      */
-    public void updateProjectile(float dt, OrthographicCamera o, EnemySpawner e){
+    public void updateProjectile(float dt, OrthographicCamera o, Array<Enemy> e){
 
         for(Projectile p : activeBullets) {
             if(p.getState() != Projectile.STATE.DEAD) {
-                p.update(dt, e.getSpawnedEnemies());
+                p.update(dt, e);
             } else {
                 activeBullets.removeValue(p, true);
             }
@@ -89,14 +89,14 @@ public class ActiveBullets {
 
 
     //TODO Relic of the past needs to be removed
-    public void updateExplosions(float dt, OrthographicCamera o, EnemySpawner enemyspawned){
+    public void updateExplosions(float dt, OrthographicCamera o, Array<Enemy> enemies){
        for(Explosion exp : activeExplosions){
             if(exp.isAnimationFinished()){
                 activeExplosions.removeValue(exp, true);
             }
            if(!exp.hasHit()){
                exp.sethasHit(true);
-               for (Enemy e : enemyspawned.getSpawnedEnemies()) {
+               for (Enemy e : enemies) {
                    if(exp.getSprite().getBoundingRectangle().overlaps(e.getSprite().getBoundingRectangle())){
                        e.reduceHealth(2);
                    }
