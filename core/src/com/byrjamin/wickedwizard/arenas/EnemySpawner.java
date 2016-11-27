@@ -15,12 +15,10 @@ import com.byrjamin.wickedwizard.sprites.enemies.Turret;
 public class EnemySpawner {
 
     private Array<Enemy> spawnedEnemies;
-    private Array<Enemy> dyingEnemies;
 
 
     public EnemySpawner(){
         spawnedEnemies = new Array<Enemy>();
-        dyingEnemies = new Array<Enemy>();
     }
 
 
@@ -42,26 +40,15 @@ public class EnemySpawner {
         spawnedEnemies.add(t);
     }
 
-
-    public void startSpawningBlobs(float x, float y){
-
-        spawnBlob(x, y);
-        spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
-    }
-
+    /**
+     * Updates all Enemies that have been spawned. If the enemy is dead it is removed from the array.
+     * @param dt
+     * @param wizard
+     */
     public void update(float dt, Wizard wizard){
         for(Enemy e : spawnedEnemies){
-            if(e.getState() == Enemy.STATE.DYING){
-                dyingEnemies.add(e);
-                spawnedEnemies.removeValue(e, true);
-            } else {
-                e.update(dt, wizard);
-            }
-        }
-
-        for(Enemy e : dyingEnemies){
             if(e.getState() == Enemy.STATE.DEAD){
-                dyingEnemies.removeValue(e, true);
+                spawnedEnemies.removeValue(e, true);
             } else {
                 e.update(dt, wizard);
             }
@@ -69,11 +56,6 @@ public class EnemySpawner {
     }
 
     public void draw(SpriteBatch batch){
-
-        for(Enemy e : dyingEnemies){
-            e.draw(batch);
-        }
-
         for(Enemy e : spawnedEnemies){
             e.draw(batch);
         }
@@ -100,7 +82,7 @@ public class EnemySpawner {
 
 
     public boolean areAllEnemiesKilled(){
-        return dyingEnemies.size == 0 && spawnedEnemies.size == 0;
+        return spawnedEnemies.size == 0;
     }
 
     public Array<Enemy> getSpawnedEnemies() {

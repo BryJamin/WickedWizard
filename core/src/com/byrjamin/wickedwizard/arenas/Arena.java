@@ -10,7 +10,9 @@ import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
 import java.util.Random;
 
 /**
- * Created by Home on 27/11/2016.
+ * Class is currently a stand-in for a future 'Room' Class
+ * The idea behind this class is that Arenas/Rooms will decide their layouts, when they enemies spawn
+ * and where the wizard is placed inside them
  */
 public class Arena {
 
@@ -31,13 +33,14 @@ public class Arena {
 
 
 
+    //A room with one turret that spawns on the left
     public void stage1(){
         wizard = new Wizard();
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnTurret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
     }
 
-
+    //A room with one turret that spawns on the right and one blob on the left
     public void stage2(){
         wizard = new Wizard();
         enemySpawner = new EnemySpawner();
@@ -45,6 +48,7 @@ public class Arena {
         enemySpawner.spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
     }
 
+    //A room with two blobs on both side and the wizard position is moved.
     public void stage3(){
         wizard.getSprite().setPosition(MainGame.GAME_WIDTH / 2, 1000);
         enemySpawner = new EnemySpawner();

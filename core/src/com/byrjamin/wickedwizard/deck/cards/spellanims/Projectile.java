@@ -291,18 +291,30 @@ public class Projectile {
     }
 
 
-    //TODO This effect multiple enemies
-    public void singleTargetProjectileDamageCheck(Array<Enemy> e){
+    /**
+     * Checks if the projectile has hit any of the enemies on screen, if it has the bullet deals damage
+     * and switches to another state.
+     *
+     * If the enemy is already dying the bullet passes through the enemy.
+     *
+     * @param enemies - Array of Enemies
+     */
+    public void singleTargetProjectileDamageCheck(Array<Enemy> enemies){
 
-        for (Enemy enemy : e) {
-            if(getSprite().getBoundingRectangle().overlaps(enemy.getSprite().getBoundingRectangle())){
-                enemy.reduceHealth(damage);
+        for (Enemy e : enemies) {
+            if(getSprite().getBoundingRectangle().overlaps(e.getSprite().getBoundingRectangle())
+                    && e.getState() == Enemy.STATE.ALIVE){
+                e.reduceHealth(damage);
                 this.setState(STATE.EXPLODING);
                 return;
             }
         }
     }
 
+    /**
+     * Checks if the projectile has hit the wizard, if it has the projectile deals damage and switches state.
+     * @param w
+     */
     public void singleTargetProjectileDamageCheck(Wizard w){
         if(getSprite().getBoundingRectangle().overlaps(w.getSprite().getBoundingRectangle())){
             w.reduceHealth(damage);
@@ -330,6 +342,16 @@ public class Projectile {
         }
     }
 
+    /**
+     * Gets the center of the Projectile Sprite and applies the Area of effect Rectangle from
+     * that position.
+     *
+     * Then checks to see how many enemies were within the area of effect and applies damage.
+     *
+     * @param bullet - The projectile's Sprite
+     * @param explosionRadius - Area of Effect of the Explosion
+     * @param e - Array of enemies
+     */
     public void explosionHit(Sprite bullet, Rectangle explosionRadius, Array<Enemy> e){
         Vector2 temp = new Vector2();
         bullet.getBoundingRectangle().getCenter(temp);
@@ -371,6 +393,10 @@ public class Projectile {
 
     }
 
+    /**
+     * Colors the bullet based on the direction it can be dispelled (This will be tweaked) //TODO look back
+     * @param batch
+     */
     public void alive_draw(SpriteBatch batch){
         Color temp = this.getSprite().getColor();
         switch(dispell){

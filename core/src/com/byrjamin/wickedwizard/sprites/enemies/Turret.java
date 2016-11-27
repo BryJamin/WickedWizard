@@ -93,7 +93,15 @@ public class Turret extends Enemy{
     //public void flipX()
 
 
-
+    /**
+     * Checks to see if the Turret can fire, if it can it fires.
+     *
+     * Currently this turret is set to alternate between Vertical and horizontal dispellables.
+     *
+     * This will be changed to be an option when generating a Turret.
+     * @param dt
+     * @param wizard
+     */
     public void fire(float dt, Wizard wizard){
         reloadTimer -= dt;
         if (reloadTimer <= 0) {

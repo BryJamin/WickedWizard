@@ -77,6 +77,14 @@ public abstract class Card {
         }
     }
 
+    /**
+     * Generates the projectile that the cards fire.
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
     public Projectile generateProjectile(float x1, float y1, float x2, float y2){
 
         return new Projectile.ProjectileBuilder(x1, y1, x2, y2)

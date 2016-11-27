@@ -57,6 +57,11 @@ public class EnemyBullets {
 
     }
 
+    /**
+     * Inputs the dispell direction into the active bullet array to see if any bullets can be
+     * dispelled. 
+     * @param dispell - The direction the dispell was cast in
+     */
     public void dispellProjectiles(Projectile.DISPELL dispell){
         for(Projectile p : activeBullets) {
             if(p.getState() == Projectile.STATE.ALIVE) {

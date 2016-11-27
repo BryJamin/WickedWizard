@@ -27,15 +27,6 @@ public class ActiveBullets {
         activeExplosions = new Array<Explosion>();
     }
 
-    public ActiveBullets(float minimum_x, float minimum_y, float max_x, float max_y){
-        activeBullets = new Array<Projectile>();
-        activeBullets = new Array<Projectile>();
-        min_x = minimum_x;
-        min_y = minimum_y;
-        this.max_x = max_x;
-        this.max_y = max_y;
-    }
-
     /**
      * Adds a bullet to the active ActiveBullets array
      * @param p - Projectile
