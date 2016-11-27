@@ -15,6 +15,7 @@ import java.util.Random;
 public class Arena {
 
     private EnemySpawner enemySpawner;
+    private Wizard wizard;
 
     public enum STATE {
         LOCKED, UNLOCKED
@@ -23,25 +24,29 @@ public class Arena {
 
     public STATE arenaState;
 
-    public Arena(Wizard wizard){
+    public Arena(){
+        wizard = new Wizard();
         stage3();
     }
 
 
 
     public void stage1(){
+        wizard = new Wizard();
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnTurret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
     }
 
 
     public void stage2(){
+        wizard = new Wizard();
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnBlob(new Blob(0,500));
         enemySpawner.spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
     }
 
     public void stage3(){
+        wizard.getSprite().setPosition(MainGame.GAME_WIDTH / 2, 1000);
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnBlob(new Blob(0,500));
         enemySpawner.spawnBlob(new Blob(MainGame.GAME_WIDTH, 500));
@@ -50,16 +55,19 @@ public class Arena {
 
 
 
-    public void update(float dt, Wizard wizard){
+    public void update(float dt){
+        wizard.update(dt);
         enemySpawner.update(dt, wizard);
         if(enemySpawner.areAllEnemiesKilled()){
             arenaState = STATE.UNLOCKED;
-            nextStage();
+        } else {
+            arenaState = STATE.LOCKED;
         }
     }
 
 
     public void draw(SpriteBatch batch){
+        wizard.draw(batch);
         enemySpawner.draw(batch);
     }
 
@@ -83,7 +91,9 @@ public class Arena {
 
 
     public void triggerNextStage(){
-
+        if(arenaState == STATE.UNLOCKED) {
+            nextStage();
+        }
     }
 
 
@@ -92,8 +102,11 @@ public class Arena {
     }
 
 
+    public Wizard getWizard() {
+        return wizard;
+    }
 
-
-
-
+    public void setWizard(Wizard wizard) {
+        this.wizard = wizard;
+    }
 }

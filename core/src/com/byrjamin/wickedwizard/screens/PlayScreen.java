@@ -105,10 +105,7 @@ public class PlayScreen implements Screen {
         gestureDetector = new GestureDetector(new gestures());
 
         atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
-
-        wizard = new Wizard();
-
-        arena = new Arena(wizard);
+        arena = new Arena();
         enemyBullets = new EnemyBullets();
         deck = new Deck();
 
@@ -133,8 +130,8 @@ public class PlayScreen implements Screen {
             if(input.y > PlayScreen.GROUND_Y) {
 
                 if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
-                    activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(wizard.getSprite().getX() + wizard.getSprite().getWidth() / 2,
-                            wizard.getSprite().getY() + wizard.getSprite().getHeight() / 2, input.x, input.y));
+                    activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(arena.getWizard().getCenter().x,
+                            arena.getWizard().getCenter().y, input.x, input.y));
                 } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
                     activeBullets.addExplosion(input.x, input.y);
                 }
@@ -146,10 +143,9 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         handleInput(dt);
-        wizard.update(dt);
-        arena.update(dt, wizard);
+        arena.update(dt);
         activeBullets.update(dt,gamecam, arena.getEnemies());
-        enemyBullets.update(dt, gamecam, wizard);
+        enemyBullets.update(dt, gamecam, arena.getWizard());
 
         deck.update(dt);
     }
@@ -172,14 +168,12 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        arena.draw(game.batch);
-
         if(instantCast != null) {
             instantCast.draw(game.batch);
 
         }
-        wizard.draw(game.batch);
         activeBullets.draw(game.batch);
+        arena.draw(game.batch);
         enemyBullets.draw(game.batch);
         deck.draw(game.batch);
 
@@ -237,6 +231,8 @@ public class PlayScreen implements Screen {
             gamecam.unproject(input);
 
             deck.cardSelect(input.x, input.y);
+
+            arena.triggerNextStage();
 
             //enemyBullets.dispellProjectiles();
 /*            if(count == 2){
