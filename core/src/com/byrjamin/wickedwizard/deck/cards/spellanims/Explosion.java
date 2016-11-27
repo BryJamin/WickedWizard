@@ -44,24 +44,17 @@ public class Explosion {
 
     }
 
-
-
-
     public void update(float dt){
         time += dt;
         animationFinished = explosion_animation.isAnimationFinished(time);
         this.getSprite().setRegion(explosion_animation.getKeyFrame(time));
     }
 
-
     public void draw(SpriteBatch batch){
-
         if(!animationFinished){
             this.getSprite().draw(batch);
         }
     }
-
-
 
     public Sprite getSprite() {
         return sprite;

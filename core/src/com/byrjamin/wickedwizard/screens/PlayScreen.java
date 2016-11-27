@@ -261,14 +261,11 @@ public class PlayScreen implements Screen {
 
 
             if(Math.abs(velocityY)> 500){
-                enemyBullets.dispellProjectiles();
+                enemyBullets.dispellProjectiles(Projectile.DISPELL.VERTICAL);
             } else if(Math.abs(velocityX) > 500){
-                enemyBullets.dispellProjectiles();
+                enemyBullets.dispellProjectiles(Projectile.DISPELL.HORIZONTAL);
             }
             System.out.println("FLING PERFORMED");
-            System.out.println("VELOCITY X IS" + velocityX);
-            System.out.println("VELOCITY Y IS" + velocityY);
-
             return true;
         }
 

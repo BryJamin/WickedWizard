@@ -62,30 +62,6 @@ public class Projectile {
     private String spriteString;
     private Rectangle areaOfEffect;
 
-
-/*
-    public Projectile(){
-        sprite = PlayScreen.atlas.createSprite("blob_0");
-        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-        sprite.setRotation((float) Math.toDegrees(projectAngle));
-
-        Array<TextureRegion> animation;
-
-        animation = new Array<TextureRegion>();
-
-        // Create an array of TextureRegions
-        animation.add(PlayScreen.atlas.findRegion("explosion0"));
-        animation.add(PlayScreen.atlas.findRegion("explosion1"));
-        animation.add(PlayScreen.atlas.findRegion("explosion2"));
-        animation.add(PlayScreen.atlas.findRegion("explosion3"));
-
-        explosion_animation = new Animation(0.07f / 1f, animation);
-
-        time = 0;
-    }
-*/
-
-
     public static class ProjectileBuilder{
 
         //Required Parameters
@@ -102,6 +78,7 @@ public class Projectile {
         private Sprite sprite;
         private String spriteString = "fire";
         private Rectangle areaOfEffect;
+        private float HORIZONTAL_VELOCITY = 20f;
 
 
         public ProjectileBuilder(float x1, float y1, float x2, float y2) {
@@ -116,6 +93,9 @@ public class Projectile {
 
         public ProjectileBuilder gravity(boolean val)
         { gravity = val; return this; }
+
+        public ProjectileBuilder HORIZONTAL_VELOCITY(float val)
+        { HORIZONTAL_VELOCITY = val; return this; }
 
         public ProjectileBuilder explosionAnimation(Animation val)
         { explosionAnimation = val; return this; }
@@ -150,6 +130,7 @@ public class Projectile {
         dispell = builder.dispell;
         sprite = builder.sprite;
         spriteString = builder.spriteString;
+        HORIZONTAL_VELOCITY = builder.HORIZONTAL_VELOCITY;
         //TODO fix this crap
         sprite = PlayScreen.atlas.createSprite(spriteString);
         sprite.setCenter(x1, y1);
@@ -184,8 +165,6 @@ public class Projectile {
     }
 
 //TODO More math T---T
-
-
     public void calculateAngle(float x1,float y1, float x2, float y2){
         projectAngle = (Math.atan2(y2 - y1, x2 - x1));
     }
@@ -272,7 +251,6 @@ public class Projectile {
     }
 
     public void dispell(DISPELL dispell){
-
         if(dispell == getDispell()) {
             time = 0;
             this.setState(STATE.EXPLODING);

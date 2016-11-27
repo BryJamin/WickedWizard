@@ -99,6 +99,8 @@ public class Turret extends Enemy{
             EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), wizard.getSprite().getX(),wizard.getSprite().getY())
                     .spriteString("fire")
                     .damage(1)
+                    .HORIZONTAL_VELOCITY(5f)
+                    .dispell(Projectile.DISPELL.HORIZONTAL)
                     .build());
             reloadTimer += fireRate;
         }

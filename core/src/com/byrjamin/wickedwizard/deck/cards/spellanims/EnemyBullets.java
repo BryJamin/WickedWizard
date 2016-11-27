@@ -48,7 +48,6 @@ public class EnemyBullets {
      * @param w - Wizard (could be changed to just the enemy array)
      */
     public void updateProjectile(float dt, OrthographicCamera o, Wizard w){
-
         for(Projectile p : activeBullets) {
             if(p.getState() != Projectile.STATE.DEAD) {
                 p.update(dt, w);
@@ -59,10 +58,10 @@ public class EnemyBullets {
 
     }
 
-    public void dispellProjectiles(){
+    public void dispellProjectiles(Projectile.DISPELL dispell){
         for(Projectile p : activeBullets) {
             if(p.getState() == Projectile.STATE.ALIVE) {
-                //p.dispell();
+                p.dispell(dispell);
             }
         }
     }

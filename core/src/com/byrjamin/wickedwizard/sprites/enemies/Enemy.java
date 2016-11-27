@@ -15,14 +15,9 @@ import com.sun.org.apache.xpath.internal.SourceTree;
  */
 public abstract class Enemy {
 
-
-
-
     public enum STATE {
         DEAD, DYING, ALIVE
     }
-
-
 
     public STATE state;
 
@@ -33,8 +28,8 @@ public abstract class Enemy {
     private Vector3 position;
 
     private boolean isFlashing;
-    private float flashTimer;
 
+    private float flashTimer;
     public float time;
 
     private Animation dyingAnimation;
@@ -75,10 +70,7 @@ public abstract class Enemy {
             this.setState(STATE.DYING);
             //return;
         }
-
         resetFlashTimer();
-
-
     }
 
     public void flashTimer(float dt){
@@ -147,13 +139,4 @@ public abstract class Enemy {
             this.setState(STATE.DEAD);
         }
     }
-    /**
-     * Checks if the enemies health is less than 0,
-     * if so it doesn't draw it.
-     * This will most likely be moved into the abstract class.
-     * @param batch
-     */
-
-
-
 }
