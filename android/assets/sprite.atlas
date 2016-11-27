@@ -13,7 +13,7 @@ blob_0
   index: -1
 blob_1
   rotate: false
-  xy: 1886, 134
+  xy: 1952, 68
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -93,6 +93,27 @@ blob_dying09
   xy: 812, 28
   size: 160, 160
   orig: 160, 160
+  offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 1886, 102
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+bullet_blue
+  rotate: false
+  xy: 1886, 36
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+bullet_red
+  rotate: false
+  xy: 1952, 102
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 card_arc
@@ -188,7 +209,7 @@ frost
   index: -1
 wiz
   rotate: false
-  xy: 1886, 100
+  xy: 2005, 390
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

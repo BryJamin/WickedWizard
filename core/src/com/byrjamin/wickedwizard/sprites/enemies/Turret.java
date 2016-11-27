@@ -26,6 +26,8 @@ public class Turret extends Enemy{
 
     private float fireRate = 1f;
 
+    private boolean isVertical = false;
+
     private Projectile projectile;
 
     private Array<Projectile> activeBullets;
@@ -97,12 +99,13 @@ public class Turret extends Enemy{
         reloadTimer -= dt;
         if (reloadTimer <= 0) {
             EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), wizard.getSprite().getX(),wizard.getSprite().getY())
-                    .spriteString("fire")
+                    .spriteString("bullet")
                     .damage(1)
                     .HORIZONTAL_VELOCITY(5f)
-                    .dispell(Projectile.DISPELL.HORIZONTAL)
+                    .dispell(isVertical ? Projectile.DISPELL.HORIZONTAL : Projectile.DISPELL.VERTICAL)
                     .build());
             reloadTimer += fireRate;
+            isVertical = !isVertical;
         }
     }
 

@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.deck.cards.spellanims;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -357,7 +358,7 @@ public class Projectile {
     public void draw(SpriteBatch batch){
 
         if(getState() == STATE.ALIVE){
-            this.getSprite().draw(batch);
+            alive_draw(batch);
         } else if (getState() == STATE.EXPLODING){
             if(areaOfEffect != null && explosionTextureRegion != null){
                 batch.draw(explosionTextureRegion, areaOfEffect.getX(), areaOfEffect.getY(), areaOfEffect.getWidth(), areaOfEffect.getHeight());
@@ -367,6 +368,22 @@ public class Projectile {
                 }
             }
         }
+
+    }
+
+    public void alive_draw(SpriteBatch batch){
+        Color temp = this.getSprite().getColor();
+        switch(dispell){
+            case VERTICAL: this.getSprite().setColor(Color.toFloatBits(255, 43, 43,255));
+                break;
+            case HORIZONTAL: this.getSprite().setColor(Color.toFloatBits(0, 255, 199,255));
+                break;
+            default: this.getSprite().setColor(Color.WHITE);
+        }
+
+        this.getSprite().draw(batch);
+        this.getSprite().setColor(temp);
+
 
     }
 
