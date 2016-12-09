@@ -69,10 +69,12 @@ public abstract class Card {
 
     public void update(float dt){
         fireTracker -= dt;
+        System.out.println(fireTracker);
         if (fireTracker <= 0) {
             canFire = true;
             fireTracker += fireRate;
         } else {
+            System.out.println("False");
             canFire = false;
         }
     }
@@ -86,7 +88,6 @@ public abstract class Card {
      * @return
      */
     public Projectile generateProjectile(float x1, float y1, float x2, float y2){
-
         return new Projectile.ProjectileBuilder(x1, y1, x2, y2)
                 .spriteString(projectileSpriteName)
                 .damage(getBaseDamage())

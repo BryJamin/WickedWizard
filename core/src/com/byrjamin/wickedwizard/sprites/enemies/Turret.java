@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
+import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 
@@ -20,6 +21,8 @@ public class Turret extends Enemy{
     }
 
     private float MOVEMENT = MainGame.GAME_UNITS * 30;
+
+    private Reloader reloader;
 
     private float reloadTimer;
 
@@ -54,7 +57,7 @@ public class Turret extends Enemy{
 
         this.setDyingAnimation(new Animation(0.05f / 1f, dyingAnimationAr));
 
-        reloadTimer = 3.0f;
+        reloader = new Reloader(0.2f, 3.0f);
 
 
     }
@@ -76,6 +79,7 @@ public class Turret extends Enemy{
         if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
+        reloader.update(dt);
         fire(dt,wizard);
     }
 
@@ -103,15 +107,13 @@ public class Turret extends Enemy{
      * @param wizard
      */
     public void fire(float dt, Wizard wizard){
-        reloadTimer -= dt;
-        if (reloadTimer <= 0) {
+        if (reloader.isReady()) {
             EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), wizard.getSprite().getX(),wizard.getSprite().getY())
                     .spriteString("bullet")
                     .damage(1)
                     .HORIZONTAL_VELOCITY(5f)
                     .dispell(isVertical ? Projectile.DISPELL.HORIZONTAL : Projectile.DISPELL.VERTICAL)
                     .build());
-            reloadTimer += fireRate;
             isVertical = !isVertical;
         }
     }

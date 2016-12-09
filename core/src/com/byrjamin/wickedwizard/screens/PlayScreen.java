@@ -54,8 +54,6 @@ public class PlayScreen implements Screen {
 
     private boolean up;
 
-    private Wizard wizard;
-
     private Blob blob1;
     private Blob blob2;
 
@@ -129,11 +127,8 @@ public class PlayScreen implements Screen {
 
             if(input.y > PlayScreen.GROUND_Y) {
 
-                if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.PROJECTILE && deck.getSelectedCard().isCanFire()) {
-                    activeBullets.addProjectile(deck.getSelectedCard().generateProjectile(arena.getWizard().getCenter().x,
-                            arena.getWizard().getCenter().y, input.x, input.y));
-                } else if (deck.getSelectedCard().getProjectileType() == Card.ProjectileType.INSTANT) {
-                    activeBullets.addExplosion(input.x, input.y);
+                if(arena.getWizard().getReloader().isReady()){
+                    activeBullets.addProjectile(arena.getWizard().generateProjectile(input.x, input.y));
                 }
             }
 
