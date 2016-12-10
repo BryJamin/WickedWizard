@@ -171,6 +171,7 @@ public class Blob extends Enemy {
     }
 
     public void applyGravity(float dt, Arena arena){
+
         if(isFalling){
             Rectangle r = arena.getOverlappingRectangle(this.getSprite().getBoundingRectangle());
             if(r != null) {

@@ -95,6 +95,13 @@ blob_dying09
   orig: 160, 160
   offset: 0, 0
   index: -1
+brick
+  rotate: false
+  xy: 2005, 390
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 bullet
   rotate: false
   xy: 1886, 102
@@ -209,7 +216,7 @@ frost
   index: -1
 wiz
   rotate: false
-  xy: 2005, 390
+  xy: 2005, 356
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

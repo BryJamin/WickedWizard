@@ -78,24 +78,18 @@ public class Wizard {
 
 
     public void applyGravity(float dt, Arena arena){
-
-        if(isFalling){
-
             this.getSprite().translateY(GRAVITY);
             Rectangle r = arena.getOverlappingRectangle(this.getSprite().getBoundingRectangle());
-
             if(r != null) {
                 this.getSprite().setY(r.getY() + r.getHeight());
-                isFalling = false;
             }
-
-        }
     }
 
     public Projectile generateProjectile(float input_x, float input_y){
         return new Projectile.ProjectileBuilder(getCenter().x, getCenter().y, input_x, input_y)
                 .spriteString("fire")
                 .damage(damage)
+                .HORIZONTAL_VELOCITY(30f)
                 .build();
     }
 

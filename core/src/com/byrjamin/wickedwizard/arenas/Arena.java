@@ -1,14 +1,18 @@
 package com.byrjamin.wickedwizard.arenas;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
+import com.byrjamin.wickedwizard.sprites.enemies.Turret;
 
 import java.util.Random;
 
@@ -26,6 +30,11 @@ public class Arena {
 
     private Rectangle ground;
 
+    private Array<Vector2> groundTileTextureCoords;
+
+    private float tile_height;
+    private float tile_width;
+
     private Array<Rectangle> platforms;
 
 
@@ -39,10 +48,12 @@ public class Arena {
     public Arena(){
         activeBullets = new ActiveBullets();
         enemyBullets = new EnemyBullets();
+        enemySpawner = new EnemySpawner();
         wizard = new Wizard();
 
-        ground = new Rectangle(0,0,MainGame.GAME_WIDTH, 200);
+        ground = new Rectangle(0,0,MainGame.GAME_WIDTH, MainGame.GAME_UNITS * 10);
 
+        genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
@@ -68,7 +79,10 @@ public class Arena {
     public void stage1(){
         wizard = new Wizard();
         enemySpawner = new EnemySpawner();
-        enemySpawner.spawnTurret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
+        Array<Enemy> k = new Array<Enemy>();
+        k.add(new Turret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10));
+        enemySpawner.setSpawnedEnemies(k);
+        //enemySpawner.spawnTurret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
     }
 
     //A room with one turret that spawns on the right and one blob on the left
@@ -109,6 +123,38 @@ public class Arena {
         wizard.draw(batch);
         enemySpawner.draw(batch);
         enemyBullets.draw(batch);
+
+        batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
+        batch.draw(PlayScreen.atlas.findRegion("brick"), 200, 0, 200, 200);
+
+        for(Vector2 v : groundTileTextureCoords){
+            batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
+        }
+
+    }
+
+
+    public void genGroundCoords(float ground_width, float ground_height, float rows){
+
+        groundTileTextureCoords = new Array<Vector2>();
+
+        tile_height = ground_height / rows;
+        tile_width = ground_height / rows;
+        //Assuming were using square tiles here
+        float columns = ground_width / tile_width;
+
+
+        for(int i = 0; i < columns; i++){
+            for(int j = 0; j < rows; j++){
+                groundTileTextureCoords.add(new Vector2((i * tile_height),(j * tile_width)));
+
+                System.out.println("x:" + (i * tile_height) + " y:" + (j * tile_width));
+
+            }
+        }
+
+
+
     }
 
     public void nextStage(){
