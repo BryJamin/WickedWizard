@@ -16,14 +16,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.deck.Deck;
-import com.byrjamin.wickedwizard.deck.cards.Card;
 import com.byrjamin.wickedwizard.arenas.ActiveBullets;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.Explosion;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
-import com.byrjamin.wickedwizard.sprites.Wizard;
+import com.byrjamin.wickedwizard.deck.cards.spelltypes.Explosion;
+import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
-import com.byrjamin.wickedwizard.arenas.EnemySpawner;
 
 
 //TODO
@@ -39,57 +36,30 @@ public class PlayScreen implements Screen {
 
     private OrthographicCamera gamecam;
 
-    public static int GROUND_Y = 400;
-
-    Texture img;
+    public static int GROUND_Y = 200;
 
     private Viewport gamePort;
-
-    private Vector3 test;
 
     public static TextureAtlas atlas;
 
     GestureDetector gestureDetector;
 
-
-    private boolean up;
-
-    private Blob blob1;
-    private Blob blob2;
-
-    private float timeAux;
-
-    private Projectile projectile;
-
     private ActiveBullets activeBullets;
 
-
-    Texture texture;
-
-    Sprite sprite;
-    Sprite swordCard;
-    Sprite spellCard;
-
     Vector3 input;
-
-    ShapeRenderer sr;
 
     Arena arena;
 
     EnemyBullets enemyBullets;
 
-    private Explosion instantCast;
-
-    Deck deck;
+ //   Deck deck;
 
     //TODO IF you ever click in the deck area don't cast any spells
 
     public PlayScreen(MainGame game){
         this.game = game;
-        //texture = new Texture("rockbackground.png");
 
-       gamecam = new OrthographicCamera();
-        sr = new ShapeRenderer();
+        gamecam = new OrthographicCamera();
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 
@@ -105,7 +75,7 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
         arena = new Arena();
         enemyBullets = new EnemyBullets();
-        deck = new Deck();
+      //  deck = new Deck();
 
 
 
@@ -117,18 +87,17 @@ public class PlayScreen implements Screen {
         Gdx.input.setInputProcessor(gestureDetector);
 
         if(Gdx.input.isTouched()) {
-            int x1 = Gdx.input.getX();
-            int y1 = Gdx.input.getY();
+            float x1 = Gdx.input.getX();
+            float y1 = Gdx.input.getY();
             input = new Vector3(x1, y1, 0);
-
 
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
-            if(input.y > PlayScreen.GROUND_Y) {
+            arena.addProjectile(input.x, input.y);
 
+            if(input.y > PlayScreen.GROUND_Y) {
                 if(arena.getWizard().getReloader().isReady()){
-                    activeBullets.addProjectile(arena.getWizard().generateProjectile(input.x, input.y));
                 }
             }
 
@@ -138,11 +107,8 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         handleInput(dt);
-        arena.update(dt);
-        activeBullets.update(dt,gamecam, arena.getEnemies());
-        enemyBullets.update(dt, gamecam, arena.getWizard());
-
-        deck.update(dt);
+        arena.update(dt, gamecam);
+       // deck.update(dt);
     }
 
     @Override
@@ -163,14 +129,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        if(instantCast != null) {
-            instantCast.draw(game.batch);
-
-        }
-        activeBullets.draw(game.batch);
         arena.draw(game.batch);
-        enemyBullets.draw(game.batch);
-        deck.draw(game.batch);
+        //deck.draw(game.batch);
 
 
         game.batch.end();
@@ -179,7 +139,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
         //Updates the view port to the designated width and height.
         gamePort.update(width, height);
 
@@ -225,7 +184,7 @@ public class PlayScreen implements Screen {
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
-            deck.cardSelect(input.x, input.y);
+            //deck.cardSelect(input.x, input.y);
 
             arena.triggerNextStage();
 
@@ -251,11 +210,8 @@ public class PlayScreen implements Screen {
         public boolean fling(float velocityX, float velocityY, int button) {
 
 
-            if(Math.abs(velocityY)> 500){
-                enemyBullets.dispellProjectiles(Projectile.DISPELL.VERTICAL);
-            } else if(Math.abs(velocityX) > 500){
-                enemyBullets.dispellProjectiles(Projectile.DISPELL.HORIZONTAL);
-            }
+            arena.dispell(velocityX, velocityY);
+
             System.out.println("FLING PERFORMED");
             return true;
         }

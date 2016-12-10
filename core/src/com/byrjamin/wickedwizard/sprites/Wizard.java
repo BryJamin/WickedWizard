@@ -1,13 +1,13 @@
 package com.byrjamin.wickedwizard.sprites;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.EnemyBullets;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
+import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
@@ -24,15 +24,15 @@ public class Wizard {
 
     private Reloader reloader;
 
-    private float reloadRate = 0.2f;
+    private boolean isFalling = true;
 
     private Vector3 velocity;
 
+    //STATS
     private int health = 10;
-
-
+    private int armor;
     private int damage = 1;
-
+    private float reloadRate = 0.3f;
 
     private Sprite sprite;
 
@@ -48,18 +48,9 @@ public class Wizard {
     }
 
 
-    public void update(float dt){
+    public void update(float dt, Arena arena){
         reloader.update(dt);
-
-        if(this.getSprite().getY() > PlayScreen.GROUND_Y) {
-            this.getSprite().translateY(GRAVITY);
-            if (this.getSprite().getY() <= PlayScreen.GROUND_Y) {
-                this.getSprite().setY(PlayScreen.GROUND_Y);
-            }
-        }
-
-
-
+        applyGravity(dt, arena);
     }
 
 
@@ -86,18 +77,19 @@ public class Wizard {
 
 
 
-    public void fire(float dt, Wizard wizard){
-/*        reloadTimer -= dt;
-        if (reloadTimer <= 0) {
-            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), wizard.getSprite().getX(),wizard.getSprite().getY())
-                    .spriteString("bullet")
-                    .damage(1)
-                    .HORIZONTAL_VELOCITY(5f)
-                    .dispell(isVertical ? Projectile.DISPELL.HORIZONTAL : Projectile.DISPELL.VERTICAL)
-                    .build());
-            reloadTimer += fireRate;
-            isVertical = !isVertical;
-        }*/
+    public void applyGravity(float dt, Arena arena){
+
+        if(isFalling){
+
+            this.getSprite().translateY(GRAVITY);
+            Rectangle r = arena.getOverlappingRectangle(this.getSprite().getBoundingRectangle());
+
+            if(r != null) {
+                this.getSprite().setY(r.getY() + r.getHeight());
+                isFalling = false;
+            }
+
+        }
     }
 
     public Projectile generateProjectile(float input_x, float input_y){
@@ -126,4 +118,7 @@ public class Wizard {
     public void setReloader(Reloader reloader) {
         this.reloader = reloader;
     }
+
+
+
 }

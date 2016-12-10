@@ -3,9 +3,11 @@ package com.byrjamin.wickedwizard.sprites.enemies;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 
@@ -26,6 +28,8 @@ public class Blob extends Enemy {
     private Animation walk;
     private Animation attack;
     private Animation currentAnimation;
+
+    private boolean isFalling = true;
 
     private int MOVEMENT = MainGame.GAME_UNITS * 30;
     private static final int GRAVITY = -7;
@@ -91,17 +95,17 @@ public class Blob extends Enemy {
         velocity = new Vector3(0, 50, 0);
         sprite.setPosition(posX, posY);
         this.setSprite(sprite);
-        this.setHealth(10);
+        this.setHealth(4);
         this.setBlob_state(blob.WALKING);
     }
 
     @Override
-    public void update(float dt, Wizard wizard) {
+    public void update(float dt, Arena arena) {
 
         flashTimer(dt);
 
         if(this.getState() == STATE.ALIVE){
-            aliveUpdate(dt, wizard);
+            aliveUpdate(dt, arena);
         } else if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
@@ -119,10 +123,10 @@ public class Blob extends Enemy {
     //TODO The way this blob attacks is slightly incorrect, just in the animation is finished no matter
     //TODO where the wizard is it takes damage.
     //TODO what should happen is that it attack an area infront of it, which I guess can count as a projectile
-    public void aliveUpdate(float dt,  Wizard wizard){
+    public void aliveUpdate(float dt,  Arena arena){
 
 
-        if(wizard.getSprite().getX() > this.getSprite().getX()){
+        if(arena.getWizard().getSprite().getX() > this.getSprite().getX()){
             MOVEMENT = -MainGame.GAME_UNITS * 10;
         } else {
             MOVEMENT = MainGame.GAME_UNITS * 10;
@@ -131,20 +135,14 @@ public class Blob extends Enemy {
 
         time += dt;
         //Applying Gravity
-        if(this.getSprite().getY() > PlayScreen.GROUND_Y) {
-            this.velocity.add(0, GRAVITY, 0);
-            this.getSprite().translateY(velocity.y);
-            if (this.getSprite().getY() <= PlayScreen.GROUND_Y) {
-                this.getSprite().setY(PlayScreen.GROUND_Y);
-            }
-        }
+        applyGravity(dt, arena);
 
         //Changing state of blob to walking or attacking
         if(this.getBlob_state() == movement.WALKING ){
 
             getSprite().setX(getSprite().getX() - MOVEMENT * dt);
 
-            if(this.getSprite().getBoundingRectangle().overlaps(wizard.getSprite().getBoundingRectangle())) {
+            if(this.getSprite().getBoundingRectangle().overlaps(arena.getWizard().getSprite().getBoundingRectangle())) {
                 if(currentAnimation != attack) {
                     currentAnimation = attack;
                     time = 0;
@@ -153,7 +151,7 @@ public class Blob extends Enemy {
             }
         } else {
 
-            if(!this.getSprite().getBoundingRectangle().overlaps(wizard.getSprite().getBoundingRectangle())) {
+            if(!this.getSprite().getBoundingRectangle().overlaps(arena.getWizard().getSprite().getBoundingRectangle())) {
                 if(currentAnimation != walk) {
                     currentAnimation = walk;
                     time = 0;
@@ -162,7 +160,7 @@ public class Blob extends Enemy {
             }
 
             if(currentAnimation.isAnimationFinished(time)){
-                wizard.reduceHealth(2);
+                arena.getWizard().reduceHealth(2);
                 time = 0;
             }
         }
@@ -170,6 +168,20 @@ public class Blob extends Enemy {
         this.getSprite().setRegion(currentAnimation.getKeyFrame(time));
 
 
+    }
+
+    public void applyGravity(float dt, Arena arena){
+        if(isFalling){
+            Rectangle r = arena.getOverlappingRectangle(this.getSprite().getBoundingRectangle());
+            if(r != null) {
+                this.getSprite().setY(r.getY() + r.getHeight());
+                isFalling = false;
+            } else {
+                this.velocity.add(0, GRAVITY, 0);
+                this.getSprite().translateY(velocity.y);
+            }
+
+        }
     }
 
 

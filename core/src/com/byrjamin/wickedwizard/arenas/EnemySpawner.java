@@ -43,14 +43,14 @@ public class EnemySpawner {
     /**
      * Updates all Enemies that have been spawned. If the enemy is dead it is removed from the array.
      * @param dt
-     * @param wizard
+     * @param a
      */
-    public void update(float dt, Wizard wizard){
+    public void update(float dt, Arena a){
         for(Enemy e : spawnedEnemies){
             if(e.getState() == Enemy.STATE.DEAD){
                 spawnedEnemies.removeValue(e, true);
             } else {
-                e.update(dt, wizard);
+                e.update(dt, a);
             }
         }
     }

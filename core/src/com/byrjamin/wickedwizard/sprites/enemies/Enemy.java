@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
+import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.sprites.Wizard;
-import com.sun.org.apache.xpath.internal.SourceTree;
 
 /**
  * Abstract class for enemies within the game
@@ -90,7 +89,7 @@ public abstract class Enemy {
 
     public abstract void update(float dt);
 
-    public abstract void update(float dt, Wizard wizard);
+    public abstract void update(float dt, Arena a);
 
     public void setHealth(int health) {
         Health = health;

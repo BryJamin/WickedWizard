@@ -1,8 +1,11 @@
 package com.byrjamin.wickedwizard.arenas;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Blob;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
@@ -16,8 +19,15 @@ import java.util.Random;
  */
 public class Arena {
 
+    private ActiveBullets activeBullets;
+    public static EnemyBullets enemyBullets;
     private EnemySpawner enemySpawner;
     private Wizard wizard;
+
+    private Rectangle ground;
+
+    private Array<Rectangle> platforms;
+
 
     public enum STATE {
         LOCKED, UNLOCKED
@@ -27,10 +37,31 @@ public class Arena {
     public STATE arenaState;
 
     public Arena(){
+        activeBullets = new ActiveBullets();
+        enemyBullets = new EnemyBullets();
         wizard = new Wizard();
+
+        ground = new Rectangle(0,0,MainGame.GAME_WIDTH, 200);
+
+        platforms = new Array<Rectangle>();
+        platforms.add(ground);
+
         stage3();
     }
 
+    public void addProjectile(float x, float y) {
+        if(getWizard().getReloader().isReady()){
+            activeBullets.addProjectile(getWizard().generateProjectile(x, y));
+        }
+    }
+
+    public void dispell(float velocityX, float velocityY) {
+        if(Math.abs(velocityY)> 500){
+            enemyBullets.dispellProjectiles(Projectile.DISPELL.VERTICAL);
+        } else if(Math.abs(velocityX) > 500){
+            enemyBullets.dispellProjectiles(Projectile.DISPELL.HORIZONTAL);
+        }
+    }
 
 
     //A room with one turret that spawns on the left
@@ -44,35 +75,40 @@ public class Arena {
     public void stage2(){
         wizard = new Wizard();
         enemySpawner = new EnemySpawner();
-        enemySpawner.spawnBlob(new Blob(0,500));
+        enemySpawner.spawnBlob(new Blob(0,1000));
         enemySpawner.spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
     }
 
     //A room with two blobs on both side and the wizard position is moved.
     public void stage3(){
+        wizard = new Wizard();
         wizard.getSprite().setPosition(MainGame.GAME_WIDTH / 2, 1000);
         enemySpawner = new EnemySpawner();
-        enemySpawner.spawnBlob(new Blob(0,500));
+        enemySpawner.spawnBlob(new Blob(0,1000));
         enemySpawner.spawnBlob(new Blob(MainGame.GAME_WIDTH, 500));
     }
 
 
 
 
-    public void update(float dt){
-        wizard.update(dt);
-        enemySpawner.update(dt, wizard);
+    public void update(float dt, OrthographicCamera gamecam){
+        wizard.update(dt, this);
+        enemySpawner.update(dt, this);
         if(enemySpawner.areAllEnemiesKilled()){
             arenaState = STATE.UNLOCKED;
         } else {
             arenaState = STATE.LOCKED;
         }
+        activeBullets.update(dt, gamecam, this.getEnemies());
+        enemyBullets.update(dt, gamecam, this.getWizard());
     }
 
 
     public void draw(SpriteBatch batch){
+        activeBullets.draw(batch);
         wizard.draw(batch);
         enemySpawner.draw(batch);
+        enemyBullets.draw(batch);
     }
 
     public void nextStage(){
@@ -100,6 +136,26 @@ public class Arena {
         }
     }
 
+    public Rectangle getOverlappingRectangle(Rectangle r){
+        for(Rectangle rect : platforms){
+            if (r.overlaps(rect)){
+                return rect;
+            }
+        }
+        return null;
+    }
+
+    public float testinggravity(Rectangle r){
+
+        for(Rectangle rect : platforms){
+            if (r.overlaps(rect)){
+                return rect.getY() + rect.getHeight();
+            }
+        }
+
+        return r.getY() + r.getHeight();
+
+    }
 
     public Array<Enemy> getEnemies() {
         return enemySpawner.getSpawnedEnemies();

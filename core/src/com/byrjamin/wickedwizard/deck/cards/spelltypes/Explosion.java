@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.deck.cards.spellanims;
+package com.byrjamin.wickedwizard.deck.cards.spelltypes;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;

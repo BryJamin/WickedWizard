@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
+import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
@@ -37,7 +38,7 @@ public class Turret extends Enemy{
 
     public Turret(float posX, float posY){
         super(posX, posY);
-        this.setHealth(10);
+        this.setHealth(4);
         this.getSprite().setRegion(PlayScreen.atlas.findRegion("blob_0"));
         this.getSprite().setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 10);
         this.getSprite().setCenter(posX, posY);
@@ -73,14 +74,14 @@ public class Turret extends Enemy{
     }
 
     @Override
-    public void update(float dt, Wizard wizard) {
+    public void update(float dt, Arena a) {
         flashTimer(dt);
         updateMovement(dt);
         if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
         reloader.update(dt);
-        fire(dt,wizard);
+        fire(dt,a);
     }
 
 
@@ -104,11 +105,11 @@ public class Turret extends Enemy{
      *
      * This will be changed to be an option when generating a Turret.
      * @param dt
-     * @param wizard
+     * @param a
      */
-    public void fire(float dt, Wizard wizard){
+    public void fire(float dt, Arena a){
         if (reloader.isReady()) {
-            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), wizard.getSprite().getX(),wizard.getSprite().getY())
+            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), a.getWizard().getSprite().getX(),a.getWizard().getSprite().getY())
                     .spriteString("bullet")
                     .damage(1)
                     .HORIZONTAL_VELOCITY(5f)

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.deck.cards.spellanims.Projectile;
+import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -69,12 +69,10 @@ public abstract class Card {
 
     public void update(float dt){
         fireTracker -= dt;
-        System.out.println(fireTracker);
         if (fireTracker <= 0) {
             canFire = true;
             fireTracker += fireRate;
         } else {
-            System.out.println("False");
             canFire = false;
         }
     }
