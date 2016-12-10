@@ -32,10 +32,18 @@ public class Arena {
 
     private Array<Vector2> groundTileTextureCoords;
 
+
+    public float ARENA_WIDTH = MainGame.GAME_WIDTH;
+    public float ARENA_HEIGHT = MainGame.GAME_HEIGHT;
+
     private float tile_height;
     private float tile_width;
 
     private Array<Rectangle> platforms;
+
+    private Events events;
+
+    int count = 0;
 
 
     public enum STATE {
@@ -51,13 +59,16 @@ public class Arena {
         enemySpawner = new EnemySpawner();
         wizard = new Wizard();
 
-        ground = new Rectangle(0,0,MainGame.GAME_WIDTH, MainGame.GAME_UNITS * 10);
+        ground = new Rectangle(0,0,ARENA_WIDTH, MainGame.GAME_UNITS * 10);
 
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
-        stage3();
+        events = new Events(this);
+        events.nextWave(0, enemySpawner.getSpawnedEnemies());
+
+        //stage3();
     }
 
     public void addProjectile(float x, float y) {
@@ -78,7 +89,6 @@ public class Arena {
     //A room with one turret that spawns on the left
     public void stage1(){
         wizard = new Wizard();
-        enemySpawner = new EnemySpawner();
         Array<Enemy> k = new Array<Enemy>();
         k.add(new Turret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10));
         enemySpawner.setSpawnedEnemies(k);
@@ -115,6 +125,7 @@ public class Arena {
         }
         activeBullets.update(dt, gamecam, this.getEnemies());
         enemyBullets.update(dt, gamecam, this.getWizard());
+        triggerNextStage();
     }
 
 
@@ -178,7 +189,7 @@ public class Arena {
 
     public void triggerNextStage(){
         if(arenaState == STATE.UNLOCKED) {
-            nextStage();
+            events.nextWave(1, enemySpawner.getSpawnedEnemies());
         }
     }
 
@@ -214,5 +225,9 @@ public class Arena {
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
+    }
+
+    public float groundHeight(){
+        return ground.getY();
     }
 }

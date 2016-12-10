@@ -123,7 +123,7 @@ public class PlayScreen implements Screen {
         update(delta);
 
         //Sets the background color if nothing is on the screen.
-        Gdx.gl.glClearColor(1, 0, 0, 0.5f);
+        Gdx.gl.glClearColor(0, 0, 0, 0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -186,7 +186,6 @@ public class PlayScreen implements Screen {
 
             //deck.cardSelect(input.x, input.y);
 
-            arena.triggerNextStage();
 
             //enemyBullets.dispellProjectiles();
 /*            if(count == 2){
