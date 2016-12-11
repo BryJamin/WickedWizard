@@ -184,6 +184,7 @@ public class PlayScreen implements Screen {
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
+            //arena.getWizard().teleport(input.x, input.y);
             //deck.cardSelect(input.x, input.y);
 
 

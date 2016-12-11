@@ -4,97 +4,125 @@ size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-blob_0
+blob
   rotate: false
   xy: 2005, 458
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: -1
-blob_1
+  index: 0
+blob
   rotate: false
   xy: 1952, 68
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: -1
-blob_2
+  index: 1
+blob_attack
+  rotate: false
+  xy: 1952, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+blob
   rotate: false
   xy: 2005, 424
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: -1
-blob_dying00
+  index: 2
+blob_attack
+  rotate: false
+  xy: 2005, 424
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+blob_attack
+  rotate: false
+  xy: 2005, 424
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+blob_attack
+  rotate: false
+  xy: 2005, 424
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+blob_dying
   rotate: false
   xy: 2, 2
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying01
+  index: 0
+blob_dying
   rotate: false
   xy: 1681, 330
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying02
+  index: 1
+blob_dying
   rotate: false
   xy: 1843, 330
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying03
+  index: 2
+blob_dying
   rotate: false
   xy: 1681, 168
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying04
+  index: 3
+blob_dying
   rotate: false
   xy: 1843, 168
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying05
+  index: 4
+blob_dying
   rotate: false
   xy: 164, 2
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying06
+  index: 5
+blob_dying
   rotate: false
   xy: 326, 28
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying07
+  index: 6
+blob_dying
   rotate: false
   xy: 488, 28
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying08
+  index: 7
+blob_dying
   rotate: false
   xy: 650, 28
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
-blob_dying09
+  index: 8
+blob_dying
   rotate: false
   xy: 812, 28
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
-  index: -1
+  index: 9
 brick
   rotate: false
   xy: 2005, 390

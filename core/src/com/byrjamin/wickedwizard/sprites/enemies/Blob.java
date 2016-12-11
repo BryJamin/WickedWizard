@@ -2,12 +2,14 @@ package com.byrjamin.wickedwizard.sprites.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 
@@ -105,44 +107,11 @@ public class Blob extends Enemy {
 
         //Will probaably move to an indicies method
 
-        Sprite sprite = PlayScreen.atlas.createSprite("blob_0");
+        Sprite sprite = PlayScreen.atlas.createSprite("blob");
 
-        Array<TextureRegion> walkAnimation;
-        walkAnimation = new Array<TextureRegion>();
-
-        // Create an array of TextureRegions
-        walkAnimation.add(PlayScreen.atlas.findRegion("blob_0"));
-        walkAnimation.add(PlayScreen.atlas.findRegion("blob_1"));
-        walkAnimation.add(PlayScreen.atlas.findRegion("blob_0"));
-        walkAnimation.add(PlayScreen.atlas.findRegion("blob_2"));
-
-        Array<TextureRegion> attackAnimation = new Array<TextureRegion>();
-
-        attackAnimation.add(PlayScreen.atlas.findRegion("blob_0"));
-        attackAnimation.add(PlayScreen.atlas.findRegion("blob_2"));
-        attackAnimation.add(PlayScreen.atlas.findRegion("blob_2"));
-        attackAnimation.add(PlayScreen.atlas.findRegion("blob_2"));
-        attackAnimation.add(PlayScreen.atlas.findRegion("blob_2"));
-        attackAnimation.add(PlayScreen.atlas.findRegion("blob_1"));
-
-
-        Array<TextureRegion> dyingAnimationAr = new Array<TextureRegion>();
-
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying00"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying01"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying02"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying03"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying04"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying05"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying06"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying07"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying08"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying09"));
-
-        this.setDyingAnimation(new Animation(0.05f / 1f, dyingAnimationAr));
-
-        walk = new Animation(0.25f / 1f, walkAnimation, Animation.PlayMode.LOOP);
-        attack = new Animation(0.25f / 1f, attackAnimation);
+        walk = AnimationPacker.genLoopedAnimation(0.25f / 1f, "blob");
+        attack = AnimationPacker.genAnimation(0.25f / 1f, "blob_attack");
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, "blob_dying"));
 
         currentAnimation = walk;
 

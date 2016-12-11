@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
@@ -39,24 +40,10 @@ public class Turret extends Enemy{
     public Turret(float posX, float posY){
         super();
         this.setHealth(4);
-        this.getSprite().setRegion(PlayScreen.atlas.findRegion("blob_0"));
+        this.getSprite().setRegion(PlayScreen.atlas.findRegion("blob"));
         this.getSprite().setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 10);
         this.getSprite().setCenter(posX, posY);
-
-        Array<TextureRegion> dyingAnimationAr = new Array<TextureRegion>();
-
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying00"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying01"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying02"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying03"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying04"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying05"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying06"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying07"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying08"));
-        dyingAnimationAr.add(PlayScreen.atlas.findRegion("blob_dying09"));
-
-        this.setDyingAnimation(new Animation(0.05f / 1f, dyingAnimationAr));
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, "blob_dying"));
 
         reloader = new Reloader(0.2f, 3.0f);
 
