@@ -22,9 +22,7 @@ public abstract class Enemy {
 
     private Sprite sprite;
 
-    private int Health;
-
-    private Vector3 position;
+    private float health;
 
     private boolean isFlashing;
 
@@ -34,9 +32,8 @@ public abstract class Enemy {
     private Animation dyingAnimation;
 
 
-    public Enemy(float posX, float posY){
+    public Enemy(){
         sprite = new Sprite();
-        position = new Vector3(posX, posY, 0);
         state = STATE.ALIVE;
         isFlashing = false;
     }
@@ -91,20 +88,12 @@ public abstract class Enemy {
 
     public abstract void update(float dt, Arena a);
 
-    public void setHealth(int health) {
-        Health = health;
+    public void setHealth(float health) {
+        this.health = health;
     }
 
-    public int getHealth() {
-        return Health;
-    }
-
-    public void setPosition(Vector3 position) {
-        this.position = position;
-    }
-
-    public Vector3 getPosition() {
-        return position;
+    public float getHealth() {
+        return health;
     }
 
     public void setSprite(Sprite sprite) {

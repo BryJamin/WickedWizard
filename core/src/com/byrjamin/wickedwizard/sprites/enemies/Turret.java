@@ -37,7 +37,7 @@ public class Turret extends Enemy{
 
 
     public Turret(float posX, float posY){
-        super(posX, posY);
+        super();
         this.setHealth(4);
         this.getSprite().setRegion(PlayScreen.atlas.findRegion("blob_0"));
         this.getSprite().setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 10);

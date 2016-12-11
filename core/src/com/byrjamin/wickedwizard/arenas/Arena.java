@@ -86,7 +86,7 @@ public class Arena {
     }
 
 
-    //A room with one turret that spawns on the left
+/*    //A room with one turret that spawns on the left
     public void stage1(){
         wizard = new Wizard();
         Array<Enemy> k = new Array<Enemy>();
@@ -110,7 +110,7 @@ public class Arena {
         enemySpawner = new EnemySpawner();
         enemySpawner.spawnBlob(new Blob(0,1000));
         enemySpawner.spawnBlob(new Blob(MainGame.GAME_WIDTH, 500));
-    }
+    }*/
 
 
 
@@ -168,28 +168,9 @@ public class Arena {
 
     }
 
-    public void nextStage(){
-        Random random = new Random();
-
-        int temp = random.nextInt(3) + 1;
-
-        switch(temp){
-            case 1: stage1();
-                break;
-            case 2: stage2();
-                break;
-            case 3: stage3();
-                break;
-            default:
-                stage1();
-        }
-
-    }
-
-
     public void triggerNextStage(){
         if(arenaState == STATE.UNLOCKED) {
-            events.nextWave(1, enemySpawner.getSpawnedEnemies());
+            events.nextWave(3, enemySpawner.getSpawnedEnemies());
         }
     }
 

@@ -16,14 +16,7 @@ import com.byrjamin.wickedwizard.sprites.Wizard;
  */
 public class Blob extends Enemy {
 
-    private int HEIGHT = MainGame.GAME_UNITS * 10;
-    private int WIDTH = MainGame.GAME_UNITS * 10;
-
-
-
-    private Vector3 position;
     private Vector3 velocity;
-
 
     private Animation walk;
     private Animation attack;
@@ -31,10 +24,14 @@ public class Blob extends Enemy {
 
     private boolean isFalling = true;
 
-    private int MOVEMENT = MainGame.GAME_UNITS * 30;
     private static final int GRAVITY = -7;
 
- //   private float time;
+    //Optional Parameters
+    private float MOVEMENT;
+    private float HEIGHT;
+    private float scale;
+    private float speed;
+    private int WIDTH;
 
     private enum movement {
         WALKING, ATTACKING
@@ -43,12 +40,74 @@ public class Blob extends Enemy {
     private movement blob;
 
 
-    public Blob(float posX, float posY) {
-        super(posX, posY);
+    public static class BlobBuilder{
+
+        //Required Parameters
+        private final float posX;
+        private final float posY;
+
+        //Optional Parameters
+        private Sprite sprite;
+        private String spriteString = "fire";
+
+        private float health = 4;
+
+        private float MOVEMENT = MainGame.GAME_UNITS * 15;
+
+        private float HEIGHT = MainGame.GAME_UNITS * 10;
+        private float WIDTH = MainGame.GAME_UNITS * 10;
+        private float scale = 1;
+        private float speed = 1;
+
+
+        public BlobBuilder(float posX, float posY) {
+            this.posX = posX;
+            this.posY = posY;
+        }
+
+        public BlobBuilder health(float val)
+        { health = val; return this; }
+
+        public BlobBuilder HEIGHT(float val)
+        { HEIGHT = val; return this; }
+
+        public BlobBuilder WIDTH(float val)
+        { WIDTH = val; return this; }
+
+        public BlobBuilder scale(float val)
+        { scale = val; return this; }
+
+        public BlobBuilder speed(float val)
+        { speed = val; return this; }
+
+        public BlobBuilder MOVEMENT(float val)
+        { MOVEMENT = val; return this; }
+
+        public BlobBuilder sprite(Sprite val)
+        { sprite = val; return this; }
+
+        public BlobBuilder spriteString(String val)
+        { spriteString = val; return this; }
+
+        public Blob build() {
+            return new Blob(this);
+        }
+
+
+    }
+
+
+
+
+
+    public Blob(BlobBuilder b) {
+        super();
+
+        //Will probaably move to an indicies method
+
         Sprite sprite = PlayScreen.atlas.createSprite("blob_0");
 
         Array<TextureRegion> walkAnimation;
-
         walkAnimation = new Array<TextureRegion>();
 
         // Create an array of TextureRegions
@@ -89,13 +148,15 @@ public class Blob extends Enemy {
 
         time = 0f;
 
-        sprite.setSize((float) HEIGHT, (float) WIDTH);
+        MOVEMENT = b.MOVEMENT;
+        scale = b.scale;
+        speed = b.speed;
+        sprite.setSize(b.WIDTH * scale, b.HEIGHT * scale);
         sprite.flip(true, true);
-        position = new Vector3(posX, posY, 0);
         velocity = new Vector3(0, 50, 0);
-        sprite.setPosition(posX, posY);
+        sprite.setPosition(b.posX, b.posY);
         this.setSprite(sprite);
-        this.setHealth(4);
+        this.setHealth(b.health);
         this.setBlob_state(blob.WALKING);
     }
 
@@ -126,10 +187,16 @@ public class Blob extends Enemy {
     public void aliveUpdate(float dt,  Arena arena){
 
 
+        //depending on the wizard is flip left or right.
+
+        //TODO this is terrible please fix once you introduced moving wizard
+
+        int direction = 1;
+
         if(arena.getWizard().getSprite().getX() > this.getSprite().getX()){
-            MOVEMENT = -MainGame.GAME_UNITS * 10;
+            direction = -1;
         } else {
-            MOVEMENT = MainGame.GAME_UNITS * 10;
+            direction = 1;
         }
 
 
@@ -140,7 +207,7 @@ public class Blob extends Enemy {
         //Changing state of blob to walking or attacking
         if(this.getBlob_state() == movement.WALKING ){
 
-            getSprite().setX(getSprite().getX() - MOVEMENT * dt);
+            getSprite().setX(getSprite().getX() - MOVEMENT * dt * direction * speed);
 
             if(this.getSprite().getBoundingRectangle().overlaps(arena.getWizard().getSprite().getBoundingRectangle())) {
                 if(currentAnimation != attack) {

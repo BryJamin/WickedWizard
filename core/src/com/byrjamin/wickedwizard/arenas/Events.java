@@ -16,6 +16,8 @@ public class Events {
 
     private Array<Enemy> enemyArray;
 
+    private int currentWave = 0;
+
 
 
 
@@ -26,12 +28,26 @@ public class Events {
 
     public void blob(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.slowBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.defaultBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+    }
+
+    public void blob2(Array<Enemy> e){
+        e.clear();
+        e.add(EnemyPresets.smallBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.slowTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+    }
+
+    public void blob3(Array<Enemy> e){
+        e.clear();
+        e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.slowTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void turret(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.slowTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.smallBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.defaultBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
     }
 
     public void generateWaves(){
@@ -46,14 +62,20 @@ public class Events {
 
     private Waves[] spawnWave = new Waves[] {
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob3(enemies); } },
     };
 
 
     public void nextWave(int index, Array<Enemy> enemies) {
-        spawnWave[index].spawnWave(enemies);
+        spawnWave[currentWave].spawnWave(enemies);
+
+        currentWave++;
+
+        if(currentWave >= spawnWave.length){
+            currentWave = 0;
+        }
     }
 
 

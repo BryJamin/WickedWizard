@@ -21,12 +21,6 @@ public class EnemySpawner {
         spawnedEnemies = new Array<Enemy>();
     }
 
-
-    public void spawnBlob(float posX, float posY){
-        Blob b = new Blob(posX, posY);
-        spawnedEnemies.add(b);
-    }
-
     public void spawnBlob(Blob b){
         spawnedEnemies.add(b);
     }
