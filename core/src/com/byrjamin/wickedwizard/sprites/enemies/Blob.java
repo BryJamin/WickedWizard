@@ -49,13 +49,8 @@ public class Blob extends Enemy {
         private final float posY;
 
         //Optional Parameters
-        private Sprite sprite;
-        private String spriteString = "fire";
-
         private float health = 4;
-
         private float MOVEMENT = MainGame.GAME_UNITS * 15;
-
         private float HEIGHT = MainGame.GAME_UNITS * 10;
         private float WIDTH = MainGame.GAME_UNITS * 10;
         private float scale = 1;
@@ -84,12 +79,6 @@ public class Blob extends Enemy {
 
         public BlobBuilder MOVEMENT(float val)
         { MOVEMENT = val; return this; }
-
-        public BlobBuilder sprite(Sprite val)
-        { sprite = val; return this; }
-
-        public BlobBuilder spriteString(String val)
-        { spriteString = val; return this; }
 
         public Blob build() {
             return new Blob(this);
@@ -126,7 +115,7 @@ public class Blob extends Enemy {
         sprite.setPosition(b.posX, b.posY);
         this.setSprite(sprite);
         this.setHealth(b.health);
-        this.setBlob_state(blob.WALKING);
+        this.setBlob_state(movement.WALKING);
     }
 
     @Override
