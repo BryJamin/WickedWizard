@@ -34,13 +34,14 @@ public class Events {
     public void blob2(Array<Enemy> e){
         e.clear();
         e.add(EnemyPresets.smallBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.slowTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.defaultTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void blob3(Array<Enemy> e){
         e.clear();
         e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.slowTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.alternarteShotsTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.fastTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void turret(Array<Enemy> e){

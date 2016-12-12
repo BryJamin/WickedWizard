@@ -1,6 +1,8 @@
 package com.byrjamin.wickedwizard.sprites.enemies;
 
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+
 /**
  * Created by Home on 10/12/2016.
  */
@@ -26,8 +28,23 @@ public class EnemyPresets {
                 .build();
     }
 
-    public static Turret slowTurret(float posX, float posY){
-        return new Turret(posX, posY);
+    public static Turret defaultTurret(float posX, float posY){
+        return new Turret.TurretBuilder(posX, posY)
+                .build();
+    }
+
+
+    public static Turret alternarteShotsTurret(float posX, float posY){
+        return new Turret.TurretBuilder(posX, posY)
+                .dispellSequence(new Projectile.DISPELL[]{Projectile.DISPELL.VERTICAL, Projectile.DISPELL.HORIZONTAL, Projectile.DISPELL.VERTICAL})
+                .build();
+    }
+
+
+    public static Turret fastTurret(float posX, float posY){
+        return new Turret.TurretBuilder(posX, posY)
+                .shotSpeed(2.0f)
+                .build();
     }
 
 

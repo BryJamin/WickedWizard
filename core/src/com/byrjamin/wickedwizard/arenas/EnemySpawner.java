@@ -25,11 +25,6 @@ public class EnemySpawner {
         spawnedEnemies.add(b);
     }
 
-    public void spawnTurret(float posX, float posY){
-        Turret t = new Turret(posX, posY);
-        spawnedEnemies.add(t);
-    }
-
     public void spawnTurret(Turret t){
         spawnedEnemies.add(t);
     }

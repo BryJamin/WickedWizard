@@ -86,35 +86,6 @@ public class Arena {
     }
 
 
-/*    //A room with one turret that spawns on the left
-    public void stage1(){
-        wizard = new Wizard();
-        Array<Enemy> k = new Array<Enemy>();
-        k.add(new Turret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10));
-        enemySpawner.setSpawnedEnemies(k);
-        //enemySpawner.spawnTurret(0, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
-    }
-
-    //A room with one turret that spawns on the right and one blob on the left
-    public void stage2(){
-        wizard = new Wizard();
-        enemySpawner = new EnemySpawner();
-        enemySpawner.spawnBlob(new Blob(0,1000));
-        enemySpawner.spawnTurret(MainGame.GAME_WIDTH - MainGame.GAME_UNITS * 10, MainGame.GAME_HEIGHT - MainGame.GAME_UNITS * 10);
-    }
-
-    //A room with two blobs on both side and the wizard position is moved.
-    public void stage3(){
-        wizard = new Wizard();
-        wizard.getSprite().setPosition(MainGame.GAME_WIDTH / 2, 1000);
-        enemySpawner = new EnemySpawner();
-        enemySpawner.spawnBlob(new Blob(0,1000));
-        enemySpawner.spawnBlob(new Blob(MainGame.GAME_WIDTH, 500));
-    }*/
-
-
-
-
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt, this);
         enemySpawner.update(dt, this);

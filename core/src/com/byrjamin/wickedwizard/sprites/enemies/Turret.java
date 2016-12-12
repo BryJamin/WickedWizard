@@ -1,8 +1,6 @@
 package com.byrjamin.wickedwizard.sprites.enemies;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
@@ -11,7 +9,6 @@ import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.sprites.Wizard;
 
 /**
  * Created by Home on 20/11/2016.
@@ -23,6 +20,8 @@ public class Turret extends Enemy{
     }
 
     private float MOVEMENT = MainGame.GAME_UNITS * 30;
+    private float SQUARE_SIZE = MainGame.GAME_UNITS * 10;
+    private float DEFAULT_SHOT_SPEED = 2.5f;
 
     private Reloader reloader;
 
@@ -34,20 +33,81 @@ public class Turret extends Enemy{
 
     private Projectile projectile;
 
-    private Array<Projectile> activeBullets;
+    private Array<Projectile.DISPELL> dispellSequence;
+
+    private final float shotspeed;
+
+    public static class TurretBuilder {
+
+        //Required Parameters
+        private final float posX;
+        private final float posY;
+
+        //Optional Parameters
+        private float health = 4;
+        private float scale = 1;
+        private float speed = 1;
+        private float shotSpeed = 1;
+        private float initialFiringDelay = 3.0f;
+        private float reloadSpeed = 1f;
+
+        private Array<Projectile.DISPELL> dispellSequence = new Array<Projectile.DISPELL>();
 
 
-    public Turret(float posX, float posY){
+        public TurretBuilder(float posX, float posY) {
+            this.posX = posX;
+            this.posY = posY;
+        }
+
+        public TurretBuilder health(float val)
+        { health = val; return this; }
+
+        public TurretBuilder scale(float val)
+        { scale = val; return this; }
+
+        public TurretBuilder speed(float val)
+        { speed = val; return this; }
+
+        public TurretBuilder shotSpeed(float val)
+        { shotSpeed = val; return this; }
+
+        public TurretBuilder initialFiringDelay(float val)
+        { initialFiringDelay = val; return this; }
+
+        public TurretBuilder reloadSpeed(float val)
+        { reloadSpeed = val; return this; }
+
+        public TurretBuilder dispellSequence(Projectile.DISPELL val)
+        { dispellSequence.add(val); return this; }
+
+        public TurretBuilder dispellSequence(Projectile.DISPELL[] val)
+        { dispellSequence.addAll(val); return this; }
+
+
+        public Turret build() {
+            return new Turret(this);
+        }
+
+
+    }
+
+    public Turret(TurretBuilder builder){
         super();
-        this.setHealth(4);
+        this.setHealth(builder.health);
         this.getSprite().setRegion(PlayScreen.atlas.findRegion("blob"));
-        this.getSprite().setSize(MainGame.GAME_UNITS * 10, MainGame.GAME_UNITS * 10);
-        this.getSprite().setCenter(posX, posY);
+        this.getSprite().setSize(SQUARE_SIZE * builder.scale, SQUARE_SIZE * builder.scale);
+        this.getSprite().setCenter(builder.posX, builder.posY);
         this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, "blob_dying"));
-
-        reloader = new Reloader(0.2f, 3.0f);
-
-
+        MOVEMENT = MOVEMENT * builder.speed;
+        DEFAULT_SHOT_SPEED = DEFAULT_SHOT_SPEED * builder.shotSpeed;
+        reloader = new Reloader(builder.reloadSpeed, builder.initialFiringDelay);
+        if(builder.dispellSequence.size == 0) {
+            dispellSequence = new Array<Projectile.DISPELL>();
+            dispellSequence.add(Projectile.DISPELL.HORIZONTAL);
+        } else {
+            dispellSequence = builder.dispellSequence;
+        }
+        shotspeed = builder.shotSpeed;
     }
 
 
@@ -99,10 +159,13 @@ public class Turret extends Enemy{
             EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), a.getWizard().getSprite().getX(),a.getWizard().getSprite().getY())
                     .spriteString("bullet")
                     .damage(1)
-                    .HORIZONTAL_VELOCITY(5f)
-                    .dispell(isVertical ? Projectile.DISPELL.HORIZONTAL : Projectile.DISPELL.VERTICAL)
+                    .HORIZONTAL_VELOCITY(DEFAULT_SHOT_SPEED)
+                    .dispell(dispellSequence.get(0))
                     .build());
-            isVertical = !isVertical;
+
+            dispellSequence.add(dispellSequence.get(0));
+            dispellSequence.removeIndex(0);
+
         }
     }
 
