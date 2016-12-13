@@ -40,6 +40,8 @@ public abstract class Enemy {
 
     public void draw(SpriteBatch batch){
 
+        //If the enemy is flashing set the enemy to a darker color.
+
         if(isFlashing) {
             Color color = getSprite().getColor();
             this.getSprite().setColor(new Color(0.0f,0.0f,0.0f,0.95f));
@@ -57,7 +59,7 @@ public abstract class Enemy {
      * but only if the enemy is targetable
      * @param i -
      */
-    public void reduceHealth(int i){
+    public void reduceHealth(float i){
         System.out.println("Enemy took: "+i+" damage");
         this.setHealth(this.getHealth() - i);
 
@@ -69,6 +71,10 @@ public abstract class Enemy {
         resetFlashTimer();
     }
 
+    /**
+     * If the enemy has finished flashing set isFlashing to false.
+     * @param dt
+     */
     public void flashTimer(float dt){
         if(flashTimer <= 0) {
             flashTimer = 0;
@@ -79,6 +85,9 @@ public abstract class Enemy {
         }
     }
 
+    /**
+     * Adds 0.05f to the flashtimer so the enemy can start to flash.
+     */
     public void resetFlashTimer(){
         flashTimer += 0.05f;
     }

@@ -219,8 +219,6 @@ public class PlayScreen implements Screen {
         @Override
         public boolean pan(float x, float y, float deltaX, float deltaY) {
 
-            System.out.println("PAN PERFORMED");
-
             return true;
         }
 

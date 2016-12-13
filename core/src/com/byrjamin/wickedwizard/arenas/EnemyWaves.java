@@ -5,10 +5,15 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
 import com.byrjamin.wickedwizard.sprites.enemies.EnemyPresets;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Created by Home on 10/12/2016.
  */
-public class Events {
+public class EnemyWaves {
 
     private Array<Array<Enemy>> incomingWaves;
 
@@ -17,12 +22,17 @@ public class Events {
     private Array<Enemy> enemyArray;
 
     private int currentWave = 0;
+    private List<Integer> shuffled;
+
+    private long randomSeed = 103354434;
 
 
 
 
-    public Events(Arena a){
+    public EnemyWaves(Arena a){
         arena = a;
+
+        generateWaves();
     }
 
 
@@ -51,12 +61,6 @@ public class Events {
         e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
     }
 
-    public void generateWaves(){
-
-
-
-    }
-
     interface Waves {
         void spawnWave(Array<Enemy> enemies);
     }
@@ -69,8 +73,25 @@ public class Events {
     };
 
 
+    public void generateWaves(){
+        Integer[] a = new Integer[spawnWave.length];
+        for (int i=0;i < spawnWave.length;++i){
+            a[i]=i;
+        }
+
+        shuffled = Arrays.asList(a);
+
+        Collections.shuffle(shuffled, new Random (randomSeed));
+
+
+        for(int i=0; i< shuffled.size(); i++){
+            System.out.println(shuffled.get(i));
+        }
+
+    }
+
     public void nextWave(int index, Array<Enemy> enemies) {
-        spawnWave[currentWave].spawnWave(enemies);
+        spawnWave[shuffled.get(currentWave)].spawnWave(enemies);
 
         currentWave++;
 

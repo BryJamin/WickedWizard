@@ -16,7 +16,6 @@ public class EnemySpawner {
 
     private Array<Enemy> spawnedEnemies;
 
-
     public EnemySpawner(){
         spawnedEnemies = new Array<Enemy>();
     }

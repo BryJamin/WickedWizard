@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.arenas;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -10,11 +9,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
-import com.byrjamin.wickedwizard.sprites.enemies.Blob;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
-import com.byrjamin.wickedwizard.sprites.enemies.Turret;
-
-import java.util.Random;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -41,7 +36,7 @@ public class Arena {
 
     private Array<Rectangle> platforms;
 
-    private Events events;
+    private EnemyWaves enemyWaves;
 
     int count = 0;
 
@@ -49,6 +44,12 @@ public class Arena {
     public enum STATE {
         LOCKED, UNLOCKED
     }
+
+    public enum EVENT {
+        WAVE, ITEM, IMP, BOSS
+    }
+
+    Array<EVENT> day;
 
 
     public STATE arenaState;
@@ -65,8 +66,16 @@ public class Arena {
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
-        events = new Events(this);
-        events.nextWave(0, enemySpawner.getSpawnedEnemies());
+        enemyWaves = new EnemyWaves(this);
+        enemyWaves.nextWave(0, enemySpawner.getSpawnedEnemies());
+
+        day = new Array<EVENT>();
+
+        for(int i = 0; i < 5; i++){
+            day.add(EVENT.WAVE);
+        }
+
+        day.add(EVENT.BOSS);
 
         //stage3();
     }
@@ -96,7 +105,9 @@ public class Arena {
         }
         activeBullets.update(dt, gamecam, this.getEnemies());
         enemyBullets.update(dt, gamecam, this.getWizard());
+
         triggerNextStage();
+
     }
 
 
@@ -140,8 +151,11 @@ public class Arena {
     }
 
     public void triggerNextStage(){
-        if(arenaState == STATE.UNLOCKED) {
-            events.nextWave(3, enemySpawner.getSpawnedEnemies());
+        if(arenaState == STATE.UNLOCKED && day.size != 0) {
+
+            if(day.pop() == EVENT.WAVE) {
+                enemyWaves.nextWave(3, enemySpawner.getSpawnedEnemies());
+            }
         }
     }
 
@@ -152,18 +166,6 @@ public class Arena {
             }
         }
         return null;
-    }
-
-    public float testinggravity(Rectangle r){
-
-        for(Rectangle rect : platforms){
-            if (r.overlaps(rect)){
-                return rect.getY() + rect.getHeight();
-            }
-        }
-
-        return r.getY() + r.getHeight();
-
     }
 
     public Array<Enemy> getEnemies() {
