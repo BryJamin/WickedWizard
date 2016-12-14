@@ -73,6 +73,10 @@ public class EnemyWaves {
     };
 
 
+    /**
+     * Current this creates an array with the number 1..n (n being the size of the spawnWave array
+     * This then converts the array into a list and shuffles it using the global random seed.
+     */
     public void generateWaves(){
         Integer[] a = new Integer[spawnWave.length];
         for (int i=0;i < spawnWave.length;++i){
@@ -90,11 +94,20 @@ public class EnemyWaves {
 
     }
 
+    /**
+     * currentWave counts until the number of waves and then resets to zero.
+     * Since shuffled is a randomized number between the size of spawnwave and 0 it can be used
+     * to spawn the nextwave in a random order.
+     *
+     * In future I will need to decide if waves will have more random elements
+     *
+     * @param index
+     * @param enemies
+     */
     public void nextWave(int index, Array<Enemy> enemies) {
         spawnWave[shuffled.get(currentWave)].spawnWave(enemies);
 
         currentWave++;
-
         if(currentWave >= spawnWave.length){
             currentWave = 0;
         }

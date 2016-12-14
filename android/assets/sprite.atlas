@@ -1,250 +1,257 @@
 
 sprite.png
-size: 2048,512
+size: 1024,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 blob
   rotate: false
-  xy: 2005, 458
-  size: 32, 32
-  orig: 32, 32
+  xy: 948, 159
+  size: 29, 29
+  orig: 29, 29
   offset: 0, 0
   index: 0
 blob
   rotate: false
-  xy: 1952, 68
-  size: 32, 32
-  orig: 32, 32
+  xy: 948, 159
+  size: 29, 29
+  orig: 29, 29
+  offset: 0, 0
+  index: 2
+blob
+  rotate: false
+  xy: 980, 191
+  size: 29, 29
+  orig: 29, 29
   offset: 0, 0
   index: 1
-blob_attack
+blob
   rotate: false
-  xy: 1952, 68
-  size: 32, 32
-  orig: 32, 32
+  xy: 134, 29
+  size: 29, 29
+  orig: 29, 29
   offset: 0, 0
   index: 3
-blob
-  rotate: false
-  xy: 2005, 424
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
 blob_attack
   rotate: false
-  xy: 2005, 424
-  size: 32, 32
-  orig: 32, 32
+  xy: 33, 2
+  size: 29, 24
+  orig: 29, 24
   offset: 0, 0
   index: 0
 blob_attack
   rotate: false
-  xy: 2005, 424
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-blob_attack
-  rotate: false
-  xy: 2005, 424
-  size: 32, 32
-  orig: 32, 32
+  xy: 33, 2
+  size: 29, 24
+  orig: 29, 24
   offset: 0, 0
   index: 1
-blob_dying
+blob_attack
+  rotate: false
+  xy: 33, 2
+  size: 29, 24
+  orig: 29, 24
+  offset: 0, 0
+  index: 2
+blob_attack3
   rotate: false
   xy: 2, 2
-  size: 160, 160
-  orig: 160, 160
+  size: 29, 24
+  orig: 29, 24
   offset: 0, 0
-  index: 0
+  index: -1
 blob_dying
   rotate: false
-  xy: 1681, 330
-  size: 160, 160
-  orig: 160, 160
+  xy: 161, 2
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 1
 blob_dying
   rotate: false
-  xy: 1843, 330
-  size: 160, 160
-  orig: 160, 160
+  xy: 948, 132
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 2
 blob_dying
   rotate: false
-  xy: 1681, 168
-  size: 160, 160
-  orig: 160, 160
+  xy: 165, 33
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 3
 blob_dying
   rotate: false
-  xy: 1843, 168
-  size: 160, 160
-  orig: 160, 160
+  xy: 192, 33
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 4
 blob_dying
   rotate: false
-  xy: 164, 2
-  size: 160, 160
-  orig: 160, 160
+  xy: 219, 33
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 5
 blob_dying
   rotate: false
-  xy: 326, 28
-  size: 160, 160
-  orig: 160, 160
+  xy: 246, 33
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 6
 blob_dying
   rotate: false
-  xy: 488, 28
-  size: 160, 160
-  orig: 160, 160
+  xy: 273, 33
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 7
 blob_dying
   rotate: false
-  xy: 650, 28
-  size: 160, 160
-  orig: 160, 160
+  xy: 188, 6
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 8
 blob_dying
   rotate: false
-  xy: 812, 28
-  size: 160, 160
-  orig: 160, 160
+  xy: 215, 6
+  size: 25, 25
+  orig: 25, 25
   offset: 0, 0
   index: 9
+blob_dying00
+  rotate: false
+  xy: 134, 2
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+blob_dying
+  rotate: false
+  xy: 134, 2
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: 0
 brick
   rotate: false
-  xy: 2005, 390
+  xy: 914, 156
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 bullet
   rotate: false
-  xy: 1886, 102
+  xy: 2, 28
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bullet_blue
   rotate: false
-  xy: 1886, 36
+  xy: 914, 190
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bullet_red
   rotate: false
-  xy: 1952, 102
+  xy: 68, 28
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-card_arc
-  rotate: false
-  xy: 259, 190
-  size: 235, 300
-  orig: 235, 300
-  offset: 0, 0
-  index: -1
-card_border
-  rotate: false
-  xy: 2, 164
-  size: 255, 326
-  orig: 255, 326
-  offset: 0, 0
-  index: -1
-card_default
-  rotate: false
-  xy: 496, 190
-  size: 235, 300
-  orig: 235, 300
-  offset: 0, 0
-  index: -1
-card_frost
-  rotate: false
-  xy: 733, 190
-  size: 235, 300
-  orig: 235, 300
-  offset: 0, 0
-  index: -1
-card_spell
-  rotate: false
-  xy: 970, 190
-  size: 235, 300
-  orig: 235, 300
-  offset: 0, 0
-  index: -1
-card_sword
-  rotate: false
-  xy: 1207, 190
-  size: 235, 300
-  orig: 235, 300
-  offset: 0, 0
-  index: -1
-card_tele
-  rotate: false
-  xy: 1444, 190
-  size: 235, 300
-  orig: 235, 300
-  offset: 0, 0
-  index: -1
 explosion0
   rotate: false
-  xy: 1298, 43
+  xy: 326, 109
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion1
   rotate: false
-  xy: 1445, 43
+  xy: 473, 109
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion2
   rotate: false
-  xy: 1592, 21
+  xy: 620, 109
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 explosion3
   rotate: false
-  xy: 1739, 21
+  xy: 767, 109
   size: 145, 145
   orig: 145, 145
   offset: 0, 0
   index: -1
 fire
   rotate: false
-  xy: 974, 28
+  xy: 2, 94
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
   index: -1
 frost
   rotate: false
-  xy: 1136, 28
+  xy: 164, 94
   size: 160, 160
   orig: 160, 160
   offset: 0, 0
   index: -1
+sprite_health0
+  rotate: false
+  xy: 980, 222
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite_health1
+  rotate: false
+  xy: 134, 60
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite_health2
+  rotate: false
+  xy: 914, 122
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite_health3
+  rotate: false
+  xy: 168, 60
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite_health4
+  rotate: false
+  xy: 202, 60
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite_health5
+  rotate: false
+  xy: 236, 60
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 wiz
   rotate: false
-  xy: 2005, 356
+  xy: 270, 60
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

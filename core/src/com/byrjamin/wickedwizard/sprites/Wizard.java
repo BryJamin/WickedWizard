@@ -29,7 +29,7 @@ public class Wizard {
     private Vector3 velocity;
 
     //STATS
-    private int health = 10;
+    private int health = 3;
     private int armor;
     private int damage = 1;
     private float reloadRate = 0.3f;

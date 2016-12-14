@@ -52,21 +52,14 @@ public class PlayScreen implements Screen {
 
     EnemyBullets enemyBullets;
 
- //   Deck deck;
+    Texture health;
+
+    //   Deck deck;
 
     //TODO IF you ever click in the deck area don't cast any spells
 
     public PlayScreen(MainGame game){
         this.game = game;
-
-        gamecam = new OrthographicCamera();
-
-        //Starts in the middle of the screen, on the 1/4 thingie.
-
-        gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
-
-        //Moves the gamecamer to the (0,0) position instead of being in the center.
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         activeBullets = new ActiveBullets();
 
@@ -75,6 +68,17 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
         arena = new Arena();
         enemyBullets = new EnemyBullets();
+
+
+        gamecam = new OrthographicCamera();
+
+        //Starts in the middle of the screen, on the 1/4 thingie.
+
+        //TODO Decide whetehr to have heath on the screen or have health off in like black space.
+        gamePort = new FitViewport(arena.ARENA_WIDTH, arena.ARENA_HEIGHT + 250, gamecam);
+
+        //Moves the gamecamer to the (0,0) position instead of being in the center.
+        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
       //  deck = new Deck();
 
 
@@ -131,6 +135,10 @@ public class PlayScreen implements Screen {
 
         arena.draw(game.batch);
         //deck.draw(game.batch);
+
+        for(int i = 1; i <= arena.getWizard().getHealth(); i++){
+            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i),arena.ARENA_HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        }
 
 
         game.batch.end();
