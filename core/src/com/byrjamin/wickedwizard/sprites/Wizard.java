@@ -31,7 +31,7 @@ public class Wizard {
     //STATS
     private int health = 3;
     private int armor;
-    private int damage = 1;
+    private float damage = 1;
     private float reloadRate = 0.3f;
 
     private Sprite sprite;
@@ -60,7 +60,7 @@ public class Wizard {
         }
     }
 
-    public void reduceHealth(int i){
+    public void reduceHealth(float i){
         health -= i;
     }
 
@@ -73,6 +73,15 @@ public class Wizard {
 
     public Vector2 getCenter(){
         return new Vector2(this.getSprite().getX() + WIDTH / 2, this.getSprite().getY() + HEIGHT / 2);
+    }
+
+
+    public void increaseDamage(float d){
+        damage += d;
+    }
+
+    public void increaseHealth(int h){
+        health += h;
     }
 
 

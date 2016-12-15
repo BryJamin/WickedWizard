@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
@@ -76,6 +77,8 @@ public class Arena {
         }
 
         day.add(EVENT.BOSS);
+
+        day.insert(3, EVENT.ITEM);
 
         //stage3();
     }
@@ -153,9 +156,15 @@ public class Arena {
     public void triggerNextStage(){
         if(arenaState == STATE.UNLOCKED && day.size != 0) {
 
-            if(day.pop() == EVENT.WAVE) {
+
+            if(day.get(0) == EVENT.WAVE) {
                 enemyWaves.nextWave(3, enemySpawner.getSpawnedEnemies());
+                day.removeIndex(0);
+            } else if(day.get(0) == EVENT.ITEM) {
+                Item.itemName.ATTACK_UP.itemEffect(this.getWizard());
+                day.removeIndex(0);
             }
+
         }
     }
 

@@ -55,7 +55,7 @@ public class Projectile {
     private final float y2;
 
     //Optional Parameters
-    private int damage;
+    private float damage;
     private boolean gravity;
     private Animation explosionAnimation;
     private DISPELL dispell;
@@ -72,7 +72,7 @@ public class Projectile {
         private final float y2;
 
         //Optional Parameters
-        private int damage = 0;
+        private float damage = 0;
         private boolean gravity = false;
         private Animation explosionAnimation;
         private DISPELL dispell = DISPELL.NONE;
@@ -89,7 +89,7 @@ public class Projectile {
             this.y2 = y2;
         }
 
-        public ProjectileBuilder damage(int val)
+        public ProjectileBuilder damage(float val)
         { damage = val; return this; }
 
         public ProjectileBuilder gravity(boolean val)
@@ -426,7 +426,7 @@ public class Projectile {
         sprite.setRegion(r);
     }
 
-    public int getDamage() {
+    public float getDamage() {
         return damage;
     }
 
