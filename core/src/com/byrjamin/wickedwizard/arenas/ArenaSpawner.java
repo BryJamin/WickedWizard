@@ -2,21 +2,18 @@ package com.byrjamin.wickedwizard.arenas;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Timer;
-import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.sprites.Wizard;
-import com.byrjamin.wickedwizard.sprites.enemies.Blob;
-import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
-import com.byrjamin.wickedwizard.sprites.enemies.Turret;
+import com.byrjamin.wickedwizard.enemy.enemies.Blob;
+import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.enemy.enemies.Turret;
 
 /**
  * Created by Home on 06/11/2016.
  */
-public class EnemySpawner {
+public class ArenaSpawner {
 
     private Array<Enemy> spawnedEnemies;
 
-    public EnemySpawner(){
+    public ArenaSpawner(){
         spawnedEnemies = new Array<Enemy>();
     }
 

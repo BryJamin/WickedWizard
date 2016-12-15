@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**

@@ -1,11 +1,5 @@
 package com.byrjamin.wickedwizard.item;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Arena;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.sprites.Wizard;
-
 /**
  * Created by Home on 14/12/2016.
  */

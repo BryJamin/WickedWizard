@@ -5,9 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -15,12 +13,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
-import com.byrjamin.wickedwizard.deck.Deck;
 import com.byrjamin.wickedwizard.arenas.ActiveBullets;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Explosion;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
-import com.byrjamin.wickedwizard.sprites.enemies.Blob;
 
 
 //TODO

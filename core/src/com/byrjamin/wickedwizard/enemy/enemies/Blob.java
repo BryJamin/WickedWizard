@@ -1,22 +1,18 @@
-package com.byrjamin.wickedwizard.sprites.enemies;
+package com.byrjamin.wickedwizard.enemy.enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.sprites.Wizard;
 
 /**
  * Basic starter enemy, used for testing purposes.
  */
-public class Blob extends Enemy {
+public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     private Vector3 velocity;
 

@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.sprites;
+package com.byrjamin.wickedwizard.player;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;

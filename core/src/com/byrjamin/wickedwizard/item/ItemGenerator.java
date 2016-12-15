@@ -24,9 +24,7 @@ public class ItemGenerator {
 
     public Item getItem(long seed){
         Random rand = new Random(seed);
-
         return ItemsPresets.itemList.ATTACK_UP.getItem();
-
         //return items.get(rand.nextInt(items.size));
     }
 

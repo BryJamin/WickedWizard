@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.deck.cards.spelltypes;
+package com.byrjamin.wickedwizard.spelltypes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.sprites.Wizard;
-import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
+import com.byrjamin.wickedwizard.player.Wizard;
+import com.byrjamin.wickedwizard.enemy.Enemy;
 
 /**
  * Created by Home on 07/11/2016.

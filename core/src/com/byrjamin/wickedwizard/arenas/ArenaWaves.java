@@ -2,8 +2,8 @@ package com.byrjamin.wickedwizard.arenas;
 
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
-import com.byrjamin.wickedwizard.sprites.enemies.EnemyPresets;
+import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.enemy.EnemyPresets;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Created by Home on 10/12/2016.
  */
-public class EnemyWaves {
+public class ArenaWaves {
 
     private Array<Array<Enemy>> incomingWaves;
 
@@ -29,7 +29,7 @@ public class EnemyWaves {
 
 
 
-    public EnemyWaves(Arena a){
+    public ArenaWaves(Arena a){
         arena = a;
 
         generateWaves();

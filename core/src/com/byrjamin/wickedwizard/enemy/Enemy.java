@@ -1,12 +1,10 @@
-package com.byrjamin.wickedwizard.sprites.enemies;
+package com.byrjamin.wickedwizard.enemy;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.arenas.Arena;
-import com.byrjamin.wickedwizard.sprites.Wizard;
 
 /**
  * Abstract class for enemies within the game

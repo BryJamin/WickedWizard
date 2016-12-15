@@ -3,7 +3,7 @@ package com.byrjamin.wickedwizard.deck.cards.fire;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.cards.Card;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**

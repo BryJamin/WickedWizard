@@ -3,8 +3,8 @@ package com.byrjamin.wickedwizard.arenas;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
-import com.byrjamin.wickedwizard.sprites.Wizard;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.player.Wizard;
 
 /**
  * Created by Home on 20/11/2016.

@@ -6,12 +6,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
-import com.byrjamin.wickedwizard.item.Item;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.sprites.Wizard;
-import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
+import com.byrjamin.wickedwizard.player.Wizard;
+import com.byrjamin.wickedwizard.enemy.Enemy;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -22,7 +21,7 @@ public class Arena {
 
     private ActiveBullets activeBullets;
     public static EnemyBullets enemyBullets;
-    private EnemySpawner enemySpawner;
+    private ArenaSpawner arenaSpawner;
     private ItemGenerator ig;
     private Wizard wizard;
 
@@ -41,7 +40,7 @@ public class Arena {
 
     private Array<Rectangle> platforms;
 
-    private EnemyWaves enemyWaves;
+    private ArenaWaves arenaWaves;
 
     int count = 0;
 
@@ -62,7 +61,7 @@ public class Arena {
     public Arena(){
         activeBullets = new ActiveBullets();
         enemyBullets = new EnemyBullets();
-        enemySpawner = new EnemySpawner();
+        arenaSpawner = new ArenaSpawner();
         ig = new ItemGenerator();
         wizard = new Wizard();
 
@@ -72,8 +71,8 @@ public class Arena {
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
-        enemyWaves = new EnemyWaves(this);
-        enemyWaves.nextWave(0, enemySpawner.getSpawnedEnemies());
+        arenaWaves = new ArenaWaves(this);
+        arenaWaves.nextWave(0, arenaSpawner.getSpawnedEnemies());
 
         day = new Array<EVENT>();
 
@@ -105,8 +104,8 @@ public class Arena {
 
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt, this);
-        enemySpawner.update(dt, this);
-        if(enemySpawner.areAllEnemiesKilled()){
+        arenaSpawner.update(dt, this);
+        if(arenaSpawner.areAllEnemiesKilled()){
             arenaState = STATE.UNLOCKED;
         } else {
             arenaState = STATE.LOCKED;
@@ -122,7 +121,7 @@ public class Arena {
     public void draw(SpriteBatch batch){
         activeBullets.draw(batch);
         wizard.draw(batch);
-        enemySpawner.draw(batch);
+        arenaSpawner.draw(batch);
         enemyBullets.draw(batch);
 
         batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
@@ -148,9 +147,6 @@ public class Arena {
         for(int i = 0; i < columns; i++){
             for(int j = 0; j < rows; j++){
                 groundTileTextureCoords.add(new Vector2((i * tile_height),(j * tile_width)));
-
-                System.out.println("x:" + (i * tile_height) + " y:" + (j * tile_width));
-
             }
         }
 
@@ -163,7 +159,7 @@ public class Arena {
 
 
             if(day.get(0) == EVENT.WAVE) {
-                enemyWaves.nextWave(3, enemySpawner.getSpawnedEnemies());
+                arenaWaves.nextWave(3, arenaSpawner.getSpawnedEnemies());
                 day.removeIndex(0);
             } else if(day.get(0) == EVENT.ITEM) {
                 wizard.applyItem(ig.getItem(seed));
@@ -183,7 +179,7 @@ public class Arena {
     }
 
     public Array<Enemy> getEnemies() {
-        return enemySpawner.getSpawnedEnemies();
+        return arenaSpawner.getSpawnedEnemies();
     }
 
 

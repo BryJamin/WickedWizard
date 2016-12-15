@@ -1,7 +1,8 @@
-package com.byrjamin.wickedwizard.sprites.enemies;
+package com.byrjamin.wickedwizard.enemy;
 
-import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.enemy.enemies.Blob;
+import com.byrjamin.wickedwizard.enemy.enemies.Turret;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 
 /**
  * Created by Home on 10/12/2016.
