@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.item;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
@@ -11,86 +12,52 @@ import com.byrjamin.wickedwizard.sprites.Wizard;
 public class Item {
 
 
-    private Sprite sprite;
+    //Require Parameter
+    private String spriteName;
 
-    public enum itemName {
+    //Optional
+    private float damageIncrease;
+    private int healthIncrease;
 
-        ATTACK_UP {
-            @Override
-            public void itemEffect(Wizard w) {
-                w.increaseDamage(0.2f);
-            }
-            @Override
-            public Sprite getSprite() {
-                return PlayScreen.atlas.createSprite("fire");
-            }
-        },
-        ATTACK_DOWN {
-            @Override
-            public void itemEffect(Wizard w) {
+    public static class ItemBuilder{
 
-            }
-            @Override
-            public Sprite getSprite() {
-                return PlayScreen.atlas.createSprite("fire");
-            }
-        },
-        HEALTH_UP {
-            @Override
-            public void itemEffect(Wizard w) {
-            }
-            @Override
-            public Sprite getSprite() {
-                return PlayScreen.atlas.createSprite("fire");
-            }
+        //Required Parameters
+        private String spriteName;
 
-        },
-        RELOAD_SPEED_UP {
-            @Override
-            public void itemEffect(Wizard w) {
-            }
-            @Override
-            public Sprite getSprite() {
-                return PlayScreen.atlas.createSprite("fire");
-            }
-        };
+        //Optional Parameters
+        private float damageIncrease = 0;
+        private int healthIncrease = 0;
 
+        public ItemBuilder(String spriteName) {
+            this.spriteName = spriteName;
+        }
 
-        public abstract void itemEffect(Wizard w);
-        public abstract Sprite getSprite();
+        public ItemBuilder damageIncrease(float val)
+        { damageIncrease = val; return this; }
 
+        public ItemBuilder healthIncrease(int val)
+        { healthIncrease = val; return this; }
+
+        public Item build() {
+            return new Item(this);
+        }
     }
 
-    //TODO enums as methods??
-
-
-    private itemName currentItem;
-
-    private void setSprite(Sprite s){
-        sprite = s;
+    public Item(ItemBuilder builder){
+        spriteName = builder.spriteName;
+        damageIncrease = builder.damageIncrease;
+        healthIncrease = builder.healthIncrease;
     }
 
-    public Item(itemName i){
-        currentItem = i;
+    public float getDamageIncrease() {
+        return damageIncrease;
     }
 
-    public void applyItem(Wizard w){
-        w.increaseDamage(0.2f);
+    public int getHealthIncrease() {
+        return healthIncrease;
     }
 
-
-
-
-
-
-
-
-
-
-
-    public void update(float dt){
-
+    public String getSpriteName() {
+        return spriteName;
     }
-
-
 }

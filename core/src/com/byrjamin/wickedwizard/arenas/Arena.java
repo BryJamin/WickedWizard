@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.item.Item;
+import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.sprites.Wizard;
 import com.byrjamin.wickedwizard.sprites.enemies.Enemy;
@@ -22,6 +23,7 @@ public class Arena {
     private ActiveBullets activeBullets;
     public static EnemyBullets enemyBullets;
     private EnemySpawner enemySpawner;
+    private ItemGenerator ig;
     private Wizard wizard;
 
     private Rectangle ground;
@@ -34,6 +36,8 @@ public class Arena {
 
     private float tile_height;
     private float tile_width;
+
+    private long seed = 2;
 
     private Array<Rectangle> platforms;
 
@@ -59,6 +63,7 @@ public class Arena {
         activeBullets = new ActiveBullets();
         enemyBullets = new EnemyBullets();
         enemySpawner = new EnemySpawner();
+        ig = new ItemGenerator();
         wizard = new Wizard();
 
         ground = new Rectangle(0,0,ARENA_WIDTH, MainGame.GAME_UNITS * 10);
@@ -161,7 +166,7 @@ public class Arena {
                 enemyWaves.nextWave(3, enemySpawner.getSpawnedEnemies());
                 day.removeIndex(0);
             } else if(day.get(0) == EVENT.ITEM) {
-                Item.itemName.ATTACK_UP.itemEffect(this.getWizard());
+                wizard.applyItem(ig.getItem(seed));
                 day.removeIndex(0);
             }
 

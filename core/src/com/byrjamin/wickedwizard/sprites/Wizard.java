@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.deck.cards.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
+import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -37,11 +39,16 @@ public class Wizard {
     private Sprite sprite;
 
 
+    private Array<Item> items;
+
+
     public Wizard() {
         sprite = PlayScreen.atlas.createSprite("wiz");
         sprite.setSize((float) HEIGHT, (float) WIDTH);
         position = new Vector3(300, 400, 0);
         sprite.setPosition(position.x, PlayScreen.GROUND_Y);
+
+        items = new Array<Item>();
 
         reloader = new Reloader(reloadRate);
 
@@ -84,7 +91,16 @@ public class Wizard {
         health += h;
     }
 
+    public void addItem(Item i){
+        items.add(i);
+    }
 
+
+    public void applyItem(Item i){
+        this.damage += i.getDamageIncrease();
+        this.health += i.getHealthIncrease();
+        items.add(i);
+    }
 
     public void applyGravity(float dt, Arena arena){
             this.getSprite().translateY(GRAVITY);
