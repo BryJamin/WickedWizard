@@ -15,7 +15,7 @@ public class ItemGenerator {
     public ItemGenerator(){
         items = new Array<Item>();
 
-        for(ItemsPresets.itemList i : ItemsPresets.itemList.values()){
+        for(ItemPresets.itemList i : ItemPresets.itemList.values()){
             items.add(i.getItem());
         }
     }
@@ -24,7 +24,7 @@ public class ItemGenerator {
 
     public Item getItem(long seed){
         Random rand = new Random(seed);
-        return ItemsPresets.itemList.ATTACK_UP.getItem();
+        return ItemPresets.itemList.ATTACK_UP.getItem();
         //return items.get(rand.nextInt(items.size));
     }
 

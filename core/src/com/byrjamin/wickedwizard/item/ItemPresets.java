@@ -3,7 +3,7 @@ package com.byrjamin.wickedwizard.item;
 /**
  * Created by Home on 15/12/2016.
  */
-public class ItemsPresets {
+public class ItemPresets {
 
     public enum itemList {
         ATTACK_UP {

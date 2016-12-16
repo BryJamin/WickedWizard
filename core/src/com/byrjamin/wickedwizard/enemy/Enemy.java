@@ -2,8 +2,10 @@ package com.byrjamin.wickedwizard.enemy;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.arenas.Arena;
 
 /**
@@ -88,6 +90,11 @@ public abstract class Enemy {
      */
     public void resetFlashTimer(){
         flashTimer += 0.05f;
+    }
+
+
+    public boolean isHit(Rectangle r){
+        return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
     }
 
 

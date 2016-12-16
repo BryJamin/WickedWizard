@@ -4,30 +4,86 @@ size: 1024,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+biggablobba
+  rotate: false
+  xy: 2, 28
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+biggablobba
+  rotate: false
+  xy: 914, 190
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+biggablobba
+  rotate: false
+  xy: 914, 190
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+biggablobba
+  rotate: false
+  xy: 68, 28
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+biggablobba
+  rotate: false
+  xy: 68, 28
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+biggablobba
+  rotate: false
+  xy: 914, 124
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+biggablobba
+  rotate: false
+  xy: 914, 124
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+biggablobba
+  rotate: false
+  xy: 134, 28
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
 blob
   rotate: false
-  xy: 948, 159
+  xy: 398, 44
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
   index: 0
 blob
   rotate: false
-  xy: 948, 159
+  xy: 398, 44
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
   index: 2
 blob
   rotate: false
-  xy: 980, 191
+  xy: 568, 78
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
   index: 1
 blob
   rotate: false
-  xy: 134, 29
+  xy: 429, 44
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
@@ -45,14 +101,14 @@ blob_attack
   size: 29, 24
   orig: 29, 24
   offset: 0, 0
-  index: 1
+  index: 2
 blob_attack
   rotate: false
   xy: 33, 2
   size: 29, 24
   orig: 29, 24
   offset: 0, 0
-  index: 2
+  index: 1
 blob_attack3
   rotate: false
   xy: 2, 2
@@ -62,105 +118,105 @@ blob_attack3
   index: -1
 blob_dying
   rotate: false
-  xy: 161, 2
+  xy: 599, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 1
 blob_dying
   rotate: false
-  xy: 948, 132
+  xy: 460, 48
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 2
 blob_dying
   rotate: false
-  xy: 165, 33
+  xy: 626, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 3
 blob_dying
   rotate: false
-  xy: 192, 33
+  xy: 487, 48
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 4
 blob_dying
   rotate: false
-  xy: 219, 33
+  xy: 653, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 5
 blob_dying
   rotate: false
-  xy: 246, 33
+  xy: 514, 48
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 6
 blob_dying
   rotate: false
-  xy: 273, 33
+  xy: 680, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 7
 blob_dying
   rotate: false
-  xy: 188, 6
+  xy: 541, 48
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 8
 blob_dying
   rotate: false
-  xy: 215, 6
+  xy: 568, 51
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 9
 blob_dying00
   rotate: false
-  xy: 134, 2
+  xy: 980, 127
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 blob_dying
   rotate: false
-  xy: 134, 2
+  xy: 980, 127
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: 0
 brick
   rotate: false
-  xy: 914, 156
+  xy: 980, 222
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 bullet
   rotate: false
-  xy: 2, 28
+  xy: 200, 28
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bullet_blue
   rotate: false
-  xy: 914, 190
+  xy: 266, 28
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 bullet_red
   rotate: false
-  xy: 68, 28
+  xy: 332, 43
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -209,49 +265,49 @@ frost
   index: -1
 sprite_health0
   rotate: false
-  xy: 980, 222
+  xy: 398, 75
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health1
   rotate: false
-  xy: 134, 60
+  xy: 980, 188
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health2
   rotate: false
-  xy: 914, 122
+  xy: 432, 75
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health3
   rotate: false
-  xy: 168, 60
+  xy: 980, 154
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health4
   rotate: false
-  xy: 202, 60
+  xy: 466, 75
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health5
   rotate: false
-  xy: 236, 60
+  xy: 500, 75
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 wiz
   rotate: false
-  xy: 270, 60
+  xy: 534, 75
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

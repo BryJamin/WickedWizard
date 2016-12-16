@@ -19,14 +19,14 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class AnimationPacker {
 
-    public static Animation genLoopedAnimation(float animationSpeed, String atlasRegionsName){
+    public static Animation genAnimation(float animationSpeed, String atlasRegionsName, Animation.PlayMode playmode){
         Array<TextureRegion> textureRegions = new Array<TextureRegion>();
 
         for(TextureAtlas.AtlasRegion a : PlayScreen.atlas.findRegions(atlasRegionsName)){
             textureRegions.add(a);
         }
 
-        return new Animation(animationSpeed, textureRegions, Animation.PlayMode.LOOP);
+        return new Animation(animationSpeed, textureRegions, playmode);
 
     }
 

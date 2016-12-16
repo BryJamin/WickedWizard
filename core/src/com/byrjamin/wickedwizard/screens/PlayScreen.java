@@ -186,6 +186,10 @@ public class PlayScreen implements Screen {
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
+            if(arena.getcurrentEvent() == Arena.EVENT.ITEM){
+                arena.itemGet(input.x, input.y);
+            }
+
             //arena.getWizard().teleport(input.x, input.y);
             //deck.cardSelect(input.x, input.y);
 

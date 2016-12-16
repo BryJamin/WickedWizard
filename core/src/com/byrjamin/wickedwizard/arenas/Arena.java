@@ -1,11 +1,14 @@
 package com.byrjamin.wickedwizard.arenas;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlob;
+import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -28,6 +31,7 @@ public class Arena {
     private Rectangle ground;
 
     private Array<Vector2> groundTileTextureCoords;
+    private Sprite itemSprite;
 
 
     public float ARENA_WIDTH = MainGame.GAME_WIDTH;
@@ -72,7 +76,7 @@ public class Arena {
         platforms.add(ground);
 
         arenaWaves = new ArenaWaves(this);
-        arenaWaves.nextWave(0, arenaSpawner.getSpawnedEnemies());
+        //arenaWaves.nextWave(0, arenaSpawner.getSpawnedEnemies());
 
         day = new Array<EVENT>();
 
@@ -81,9 +85,7 @@ public class Arena {
         }
 
         day.add(EVENT.BOSS);
-
-        day.insert(3, EVENT.ITEM);
-
+        day.insert(0, EVENT.BOSS);
         //stage3();
     }
 
@@ -119,9 +121,9 @@ public class Arena {
 
 
     public void draw(SpriteBatch batch){
-        activeBullets.draw(batch);
         wizard.draw(batch);
         arenaSpawner.draw(batch);
+        activeBullets.draw(batch);
         enemyBullets.draw(batch);
 
         batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
@@ -129,6 +131,10 @@ public class Arena {
 
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
+        }
+
+        if(itemSprite != null){
+            itemSprite.draw(batch);
         }
 
     }
@@ -161,11 +167,31 @@ public class Arena {
             if(day.get(0) == EVENT.WAVE) {
                 arenaWaves.nextWave(3, arenaSpawner.getSpawnedEnemies());
                 day.removeIndex(0);
-            } else if(day.get(0) == EVENT.ITEM) {
-                wizard.applyItem(ig.getItem(seed));
-                day.removeIndex(0);
+            } else if(day.get(0) == EVENT.ITEM && itemSprite == null) {
+               // wizard.applyItem(ig.getItem(seed));
+                System.out.println("inside");
+                spawnItem(ig.getItem(seed));
+              //  day.removeIndex(0);
+            } else if(day.get(0) == EVENT.BOSS) {
+                arenaSpawner.getSpawnedEnemies().add(new BiggaBlob(500, 1000));
             }
 
+        }
+    }
+
+    private void spawnItem(Item ig) {
+        itemSprite = PlayScreen.atlas.createSprite(ig.getSpriteName());
+        itemSprite.setSize(MainGame.GAME_UNITS * 7, MainGame.GAME_UNITS * 7);
+        itemSprite.setCenter(this.ARENA_WIDTH / 2, (this.ARENA_HEIGHT / 4) * 3);
+    }
+
+
+    public void itemGet(float input_x, float input_y){
+        if(itemSprite.getBoundingRectangle().contains(input_x, input_y)){
+            Item i = ig.getItem(seed);
+            wizard.applyItem(i);
+            itemSprite = null;
+            day.removeIndex(0);
         }
     }
 
@@ -189,6 +215,11 @@ public class Arena {
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
+    }
+
+
+    public EVENT getcurrentEvent(){
+        return day.get(0);
     }
 
     public float groundHeight(){

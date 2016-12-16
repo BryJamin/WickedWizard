@@ -302,8 +302,7 @@ public class Projectile {
     public void singleTargetProjectileDamageCheck(Array<Enemy> enemies){
 
         for (Enemy e : enemies) {
-            if(getSprite().getBoundingRectangle().overlaps(e.getSprite().getBoundingRectangle())
-                    && e.getState() == Enemy.STATE.ALIVE){
+            if(e.isHit(getSprite().getBoundingRectangle())){
                 e.reduceHealth(damage);
                 this.setState(STATE.EXPLODING);
                 return;
@@ -350,19 +349,18 @@ public class Projectile {
      *
      * @param bullet - The projectile's Sprite
      * @param explosionRadius - Area of Effect of the Explosion
-     * @param e - Array of enemies
+     * @param enemies - Array of enemies
      */
-    public void explosionHit(Sprite bullet, Rectangle explosionRadius, Array<Enemy> e){
+    public void explosionHit(Sprite bullet, Rectangle explosionRadius, Array<Enemy> enemies){
         Vector2 temp = new Vector2();
         bullet.getBoundingRectangle().getCenter(temp);
         explosionRadius.setCenter(temp);
         //damageRadius = new Rectangle(temp.x, temp.y, MainGame.GAME_UNITS * 15, MainGame.GAME_UNITS * 15);
-        for(Enemy enemy: e){
-            if(explosionRadius.overlaps(enemy.getSprite().getBoundingRectangle())){
-                enemy.reduceHealth(damage);
+        for(Enemy e: enemies){
+            if(e.isHit(explosionRadius)){
+                e.reduceHealth(damage);
                 this.setState(STATE.EXPLODING);
             }
-
         }
     }
 

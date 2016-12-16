@@ -94,7 +94,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
         Sprite sprite = PlayScreen.atlas.createSprite("blob");
 
-        walk = AnimationPacker.genLoopedAnimation(0.25f / 1f, "blob");
+        walk = AnimationPacker.genAnimation(0.25f / 1f, "blob", Animation.PlayMode.LOOP);
         attack = AnimationPacker.genAnimation(0.25f / 1f, "blob_attack");
         this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, "blob_dying"));
 
