@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlob;
+import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlobba;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
@@ -80,12 +80,14 @@ public class Arena {
 
         day = new Array<EVENT>();
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 10; i++){
             day.add(EVENT.WAVE);
         }
 
         day.add(EVENT.BOSS);
+
         day.insert(0, EVENT.BOSS);
+        day.insert(5, EVENT.ITEM);
         //stage3();
     }
 
@@ -126,8 +128,8 @@ public class Arena {
         activeBullets.draw(batch);
         enemyBullets.draw(batch);
 
-        batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
-        batch.draw(PlayScreen.atlas.findRegion("brick"), 200, 0, 200, 200);
+        //batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
+        //batch.draw(PlayScreen.atlas.findRegion("brick"), 200, 0, 200, 200);
 
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
@@ -148,7 +150,6 @@ public class Arena {
         tile_width = ground_height / rows;
         //Assuming were using square tiles here
         float columns = ground_width / tile_width;
-
 
         for(int i = 0; i < columns; i++){
             for(int j = 0; j < rows; j++){
@@ -173,7 +174,7 @@ public class Arena {
                 spawnItem(ig.getItem(seed));
               //  day.removeIndex(0);
             } else if(day.get(0) == EVENT.BOSS) {
-                arenaSpawner.getSpawnedEnemies().add(new BiggaBlob(500, 1000));
+                arenaSpawner.getSpawnedEnemies().add(new BiggaBlobba(1100, 2000));
             }
 
         }
@@ -216,7 +217,6 @@ public class Arena {
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
     }
-
 
     public EVENT getcurrentEvent(){
         return day.get(0);

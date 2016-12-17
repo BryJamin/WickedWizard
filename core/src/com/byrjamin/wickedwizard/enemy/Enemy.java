@@ -24,7 +24,7 @@ public abstract class Enemy {
 
     private float health;
 
-    private boolean isFlashing;
+    public boolean isFlashing;
 
     private float flashTimer;
     public float time;
@@ -96,6 +96,8 @@ public abstract class Enemy {
     public boolean isHit(Rectangle r){
         return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
     }
+
+
 
 
     public abstract void update(float dt);

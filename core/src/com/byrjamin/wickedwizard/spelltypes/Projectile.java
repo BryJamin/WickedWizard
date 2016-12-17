@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
@@ -38,6 +40,8 @@ public class Projectile {
     float time;
 
     TextureRegion explosionTextureRegion;
+
+    private ShapeRenderer shapeRenderer;
 
 
     private Vector2 position;
@@ -136,11 +140,13 @@ public class Projectile {
         sprite = PlayScreen.atlas.createSprite(spriteString);
         sprite.setCenter(x1, y1);
         calculateAngle(x1,y1,x2,y2);
-        sprite.setSize((float) MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        sprite.setSize(MainGame.GAME_UNITS * 3, MainGame.GAME_UNITS * 3);
         sprite.setRotation((float) Math.toDegrees(projectAngle));
         areaOfEffect = builder.areaOfEffect;
         time = 0;
         state = STATE.ALIVE;
+
+        shapeRenderer = new ShapeRenderer();
 
         Array<TextureRegion> animation;
 
@@ -376,6 +382,8 @@ public class Projectile {
     }
 
     public void draw(SpriteBatch batch){
+
+        BoundsDrawer.drawBounds(batch, this.getSprite().getBoundingRectangle());
 
         if(getState() == STATE.ALIVE){
             alive_draw(batch);

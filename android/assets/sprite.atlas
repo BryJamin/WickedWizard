@@ -20,13 +20,6 @@ biggablobba
   index: 1
 biggablobba
   rotate: false
-  xy: 914, 190
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 7
-biggablobba
-  rotate: false
   xy: 68, 28
   size: 64, 64
   orig: 64, 64
@@ -34,25 +27,11 @@ biggablobba
   index: 2
 biggablobba
   rotate: false
-  xy: 68, 28
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 6
-biggablobba
-  rotate: false
   xy: 914, 124
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
-biggablobba
-  rotate: false
-  xy: 914, 124
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
 biggablobba
   rotate: false
   xy: 134, 28
@@ -101,14 +80,14 @@ blob_attack
   size: 29, 24
   orig: 29, 24
   offset: 0, 0
-  index: 2
+  index: 1
 blob_attack
   rotate: false
   xy: 33, 2
   size: 29, 24
   orig: 29, 24
   offset: 0, 0
-  index: 1
+  index: 2
 blob_attack3
   rotate: false
   xy: 2, 2
