@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
+import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.item.Item;
@@ -110,7 +111,7 @@ public class Wizard {
     }
 
     public Vector2 getCenter(){
-        return new Vector2(this.getSprite().getX(), this.getSprite().getY());
+        return new Vector2(this.getSprite().getX() + this.getSprite().getWidth() /2 , this.getSprite().getY() + this.getSprite().getHeight() /2 );
     }
 
 
@@ -145,25 +146,15 @@ public class Wizard {
 
         startfireAnimation();
 
-        System.out.println(this.getSprite().getX() + this.getSprite().getWidth() / 2);
-        System.out.println(this.getSprite().getY() + this.getSprite().getHeight() / 2);
+        float angle = calculateAngle(getCenter().x, getCenter().y, input_x,input_y);
 
 
-
-        return (new Projectile.ProjectileBuilder(this.getSprite().getX() + this.getSprite().getWidth() / 2, this.getSprite().getY() + this.getSprite().getHeight() / 2, input_x,input_y)
+        return (new Projectile.ProjectileBuilder(getCenter().x + ((this.getSprite().getWidth() / 2) * (float) Math.cos(angle))
+                , getCenter().y + ((this.getSprite().getHeight() / 2) * (float) Math.sin(angle)), input_x,input_y)
                 .spriteString("frost")
                 .damage(1)
                 .HORIZONTAL_VELOCITY(25f)
                 .build());
-
-
-
-
-/*        return new Projectile.ProjectileBuilder(this.getSprite().getX() + this.getSprite().getWidth() / 2, this.getSprite().getY() + this.getSprite().getHeight() / 2, input_x, input_y)
-                .spriteString("fire")
-                .damage(damage)
-                .HORIZONTAL_VELOCITY(0f)
-                .build();*/
     }
 
     private void startfireAnimation() {
@@ -171,9 +162,9 @@ public class Wizard {
         animationTime = 0;
     }
 
-/*    public float calculateAngle(float x1,float y1, float x2, float y2){
-        return (Math.atan2(y2 - y1, x2 - x1));
-    }*/
+    public float calculateAngle(float x1,float y1, float x2, float y2){
+        return (float) (Math.atan2(y2 - y1, x2 - x1));
+    }
 
 
     public Sprite getSprite() {

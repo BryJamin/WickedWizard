@@ -135,7 +135,7 @@ public class Projectile {
         dispell = builder.dispell;
         sprite = builder.sprite;
         spriteString = builder.spriteString;
-        HORIZONTAL_VELOCITY =  builder.HORIZONTAL_VELOCITY;
+        HORIZONTAL_VELOCITY = builder.HORIZONTAL_VELOCITY;
         //TODO fix this crap
         sprite = PlayScreen.atlas.createSprite(spriteString);
         calculateAngle(x1,y1,x2,y2);

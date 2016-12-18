@@ -125,10 +125,10 @@ public class Arena {
 
     public void draw(SpriteBatch batch){
        // wizard.draw(batch);
-        wizard.draw(batch);
         arenaSpawner.draw(batch);
         activeBullets.draw(batch);
         enemyBullets.draw(batch);
+        wizard.draw(batch);
 
         //batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
         //batch.draw(PlayScreen.atlas.findRegion("brick"), 200, 0, 200, 200);
