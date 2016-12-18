@@ -156,10 +156,10 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
      */
     public void fire(float dt, Arena a){
         if (reloader.isReady()) {
-            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX(), this.getSprite().getY(), a.getWizard().getSprite().getX(),a.getWizard().getSprite().getY())
+            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX() + this.getSprite().getWidth() / 2, this.getSprite().getY() + this.getSprite().getHeight() / 2, a.getWizard().getSprite().getX(),a.getWizard().getSprite().getY())
                     .spriteString("bullet")
                     .damage(1)
-                    .HORIZONTAL_VELOCITY(DEFAULT_SHOT_SPEED)
+                    .HORIZONTAL_VELOCITY(25f)
                     .dispell(dispellSequence.get(0))
                     .build());
 
@@ -171,7 +171,12 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     @Override
     public void draw(SpriteBatch batch){
+
         super.draw(batch);
+
+
+
+
     }
 
 }

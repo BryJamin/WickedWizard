@@ -62,6 +62,8 @@ public class Arena {
 
     public STATE arenaState;
 
+
+
     public Arena(){
         activeBullets = new ActiveBullets();
         enemyBullets = new EnemyBullets();
@@ -84,10 +86,9 @@ public class Arena {
             day.add(EVENT.WAVE);
         }
 
-        day.add(EVENT.BOSS);
-
-        day.insert(0, EVENT.BOSS);
+        //day.insert(0, EVENT.BOSS);
         day.insert(5, EVENT.ITEM);
+        day.add(EVENT.BOSS);
         //stage3();
     }
 
@@ -123,6 +124,7 @@ public class Arena {
 
 
     public void draw(SpriteBatch batch){
+       // wizard.draw(batch);
         wizard.draw(batch);
         arenaSpawner.draw(batch);
         activeBullets.draw(batch);
@@ -175,6 +177,7 @@ public class Arena {
               //  day.removeIndex(0);
             } else if(day.get(0) == EVENT.BOSS) {
                 arenaSpawner.getSpawnedEnemies().add(new BiggaBlobba(1100, 2000));
+                day.removeIndex(0);
             }
 
         }
@@ -223,6 +226,6 @@ public class Arena {
     }
 
     public float groundHeight(){
-        return ground.getY();
+        return ground.getHeight();
     }
 }

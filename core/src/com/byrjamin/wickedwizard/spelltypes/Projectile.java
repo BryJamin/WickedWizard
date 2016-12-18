@@ -135,13 +135,18 @@ public class Projectile {
         dispell = builder.dispell;
         sprite = builder.sprite;
         spriteString = builder.spriteString;
-        HORIZONTAL_VELOCITY = builder.HORIZONTAL_VELOCITY;
+        HORIZONTAL_VELOCITY =  builder.HORIZONTAL_VELOCITY;
         //TODO fix this crap
         sprite = PlayScreen.atlas.createSprite(spriteString);
-        sprite.setCenter(x1, y1);
         calculateAngle(x1,y1,x2,y2);
         sprite.setSize(MainGame.GAME_UNITS * 3, MainGame.GAME_UNITS * 3);
-        sprite.setRotation((float) Math.toDegrees(projectAngle));
+
+        //sprite.setOrigin(x1, y1);
+
+        sprite.setCenter(x1, y1);
+        sprite.setOriginCenter();
+        sprite.rotate((float) Math.toDegrees(projectAngle));
+
         areaOfEffect = builder.areaOfEffect;
         time = 0;
         state = STATE.ALIVE;
@@ -181,8 +186,13 @@ public class Projectile {
      * @param dt
      */
     public void update(float dt){
-        this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
-        this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
+
+        this.getSprite().setCenter(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)),
+                this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
+
+
+/*        this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
+        this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));*/
     }
 
     public void update(float dt, Array<Enemy> e){
@@ -248,13 +258,28 @@ public class Projectile {
     }
 
     public void travelUpdate(){
-        this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
+
+        float x;
+        float y;
+
+
+        x = this.getSprite().getX() + (this.getSprite().getWidth() / 2) + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle));
+        //this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
         if(gravity){
             velocity.add(0, GRAVITY);
-            this.getSprite().setY(this.getSprite().getY() + velocity.y);
+            y = this.getSprite().getY() + velocity.y;
+            //this.getSprite().setY(this.getSprite().getY() + velocity.y);
+
+
+
         } else {
-            this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
+            y = this.getSprite().getY() + (this.getSprite().getHeight() / 2) + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle));
+
+            //this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
         }
+
+        this.getSprite().setCenter(x,y);
+
     }
 
     public void dispell(DISPELL dispell){

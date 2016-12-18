@@ -55,7 +55,7 @@ blob
   index: 2
 blob
   rotate: false
-  xy: 568, 78
+  xy: 738, 78
   size: 29, 29
   orig: 29, 29
   offset: 0, 0
@@ -97,7 +97,7 @@ blob_attack3
   index: -1
 blob_dying
   rotate: false
-  xy: 599, 82
+  xy: 769, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -111,7 +111,7 @@ blob_dying
   index: 2
 blob_dying
   rotate: false
-  xy: 626, 82
+  xy: 796, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -125,7 +125,7 @@ blob_dying
   index: 4
 blob_dying
   rotate: false
-  xy: 653, 82
+  xy: 823, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -139,7 +139,7 @@ blob_dying
   index: 6
 blob_dying
   rotate: false
-  xy: 680, 82
+  xy: 850, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -153,7 +153,7 @@ blob_dying
   index: 8
 blob_dying
   rotate: false
-  xy: 568, 51
+  xy: 877, 82
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -284,9 +284,86 @@ sprite_health5
   orig: 32, 32
   offset: 0, 0
   index: -1
-wiz
+squ_firing
   rotate: false
   xy: 534, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+squ_firing
+  rotate: false
+  xy: 534, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+squ_firing
+  rotate: false
+  xy: 534, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+squ_walk
+  rotate: false
+  xy: 534, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+squ_walk
+  rotate: false
+  xy: 534, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+squ_firing
+  rotate: false
+  xy: 568, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+squ_firing
+  rotate: false
+  xy: 568, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+squ_firing
+  rotate: false
+  xy: 602, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+squ_walk
+  rotate: false
+  xy: 636, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+squ_walk
+  rotate: false
+  xy: 636, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+squ_walk
+  rotate: false
+  xy: 670, 75
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+wiz
+  rotate: false
+  xy: 704, 75
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

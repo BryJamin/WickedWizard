@@ -23,7 +23,7 @@ public class EnemyPresets {
 
     public static Blob smallBlob(float posX, float posY){
         return new Blob.BlobBuilder(posX, posY)
-                .health(2)
+                .health(1)
                 .speed(3.0f)
                 .scale(0.5f)
                 .build();

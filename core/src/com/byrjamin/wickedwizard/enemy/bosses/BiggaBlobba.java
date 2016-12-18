@@ -10,12 +10,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.enemy.EnemyPresets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 
 import org.w3c.dom.css.Rect;
 
@@ -43,6 +46,7 @@ public class BiggaBlobba extends Enemy {
     private float lowerbodyHeight;
 
 
+
     private Vector2 position;
     private Vector2 velocity;
 
@@ -56,10 +60,22 @@ public class BiggaBlobba extends Enemy {
 
     ShapeRenderer shapeRenderer;
 
+    public enum PHASE {
+        PHASE1, PHASE2, PHASE3
+    }
+
+
+    PHASE phase;
 
     //Phase 1
-    private Reloader slimeCannon;
     private Reloader littleSlimer;
+    private int slimeCount = 5;
+
+    //Phase 2
+    private Reloader jumper = new Reloader(4.0f);
+    private Reloader launcher = new Reloader(1.0f);
+    private int jumpCount = 3;
+    private boolean isLanded;
 
     //TODO - Biggablobba needs to summon litte slimes
     //TODO - Biggablobba has a shield
@@ -69,7 +85,7 @@ public class BiggaBlobba extends Enemy {
 
         shapeRenderer = new ShapeRenderer();
 
-        this.setHealth(10000);
+        this.setHealth(50);
 
         velocity = new Vector2();
         position = new Vector2(posX, posY);
@@ -109,8 +125,12 @@ public class BiggaBlobba extends Enemy {
         walk = AnimationPacker.genAnimation(1 / 20f, "biggablobba", Animation.PlayMode.LOOP_PINGPONG);
         currentAnimation = walk;
 
-        bounce();
+        //bounce();
         //updateLowerBody();
+
+
+        phase = PHASE.PHASE1;
+         littleSlimer = new Reloader(0.5f, 3.0f);
 
         time = 0f;
 
@@ -133,24 +153,80 @@ public class BiggaBlobba extends Enemy {
     }
 
 
+    public void phase1Update(float dt, Arena a){
+
+        if(slimeCount <= 0){
+            phase = PHASE.PHASE2;
+            jumpCount = 3;
+            return;
+        }
+
+        littleSlimer.update(dt);
+
+        if(littleSlimer.isReady()){
+            a.getEnemies().add(EnemyPresets.smallBlob(position.x + Measure.units(15), a.ARENA_HEIGHT));
+            slimeCount --;
+            System.out.println(slimeCount);
+        }
+
+    }
+
+    public void phase2Update(float dt, Arena a){
+
+
+        if(jumpCount <= 0){
+            phase = PHASE.PHASE1;
+            slimeCount = 5;
+            return;
+        }
+
+        jumper.update(dt);
+        launcher.update(dt);
+
+
+        if(jumper.isReady()){
+            jump();
+            jumpCount --;
+            isLanded = false;
+        } else if(isLanded){
+
+            if(launcher.isReady()){
+                EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(
+                        this.position.x + Measure.units(25) ,
+                        this.position.y + Measure.units(30),
+                        a.getWizard().getX(),
+                        a.getWizard().getY())
+                        .spriteString("bullet")
+                        .damage(1)
+                        .HORIZONTAL_VELOCITY(20f)
+                        .dispell(Projectile.DISPELL.HORIZONTAL)
+                        .build());
+            }
+
+
+        }
+        System.out.println(position.y <= a.groundHeight());
+        System.out.println(position.y);
+        System.out.println(a.groundHeight());
+        if(position.y <= a.groundHeight()) {
+            System.out.println(position.y <= a.groundHeight());
+            isLanded = true;
+        }
+
+    }
+
+
     /**
      * Bigga blobba bounces with a variances of 2 units.
      */
-    public void bounce(){
-
-        //private float frameNo =
-
-        //System.out.println(walk.getAnimationDuration());
-        //System.out.println(walk.getFrameDuration());
-
-       System.out.println(walk.getKeyFrameIndex(time));
-
-        //if(walk.getAnimationDuration())
+    public void jump(){
+        this.velocity.y = 50;
     }
 
     public void applyGravity(float dt, Arena arena){
 
-        if(isFalling){
+        if(velocity.y <= 0){
+            //System.out.println(isFalling);
             Rectangle r = arena.getOverlappingRectangle(bounds.get(0));
             if(r != null) {
                 //this.getSprite().setY(r.getY() + r.getHeight());
@@ -159,14 +235,30 @@ public class BiggaBlobba extends Enemy {
                 this.velocity.add(0, GRAVITY * dt);
                 position.add(velocity);
 
+
                 for(Rectangle bound : bounds) {
                     Vector2 temp = new Vector2();
                     bound.getPosition(temp);
                     temp.add(velocity);
                     bound.setPosition(temp);
                 }
-                //this.getSprite().translateY(velocity.y);
             }
+        } else {
+
+            this.velocity.add(0, GRAVITY * dt);
+            position.add(velocity);
+
+
+            for(Rectangle bound : bounds) {
+                Vector2 temp = new Vector2();
+                bound.getPosition(temp);
+                temp.add(velocity);
+                bound.setPosition(temp);
+            }
+
+
+
+
 
         }
     }
@@ -199,6 +291,31 @@ public class BiggaBlobba extends Enemy {
         applyGravity(dt, a);
         boundsUpdate();
 
+        if(this.getHealth() <= 0 ){
+            this.setState(STATE.DEAD);
+        }
+
+        if(state == STATE.ALIVE) {
+
+            if (phase == PHASE.PHASE1) {
+                phase1Update(dt, a);
+            } else if (phase == PHASE.PHASE2) {
+                phase2Update(dt, a);
+            }
+
+            if (this.getHealth() < 35 && this.getHealth() > 20) {
+                currentAnimation.setFrameDuration(1 / 40f);
+            } else if (this.getHealth() < 20) {
+                currentAnimation.setFrameDuration(1 / 60f);
+            }
+
+            for (Rectangle bound : bounds) {
+                if (bound.overlaps(a.getWizard().getSprite().getBoundingRectangle())) {
+                    a.getWizard().reduceHealth(1);
+                }
+            }
+
+        }
         //TODO - As slime takes damage it falls
 /*        if(time > 5 && test == true){
             bounds.removeIndex(0);

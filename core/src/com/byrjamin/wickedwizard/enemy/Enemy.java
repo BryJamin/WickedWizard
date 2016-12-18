@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 
 /**
  * Abstract class for enemies within the game
@@ -51,6 +52,10 @@ public abstract class Enemy {
         } else {
             this.getSprite().draw(batch);
         }
+
+
+        BoundsDrawer.drawBounds(batch, this.getSprite().getBoundingRectangle());
+
     }
 
 
