@@ -23,8 +23,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Wizard {
 
-    private int HEIGHT = MainGame.GAME_UNITS * 10;
-    private int WIDTH = MainGame.GAME_UNITS * 10;
+    private int HEIGHT = MainGame.GAME_UNITS * 7;
+    private int WIDTH = MainGame.GAME_UNITS * 7;
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private Vector3 position;
@@ -151,7 +151,7 @@ public class Wizard {
 
         return (new Projectile.ProjectileBuilder(getCenter().x + ((this.getSprite().getWidth() / 2) * (float) Math.cos(angle))
                 , getCenter().y + ((this.getSprite().getHeight() / 2) * (float) Math.sin(angle)), input_x,input_y)
-                .spriteString("frost")
+                .spriteString("bullet")
                 .damage(1)
                 .HORIZONTAL_VELOCITY(25f)
                 .build());

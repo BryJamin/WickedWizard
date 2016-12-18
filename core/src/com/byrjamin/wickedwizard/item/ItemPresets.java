@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.item;
 
 /**
- * Created by Home on 15/12/2016.
+ * Presets of Items
  */
 public class ItemPresets {
 

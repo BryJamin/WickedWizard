@@ -159,7 +159,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
             EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX() + this.getSprite().getWidth() / 2, this.getSprite().getY() + this.getSprite().getHeight() / 2, a.getWizard().getSprite().getX(),a.getWizard().getSprite().getY())
                     .spriteString("bullet")
                     .damage(1)
-                    .HORIZONTAL_VELOCITY(20f)
+                    .HORIZONTAL_VELOCITY(15f)
                     .dispell(dispellSequence.get(0))
                     .build());
 

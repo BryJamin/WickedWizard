@@ -19,6 +19,13 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class AnimationPacker {
 
+    /**
+     * Generates an animation using the frames per second, names of the regions and the Playmode.
+     * @param animationSpeed - speed of animation
+     * @param atlasRegionsName - names of regions
+     * @param playmode - Animation playmode
+     * @return - Returns a new Animaion
+     */
     public static Animation genAnimation(float animationSpeed, String atlasRegionsName, Animation.PlayMode playmode){
         Array<TextureRegion> textureRegions = new Array<TextureRegion>();
 
@@ -30,6 +37,12 @@ public class AnimationPacker {
 
     }
 
+    /**
+     * Generates an animation using the default playmode using the frames per second and names of the regions.
+     * @param animationSpeed - speed of animation
+     * @param atlasRegionsName - names of regions
+     * @return
+     */
     public static Animation genAnimation(float animationSpeed, String atlasRegionsName){
 
         Array<TextureRegion> textureRegions = new Array<TextureRegion>();

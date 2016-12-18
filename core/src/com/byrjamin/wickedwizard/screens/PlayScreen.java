@@ -185,40 +185,18 @@ public class PlayScreen implements Screen {
 
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
-
-            if(arena.getcurrentEvent() == Arena.EVENT.ITEM){
-                arena.itemGet(input.x, input.y);
-            }
-
-            //arena.getWizard().teleport(input.x, input.y);
-            //deck.cardSelect(input.x, input.y);
-
-
-            //enemyBullets.dispellProjectiles();
-/*            if(count == 2){
-                wizard.teleport(input.x, input.y);
-            }*/
-
-/*            if(deck.getSelectedCard().getProjectileType() == Card.ProjectileType.HUMAN && input.y > PlayScreen.GROUND_Y){
-                wizard.teleport(input.x, input.y);
-            }*/
+            arena.itemGet(input.x, input.y);
             return true;
         }
 
         @Override
         public boolean longPress(float x, float y) {
-
-            System.out.println("LONG PRESS PERFORMED");
             return true;
         }
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
-
-
             arena.dispell(velocityX, velocityY);
-
-            System.out.println("FLING PERFORMED");
             return true;
         }
 
@@ -231,8 +209,6 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean panStop(float x, float y, int pointer, int button) {
-            System.out.println("PAN STOP PERFORMED");
-
             return false;
         }
 

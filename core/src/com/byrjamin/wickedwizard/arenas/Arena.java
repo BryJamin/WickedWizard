@@ -118,7 +118,9 @@ public class Arena {
         activeBullets.update(dt, gamecam, this.getEnemies());
         enemyBullets.update(dt, gamecam, this.getWizard());
 
-        triggerNextStage();
+        if(day.size != 0) {
+            triggerNextStage();
+        }
 
     }
 
@@ -178,6 +180,8 @@ public class Arena {
             } else if(day.get(0) == EVENT.BOSS) {
                 arenaSpawner.getSpawnedEnemies().add(new BiggaBlobba(1100, 2000));
                 day.removeIndex(0);
+
+                //TODO figure out what happens when the boss is defeated
             }
 
         }
@@ -191,11 +195,16 @@ public class Arena {
 
 
     public void itemGet(float input_x, float input_y){
-        if(itemSprite.getBoundingRectangle().contains(input_x, input_y)){
-            Item i = ig.getItem(seed);
-            wizard.applyItem(i);
-            itemSprite = null;
-            day.removeIndex(0);
+
+        if(day.size != 0) {
+            if(day.get(0) == EVENT.ITEM) {
+                if (itemSprite.getBoundingRectangle().contains(input_x, input_y)) {
+                    Item i = ig.getItem(seed);
+                    wizard.applyItem(i);
+                    itemSprite = null;
+                    day.removeIndex(0);
+                }
+            }
         }
     }
 

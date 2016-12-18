@@ -7,20 +7,26 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Created by Home on 17/12/2016.
+ * Used to draw Rectangles/Array of Rectangles used throughtout the program.
+ *
+ * This is just so I can more easily see bounds of the sprites I'm creating.
+ *
  */
 public class BoundsDrawer {
 
     private static ShapeRenderer shapeRenderer;
 
+    /**
+     * Draws the bounds of a single Rectangle
+     * @param batch - SpriteBatch
+     * @param r - Rectangle
+     */
     public static void drawBounds(SpriteBatch batch, Rectangle r){
-
         initialize();
 
         batch.end();
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(r.getX(),r.getY(),r.getWidth(), r.getHeight());
@@ -30,14 +36,17 @@ public class BoundsDrawer {
     }
 
 
+    /**
+     * Draws the boundarys of an Array of Rectangles
+     * @param batch - The SpriteBatch
+     * @param bounds - Rectangle Array
+     */
     public static void drawBounds(SpriteBatch batch, Array<Rectangle> bounds){
-
         initialize();
 
         batch.end();
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         for(Rectangle r : bounds) {
@@ -50,7 +59,9 @@ public class BoundsDrawer {
     }
 
 
-
+    /**
+     * Initializes the Global ShapeRenderer.
+     */
     private static void initialize(){
         if(shapeRenderer == null){
             shapeRenderer = new ShapeRenderer();

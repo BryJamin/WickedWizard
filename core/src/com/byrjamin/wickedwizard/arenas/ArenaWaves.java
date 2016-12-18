@@ -50,8 +50,14 @@ public class ArenaWaves {
     public void blob3(Array<Enemy> e){
         e.clear();
         e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.alternarteShotsTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
         e.add(EnemyPresets.fastTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+    }
+
+
+    public void blob4(Array<Enemy> e){
+        e.clear();
+        e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.alternarteShotsTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void turret(Array<Enemy> e){
@@ -70,6 +76,7 @@ public class ArenaWaves {
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob3(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },
     };
 
 

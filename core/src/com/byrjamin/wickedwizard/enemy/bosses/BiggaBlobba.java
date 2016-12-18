@@ -79,13 +79,14 @@ public class BiggaBlobba extends Enemy {
 
     //TODO - Biggablobba needs to summon litte slimes
     //TODO - Biggablobba has a shield
+    //TODO - Clean up this class.
 
     public BiggaBlobba(float posX, float posY){
         super();
 
         shapeRenderer = new ShapeRenderer();
 
-        this.setHealth(50);
+        this.setHealth(100);
 
         velocity = new Vector2();
         position = new Vector2(posX, posY);
@@ -198,7 +199,7 @@ public class BiggaBlobba extends Enemy {
                         a.getWizard().getY())
                         .spriteString("bullet")
                         .damage(1)
-                        .HORIZONTAL_VELOCITY(20f)
+                        .HORIZONTAL_VELOCITY(15f)
                         .dispell(Projectile.DISPELL.HORIZONTAL)
                         .build());
             }
@@ -303,10 +304,8 @@ public class BiggaBlobba extends Enemy {
                 phase2Update(dt, a);
             }
 
-            if (this.getHealth() < 35 && this.getHealth() > 20) {
+            if (this.getHealth() < (100 / 2)) {
                 currentAnimation.setFrameDuration(1 / 40f);
-            } else if (this.getHealth() < 20) {
-                currentAnimation.setFrameDuration(1 / 60f);
             }
 
             for (Rectangle bound : bounds) {

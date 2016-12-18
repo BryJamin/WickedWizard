@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.helper;
 
 /**
- * Created by Home on 09/12/2016.
+ * Class used for reloading a checking if a person can shoot.
  */
 public class Reloader {
 
@@ -10,10 +10,19 @@ public class Reloader {
 
     private boolean ready;
 
+    /**
+     *
+     * @param reloadSpeed - How long it takes to reload
+     */
     public Reloader(float reloadSpeed){
         this.reloadSpeed = reloadSpeed;
     }
 
+    /**
+     *
+     * @param reloadSpeed - How long it takes to reload.
+     * @param initialDelay - How long to wait before you can shoot for the first time.
+     */
     public Reloader(float reloadSpeed, float initialDelay){
         this.reload = initialDelay;
         this.reloadSpeed = reloadSpeed;
