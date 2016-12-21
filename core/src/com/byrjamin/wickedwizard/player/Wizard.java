@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.player;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,10 +11,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
-import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
-import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.item.Item;
@@ -32,6 +32,13 @@ public class Wizard {
     private Reloader reloader;
 
     private boolean isFalling = true;
+    private boolean isFiring = false;
+
+    private enum STATE {
+        CHARGING, FIRING, STANDING,AOECIRCLETHING
+    }
+
+    private STATE currentState;
 
     private Vector3 velocity;
 
@@ -40,13 +47,17 @@ public class Wizard {
     private int armor;
     private float damage = 1;
     private float reloadRate = 0.3f;
+    private float windUp = 0.3f;
 
     private Sprite sprite;
 
     private float animationTime;
+    private float stateTime;
 
     private Animation standing;
     private Animation firing;
+
+    private Animation windUpAnimation;
 
 
     private Animation currentAnimation;
@@ -62,7 +73,7 @@ public class Wizard {
 
         items = new Array<Item>();
 
-        reloader = new Reloader(reloadRate);
+        reloader = new Reloader(reloadRate, windUp);
 
 
         //Note firing animation speed is equal to the reloadRate divided by 10.
@@ -70,20 +81,42 @@ public class Wizard {
         standing = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
         firing = AnimationPacker.genAnimation(reloadRate / 10, "squ_firing");
 
+        windUpAnimation = AnimationPacker.genAnimation(0.03f, "circle");
+
         currentAnimation = standing;
 
 
     }
 
 
-    public void update(float dt, Arena arena){
+    public void update(float dt, OrthographicCamera gamecam, Arena arena){
         animationTime += dt;
-        reloader.update(dt);
         applyGravity(dt, arena);
 
         if(currentAnimation != standing && currentAnimation.isAnimationFinished(animationTime)){
             currentAnimation = standing;
             //animationTime = 0;
+        }
+
+        if(currentState == STATE.CHARGING){
+            reloader.update(dt);
+            stateTime+= dt;
+            if(reloader.isReady()){
+                currentState = STATE.FIRING;
+            }
+        }
+
+        if(currentState == STATE.FIRING){
+            reloader.update(dt);
+            stateTime+= dt;
+            if(reloader.isReady()){
+                float x1 = Gdx.input.getX();
+                float y1 = Gdx.input.getY();
+                Vector3 input = new Vector3(x1, y1, 0);
+                //This is so inputs match up to the game co-ordinates.
+                gamecam.unproject(input);
+                arena.addProjectile(generateProjectile(input.x, input.y));
+            }
         }
 
 
@@ -95,6 +128,12 @@ public class Wizard {
         }
         this.getSprite().setRegion(currentAnimation.getKeyFrame(animationTime));
         this.getSprite().draw(batch);
+
+        if(currentState == STATE.CHARGING) {
+            batch.draw(windUpAnimation.getKeyFrame(stateTime), getCenterX() - 250, getCenterY() - 270, 500, 500);
+        }
+
+
         BoundsDrawer.drawBounds(batch, getSprite().getBoundingRectangle());
     }
 
@@ -114,6 +153,13 @@ public class Wizard {
         return new Vector2(this.getSprite().getX() + this.getSprite().getWidth() /2 , this.getSprite().getY() + this.getSprite().getHeight() /2 );
     }
 
+    public float getCenterX(){
+        return this.getSprite().getX() + this.getSprite().getWidth() /2;
+    }
+
+    public float getCenterY(){
+        return this.getSprite().getY() + this.getSprite().getHeight() /2;
+    }
 
     public void increaseDamage(float d){
         damage += d;
@@ -143,17 +189,13 @@ public class Wizard {
     }
 
     public Projectile generateProjectile(float input_x, float input_y){
-
         startfireAnimation();
-
-        float angle = calculateAngle(getCenter().x, getCenter().y, input_x,input_y);
-
-
+        float angle = calculateAngle(getCenterX(), getCenterY(), input_x,input_y);
         return (new Projectile.ProjectileBuilder(getCenter().x + ((this.getSprite().getWidth() / 2) * (float) Math.cos(angle))
                 , getCenter().y + ((this.getSprite().getHeight() / 2) * (float) Math.sin(angle)), input_x,input_y)
                 .spriteString("bullet")
                 .damage(1)
-                .HORIZONTAL_VELOCITY(25f)
+                .HORIZONTAL_VELOCITY(50f)
                 .build());
     }
 
@@ -190,5 +232,17 @@ public class Wizard {
 
     public float getY() {
         return getSprite().getY();
+    }
+
+    public void startFiring() {
+        currentState = STATE.CHARGING;
+        stateTime = 0;
+    }
+
+
+    public void stopFiring() {
+        currentState = STATE.STANDING;
+        reloader.addWindUp(windUp);
+        stateTime = 0;
     }
 }

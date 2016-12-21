@@ -65,7 +65,7 @@ public abstract class Enemy {
      * @param i -
      */
     public void reduceHealth(float i){
-        System.out.println("Enemy took: "+i+" damage");
+        //System.out.println("Enemy took: "+i+" damage");
         this.setHealth(this.getHealth() - i);
 
         if(this.getHealth() <= 0 && getState() != STATE.DYING){

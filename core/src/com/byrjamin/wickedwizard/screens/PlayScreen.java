@@ -1,6 +1,8 @@
 package com.byrjamin.wickedwizard.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,6 +17,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.arenas.ActiveBullets;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
+import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 
 
 //TODO
@@ -45,6 +48,8 @@ public class PlayScreen implements Screen {
     Arena arena;
 
     EnemyBullets enemyBullets;
+
+    BlastWave blast;
 
     Texture health;
 
@@ -82,9 +87,51 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt){
 
-        Gdx.input.setInputProcessor(gestureDetector);
 
-        if(Gdx.input.isTouched()) {
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(gestureDetector);
+        multiplexer.addProcessor(new InputAdapter(){
+
+            @Override
+            public boolean touchDown (int x, int y, int pointer, int button) {
+                System.out.println("TouchDown");
+
+
+                arena.getWizard().startFiring();
+
+
+                int x1 = Gdx.input.getX();
+                int y1 = Gdx.input.getY();
+                Vector3 input = new Vector3(x1, y1, 0);
+
+                //This is so inputs match up to the game co-ordinates.
+                gamecam.unproject(input);
+
+                blast = new BlastWave(input.x,input.y);
+                // your touch down code here
+                return true; // return true to indicate the event was handled
+            }
+
+            @Override
+            public boolean touchUp (int x, int y, int pointer, int button) {
+
+                System.out.println("TouchUp");
+
+                arena.getWizard().stopFiring();
+                // your touch down code here
+                return true; // return true to indicate the event was handled
+            }
+
+
+
+        });
+       // multiplexer.addProcessor(gestureDetector);
+
+        Gdx.input.setInputProcessor(multiplexer);
+
+
+
+        /**if(Gdx.input.isTouched()) {
             float x1 = Gdx.input.getX();
             float y1 = Gdx.input.getY();
             input = new Vector3(x1, y1, 0);
@@ -99,13 +146,18 @@ public class PlayScreen implements Screen {
                 }
             }
 
-        }
+        } **/
 
     }
 
     public void update(float dt){
         handleInput(dt);
         arena.update(dt, gamecam);
+
+
+        if(blast != null){
+            blast.update(dt);
+        }
        // deck.update(dt);
     }
 
@@ -132,6 +184,10 @@ public class PlayScreen implements Screen {
 
         for(int i = 1; i <= arena.getWizard().getHealth(); i++){
             game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i),arena.ARENA_HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        }
+
+        if(blast != null){
+            blast.draw(game.batch);
         }
 
 
@@ -172,7 +228,7 @@ public class PlayScreen implements Screen {
         @Override
         public boolean touchDown(float x, float y, int pointer, int button) {
 
-            return true;
+            return false;
         }
 
         @Override
@@ -186,24 +242,30 @@ public class PlayScreen implements Screen {
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
             arena.itemGet(input.x, input.y);
-            return true;
+            return false;
         }
 
         @Override
         public boolean longPress(float x, float y) {
-            return true;
+            return false;
         }
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
+            arena.getWizard().stopFiring();
             arena.dispell(velocityX, velocityY);
+            System.out.println("Fling");
+
+            System.out.println("Velocity X is :" + velocityX);
+            System.out.println("Velocity Y is :" + velocityY);
+
             return true;
         }
 
         @Override
         public boolean pan(float x, float y, float deltaX, float deltaY) {
 
-            return true;
+            return false;
         }
 
 

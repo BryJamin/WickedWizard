@@ -45,4 +45,10 @@ public class Reloader {
     public void setReady(boolean ready) {
         this.ready = ready;
     }
+
+
+    public void addWindUp(float windUp){
+        reload = windUp;
+    }
+
 }

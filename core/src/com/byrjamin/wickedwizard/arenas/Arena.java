@@ -98,17 +98,23 @@ public class Arena {
         }
     }
 
+    public void addProjectile(Projectile p){
+        activeBullets.addProjectile(p);
+    }
+
     public void dispell(float velocityX, float velocityY) {
-        if(Math.abs(velocityY)> 500){
+        if(Math.abs(velocityY)> 500) {
             enemyBullets.dispellProjectiles(Projectile.DISPELL.VERTICAL);
-        } else if(Math.abs(velocityX) > 500){
+        }
+
+        if(Math.abs(velocityX) > 500){
             enemyBullets.dispellProjectiles(Projectile.DISPELL.HORIZONTAL);
         }
     }
 
 
     public void update(float dt, OrthographicCamera gamecam){
-        wizard.update(dt, this);
+        wizard.update(dt,gamecam, this);
         arenaSpawner.update(dt, this);
         if(arenaSpawner.areAllEnemiesKilled()){
             arenaState = STATE.UNLOCKED;
