@@ -18,6 +18,7 @@ import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 
 import org.w3c.dom.css.Rect;
@@ -200,7 +201,7 @@ public class BiggaBlobba extends Enemy {
                         .spriteString("bullet")
                         .damage(1)
                         .HORIZONTAL_VELOCITY(15f)
-                        .dispell(Projectile.DISPELL.HORIZONTAL)
+                        .dispellable(new Dispellable(Dispellable.DISPELL.HORIZONTAL))
                         .build());
             }
 

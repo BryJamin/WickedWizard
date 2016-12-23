@@ -47,7 +47,7 @@ public class Wizard {
     private int armor;
     private float damage = 1;
     private float reloadRate = 0.3f;
-    private float windUp = 0.3f;
+    private float windUp = 0.15f;
 
     private Sprite sprite;
 
@@ -244,5 +244,18 @@ public class Wizard {
         currentState = STATE.STANDING;
         reloader.addWindUp(windUp);
         stateTime = 0;
+    }
+
+
+    public boolean isCharing(){
+        return currentState == STATE.CHARGING;
+    }
+
+    public STATE getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(STATE currentState) {
+        this.currentState = currentState;
     }
 }

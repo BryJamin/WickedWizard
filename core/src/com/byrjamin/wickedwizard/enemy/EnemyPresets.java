@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.enemy;
 
 import com.byrjamin.wickedwizard.enemy.enemies.Blob;
 import com.byrjamin.wickedwizard.enemy.enemies.Turret;
+import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 
 /**
@@ -37,7 +38,7 @@ public class EnemyPresets {
 
     public static Turret alternarteShotsTurret(float posX, float posY){
         return new Turret.TurretBuilder(posX, posY)
-                .dispellSequence(new Projectile.DISPELL[]{Projectile.DISPELL.VERTICAL, Projectile.DISPELL.HORIZONTAL, Projectile.DISPELL.VERTICAL})
+                .dispellSequence(new Dispellable.DISPELL[]{Dispellable.DISPELL.VERTICAL, Dispellable.DISPELL.HORIZONTAL})
                 .build();
     }
 

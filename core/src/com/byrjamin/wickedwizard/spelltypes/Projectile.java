@@ -24,10 +24,6 @@ public class Projectile {
         DEAD, EXPLODING, ALIVE
     }
 
-    public enum DISPELL {
-        VERTICAL, HORIZONTAL, NONE
-    }
-
     STATE state;
 
     double projectAngle;
@@ -35,13 +31,10 @@ public class Projectile {
     private Animation explosion_animation;
 
     private boolean animationFinished = false;
-    private boolean dispellable;
 
     float time;
 
     TextureRegion explosionTextureRegion;
-
-    private ShapeRenderer shapeRenderer;
 
 
     private Vector2 position;
@@ -62,7 +55,7 @@ public class Projectile {
     private float damage;
     private boolean gravity;
     private Animation explosionAnimation;
-    private DISPELL dispell;
+    private Dispellable dispellable;
     private Sprite sprite;
     private String spriteString;
     private Rectangle areaOfEffect;
@@ -79,7 +72,7 @@ public class Projectile {
         private float damage = 0;
         private boolean gravity = false;
         private Animation explosionAnimation;
-        private DISPELL dispell = DISPELL.NONE;
+        private Dispellable dispellable = new Dispellable(Dispellable.DISPELL.NONE);
         private Sprite sprite;
         private String spriteString = "fire";
         private Rectangle areaOfEffect;
@@ -105,8 +98,8 @@ public class Projectile {
         public ProjectileBuilder explosionAnimation(Animation val)
         { explosionAnimation = val; return this; }
 
-        public ProjectileBuilder dispell(DISPELL val)
-        { dispell = val; return this; }
+        public ProjectileBuilder dispellable(Dispellable val)
+        { dispellable = val; return this; }
 
         public ProjectileBuilder sprite(Sprite val)
         { sprite = val; return this; }
@@ -132,7 +125,7 @@ public class Projectile {
         damage = builder.damage;
         gravity = builder.gravity;
         explosionAnimation = builder.explosionAnimation;
-        dispell = builder.dispell;
+        dispellable = builder.dispellable;
         sprite = builder.sprite;
         spriteString = builder.spriteString;
         HORIZONTAL_VELOCITY = builder.HORIZONTAL_VELOCITY;
@@ -150,8 +143,6 @@ public class Projectile {
         areaOfEffect = builder.areaOfEffect;
         time = 0;
         state = STATE.ALIVE;
-
-        shapeRenderer = new ShapeRenderer();
 
         Array<TextureRegion> animation;
 
@@ -282,11 +273,21 @@ public class Projectile {
 
     }
 
-    public void dispell(DISPELL dispell){
-        if(dispell == getDispell()) {
+    public void dispellProjectile(Dispellable.DISPELL dispell){
+
+        if(state == STATE.ALIVE) {
+            dispellable.dispel(dispell);
+            if (dispellable.isDispelled()) {
+                time = 0;
+                this.setState(STATE.EXPLODING);
+            }
+        }
+
+    }
+
+    public void dispellProjectile(){
             time = 0;
             this.setState(STATE.EXPLODING);
-        }
     }
 
     public void damageCheck(Array<Enemy> e){
@@ -430,7 +431,7 @@ public class Projectile {
      */
     public void alive_draw(SpriteBatch batch){
         Color temp = this.getSprite().getColor();
-        switch(dispell){
+        switch(dispellable.getDispel()){
             case VERTICAL: this.getSprite().setColor(Color.toFloatBits(255, 43, 43,255));
                 break;
             case HORIZONTAL: this.getSprite().setColor(Color.toFloatBits(0, 255, 199,255));
@@ -479,14 +480,6 @@ public class Projectile {
 
     public void setAreaOfEffect(Rectangle areaOfEffect) {
         this.areaOfEffect = areaOfEffect;
-    }
-
-    public DISPELL getDispell() {
-        return dispell;
-    }
-
-    public void setDispell(DISPELL dispell) {
-        this.dispell = dispell;
     }
 
 

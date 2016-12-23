@@ -1,13 +1,15 @@
 package com.byrjamin.wickedwizard.spelltypes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
  * Created by Home on 21/12/2016.
@@ -18,12 +20,18 @@ public class BlastWave {
     private boolean dispellType;
     //private
 
-    private float SIZE = Measure.units(3);
+    private float SIZE = Measure.units(10);
+    private float CIRCLE_SIZE = Measure.units(3);
 
-    private float GROWTH_RATE = Measure.units(1.5f);
+    private float GROWTH_RATE = Measure.units(8f);
+    //private float GROWTH_RATE = Measure.units(0.5f);
 
     private float centerPointX;
     private float centerPointY;
+
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+    private Dispellable.DISPELL dispelDirection;
 
     //
     private Rectangle right;
@@ -31,11 +39,16 @@ public class BlastWave {
     private Rectangle top;
     private Rectangle bottom;
 
-    private float MOVEMENT = Measure.units(45f);
+    private Color drawingColor;
 
-    public BlastWave(float centerPointX, float centerPointY){
+    private float MOVEMENT = Measure.units(240f);
+    //private float MOVEMENT = Measure.units(15f);
+
+    public BlastWave(float centerPointX, float centerPointY, Dispellable.DISPELL dispelDirection){
         this.centerPointX = centerPointX;
         this.centerPointY = centerPointY;
+
+        this.dispelDirection = dispelDirection;
 
         right = new Rectangle(0,0, SIZE, SIZE);
         right.setCenter(centerPointX, centerPointY);
@@ -45,6 +58,14 @@ public class BlastWave {
         top.setCenter(centerPointX, centerPointY);
         bottom  = new Rectangle(0,0, SIZE, SIZE);
         bottom.setCenter(centerPointX, centerPointY);
+
+        if(dispelDirection == Dispellable.DISPELL.HORIZONTAL){
+            drawingColor = Color.BLUE;
+        } else if(dispelDirection == Dispellable.DISPELL.VERTICAL){
+            drawingColor = Color.RED;
+        }
+
+
     }
 
 
@@ -73,33 +94,58 @@ public class BlastWave {
         temp.add(0, MOVEMENT * dt * -1);
         bottom.setPosition(centerPointX - bottom.getWidth() / 2, temp.y);
 
-        //left.setCenter(left.getPosition(temp), centerPointY);
-        //left.
+
+        CIRCLE_SIZE += GROWTH_RATE * 1.2;
 
         System.out.println(left.x);
 
-/*        top.width += MOVEMENT;
-        top.setCenter(centerPointX, top.y += MOVEMENT * dt);
-
-        bottom.width += MOVEMENT;
-        bottom.setCenter(centerPointX, bottom.y -= MOVEMENT * dt);*/
     }
 
     public void draw(SpriteBatch batch){
-
         Array<Rectangle> bounds = new Array<Rectangle>();
-       bounds.add(right);
-       bounds.add(left);
-      bounds.add(top);
-      bounds.add(bottom);
-
-        System.out.println("got drew");
-
+        bounds.add(right);
+        bounds.add(left);
+        bounds.add(top);
+        bounds.add(bottom);
         BoundsDrawer.drawBounds(batch, bounds);
+
+        batch.setColor(drawingColor);
+        batch.draw(PlayScreen.atlas.findRegion("circle"), centerPointX - CIRCLE_SIZE / 2, centerPointY - CIRCLE_SIZE / 2, CIRCLE_SIZE, CIRCLE_SIZE);
+        batch.setColor(Color.WHITE);
+        /*
+        batch.end();
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.circle(centerPointX, centerPointY, CIRCLE_SIZE / 2);
+        shapeRenderer.end();
+
+        batch.begin();
+*/
+
     }
 
 
 
+    public boolean collides(Rectangle r){
+        return right.overlaps(r) || left.overlaps(r) || top.overlaps(r) || bottom.overlaps(r);
+    }
 
+    /**
+     * Checks to see if the wave is outofBounds using the circle's radius
+     * @param a - the current Arena
+     * @return - true if outofBounds.
+     */
+    public boolean outOfBounds(Arena a){
+        return CIRCLE_SIZE / 2 > a.ARENA_WIDTH && CIRCLE_SIZE / 2 > a.ARENA_HEIGHT;
+    }
 
+    public Dispellable.DISPELL getDispelDirection() {
+        return dispelDirection;
+    }
+
+    public void setDispelDirection(Dispellable.DISPELL dispelDirection) {
+        this.dispelDirection = dispelDirection;
+    }
 }

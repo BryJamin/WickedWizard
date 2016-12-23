@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
+import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Reloader;
@@ -33,7 +34,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     private Projectile projectile;
 
-    private Array<Projectile.DISPELL> dispellSequence;
+    private Array<Dispellable.DISPELL> dispellSequence;
 
     private final float shotspeed;
 
@@ -51,7 +52,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
         private float initialFiringDelay = 3.0f;
         private float reloadSpeed = 1f;
 
-        private Array<Projectile.DISPELL> dispellSequence = new Array<Projectile.DISPELL>();
+        private Array<Dispellable.DISPELL> dispellSequence = new Array<Dispellable.DISPELL>();
 
 
         public TurretBuilder(float posX, float posY) {
@@ -77,10 +78,10 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
         public TurretBuilder reloadSpeed(float val)
         { reloadSpeed = val; return this; }
 
-        public TurretBuilder dispellSequence(Projectile.DISPELL val)
+        public TurretBuilder dispellSequence(Dispellable.DISPELL val)
         { dispellSequence.add(val); return this; }
 
-        public TurretBuilder dispellSequence(Projectile.DISPELL[] val)
+        public TurretBuilder dispellSequence(Dispellable.DISPELL[] val)
         { dispellSequence.addAll(val); return this; }
 
 
@@ -102,8 +103,8 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
         DEFAULT_SHOT_SPEED = DEFAULT_SHOT_SPEED * builder.shotSpeed;
         reloader = new Reloader(builder.reloadSpeed, builder.initialFiringDelay);
         if(builder.dispellSequence.size == 0) {
-            dispellSequence = new Array<Projectile.DISPELL>();
-            dispellSequence.add(Projectile.DISPELL.HORIZONTAL);
+            dispellSequence = new Array<Dispellable.DISPELL>();
+            dispellSequence.add(Dispellable.DISPELL.HORIZONTAL);
         } else {
             dispellSequence = builder.dispellSequence;
         }
@@ -160,7 +161,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
                     .spriteString("bullet")
                     .damage(1)
                     .HORIZONTAL_VELOCITY(15f)
-                    .dispell(dispellSequence.get(0))
+                    .dispellable(new Dispellable(dispellSequence.get(0)))
                     .build());
 
             dispellSequence.add(dispellSequence.get(0));

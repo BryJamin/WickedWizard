@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlobba;
 import com.byrjamin.wickedwizard.item.Item;
+import com.byrjamin.wickedwizard.spelltypes.BlastWave;
+import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -43,11 +45,11 @@ public class Arena {
     private long seed = 2;
 
     private Array<Rectangle> platforms;
+    private Array<BlastWave> blastWaves;
 
     private ArenaWaves arenaWaves;
 
     int count = 0;
-
 
     public enum STATE {
         LOCKED, UNLOCKED
@@ -77,6 +79,8 @@ public class Arena {
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
+        blastWaves = new Array<BlastWave>();
+
         arenaWaves = new ArenaWaves(this);
         //arenaWaves.nextWave(0, arenaSpawner.getSpawnedEnemies());
 
@@ -92,23 +96,17 @@ public class Arena {
         //stage3();
     }
 
-    public void addProjectile(float x, float y) {
-        if(getWizard().getReloader().isReady()){
-            activeBullets.addProjectile(getWizard().generateProjectile(x, y));
-        }
-    }
-
     public void addProjectile(Projectile p){
         activeBullets.addProjectile(p);
     }
 
     public void dispell(float velocityX, float velocityY) {
         if(Math.abs(velocityY)> 500) {
-            enemyBullets.dispellProjectiles(Projectile.DISPELL.VERTICAL);
+            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.VERTICAL));
         }
 
         if(Math.abs(velocityX) > 500){
-            enemyBullets.dispellProjectiles(Projectile.DISPELL.HORIZONTAL);
+            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.HORIZONTAL));
         }
     }
 
@@ -124,6 +122,24 @@ public class Arena {
         activeBullets.update(dt, gamecam, this.getEnemies());
         enemyBullets.update(dt, gamecam, this.getWizard());
 
+        for(BlastWave b : blastWaves){
+            b.update(dt);
+
+
+            for(int i = 0; i < EnemyBullets.activeBullets.size; i++){
+                if(b.collides(EnemyBullets.activeBullets.get(i).getSprite().getBoundingRectangle())){
+                    EnemyBullets.activeBullets.get(i).dispellProjectile(b.getDispelDirection());
+                }
+            }
+
+            if(b.outOfBounds(this)){
+                blastWaves.removeValue(b, true);
+            }
+
+            //if(b.collides(EnemyBullets.activeBullets.))
+
+        }
+
         if(day.size != 0) {
             triggerNextStage();
         }
@@ -132,6 +148,16 @@ public class Arena {
 
 
     public void draw(SpriteBatch batch){
+
+        for(BlastWave b : blastWaves){
+            b.draw(batch);
+        }
+
+        for(Vector2 v : groundTileTextureCoords){
+            batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
+        }
+
+
        // wizard.draw(batch);
         arenaSpawner.draw(batch);
         activeBullets.draw(batch);
@@ -140,10 +166,6 @@ public class Arena {
 
         //batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
         //batch.draw(PlayScreen.atlas.findRegion("brick"), 200, 0, 200, 200);
-
-        for(Vector2 v : groundTileTextureCoords){
-            batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
-        }
 
         if(itemSprite != null){
             itemSprite.draw(batch);
@@ -221,6 +243,10 @@ public class Arena {
             }
         }
         return null;
+    }
+
+    public void addBlastWave(BlastWave blastWave) {
+        blastWaves.add(blastWave);
     }
 
     public Array<Enemy> getEnemies() {

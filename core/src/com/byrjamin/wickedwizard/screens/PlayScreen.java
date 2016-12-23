@@ -17,6 +17,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.arenas.ActiveBullets;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
+import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 
 
@@ -106,8 +107,6 @@ public class PlayScreen implements Screen {
 
                 //This is so inputs match up to the game co-ordinates.
                 gamecam.unproject(input);
-
-                blast = new BlastWave(input.x,input.y);
                 // your touch down code here
                 return true; // return true to indicate the event was handled
             }
@@ -115,7 +114,11 @@ public class PlayScreen implements Screen {
             @Override
             public boolean touchUp (int x, int y, int pointer, int button) {
 
-                System.out.println("TouchUp");
+
+/*                if(arena.getWizard().isCharing()){
+                    blast = new BlastWave(arena.getWizard().getCenterX(),arena.getWizard().getCenterY());
+                }*/
+
 
                 arena.getWizard().stopFiring();
                 // your touch down code here
@@ -128,25 +131,6 @@ public class PlayScreen implements Screen {
        // multiplexer.addProcessor(gestureDetector);
 
         Gdx.input.setInputProcessor(multiplexer);
-
-
-
-        /**if(Gdx.input.isTouched()) {
-            float x1 = Gdx.input.getX();
-            float y1 = Gdx.input.getY();
-            input = new Vector3(x1, y1, 0);
-
-            //This is so inputs match up to the game co-ordinates.
-            gamecam.unproject(input);
-
-            arena.addProjectile(input.x, input.y);
-
-            if(input.y > PlayScreen.GROUND_Y) {
-                if(arena.getWizard().getReloader().isReady()){
-                }
-            }
-
-        } **/
 
     }
 
@@ -179,6 +163,10 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
+        if(blast != null){
+            blast.draw(game.batch);
+        }
+
         arena.draw(game.batch);
         //deck.draw(game.batch);
 
@@ -186,9 +174,6 @@ public class PlayScreen implements Screen {
             game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i),arena.ARENA_HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
-        if(blast != null){
-            blast.draw(game.batch);
-        }
 
 
         game.batch.end();
@@ -252,14 +237,21 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
+
+            if(arena.getWizard().isCharing()){
+                arena.dispell(velocityX, velocityY);
+            }
+
             arena.getWizard().stopFiring();
-            arena.dispell(velocityX, velocityY);
+
             System.out.println("Fling");
+
+
 
             System.out.println("Velocity X is :" + velocityX);
             System.out.println("Velocity Y is :" + velocityY);
 
-            return true;
+            return false;
         }
 
         @Override
