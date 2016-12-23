@@ -104,7 +104,6 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
         //Will probaably move to an indicies method
 
-        Sprite sprite = PlayScreen.atlas.createSprite("blob");
 
         walk = AnimationPacker.genAnimation(0.25f / 1f, "blob", Animation.PlayMode.LOOP);
         attack = AnimationPacker.genAnimation(0.25f / 1f, "blob_attack");
@@ -117,8 +116,6 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         MOVEMENT = b.MOVEMENT;
         scale = b.scale;
         speed = b.speed;
-        sprite.setSize(b.WIDTH * scale, b.HEIGHT * scale);
-        sprite.flip(true, true);
         velocity = new Vector2(0, 0);
 
         currentFrame = PlayScreen.atlas.findRegion("blob");
@@ -130,7 +127,6 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         bounds = new Rectangle(b.posX + (Measure.units(1) * scale), b.posY,
                 WIDTH - (Measure.units(2.5f) * scale),
                 HEIGHT - (Measure.units(2.5f) * scale));
-        //this.setSprite(sprite);
         this.setHealth(b.health);
         this.setBlob_state(movement.WALKING);
 
@@ -170,22 +166,14 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
         //TODO this is terrible please fix once you introduced moving wizard
 
-        int direction = 1;
-
-        if(arena.getWizard().getX() > position.x){
-            direction = -1;
-        } else {
-            direction = 1;
-        }
-
 
         time += dt;
-        //Applying Gravity;
 
         //Changing state of blob to walking or attacking
         if(this.getBlob_state() == movement.WALKING ){
 
             System.out.println(position.x);
+            int direction = arena.getWizard().getX() > position.x ? -1 : 1;
             position.x = position.x - MOVEMENT * dt * direction * speed;
             bounds.x = bounds.x  - MOVEMENT * dt * direction * speed;
 
@@ -209,9 +197,8 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
                 time = 0;
             }
         }
-        //this.getSprite().setPosition(this.getSprite().getPosition().x + (5f * dt), this.getPosition().y);
-        this.getSprite().setRegion(currentAnimation.getKeyFrame(time));
 
+        //Applying Gravity;
         applyGravity(dt, arena);
 
 
@@ -221,7 +208,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         time+=dt;
 
         currentAnimation = this.getDyingAnimation();
-        
+
         if(this.getDyingAnimation().isAnimationFinished(time)){
             this.setState(STATE.DEAD);
         }

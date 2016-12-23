@@ -40,13 +40,11 @@ public abstract class Enemy {
 
 
     public Enemy(){
-        sprite = new Sprite();
         state = STATE.ALIVE;
         isFlashing = false;
     }
 
     public void draw(SpriteBatch batch){
-
         //If the enemy is flashing set the enemy to a darker color.
 
         if(isFlashing) {
