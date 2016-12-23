@@ -236,6 +236,8 @@ public class Wizard {
 
     public void startFiring() {
         currentState = STATE.CHARGING;
+        currentAnimation = firing;
+        animationTime = 0;
         stateTime = 0;
     }
 

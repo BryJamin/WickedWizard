@@ -44,7 +44,9 @@ public class PlayScreen implements Screen {
 
     private ActiveBullets activeBullets;
 
-    Vector3 input;
+    Vector3 input = new Vector3();
+    Vector3 touchDownInput = new Vector3();
+    Vector3 touchUpInput = new Vector3();
 
     Arena arena;
 
@@ -101,12 +103,11 @@ public class PlayScreen implements Screen {
                 arena.getWizard().startFiring();
 
 
-                int x1 = Gdx.input.getX();
-                int y1 = Gdx.input.getY();
-                Vector3 input = new Vector3(x1, y1, 0);
-
+                float x1 = Gdx.input.getX();
+                float y1 = Gdx.input.getY();
+                touchDownInput = new Vector3(x1, y1, 0);
                 //This is so inputs match up to the game co-ordinates.
-                gamecam.unproject(input);
+                gamecam.unproject(touchDownInput);
                 // your touch down code here
                 return true; // return true to indicate the event was handled
             }
@@ -118,7 +119,17 @@ public class PlayScreen implements Screen {
 /*                if(arena.getWizard().isCharing()){
                     blast = new BlastWave(arena.getWizard().getCenterX(),arena.getWizard().getCenterY());
                 }*/
+                float x1 = Gdx.input.getX();
+                float y1 = Gdx.input.getY();
+                touchUpInput = new Vector3(x1, y1, 0);
 
+                gamecam.unproject(touchUpInput);
+
+                if(arena.getWizard().isCharing()){
+                    arena.dispell(touchDownInput, touchUpInput);
+                }
+
+                arena.getWizard().stopFiring();
 
                 arena.getWizard().stopFiring();
                 // your touch down code here
@@ -237,12 +248,6 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
-
-            if(arena.getWizard().isCharing()){
-                arena.dispell(velocityX, velocityY);
-            }
-
-            arena.getWizard().stopFiring();
 
             System.out.println("Fling");
 

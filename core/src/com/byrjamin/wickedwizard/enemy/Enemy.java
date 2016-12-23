@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.arenas.Arena;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 
@@ -32,6 +34,10 @@ public abstract class Enemy {
 
     private Animation dyingAnimation;
 
+    private Array<Rectangle> bounds = new Array<Rectangle>();
+
+    private Vector2 position;
+
 
     public Enemy(){
         sprite = new Sprite();
@@ -53,8 +59,7 @@ public abstract class Enemy {
             this.getSprite().draw(batch);
         }
 
-
-        BoundsDrawer.drawBounds(batch, this.getSprite().getBoundingRectangle());
+        BoundsDrawer.drawBounds(batch, bounds);
 
     }
 
@@ -108,6 +113,14 @@ public abstract class Enemy {
     public abstract void update(float dt);
 
     public abstract void update(float dt, Arena a);
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
 
     public void setHealth(float health) {
         this.health = health;

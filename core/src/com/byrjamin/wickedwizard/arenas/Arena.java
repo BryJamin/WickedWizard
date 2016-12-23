@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlobba;
+import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
@@ -108,6 +110,23 @@ public class Arena {
         if(Math.abs(velocityX) > 500){
             blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.HORIZONTAL));
         }
+    }
+
+    public void dispell(Vector3 touchDownInput, Vector3 touchUpInput) {
+
+        float x1 = touchDownInput.x;
+        float y1 = touchDownInput.y;
+
+        float x2 = touchUpInput.x;
+        float y2 = touchUpInput.y;
+
+        if(Math.abs(x1 - x2) > Measure.units(10) && Math.abs(y1 - y2) < Math.abs(x1 - x2)){
+            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.HORIZONTAL));
+        } else if((Math.abs(y1 - y2) > Measure.units(10) && Math.abs(x1 - x2) < Math.abs(y1 - y2))) {
+            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.VERTICAL));
+        }
+
+
     }
 
 
@@ -243,6 +262,10 @@ public class Arena {
             }
         }
         return null;
+    }
+
+    public Array<Rectangle> getPlatforms() {
+        return platforms;
     }
 
     public void addBlastWave(BlastWave blastWave) {

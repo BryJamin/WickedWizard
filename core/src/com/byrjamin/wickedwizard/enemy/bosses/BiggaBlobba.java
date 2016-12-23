@@ -149,9 +149,7 @@ public class BiggaBlobba extends Enemy {
         } else {
             batch.draw(currentFrame, position.x, position.y, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
-
         BoundsDrawer.drawBounds(batch, bounds);
-
     }
 
 
@@ -267,7 +265,6 @@ public class BiggaBlobba extends Enemy {
 
 
     public boolean isHit(Rectangle r){
-
         for(Rectangle bound: bounds){
             if((state == STATE.ALIVE) && bound.overlaps(r)){
                 return true;
