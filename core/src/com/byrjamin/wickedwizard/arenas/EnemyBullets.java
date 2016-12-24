@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.player.Wizard;
  */
 public class EnemyBullets {
 
-    public static Array<Projectile> activeBullets;
+    public static Array<Projectile> activeBullets = new Array<Projectile>();
 
     public EnemyBullets(){
         activeBullets = new Array<Projectile>();

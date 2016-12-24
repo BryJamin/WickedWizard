@@ -10,9 +10,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.ActiveBullets;
+import com.byrjamin.wickedwizard.arenas.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
+import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.spelltypes.BlastWave;
+import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.item.Item;
@@ -23,16 +27,18 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Wizard {
 
-    private int HEIGHT = MainGame.GAME_UNITS * 7;
-    private int WIDTH = MainGame.GAME_UNITS * 7;
+    private float HEIGHT = MainGame.GAME_UNITS * 7;
+    private float WIDTH = MainGame.GAME_UNITS * 7;
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private Vector3 position;
 
+    private ActiveBullets activeBullets;
+    private Array<BlastWave> blastWaves;
+
     private Reloader reloader;
 
     private boolean isFalling = true;
-    private boolean isFiring = false;
 
     private enum STATE {
         CHARGING, FIRING, STANDING,AOECIRCLETHING
@@ -56,10 +62,7 @@ public class Wizard {
 
     private Animation standing;
     private Animation firing;
-
     private Animation windUpAnimation;
-
-
     private Animation currentAnimation;
 
 
@@ -68,10 +71,13 @@ public class Wizard {
 
     public Wizard() {
         sprite = PlayScreen.atlas.createSprite("squ_walk");
-        sprite.setSize((float) HEIGHT, (float) WIDTH);
+        sprite.setSize(HEIGHT, WIDTH);
         sprite.setPosition(200, 400);
 
         items = new Array<Item>();
+
+        activeBullets = new ActiveBullets();
+        blastWaves = new Array<BlastWave>();
 
         reloader = new Reloader(reloadRate, windUp);
 
@@ -89,9 +95,9 @@ public class Wizard {
     }
 
 
-    public void update(float dt, OrthographicCamera gamecam, Arena arena){
+    public void update(float dt, OrthographicCamera gamecam, Room room){
         animationTime += dt;
-        applyGravity(dt, arena);
+        applyGravity(dt, room);
 
         if(currentAnimation != standing && currentAnimation.isAnimationFinished(animationTime)){
             currentAnimation = standing;
@@ -115,7 +121,16 @@ public class Wizard {
                 Vector3 input = new Vector3(x1, y1, 0);
                 //This is so inputs match up to the game co-ordinates.
                 gamecam.unproject(input);
-                arena.addProjectile(generateProjectile(input.x, input.y));
+                fireProjectile(input.x, input.y);
+            }
+        }
+
+        activeBullets.update(dt, gamecam, room.getEnemies());
+
+        for(BlastWave b : blastWaves){
+            b.update(dt);
+            if(b.outOfBounds(room)){
+                blastWaves.removeValue(b, true);
             }
         }
 
@@ -133,6 +148,11 @@ public class Wizard {
             batch.draw(windUpAnimation.getKeyFrame(stateTime), getCenterX() - 250, getCenterY() - 270, 500, 500);
         }
 
+        activeBullets.draw(batch);
+
+        for(BlastWave b : blastWaves){
+            b.draw(batch);
+        }
 
         BoundsDrawer.drawBounds(batch, getSprite().getBoundingRectangle());
     }
@@ -180,18 +200,22 @@ public class Wizard {
         items.add(i);
     }
 
-    public void applyGravity(float dt, Arena arena){
+    public void applyGravity(float dt, Room room){
             this.getSprite().translateY(GRAVITY);
-            Rectangle r = arena.getOverlappingRectangle(this.getSprite().getBoundingRectangle());
+            Rectangle r = room.getOverlappingRectangle(this.getSprite().getBoundingRectangle());
             if(r != null) {
                 this.getSprite().setY(r.getY() + r.getHeight());
             }
     }
 
-    public Projectile generateProjectile(float input_x, float input_y){
+    public void fireProjectile(float input_x, float input_y){
         startfireAnimation();
+
+        //This only really matters if I make it so the bullets are drawn in front so they don't appear from
+        //the middle of the character. If to decide to just draw from the back I can remove this piece of code
+        //angle bits.
         float angle = calculateAngle(getCenterX(), getCenterY(), input_x,input_y);
-        return (new Projectile.ProjectileBuilder(getCenter().x + ((this.getSprite().getWidth() / 2) * (float) Math.cos(angle))
+        activeBullets.addProjectile(new Projectile.ProjectileBuilder(getCenter().x + ((this.getSprite().getWidth() / 2) * (float) Math.cos(angle))
                 , getCenter().y + ((this.getSprite().getHeight() / 2) * (float) Math.sin(angle)), input_x,input_y)
                 .spriteString("bullet")
                 .damage(1)
@@ -206,6 +230,23 @@ public class Wizard {
 
     public float calculateAngle(float x1,float y1, float x2, float y2){
         return (float) (Math.atan2(y2 - y1, x2 - x1));
+    }
+
+    public void dispell(Vector3 touchDownInput, Vector3 touchUpInput) {
+
+        float x1 = touchDownInput.x;
+        float y1 = touchDownInput.y;
+
+        float x2 = touchUpInput.x;
+        float y2 = touchUpInput.y;
+
+        if(Math.abs(x1 - x2) > Measure.units(10) && Math.abs(y1 - y2) < Math.abs(x1 - x2)){
+            blastWaves.add(new BlastWave(getCenterX(), getCenterY(), Dispellable.DISPELL.HORIZONTAL));
+        } else if((Math.abs(y1 - y2) > Measure.units(10) && Math.abs(x1 - x2) < Math.abs(y1 - y2))) {
+            blastWaves.add(new BlastWave(getCenterX(), getCenterY(), Dispellable.DISPELL.VERTICAL));
+        }
+
+
     }
 
 
@@ -259,5 +300,9 @@ public class Wizard {
 
     public void setCurrentState(STATE currentState) {
         this.currentState = currentState;
+    }
+
+    public Array<BlastWave> getBlastWaves() {
+        return blastWaves;
     }
 }

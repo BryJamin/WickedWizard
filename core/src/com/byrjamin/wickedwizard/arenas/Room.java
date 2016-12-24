@@ -24,9 +24,8 @@ import com.byrjamin.wickedwizard.enemy.Enemy;
  * The idea behind this class is that Arenas/Rooms will decide their layouts, when they enemies spawn
  * and where the wizard is placed inside them
  */
-public class Arena {
+public class Room {
 
-    private ActiveBullets activeBullets;
     public static EnemyBullets enemyBullets;
     private ArenaSpawner arenaSpawner;
     private ItemGenerator ig;
@@ -47,7 +46,6 @@ public class Arena {
     private long seed = 2;
 
     private Array<Rectangle> platforms;
-    private Array<BlastWave> blastWaves;
 
     private ArenaWaves arenaWaves;
 
@@ -68,109 +66,65 @@ public class Arena {
 
 
 
-    public Arena(){
-        activeBullets = new ActiveBullets();
+    public Room(){
         enemyBullets = new EnemyBullets();
         arenaSpawner = new ArenaSpawner();
         ig = new ItemGenerator();
         wizard = new Wizard();
-
         ground = new Rectangle(0,0,ARENA_WIDTH, MainGame.GAME_UNITS * 10);
-
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
-        blastWaves = new Array<BlastWave>();
-
         arenaWaves = new ArenaWaves(this);
         //arenaWaves.nextWave(0, arenaSpawner.getSpawnedEnemies());
 
-        day = new Array<EVENT>();
-
-        for(int i = 0; i < 10; i++){
+/*        day = new Array<EVENT>();
+        for(int i = 0; i < 2; i++){
             day.add(EVENT.WAVE);
         }
 
-        //day.insert(0, EVENT.BOSS);
-        day.insert(5, EVENT.ITEM);
-        day.add(EVENT.BOSS);
+        day.insert(0, EVENT.BOSS);*/
+        //day.insert(5, EVENT.ITEM);
+        //day.add(EVENT.BOSS);
         //stage3();
-    }
-
-    public void addProjectile(Projectile p){
-        activeBullets.addProjectile(p);
-    }
-
-    public void dispell(float velocityX, float velocityY) {
-        if(Math.abs(velocityY)> 500) {
-            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.VERTICAL));
-        }
-
-        if(Math.abs(velocityX) > 500){
-            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.HORIZONTAL));
-        }
-    }
-
-    public void dispell(Vector3 touchDownInput, Vector3 touchUpInput) {
-
-        float x1 = touchDownInput.x;
-        float y1 = touchDownInput.y;
-
-        float x2 = touchUpInput.x;
-        float y2 = touchUpInput.y;
-
-        if(Math.abs(x1 - x2) > Measure.units(10) && Math.abs(y1 - y2) < Math.abs(x1 - x2)){
-            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.HORIZONTAL));
-        } else if((Math.abs(y1 - y2) > Measure.units(10) && Math.abs(x1 - x2) < Math.abs(y1 - y2))) {
-            blastWaves.add(new BlastWave(wizard.getCenterX(), wizard.getCenterY(), Dispellable.DISPELL.VERTICAL));
-        }
-
-
     }
 
 
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt,gamecam, this);
         arenaSpawner.update(dt, this);
-        if(arenaSpawner.areAllEnemiesKilled()){
+
+
+
+/*
+        if(day.size == 0){
             arenaState = STATE.UNLOCKED;
         } else {
             arenaState = STATE.LOCKED;
         }
-        activeBullets.update(dt, gamecam, this.getEnemies());
+*/
+
         enemyBullets.update(dt, gamecam, this.getWizard());
 
-        for(BlastWave b : blastWaves){
-            b.update(dt);
-
-
+        for(BlastWave b : wizard.getBlastWaves()){
             for(int i = 0; i < EnemyBullets.activeBullets.size; i++){
                 if(b.collides(EnemyBullets.activeBullets.get(i).getSprite().getBoundingRectangle())){
                     EnemyBullets.activeBullets.get(i).dispellProjectile(b.getDispelDirection());
                 }
             }
-
-            if(b.outOfBounds(this)){
-                blastWaves.removeValue(b, true);
-            }
-
-            //if(b.collides(EnemyBullets.activeBullets.))
-
         }
-
+/*
         if(day.size != 0) {
             triggerNextStage();
-        }
+        }*/
 
     }
 
 
     public void draw(SpriteBatch batch){
 
-        for(BlastWave b : blastWaves){
-            b.draw(batch);
-        }
+        wizard.draw(batch);
 
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
@@ -179,9 +133,7 @@ public class Arena {
 
        // wizard.draw(batch);
         arenaSpawner.draw(batch);
-        activeBullets.draw(batch);
         enemyBullets.draw(batch);
-        wizard.draw(batch);
 
         //batch.draw(PlayScreen.atlas.findRegion("brick"), 0, 0, 200, 200);
         //batch.draw(PlayScreen.atlas.findRegion("brick"), 200, 0, 200, 200);
@@ -212,12 +164,12 @@ public class Arena {
 
     }
 
-    public void triggerNextStage(){
-        if(arenaState == STATE.UNLOCKED && day.size != 0) {
+/*    public void triggerNextStage(){
+        if(arenaSpawner.areAllEnemiesKilled() && day.size != 0) {
 
 
             if(day.get(0) == EVENT.WAVE) {
-                arenaWaves.nextWave(3, arenaSpawner.getSpawnedEnemies());
+                arenaWaves.nextWave(arenaSpawner.getSpawnedEnemies());
                 day.removeIndex(0);
             } else if(day.get(0) == EVENT.ITEM && itemSprite == null) {
                // wizard.applyItem(ig.getItem(seed));
@@ -232,7 +184,7 @@ public class Arena {
             }
 
         }
-    }
+    }*/
 
     private void spawnItem(Item ig) {
         itemSprite = PlayScreen.atlas.createSprite(ig.getSpriteName());
@@ -268,14 +220,13 @@ public class Arena {
         return platforms;
     }
 
-    public void addBlastWave(BlastWave blastWave) {
-        blastWaves.add(blastWave);
-    }
-
     public Array<Enemy> getEnemies() {
         return arenaSpawner.getSpawnedEnemies();
     }
 
+    public ArenaSpawner getArenaSpawner() {
+        return arenaSpawner;
+    }
 
     public Wizard getWizard() {
         return wizard;
@@ -291,5 +242,10 @@ public class Arena {
 
     public float groundHeight(){
         return ground.getHeight();
+    }
+
+
+    public boolean isUnlocked(){
+        return arenaState == STATE.UNLOCKED;
     }
 }

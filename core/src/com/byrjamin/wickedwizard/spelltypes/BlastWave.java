@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -96,8 +96,8 @@ public class BlastWave {
 
 
         CIRCLE_SIZE += GROWTH_RATE * 1.2;
-
-        System.out.println(left.x);
+/*
+        System.out.println(left.x);*/
 
     }
 
@@ -137,7 +137,7 @@ public class BlastWave {
      * @param a - the current Arena
      * @return - true if outofBounds.
      */
-    public boolean outOfBounds(Arena a){
+    public boolean outOfBounds(Room a){
         return CIRCLE_SIZE / 2 > a.ARENA_WIDTH && CIRCLE_SIZE / 2 > a.ARENA_HEIGHT;
     }
 

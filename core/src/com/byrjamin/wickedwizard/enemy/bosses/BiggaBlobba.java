@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.Room;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.enemy.EnemyPresets;
@@ -20,8 +20,6 @@ import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
-
-import org.w3c.dom.css.Rect;
 
 /**
  * Created by Home on 16/12/2016.
@@ -153,7 +151,7 @@ public class BiggaBlobba extends Enemy {
     }
 
 
-    public void phase1Update(float dt, Arena a){
+    public void phase1Update(float dt, Room a){
 
         if(slimeCount <= 0){
             phase = PHASE.PHASE2;
@@ -171,7 +169,7 @@ public class BiggaBlobba extends Enemy {
 
     }
 
-    public void phase2Update(float dt, Arena a){
+    public void phase2Update(float dt, Room a){
 
 
         if(jumpCount <= 0){
@@ -223,11 +221,11 @@ public class BiggaBlobba extends Enemy {
         this.velocity.y = 50;
     }
 
-    public void applyGravity(float dt, Arena arena){
+    public void applyGravity(float dt, Room room){
 
         if(velocity.y <= 0){
             //System.out.println(isFalling);
-            Rectangle r = arena.getOverlappingRectangle(bounds.get(0));
+            Rectangle r = room.getOverlappingRectangle(bounds.get(0));
             if(r != null) {
                 //this.getSprite().setY(r.getY() + r.getHeight());
                 isFalling = false;
@@ -282,7 +280,7 @@ public class BiggaBlobba extends Enemy {
     }
 
     @Override
-    public void update(float dt, Arena a) {
+    public void update(float dt, Room a) {
 
         flashTimer(dt);
         time += dt;

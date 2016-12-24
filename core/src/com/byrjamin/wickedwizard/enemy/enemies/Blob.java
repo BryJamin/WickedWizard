@@ -2,15 +2,12 @@ package com.byrjamin.wickedwizard.enemy.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -134,12 +131,12 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
     }
 
     @Override
-    public void update(float dt, Arena arena) {
+    public void update(float dt, Room room) {
 
         flashTimer(dt);
 
         if(this.getState() == STATE.ALIVE){
-            aliveUpdate(dt, arena);
+            aliveUpdate(dt, room);
         } else if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
@@ -159,7 +156,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
     //TODO The way this blob attacks is slightly incorrect, just in the animation is finished no matter
     //TODO where the wizard is it takes damage.
     //TODO what should happen is that it attack an area infront of it, which I guess can count as a projectile
-    public void aliveUpdate(float dt,  Arena arena){
+    public void aliveUpdate(float dt,  Room room){
 
 
         //depending on the wizard is flip left or right.
@@ -172,19 +169,18 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         //Changing state of blob to walking or attacking
         if(this.getBlob_state() == movement.WALKING ){
 
-            System.out.println(position.x);
-            int direction = arena.getWizard().getX() > position.x ? -1 : 1;
+            int direction = room.getWizard().getX() > position.x ? -1 : 1;
             position.x = position.x - MOVEMENT * dt * direction * speed;
             bounds.x = bounds.x  - MOVEMENT * dt * direction * speed;
 
-            if(bounds.overlaps(arena.getWizard().getSprite().getBoundingRectangle())) {
+            if(bounds.overlaps(room.getWizard().getSprite().getBoundingRectangle())) {
                 currentAnimation = attack;
                 time = 0;
                 this.setBlob_state(movement.ATTACKING);
             }
         } else {
 
-            if(!bounds.overlaps(arena.getWizard().getSprite().getBoundingRectangle())) {
+            if(!bounds.overlaps(room.getWizard().getSprite().getBoundingRectangle())) {
                 if(currentAnimation != walk) {
                     currentAnimation = walk;
                     time = 0;
@@ -193,13 +189,13 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
             }
 
             if(currentAnimation.isAnimationFinished(time)){
-                arena.getWizard().reduceHealth(2);
+                room.getWizard().reduceHealth(2);
                 time = 0;
             }
         }
 
         //Applying Gravity;
-        applyGravity(dt, arena);
+        applyGravity(dt, room);
 
 
     }
@@ -227,11 +223,11 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         BoundsDrawer.drawBounds(batch, bounds);
     }
 
-    public void applyGravity(float dt, Arena arena){
+    public void applyGravity(float dt, Room room){
 
         Rectangle landedPlatform = null;
 
-        for (Rectangle platform : arena.getPlatforms()){
+        for (Rectangle platform : room.getPlatforms()){
             if(bounds.overlaps(platform)){
                 landedPlatform = platform;
                 break;

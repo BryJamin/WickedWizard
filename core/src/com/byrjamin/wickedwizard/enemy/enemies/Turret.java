@@ -3,7 +3,7 @@ package com.byrjamin.wickedwizard.enemy.enemies;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.Room;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
@@ -122,7 +122,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
     }
 
     @Override
-    public void update(float dt, Arena a) {
+    public void update(float dt, Room a) {
         flashTimer(dt);
         updateMovement(dt);
         if(this.getState() == STATE.DYING){
@@ -155,7 +155,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
      * @param dt
      * @param a
      */
-    public void fire(float dt, Arena a){
+    public void fire(float dt, Room a){
         if (reloader.isReady()) {
             EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX() + this.getSprite().getWidth() / 2, this.getSprite().getY() + this.getSprite().getHeight() / 2, a.getWizard().getSprite().getX(),a.getWizard().getSprite().getY())
                     .spriteString("bullet")

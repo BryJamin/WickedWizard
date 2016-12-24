@@ -2,13 +2,12 @@ package com.byrjamin.wickedwizard.enemy;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 
 /**
@@ -40,6 +39,7 @@ public abstract class Enemy {
 
 
     public Enemy(){
+        sprite = new Sprite();
         state = STATE.ALIVE;
         isFlashing = false;
     }
@@ -110,7 +110,7 @@ public abstract class Enemy {
 
     public abstract void update(float dt);
 
-    public abstract void update(float dt, Arena a);
+    public abstract void update(float dt, Room a);
 
     public Vector2 getPosition() {
         return position;

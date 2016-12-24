@@ -30,7 +30,7 @@ public class ArenaSpawner {
      * @param dt
      * @param a
      */
-    public void update(float dt, Arena a){
+    public void update(float dt, Room a){
         for(Enemy e : spawnedEnemies){
             if(e.getState() == Enemy.STATE.DEAD){
                 spawnedEnemies.removeValue(e, true);
@@ -44,25 +44,6 @@ public class ArenaSpawner {
         for(Enemy e : spawnedEnemies){
             e.draw(batch);
         }
-    }
-
-
-    public boolean hitScan(int damage, float posx, float posy){
-
-        boolean isHit = false;
-
-        for(int i = 0; i < spawnedEnemies.size; i++){
-            System.out.println("inside");
-            if(spawnedEnemies.get(i).getSprite().getBoundingRectangle().contains(posx, posy)){
-                System.out.println("OW said Blob " + i);
-                spawnedEnemies.get(i).reduceHealth(damage);
-                isHit = true;
-                System.out.println("My health is " + spawnedEnemies.get(i).getHealth() +" said Blob " + i);
-            }
-        }
-
-        return isHit;
-
     }
 
 

@@ -17,7 +17,7 @@ public class ArenaWaves {
 
     private Array<Array<Enemy>> incomingWaves;
 
-    private Arena arena;
+    private Room room;
 
     private Array<Enemy> enemyArray;
 
@@ -29,42 +29,42 @@ public class ArenaWaves {
 
 
 
-    public ArenaWaves(Arena a){
-        arena = a;
+    public ArenaWaves(Room a){
+        room = a;
 
-        generateWaves();
+        generateShuffler();
     }
 
 
     public void blob(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.defaultBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.defaultBlob(room.ARENA_WIDTH, room.groundHeight()));
     }
 
     public void blob2(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.smallBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.defaultTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.smallBlob(room.ARENA_WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.defaultTurret(room.ARENA_WIDTH, room.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void blob3(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.fastTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.largeBlob(room.ARENA_WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.fastTurret(room.ARENA_WIDTH, room.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
 
     public void blob4(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.alternarteShotsTurret(arena.ARENA_WIDTH, arena.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.largeBlob(room.ARENA_WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.alternarteShotsTurret(room.ARENA_WIDTH, room.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void turret(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.smallBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.defaultBlob(arena.ARENA_WIDTH, arena.groundHeight()));
-        e.add(EnemyPresets.largeBlob(arena.ARENA_WIDTH, arena.groundHeight()));
+        e.add(EnemyPresets.smallBlob(room.ARENA_WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.defaultBlob(room.ARENA_WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.largeBlob(room.ARENA_WIDTH, room.groundHeight()));
     }
 
     interface Waves {
@@ -84,7 +84,7 @@ public class ArenaWaves {
      * Current this creates an array with the number 1..n (n being the size of the spawnWave array
      * This then converts the array into a list and shuffles it using the global random seed.
      */
-    public void generateWaves(){
+    public void generateShuffler(){
         Integer[] a = new Integer[spawnWave.length];
         for (int i=0;i < spawnWave.length;++i){
             a[i]=i;
@@ -108,12 +108,10 @@ public class ArenaWaves {
      *
      * In future I will need to decide if waves will have more random elements
      *
-     * @param index
      * @param enemies
      */
-    public void nextWave(int index, Array<Enemy> enemies) {
+    public void nextWave(Array<Enemy> enemies) {
         spawnWave[shuffled.get(currentWave)].spawnWave(enemies);
-
         currentWave++;
         if(currentWave >= spawnWave.length){
             currentWave = 0;
@@ -122,10 +120,9 @@ public class ArenaWaves {
 
 
     public Array<Array<Enemy>> getIncomingWaves() {
-        return incomingWaves;
-    }
 
-    public void setIncomingWaves(Array<Array<Enemy>> incomingWaves) {
-        this.incomingWaves = incomingWaves;
+
+
+        return incomingWaves;
     }
 }

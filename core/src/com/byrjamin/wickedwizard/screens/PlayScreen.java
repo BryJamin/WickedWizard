@@ -14,10 +14,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Arena;
+import com.byrjamin.wickedwizard.arenas.Map;
+import com.byrjamin.wickedwizard.arenas.Room;
 import com.byrjamin.wickedwizard.arenas.ActiveBullets;
 import com.byrjamin.wickedwizard.arenas.EnemyBullets;
-import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 
 
@@ -48,7 +48,7 @@ public class PlayScreen implements Screen {
     Vector3 touchDownInput = new Vector3();
     Vector3 touchUpInput = new Vector3();
 
-    Arena arena;
+    Map map;
 
     EnemyBullets enemyBullets;
 
@@ -68,7 +68,7 @@ public class PlayScreen implements Screen {
         gestureDetector = new GestureDetector(new gestures());
 
         atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
-        arena = new Arena();
+        map = new Map();
         enemyBullets = new EnemyBullets();
 
 
@@ -77,7 +77,7 @@ public class PlayScreen implements Screen {
         //Starts in the middle of the screen, on the 1/4 thingie.
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gamePort = new FitViewport(arena.ARENA_WIDTH, arena.ARENA_HEIGHT + 250, gamecam);
+        gamePort = new FitViewport(map.getActiveRoom().ARENA_WIDTH, map.getActiveRoom().ARENA_HEIGHT + 250, gamecam);
 
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -100,7 +100,7 @@ public class PlayScreen implements Screen {
                 System.out.println("TouchDown");
 
 
-                arena.getWizard().startFiring();
+                map.getActiveRoom().getWizard().startFiring();
 
 
                 float x1 = Gdx.input.getX();
@@ -125,13 +125,11 @@ public class PlayScreen implements Screen {
 
                 gamecam.unproject(touchUpInput);
 
-                if(arena.getWizard().isCharing()){
-                    arena.dispell(touchDownInput, touchUpInput);
+                if(map.getActiveRoom().getWizard().isCharing()){
+                    map.getActiveRoom().getWizard().dispell(touchDownInput, touchUpInput);
                 }
 
-                arena.getWizard().stopFiring();
-
-                arena.getWizard().stopFiring();
+                map.getActiveRoom().getWizard().stopFiring();
                 // your touch down code here
                 return true; // return true to indicate the event was handled
             }
@@ -147,13 +145,7 @@ public class PlayScreen implements Screen {
 
     public void update(float dt){
         handleInput(dt);
-        arena.update(dt, gamecam);
-
-
-        if(blast != null){
-            blast.update(dt);
-        }
-       // deck.update(dt);
+        map.update(dt, gamecam);
     }
 
     @Override
@@ -178,11 +170,11 @@ public class PlayScreen implements Screen {
             blast.draw(game.batch);
         }
 
-        arena.draw(game.batch);
+        map.draw(game.batch);
         //deck.draw(game.batch);
 
-        for(int i = 1; i <= arena.getWizard().getHealth(); i++){
-            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i),arena.ARENA_HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
+            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().ARENA_HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
 
@@ -237,7 +229,7 @@ public class PlayScreen implements Screen {
 
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
-            arena.itemGet(input.x, input.y);
+            //map.getActiveRoom().itemGet(input.x, input.y);
             return false;
         }
 
@@ -248,13 +240,6 @@ public class PlayScreen implements Screen {
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
-
-            System.out.println("Fling");
-
-
-
-            System.out.println("Velocity X is :" + velocityX);
-            System.out.println("Velocity Y is :" + velocityY);
 
             return false;
         }
