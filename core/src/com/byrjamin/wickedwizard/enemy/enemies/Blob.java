@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Room;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -145,12 +145,6 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
 
     }
-
-    @Override
-    public void update(float dt) {
-
-    }
-
 
 
     //TODO The way this blob attacks is slightly incorrect, just in the animation is finished no matter

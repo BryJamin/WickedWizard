@@ -1,9 +1,10 @@
-package com.byrjamin.wickedwizard.arenas;
+package com.byrjamin.wickedwizard.maps;
 
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.enemy.EnemyPresets;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
 
 import java.util.Arrays;
 import java.util.Collections;

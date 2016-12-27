@@ -1,19 +1,19 @@
-package com.byrjamin.wickedwizard.arenas;
+package com.byrjamin.wickedwizard.maps;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
-import com.byrjamin.wickedwizard.player.Wizard;
+import com.byrjamin.wickedwizard.enemy.Enemy;
 
 /**
- * Created by Home on 20/11/2016.
+ * Created by Home on 10/11/2016.
  */
-public class EnemyBullets {
+public class ActiveBullets {
 
-    public static Array<Projectile> activeBullets = new Array<Projectile>();
+    private Array<Projectile> activeBullets;
 
-    public EnemyBullets(){
+    public ActiveBullets(){
         activeBullets = new Array<Projectile>();
     }
 
@@ -30,12 +30,12 @@ public class EnemyBullets {
      * Either way to destroys the projectile
      * @param dt - delta time
      * @param o - camera
-     * @param w - enemyspawner
+     * @param e - enemyspawner
      */
-    public void update(float dt, OrthographicCamera o, Wizard w){
+    public void update(float dt, OrthographicCamera o, Array<Enemy> e){
         //TODO If the sprite ever moves instead of the world moving This needs to be changed
         //TODO to use the camera position.
-        updateProjectile(dt, o, w);
+        updateProjectile(dt, o, e);
     }
 
 
@@ -44,12 +44,13 @@ public class EnemyBullets {
      * it is no longer tracked by this class.
      * @param dt - delta time
      * @param o - camera
-     * @param w - Wizard (could be changed to just the enemy array)
+     * @param e - Enemy Spawned (could be changed to just the enemy array)
      */
-    public void updateProjectile(float dt, OrthographicCamera o, Wizard w){
+    public void updateProjectile(float dt, OrthographicCamera o, Array<Enemy> e){
+
         for(Projectile p : activeBullets) {
             if(p.getState() != Projectile.STATE.DEAD) {
-                p.update(dt, w);
+                p.update(dt, e);
             } else {
                 activeBullets.removeValue(p, true);
             }
@@ -63,6 +64,5 @@ public class EnemyBullets {
             p.draw(batch);
         }
     }
-
 
 }

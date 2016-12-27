@@ -1,22 +1,22 @@
-package com.byrjamin.wickedwizard.arenas;
+package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlobba;
+import com.byrjamin.wickedwizard.maps.ArenaWaves;
 
 /**
  * Created by Home on 24/12/2016.
  */
-public class BattleRoom extends Room{
+public class BattleRoom extends Room {
 
     private ArenaWaves arenaWaves;
 
-    private int numberOfWaves = 1;
+    private int numberOfWaves = 0;
 
     public BattleRoom(){
         super();
         arenaWaves = new ArenaWaves(this);
-        arenaWaves.nextWave(this.getEnemies());
+        //arenaWaves.nextWave(this.getEnemies());
     }
 
 

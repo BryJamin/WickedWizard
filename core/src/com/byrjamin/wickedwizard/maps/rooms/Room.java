@@ -1,19 +1,17 @@
-package com.byrjamin.wickedwizard.arenas;
+package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlobba;
-import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
+import com.byrjamin.wickedwizard.maps.ArenaSpawner;
+import com.byrjamin.wickedwizard.maps.ArenaWaves;
+import com.byrjamin.wickedwizard.maps.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
-import com.byrjamin.wickedwizard.spelltypes.Dispellable;
-import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
@@ -77,6 +75,7 @@ public class Room {
         platforms.add(ground);
 
         arenaWaves = new ArenaWaves(this);
+
         //arenaWaves.nextWave(0, arenaSpawner.getSpawnedEnemies());
 
 /*        day = new Array<EVENT>();

@@ -3,8 +3,8 @@ package com.byrjamin.wickedwizard.enemy.enemies;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Room;
-import com.byrjamin.wickedwizard.arenas.EnemyBullets;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.maps.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -109,16 +109,6 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
             dispellSequence = builder.dispellSequence;
         }
         shotspeed = builder.shotSpeed;
-    }
-
-
-
-    @Override
-    public void update(float dt) {
-
-
-
-
     }
 
     @Override

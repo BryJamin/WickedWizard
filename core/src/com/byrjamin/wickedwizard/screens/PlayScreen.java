@@ -14,10 +14,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Map;
-import com.byrjamin.wickedwizard.arenas.Room;
-import com.byrjamin.wickedwizard.arenas.ActiveBullets;
-import com.byrjamin.wickedwizard.arenas.EnemyBullets;
+import com.byrjamin.wickedwizard.maps.Map;
+import com.byrjamin.wickedwizard.maps.ActiveBullets;
+import com.byrjamin.wickedwizard.maps.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 
 

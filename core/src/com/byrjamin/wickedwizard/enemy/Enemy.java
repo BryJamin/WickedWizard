@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.arenas.Room;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 
 /**
@@ -104,11 +104,6 @@ public abstract class Enemy {
     public boolean isHit(Rectangle r){
         return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
     }
-
-
-
-
-    public abstract void update(float dt);
 
     public abstract void update(float dt, Room a);
 

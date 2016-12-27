@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.arenas.Room;
-import com.byrjamin.wickedwizard.arenas.EnemyBullets;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.maps.EnemyBullets;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.enemy.EnemyPresets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -273,13 +273,6 @@ public class BiggaBlobba extends Enemy {
         return false;
     }
 
-
-
-    @Override
-    public void update(float dt) {
-
-        //currentFrame = currentAnimation.getKeyFrame(time);
-    }
 
     @Override
     public void update(float dt, Room room) {
