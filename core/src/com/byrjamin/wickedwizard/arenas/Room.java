@@ -70,7 +70,7 @@ public class Room {
         enemyBullets = new EnemyBullets();
         arenaSpawner = new ArenaSpawner();
         ig = new ItemGenerator();
-        wizard = new Wizard();
+        wizard = new Wizard(200, 400);
         ground = new Rectangle(0,0,ARENA_WIDTH, MainGame.GAME_UNITS * 10);
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
@@ -113,6 +113,10 @@ public class Room {
                     EnemyBullets.activeBullets.get(i).dispellProjectile(b.getDispelDirection());
                 }
             }
+        }
+
+        if(arenaState == STATE.UNLOCKED){
+            wizard.moveRight(dt);
         }
 /*
         if(day.size != 0) {
@@ -215,6 +219,15 @@ public class Room {
         }
         return null;
     }
+
+
+
+    public void exitRight(){
+
+    }
+
+
+
 
     public Array<Rectangle> getPlatforms() {
         return platforms;

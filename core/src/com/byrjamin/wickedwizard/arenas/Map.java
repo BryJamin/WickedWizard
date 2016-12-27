@@ -9,10 +9,13 @@ import com.badlogic.gdx.utils.Array;
  */
 public class Map {
 
+
+
     private Array<Room> rooms;
 
     private Room activeRoom;
 
+    private boolean isTransitioning;
 
     public Map(){
         rooms = new Array<Room>();
@@ -31,10 +34,10 @@ public class Map {
 
             activeRoom.update(dt, gamecam);
 
-            if (activeRoom.isUnlocked() && rooms.size > 1) {
+/*            if (activeRoom.isUnlocked() && rooms.size > 1) {
                 rooms.removeIndex(0);
                 activeRoom = rooms.get(0);
-            }
+            }*/
 
         }
 

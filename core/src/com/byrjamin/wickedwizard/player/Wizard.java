@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -27,14 +28,20 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Wizard {
 
-    private float HEIGHT = MainGame.GAME_UNITS * 7;
-    private float WIDTH = MainGame.GAME_UNITS * 7;
+    private float HEIGHT = Measure.units(7);
+    private float WIDTH = Measure.units(7);
+    private float MOVEMENT = Measure.units(20f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
-    private Vector3 position;
+    private Vector2 position;
+    private Vector2 velocity = new Vector2(0, 0);
+    private Vector2 gravity = new Vector2(0, -50f);
+    private float Acceleration = 20f;
 
-    private ActiveBullets activeBullets;
-    private Array<BlastWave> blastWaves;
+    private Rectangle bounds;
+
+    private ActiveBullets activeBullets = new ActiveBullets();
+    private Array<BlastWave> blastWaves = new Array<BlastWave>();
 
     private Reloader reloader;
 
@@ -44,9 +51,7 @@ public class Wizard {
         CHARGING, FIRING, STANDING,AOECIRCLETHING
     }
 
-    private STATE currentState;
-
-    private Vector3 velocity;
+    private STATE currentState = STATE.STANDING;
 
     //STATS
     private int health = 3;
@@ -54,8 +59,6 @@ public class Wizard {
     private float damage = 1;
     private float reloadRate = 0.3f;
     private float windUp = 0.15f;
-
-    private Sprite sprite;
 
     private float animationTime;
     private float stateTime;
@@ -65,41 +68,36 @@ public class Wizard {
     private Animation windUpAnimation;
     private Animation currentAnimation;
 
+    private TextureRegion currentFrame;
 
-    private Array<Item> items;
+
+    private Array<Item> items = new Array<Item>();
 
 
-    public Wizard() {
-        sprite = PlayScreen.atlas.createSprite("squ_walk");
-        sprite.setSize(HEIGHT, WIDTH);
-        sprite.setPosition(200, 400);
+    public Wizard(float posX, float posY) {
 
-        items = new Array<Item>();
 
-        activeBullets = new ActiveBullets();
-        blastWaves = new Array<BlastWave>();
+        currentFrame = PlayScreen.atlas.findRegion("squ_walk");
+       // sprite.setPosition(200, 400);
+
+        position = new Vector2(posX, posY);
+        velocity = new Vector2();
+        bounds = new Rectangle(posX + Measure.units(0.5f),posY,WIDTH - Measure.units(1f), HEIGHT - Measure.units(1));
 
         reloader = new Reloader(reloadRate, windUp);
 
-
         //Note firing animation speed is equal to the reloadRate divided by 10.
-
         standing = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
         firing = AnimationPacker.genAnimation(reloadRate / 10, "squ_firing");
-
         windUpAnimation = AnimationPacker.genAnimation(0.03f, "circle");
-
-        currentAnimation = standing;
-
 
     }
 
 
     public void update(float dt, OrthographicCamera gamecam, Room room){
         animationTime += dt;
-        applyGravity(dt, room);
 
-        if(currentAnimation != standing && currentAnimation.isAnimationFinished(animationTime)){
+        if(currentState == STATE.STANDING){
             currentAnimation = standing;
             //animationTime = 0;
         }
@@ -134,15 +132,18 @@ public class Wizard {
             }
         }
 
+        applyGravity(dt, room);
 
+        currentFrame = currentAnimation.getKeyFrame(animationTime);
     }
 
     public void draw(SpriteBatch batch){
         if(this.getHealth() <= 0){
+            System.out.println("Inside");
             return;
         }
-        this.getSprite().setRegion(currentAnimation.getKeyFrame(animationTime));
-        this.getSprite().draw(batch);
+
+        batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
 
         if(currentState == STATE.CHARGING) {
             batch.draw(windUpAnimation.getKeyFrame(stateTime), getCenterX() - 250, getCenterY() - 270, 500, 500);
@@ -154,15 +155,31 @@ public class Wizard {
             b.draw(batch);
         }
 
-        BoundsDrawer.drawBounds(batch, getSprite().getBoundingRectangle());
+        BoundsDrawer.drawBounds(batch, bounds);
     }
 
 
+/*
 
     public void teleport(float posX, float posY){
         if(posY > PlayScreen.GROUND_Y) {
             this.getSprite().setCenter(posX, posY);
         }
+    }
+*/
+
+
+
+    public void moveRight(float dt){
+        velocity.add(Acceleration * dt, 0);
+        position.add(velocity);
+/*        bounds.x
+        bounds.x = bounds.x + MOVEMENT * dt;*/
+    }
+
+    public void moveLeft(float dt){
+        position.x = position.x - MOVEMENT * dt;
+        bounds.x = bounds.x - MOVEMENT * dt;
     }
 
     public void reduceHealth(float i){
@@ -170,15 +187,15 @@ public class Wizard {
     }
 
     public Vector2 getCenter(){
-        return new Vector2(this.getSprite().getX() + this.getSprite().getWidth() /2 , this.getSprite().getY() + this.getSprite().getHeight() /2 );
+        return new Vector2(getCenterX(), getCenterY());
     }
 
     public float getCenterX(){
-        return this.getSprite().getX() + this.getSprite().getWidth() /2;
+        return position.x + WIDTH /2;
     }
 
     public float getCenterY(){
-        return this.getSprite().getY() + this.getSprite().getHeight() /2;
+        return position.y + HEIGHT /2;
     }
 
     public void increaseDamage(float d){
@@ -197,15 +214,27 @@ public class Wizard {
     public void applyItem(Item i){
         this.damage += i.getDamageIncrease();
         this.health += i.getHealthIncrease();
-        items.add(i);
-    }
+    items.add(i);
+}
 
-    public void applyGravity(float dt, Room room){
-            this.getSprite().translateY(GRAVITY);
-            Rectangle r = room.getOverlappingRectangle(this.getSprite().getBoundingRectangle());
-            if(r != null) {
-                this.getSprite().setY(r.getY() + r.getHeight());
-            }
+   public void applyGravity(float dt, Room room){
+
+       if(isFalling) {
+           velocity.add(gravity);
+           position.add(velocity.x * dt, velocity.y * dt);
+           bounds.y = position.y;
+       }
+
+
+       Rectangle r = room.getOverlappingRectangle(bounds);
+       if(r != null) {
+           isFalling = false;
+           velocity = new Vector2();
+           position.y = r.getY() + r.getHeight();
+           bounds.y = r.getY() + r.getHeight();
+       } else {
+
+       }
     }
 
     public void fireProjectile(float input_x, float input_y){
@@ -215,8 +244,11 @@ public class Wizard {
         //the middle of the character. If to decide to just draw from the back I can remove this piece of code
         //angle bits.
         float angle = calculateAngle(getCenterX(), getCenterY(), input_x,input_y);
-        activeBullets.addProjectile(new Projectile.ProjectileBuilder(getCenter().x + ((this.getSprite().getWidth() / 2) * (float) Math.cos(angle))
-                , getCenter().y + ((this.getSprite().getHeight() / 2) * (float) Math.sin(angle)), input_x,input_y)
+
+        float x1 = (getCenterX()) + ((WIDTH / 2) * (float) Math.cos(angle)); //+ (WIDTH / 2)) * (float) Math.cos(angle);
+        float y1 = (getCenterY()) + ((WIDTH / 2) * (float) Math.sin(angle));; //+ (HEIGHT / 2)) * (float) Math.sin(angle);
+
+        activeBullets.addProjectile(new Projectile.ProjectileBuilder(x1 , y1, input_x,input_y)
                 .spriteString("bullet")
                 .damage(1)
                 .HORIZONTAL_VELOCITY(50f)
@@ -249,11 +281,6 @@ public class Wizard {
 
     }
 
-
-    public Sprite getSprite() {
-        return sprite;
-    }
-
     public int getHealth() {
         return health;
     }
@@ -268,11 +295,15 @@ public class Wizard {
 
 
     public float getX() {
-        return getSprite().getX();
+        return position.x;
     }
 
     public float getY() {
-        return getSprite().getY();
+        return position.y;
+    }
+
+    public Rectangle getBounds(){
+        return bounds;
     }
 
     public void startFiring() {
