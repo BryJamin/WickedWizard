@@ -11,7 +11,7 @@ public class BattleRoom extends Room{
 
     private ArenaWaves arenaWaves;
 
-    private int numberOfWaves = 3;
+    private int numberOfWaves = 1;
 
     public BattleRoom(){
         super();
@@ -24,7 +24,7 @@ public class BattleRoom extends Room{
     public void update(float dt, OrthographicCamera gamecam){
         super.update(dt, gamecam);
 
-        if(numberOfWaves == 0){
+        if(numberOfWaves == 0 && getArenaSpawner().areAllEnemiesKilled()){
             arenaState = STATE.UNLOCKED;
         } else {
             arenaState = STATE.LOCKED;

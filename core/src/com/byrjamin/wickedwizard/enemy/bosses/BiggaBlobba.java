@@ -223,6 +223,8 @@ public class BiggaBlobba extends Enemy {
 
     public void applyGravity(float dt, Room room){
 
+
+
         if(velocity.y <= 0){
             //System.out.println(isFalling);
             Rectangle r = room.getOverlappingRectangle(bounds.get(0));
@@ -280,12 +282,12 @@ public class BiggaBlobba extends Enemy {
     }
 
     @Override
-    public void update(float dt, Room a) {
+    public void update(float dt, Room room) {
 
         flashTimer(dt);
         time += dt;
         currentFrame = currentAnimation.getKeyFrame(time);
-        applyGravity(dt, a);
+        applyGravity(dt, room);
         boundsUpdate();
 
         if(this.getHealth() <= 0 ){
@@ -295,9 +297,9 @@ public class BiggaBlobba extends Enemy {
         if(state == STATE.ALIVE) {
 
             if (phase == PHASE.PHASE1) {
-                phase1Update(dt, a);
+                phase1Update(dt, room);
             } else if (phase == PHASE.PHASE2) {
-                phase2Update(dt, a);
+                phase2Update(dt, room);
             }
 
             if (this.getHealth() < (100 / 2)) {
@@ -305,8 +307,8 @@ public class BiggaBlobba extends Enemy {
             }
 
             for (Rectangle bound : bounds) {
-                if (bound.overlaps(a.getWizard().getSprite().getBoundingRectangle())) {
-                    a.getWizard().reduceHealth(1);
+                if (bound.overlaps(room.getWizard().getBounds())) {
+                    room.getWizard().reduceHealth(1);
                 }
             }
 

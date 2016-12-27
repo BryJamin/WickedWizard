@@ -173,14 +173,14 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
             position.x = position.x - MOVEMENT * dt * direction * speed;
             bounds.x = bounds.x  - MOVEMENT * dt * direction * speed;
 
-            if(bounds.overlaps(room.getWizard().getSprite().getBoundingRectangle())) {
+            if(bounds.overlaps(room.getWizard().getBounds())) {
                 currentAnimation = attack;
                 time = 0;
                 this.setBlob_state(movement.ATTACKING);
             }
         } else {
 
-            if(!bounds.overlaps(room.getWizard().getSprite().getBoundingRectangle())) {
+            if(!bounds.overlaps(room.getWizard().getBounds())) {
                 if(currentAnimation != walk) {
                     currentAnimation = walk;
                     time = 0;

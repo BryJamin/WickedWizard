@@ -347,7 +347,7 @@ public class Projectile {
      * @param w
      */
     public void singleTargetProjectileDamageCheck(Wizard w){
-        if(getSprite().getBoundingRectangle().overlaps(w.getSprite().getBoundingRectangle())){
+        if(getSprite().getBoundingRectangle().overlaps(w.getBounds())){
             w.reduceHealth(damage);
             this.setState(STATE.EXPLODING);
         }
@@ -368,7 +368,7 @@ public class Projectile {
     }
 
     public void multipleTargetProjectileDamageCheck(Wizard w) {
-        if(getSprite().getBoundingRectangle().overlaps(w.getSprite().getBoundingRectangle())){
+        if(getSprite().getBoundingRectangle().overlaps(w.getBounds())){
                 explosionHit(getSprite(), getAreaOfEffect(), w);
         }
     }
@@ -401,7 +401,7 @@ public class Projectile {
         bullet.getBoundingRectangle().getCenter(temp);
         explosionRadius.setCenter(temp);
         //damageRadius = new Rectangle(temp.x, temp.y, MainGame.GAME_UNITS * 15, MainGame.GAME_UNITS * 15);
-        if (explosionRadius.overlaps(w.getSprite().getBoundingRectangle())) {
+        if (explosionRadius.overlaps(w.getBounds())) {
             w.reduceHealth(damage);
             this.setState(STATE.EXPLODING);
         }
