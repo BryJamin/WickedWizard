@@ -19,6 +19,8 @@ import com.byrjamin.wickedwizard.player.ActiveBullets;
 import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 
+import sun.rmi.runtime.Log;
+
 
 //TODO
 
@@ -53,9 +55,6 @@ public class PlayScreen implements Screen {
 
     BlastWave blast;
 
-    Texture health;
-
-    //   Deck deck;
 
     //TODO IF you ever click in the deck area don't cast any spells
 
@@ -80,10 +79,6 @@ public class PlayScreen implements Screen {
 
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-      //  deck = new Deck();
-
-
-
 
     }
 
@@ -96,17 +91,22 @@ public class PlayScreen implements Screen {
 
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
-                System.out.println("TouchDown");
-
-
-                map.getActiveRoom().getWizard().startFiring();
-
 
                 float x1 = Gdx.input.getX();
                 float y1 = Gdx.input.getY();
+                input = new Vector3(x1, y1, 0);
                 touchDownInput = new Vector3(x1, y1, 0);
+
+                gamePort.unproject(input);
+                gamePort.unproject(touchDownInput);
+
+                boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
+
+                if(!tapped) {
+                    map.getActiveRoom().getWizard().startFiring();
+                }
+
                 //This is so inputs match up to the game co-ordinates.
-                gamecam.unproject(touchDownInput);
                 // your touch down code here
                 return true; // return true to indicate the event was handled
             }
@@ -114,15 +114,11 @@ public class PlayScreen implements Screen {
             @Override
             public boolean touchUp (int x, int y, int pointer, int button) {
 
-
-/*                if(arena.getWizard().isCharing()){
-                    blast = new BlastWave(arena.getWizard().getCenterX(),arena.getWizard().getCenterY());
-                }*/
                 float x1 = Gdx.input.getX();
                 float y1 = Gdx.input.getY();
                 touchUpInput = new Vector3(x1, y1, 0);
 
-                gamecam.unproject(touchUpInput);
+                gamePort.unproject(touchUpInput);
 
                 if(map.getActiveRoom().getWizard().isCharing()){
                     map.getActiveRoom().getWizard().dispell(touchDownInput, touchUpInput);
@@ -136,7 +132,6 @@ public class PlayScreen implements Screen {
 
 
         });
-       // multiplexer.addProcessor(gestureDetector);
 
         Gdx.input.setInputProcessor(multiplexer);
 
@@ -170,13 +165,10 @@ public class PlayScreen implements Screen {
         }
 
         map.draw(game.batch);
-        //deck.draw(game.batch);
 
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
             game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().ARENA_HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
-
-
 
         game.batch.end();
 
@@ -221,14 +213,15 @@ public class PlayScreen implements Screen {
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
-
             int x1 = Gdx.input.getX();
             int y1 = Gdx.input.getY();
             Vector3 input = new Vector3(x1, y1, 0);
 
             //This is so inputs match up to the game co-ordinates.
-            gamecam.unproject(input);
-            map.getActiveRoom().tapArrow(input.x, input.y);
+            gamePort.unproject(input);
+
+            System.out.println("Input X is: " + input.x);
+            System.out.println("Input Y is: " + input.y);
             //map.getActiveRoom().itemGet(input.x, input.y);
             return false;
         }

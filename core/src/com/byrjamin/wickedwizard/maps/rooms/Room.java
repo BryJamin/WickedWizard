@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
@@ -199,14 +200,16 @@ public class Room {
             batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
         }
 
-        if(state != STATE.LOCKED) {
+        if(state == STATE.UNLOCKED) {
 
             if(leftExit){
                 leftArrow.draw(batch);
+                BoundsDrawer.drawBounds(batch, leftArrow.getBoundingRectangle());
             }
 
             if(rightExit){
                 rightArrow.draw(batch);
+                BoundsDrawer.drawBounds(batch, rightArrow.getBoundingRectangle());
             }
 
         }
@@ -268,13 +271,16 @@ public class Room {
 
 
 
-    public void tapArrow(float input_x, float input_y){
+    public boolean tapArrow(float input_x, float input_y){
 
         if(rightExit && state == STATE.UNLOCKED){
+            System.out.println(rightArrow.getBoundingRectangle().contains(input_x, input_y));
             if(rightArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
                 exit_point = EXIT_POINT.RIGHT;
                 roomTransition.exitToRight();
+                System.out.println("INSIDE RIGHT ARROW METHOD");
+                return true;
             }
         }
 
@@ -284,8 +290,12 @@ public class Room {
                 state = STATE.EXIT;
                 exit_point = EXIT_POINT.LEFT;
                 roomTransition.exitToLeft();
+                System.out.println("INSIDE LEFT ARROW METHOD");
+                return true;
             }
         }
+
+        return false;
 
     }
 

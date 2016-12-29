@@ -34,6 +34,9 @@ public class Wizard {
     private Vector2 position;
     private Vector2 velocity = new Vector2(0, 0);
     private Vector2 gravity = new Vector2(0, -50f);
+
+    private Vector3 input = new Vector3();
+
     private float Acceleration = 20f;
 
     private Rectangle bounds;
@@ -120,7 +123,7 @@ public class Wizard {
             if(reloader.isReady()){
                 float x1 = Gdx.input.getX();
                 float y1 = Gdx.input.getY();
-                Vector3 input = new Vector3(x1, y1, 0);
+                input = new Vector3(x1, y1, 0);
                 //This is so inputs match up to the game co-ordinates.
                 gamecam.unproject(input);
                 fireProjectile(input.x, input.y);
