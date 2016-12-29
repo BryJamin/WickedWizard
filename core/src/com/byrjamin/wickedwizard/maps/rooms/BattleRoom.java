@@ -2,7 +2,7 @@ package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.byrjamin.wickedwizard.maps.ArenaWaves;
+import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
 
 /**
  * Created by Home on 24/12/2016.
@@ -11,7 +11,7 @@ public class BattleRoom extends Room {
 
     private ArenaWaves arenaWaves;
 
-    private int numberOfWaves = 0;
+    private int numberOfWaves = 3;
 
     public BattleRoom(){
         super();
@@ -24,17 +24,20 @@ public class BattleRoom extends Room {
     public void update(float dt, OrthographicCamera gamecam){
         super.update(dt, gamecam);
 
-        if(numberOfWaves == 0 && getArenaSpawner().areAllEnemiesKilled()){
-            arenaState = STATE.UNLOCKED;
-        } else {
-            arenaState = STATE.LOCKED;
-            if(getArenaSpawner().areAllEnemiesKilled()) {
-                arenaWaves.nextWave(this.getEnemies());
-                numberOfWaves--;
-                System.out.println("NUMBER OF WAVES: " + numberOfWaves);
-            }
-        }
+        if(state != STATE.ENTRY && state != STATE.EXIT) {
 
+            if (numberOfWaves == 0 && getArenaSpawner().areAllEnemiesKilled()) {
+                state = STATE.UNLOCKED;
+            } else {
+                state = STATE.LOCKED;
+                if (getArenaSpawner().areAllEnemiesKilled()) {
+                    arenaWaves.nextWave(this.getEnemies());
+                    numberOfWaves--;
+                    System.out.println("NUMBER OF WAVES: " + numberOfWaves);
+                }
+            }
+
+        }
 
     }
 
@@ -44,29 +47,6 @@ public class BattleRoom extends Room {
     public void draw(SpriteBatch batch){
         super.draw(batch);
     }
-
-
-/*    public void triggerNextStage(){
-        if(arenaSpawner.areAllEnemiesKilled() && day.size != 0) {
-
-
-            if(day.get(0) == EVENT.WAVE) {
-                arenaWaves.nextWave(arenaSpawner.getSpawnedEnemies());
-                day.removeIndex(0);
-            } else if(day.get(0) == EVENT.ITEM *//*&& itemSprite == null*//*) {
-                // wizard.applyItem(ig.getItem(seed));
-               // System.out.println("inside");
-               // spawnItem(ig.getItem(seed));
-                //  day.removeIndex(0);
-            } else if(day.get(0) == EVENT.BOSS) {
-                arenaSpawner.getSpawnedEnemies().add(new BiggaBlobba(1100, 2000));
-                day.removeIndex(0);
-
-                //TODO figure out what happens when the boss is defeated
-            }
-
-        }
-    }*/
 
 
 

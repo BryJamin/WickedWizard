@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.EnemyBullets;
+import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;

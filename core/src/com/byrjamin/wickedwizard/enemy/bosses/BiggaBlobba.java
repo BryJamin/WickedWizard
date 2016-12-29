@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.EnemyBullets;
+import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.enemy.EnemyPresets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;

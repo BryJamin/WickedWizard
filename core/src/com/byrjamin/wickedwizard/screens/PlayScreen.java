@@ -15,8 +15,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.maps.Map;
-import com.byrjamin.wickedwizard.maps.ActiveBullets;
-import com.byrjamin.wickedwizard.maps.EnemyBullets;
+import com.byrjamin.wickedwizard.player.ActiveBullets;
+import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 
 
@@ -228,6 +228,7 @@ public class PlayScreen implements Screen {
 
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
+            map.getActiveRoom().tapArrow(input.x, input.y);
             //map.getActiveRoom().itemGet(input.x, input.y);
             return false;
         }

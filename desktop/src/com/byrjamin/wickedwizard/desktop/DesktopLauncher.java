@@ -9,6 +9,7 @@ import java.io.IOException;
 public class DesktopLauncher {
 	public static void main (String[] arg) throws IOException{
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.forceExit = true;
 		new LwjglApplication(new MainGame(), config);
 	}
 }

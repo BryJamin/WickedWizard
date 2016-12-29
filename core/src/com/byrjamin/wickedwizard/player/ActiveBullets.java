@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps;
+package com.byrjamin.wickedwizard.player;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

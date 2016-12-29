@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.maps.ActiveBullets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -138,7 +137,6 @@ public class Wizard {
 
     public void draw(SpriteBatch batch){
         if(this.getHealth() <= 0){
-            System.out.println("Inside");
             return;
         }
 

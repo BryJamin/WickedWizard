@@ -16,13 +16,17 @@ public class Map {
 
 
 
-    private Array<Room> rooms;
+    //private Array<Room> rooms;
 
-    private Room activeRoom;
+    private Room[] rooms;
+
+    private int activeRoom;
 
     private boolean isTransitioning = true;
 
     ShapeRenderer shapeRenderer;
+
+    private RoomTransitionAnim roomTransitionAnim;
 
     private float SCREENMOVEMENT = 100f;
 
@@ -31,15 +35,14 @@ public class Map {
     Vector2 screenWipePosition;
 
     public Map(){
-        rooms = new Array<Room>();
-        rooms.add(new BattleRoom());
-        rooms.add(new BattleRoom());
 
-        activeRoom = rooms.first();
+        rooms = new Room[]{new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom()};
 
-        timer = 2f;
+        rooms[0] = new BattleRoom();
+        rooms[1] = new BattleRoom();
+        rooms[2] = new BattleRoom();
 
-        screenWipePosition = new Vector2(activeRoom.ARENA_WIDTH, 0);
+        activeRoom = 0;
 
         shapeRenderer = new ShapeRenderer();
 
@@ -49,46 +52,19 @@ public class Map {
 
 
     public void update(float dt, OrthographicCamera gamecam){
+            rooms[activeRoom].update(dt, gamecam);
 
-        if(activeRoom != null && isTransitioning) {
-            activeRoom.update(dt, gamecam);
-/*            if (activeRoom.isUnlocked() && rooms.size > 1) {
-                rooms.removeIndex(0);
-                activeRoom = rooms.get(0);
-            }*/
-        }
-
-        screenWipePosition.add(-SCREENMOVEMENT, 0);
-
-
-        if(screenWipePosition.x < 0 && timer > 0){
-            screenWipePosition.x = 0;
-            timer-=dt;
-            System.out.println(timer);
-        }
-
+            if(rooms[activeRoom].isExitTransitionFinished() && rooms[activeRoom].state == Room.STATE.EXIT){
+                activeRoom++;
+            }
     }
 
 
     public void draw(SpriteBatch batch){
-        activeRoom.draw(batch);
-        batch.end();
-
-        //Gdx.graphics.getGL20().glEnable(GL20.GL_BLEND);
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0,0,0,1f);
-        shapeRenderer.rect(screenWipePosition.x, screenWipePosition.y, activeRoom.ARENA_WIDTH, activeRoom.ARENA_HEIGHT);
-        shapeRenderer.end();
-
-        batch.begin();
-
-
-
-
+        rooms[activeRoom].draw(batch);
     }
 
     public Room getActiveRoom() {
-        return activeRoom;
+        return rooms[activeRoom];
     }
 }

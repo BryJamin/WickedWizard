@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps;
+package com.byrjamin.wickedwizard.maps.rooms.helper;
 
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
