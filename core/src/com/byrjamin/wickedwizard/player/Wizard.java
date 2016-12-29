@@ -26,9 +26,9 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Wizard {
 
-    private float HEIGHT = Measure.units(7);
-    private float WIDTH = Measure.units(7);
-    private float MOVEMENT = Measure.units(20f);
+    public float HEIGHT = Measure.units(7);
+    public float WIDTH = Measure.units(7);
+    private float MOVEMENT = Measure.units(100f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private Vector2 position;
@@ -48,6 +48,12 @@ public class Wizard {
     private enum STATE {
         CHARGING, FIRING, STANDING,AOECIRCLETHING
     }
+
+    private enum DIRECTION {
+        LEFT, RIGHT, UP, DOWN
+    }
+
+    private DIRECTION direction = DIRECTION.RIGHT;
 
     private STATE currentState = STATE.STANDING;
 
@@ -133,6 +139,8 @@ public class Wizard {
         applyGravity(dt, room);
 
         currentFrame = currentAnimation.getKeyFrame(animationTime);
+
+        boundsUpdate();
     }
 
     public void draw(SpriteBatch batch){
@@ -140,7 +148,9 @@ public class Wizard {
             return;
         }
 
-        batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
+
+        boolean flip = (getDirection() == DIRECTION.LEFT);
+        batch.draw(currentFrame, flip ? position.x + WIDTH : position.x, position.y, flip ? -WIDTH : WIDTH, HEIGHT);
 
         if(currentState == STATE.CHARGING) {
             batch.draw(windUpAnimation.getKeyFrame(stateTime), getCenterX() - 250, getCenterY() - 270, 500, 500);
@@ -165,18 +175,25 @@ public class Wizard {
     }
 */
 
+    private void boundsUpdate(){
+        bounds.x = position.x + Measure.units(0.5f);
+        bounds.y = position.y;
+    }
 
+    public DIRECTION getDirection() {
+        return direction;
+    }
 
     public void moveRight(float dt){
-        velocity.add(Acceleration * dt, 0);
-        position.add(velocity);
-/*        bounds.x
-        bounds.x = bounds.x + MOVEMENT * dt;*/
+        position.x = position.x + MOVEMENT * dt;
+        boundsUpdate();
+        direction = DIRECTION.RIGHT;
     }
 
     public void moveLeft(float dt){
         position.x = position.x - MOVEMENT * dt;
-        bounds.x = bounds.x - MOVEMENT * dt;
+        boundsUpdate();
+        direction = DIRECTION.LEFT;
     }
 
     public void reduceHealth(float i){
@@ -290,14 +307,22 @@ public class Wizard {
         this.reloader = reloader;
     }
 
+    public void setX(float x){
+        position.x = x;
+    }
 
     public float getX() {
         return position.x;
     }
 
+    public void setY(float y){
+        position.y = y;
+    }
+
     public float getY() {
         return position.y;
     }
+
 
     public Rectangle getBounds(){
         return bounds;

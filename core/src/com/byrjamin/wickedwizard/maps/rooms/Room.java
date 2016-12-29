@@ -9,7 +9,8 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
-import com.byrjamin.wickedwizard.maps.RoomTransitionAnim;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransitionAnim;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
 import com.byrjamin.wickedwizard.enemy.EnemyBullets;
@@ -36,8 +37,6 @@ public class Room {
     private ArenaSpawner arenaSpawner;
     private ItemGenerator ig;
     private Wizard wizard;
-
-    private RoomTransitionAnim exitingAnimation;
 
     private Rectangle ground;
 
@@ -82,6 +81,8 @@ public class Room {
     public EXIT_POINT exit_point;
 
 
+    private RoomTransition roomTransition;
+
 
     public enum EVENT {
         WAVE, ITEM, IMP, BOSS
@@ -96,7 +97,7 @@ public class Room {
         arenaSpawner = new ArenaSpawner();
 
         ig = new ItemGenerator();
-        wizard = new Wizard(200, 400);
+        wizard = new Wizard(0, 0);
         ground = new Rectangle(0,0,ARENA_WIDTH, MainGame.GAME_UNITS * 10);
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
@@ -104,49 +105,59 @@ public class Room {
 
         arenaWaves = new ArenaWaves(this);
 
-        leftArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        leftArrow.setCenter(1700, 500);
-        leftArrow.setSize(Measure.units(10), Measure.units(10));
-
         rightArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        rightArrow.setCenter(200, 500);
+        rightArrow.setCenter(1700, 500);
         rightArrow.setSize(Measure.units(10), Measure.units(10));
-        rightArrow.setFlip(true, true);
+
+        leftArrow = PlayScreen.atlas.createSprite("exit_arrow");
+        leftArrow.setCenter(200, 500);
+        leftArrow.setSize(Measure.units(10), Measure.units(10));
+        leftArrow.setFlip(true, true);
 
         state = STATE.ENTRY;
+        entry_point = ENTRY_POINT.LEFT;
 
-        exitingAnimation = new RoomTransitionAnim(0, 0,
-                -ARENA_WIDTH,0,
-                ARENA_WIDTH, ARENA_HEIGHT
-                );
+        roomTransition = new RoomTransition(ARENA_WIDTH, ARENA_HEIGHT);
+        roomTransition.enterFromLeft();
 
-        //arenaWaves.nextWave(0, arenaSpawner.getSpawnedEnemies());
-
-/*        day = new Array<EVENT>();
-        for(int i = 0; i < 2; i++){
-            day.add(EVENT.WAVE);
-        }
-
-        day.insert(0, EVENT.BOSS);*/
-        //day.insert(5, EVENT.ITEM);
-        //day.add(EVENT.BOSS);
-        //stage3();
     }
 
 
     public void update(float dt, OrthographicCamera gamecam){
 
+        wizard.update(dt, gamecam, this);
 
         if(state == STATE.ENTRY) {
-            exitingAnimation.update(dt);
+            roomTransition.update(dt);
 
-            if(exitingAnimation.isFinished()){
-                state = STATE.LOCKED;
+            if(roomTransition.isFinished()){
+
+                boolean inPosition = false;
+
+                if(entry_point == ENTRY_POINT.RIGHT){
+                    wizard.moveLeft(dt);
+
+                    if(wizard.getX() < 1600){
+                        wizard.setX(1600);
+                        inPosition = true;
+                    }
+
+                } else if(entry_point == ENTRY_POINT.LEFT){
+                    wizard.moveRight(dt);
+
+                    if(wizard.getX() > 200){
+                        wizard.setX(200);
+                        inPosition = true;
+                    }
+
+                }
+
+                if(inPosition) {
+                    state = STATE.UNLOCKED;
+                }
             }
 
         } else {
-
-            wizard.update(dt, gamecam, this);
             arenaSpawner.update(dt, this);
             enemyBullets.update(dt, gamecam, this.getWizard());
 
@@ -159,10 +170,16 @@ public class Room {
             }
 
             if (state == STATE.EXIT) {
-                wizard.moveRight(dt);
+
+
+                if(exit_point == EXIT_POINT.RIGHT) {
+                    wizard.moveRight(dt);
+                } else if(exit_point == EXIT_POINT.LEFT){
+                    wizard.moveLeft(dt);
+                }
 
                 if (isWizardOfScreen()) {
-                    exitingAnimation.update(dt);
+                    roomTransition.update(dt);
                 }
 
             }
@@ -182,16 +199,24 @@ public class Room {
             batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
         }
 
-        if(state == STATE.UNLOCKED) {
-            leftArrow.draw(batch);
+        if(state != STATE.LOCKED) {
+
+            if(leftExit){
+                leftArrow.draw(batch);
+            }
+
+            if(rightExit){
+                rightArrow.draw(batch);
+            }
+
         }
 
         if(itemSprite != null){
             itemSprite.draw(batch);
         }
 
-        if(exitingAnimation != null){
-            exitingAnimation.draw(batch);
+        if(roomTransition != null){
+            roomTransition.draw(batch);
         }
 
     }
@@ -216,9 +241,27 @@ public class Room {
 
     }
 
+
+    public void enterRoom(ENTRY_POINT entry_point){
+        state = STATE.ENTRY;
+        this.entry_point = entry_point;
+
+        switch(entry_point){
+            case LEFT:
+                wizard.setX(0);
+                roomTransition.enterFromLeft();
+
+                break;
+            case RIGHT:
+                wizard.setX(ARENA_WIDTH);
+                roomTransition.enterFromRight();
+        }
+
+    }
+
     public boolean isExitTransitionFinished(){
-        if(exitingAnimation != null){
-            return exitingAnimation.isFinished();
+        if(roomTransition != null){
+            return roomTransition.isFinished();
         }
         return false;
     }
@@ -227,22 +270,20 @@ public class Room {
 
     public void tapArrow(float input_x, float input_y){
 
-        if(leftExit && state == STATE.UNLOCKED){
-            if(leftArrow.getBoundingRectangle().contains(input_x, input_y)){
+        if(rightExit && state == STATE.UNLOCKED){
+            if(rightArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
-                exitingAnimation = new RoomTransitionAnim(ARENA_WIDTH, 0,
-                        0, 0,
-                        ARENA_WIDTH, ARENA_HEIGHT);
+                exit_point = EXIT_POINT.RIGHT;
+                roomTransition.exitToRight();
             }
         }
 
 
-        if(rightExit && state == STATE.UNLOCKED){
-            if(rightArrow.getBoundingRectangle().contains(input_x, input_y)){
+        if(leftExit && state == STATE.UNLOCKED){
+            if(leftArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
-                exitingAnimation = new RoomTransitionAnim(-ARENA_WIDTH, 0,
-                        0, 0,
-                        ARENA_WIDTH, ARENA_HEIGHT);
+                exit_point = EXIT_POINT.LEFT;
+                roomTransition.exitToLeft();
             }
         }
 
@@ -250,7 +291,7 @@ public class Room {
 
 
     public boolean isWizardOfScreen(){
-        return (wizard.getX() > ARENA_WIDTH) || wizard.getX() < 0;
+        return (wizard.getX() > ARENA_WIDTH) || wizard.getX() < -wizard.WIDTH;
     }
 
     private void spawnItem(Item ig) {
@@ -296,6 +337,18 @@ public class Room {
 
     public void setRightExit(boolean rightExit) {
         this.rightExit = rightExit;
+    }
+
+    public EXIT_POINT getExit_point() {
+        return exit_point;
+    }
+
+    public boolean isExitPointRight(){
+        return exit_point == EXIT_POINT.RIGHT;
+    }
+
+    public boolean isExitPointLeft(){
+        return exit_point == EXIT_POINT.LEFT;
     }
 
     public Array<Rectangle> getPlatforms() {

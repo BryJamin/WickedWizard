@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps;
+package com.byrjamin.wickedwizard.maps.rooms.helper;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -40,17 +40,11 @@ public class RoomTransitionAnim {
     private float distancePerSecondX;
     private float distancePerSecondY;
 
-    private float durationInSeconds = 0.5f;
+    private float durationInSeconds = 0.25f;
 
     private Vector2 velocity;
 
     private ShapeRenderer shapeRenderer;
-
-    public enum TRANSITIONTYPE{
-        UP_DOWN, DOWN_UP, LEFT_RIGHT, RIGHT_LEFT
-    }
-
-    private TRANSITIONTYPE transitiontype;
 
 
     public RoomTransitionAnim(float startX, float startY, float endX, float endY, float WIDTH, float HEIGHT){

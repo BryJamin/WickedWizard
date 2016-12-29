@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 
@@ -26,7 +25,7 @@ public class Map {
 
     ShapeRenderer shapeRenderer;
 
-    private RoomTransitionAnim roomTransitionAnim;
+    private com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransitionAnim roomTransitionAnim;
 
     private float SCREENMOVEMENT = 100f;
 
@@ -36,15 +35,36 @@ public class Map {
 
     public Map(){
 
-        rooms = new Room[]{new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom()};
+        rooms = new Room[]{null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), null};
 
-        rooms[0] = new BattleRoom();
-        rooms[1] = new BattleRoom();
-        rooms[2] = new BattleRoom();
 
-        activeRoom = 0;
+        roomSetup();
+
+
+        activeRoom = 1;
 
         shapeRenderer = new ShapeRenderer();
+
+    }
+
+    public void roomSetup(){
+
+        for(int i = 0; i < rooms.length; i++){
+
+            if(rooms[i] == null){
+                continue;
+            }
+
+            if(rooms[i - 1] != null){
+                rooms[i].setLeftExit(true);
+            }
+
+            if(rooms[i + 1] != null){
+                rooms[i].setRightExit(true);
+            }
+
+        }
+
 
     }
 
@@ -55,7 +75,15 @@ public class Map {
             rooms[activeRoom].update(dt, gamecam);
 
             if(rooms[activeRoom].isExitTransitionFinished() && rooms[activeRoom].state == Room.STATE.EXIT){
-                activeRoom++;
+
+                if(rooms[activeRoom].isExitPointRight()){
+                    activeRoom++;
+                    rooms[activeRoom].enterRoom(Room.ENTRY_POINT.LEFT);
+                } else if(rooms[activeRoom].isExitPointLeft()){
+                    activeRoom--;
+                    rooms[activeRoom].enterRoom(Room.ENTRY_POINT.RIGHT);
+                }
+
             }
     }
 
