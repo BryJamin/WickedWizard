@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
@@ -18,8 +17,6 @@ import com.byrjamin.wickedwizard.maps.Map;
 import com.byrjamin.wickedwizard.player.ActiveBullets;
 import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.spelltypes.BlastWave;
-
-import sun.rmi.runtime.Log;
 
 
 //TODO
@@ -75,7 +72,7 @@ public class PlayScreen implements Screen {
         //Starts in the middle of the screen, on the 1/4 thingie.
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gamePort = new FitViewport(map.getActiveRoom().ARENA_WIDTH, map.getActiveRoom().ARENA_HEIGHT + 250, gamecam);
+        gamePort = new FitViewport(map.getActiveRoom().WIDTH, map.getActiveRoom().HEIGHT + 250, gamecam);
 
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -167,7 +164,7 @@ public class PlayScreen implements Screen {
         map.draw(game.batch);
 
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
-            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().ARENA_HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
         game.batch.end();

@@ -11,7 +11,7 @@ public class BattleRoom extends Room {
 
     private ArenaWaves arenaWaves;
 
-    private int numberOfWaves = 2;
+    private int numberOfWaves = 0;
 
     public BattleRoom(){
         super();

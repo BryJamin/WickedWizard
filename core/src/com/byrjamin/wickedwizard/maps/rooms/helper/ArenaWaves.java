@@ -39,33 +39,33 @@ public class ArenaWaves {
 
     public void blob(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.defaultBlob(room.ARENA_WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
     }
 
     public void blob2(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.smallBlob(room.ARENA_WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.defaultTurret(room.ARENA_WIDTH, room.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.defaultTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void blob3(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.largeBlob(room.ARENA_WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.fastTurret(room.ARENA_WIDTH, room.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.fastTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
 
     public void blob4(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.largeBlob(room.ARENA_WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.alternarteShotsTurret(room.ARENA_WIDTH, room.ARENA_HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void turret(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.smallBlob(room.ARENA_WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.defaultBlob(room.ARENA_WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.largeBlob(room.ARENA_WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
+        e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
     }
 
     interface Waves {

@@ -162,7 +162,7 @@ public class BiggaBlobba extends Enemy {
         littleSlimer.update(dt);
 
         if(littleSlimer.isReady()){
-            a.getEnemies().add(EnemyPresets.smallBlob(position.x + Measure.units(15), a.ARENA_HEIGHT));
+            a.getEnemies().add(EnemyPresets.smallBlob(position.x + Measure.units(15), a.HEIGHT));
             slimeCount --;
             System.out.println(slimeCount);
         }

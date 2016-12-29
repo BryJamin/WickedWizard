@@ -11,7 +11,6 @@ import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransitionAnim;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
 import com.byrjamin.wickedwizard.enemy.EnemyBullets;
@@ -28,11 +27,16 @@ import com.byrjamin.wickedwizard.enemy.Enemy;
  */
 public class Room {
 
-    public float ARENA_WIDTH = MainGame.GAME_WIDTH;
-    public float ARENA_HEIGHT = MainGame.GAME_HEIGHT;
+    public float WIDTH = MainGame.GAME_WIDTH;
+    public float HEIGHT = MainGame.GAME_HEIGHT;
 
     private float tile_height;
     private float tile_width;
+
+
+    private float[] sectionCenters;
+
+    private int currentSection;
 
     public static EnemyBullets enemyBullets;
     private ArenaSpawner arenaSpawner;
@@ -99,7 +103,7 @@ public class Room {
 
         ig = new ItemGenerator();
         wizard = new Wizard(0, 0);
-        ground = new Rectangle(0,0,ARENA_WIDTH, MainGame.GAME_UNITS * 10);
+        ground = new Rectangle(0,0, WIDTH, MainGame.GAME_UNITS * 10);
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
         platforms.add(ground);
@@ -115,12 +119,31 @@ public class Room {
         leftArrow.setSize(Measure.units(10), Measure.units(10));
         leftArrow.setFlip(true, true);
 
+
+        sectionSetup();
+
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
 
-        roomTransition = new RoomTransition(ARENA_WIDTH, ARENA_HEIGHT);
+        roomTransition = new RoomTransition(WIDTH, HEIGHT);
         roomTransition.enterFromLeft();
 
+    }
+
+    /**
+     * This assumes each arena has 3 sections. (LEFT, MIDDLE, RIGHT)
+     * A player can dodge between these 3 sections.
+     */
+    public void sectionSetup(){
+
+        sectionCenters = new float[3];
+        float lengths = WIDTH / 3;
+        for(int i = 0; i < sectionCenters.length; i++){
+            sectionCenters[i] = (i * lengths) + (lengths / 2);
+        }
+
+        //TODO this only really works if the length of the array is odd.
+        currentSection = (sectionCenters.length - 1) / 2;
     }
 
 
@@ -138,16 +161,16 @@ public class Room {
                 if(entry_point == ENTRY_POINT.RIGHT){
                     wizard.moveLeft(dt);
 
-                    if(wizard.getX() < 1600){
-                        wizard.setX(1600);
+                    if(wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1) / 2]){
+                        wizard.setCenterX(sectionCenters[(sectionCenters.length - 1) / 2]);
                         inPosition = true;
                     }
 
                 } else if(entry_point == ENTRY_POINT.LEFT){
                     wizard.moveRight(dt);
 
-                    if(wizard.getX() > 200){
-                        wizard.setX(200);
+                    if(wizard.getCenterX() > sectionCenters[(sectionCenters.length - 1) / 2]){
+                        wizard.setCenterX(sectionCenters[(sectionCenters.length - 1) / 2]);
                         inPosition = true;
                     }
 
@@ -256,7 +279,7 @@ public class Room {
 
                 break;
             case RIGHT:
-                wizard.setX(ARENA_WIDTH);
+                wizard.setX(WIDTH);
                 roomTransition.enterFromRight();
         }
 
@@ -301,13 +324,13 @@ public class Room {
 
 
     public boolean isWizardOfScreen(){
-        return (wizard.getX() > ARENA_WIDTH) || wizard.getX() < -wizard.WIDTH;
+        return (wizard.getX() > WIDTH) || wizard.getX() < -wizard.WIDTH;
     }
 
     private void spawnItem(Item ig) {
         itemSprite = PlayScreen.atlas.createSprite(ig.getSpriteName());
         itemSprite.setSize(MainGame.GAME_UNITS * 7, MainGame.GAME_UNITS * 7);
-        itemSprite.setCenter(this.ARENA_WIDTH / 2, (this.ARENA_HEIGHT / 4) * 3);
+        itemSprite.setCenter(this.WIDTH / 2, (this.HEIGHT / 4) * 3);
     }
 
 

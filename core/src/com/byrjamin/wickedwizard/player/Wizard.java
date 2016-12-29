@@ -207,8 +207,16 @@ public class Wizard {
         return new Vector2(getCenterX(), getCenterY());
     }
 
+    public void setCenterX(float posX){
+        position.x = posX - WIDTH / 2;
+    }
+
     public float getCenterX(){
         return position.x + WIDTH /2;
+    }
+
+    public void setCenterY(float posY){
+        position.x = posY - HEIGHT / 2;
     }
 
     public float getCenterY(){

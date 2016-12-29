@@ -138,7 +138,7 @@ public class BlastWave {
      * @return - true if outofBounds.
      */
     public boolean outOfBounds(Room a){
-        return CIRCLE_SIZE / 2 > a.ARENA_WIDTH && CIRCLE_SIZE / 2 > a.ARENA_HEIGHT;
+        return CIRCLE_SIZE / 2 > a.WIDTH && CIRCLE_SIZE / 2 > a.HEIGHT;
     }
 
     public Dispellable.DISPELL getDispelDirection() {
