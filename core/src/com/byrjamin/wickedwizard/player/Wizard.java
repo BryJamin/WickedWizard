@@ -28,7 +28,7 @@ public class Wizard {
 
     public float HEIGHT = Measure.units(7);
     public float WIDTH = Measure.units(7);
-    private float MOVEMENT = Measure.units(100f);
+    private float MOVEMENT = Measure.units(200f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private Vector2 position;
@@ -48,7 +48,9 @@ public class Wizard {
 
     private boolean isFalling = true;
 
-    private enum STATE {
+    private float dashTarget;
+
+    public enum STATE {
         CHARGING, FIRING, STANDING,AOECIRCLETHING
     }
 
@@ -56,16 +58,19 @@ public class Wizard {
         LEFT, RIGHT, UP, DOWN
     }
 
+    private STATE currentState = STATE.STANDING;
+
     private DIRECTION direction = DIRECTION.RIGHT;
 
-    private STATE currentState = STATE.STANDING;
+    private boolean dashing = false;
 
     //STATS
     private int health = 3;
     private int armor;
     private float damage = 1;
     private float reloadRate = 0.3f;
-    private float windUp = 0.15f;
+    //private float windUp = 0.5f;
+    private float windUpAnimationTime = 0.02f;
 
     private float animationTime;
     private float stateTime;
@@ -83,7 +88,6 @@ public class Wizard {
 
     public Wizard(float posX, float posY) {
 
-
         currentFrame = PlayScreen.atlas.findRegion("squ_walk");
        // sprite.setPosition(200, 400);
 
@@ -91,12 +95,12 @@ public class Wizard {
         velocity = new Vector2();
         bounds = new Rectangle(posX + Measure.units(0.5f),posY,WIDTH - Measure.units(1f), HEIGHT - Measure.units(1));
 
-        reloader = new Reloader(reloadRate, windUp);
+        reloader = new Reloader(reloadRate);
 
         //Note firing animation speed is equal to the reloadRate divided by 10.
         standing = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
-        firing = AnimationPacker.genAnimation(reloadRate / 10, "squ_firing");
-        windUpAnimation = AnimationPacker.genAnimation(0.03f, "circle");
+        firing = AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
+        windUpAnimation = AnimationPacker.genAnimation(windUpAnimationTime, "circle");
 
     }
 
@@ -106,20 +110,25 @@ public class Wizard {
 
         if(currentState == STATE.STANDING){
             currentAnimation = standing;
+
+            if(Gdx.input.isTouched()){
+                //currentState = STATE.CHARGING;
+            }
+
             //animationTime = 0;
         }
 
         if(currentState == STATE.CHARGING){
-            reloader.update(dt);
+            //reloader.update(dt);
             stateTime+= dt;
-            if(reloader.isReady()){
+            if(windUpAnimation.isAnimationFinished(stateTime)){
                 currentState = STATE.FIRING;
             }
         }
 
         if(currentState == STATE.FIRING){
             reloader.update(dt);
-            stateTime+= dt;
+           // stateTime+= dt;
             if(reloader.isReady()){
                 float x1 = Gdx.input.getX();
                 float y1 = Gdx.input.getY();
@@ -127,7 +136,16 @@ public class Wizard {
                 //This is so inputs match up to the game co-ordinates.
                 gamecam.unproject(input);
                 fireProjectile(input.x, input.y);
+                //reloader.update(dt);
+            } else {
+                //reloader.update(dt);
             }
+        }
+
+
+
+        if(dashing){
+            dashing = dashUpdate(dt);
         }
 
         activeBullets.update(dt, gamecam, room.getEnemies());
@@ -144,6 +162,9 @@ public class Wizard {
         currentFrame = currentAnimation.getKeyFrame(animationTime);
 
         boundsUpdate();
+
+        //System.out.println("STATE IS: " + currentState);
+
     }
 
     public void draw(SpriteBatch batch){
@@ -168,16 +189,6 @@ public class Wizard {
         BoundsDrawer.drawBounds(batch, bounds);
     }
 
-
-/*
-
-    public void teleport(float posX, float posY){
-        if(posY > PlayScreen.GROUND_Y) {
-            this.getSprite().setCenter(posX, posY);
-        }
-    }
-*/
-
     private void boundsUpdate(){
         bounds.x = position.x + Measure.units(0.5f);
         bounds.y = position.y;
@@ -199,8 +210,37 @@ public class Wizard {
         direction = DIRECTION.LEFT;
     }
 
+    public void dash(float sectionCenter) {
+        if(!dashing && !isFiring()) {
+            dashing = true;
+            dashTarget = sectionCenter;
+        }
+    }
+
+    public boolean dashUpdate(float dt){
+        if(dashTarget <= getCenterX()){
+            this.moveLeft(dt);
+            if(this.getCenterX() <= dashTarget){
+                this.setCenterX(dashTarget);
+                return false;
+            }
+        }
+
+        if(dashTarget >= getCenterX()){
+            this.moveRight(dt);
+            if(this.getCenterX() >= dashTarget){
+                this.setCenterX(dashTarget);
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
     public void reduceHealth(float i){
-        health -= i;
+
+        //health -= i;
     }
 
     public Vector2 getCenter(){
@@ -270,6 +310,14 @@ public class Wizard {
         //angle bits.
         float angle = calculateAngle(getCenterX(), getCenterY(), input_x,input_y);
 
+        if(angle >= 0){
+            if(angle <= (Math.PI / 2)) direction = DIRECTION.RIGHT;
+            else direction = DIRECTION.LEFT;
+        } else {
+            if(angle >= -(Math.PI / 2)) direction = DIRECTION.RIGHT;
+            else direction = DIRECTION.LEFT;
+        }
+
         float x1 = (getCenterX()) + ((WIDTH / 2) * (float) Math.cos(angle)); //+ (WIDTH / 2)) * (float) Math.cos(angle);
         float y1 = (getCenterY()) + ((WIDTH / 2) * (float) Math.sin(angle));; //+ (HEIGHT / 2)) * (float) Math.sin(angle);
 
@@ -289,7 +337,7 @@ public class Wizard {
         return (float) (Math.atan2(y2 - y1, x2 - x1));
     }
 
-    public void dispell(Vector3 touchDownInput, Vector3 touchUpInput) {
+    public void dispel(Vector3 touchDownInput, Vector3 touchUpInput) {
 
         float x1 = touchDownInput.x;
         float y1 = touchDownInput.y;
@@ -299,10 +347,12 @@ public class Wizard {
 
         if(Math.abs(x1 - x2) > Measure.units(10) && Math.abs(y1 - y2) < Math.abs(x1 - x2)){
             blastWaves.add(new BlastWave(getCenterX(), getCenterY(), Dispellable.DISPELL.HORIZONTAL));
+            currentState = STATE.STANDING;
         } else if((Math.abs(y1 - y2) > Measure.units(10) && Math.abs(x1 - x2) < Math.abs(y1 - y2))) {
             blastWaves.add(new BlastWave(getCenterX(), getCenterY(), Dispellable.DISPELL.VERTICAL));
+            currentState = STATE.STANDING;
         }
-
+        currentState = STATE.STANDING;
 
     }
 
@@ -340,22 +390,32 @@ public class Wizard {
     }
 
     public void startFiring() {
-        currentState = STATE.CHARGING;
-        currentAnimation = firing;
-        animationTime = 0;
-        stateTime = 0;
+            currentState = STATE.CHARGING;
+            currentAnimation = firing;
+            animationTime = 0;
+            stateTime = 0;
+
     }
 
 
     public void stopFiring() {
-        currentState = STATE.STANDING;
-        reloader.addWindUp(windUp);
-        stateTime = 0;
+        if(currentState == STATE.FIRING || currentState == STATE.CHARGING){
+            currentState = STATE.STANDING;
+            stateTime = 0;
+        }
     }
 
 
     public boolean isCharing(){
         return currentState == STATE.CHARGING;
+    }
+
+    public boolean isDashing(){
+        return dashing;
+    }
+
+    public boolean isFiring(){
+        return currentState == STATE.FIRING;
     }
 
     public STATE getCurrentState() {

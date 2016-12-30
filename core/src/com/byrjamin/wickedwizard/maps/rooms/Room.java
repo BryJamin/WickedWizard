@@ -33,6 +33,8 @@ public class Room {
     private float tile_height;
     private float tile_width;
 
+    private float x = 0;
+    private float y = 0;
 
     private float[] sectionCenters;
 
@@ -152,6 +154,7 @@ public class Room {
         wizard.update(dt, gamecam, this);
 
         if(state == STATE.ENTRY) {
+
             roomTransition.update(dt);
 
             if(roomTransition.isFinished()){
@@ -161,16 +164,18 @@ public class Room {
                 if(entry_point == ENTRY_POINT.RIGHT){
                     wizard.moveLeft(dt);
 
-                    if(wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1) / 2]){
-                        wizard.setCenterX(sectionCenters[(sectionCenters.length - 1) / 2]);
+                    if(wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1)]){
+                        wizard.setCenterX(sectionCenters[(sectionCenters.length - 1)]);
+                        currentSection = sectionCenters.length - 1;
                         inPosition = true;
                     }
 
                 } else if(entry_point == ENTRY_POINT.LEFT){
                     wizard.moveRight(dt);
 
-                    if(wizard.getCenterX() > sectionCenters[(sectionCenters.length - 1) / 2]){
-                        wizard.setCenterX(sectionCenters[(sectionCenters.length - 1) / 2]);
+                    if(wizard.getCenterX() > sectionCenters[0]){
+                        wizard.setCenterX(sectionCenters[0]);
+                        currentSection = 0;
                         inPosition = true;
                     }
 
@@ -182,6 +187,7 @@ public class Room {
             }
 
         } else {
+            
             arenaSpawner.update(dt, this);
             enemyBullets.update(dt, gamecam, this.getWizard());
 
@@ -193,22 +199,55 @@ public class Room {
                 }
             }
 
-            if (state == STATE.EXIT) {
+        }
 
+        if (state == STATE.EXIT) {
+            if(exit_point == EXIT_POINT.RIGHT) {
+                wizard.moveRight(dt);
+            } else if(exit_point == EXIT_POINT.LEFT){
+                wizard.moveLeft(dt);
+            }
 
-                if(exit_point == EXIT_POINT.RIGHT) {
-                    wizard.moveRight(dt);
-                } else if(exit_point == EXIT_POINT.LEFT){
-                    wizard.moveLeft(dt);
-                }
-
-                if (isWizardOfScreen()) {
-                    roomTransition.update(dt);
-                }
-
+            if (isWizardOfScreen()) {
+                roomTransition.update(dt);
             }
         }
 
+    }
+
+    /**
+     * Shifts the player to the next available section of the room based on where the input is placed.
+     * This also triggers the player to 'dash' there.
+     * @param input_x
+     */
+    public void shift(float input_x){
+        if(state != STATE.ENTRY && state != STATE.EXIT && !wizard.isDashing()) {
+            if (input_x <= wizard.getCenterX()) {
+                shiftWizardLeft();
+            } else {
+                shiftWizardRight();
+            }
+        }
+    }
+
+    /**
+     * Shifts the wizard to the next available left section of the room.
+     */
+    public void shiftWizardLeft(){
+        if(currentSection != 0){
+            currentSection--;
+            wizard.dash(sectionCenters[currentSection]);
+        }
+    }
+
+    /**
+     * Shifts the player to the next avaliable right section of the room.
+     */
+    public void shiftWizardRight(){
+        if(currentSection < sectionCenters.length - 1){
+            currentSection++;
+            wizard.dash(sectionCenters[currentSection]);
+        }
     }
 
 
@@ -285,7 +324,11 @@ public class Room {
 
     }
 
-    public boolean isExitTransitionFinished(){
+    /**
+     * Checks to see if the Room Transition has finished it's animation.
+     * @return
+     */
+    public boolean isRoomTransitionFinished(){
         if(roomTransition != null){
             return roomTransition.isFinished();
         }
@@ -293,11 +336,14 @@ public class Room {
     }
 
 
+    public boolean isExitTransitionFinished(){
+        return roomTransition.isFinished() && state == STATE.EXIT;
+    }
+
 
     public boolean tapArrow(float input_x, float input_y){
 
         if(rightExit && state == STATE.UNLOCKED){
-            System.out.println(rightArrow.getBoundingRectangle().contains(input_x, input_y));
             if(rightArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
                 exit_point = EXIT_POINT.RIGHT;

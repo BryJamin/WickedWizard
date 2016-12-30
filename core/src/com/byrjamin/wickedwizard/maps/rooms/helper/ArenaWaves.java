@@ -97,7 +97,7 @@ public class ArenaWaves {
 
 
         for(int i=0; i< shuffled.size(); i++){
-            System.out.println(shuffled.get(i));
+            //System.out.println(shuffled.get(i));
         }
 
     }

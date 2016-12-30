@@ -81,56 +81,64 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt){
 
+        if(!map.isTransitioning()) {
 
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(gestureDetector);
-        multiplexer.addProcessor(new InputAdapter(){
+            InputMultiplexer multiplexer = new InputMultiplexer();
+            multiplexer.addProcessor(gestureDetector);
+            multiplexer.addProcessor(new InputAdapter() {
 
-            @Override
-            public boolean touchDown (int x, int y, int pointer, int button) {
+                @Override
+                public boolean touchDown(int x, int y, int pointer, int button) {
 
-                float x1 = Gdx.input.getX();
-                float y1 = Gdx.input.getY();
-                input = new Vector3(x1, y1, 0);
-                touchDownInput = new Vector3(x1, y1, 0);
 
-                gamePort.unproject(input);
-                gamePort.unproject(touchDownInput);
+                    System.out.println("TOUCHDOWN");
 
-                boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
+                    float x1 = Gdx.input.getX();
+                    float y1 = Gdx.input.getY();
+                    input = new Vector3(x1, y1, 0);
+                    touchDownInput = new Vector3(x1, y1, 0);
 
-                if(!tapped) {
-                    map.getActiveRoom().getWizard().startFiring();
+                    gamePort.unproject(input);
+                    gamePort.unproject(touchDownInput);
+
+                    boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
+
+                    if (!tapped) {
+                        map.getActiveRoom().getWizard().startFiring();
+                    }
+
+
+                    //This is so inputs match up to the game co-ordinates.
+                    // your touch down code here
+                    return true; // return true to indicate the event was handled
                 }
 
-                //This is so inputs match up to the game co-ordinates.
-                // your touch down code here
-                return true; // return true to indicate the event was handled
-            }
+                @Override
+                public boolean touchUp(int x, int y, int pointer, int button) {
 
-            @Override
-            public boolean touchUp (int x, int y, int pointer, int button) {
+                    float x1 = Gdx.input.getX();
+                    float y1 = Gdx.input.getY();
+                    touchUpInput = new Vector3(x1, y1, 0);
 
-                float x1 = Gdx.input.getX();
-                float y1 = Gdx.input.getY();
-                touchUpInput = new Vector3(x1, y1, 0);
+                    gamePort.unproject(touchUpInput);
 
-                gamePort.unproject(touchUpInput);
+                    if (map.getActiveRoom().getWizard().isCharing()) {
+                        map.getActiveRoom().getWizard().dispel(touchDownInput, touchUpInput);
+                    }
 
-                if(map.getActiveRoom().getWizard().isCharing()){
-                    map.getActiveRoom().getWizard().dispell(touchDownInput, touchUpInput);
+                    map.getActiveRoom().getWizard().stopFiring();
+                    // your touch down code here
+                    return true; // return true to indicate the event was handled
                 }
 
-                map.getActiveRoom().getWizard().stopFiring();
-                // your touch down code here
-                return true; // return true to indicate the event was handled
-            }
 
+            });
 
+            Gdx.input.setInputProcessor(multiplexer);
 
-        });
-
-        Gdx.input.setInputProcessor(multiplexer);
+        } else {
+            Gdx.input.setInputProcessor(null);
+        }
 
     }
 
@@ -217,15 +225,22 @@ public class PlayScreen implements Screen {
             //This is so inputs match up to the game co-ordinates.
             gamePort.unproject(input);
 
-            System.out.println("Input X is: " + input.x);
-            System.out.println("Input Y is: " + input.y);
+
+            //System.out.println("Is wizard not firing?" + !map.getActiveRoom().getWizard().isFiring());
+
+            map.getActiveRoom().shift(input.x);
+            map.getActiveRoom().getWizard().stopFiring();
+
+            System.out.println("INSIDE TAP");
+
             //map.getActiveRoom().itemGet(input.x, input.y);
-            return false;
+            return true;
         }
 
         @Override
         public boolean longPress(float x, float y) {
-            return false;
+            System.out.println("LongPress");
+            return true;
         }
 
         @Override
