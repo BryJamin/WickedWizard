@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
+import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.player.Wizard;
 
@@ -18,7 +19,7 @@ public class Map {
 
     public Map(){
 
-        rooms = new Room[]{null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), null};
+        rooms = new Room[]{null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null};
         roomSetup();
         activeRoom = 1;
 
