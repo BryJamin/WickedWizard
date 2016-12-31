@@ -72,7 +72,7 @@ public class PlayScreen implements Screen {
         //Starts in the middle of the screen, on the 1/4 thingie.
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gamePort = new FitViewport(map.getActiveRoom().WIDTH, map.getActiveRoom().HEIGHT + 250, gamecam);
+        gamePort = new FitViewport(map.getActiveRoom().WIDTH, map.getActiveRoom().HEIGHT, gamecam);
 
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -91,7 +91,7 @@ public class PlayScreen implements Screen {
                 public boolean touchDown(int x, int y, int pointer, int button) {
 
 
-                    System.out.println("TOUCHDOWN");
+                    //System.out.println("TOUCHDOWN");
 
                     float x1 = Gdx.input.getX();
                     float y1 = Gdx.input.getY();
@@ -172,7 +172,7 @@ public class PlayScreen implements Screen {
         map.draw(game.batch);
 
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
-            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().HEIGHT + (150),MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().HEIGHT - 150,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
         game.batch.end();
@@ -231,7 +231,8 @@ public class PlayScreen implements Screen {
             map.getActiveRoom().shift(input.x);
             map.getActiveRoom().getWizard().stopFiring();
 
-            System.out.println("INSIDE TAP");
+            System.out.println("X is " + input.x);
+            System.out.println("Y is " + input.y);
 
             //map.getActiveRoom().itemGet(input.x, input.y);
             return true;

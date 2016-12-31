@@ -80,6 +80,13 @@ blob_attack
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 0
+blob_attack
+  rotate: false
+  xy: 980, 181
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 1
 blob_attack
   rotate: false
@@ -88,13 +95,6 @@ blob_attack
   orig: 32, 32
   offset: 0, 0
   index: 2
-blob_attack
-  rotate: false
-  xy: 980, 181
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 0
 blob_dying
   rotate: false
   xy: 432, 68
@@ -171,7 +171,7 @@ brick
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: -1
+  index: 0
 bullet
   rotate: false
   xy: 200, 21
@@ -402,14 +402,14 @@ squ_walk
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
+  index: 4
 squ_walk
   rotate: false
   xy: 332, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 0
 squ_firing
   rotate: false
   xy: 914, 83
@@ -459,3 +459,121 @@ wiz
   orig: 32, 32
   offset: 0, 0
   index: -1
+
+sprite2.png
+size: 256,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background/brick
+  rotate: false
+  xy: 2, 398
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+background/brick
+  rotate: false
+  xy: 2, 332
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+background/brick
+  rotate: false
+  xy: 68, 398
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+background/brick
+  rotate: false
+  xy: 2, 266
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+background/brick
+  rotate: false
+  xy: 68, 332
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+background/brick
+  rotate: false
+  xy: 134, 398
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+background/brick
+  rotate: false
+  xy: 2, 200
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+background/brick
+  rotate: false
+  xy: 68, 266
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+background/brick
+  rotate: false
+  xy: 134, 332
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 8
+background/brick
+  rotate: false
+  xy: 2, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 9
+background/brick
+  rotate: false
+  xy: 68, 200
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 10
+background/brick
+  rotate: false
+  xy: 134, 266
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 11
+background/brick
+  rotate: false
+  xy: 2, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 12
+background/brick
+  rotate: false
+  xy: 68, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 13
+background/brick
+  rotate: false
+  xy: 134, 200
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 14
+background/brick
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 15

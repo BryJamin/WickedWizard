@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.maps.rooms;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -10,6 +11,8 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
+import com.byrjamin.wickedwizard.maps.rooms.helper.Bleeding;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
@@ -89,11 +92,14 @@ public class Room {
 
 
     private RoomTransition roomTransition;
+    private RoomBackground roomBackground;
 
 
     public enum EVENT {
         WAVE, ITEM, IMP, BOSS
     }
+
+    private TextureRegion groundTexture;
 
     Array<EVENT> day;
 
@@ -105,7 +111,7 @@ public class Room {
 
         ig = new ItemGenerator();
         wizard = new Wizard(0, 0);
-        ground = new Rectangle(0,0, WIDTH, MainGame.GAME_UNITS * 10);
+        ground = new Rectangle(0,0, WIDTH, 200);
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
         platforms.add(ground);
@@ -122,6 +128,9 @@ public class Room {
         leftArrow.setFlip(true, true);
 
 
+        groundTexture = PlayScreen.atlas.findRegion("brick");
+        //Bleeding.fixBleeding(groundTexture);
+
         sectionSetup();
 
         state = STATE.ENTRY;
@@ -129,6 +138,8 @@ public class Room {
 
         roomTransition = new RoomTransition(WIDTH, HEIGHT);
         roomTransition.enterFromLeft();
+
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("background/brick"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
 
     }
 
@@ -147,7 +158,6 @@ public class Room {
         //TODO this only really works if the length of the array is odd.
         currentSection = (sectionCenters.length - 1) / 2;
     }
-
 
     public void update(float dt, OrthographicCamera gamecam){
 
@@ -221,13 +231,17 @@ public class Room {
      * @param input_x
      */
     public void shift(float input_x){
-        if(state != STATE.ENTRY && state != STATE.EXIT && !wizard.isDashing()) {
+        if(state != STATE.ENTRY && state != STATE.EXIT && !wizard.isDashing() && !wizard.isFiring()) {
             if (input_x <= wizard.getCenterX()) {
                 shiftWizardLeft();
             } else {
                 shiftWizardRight();
             }
         }
+
+
+        System.out.println("Current Section is: " + currentSection);
+
     }
 
     /**
@@ -253,13 +267,14 @@ public class Room {
 
     public void draw(SpriteBatch batch){
 
+        roomBackground.draw(batch);
         wizard.draw(batch);
         arenaSpawner.draw(batch);
         enemyBullets.draw(batch);
 
 
         for(Vector2 v : groundTileTextureCoords){
-            batch.draw(PlayScreen.atlas.findRegion("brick"), v.x, v.y, tile_width, tile_height);
+            batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
         }
 
         if(state == STATE.UNLOCKED) {
@@ -296,12 +311,20 @@ public class Room {
         //Assuming were using square tiles here
         float columns = ground_width / tile_width;
 
-        for(int i = 0; i < columns; i++){
-            for(int j = 0; j < rows; j++){
-                groundTileTextureCoords.add(new Vector2((i * tile_height),(j * tile_width)));
+        for(float i = 0; i < columns; i++){
+            for(float j = 0; j < rows; j++){
+                groundTileTextureCoords.add(new Vector2(((i * tile_height - 5)),(j * tile_width - 5)));
             }
         }
 
+
+        for(Vector2 v : groundTileTextureCoords){
+            System.out.println("Co-ordinates are (" + v.x +"," + v.y + ")");
+        }
+
+
+        System.out.println("Tile width is" + tile_width);
+        System.out.println("Tile height is" + tile_height);
 
 
     }

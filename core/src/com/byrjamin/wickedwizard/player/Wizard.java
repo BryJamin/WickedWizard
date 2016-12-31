@@ -219,7 +219,8 @@ public class Wizard {
 
     public boolean dashUpdate(float dt){
         if(dashTarget <= getCenterX()){
-            this.moveLeft(dt);
+            position.x = position.x - MOVEMENT * dt;
+            boundsUpdate();
             if(this.getCenterX() <= dashTarget){
                 this.setCenterX(dashTarget);
                 return false;
@@ -227,7 +228,8 @@ public class Wizard {
         }
 
         if(dashTarget >= getCenterX()){
-            this.moveRight(dt);
+            position.x = position.x + MOVEMENT * dt;
+            boundsUpdate();
             if(this.getCenterX() >= dashTarget){
                 this.setCenterX(dashTarget);
                 return false;
@@ -239,8 +241,9 @@ public class Wizard {
     }
 
     public void reduceHealth(float i){
-
-        //health -= i;
+        if(!dashing) {
+            health -= i;
+        }
     }
 
     public Vector2 getCenter(){

@@ -202,11 +202,11 @@ public class BiggaBlobba extends Enemy {
 
 
         }
-        System.out.println(position.y <= a.groundHeight());
+/*        System.out.println(position.y <= a.groundHeight());
         System.out.println(position.y);
-        System.out.println(a.groundHeight());
+        System.out.println(a.groundHeight());*/
         if(position.y <= a.groundHeight()) {
-            System.out.println(position.y <= a.groundHeight());
+/*            System.out.println(position.y <= a.groundHeight());*/
             isLanded = true;
         }
 
