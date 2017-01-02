@@ -17,26 +17,6 @@ public class BoundsDrawer {
     private static ShapeRenderer shapeRenderer;
 
     /**
-     * Draws the bounds of a single Rectangle
-     * @param batch - SpriteBatch
-     * @param r - Rectangle
-     */
-    public static void drawBounds(SpriteBatch batch, Rectangle r){
-        initialize();
-
-        batch.end();
-
-        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(r.getX(),r.getY(),r.getWidth(), r.getHeight());
-        shapeRenderer.end();
-
-        batch.begin();
-    }
-
-
-    /**
      * Draws the boundarys of an Array of Rectangles
      * @param batch - The SpriteBatch
      * @param bounds - Rectangle Array

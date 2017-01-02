@@ -31,7 +31,7 @@ public class BattleRoom extends Room {
             } else {
                 state = STATE.LOCKED;
                 if (getArenaSpawner().areAllEnemiesKilled()) {
-                    arenaWaves.nextWave(this.getEnemies());
+                    arenaWaves.nextWaveTest(this.getEnemies());
                     numberOfWaves--;
                     System.out.println("NUMBER OF WAVES: " + numberOfWaves);
                 }

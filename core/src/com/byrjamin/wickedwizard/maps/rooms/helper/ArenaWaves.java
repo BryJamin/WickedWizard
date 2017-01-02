@@ -61,7 +61,7 @@ public class ArenaWaves {
 
     public void blob4(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
+        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
         e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
@@ -78,10 +78,10 @@ public class ArenaWaves {
 
     private Waves[] spawnWave = new Waves[] {
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob(enemies); } },
-           /* new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob3(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },*/
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },
     };
 
 
@@ -125,9 +125,14 @@ public class ArenaWaves {
 
 
     public Array<Array<Enemy>> getIncomingWaves() {
-
-
-
         return incomingWaves;
     }
+
+    public void nextWaveTest(Array<Enemy> enemies){
+
+        Random r = new Random();
+        spawnWave[r.nextInt(spawnWave.length)].spawnWave(enemies);
+    }
+
+
 }
