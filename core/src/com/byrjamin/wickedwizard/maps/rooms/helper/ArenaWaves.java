@@ -40,8 +40,8 @@ public class ArenaWaves {
 
     public void blob(Array<Enemy> e){
         e.clear();
-        //e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
-        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.groundHeight()).build());
+        e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
+        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
     }
 
 

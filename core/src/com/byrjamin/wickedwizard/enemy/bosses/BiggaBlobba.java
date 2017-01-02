@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.enemy.Enemy;
@@ -28,6 +29,12 @@ import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 public class BiggaBlobba extends Enemy {
 
 
+    private final Rectangle lowerBody;
+    private final Rectangle upperBody;
+    private final Rectangle upperupperupperBody;
+    private final Rectangle upperupperBody;
+    private final Rectangle crown;
+
     private float TEXTURE_HEIGHT = Measure.units(45);
     private float TEXTURE_WIDTH = Measure.units(45);
 
@@ -46,6 +53,7 @@ public class BiggaBlobba extends Enemy {
     private float lowerbodyHeight;
 
 
+    private GravMaster2000 g2000 = new GravMaster2000();
 
     private Vector2 position;
     private Vector2 velocity;
@@ -96,21 +104,21 @@ public class BiggaBlobba extends Enemy {
         //17 to 15
 
         //Lower Body
-        Rectangle lowerBody = new Rectangle(posX + Measure.units(6), posY, BOUNDS_WIDTH, Measure.units(17));
+        lowerBody = new Rectangle(posX + Measure.units(6), posY, BOUNDS_WIDTH, Measure.units(17));
 
-        Rectangle upperBody = new Rectangle(posX + Measure.units(8),
+        upperBody = new Rectangle(posX + Measure.units(8),
                 lowerBody.getY() + lowerBody.getHeight(),
                 Measure.units(29), Measure.units(5));
 
-        Rectangle upperupperBody = new Rectangle(posX + Measure.units(10),
+        upperupperBody = new Rectangle(posX + Measure.units(10),
                 upperBody.getY() + upperBody.getHeight(),
                 Measure.units(26), Measure.units(5));
 
-        Rectangle upperupperupperBody = new Rectangle(posX + Measure.units(14),
+        upperupperupperBody = new Rectangle(posX + Measure.units(14),
                 upperupperBody.getY() + upperupperBody.getHeight(),
                 Measure.units(17), Measure.units(3));
 
-        Rectangle crown = new Rectangle(posX + Measure.units(18),
+        crown = new Rectangle(posX + Measure.units(18),
                 upperupperupperBody.getY() + upperupperupperBody.getHeight(),
                 Measure.units(9),
                 Measure.units(9));
@@ -163,7 +171,7 @@ public class BiggaBlobba extends Enemy {
         littleSlimer.update(dt);
 
         if(littleSlimer.isReady()){
-            a.getEnemies().add(EnemyPresets.smallBlob(position.x + Measure.units(15), a.HEIGHT));
+            a.getEnemies().add(EnemyPresets.smallBlob(a.WIDTH, 0));
             slimeCount --;
         }
 
@@ -218,49 +226,40 @@ public class BiggaBlobba extends Enemy {
      * Bigga blobba bounces with a variances of 2 units.
      */
     public void jump(){
-        this.velocity.y = 50;
+        g2000.jump(25);
     }
 
     public void applyGravity(float dt, Room room){
 
 
+        g2000.update(dt, position, room.getPlatforms());
+        bounds.get(0).y = position.y;
 
-        if(velocity.y <= 0){
-            //System.out.println(isFalling);
-            Rectangle r = room.getOverlappingRectangle(bounds.get(0));
-            if(r != null) {
-                //this.getSprite().setY(r.getY() + r.getHeight());
-                isFalling = false;
-            } else {
-                this.velocity.add(0, GRAVITY * dt);
-                position.add(velocity);
+        this.velocity.add(0, GRAVITY * dt);
 
+        boolean canAdd = true;
 
-                for(Rectangle bound : bounds) {
-                    Vector2 temp = new Vector2();
-                    bound.getPosition(temp);
-                    temp.add(velocity);
-                    bound.setPosition(temp);
+/*        for (Rectangle r : room.getPlatforms()){
+            if(r.overlaps(bounds.get(0)) || r.getY() + r.getHeight() == position.y ){
+                if(position.y + velocity.y >= (r.y + r.getHeight())){
+                    //Allows for jumping
+                    position.add(velocity);
+                    bounds.get(0).setY(position.y);
+                    break;
+                } else {
+                    position.y = r.y + r.getHeight();
+                    bounds.get(0).setY(position.y);
+                    canAdd = false;
+                    break;
                 }
             }
-        } else {
-
-            this.velocity.add(0, GRAVITY * dt);
-            position.add(velocity);
-
-
-            for(Rectangle bound : bounds) {
-                Vector2 temp = new Vector2();
-                bound.getPosition(temp);
-                temp.add(velocity);
-                bound.setPosition(temp);
-            }
-
-
-
-
-
         }
+
+        if(canAdd){
+            position.add(velocity);
+            bounds.get(0).setY(position.y);
+        }*/
+
     }
 
 
@@ -277,7 +276,7 @@ public class BiggaBlobba extends Enemy {
     @Override
     public void update(float dt, Room r) {
 
-        flashTimer(dt);
+        super.update(dt, r);
         time += dt;
         currentFrame = currentAnimation.getKeyFrame(time);
         applyGravity(dt, r);

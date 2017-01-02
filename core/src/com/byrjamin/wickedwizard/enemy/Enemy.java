@@ -105,7 +105,11 @@ public abstract class Enemy {
         return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
     }
 
-    public abstract void update(float dt, Room r);
+
+
+    public void update(float dt, Room r){
+        flashTimer(dt);
+    };
 
     public Vector2 getPosition() {
         return position;

@@ -127,9 +127,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     @Override
     public void update(float dt, Room r) {
-
-        flashTimer(dt);
-
+        super.update(dt, r);
         if(this.getState() == STATE.ALIVE){
             aliveUpdate(dt, r);
         } else if(this.getState() == STATE.DYING){

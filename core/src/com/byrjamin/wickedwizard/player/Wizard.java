@@ -32,6 +32,10 @@ public class Wizard {
     private float MOVEMENT = Measure.units(200f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
+    private float invinciblityFrames = 1.0f;
+    private float invinciblityTimer;
+    private boolean hitFlash;
+
     private Vector2 position;
     private Vector2 velocity = new Vector2(0, 0);
     private Vector2 gravity = new Vector2(0, -50f);
@@ -74,7 +78,7 @@ public class Wizard {
     private float windUpAnimationTime = 0.02f;
 
     private float animationTime;
-    private float stateTime;
+    private float chargeTime;
 
     private Animation standing;
     private Animation firing;
@@ -111,18 +115,12 @@ public class Wizard {
 
         if(currentState == STATE.STANDING){
             currentAnimation = standing;
-
-            if(Gdx.input.isTouched()){
-                //currentState = STATE.CHARGING;
-            }
-
-            //animationTime = 0;
         }
 
         if(currentState == STATE.CHARGING){
             //reloader.update(dt);
-            stateTime+= dt;
-            if(windUpAnimation.isAnimationFinished(stateTime)){
+            chargeTime += dt;
+            if(windUpAnimation.isAnimationFinished(chargeTime)){
                 currentState = STATE.FIRING;
             }
         }
@@ -137,8 +135,6 @@ public class Wizard {
                 //This is so inputs match up to the game co-ordinates.
                 gamecam.unproject(input);
                 fireProjectile(input.x, input.y);
-                //reloader.update(dt);
-            } else {
                 //reloader.update(dt);
             }
         }
@@ -162,6 +158,7 @@ public class Wizard {
 
         currentFrame = currentAnimation.getKeyFrame(animationTime);
 
+        damageFramesUpdate(dt);
         boundsUpdate();
 
         //System.out.println("STATE IS: " + currentState);
@@ -174,11 +171,13 @@ public class Wizard {
         }
 
 
-        boolean flip = (getDirection() == DIRECTION.LEFT);
-        batch.draw(currentFrame, flip ? position.x + WIDTH : position.x, position.y, flip ? -WIDTH : WIDTH, HEIGHT);
+        if(!hitFlash) {
+            boolean flip = (getDirection() == DIRECTION.LEFT);
+            batch.draw(currentFrame, flip ? position.x + WIDTH : position.x, position.y, flip ? -WIDTH : WIDTH, HEIGHT);
+        }
 
         if(currentState == STATE.CHARGING) {
-            batch.draw(windUpAnimation.getKeyFrame(stateTime), getCenterX() - 250, getCenterY() - 270, 500, 500);
+            batch.draw(windUpAnimation.getKeyFrame(chargeTime), getCenterX() - 250, getCenterY() - 270, 500, 500);
         }
 
         activeBullets.draw(batch);
@@ -187,7 +186,7 @@ public class Wizard {
             b.draw(batch);
         }
 
-        BoundsDrawer.drawBounds(batch, bounds);
+        //BoundsDrawer.drawBounds(batch, bounds);
     }
 
     private void boundsUpdate(){
@@ -242,42 +241,66 @@ public class Wizard {
     }
 
     public void reduceHealth(float i){
-        if(!dashing) {
+        if(!dashing && !isInvunerable()) {
+            invinciblityTimer = invinciblityFrames;
             health -= i;
         }
     }
 
-    public Vector2 getCenter(){
-        return new Vector2(getCenterX(), getCenterY());
+    public boolean isInvunerable(){
+        return invinciblityTimer > 0;
     }
 
-    public void setCenterX(float posX){
-        position.x = posX - WIDTH / 2;
+    public void damageFramesUpdate(float dt){
+
+
+        invinciblityTimer -= dt;
+
+        if(invinciblityTimer < 0.9f){
+            hitFlash = true;
+        }
+
+        if(invinciblityTimer < 0.8f){
+            hitFlash = false;
+        }
+
+        if(invinciblityTimer < 0.7f){
+            hitFlash = true;
+        }
+
+        if(invinciblityTimer < 0.6f){
+            hitFlash = false;
+        }
+
+        if(invinciblityTimer < 0.5f){
+            hitFlash = true;
+        }
+
+
+        if(invinciblityTimer < 0.4f){
+            hitFlash = false;
+        }
+
+        if(invinciblityTimer < 0.3f){
+            hitFlash = true;
+        }
+
+        if(invinciblityTimer < 0.2f){
+            hitFlash = false;
+        }
+
+        if(invinciblityTimer < 0.1f){
+            hitFlash = true;
+        }
+
+        if(invinciblityTimer < 0.0f){
+            hitFlash = false;
+        }
+
+
+
     }
 
-    public float getCenterX(){
-        return position.x + WIDTH /2;
-    }
-
-    public void setCenterY(float posY){
-        position.x = posY - HEIGHT / 2;
-    }
-
-    public float getCenterY(){
-        return position.y + HEIGHT /2;
-    }
-
-    public void increaseDamage(float d){
-        damage += d;
-    }
-
-    public void increaseHealth(int h){
-        health += h;
-    }
-
-    public void addItem(Item i){
-        items.add(i);
-    }
 
 
     public void applyItem(Item i){
@@ -360,6 +383,23 @@ public class Wizard {
 
     }
 
+    public void startFiring() {
+            currentState = STATE.CHARGING;
+            currentAnimation = firing;
+            animationTime = 0;
+            chargeTime = 0;
+
+    }
+
+
+    public void stopFiring() {
+        if(currentState == STATE.FIRING || currentState == STATE.CHARGING){
+            currentState = STATE.STANDING;
+            chargeTime = 0;
+        }
+    }
+
+
     public int getHealth() {
         return health;
     }
@@ -393,22 +433,37 @@ public class Wizard {
         return bounds;
     }
 
-    public void startFiring() {
-            currentState = STATE.CHARGING;
-            currentAnimation = firing;
-            animationTime = 0;
-            stateTime = 0;
-
+    public Vector2 getCenter(){
+        return new Vector2(getCenterX(), getCenterY());
     }
 
-
-    public void stopFiring() {
-        if(currentState == STATE.FIRING || currentState == STATE.CHARGING){
-            currentState = STATE.STANDING;
-            stateTime = 0;
-        }
+    public void setCenterX(float posX){
+        position.x = posX - WIDTH / 2;
     }
 
+    public float getCenterX(){
+        return position.x + WIDTH /2;
+    }
+
+    public void setCenterY(float posY){
+        position.x = posY - HEIGHT / 2;
+    }
+
+    public float getCenterY(){
+        return position.y + HEIGHT /2;
+    }
+
+    public void increaseDamage(float d){
+        damage += d;
+    }
+
+    public void increaseHealth(int h){
+        health += h;
+    }
+
+    public void addItem(Item i){
+        items.add(i);
+    }
 
     public boolean isCharing(){
         return currentState == STATE.CHARGING;
