@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
  * Created by Home on 20/11/2016.
@@ -95,10 +96,10 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
     public Turret(TurretBuilder builder){
         super();
         this.setHealth(builder.health);
-        this.getSprite().setRegion(PlayScreen.atlas.findRegion("blob"));
+        this.getSprite().setRegion(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING));
         this.getSprite().setSize(SQUARE_SIZE * builder.scale, SQUARE_SIZE * builder.scale);
         this.getSprite().setCenter(builder.posX, builder.posY);
-        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, "blob_dying"));
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.BLOB_DYING));
         MOVEMENT = MOVEMENT * builder.speed;
         DEFAULT_SHOT_SPEED = DEFAULT_SHOT_SPEED * builder.shotSpeed;
         reloader = new Reloader(builder.reloadSpeed, builder.initialFiringDelay);
@@ -112,14 +113,14 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
     }
 
     @Override
-    public void update(float dt, Room a) {
+    public void update(float dt, Room r) {
         flashTimer(dt);
         updateMovement(dt);
         if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
         reloader.update(dt);
-        fire(dt,a);
+        fire(dt, r);
     }
 
 

@@ -14,12 +14,13 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.spelltypes.BlastWave;
+import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.spelltypes.blastwaves.DispelWave;
 
 /**
  * Created by Home on 23/10/2016.
@@ -42,7 +43,7 @@ public class Wizard {
     private Rectangle bounds;
 
     private ActiveBullets activeBullets = new ActiveBullets();
-    private Array<BlastWave> blastWaves = new Array<BlastWave>();
+    private Array<DispelWave> dispelWaves = new Array<DispelWave>();
 
     private Reloader reloader;
 
@@ -150,10 +151,10 @@ public class Wizard {
 
         activeBullets.update(dt, gamecam, room.getEnemies());
 
-        for(BlastWave b : blastWaves){
-            b.update(dt);
-            if(b.outOfBounds(room)){
-                blastWaves.removeValue(b, true);
+        for(DispelWave d : dispelWaves){
+            d.update(dt);
+            if(d.outOfBounds(room)){
+                dispelWaves.removeValue(d, true);
             }
         }
 
@@ -182,7 +183,7 @@ public class Wizard {
 
         activeBullets.draw(batch);
 
-        for(BlastWave b : blastWaves){
+        for(BlastWave b : dispelWaves){
             b.draw(batch);
         }
 
@@ -349,10 +350,10 @@ public class Wizard {
         float y2 = touchUpInput.y;
 
         if(Math.abs(x1 - x2) > Measure.units(10) && Math.abs(y1 - y2) < Math.abs(x1 - x2)){
-            blastWaves.add(new BlastWave(getCenterX(), getCenterY(), Dispellable.DISPELL.HORIZONTAL));
+            dispelWaves.add(new DispelWave(getCenterX(), getCenterY(), Dispellable.DISPELL.HORIZONTAL));
             currentState = STATE.STANDING;
         } else if((Math.abs(y1 - y2) > Measure.units(10) && Math.abs(x1 - x2) < Math.abs(y1 - y2))) {
-            blastWaves.add(new BlastWave(getCenterX(), getCenterY(), Dispellable.DISPELL.VERTICAL));
+            dispelWaves.add(new DispelWave(getCenterX(), getCenterY(), Dispellable.DISPELL.VERTICAL));
             currentState = STATE.STANDING;
         }
         currentState = STATE.STANDING;
@@ -429,7 +430,7 @@ public class Wizard {
         this.currentState = currentState;
     }
 
-    public Array<BlastWave> getBlastWaves() {
-        return blastWaves;
+    public Array<DispelWave> getDispelWaves() {
+        return dispelWaves;
     }
 }

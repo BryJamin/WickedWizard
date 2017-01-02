@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
  * Basic starter enemy, used for testing purposes.
@@ -99,23 +100,10 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
     public Blob(BlobBuilder b) {
         super();
 
-        //Will probaably move to an indicies method
-
-
-        walk = AnimationPacker.genAnimation(0.25f / 1f, "blob", Animation.PlayMode.LOOP);
-        attack = AnimationPacker.genAnimation(0.25f / 1f, "blob_attack");
-        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, "blob_dying"));
-
-        currentAnimation = walk;
-
-        time = 0f;
-
         MOVEMENT = b.MOVEMENT;
         scale = b.scale;
         speed = b.speed;
         velocity = new Vector2(0, 0);
-
-        currentFrame = PlayScreen.atlas.findRegion("blob");
 
         HEIGHT = b.HEIGHT * scale;
         WIDTH = b.WIDTH * scale;
@@ -127,16 +115,23 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         this.setHealth(b.health);
         this.setBlob_state(movement.WALKING);
 
+        walk = AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP);
+        attack = AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_ATTACKING);
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.BLOB_DYING));
+
+        currentAnimation = walk;
+        currentFrame = currentAnimation.getKeyFrame(time);
+
         //this.setDyingAnimation();
     }
 
     @Override
-    public void update(float dt, Room room) {
+    public void update(float dt, Room r) {
 
         flashTimer(dt);
 
         if(this.getState() == STATE.ALIVE){
-            aliveUpdate(dt, room);
+            aliveUpdate(dt, r);
         } else if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }

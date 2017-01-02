@@ -16,7 +16,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.maps.Map;
 import com.byrjamin.wickedwizard.player.ActiveBullets;
 import com.byrjamin.wickedwizard.enemy.EnemyBullets;
-import com.byrjamin.wickedwizard.spelltypes.BlastWave;
+import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 
 
 //TODO

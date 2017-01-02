@@ -11,17 +11,16 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
-import com.byrjamin.wickedwizard.maps.rooms.helper.Bleeding;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
 import com.byrjamin.wickedwizard.enemy.EnemyBullets;
-import com.byrjamin.wickedwizard.spelltypes.BlastWave;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.spelltypes.blastwaves.DispelWave;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -136,8 +135,8 @@ public class Room {
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
 
-        roomTransition = new RoomTransition(WIDTH, HEIGHT);
-        roomTransition.enterFromLeft();
+       // roomTransition = new RoomTransition(WIDTH, HEIGHT);
+       // roomTransition.enterFromLeft();
 
         roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("background/brick"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
 
@@ -165,9 +164,9 @@ public class Room {
 
         if(state == STATE.ENTRY) {
 
-            roomTransition.update(dt);
+           // roomTransition.update(dt);
 
-            if(roomTransition.isFinished()){
+           // if(roomTransition.isFinished()){
 
                 boolean inPosition = false;
 
@@ -194,17 +193,17 @@ public class Room {
                 if(inPosition) {
                     state = STATE.UNLOCKED;
                 }
-            }
+           // }
 
         } else {
             
             arenaSpawner.update(dt, this);
             enemyBullets.update(dt, gamecam, this.getWizard());
 
-            for (BlastWave b : wizard.getBlastWaves()) {
+            for (DispelWave d : wizard.getDispelWaves()) {
                 for (int i = 0; i < EnemyBullets.activeBullets.size; i++) {
-                    if (b.collides(EnemyBullets.activeBullets.get(i).getSprite().getBoundingRectangle())) {
-                        EnemyBullets.activeBullets.get(i).dispellProjectile(b.getDispelDirection());
+                    if (d.collides(EnemyBullets.activeBullets.get(i).getSprite().getBoundingRectangle())) {
+                        EnemyBullets.activeBullets.get(i).dispellProjectile(d.getDispelDirection());
                     }
                 }
             }
@@ -219,7 +218,7 @@ public class Room {
             }
 
             if (isWizardOfScreen()) {
-                roomTransition.update(dt);
+              //  roomTransition.update(dt);
             }
         }
 
@@ -268,10 +267,11 @@ public class Room {
     public void draw(SpriteBatch batch){
 
         roomBackground.draw(batch);
-        wizard.draw(batch);
+
+
         arenaSpawner.draw(batch);
         enemyBullets.draw(batch);
-
+        wizard.draw(batch);
 
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
@@ -296,7 +296,7 @@ public class Room {
         }
 
         if(roomTransition != null){
-            roomTransition.draw(batch);
+           // roomTransition.draw(batch);
         }
 
     }
@@ -316,17 +316,6 @@ public class Room {
                 groundTileTextureCoords.add(new Vector2(((i * tile_height - 5)),(j * tile_width - 5)));
             }
         }
-
-
-        for(Vector2 v : groundTileTextureCoords){
-            System.out.println("Co-ordinates are (" + v.x +"," + v.y + ")");
-        }
-
-
-        System.out.println("Tile width is" + tile_width);
-        System.out.println("Tile height is" + tile_height);
-
-
     }
 
 
@@ -337,12 +326,12 @@ public class Room {
         switch(entry_point){
             case LEFT:
                 wizard.setX(0);
-                roomTransition.enterFromLeft();
+               // roomTransition.enterFromLeft();
 
                 break;
             case RIGHT:
                 wizard.setX(WIDTH);
-                roomTransition.enterFromRight();
+               // roomTransition.enterFromRight();
         }
 
     }
@@ -360,7 +349,8 @@ public class Room {
 
 
     public boolean isExitTransitionFinished(){
-        return roomTransition.isFinished() && state == STATE.EXIT;
+        //return roomTransition.isFinished() && state == STATE.EXIT;
+        return isWizardOfScreen() && state == STATE.EXIT;
     }
 
 
@@ -370,8 +360,8 @@ public class Room {
             if(rightArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
                 exit_point = EXIT_POINT.RIGHT;
-                roomTransition.exitToRight();
-                System.out.println("INSIDE RIGHT ARROW METHOD");
+               // roomTransition.exitToRight();
+               // System.out.println("INSIDE RIGHT ARROW METHOD");
                 return true;
             }
         }
@@ -381,8 +371,8 @@ public class Room {
             if(leftArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
                 exit_point = EXIT_POINT.LEFT;
-                roomTransition.exitToLeft();
-                System.out.println("INSIDE LEFT ARROW METHOD");
+               // roomTransition.exitToLeft();
+               // System.out.println("INSIDE LEFT ARROW METHOD");
                 return true;
             }
         }
@@ -484,5 +474,9 @@ public class Room {
 
     public boolean isUnlocked(){
         return state == state.UNLOCKED;
+    }
+
+    public float[] getSectionCenters() {
+        return sectionCenters;
     }
 }

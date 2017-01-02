@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -23,22 +24,12 @@ public class Explosion {
 
     public Explosion(float posX, float posY){
 
-        sprite = PlayScreen.atlas.createSprite("explosion0");
+        sprite = PlayScreen.atlas.createSprite("explosion");
         sprite.setSize((float) MainGame.GAME_UNITS * 12, MainGame.GAME_UNITS * 12);
        // sprite.setPosition(posX - sprite.getWidth() / 2, posY - sprite.getHeight() / 2);
         sprite.setCenter(posX, posY);
 
-        Array<TextureRegion> animation;
-
-        animation = new Array<TextureRegion>();
-
-        // Create an array of TextureRegions
-        animation.add(PlayScreen.atlas.findRegion("explosion0"));
-        animation.add(PlayScreen.atlas.findRegion("explosion1"));
-        animation.add(PlayScreen.atlas.findRegion("explosion2"));
-        animation.add(PlayScreen.atlas.findRegion("explosion3"));
-
-        explosion_animation = new Animation(0.07f / 1f, animation);
+        explosion_animation = AnimationPacker.genAnimation(0.05f / 1f, "explosion");
 
         time = 0;
 

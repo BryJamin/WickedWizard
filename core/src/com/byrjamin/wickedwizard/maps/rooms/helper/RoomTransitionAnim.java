@@ -40,7 +40,7 @@ public class RoomTransitionAnim {
     private float distancePerSecondX;
     private float distancePerSecondY;
 
-    private float durationInSeconds = 0.25f;
+    private float durationInSeconds = 0.15f;
 
     private Vector2 velocity;
 

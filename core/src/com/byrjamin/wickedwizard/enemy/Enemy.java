@@ -29,7 +29,7 @@ public abstract class Enemy {
     public boolean isFlashing;
 
     private float flashTimer;
-    public float time;
+    public float time = 0;
 
     private Animation dyingAnimation;
 
@@ -105,7 +105,7 @@ public abstract class Enemy {
         return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
     }
 
-    public abstract void update(float dt, Room a);
+    public abstract void update(float dt, Room r);
 
     public Vector2 getPosition() {
         return position;

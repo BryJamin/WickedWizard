@@ -58,6 +58,23 @@ public class BoundsDrawer {
         batch.begin();
     }
 
+    public static void drawBounds(SpriteBatch batch, Rectangle... bounds){
+        initialize();
+
+        batch.end();
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.WHITE);
+        for(Rectangle r : bounds) {
+            shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        }
+        shapeRenderer.end();
+
+
+        batch.begin();
+    }
+
 
     /**
      * Initializes the Global ShapeRenderer.

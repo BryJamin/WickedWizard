@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
@@ -144,17 +145,7 @@ public class Projectile {
         time = 0;
         state = STATE.ALIVE;
 
-        Array<TextureRegion> animation;
-
-        animation = new Array<TextureRegion>();
-
-        // Create an array of TextureRegions
-        animation.add(PlayScreen.atlas.findRegion("explosion0"));
-        animation.add(PlayScreen.atlas.findRegion("explosion1"));
-        animation.add(PlayScreen.atlas.findRegion("explosion2"));
-        animation.add(PlayScreen.atlas.findRegion("explosion3"));
-
-        explosion_animation = new Animation(0.07f / 1f, animation);
+        explosion_animation = AnimationPacker.genAnimation(0.05f / 1f, "explosion");
 
         if(gravity) {
             velocity = new Vector2(0, (float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));

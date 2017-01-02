@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.enemy.EnemyPresets;
+import com.byrjamin.wickedwizard.enemy.enemies.SilverHead;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 
 import java.util.Arrays;
@@ -39,8 +40,11 @@ public class ArenaWaves {
 
     public void blob(Array<Enemy> e){
         e.clear();
-        e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
+        //e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
+        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.groundHeight()).build());
     }
+
+
 
     public void blob2(Array<Enemy> e){
         e.clear();
@@ -74,10 +78,10 @@ public class ArenaWaves {
 
     private Waves[] spawnWave = new Waves[] {
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
+           /* new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob3(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },*/
     };
 
 

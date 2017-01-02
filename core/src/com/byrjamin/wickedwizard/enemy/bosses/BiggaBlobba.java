@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
  * Created by Home on 16/12/2016.
@@ -85,7 +86,7 @@ public class BiggaBlobba extends Enemy {
 
         shapeRenderer = new ShapeRenderer();
 
-        this.setHealth(100);
+        this.setHealth(75);
 
         velocity = new Vector2();
         position = new Vector2(posX, posY);
@@ -121,8 +122,8 @@ public class BiggaBlobba extends Enemy {
         bounds.add(upperupperupperBody);
         bounds.add(crown);
 
-        currentFrame = PlayScreen.atlas.findRegion("biggablobba");
-        walk = AnimationPacker.genAnimation(1 / 20f, "biggablobba", Animation.PlayMode.LOOP_PINGPONG);
+        currentFrame = PlayScreen.atlas.findRegion(TextureStrings.BIGGABLOBBA_STANDING);
+        walk = AnimationPacker.genAnimation(1 / 20f, TextureStrings.BIGGABLOBBA_STANDING, Animation.PlayMode.LOOP_PINGPONG);
         currentAnimation = walk;
 
         //bounce();
@@ -274,12 +275,12 @@ public class BiggaBlobba extends Enemy {
 
 
     @Override
-    public void update(float dt, Room room) {
+    public void update(float dt, Room r) {
 
         flashTimer(dt);
         time += dt;
         currentFrame = currentAnimation.getKeyFrame(time);
-        applyGravity(dt, room);
+        applyGravity(dt, r);
         boundsUpdate();
 
         if(this.getHealth() <= 0 ){
@@ -289,18 +290,18 @@ public class BiggaBlobba extends Enemy {
         if(state == STATE.ALIVE) {
 
             if (phase == PHASE.PHASE1) {
-                phase1Update(dt, room);
+                phase1Update(dt, r);
             } else if (phase == PHASE.PHASE2) {
-                phase2Update(dt, room);
+                phase2Update(dt, r);
             }
 
-            if (this.getHealth() < (100 / 2)) {
+            if (this.getHealth() < (75 / 2)) {
                 currentAnimation.setFrameDuration(1 / 40f);
             }
 
             for (Rectangle bound : bounds) {
-                if (bound.overlaps(room.getWizard().getBounds())) {
-                    room.getWizard().reduceHealth(1);
+                if (bound.overlaps(r.getWizard().getBounds())) {
+                    r.getWizard().reduceHealth(1);
                 }
             }
 
