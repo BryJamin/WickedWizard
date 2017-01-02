@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 public class GravMaster2000 {
 
 
-    private float GRAVITY = -100;
+    private float GRAVITY = -75;
     private Vector2 gravity;
 
     public GravMaster2000(){
@@ -27,12 +27,12 @@ public class GravMaster2000 {
         for (Rectangle r : platforms){
             if(r.contains(position.x, position.y) || r.getY() + r.getHeight() <= position.y ){
                 if(position.y + gravity.y >= (r.y + r.getHeight())){
-                    System.out.println("INSIDE 1");
+                    //System.out.println("INSIDE 1");
                     //Allows for jumping
                     position.add(gravity);
                     break;
                 } else {
-                    System.out.println("INSIDE 2");
+                    //System.out.println("INSIDE 2");
                     position.y = r.y + r.getHeight();
                     canAdd = false;
                     break;

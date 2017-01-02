@@ -125,47 +125,41 @@ public class SilverHead extends Enemy {
             if(b.collides(r.getWizard().getBounds())){
                 r.getWizard().reduceHealth(1);
             }
+
+            if(b.outOfBounds(r)){
+                blastWaveArray.removeValue(b, true);
+            }
+
         }
 
         if(action == ACTION.STANDING){
-            currentAnimation = standingAnimation;
             standingTime.update(dt);
 
             if(standingTime.isFinished()){
                 standingTime.reset();
                 action = ACTION.CLOSING;
-                time = 0;
+                changeAnimation(closingAnimation);
             }
 
         } else if(action == ACTION.CHARGING){
-            currentAnimation = chargingAnimation;
-
             if(currentAnimation.isAnimationFinished(time)){
                 action = ACTION.OPENING;
-                time = 0;
-
+                changeAnimation(openingAnimation);
                 BlastWave b = new BlastWave(this.position.x + WIDTH / 2, this.position.y + HEIGHT / 2);
                 b.setSpeed(0.25f);
-
                 blastWaveArray.add(b);
             }
 
         } else if(action == ACTION.CLOSING) {
-            currentAnimation = closingAnimation;
-
             if(currentAnimation.isAnimationFinished(time)){
                 action = ACTION.CHARGING;
-                currentAnimation = chargingAnimation;
-                time = 0;
+                changeAnimation(chargingAnimation);
             }
 
         } else if(action == ACTION.OPENING){
-            currentAnimation = openingAnimation;
-
             if(currentAnimation.isAnimationFinished(time)){
                 action = ACTION.STANDING;
-                currentAnimation = standingAnimation;
-                time = 0;
+                changeAnimation(standingAnimation);
             }
 
         }
@@ -177,6 +171,12 @@ public class SilverHead extends Enemy {
 
 
 
+    }
+
+
+    public void changeAnimation(Animation a){
+        currentAnimation = a;
+        time = 0;
     }
 
     public boolean isHit(Rectangle r){
