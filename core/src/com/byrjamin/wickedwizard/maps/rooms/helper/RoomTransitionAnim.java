@@ -54,8 +54,6 @@ public class RoomTransitionAnim {
         this.endX = endX;
         this.endY = endY;
 
-        this.durationInSeconds = durationInSeconds;
-
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
 

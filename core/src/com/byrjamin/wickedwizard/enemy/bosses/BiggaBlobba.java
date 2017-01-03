@@ -237,17 +237,6 @@ public class BiggaBlobba extends Enemy {
 
     }
 
-
-    public boolean isHit(Rectangle r){
-        for(Rectangle bound: bounds){
-            if((state == STATE.ALIVE) && bound.overlaps(r)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     @Override
     public void update(float dt, Room r) {
 

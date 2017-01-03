@@ -351,9 +351,11 @@ public class Projectile {
      */
     public void multipleTargetProjectileDamageCheck(Array<Enemy> e) {
         for (Enemy enemy : e) {
-            if(getSprite().getBoundingRectangle().overlaps(enemy.getSprite().getBoundingRectangle())){
-                explosionHit(getSprite(), getAreaOfEffect(), e);
-                return;
+            for(Rectangle r : enemy.getBounds()){
+                if(getSprite().getBoundingRectangle().overlaps(r)){
+                    explosionHit(getSprite(), getAreaOfEffect(), e);
+                    return;
+                }
             }
         }
     }

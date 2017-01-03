@@ -34,7 +34,8 @@ public class Wizard {
 
     private float invinciblityFrames = 1.0f;
     private float invinciblityTimer;
-    private boolean hitFlash;
+    private float blinkTimer;
+    private boolean isInvisible;
 
     private Vector2 position;
     private Vector2 velocity = new Vector2(0, 0);
@@ -174,7 +175,7 @@ public class Wizard {
         }
 
 
-        if(!hitFlash) {
+        if(!isInvisible) {
             boolean flip = (getDirection() == DIRECTION.LEFT);
             batch.draw(currentFrame, flip ? position.x + WIDTH : position.x, position.y, flip ? -WIDTH : WIDTH, HEIGHT);
         }
@@ -221,6 +222,7 @@ public class Wizard {
         }
     }
 
+    //TODO can be refactored for sure.
     public boolean dashUpdate(float dt){
 
         if(dashTarget <= getCenterX()){
@@ -258,52 +260,16 @@ public class Wizard {
 
     public void damageFramesUpdate(float dt){
 
-
-        invinciblityTimer -= dt;
-
-        if(invinciblityTimer < 0.9f){
-            hitFlash = true;
+        if(invinciblityTimer >= 0) {
+            invinciblityTimer -= dt;
+            blinkTimer -= dt;
+            if (blinkTimer < 0) {
+                blinkTimer = 0.1f;
+                isInvisible = !isInvisible;
+            }
+        } else {
+            isInvisible = false;
         }
-
-        if(invinciblityTimer < 0.8f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.7f){
-            hitFlash = true;
-        }
-
-        if(invinciblityTimer < 0.6f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.5f){
-            hitFlash = true;
-        }
-
-
-        if(invinciblityTimer < 0.4f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.3f){
-            hitFlash = true;
-        }
-
-        if(invinciblityTimer < 0.2f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.1f){
-            hitFlash = true;
-        }
-
-        if(invinciblityTimer < 0.0f){
-            hitFlash = false;
-        }
-
-
-
     }
 
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -20,9 +21,12 @@ public abstract class Enemy {
         DEAD, DYING, ALIVE
     }
 
-    public STATE state;
+    protected float WIDTH;
+    protected float HEIGHT;
 
-    private Sprite sprite;
+    protected Vector2 position;
+
+    public STATE state;
 
     private float health;
 
@@ -35,31 +39,29 @@ public abstract class Enemy {
 
     protected Array<Rectangle> bounds = new Array<Rectangle>();
 
-    private Vector2 position;
+
+    protected Color drawingColor;
+
+    protected TextureRegion currentFrame;
 
 
     public Enemy(){
-        sprite = new Sprite();
         state = STATE.ALIVE;
         isFlashing = false;
-        bounds.add(sprite.getBoundingRectangle());
     }
 
+
+
     public void draw(SpriteBatch batch){
-        //If the enemy is flashing set the enemy to a darker color.
-
         if(isFlashing) {
-            Color color = getSprite().getColor();
-            this.getSprite().setColor(new Color(0.0f,0.0f,0.0f,0.95f));
-            this.getSprite().draw(batch);
+            Color color = batch.getColor();
+            batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
+            batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
             batch.setColor(color);
-            getSprite().setColor(color);
         } else {
-            this.getSprite().draw(batch);
+            batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
-
         BoundsDrawer.drawBounds(batch, bounds);
-
     }
 
 
@@ -103,13 +105,12 @@ public abstract class Enemy {
 
 
     public boolean isHit(Rectangle r){
-
-        if(state == STATE.ALIVE){
-
+        for(Rectangle bound: bounds){
+            if((state == STATE.ALIVE) && bound.overlaps(r)){
+                return true;
+            }
         }
-
-
-        return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
+        return false;
     }
 
 
@@ -134,14 +135,6 @@ public abstract class Enemy {
         return health;
     }
 
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-    }
-
-    public Sprite getSprite() {
-        return sprite;
-    }
-
     public Animation getDyingAnimation() {
         return dyingAnimation;
     }
@@ -160,9 +153,15 @@ public abstract class Enemy {
 
     public void dyingUpdate(float dt){
         time+=dt;
-        this.getSprite().setRegion(this.getDyingAnimation().getKeyFrame(time));
+
+        currentFrame = this.getDyingAnimation().getKeyFrame(time);
+
         if(this.getDyingAnimation().isAnimationFinished(time)){
             this.setState(STATE.DEAD);
         }
+    }
+
+    public Array<Rectangle> getBounds() {
+        return bounds;
     }
 }
