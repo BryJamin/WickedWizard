@@ -19,7 +19,7 @@ public class Map {
 
     public Map(){
 
-        rooms = new Room[]{null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null};
+        rooms = new Room[]{null, new BossRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null};
         roomSetup();
         activeRoom = 1;
 

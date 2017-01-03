@@ -212,9 +212,13 @@ public class Room {
 
         if (state == STATE.EXIT) {
             if(exit_point == EXIT_POINT.RIGHT) {
-                wizard.moveRight(dt);
+                if(!wizard.isDashing()) {
+                    wizard.moveRight(dt);
+                }
             } else if(exit_point == EXIT_POINT.LEFT){
-                wizard.moveLeft(dt);
+                if(!wizard.isDashing()) {
+                    wizard.moveLeft(dt);
+                }
             }
 
             if (isWizardOfScreen()) {
@@ -268,15 +272,13 @@ public class Room {
 
         roomBackground.draw(batch);
 
-
+        arenaSpawner.draw(batch);
         enemyBullets.draw(batch);
         wizard.draw(batch);
 
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
         }
-
-        arenaSpawner.draw(batch);
 
         if(state == STATE.UNLOCKED) {
 

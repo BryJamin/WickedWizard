@@ -187,7 +187,7 @@ public class SilverHead extends Enemy {
     public void draw(SpriteBatch batch){
         if(isFlashing) {
 
-            System.out.println("Should be flashing");
+            //System.out.println("Should be flashing");
 
             Color color = batch.getColor();
             batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));

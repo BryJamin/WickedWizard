@@ -56,7 +56,7 @@ public class Wizard {
     private float dashTarget;
 
     public enum STATE {
-        CHARGING, FIRING, STANDING,AOECIRCLETHING
+        CHARGING, FIRING, STANDING
     }
 
     private enum DIRECTION {
@@ -75,7 +75,7 @@ public class Wizard {
     private float damage = 1;
     private float reloadRate = 0.3f;
     //private float windUp = 0.5f;
-    private float windUpAnimationTime = 0.02f;
+    private float windUpAnimationTime = 0f;
 
     private float animationTime;
     private float chargeTime;
@@ -83,6 +83,7 @@ public class Wizard {
     private Animation standing;
     private Animation firing;
     private Animation windUpAnimation;
+    private Animation dashAnimation;
     private Animation currentAnimation;
 
     private TextureRegion currentFrame;
@@ -106,6 +107,7 @@ public class Wizard {
         standing = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
         firing = AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
         windUpAnimation = AnimationPacker.genAnimation(windUpAnimationTime, "circle");
+        dashAnimation = AnimationPacker.genAnimation(0.05f, "squ_dash", Animation.PlayMode.LOOP_REVERSED);
 
     }
 
@@ -142,6 +144,7 @@ public class Wizard {
 
 
         if(dashing){
+            currentAnimation = dashAnimation;
             dashing = dashUpdate(dt);
         }
 
@@ -186,7 +189,7 @@ public class Wizard {
             b.draw(batch);
         }
 
-        //BoundsDrawer.drawBounds(batch, bounds);
+        BoundsDrawer.drawBounds(batch, bounds);
     }
 
     private void boundsUpdate(){
@@ -213,11 +216,13 @@ public class Wizard {
     public void dash(float sectionCenter) {
         if(!dashing && !isFiring()) {
             dashing = true;
+            currentAnimation = dashAnimation;
             dashTarget = sectionCenter;
         }
     }
 
     public boolean dashUpdate(float dt){
+
         if(dashTarget <= getCenterX()){
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();

@@ -29,11 +29,11 @@ public abstract class Enemy {
     public boolean isFlashing;
 
     private float flashTimer;
-    public float time = 0;
+    protected float time = 0;
 
     private Animation dyingAnimation;
 
-    private Array<Rectangle> bounds = new Array<Rectangle>();
+    protected Array<Rectangle> bounds = new Array<Rectangle>();
 
     private Vector2 position;
 
@@ -42,6 +42,7 @@ public abstract class Enemy {
         sprite = new Sprite();
         state = STATE.ALIVE;
         isFlashing = false;
+        bounds.add(sprite.getBoundingRectangle());
     }
 
     public void draw(SpriteBatch batch){
@@ -102,6 +103,12 @@ public abstract class Enemy {
 
 
     public boolean isHit(Rectangle r){
+
+        if(state == STATE.ALIVE){
+
+        }
+
+
         return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
     }
 

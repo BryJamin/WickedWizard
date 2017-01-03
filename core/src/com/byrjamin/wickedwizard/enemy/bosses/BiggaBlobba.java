@@ -58,8 +58,6 @@ public class BiggaBlobba extends Enemy {
     private Vector2 position;
     private Vector2 velocity;
 
-    private Array<Rectangle> bounds;
-
     private Animation walk;
 
     private Animation currentAnimation;
@@ -233,32 +231,9 @@ public class BiggaBlobba extends Enemy {
 
 
         g2000.update(dt, position, room.getPlatforms());
-        bounds.get(0).y = position.y;
+        lowerBody.y = position.y;
 
         this.velocity.add(0, GRAVITY * dt);
-
-        boolean canAdd = true;
-
-/*        for (Rectangle r : room.getPlatforms()){
-            if(r.overlaps(bounds.get(0)) || r.getY() + r.getHeight() == position.y ){
-                if(position.y + velocity.y >= (r.y + r.getHeight())){
-                    //Allows for jumping
-                    position.add(velocity);
-                    bounds.get(0).setY(position.y);
-                    break;
-                } else {
-                    position.y = r.y + r.getHeight();
-                    bounds.get(0).setY(position.y);
-                    canAdd = false;
-                    break;
-                }
-            }
-        }
-
-        if(canAdd){
-            position.add(velocity);
-            bounds.get(0).setY(position.y);
-        }*/
 
     }
 
@@ -332,9 +307,9 @@ public class BiggaBlobba extends Enemy {
 
 
             if (frameIndex == 4) {
-                bounds.get(0).setHeight(Measure.units(17f - 2.0f));
+                lowerBody.setHeight(Measure.units(17f - 2.0f));
             } else {
-                bounds.get(0).setHeight(Measure.units(17f - (0.5f * frameIndex)));
+                lowerBody.setHeight(Measure.units(17f - (0.5f * frameIndex)));
             }
 
             for (int i = 1; i < bounds.size; i++) {

@@ -40,17 +40,11 @@ public class PlayScreen implements Screen {
 
     GestureDetector gestureDetector;
 
-    private ActiveBullets activeBullets;
-
     Vector3 input = new Vector3();
     Vector3 touchDownInput = new Vector3();
     Vector3 touchUpInput = new Vector3();
 
     Map map;
-
-    EnemyBullets enemyBullets;
-
-    BlastWave blast;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -58,15 +52,11 @@ public class PlayScreen implements Screen {
     public PlayScreen(MainGame game){
         this.game = game;
 
-        activeBullets = new ActiveBullets();
-
         gestureDetector = new GestureDetector(new gestures());
 
         atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
+
         map = new Map();
-        enemyBullets = new EnemyBullets();
-
-
         gamecam = new OrthographicCamera();
 
         //Starts in the middle of the screen, on the 1/4 thingie.
@@ -103,8 +93,15 @@ public class PlayScreen implements Screen {
 
                     boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
 
+
+
                     if (!tapped) {
-                        map.getActiveRoom().getWizard().startFiring();
+
+                        if(input.y <= map.getActiveRoom().groundHeight()){
+                            map.getActiveRoom().getWizard().dash(input.x);
+                        } else {
+                            map.getActiveRoom().getWizard().startFiring();
+                        }
                     }
 
 
@@ -165,10 +162,6 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        if(blast != null){
-            blast.draw(game.batch);
-        }
-
         map.draw(game.batch);
 
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
@@ -218,7 +211,7 @@ public class PlayScreen implements Screen {
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
-            int x1 = Gdx.input.getX();
+/*            int x1 = Gdx.input.getX();
             int y1 = Gdx.input.getY();
             Vector3 input = new Vector3(x1, y1, 0);
 
@@ -232,10 +225,10 @@ public class PlayScreen implements Screen {
             map.getActiveRoom().getWizard().stopFiring();
 
             System.out.println("X is " + input.x);
-            System.out.println("Y is " + input.y);
+            System.out.println("Y is " + input.y);*/
 
             //map.getActiveRoom().itemGet(input.x, input.y);
-            return true;
+            return false;
         }
 
         @Override
