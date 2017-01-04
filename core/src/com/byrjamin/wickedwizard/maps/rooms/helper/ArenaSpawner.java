@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.maps.rooms.helper;
 
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.enemy.enemies.Blob;
@@ -33,23 +34,32 @@ public class ArenaSpawner {
      */
     public void update(float dt, Room a){
         for(Enemy e : spawnedEnemies){
-            if(e.getState() == Enemy.STATE.DEAD){
+/*            if(e.getState() == Enemy.STATE.DEAD){
                 spawnedEnemies.removeValue(e, true);
-            } else {
+            } else {*/
                 e.update(dt, a);
-            }
+            //}
         }
     }
 
     public void draw(SpriteBatch batch){
         for(Enemy e : spawnedEnemies){
             e.draw(batch);
+            e.bulletDraw(batch);
         }
     }
 
 
     public boolean areAllEnemiesKilled(){
-        return spawnedEnemies.size == 0;
+
+        for(Enemy e : spawnedEnemies) {
+            if(e.getState() == Enemy.STATE.ALIVE){
+                return false;
+            }
+        }
+
+        return true;
+
     }
 
     public Array<Enemy> getSpawnedEnemies() {

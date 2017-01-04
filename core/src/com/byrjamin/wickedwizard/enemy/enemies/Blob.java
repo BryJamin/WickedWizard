@@ -11,7 +11,6 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
@@ -29,7 +28,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     private static final float GRAVITY = -100;
 
-    private Rectangle bounds;
+    private Rectangle hitBoz;
 
     private Vector2 velocity;
     private Vector2 position;
@@ -109,9 +108,12 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         WIDTH = b.WIDTH * scale;
 
         position = new Vector2(b.posX, b.posY);
-        bounds = new Rectangle(b.posX + (Measure.units(1) * scale), b.posY,
+        hitBoz = new Rectangle(b.posX + (Measure.units(1) * scale), b.posY,
                 WIDTH - (Measure.units(2.5f) * scale),
                 HEIGHT - (Measure.units(2.5f) * scale));
+
+        bounds.add(hitBoz);
+
         this.setHealth(b.health);
         this.setBlob_state(movement.WALKING);
 
@@ -133,10 +135,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         } else if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
-
         currentFrame = currentAnimation.getKeyFrame(time);
-
-
     }
 
 
@@ -158,16 +157,16 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
             int direction = room.getWizard().getX() > position.x ? -1 : 1;
             position.x = position.x - MOVEMENT * dt * direction * speed;
-            bounds.x = bounds.x  - MOVEMENT * dt * direction * speed;
+            hitBoz.x = hitBoz.x  - MOVEMENT * dt * direction * speed;
 
-            if(bounds.overlaps(room.getWizard().getBounds())) {
+            if(hitBoz.overlaps(room.getWizard().getBounds())) {
                 currentAnimation = attack;
                 time = 0;
                 this.setBlob_state(movement.ATTACKING);
             }
         } else {
 
-            if(!bounds.overlaps(room.getWizard().getBounds())) {
+            if(!hitBoz.overlaps(room.getWizard().getBounds())) {
                 if(currentAnimation != walk) {
                     currentAnimation = walk;
                     time = 0;
@@ -207,7 +206,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         } else {
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
-        BoundsDrawer.drawBounds(batch, bounds);
+        BoundsDrawer.drawBounds(batch, hitBoz);
     }
 
     public void applyGravity(float dt, Room room){
@@ -215,7 +214,7 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
         Rectangle landedPlatform = null;
 
         for (Rectangle platform : room.getPlatforms()){
-            if(bounds.overlaps(platform)){
+            if(hitBoz.overlaps(platform)){
                 landedPlatform = platform;
                 break;
             }
@@ -223,25 +222,18 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
         if(landedPlatform != null){
             position.y = landedPlatform.getY() + landedPlatform.getHeight();
-            bounds.y = landedPlatform.getY() + landedPlatform.getHeight();
+            hitBoz.y = landedPlatform.getY() + landedPlatform.getHeight();
             isFalling = false;
         } else if(isFalling) {
             this.velocity.add(0, GRAVITY * dt);
             position.add(velocity);
             Vector2 temp = new Vector2();
-            bounds.getPosition(temp);
+            hitBoz.getPosition(temp);
             temp.add(velocity);
-            bounds.setPosition(temp);
+            hitBoz.setPosition(temp);
         }
 
     }
-
-    public boolean isHit(Rectangle r){
-        return ((state == STATE.ALIVE) && bounds.overlaps(r));
-    }
-
-
-
 
     public void multX(){
         MOVEMENT = MOVEMENT * -1;

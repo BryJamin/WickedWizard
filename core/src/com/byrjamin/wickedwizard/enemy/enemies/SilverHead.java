@@ -8,15 +8,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.enemy.Enemy;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.spelltypes.Dispellable;
-import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
@@ -105,6 +102,8 @@ public class SilverHead extends Enemy {
         currentAnimation = standingAnimation;
         currentFrame = currentAnimation.getKeyFrame(time);
 
+        this.setDyingAnimation(closingAnimation);
+
         standingTime = new StateTimer(2f);
 
 
@@ -131,6 +130,24 @@ public class SilverHead extends Enemy {
             }
 
         }
+
+        if(this.getHealth() <= 0 ){
+            this.setState(STATE.DEAD);
+        }
+
+        if(getState() != STATE.DEAD) {
+            performAction(dt);
+        } else {
+            dyingUpdate(dt);
+        }
+
+
+
+    }
+
+
+
+    public void performAction(float dt){
 
         if(action == ACTION.STANDING){
             standingTime.update(dt);
@@ -163,14 +180,6 @@ public class SilverHead extends Enemy {
             }
 
         }
-
-
-        if(this.getHealth() <= 0 ){
-            this.setState(STATE.DEAD);
-        }
-
-
-
     }
 
 

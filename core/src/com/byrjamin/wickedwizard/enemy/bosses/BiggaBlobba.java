@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.enemy.EnemyPresets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -195,7 +194,7 @@ public class BiggaBlobba extends Enemy {
         } else if(isLanded){
 
             if(launcher.isReady()){
-                EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(
+                bullets.addProjectile(new Projectile.ProjectileBuilder(
                         this.position.x + Measure.units(25) ,
                         this.position.y + Measure.units(30),
                         a.getWizard().getX(),

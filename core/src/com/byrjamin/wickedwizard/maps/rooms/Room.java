@@ -15,7 +15,6 @@ import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
 import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
@@ -42,7 +41,6 @@ public class Room {
 
     private int currentSection;
 
-    public static EnemyBullets enemyBullets;
     private ArenaSpawner arenaSpawner;
     private ItemGenerator ig;
     private Wizard wizard;
@@ -105,7 +103,6 @@ public class Room {
 
 
     public Room(){
-        enemyBullets = new EnemyBullets();
         arenaSpawner = new ArenaSpawner();
 
         ig = new ItemGenerator();
@@ -196,18 +193,7 @@ public class Room {
            // }
 
         } else {
-            
             arenaSpawner.update(dt, this);
-            enemyBullets.update(dt, gamecam, this.getWizard());
-
-            for (DispelWave d : wizard.getDispelWaves()) {
-                for (int i = 0; i < EnemyBullets.activeBullets.size; i++) {
-                    if (d.collides(EnemyBullets.activeBullets.get(i).getSprite().getBoundingRectangle())) {
-                        EnemyBullets.activeBullets.get(i).dispellProjectile(d.getDispelDirection());
-                    }
-                }
-            }
-
         }
 
         if (state == STATE.EXIT) {
@@ -273,7 +259,7 @@ public class Room {
         roomBackground.draw(batch);
 
         arenaSpawner.draw(batch);
-        enemyBullets.draw(batch);
+
         wizard.draw(batch);
 
         for(Vector2 v : groundTileTextureCoords){

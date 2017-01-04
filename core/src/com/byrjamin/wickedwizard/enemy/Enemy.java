@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
+import com.byrjamin.wickedwizard.player.ActiveBullets;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 
 /**
  * Abstract class for enemies within the game
@@ -38,6 +40,7 @@ public abstract class Enemy {
     private Animation dyingAnimation;
 
     protected Array<Rectangle> bounds = new Array<Rectangle>();
+    protected ActiveBullets bullets = new ActiveBullets();
 
 
     protected Color drawingColor;
@@ -51,8 +54,16 @@ public abstract class Enemy {
     }
 
 
+    //TODO this is a cop out method since I can't really think of a way to do this
+    //TODO just in draw when draw itself is currently not well crafted.
+    public void bulletDraw(SpriteBatch batch){
+        bullets.draw(batch);
+    }
+
 
     public void draw(SpriteBatch batch){
+
+
         if(isFlashing) {
             Color color = batch.getColor();
             batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
@@ -117,6 +128,13 @@ public abstract class Enemy {
 
     public void update(float dt, Room r){
         flashTimer(dt);
+        bullets.updateProjectile(dt);
+        for(Projectile p : bullets.getActiveBullets()){
+            if(r.getWizard().getBounds().overlaps(p.getSprite().getBoundingRectangle())){
+                r.getWizard().reduceHealth(p.getDamage());
+                p.setState(Projectile.STATE.EXPLODING);
+            }
+        }
     };
 
     public Vector2 getPosition() {
@@ -163,5 +181,9 @@ public abstract class Enemy {
 
     public Array<Rectangle> getBounds() {
         return bounds;
+    }
+
+    public ActiveBullets getBullets() {
+        return bullets;
     }
 }

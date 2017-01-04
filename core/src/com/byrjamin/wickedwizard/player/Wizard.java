@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -76,7 +77,7 @@ public class Wizard {
     private float damage = 1;
     private float reloadRate = 0.3f;
     //private float windUp = 0.5f;
-    private float windUpAnimationTime = 0f;
+    private float windUpAnimationTime = 0.0f;
 
     private float animationTime;
     private float chargeTime;
@@ -149,12 +150,29 @@ public class Wizard {
             dashing = dashUpdate(dt);
         }
 
-        activeBullets.update(dt, gamecam, room.getEnemies());
+        activeBullets.updateProjectile(dt);
+
+        for(Projectile p : activeBullets.getActiveBullets()){
+            for(Enemy e : room.getEnemies()){
+                if(e.isHit(p.getSprite().getBoundingRectangle())){
+                    e.reduceHealth(p.getDamage());
+                    p.setState(Projectile.STATE.EXPLODING);
+                };
+            }
+        }
 
         for(DispelWave d : dispelWaves){
             d.update(dt);
             if(d.outOfBounds(room)){
                 dispelWaves.removeValue(d, true);
+            }
+
+            for(Enemy e : room.getEnemies()){
+                for(Projectile p : e.getBullets().getActiveBullets()){
+                    if(d.collides(p.getSprite().getBoundingRectangle())){
+                        p.dispellProjectile(d.getDispelDirection());
+                    }
+                }
             }
         }
 

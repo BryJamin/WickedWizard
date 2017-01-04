@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
+import com.byrjamin.wickedwizard.player.ActiveBullets;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -31,6 +31,8 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
     private Reloader reloader;
 
     private float reloadTimer;
+
+    private ActiveBullets activeBullets = new ActiveBullets();
 
     private float fireRate = 1f;
 
@@ -133,13 +135,15 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     @Override
     public void update(float dt, Room r) {
-        flashTimer(dt);
-        updateMovement(dt);
-        if(this.getState() == STATE.DYING){
+        super.update(dt, r);
+
+        if(this.getState() == STATE.DYING || this.getState() == STATE.DEAD){
             dyingUpdate(dt);
+        } else {
+            updateMovement(dt);
+            reloader.update(dt);
+            fire(dt, r);
         }
-        reloader.update(dt);
-        fire(dt, r);
     }
 
 
@@ -171,7 +175,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
      */
     public void fire(float dt, Room a){
         if (reloader.isReady()) {
-            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(position.x + WIDTH / 2, position.y + HEIGHT / 2, a.getWizard().getCenterX(),a.getWizard().getCenterY())
+            bullets.addProjectile(new Projectile.ProjectileBuilder(position.x + WIDTH / 2, position.y + HEIGHT / 2, a.getWizard().getCenterX(),a.getWizard().getCenterY())
                     .spriteString("bullet")
                     .damage(1)
                     .HORIZONTAL_VELOCITY(15f)
