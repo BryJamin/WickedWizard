@@ -153,7 +153,7 @@ public class BiggaBlobba extends Enemy {
         } else {
             batch.draw(currentFrame, position.x, position.y, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
-        BoundsDrawer.drawBounds(batch, bounds.toArray());
+        BoundsDrawer.drawBounds(batch, bounds);
     }
 
 

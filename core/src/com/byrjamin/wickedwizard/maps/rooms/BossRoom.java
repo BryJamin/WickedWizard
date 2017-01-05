@@ -11,7 +11,7 @@ public class BossRoom extends Room {
 
     public BossRoom(){
         super();
-        getRoomEnemyUpdater().getSpawnedEnemies().add(new BiggaBlobba(1100, 2000));
+        getArenaSpawner().getSpawnedEnemies().add(new BiggaBlobba(1100, 2000));
     }
 
 
@@ -19,7 +19,7 @@ public class BossRoom extends Room {
         super.update(dt, gamecam);
 
         if(state != STATE.ENTRY && state != STATE.EXIT) {
-            state = getRoomEnemyUpdater().areAllEnemiesKilled() ? STATE.UNLOCKED : STATE.LOCKED;
+            state = getArenaSpawner().areAllEnemiesKilled() ? STATE.UNLOCKED : STATE.LOCKED;
         }
 
     }

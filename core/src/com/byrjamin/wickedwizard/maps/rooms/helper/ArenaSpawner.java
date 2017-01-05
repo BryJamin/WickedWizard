@@ -11,12 +11,20 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 /**
  * Created by Home on 06/11/2016.
  */
-public class RoomEnemyUpdater {
+public class ArenaSpawner {
 
     private Array<Enemy> spawnedEnemies;
 
-    public RoomEnemyUpdater(){
+    public ArenaSpawner(){
         spawnedEnemies = new Array<Enemy>();
+    }
+
+    public void spawnBlob(Blob b){
+        spawnedEnemies.add(b);
+    }
+
+    public void spawnTurret(Turret t){
+        spawnedEnemies.add(t);
     }
 
     /**
@@ -43,12 +51,15 @@ public class RoomEnemyUpdater {
 
 
     public boolean areAllEnemiesKilled(){
+
         for(Enemy e : spawnedEnemies) {
             if(e.getState() == Enemy.STATE.ALIVE){
                 return false;
             }
         }
+
         return true;
+
     }
 
     public Array<Enemy> getSpawnedEnemies() {
@@ -57,10 +68,6 @@ public class RoomEnemyUpdater {
 
     public void setSpawnedEnemies(Array<Enemy> spawnedEnemies) {
         this.spawnedEnemies = spawnedEnemies;
-    }
-
-    public void clear(){
-        spawnedEnemies.clear();
     }
 
     public void projectileHitCheck(int damage){
