@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 
@@ -34,11 +33,11 @@ public class ActiveBullets {
      * it is no longer tracked by this class.
      * @param dt - delta time
      */
-    public void updateProjectile(float dt, Room r){
+    public void updateProjectile(float dt){
 
         for(Projectile p : activeBullets) {
             if(p.getState() == Projectile.STATE.ALIVE) {
-                p.update(dt, r);
+                p.update(dt);
             } else {
                 inActiveBullets.add(p);
                 activeBullets.removeValue(p, true);
@@ -46,7 +45,7 @@ public class ActiveBullets {
         }
 
         for(Projectile p : inActiveBullets){
-            p.update(dt, r);
+            p.update(dt);
             if(p.getState() == Projectile.STATE.DEAD){
                 inActiveBullets.removeValue(p, true);
             }

@@ -150,7 +150,7 @@ public class Wizard {
             dashing = dashUpdate(dt);
         }
 
-        activeBullets.updateProjectile(dt, room);
+        activeBullets.updateProjectile(dt);
 
         for(Projectile p : activeBullets.getActiveBullets()){
             for(Enemy e : room.getEnemies()){

@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
@@ -193,9 +192,9 @@ public class Projectile {
     }*/
 
 
-    public void update(float dt, Room r){
+    public void update(float dt){
         if(getState() == STATE.ALIVE) {
-            outOfBoundsCheck(r);
+            outOfBoundsCheck();
             travelUpdate();
         } else if(getState() == STATE.EXPLODING){
             time += dt;
@@ -219,13 +218,13 @@ public class Projectile {
     /**
      * Checks if the bullets go offScreen, if they do, Remove them.
      */
-    public void outOfBoundsCheck(Room r){
-        if((getSprite().getX() > r.WIDTH || getSprite().getX() < 0
-                || getSprite().getY() > r.HEIGHT
-                || getSprite().getY() < r.groundHeight()) && !gravity){
+    public void outOfBoundsCheck(){
+        if((getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
+                || getSprite().getY() > MainGame.GAME_HEIGHT
+                || getSprite().getY() < 0) && !gravity){
             this.setState(STATE.DEAD);
-        } else if(getSprite().getX() > r.WIDTH || getSprite().getX() < 0
-                || getSprite().getY() < r.groundHeight()) {
+        } else if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
+                || getSprite().getY() < 0) {
             this.setState(STATE.DEAD);
         }
     }
@@ -363,6 +362,9 @@ public class Projectile {
      *
      * Then checks to see how many enemies were within the area of effect and applies damage.
      *
+     * @param bullet - The projectile's Sprite
+     * @param explosionRadius - Area of Effect of the Explosion
+     * @param enemies - Array of enemies
      *//*
     public void explosionHit(Sprite bullet, Rectangle explosionRadius, Array<Enemy> enemies){
         Vector2 temp = new Vector2();

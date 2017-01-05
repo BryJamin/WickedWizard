@@ -128,7 +128,7 @@ public abstract class Enemy {
 
     public void update(float dt, Room r){
         flashTimer(dt);
-        bullets.updateProjectile(dt, r);
+        bullets.updateProjectile(dt);
         for(Projectile p : bullets.getActiveBullets()){
             if(r.getWizard().getBounds().overlaps(p.getSprite().getBoundingRectangle())){
                 r.getWizard().reduceHealth(p.getDamage());
