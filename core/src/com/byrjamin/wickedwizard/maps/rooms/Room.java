@@ -13,12 +13,13 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyUpdater;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyWaves;
+import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
+import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.spelltypes.blastwaves.DispelWave;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -40,7 +41,7 @@ public class Room {
 
     private int currentSection;
 
-    private RoomEnemyUpdater roomEnemyUpdater;
+    private ArenaSpawner arenaSpawner;
     private ItemGenerator ig;
     private Wizard wizard;
 
@@ -64,9 +65,9 @@ public class Room {
     private Sprite bottomArrow;
 
 
-    protected Array<Rectangle> platforms = new Array<Rectangle>();
+    private Array<Rectangle> platforms;
 
-    private RoomEnemyWaves roomEnemyWaves;
+    private ArenaWaves arenaWaves;
 
     public enum STATE {
        ENTRY, LOCKED, UNLOCKED, EXIT
@@ -86,6 +87,8 @@ public class Room {
 
     public EXIT_POINT exit_point;
 
+
+    private RoomTransition roomTransition;
     private RoomBackground roomBackground;
 
 
@@ -100,15 +103,16 @@ public class Room {
 
 
     public Room(){
-        roomEnemyUpdater = new RoomEnemyUpdater();
+        arenaSpawner = new ArenaSpawner();
 
         ig = new ItemGenerator();
         wizard = new Wizard(0, 0);
         ground = new Rectangle(0,0, WIDTH, 200);
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
+        platforms = new Array<Rectangle>();
         platforms.add(ground);
 
-        roomEnemyWaves = new RoomEnemyWaves(this);
+        arenaWaves = new ArenaWaves(this);
 
         rightArrow = PlayScreen.atlas.createSprite("exit_arrow");
         rightArrow.setCenter(1700, 500);
@@ -189,7 +193,7 @@ public class Room {
            // }
 
         } else {
-            roomEnemyUpdater.update(dt, this);
+            arenaSpawner.update(dt, this);
         }
 
         if (state == STATE.EXIT) {
@@ -210,9 +214,52 @@ public class Room {
 
     }
 
+    /**
+     * Shifts the player to the next available section of the room based on where the input is placed.
+     * This also triggers the player to 'dash' there.
+     * @param input_x
+     */
+    public void shift(float input_x){
+        if(state != STATE.ENTRY && state != STATE.EXIT && !wizard.isDashing() && !wizard.isFiring()) {
+            if (input_x <= wizard.getCenterX()) {
+                shiftWizardLeft();
+            } else {
+                shiftWizardRight();
+            }
+        }
+
+
+        System.out.println("Current Section is: " + currentSection);
+
+    }
+
+    /**
+     * Shifts the wizard to the next available left section of the room.
+     */
+    public void shiftWizardLeft(){
+        if(currentSection != 0){
+            currentSection--;
+            wizard.dash(sectionCenters[currentSection]);
+        }
+    }
+
+    /**
+     * Shifts the player to the next avaliable right section of the room.
+     */
+    public void shiftWizardRight(){
+        if(currentSection < sectionCenters.length - 1){
+            currentSection++;
+            wizard.dash(sectionCenters[currentSection]);
+        }
+    }
+
+
     public void draw(SpriteBatch batch){
+
         roomBackground.draw(batch);
-        roomEnemyUpdater.draw(batch);
+
+        arenaSpawner.draw(batch);
+
         wizard.draw(batch);
 
         for(Vector2 v : groundTileTextureCoords){
@@ -237,7 +284,9 @@ public class Room {
             itemSprite.draw(batch);
         }
 
-        BoundsDrawer.drawBounds(batch, platforms);
+        if(roomTransition != null){
+           // roomTransition.draw(batch);
+        }
 
     }
 
@@ -253,7 +302,7 @@ public class Room {
 
         for(float i = 0; i < columns; i++){
             for(float j = 0; j < rows; j++){
-                groundTileTextureCoords.add(new Vector2(((i * tile_height - Measure.units(0.25f))),(j * tile_width /*- Measure.units(0.25f)*/)));
+                groundTileTextureCoords.add(new Vector2(((i * tile_height - 5)),(j * tile_width - 5)));
             }
         }
     }
@@ -267,6 +316,7 @@ public class Room {
             case LEFT:
                 wizard.setX(0);
                // roomTransition.enterFromLeft();
+
                 break;
             case RIGHT:
                 wizard.setX(WIDTH);
@@ -274,6 +324,18 @@ public class Room {
         }
 
     }
+
+    /**
+     * Checks to see if the Room Transition has finished it's animation.
+     * @return
+     */
+    public boolean isRoomTransitionFinished(){
+        if(roomTransition != null){
+            return roomTransition.isFinished();
+        }
+        return false;
+    }
+
 
     public boolean isExitTransitionFinished(){
         //return roomTransition.isFinished() && state == STATE.EXIT;
@@ -375,11 +437,11 @@ public class Room {
     }
 
     public Array<Enemy> getEnemies() {
-        return roomEnemyUpdater.getSpawnedEnemies();
+        return arenaSpawner.getSpawnedEnemies();
     }
 
-    public RoomEnemyUpdater getRoomEnemyUpdater() {
-        return roomEnemyUpdater;
+    public ArenaSpawner getArenaSpawner() {
+        return arenaSpawner;
     }
 
     public Wizard getWizard() {

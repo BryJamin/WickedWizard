@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * Created by Home on 10/12/2016.
  */
-public class RoomEnemyWaves {
+public class ArenaWaves {
 
     private Array<Array<Enemy>> incomingWaves;
 
@@ -31,7 +31,7 @@ public class RoomEnemyWaves {
 
 
 
-    public RoomEnemyWaves(Room a){
+    public ArenaWaves(Room a){
         room = a;
 
         generateShuffler();
