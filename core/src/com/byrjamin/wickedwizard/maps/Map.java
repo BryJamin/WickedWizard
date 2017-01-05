@@ -48,11 +48,15 @@ public class Map {
 
             if(rooms[activeRoom].isExitTransitionFinished()){
                 if(rooms[activeRoom].isExitPointRight()){
+                    Wizard w = rooms[activeRoom].getWizard();
                     activeRoom++;
+                    rooms[activeRoom].setWizard(w);
                     rooms[activeRoom].enterRoom(Room.ENTRY_POINT.LEFT);
                 } else if(rooms[activeRoom].isExitPointLeft()){
+                    Wizard w = rooms[activeRoom].getWizard();
                     activeRoom--;
                     rooms[activeRoom].enterRoom(Room.ENTRY_POINT.RIGHT);
+                    rooms[activeRoom].setWizard(w);
                     rooms[activeRoom].getWizard().setCurrentState(Wizard.STATE.STANDING);
                 }
             }
