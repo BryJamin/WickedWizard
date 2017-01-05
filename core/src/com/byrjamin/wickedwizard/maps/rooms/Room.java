@@ -13,13 +13,12 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
-import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
-import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyUpdater;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
-import com.byrjamin.wickedwizard.spelltypes.blastwaves.DispelWave;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -41,7 +40,7 @@ public class Room {
 
     private int currentSection;
 
-    private ArenaSpawner arenaSpawner;
+    private RoomEnemyUpdater roomEnemyUpdater;
     private ItemGenerator ig;
     private Wizard wizard;
 
@@ -67,7 +66,7 @@ public class Room {
 
     private Array<Rectangle> platforms;
 
-    private ArenaWaves arenaWaves;
+    private RoomEnemyWaves roomEnemyWaves;
 
     public enum STATE {
        ENTRY, LOCKED, UNLOCKED, EXIT
@@ -103,7 +102,7 @@ public class Room {
 
 
     public Room(){
-        arenaSpawner = new ArenaSpawner();
+        roomEnemyUpdater = new RoomEnemyUpdater();
 
         ig = new ItemGenerator();
         wizard = new Wizard(0, 0);
@@ -112,7 +111,7 @@ public class Room {
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
-        arenaWaves = new ArenaWaves(this);
+        roomEnemyWaves = new RoomEnemyWaves(this);
 
         rightArrow = PlayScreen.atlas.createSprite("exit_arrow");
         rightArrow.setCenter(1700, 500);
@@ -193,7 +192,7 @@ public class Room {
            // }
 
         } else {
-            arenaSpawner.update(dt, this);
+            roomEnemyUpdater.update(dt, this);
         }
 
         if (state == STATE.EXIT) {
@@ -258,7 +257,7 @@ public class Room {
 
         roomBackground.draw(batch);
 
-        arenaSpawner.draw(batch);
+        roomEnemyUpdater.draw(batch);
 
         wizard.draw(batch);
 
@@ -437,11 +436,11 @@ public class Room {
     }
 
     public Array<Enemy> getEnemies() {
-        return arenaSpawner.getSpawnedEnemies();
+        return roomEnemyUpdater.getSpawnedEnemies();
     }
 
-    public ArenaSpawner getArenaSpawner() {
-        return arenaSpawner;
+    public RoomEnemyUpdater getRoomEnemyUpdater() {
+        return roomEnemyUpdater;
     }
 
     public Wizard getWizard() {

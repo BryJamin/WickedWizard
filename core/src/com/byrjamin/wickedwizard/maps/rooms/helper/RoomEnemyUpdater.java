@@ -11,11 +11,11 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 /**
  * Created by Home on 06/11/2016.
  */
-public class ArenaSpawner {
+public class RoomEnemyUpdater {
 
     private Array<Enemy> spawnedEnemies;
 
-    public ArenaSpawner(){
+    public RoomEnemyUpdater(){
         spawnedEnemies = new Array<Enemy>();
     }
 
