@@ -9,6 +9,8 @@ import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.player.Wizard;
 
+import org.omg.PortableInterceptor.ACTIVE;
+
 /**
  * Created by Home on 24/12/2016.
  */
@@ -19,7 +21,7 @@ public class Map {
 
     public Map(){
 
-        rooms = new Room[]{null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null};
+        rooms = new Room[]{null, new BattleRoom(0), new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null};
         roomSetup();
         activeRoom = 1;
 
@@ -48,10 +50,14 @@ public class Map {
 
             if(rooms[activeRoom].isExitTransitionFinished()){
                 if(rooms[activeRoom].isExitPointRight()){
+                    Wizard w = rooms[activeRoom].getWizard();
                     activeRoom++;
+                    rooms[activeRoom].setWizard(w);
                     rooms[activeRoom].enterRoom(Room.ENTRY_POINT.LEFT);
                 } else if(rooms[activeRoom].isExitPointLeft()){
+                    Wizard w = rooms[activeRoom].getWizard();
                     activeRoom--;
+                    rooms[activeRoom].setWizard(w);
                     rooms[activeRoom].enterRoom(Room.ENTRY_POINT.RIGHT);
                     rooms[activeRoom].getWizard().setCurrentState(Wizard.STATE.STANDING);
                 }
