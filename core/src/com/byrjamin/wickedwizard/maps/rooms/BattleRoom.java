@@ -20,6 +20,16 @@ public class BattleRoom extends Room {
         //arenaWaves.nextWave(this.getEnemies());
     }
 
+    public BattleRoom(int numberOfWaves){
+        super();
+
+        this.numberOfWaves = numberOfWaves;
+
+        roomEnemyWaves = new RoomEnemyWaves(this);
+        //arenaWaves.nextWaveTest(this.getEnemies());
+        //arenaWaves.nextWave(this.getEnemies());
+    }
+
 
 
     public void update(float dt, OrthographicCamera gamecam){
