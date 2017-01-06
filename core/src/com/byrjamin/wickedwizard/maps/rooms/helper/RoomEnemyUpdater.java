@@ -19,14 +19,6 @@ public class RoomEnemyUpdater {
         spawnedEnemies = new Array<Enemy>();
     }
 
-    public void spawnBlob(Blob b){
-        spawnedEnemies.add(b);
-    }
-
-    public void spawnTurret(Turret t){
-        spawnedEnemies.add(t);
-    }
-
     /**
      * Updates all Enemies that have been spawned. If the enemy is dead it is removed from the array.
      * @param dt
@@ -34,11 +26,8 @@ public class RoomEnemyUpdater {
      */
     public void update(float dt, Room a){
         for(Enemy e : spawnedEnemies){
-/*            if(e.getState() == Enemy.STATE.DEAD){
-                spawnedEnemies.removeValue(e, true);
-            } else {*/
+            System.out.println("NOT INSIDE");
                 e.update(dt, a);
-            //}
         }
     }
 

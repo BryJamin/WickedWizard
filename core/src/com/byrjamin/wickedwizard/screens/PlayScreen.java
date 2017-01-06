@@ -51,7 +51,7 @@ public class PlayScreen implements Screen {
 
         gestureDetector = new GestureDetector(new gestures());
 
-        atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
+        atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
 
         map = new Map();
         gamecam = new OrthographicCamera();
@@ -152,12 +152,15 @@ public class PlayScreen implements Screen {
         //Updates the positions of all elements on the screen before they are redrawn.
         update(delta);
 
+
+
         //Sets the background color if nothing is on the screen.
         Gdx.gl.glClearColor(0, 0, 0, 0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+
 
         map.draw(game.batch);
 

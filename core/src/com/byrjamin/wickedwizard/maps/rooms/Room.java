@@ -134,7 +134,7 @@ public class Room {
        // roomTransition = new RoomTransition(WIDTH, HEIGHT);
        // roomTransition.enterFromLeft();
 
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("background/brick"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
 
     }
 
@@ -282,11 +282,6 @@ public class Room {
         if(itemSprite != null){
             itemSprite.draw(batch);
         }
-
-        if(roomTransition != null){
-           // roomTransition.draw(batch);
-        }
-
     }
 
 
