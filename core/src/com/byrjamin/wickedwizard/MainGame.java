@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.byrjamin.wickedwizard.screens.LoadingScreen;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 
@@ -34,19 +35,13 @@ public class MainGame extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		manager.load("sprite.atlas", TextureAtlas.class);
+		setScreen(new LoadingScreen(this));
 	}
 
-	@Override
+/*	@Override
 	public void render () {
 		super.render();
-
-		if(manager.update() && stop)
-		{
-			setScreen(new PlayScreen(this));
-			stop = false;
-		}
-
-	}
+	}*/
 	
 /*	@Override
 	public void create () {
