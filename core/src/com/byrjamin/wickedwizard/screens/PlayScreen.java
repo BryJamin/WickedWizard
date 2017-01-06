@@ -22,10 +22,7 @@ import com.byrjamin.wickedwizard.maps.Map;
 /**
  * Created by Home on 15/10/2016.
  */
-public class PlayScreen implements Screen {
-
-
-    private MainGame game;
+public class PlayScreen extends AbstractScreen {
 
     private OrthographicCamera gamecam;
 
@@ -47,7 +44,7 @@ public class PlayScreen implements Screen {
     //TODO IF you ever click in the deck area don't cast any spells
 
     public PlayScreen(MainGame game){
-        this.game = game;
+        super(game);
 
         gestureDetector = new GestureDetector(new gestures());
 
