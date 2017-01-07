@@ -41,13 +41,11 @@ public class Room {
     private int currentSection;
 
     private RoomEnemyUpdater roomEnemyUpdater;
-    private ItemGenerator ig;
-    private Wizard wizard;
+    protected Wizard wizard;
 
     private Rectangle ground;
 
     private Array<Vector2> groundTileTextureCoords;
-    private Sprite itemSprite;
 
     private long seed = 2;
 
@@ -90,21 +88,12 @@ public class Room {
     private RoomTransition roomTransition;
     private RoomBackground roomBackground;
 
-
-    public enum EVENT {
-        WAVE, ITEM, IMP, BOSS
-    }
-
     private TextureRegion groundTexture;
-
-    Array<EVENT> day;
 
 
 
     public Room(){
         roomEnemyUpdater = new RoomEnemyUpdater();
-
-        ig = new ItemGenerator();
         wizard = new Wizard(0, 0);
         ground = new Rectangle(0,0, WIDTH, 200);
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
@@ -256,32 +245,23 @@ public class Room {
     public void draw(SpriteBatch batch){
 
         roomBackground.draw(batch);
-
         roomEnemyUpdater.draw(batch);
-
         wizard.draw(batch);
-
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
         }
 
         if(state == STATE.UNLOCKED) {
-
             if(leftExit){
                 leftArrow.draw(batch);
                 BoundsDrawer.drawBounds(batch, leftArrow.getBoundingRectangle());
             }
-
             if(rightExit){
                 rightArrow.draw(batch);
                 BoundsDrawer.drawBounds(batch, rightArrow.getBoundingRectangle());
             }
-
         }
 
-        if(itemSprite != null){
-            itemSprite.draw(batch);
-        }
     }
 
 
@@ -369,27 +349,6 @@ public class Room {
         return (wizard.getX() > WIDTH) || wizard.getX() < -wizard.WIDTH;
     }
 
-    private void spawnItem(Item ig) {
-        itemSprite = PlayScreen.atlas.createSprite(ig.getSpriteName());
-        itemSprite.setSize(MainGame.GAME_UNITS * 7, MainGame.GAME_UNITS * 7);
-        itemSprite.setCenter(this.WIDTH / 2, (this.HEIGHT / 4) * 3);
-    }
-
-
-    public void itemGet(float input_x, float input_y){
-
-        if(day.size != 0) {
-            if(day.get(0) == EVENT.ITEM) {
-                if (itemSprite.getBoundingRectangle().contains(input_x, input_y)) {
-                    Item i = ig.getItem(seed);
-                    wizard.applyItem(i);
-                    itemSprite = null;
-                    day.removeIndex(0);
-                }
-            }
-        }
-    }
-
     public Rectangle getOverlappingRectangle(Rectangle r){
         for(Rectangle rect : platforms){
             if (r.overlaps(rect)){
@@ -444,10 +403,6 @@ public class Room {
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
-    }
-
-    public EVENT getcurrentEvent(){
-        return day.get(0);
     }
 
     public float groundHeight(){

@@ -30,7 +30,7 @@ public class ItemGenerator {
      */
     public Item getItem(long seed){
         Random rand = new Random(seed);
-        return ItemPresets.itemList.ATTACK_UP.getItem();
+        return ItemPresets.itemList.HEALTH_UP.getItem();
         //return items.get(rand.nextInt(items.size));
     }
 
