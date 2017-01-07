@@ -233,6 +233,18 @@ public class Wizard {
         direction = DIRECTION.LEFT;
     }
 
+    public void moveDown(float dt){
+        position.y = position.y - MOVEMENT * dt;
+        boundsUpdate();
+        direction = DIRECTION.RIGHT;
+    }
+
+    public void moveUp(float dt){
+        position.y = position.y + MOVEMENT * dt;
+        boundsUpdate();
+        direction = DIRECTION.RIGHT;
+    }
+
     public void dash(float sectionCenter) {
         if(!dashing && !isFiring()) {
             dashing = true;
@@ -294,20 +306,24 @@ public class Wizard {
 
    public void applyGravity(float dt, Room room){
 
-       if(isFalling) {
-           velocity.add(gravity);
-           position.add(velocity.x * dt, velocity.y * dt);
-           bounds.y = position.y;
-       }
+       if(room.state != Room.STATE.EXIT) {
+
+           if (isFalling) {
+               velocity.add(gravity);
+               position.add(velocity.x * dt, velocity.y * dt);
+               bounds.y = position.y;
+           }
 
 
-       Rectangle r = room.getOverlappingRectangle(bounds);
-       if(r != null) {
-           isFalling = false;
-           velocity = new Vector2();
-           position.y = r.getY() + r.getHeight();
-           bounds.y = r.getY() + r.getHeight();
-       } else {
+           Rectangle r = room.getOverlappingRectangle(bounds);
+           if (r != null) {
+               isFalling = false;
+               velocity = new Vector2();
+               position.y = r.getY() + r.getHeight();
+               bounds.y = r.getY() + r.getHeight();
+           } else {
+
+           }
 
        }
     }
