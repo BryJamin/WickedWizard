@@ -1,57 +1,42 @@
 package com.byrjamin.wickedwizard.item;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.player.Wizard;
+
 /**
  * Created by Home on 14/12/2016.
  */
-public class Item {
+public abstract class Item extends Sprite{
 
 
     //Require Parameter
-    private String spriteName;
+    protected String name;
 
-    //Optional
-    private float damageIncrease;
-    private int healthIncrease;
+    public abstract void use(Wizard wizard);
 
-    public static class ItemBuilder{
+    private boolean isDestroyed;
 
-        //Required Parameters
-        private String spriteName;
 
-        //Optional Parameters
-        private float damageIncrease = 0;
-        private int healthIncrease = 0;
+    public Item(TextureRegion region){
+        setRegion(region);
+        setBounds(getX(), getY(), Measure.units(10), Measure.units(10));
+        isDestroyed = false;
+    }
 
-        public ItemBuilder(String spriteName) {
-            this.spriteName = spriteName;
-        }
+    public void destroy(){
+        isDestroyed = true;
+    }
 
-        public ItemBuilder damageIncrease(float val)
-        { damageIncrease = val; return this; }
-
-        public ItemBuilder healthIncrease(int val)
-        { healthIncrease = val; return this; }
-
-        public Item build() {
-            return new Item(this);
+    public void draw(SpriteBatch batch){
+        if(!isDestroyed){
+            super.draw(batch);
         }
     }
 
-    public Item(ItemBuilder builder){
-        spriteName = builder.spriteName;
-        damageIncrease = builder.damageIncrease;
-        healthIncrease = builder.healthIncrease;
-    }
-
-    public float getDamageIncrease() {
-        return damageIncrease;
-    }
-
-    public int getHealthIncrease() {
-        return healthIncrease;
-    }
-
-    public String getSpriteName() {
-        return spriteName;
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 }

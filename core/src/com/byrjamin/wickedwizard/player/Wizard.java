@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -91,7 +92,7 @@ public class Wizard {
     private TextureRegion currentFrame;
 
 
-    private Array<Item> items = new Array<Item>();
+    private Array<ItemPresets> items = new Array<ItemPresets>();
 
 
     public Wizard(float posX, float posY) {
@@ -291,13 +292,6 @@ public class Wizard {
     }
 
 
-
-    public void applyItem(Item i){
-        this.damage += i.getDamageIncrease();
-        this.health += i.getHealthIncrease();
-    items.add(i);
-}
-
    public void applyGravity(float dt, Room room){
 
        if(isFalling) {
@@ -450,7 +444,7 @@ public class Wizard {
         health += h;
     }
 
-    public void addItem(Item i){
+    public void addItem(ItemPresets i){
         items.add(i);
     }
 

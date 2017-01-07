@@ -218,8 +218,6 @@ public class SilverHead extends Enemy {
     public void reduceHealth(float dmg){
         if(action != ACTION.CHARGING) {
             super.reduceHealth(dmg);
-        } else {
-            time = 0;
         }
     }
 
