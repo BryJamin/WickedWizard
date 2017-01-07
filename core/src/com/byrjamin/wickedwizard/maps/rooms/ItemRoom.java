@@ -16,7 +16,6 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class ItemRoom extends Room{
 
     private ItemGenerator ig = new ItemGenerator();
-    private Array<Item> items = new Array<Item>();
 
     public ItemRoom(){
         super();
@@ -26,28 +25,11 @@ public class ItemRoom extends Room{
 
     public void update(float dt, OrthographicCamera gamecam){
         super.update(dt, gamecam);
-
-        for(Item item : items){
-            if(wizard.getBounds().overlaps(item.getBoundingRectangle())){
-                if(!item.isDestroyed()) {
-                    item.use(wizard);
-                }
-            }
-
-            if(item.isDestroyed()){
-                items.removeValue(item, true);
-            }
-        }
-
     }
 
 
     public void draw(SpriteBatch batch){
         super.draw(batch);
-        for(Item item : items) {
-            item.draw(batch);
-            BoundsDrawer.drawBounds(batch, item.getBoundingRectangle());
-        }
     }
 
 

@@ -25,7 +25,7 @@ import com.byrjamin.wickedwizard.enemy.Enemy;
  * The idea behind this class is that Arenas/Rooms will decide their layouts, when they enemies spawn
  * and where the wizard is placed inside them
  */
-public class Room {
+public abstract class Room {
 
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
@@ -39,6 +39,8 @@ public class Room {
     private float[] sectionCenters;
 
     private int currentSection;
+
+    protected Array<Item> items = new Array<Item>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
     protected Wizard wizard;
@@ -182,6 +184,19 @@ public class Room {
 
         } else {
             roomEnemyUpdater.update(dt, this);
+
+            for(Item item : items){
+                if(wizard.getBounds().overlaps(item.getBoundingRectangle())){
+                    if(!item.isDestroyed()) {
+                        item.use(wizard);
+                    }
+                }
+
+                if(item.isDestroyed()){
+                    items.removeValue(item, true);
+                }
+            }
+
         }
 
         if (state == STATE.EXIT) {
@@ -246,6 +261,12 @@ public class Room {
 
         roomBackground.draw(batch);
         roomEnemyUpdater.draw(batch);
+
+        for(Item item : items) {
+            item.draw(batch);
+            BoundsDrawer.drawBounds(batch, item.getBoundingRectangle());
+        }
+
         wizard.draw(batch);
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
