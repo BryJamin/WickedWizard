@@ -1,7 +1,11 @@
 package com.byrjamin.wickedwizard.maps;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
@@ -16,6 +20,8 @@ public class Map {
     private Room[][] rooms;
     private int playPositionY;
     private int playPositionX;
+
+    ShapeRenderer mapRenderer = new ShapeRenderer();
 
     public Map(){
 
@@ -112,7 +118,69 @@ public class Map {
 
 
     public void draw(SpriteBatch batch){
+
+
+        //essentialy draw a square at certain points
+        //is going to be 3x3 so needs player postion
+
+
+
+
         rooms[playPositionY][playPositionX].draw(batch);
+
+
+
+        batch.end();
+
+
+
+
+        mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        mapRenderer.begin(ShapeRenderer.ShapeType.Line);
+        mapRenderer.setColor(Color.GRAY);
+
+        float SIZE = Measure.units(3);
+        float mapy = 1000;
+        float mapx = 1700;
+
+        if(playPositionY + 1 < rooms.length){
+            if(rooms[playPositionY + 1][playPositionX] != null){
+                mapRenderer.rect(mapx, mapy - SIZE, SIZE, SIZE);
+            }
+        }
+
+        if(playPositionY - 1 >= 0){
+            if(rooms[playPositionY - 1][playPositionX] != null){
+                mapRenderer.rect(mapx, mapy + SIZE, SIZE, SIZE);
+            }
+        }
+
+        if(playPositionX + 1 < rooms[playPositionY].length){
+            if(rooms[playPositionY][playPositionX + 1] != null){
+                mapRenderer.rect(mapx + SIZE , mapy, SIZE, SIZE);
+            }
+        }
+
+        if(playPositionX - 1 >= 0){
+            if(rooms[playPositionY][playPositionX - 1] != null){
+                mapRenderer.rect(mapx - SIZE, mapy, SIZE, SIZE);
+            }
+        }
+
+
+
+        mapRenderer.setColor(Color.WHITE);
+        mapRenderer.rect(mapx, mapy, SIZE, SIZE);
+        mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
+        
+        mapRenderer.end();
+
+
+        batch.begin();
+
+
+
+
     }
 
     public Room getActiveRoom() {
