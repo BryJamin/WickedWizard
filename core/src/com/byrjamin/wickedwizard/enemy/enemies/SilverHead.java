@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.enemy.enemies;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -41,7 +40,6 @@ public class SilverHead extends Enemy {
     private StateTimer standingTime;
 
     private Vector2 velocity;
-    private Vector2 position;
 
     private Array<BlastWave> blastWaveArray = new Array<BlastWave>();
 
@@ -111,8 +109,8 @@ public class SilverHead extends Enemy {
     public void update(float dt, Room r) {
         super.update(dt, r);
 
-        g200.update(dt, position, r.getPlatforms());
-        bounds.y = position.y;
+        g200.update(dt, bounds, r.getBoundaries());
+        position.y = bounds.y;
 
         time += dt;
 

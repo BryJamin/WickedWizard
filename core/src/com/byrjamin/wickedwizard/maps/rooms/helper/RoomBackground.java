@@ -20,8 +20,8 @@ public class RoomBackground {
     private float TILE_WIDTH;
     private float TILE_HEIGHT;
 
-    private int columns = 4;
-    private int rows = 2;
+    private int columns = 5;
+    private int rows = 3;
 
     private Array<TextureAtlas.AtlasRegion> backgrounds;
 
@@ -58,6 +58,7 @@ public class RoomBackground {
             }
 
         }
+
     }
 
 
@@ -67,7 +68,6 @@ public class RoomBackground {
         Random random = new Random();
 
         for(int i = 0; i < backgroundSelection.length; i++){
-
             if(i != 0) {
                 do {
                     backgroundSelection[i] = random.nextInt(backgrounds.size);
@@ -75,16 +75,8 @@ public class RoomBackground {
             } else {
                 backgroundSelection[i] = random.nextInt(backgrounds.size);
             }
-
-
         }
     }
-
-
-
-
-
-
 
     public void setRows(int rows) {
         this.rows = rows;

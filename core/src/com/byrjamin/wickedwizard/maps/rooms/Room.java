@@ -1,9 +1,11 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -12,10 +14,11 @@ import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomGround;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomPlatform;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyUpdater;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyWaves;
-import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
@@ -40,12 +43,12 @@ public abstract class Room {
 
     private int currentSection;
 
+    private ShapeRenderer mapRenderer = new ShapeRenderer();
+
     protected Array<Item> items = new Array<Item>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
     protected Wizard wizard;
-
-    private Rectangle ground;
 
     private Array<Vector2> groundTileTextureCoords;
 
@@ -58,8 +61,11 @@ public abstract class Room {
     private Sprite topArrow;
     private Sprite bottomArrow;
 
+    private boolean bottom = false;
 
-    private Array<Rectangle> platforms;
+
+    private Array<Rectangle> boundaries;
+    private Array<RoomPlatform> platforms = new Array<RoomPlatform>();
 
     private RoomEnemyWaves roomEnemyWaves;
     private Array<Sprite> exits = new Array<Sprite>();
@@ -69,6 +75,10 @@ public abstract class Room {
     }
 
     public STATE state;
+
+    public enum DIRECTION {
+        RIGHT, LEFT, UP, DOWN
+    }
 
     public enum ENTRY_POINT {
         RIGHT, LEFT, UP, DOWN
@@ -85,6 +95,7 @@ public abstract class Room {
 
     private RoomTransition roomTransition;
     private RoomBackground roomBackground;
+    private RoomGround roomGround;
 
     private TextureRegion groundTexture;
 
@@ -93,10 +104,9 @@ public abstract class Room {
     public Room(){
         roomEnemyUpdater = new RoomEnemyUpdater();
         wizard = new Wizard(0, 0);
-        ground = new Rectangle(0,0, WIDTH, 200);
-        genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
-        platforms = new Array<Rectangle>();
-        platforms.add(ground);
+        boundaries = new Array<Rectangle>();
+
+        roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this, 200, false);
 
         roomEnemyWaves = new RoomEnemyWaves(this);
         groundTexture = PlayScreen.atlas.findRegion("brick");
@@ -109,7 +119,9 @@ public abstract class Room {
        // roomTransition = new RoomTransition(WIDTH, HEIGHT);
        // roomTransition.enterFromLeft();
 
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT);
+
+        boundaries.addAll(roomGround.getBounds());
 
     }
 
@@ -135,11 +147,7 @@ public abstract class Room {
 
         if(state == STATE.ENTRY) {
 
-           // roomTransition.update(dt);
-
-           // if(roomTransition.isFinished()){
-
-                boolean inPosition = false;
+            boolean inPosition = false;
 
             switch(entry_point){
                 case RIGHT:
@@ -158,21 +166,15 @@ public abstract class Room {
                     break;
                 case UP:
                     wizard.moveDown(dt);
-
-                    System.out.println("INSIDE UP");
-                    if(wizard.getY() <= ground.getHeight()){
-
-                        System.out.println("OH SHIZZ");
-                        wizard.setY(ground.getHeight());
+                    if(wizard.getY() <= roomGround.getHeight()){
+                        wizard.setY(roomGround.getHeight());
                         inPosition = true;
                     }
                     break;
                 case DOWN:
                     wizard.moveUp(dt);
-
-                    System.out.println("INSIDE DOWN");
-                    if(wizard.getY() >= ground.getHeight()){
-                        wizard.setY(ground.getHeight());
+                    if(wizard.getY() >= roomGround.getHeight()){
+                        wizard.setY(roomGround.getHeight());
                         inPosition = true;
                     }
                     break;
@@ -242,8 +244,11 @@ public abstract class Room {
         }
 
         wizard.draw(batch);
-        for(Vector2 v : groundTileTextureCoords){
-            batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
+
+        roomGround.draw(batch);
+
+        if(platforms.size != 0) {
+            BoundsDrawer.drawBounds(batch, platforms);
         }
 
         if(state == STATE.UNLOCKED) {
@@ -255,24 +260,6 @@ public abstract class Room {
 
     }
 
-
-    public void genGroundCoords(float ground_width, float ground_height, float rows){
-
-        groundTileTextureCoords = new Array<Vector2>();
-
-        tile_height = ground_height / rows;
-        tile_width = ground_height / rows;
-        //Assuming were using square tiles here
-        float columns = ground_width / tile_width;
-
-        for(float i = 0; i < columns; i++){
-            for(float j = 0; j < rows; j++){
-                groundTileTextureCoords.add(new Vector2(((i * tile_height - 5)),(j * tile_width - 5)));
-            }
-        }
-    }
-
-
     public void enterRoom(ENTRY_POINT entry_point){
         state = STATE.ENTRY;
         this.entry_point = entry_point;
@@ -281,7 +268,6 @@ public abstract class Room {
             case LEFT:
                 wizard.setX(0);
                // roomTransition.enterFromLeft();
-
                 break;
             case RIGHT:
                 wizard.setX(WIDTH);
@@ -366,18 +352,13 @@ public abstract class Room {
     }
 
     public Rectangle getOverlappingRectangle(Rectangle r){
-        for(Rectangle rect : platforms){
+
+        for(Rectangle rect : boundaries){
             if (r.overlaps(rect)){
                 return rect;
             }
         }
         return null;
-    }
-
-
-
-    public void exitRight(){
-
     }
 
 
@@ -407,11 +388,16 @@ public abstract class Room {
 
     public void setBottomExit() {
         bottomArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        bottomArrow.setCenter(WIDTH / 2 - 300, 1000);
-        bottomArrow.setSize(Measure.units(10), Measure.units(10));
+        bottomArrow.setCenter(WIDTH / 2 - bottomArrow.getWidth() / 2, 50);
+        bottomArrow.setSize(Measure.units(5), Measure.units(5));
         bottomArrow.setOriginCenter();
-        bottomArrow.rotate((float) -Math.toDegrees(Math.PI / 2));
+        bottomArrow.rotate((float) Math.toDegrees(-Math.PI / 2));
+        bottom = true;
         exits.add(bottomArrow);
+        roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this, 200, true);
+        boundaries = new Array<Rectangle>();
+        boundaries.addAll(roomGround.getBounds());
+        boundaries.addAll(platforms);
     }
 
     public EXIT_POINT getExit_point() {
@@ -434,8 +420,16 @@ public abstract class Room {
         return exit_point == EXIT_POINT.DOWN;
     }
 
-    public Array<Rectangle> getPlatforms() {
+    public Array<Rectangle> getBoundaries() {
+        return boundaries;
+    }
+
+    public Array<RoomPlatform> getPlatforms() {
         return platforms;
+    }
+
+    public void setPlatforms(Array<RoomPlatform> platforms) {
+        this.platforms = platforms;
     }
 
     public Array<Enemy> getEnemies() {
@@ -455,7 +449,7 @@ public abstract class Room {
     }
 
     public float groundHeight(){
-        return ground.getHeight();
+        return roomGround.getHeight();
     }
 
 

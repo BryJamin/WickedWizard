@@ -26,8 +26,6 @@ public class PlayScreen extends AbstractScreen {
 
     private OrthographicCamera gamecam;
 
-    public static int GROUND_Y = 200;
-
     private Viewport gamePort;
 
     public static TextureAtlas atlas;

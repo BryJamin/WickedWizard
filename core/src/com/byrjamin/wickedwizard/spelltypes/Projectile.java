@@ -149,7 +149,7 @@ public class Projectile {
         time = 0;
         state = STATE.ALIVE;
 
-        explosion_animation = AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.EXPLOSION);
+        explosion_animation = AnimationPacker.genAnimation(0.02f / 1f, TextureStrings.EXPLOSION);
 
         if(gravity) {
             velocity = new Vector2(0, (float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));
@@ -167,35 +167,6 @@ public class Projectile {
         projectAngle = (Math.atan2(y2 - y1, x2 - x1));
     }
 
-/*    public void update(float dt, Array<Enemy> e){
-
-        if(getState() == STATE.ALIVE) {
-            aliveUpdate(dt, e);
-        } else if(getState() == STATE.EXPLODING){
-            time += dt;
-            if(explosion_animation.isAnimationFinished(time)){
-                this.setState(STATE.DEAD);
-            }
-            explosionTextureRegion = explosion_animation.getKeyFrame(time);
-        }
-
-    }
-
-    public void update(float dt, Wizard w){
-
-        if(getState() == STATE.ALIVE) {
-            aliveUpdate(dt, w);
-        } else if(getState() == STATE.EXPLODING){
-            time += dt;
-            if(explosion_animation.isAnimationFinished(time)){
-                this.setState(STATE.DEAD);
-            }
-            explosionTextureRegion = explosion_animation.getKeyFrame(time);
-        }
-
-    }*/
-
-
     public void update(float dt, Room r){
         if(getState() == STATE.ALIVE) {
             outOfBoundsCheck(r);
@@ -208,16 +179,6 @@ public class Projectile {
             explosionTextureRegion = explosion_animation.getKeyFrame(time);
         }
     }
-
-/*    public void aliveUpdate(float dt, Wizard w){
-
-        outOfBoundsCheck();
-        //TODO if bullet hits the ground it shoudl run it's death animation
-        damageCheck(w);
-        travelUpdate();
-
-    }*/
-
 
     /**
      * Checks if the bullets go offScreen, if they do, Remove them.

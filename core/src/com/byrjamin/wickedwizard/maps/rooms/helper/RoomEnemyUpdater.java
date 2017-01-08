@@ -27,6 +27,9 @@ public class RoomEnemyUpdater {
     public void update(float dt, Room a){
         for(Enemy e : spawnedEnemies){
                 e.update(dt, a);
+            if(e.getPosition().y + 500 < 0){
+                e.setState(Enemy.STATE.DYING);
+            }
         }
     }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -28,10 +29,11 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     private static final float GRAVITY = -100;
 
+    private GravMaster2000 g2000 = new GravMaster2000();
+
     private Rectangle hitBoz;
 
     private Vector2 velocity;
-    private Vector2 position;
 
     //Optional Parameters
     private float MOVEMENT;
@@ -211,27 +213,8 @@ public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     public void applyGravity(float dt, Room room){
 
-        Rectangle landedPlatform = null;
-
-        for (Rectangle platform : room.getPlatforms()){
-            if(hitBoz.overlaps(platform)){
-                landedPlatform = platform;
-                break;
-            }
-        }
-
-        if(landedPlatform != null){
-            position.y = landedPlatform.getY() + landedPlatform.getHeight();
-            hitBoz.y = landedPlatform.getY() + landedPlatform.getHeight();
-            isFalling = false;
-        } else if(isFalling) {
-            this.velocity.add(0, GRAVITY * dt);
-            position.add(velocity);
-            Vector2 temp = new Vector2();
-            hitBoz.getPosition(temp);
-            temp.add(velocity);
-            hitBoz.setPosition(temp);
-        }
+        g2000.update(dt, hitBoz, room.getBoundaries());
+        position.y = hitBoz.y;
 
     }
 

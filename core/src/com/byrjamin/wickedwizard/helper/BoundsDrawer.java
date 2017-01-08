@@ -21,7 +21,7 @@ public class BoundsDrawer {
      * @param batch - The SpriteBatch
      * @param bounds - Rectangle Array
      */
-    public static void drawBounds(SpriteBatch batch, Array<Rectangle> bounds){
+    public static void drawBounds(SpriteBatch batch, Array<? extends Rectangle> bounds){
         initialize();
 
         batch.end();

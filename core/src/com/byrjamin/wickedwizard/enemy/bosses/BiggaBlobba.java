@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.enemy.bosses;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -54,7 +53,6 @@ public class BiggaBlobba extends Enemy {
 
     private GravMaster2000 g2000 = new GravMaster2000();
 
-    private Vector2 position;
     private Vector2 velocity;
 
     private Animation walk;
@@ -227,8 +225,8 @@ public class BiggaBlobba extends Enemy {
     public void applyGravity(float dt, Room room){
 
 
-        g2000.update(dt, position, room.getPlatforms());
-        lowerBody.y = position.y;
+        g2000.update(dt, lowerBody, room.getBoundaries());
+        position.y = lowerBody.y;
 
         this.velocity.add(0, GRAVITY * dt);
 

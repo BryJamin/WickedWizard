@@ -317,12 +317,13 @@ public class Wizard {
 
            Rectangle r = room.getOverlappingRectangle(bounds);
            if (r != null) {
+
                isFalling = false;
                velocity = new Vector2();
                position.y = r.getY() + r.getHeight();
                bounds.y = r.getY() + r.getHeight();
            } else {
-
+               isFalling = true;
            }
 
        }
