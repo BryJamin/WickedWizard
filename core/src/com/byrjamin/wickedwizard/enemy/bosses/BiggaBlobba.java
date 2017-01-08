@@ -61,8 +61,6 @@ public class BiggaBlobba extends Enemy {
 
     private Animation currentAnimation;
 
-    TextureRegion currentFrame;
-
     ShapeRenderer shapeRenderer;
 
     public enum PHASE {
@@ -241,13 +239,9 @@ public class BiggaBlobba extends Enemy {
 
         super.update(dt, r);
         time += dt;
-        currentFrame = currentAnimation.getKeyFrame(time);
         applyGravity(dt, r);
         boundsUpdate();
 
-        if(this.getHealth() <= 0 ){
-            this.setState(STATE.DEAD);
-        }
 
         if(state == STATE.ALIVE) {
 
@@ -267,6 +261,15 @@ public class BiggaBlobba extends Enemy {
                 }
             }
 
+            if(this.getHealth() <= 0 ){
+                this.setState(STATE.DYING);
+            }
+
+            currentFrame = currentAnimation.getKeyFrame(time);
+
+
+        } else if(state == STATE.DYING){
+            dyingUpdate(dt);
         }
         //TODO - As slime takes damage it falls
 /*        if(time > 5 && test == true){

@@ -6,6 +6,7 @@ package com.byrjamin.wickedwizard.staticstrings;
 public class TextureStrings {
 
     //ENEMIES
+    public static String EXPLOSION = "explosion";
 
     //BLOB
     public static String BLOB_STANDING = "blob";

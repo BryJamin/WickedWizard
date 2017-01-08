@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
  * Created by Home on 07/11/2016.
@@ -142,11 +143,13 @@ public class Projectile {
         sprite.setOriginCenter();
         sprite.rotate((float) Math.toDegrees(projectAngle));
 
+        //sprite.setBounds();
+
         areaOfEffect = builder.areaOfEffect;
         time = 0;
         state = STATE.ALIVE;
 
-        explosion_animation = AnimationPacker.genAnimation(0.05f / 1f, "explosion");
+        explosion_animation = AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.EXPLOSION);
 
         if(gravity) {
             velocity = new Vector2(0, (float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));

@@ -33,8 +33,6 @@ public class SilverHead extends Enemy {
     private Animation openingAnimation;
     private Animation currentAnimation;
 
-    private TextureRegion currentFrame;
-
     private Rectangle bounds;
 
 
@@ -102,7 +100,7 @@ public class SilverHead extends Enemy {
         currentAnimation = standingAnimation;
         currentFrame = currentAnimation.getKeyFrame(time);
 
-        this.setDyingAnimation(closingAnimation);
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION));
 
         standingTime = new StateTimer(2f);
 
@@ -131,17 +129,20 @@ public class SilverHead extends Enemy {
 
         }
 
-        if(this.getHealth() <= 0 ){
-            this.setState(STATE.DEAD);
-        }
 
-        if(getState() != STATE.DEAD) {
+
+
+        if(getState() == STATE.ALIVE) {
             performAction(dt);
-        } else {
+
+            if(this.getHealth() <= 0 ){
+                this.setState(STATE.DYING);
+                time = 0;
+            }
+
+        } else if(getState() == STATE.DYING){
             dyingUpdate(dt);
         }
-
-
 
     }
 
@@ -180,6 +181,9 @@ public class SilverHead extends Enemy {
             }
 
         }
+
+        currentFrame = currentAnimation.getKeyFrame(time);
+
     }
 
 
@@ -200,10 +204,10 @@ public class SilverHead extends Enemy {
 
             Color color = batch.getColor();
             batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
-            batch.draw(currentAnimation.getKeyFrame(time), position.x, position.y, WIDTH, HEIGHT);
+            batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
             batch.setColor(color);
         } else {
-            batch.draw(currentAnimation.getKeyFrame(time), position.x, position.y, WIDTH, HEIGHT);
+            batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
 
         for(BlastWave b : blastWaveArray){

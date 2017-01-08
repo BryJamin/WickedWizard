@@ -26,7 +26,7 @@ public class Map {
     public Map(){
 
         rooms = new Room[][]{
-                {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(),null, null},
+                {null, null, new BattleRoom(0), new BattleRoom(), new BattleRoom(),null, null},
                 {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, new BattleRoom(), null},
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
         roomSetup();
@@ -172,7 +172,7 @@ public class Map {
         mapRenderer.setColor(Color.WHITE);
         mapRenderer.rect(mapx, mapy, SIZE, SIZE);
         mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
-        
+
         mapRenderer.end();
 
 

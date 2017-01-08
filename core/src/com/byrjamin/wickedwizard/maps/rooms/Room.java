@@ -185,6 +185,7 @@ public abstract class Room {
            // }
 
         } else {
+
             roomEnemyUpdater.update(dt, this);
 
             for(Item item : items){

@@ -26,7 +26,6 @@ public class RoomEnemyUpdater {
      */
     public void update(float dt, Room a){
         for(Enemy e : spawnedEnemies){
-            System.out.println("NOT INSIDE");
                 e.update(dt, a);
         }
     }

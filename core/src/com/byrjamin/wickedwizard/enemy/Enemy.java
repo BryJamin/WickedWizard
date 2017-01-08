@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.player.ActiveBullets;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
  * Abstract class for enemies within the game
@@ -51,6 +53,9 @@ public abstract class Enemy {
     public Enemy(){
         state = STATE.ALIVE;
         isFlashing = false;
+
+        dyingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION);
+
     }
 
 
@@ -88,7 +93,6 @@ public abstract class Enemy {
         if(this.getHealth() <= 0 && getState() != STATE.DYING){
             time = 0;
             this.setState(STATE.DYING);
-            //return;
         }
         resetFlashTimer();
     }
