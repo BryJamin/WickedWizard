@@ -13,21 +13,19 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
-import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaSpawner;
-import com.byrjamin.wickedwizard.maps.rooms.helper.ArenaWaves;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyUpdater;
+import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.item.ItemGenerator;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
-import com.byrjamin.wickedwizard.spelltypes.blastwaves.DispelWave;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
  * The idea behind this class is that Arenas/Rooms will decide their layouts, when they enemies spawn
  * and where the wizard is placed inside them
  */
-public class Room {
+public abstract class Room {
 
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
@@ -42,24 +40,18 @@ public class Room {
 
     private int currentSection;
 
-    public static EnemyBullets enemyBullets;
-    private ArenaSpawner arenaSpawner;
-    private ItemGenerator ig;
-    private Wizard wizard;
+    protected Array<Item> items = new Array<Item>();
+
+    private RoomEnemyUpdater roomEnemyUpdater;
+    protected Wizard wizard;
 
     private Rectangle ground;
 
     private Array<Vector2> groundTileTextureCoords;
-    private Sprite itemSprite;
 
     private long seed = 2;
 
     private boolean transition = false;
-
-    private boolean leftExit;
-    private boolean rightExit;
-    private boolean topExit;
-    private boolean bottomExit;
 
     private Sprite leftArrow;
     private Sprite rightArrow;
@@ -69,7 +61,8 @@ public class Room {
 
     private Array<Rectangle> platforms;
 
-    private ArenaWaves arenaWaves;
+    private RoomEnemyWaves roomEnemyWaves;
+    private Array<Sprite> exits = new Array<Sprite>();
 
     public enum STATE {
        ENTRY, LOCKED, UNLOCKED, EXIT
@@ -93,42 +86,20 @@ public class Room {
     private RoomTransition roomTransition;
     private RoomBackground roomBackground;
 
-
-    public enum EVENT {
-        WAVE, ITEM, IMP, BOSS
-    }
-
     private TextureRegion groundTexture;
-
-    Array<EVENT> day;
 
 
 
     public Room(){
-        enemyBullets = new EnemyBullets();
-        arenaSpawner = new ArenaSpawner();
-
-        ig = new ItemGenerator();
+        roomEnemyUpdater = new RoomEnemyUpdater();
         wizard = new Wizard(0, 0);
         ground = new Rectangle(0,0, WIDTH, 200);
         genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
         platforms = new Array<Rectangle>();
         platforms.add(ground);
 
-        arenaWaves = new ArenaWaves(this);
-
-        rightArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        rightArrow.setCenter(1700, 500);
-        rightArrow.setSize(Measure.units(10), Measure.units(10));
-
-        leftArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        leftArrow.setCenter(200, 500);
-        leftArrow.setSize(Measure.units(10), Measure.units(10));
-        leftArrow.setFlip(true, true);
-
-
+        roomEnemyWaves = new RoomEnemyWaves(this);
         groundTexture = PlayScreen.atlas.findRegion("brick");
-        //Bleeding.fixBleeding(groundTexture);
 
         sectionSetup();
 
@@ -138,7 +109,7 @@ public class Room {
        // roomTransition = new RoomTransition(WIDTH, HEIGHT);
        // roomTransition.enterFromLeft();
 
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("background/brick"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
 
     }
 
@@ -170,25 +141,43 @@ public class Room {
 
                 boolean inPosition = false;
 
-                if(entry_point == ENTRY_POINT.RIGHT){
+            switch(entry_point){
+                case RIGHT:
                     wizard.moveLeft(dt);
-
-                    if(wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1)]){
+                    if(wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1)]) {
                         wizard.setCenterX(sectionCenters[(sectionCenters.length - 1)]);
-                        currentSection = sectionCenters.length - 1;
                         inPosition = true;
                     }
-
-                } else if(entry_point == ENTRY_POINT.LEFT){
+                    break;
+                case LEFT:
                     wizard.moveRight(dt);
-
                     if(wizard.getCenterX() > sectionCenters[0]){
                         wizard.setCenterX(sectionCenters[0]);
-                        currentSection = 0;
                         inPosition = true;
                     }
+                    break;
+                case UP:
+                    wizard.moveDown(dt);
 
-                }
+                    System.out.println("INSIDE UP");
+                    if(wizard.getY() <= ground.getHeight()){
+
+                        System.out.println("OH SHIZZ");
+                        wizard.setY(ground.getHeight());
+                        inPosition = true;
+                    }
+                    break;
+                case DOWN:
+                    wizard.moveUp(dt);
+
+                    System.out.println("INSIDE DOWN");
+                    if(wizard.getY() >= ground.getHeight()){
+                        wizard.setY(ground.getHeight());
+                        inPosition = true;
+                    }
+                    break;
+
+            }
 
                 if(inPosition) {
                     state = STATE.UNLOCKED;
@@ -196,15 +185,18 @@ public class Room {
            // }
 
         } else {
-            
-            arenaSpawner.update(dt, this);
-            enemyBullets.update(dt, gamecam, this.getWizard());
 
-            for (DispelWave d : wizard.getDispelWaves()) {
-                for (int i = 0; i < EnemyBullets.activeBullets.size; i++) {
-                    if (d.collides(EnemyBullets.activeBullets.get(i).getSprite().getBoundingRectangle())) {
-                        EnemyBullets.activeBullets.get(i).dispellProjectile(d.getDispelDirection());
+            roomEnemyUpdater.update(dt, this);
+
+            for(Item item : items){
+                if(wizard.getBounds().overlaps(item.getBoundingRectangle())){
+                    if(!item.isDestroyed()) {
+                        item.use(wizard);
                     }
+                }
+
+                if(item.isDestroyed()){
+                    items.removeValue(item, true);
                 }
             }
 
@@ -212,92 +204,53 @@ public class Room {
 
         if (state == STATE.EXIT) {
             if(exit_point == EXIT_POINT.RIGHT) {
-                wizard.moveRight(dt);
+                if(!wizard.isDashing()) {
+                    wizard.moveRight(dt);
+                }
             } else if(exit_point == EXIT_POINT.LEFT){
-                wizard.moveLeft(dt);
+                if(!wizard.isDashing()) {
+                    wizard.moveLeft(dt);
+                }
+            } else if(exit_point == EXIT_POINT.DOWN){
+                if(!wizard.isDashing()){
+                    wizard.moveDown(dt);
+                }
+            } else if(exit_point == EXIT_POINT.UP) {
+                if(!wizard.isDashing()) {
+                    wizard.moveUp(dt);
+                }
             }
 
             if (isWizardOfScreen()) {
               //  roomTransition.update(dt);
             }
+
+            //System.out.println(wizard.getY());
+
         }
 
     }
-
-    /**
-     * Shifts the player to the next available section of the room based on where the input is placed.
-     * This also triggers the player to 'dash' there.
-     * @param input_x
-     */
-    public void shift(float input_x){
-        if(state != STATE.ENTRY && state != STATE.EXIT && !wizard.isDashing() && !wizard.isFiring()) {
-            if (input_x <= wizard.getCenterX()) {
-                shiftWizardLeft();
-            } else {
-                shiftWizardRight();
-            }
-        }
-
-
-        System.out.println("Current Section is: " + currentSection);
-
-    }
-
-    /**
-     * Shifts the wizard to the next available left section of the room.
-     */
-    public void shiftWizardLeft(){
-        if(currentSection != 0){
-            currentSection--;
-            wizard.dash(sectionCenters[currentSection]);
-        }
-    }
-
-    /**
-     * Shifts the player to the next avaliable right section of the room.
-     */
-    public void shiftWizardRight(){
-        if(currentSection < sectionCenters.length - 1){
-            currentSection++;
-            wizard.dash(sectionCenters[currentSection]);
-        }
-    }
-
 
     public void draw(SpriteBatch batch){
 
         roomBackground.draw(batch);
+        roomEnemyUpdater.draw(batch);
 
+        for(Item item : items) {
+            item.draw(batch);
+            BoundsDrawer.drawBounds(batch, item.getBoundingRectangle());
+        }
 
-        enemyBullets.draw(batch);
         wizard.draw(batch);
-
         for(Vector2 v : groundTileTextureCoords){
             batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
         }
 
-        arenaSpawner.draw(batch);
-
         if(state == STATE.UNLOCKED) {
-
-            if(leftExit){
-                leftArrow.draw(batch);
-                BoundsDrawer.drawBounds(batch, leftArrow.getBoundingRectangle());
+            for(Sprite arrow : exits){
+                arrow.draw(batch);
+                BoundsDrawer.drawBounds(batch, arrow.getBoundingRectangle());
             }
-
-            if(rightExit){
-                rightArrow.draw(batch);
-                BoundsDrawer.drawBounds(batch, rightArrow.getBoundingRectangle());
-            }
-
-        }
-
-        if(itemSprite != null){
-            itemSprite.draw(batch);
-        }
-
-        if(roomTransition != null){
-           // roomTransition.draw(batch);
         }
 
     }
@@ -332,7 +285,15 @@ public class Room {
                 break;
             case RIGHT:
                 wizard.setX(WIDTH);
-               // roomTransition.enterFromRight();
+                break;
+            case UP:
+                wizard.setY(HEIGHT);
+                break;
+            case DOWN:
+                wizard.setY(0);
+                break;
+
+            // roomTransition.enterFromRight();
         }
 
     }
@@ -357,7 +318,7 @@ public class Room {
 
     public boolean tapArrow(float input_x, float input_y){
 
-        if(rightExit && state == STATE.UNLOCKED){
+        if(rightArrow != null && state == STATE.UNLOCKED){
             if(rightArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
                 exit_point = EXIT_POINT.RIGHT;
@@ -368,12 +329,29 @@ public class Room {
         }
 
 
-        if(leftExit && state == STATE.UNLOCKED){
+        if(leftArrow != null && state == STATE.UNLOCKED){
             if(leftArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
                 exit_point = EXIT_POINT.LEFT;
                // roomTransition.exitToLeft();
                // System.out.println("INSIDE LEFT ARROW METHOD");
+                return true;
+            }
+        }
+
+
+        if(topArrow != null && state == STATE.UNLOCKED){
+            if(topArrow.getBoundingRectangle().contains(input_x, input_y)){
+                state = STATE.EXIT;
+                exit_point = EXIT_POINT.UP;
+                return true;
+            }
+        }
+
+        if(bottomArrow != null && state == STATE.UNLOCKED){
+            if(bottomArrow.getBoundingRectangle().contains(input_x, input_y)){
+                state = STATE.EXIT;
+                exit_point = EXIT_POINT.DOWN;
                 return true;
             }
         }
@@ -384,28 +362,7 @@ public class Room {
 
 
     public boolean isWizardOfScreen(){
-        return (wizard.getX() > WIDTH) || wizard.getX() < -wizard.WIDTH;
-    }
-
-    private void spawnItem(Item ig) {
-        itemSprite = PlayScreen.atlas.createSprite(ig.getSpriteName());
-        itemSprite.setSize(MainGame.GAME_UNITS * 7, MainGame.GAME_UNITS * 7);
-        itemSprite.setCenter(this.WIDTH / 2, (this.HEIGHT / 4) * 3);
-    }
-
-
-    public void itemGet(float input_x, float input_y){
-
-        if(day.size != 0) {
-            if(day.get(0) == EVENT.ITEM) {
-                if (itemSprite.getBoundingRectangle().contains(input_x, input_y)) {
-                    Item i = ig.getItem(seed);
-                    wizard.applyItem(i);
-                    itemSprite = null;
-                    day.removeIndex(0);
-                }
-            }
-        }
+        return (wizard.getX() > WIDTH) || wizard.getX() < -wizard.WIDTH || wizard.getY() + wizard.WIDTH < 0 || wizard.getY() > HEIGHT;
     }
 
     public Rectangle getOverlappingRectangle(Rectangle r){
@@ -424,12 +381,37 @@ public class Room {
     }
 
 
-    public void setLeftExit(boolean leftExit) {
-        this.leftExit = leftExit;
+    public void addLeftExit() {
+        leftArrow = PlayScreen.atlas.createSprite("exit_arrow");
+        leftArrow.setCenter(200, 500);
+        leftArrow.setSize(Measure.units(10), Measure.units(10));
+        leftArrow.setFlip(true, true);
+        exits.add(leftArrow);
     }
 
-    public void setRightExit(boolean rightExit) {
-        this.rightExit = rightExit;
+    public void addRightExit() {
+        rightArrow = PlayScreen.atlas.createSprite("exit_arrow");
+        rightArrow.setCenter(1700, 500);
+        rightArrow.setSize(Measure.units(10), Measure.units(10));
+        exits.add(rightArrow);
+    }
+
+    public void addTopExit() {
+        topArrow = PlayScreen.atlas.createSprite("exit_arrow");
+        topArrow.setCenter(WIDTH / 2, 1000);
+        topArrow.setSize(Measure.units(10), Measure.units(10));
+        topArrow.setOriginCenter();
+        topArrow.rotate((float) Math.toDegrees(Math.PI / 2));
+        exits.add(topArrow);
+    }
+
+    public void setBottomExit() {
+        bottomArrow = PlayScreen.atlas.createSprite("exit_arrow");
+        bottomArrow.setCenter(WIDTH / 2 - 300, 1000);
+        bottomArrow.setSize(Measure.units(10), Measure.units(10));
+        bottomArrow.setOriginCenter();
+        bottomArrow.rotate((float) -Math.toDegrees(Math.PI / 2));
+        exits.add(bottomArrow);
     }
 
     public EXIT_POINT getExit_point() {
@@ -444,16 +426,24 @@ public class Room {
         return exit_point == EXIT_POINT.LEFT;
     }
 
+    public boolean isExitPointUp(){
+        return exit_point == EXIT_POINT.UP;
+    }
+
+    public boolean isExitPointDown(){
+        return exit_point == EXIT_POINT.DOWN;
+    }
+
     public Array<Rectangle> getPlatforms() {
         return platforms;
     }
 
     public Array<Enemy> getEnemies() {
-        return arenaSpawner.getSpawnedEnemies();
+        return roomEnemyUpdater.getSpawnedEnemies();
     }
 
-    public ArenaSpawner getArenaSpawner() {
-        return arenaSpawner;
+    public RoomEnemyUpdater getRoomEnemyUpdater() {
+        return roomEnemyUpdater;
     }
 
     public Wizard getWizard() {
@@ -462,10 +452,6 @@ public class Room {
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
-    }
-
-    public EVENT getcurrentEvent(){
-        return day.get(0);
     }
 
     public float groundHeight(){

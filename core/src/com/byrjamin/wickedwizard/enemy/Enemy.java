@@ -4,11 +4,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
+import com.byrjamin.wickedwizard.player.ActiveBullets;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
+import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
  * Abstract class for enemies within the game
@@ -20,45 +25,59 @@ public abstract class Enemy {
         DEAD, DYING, ALIVE
     }
 
-    public STATE state;
+    protected float WIDTH;
+    protected float HEIGHT;
 
-    private Sprite sprite;
+    protected Vector2 position;
+
+    public STATE state;
 
     private float health;
 
     public boolean isFlashing;
 
     private float flashTimer;
-    public float time = 0;
+    protected float time = 0;
 
     private Animation dyingAnimation;
 
-    private Array<Rectangle> bounds = new Array<Rectangle>();
+    protected Array<Rectangle> bounds = new Array<Rectangle>();
+    protected ActiveBullets bullets = new ActiveBullets();
 
-    private Vector2 position;
+
+    protected Color drawingColor;
+
+    protected TextureRegion currentFrame;
 
 
     public Enemy(){
-        sprite = new Sprite();
         state = STATE.ALIVE;
         isFlashing = false;
+
+        dyingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION);
+
     }
 
+
+    //TODO this is a cop out method since I can't really think of a way to do this
+    //TODO just in draw when draw itself is currently not well crafted.
+    public void bulletDraw(SpriteBatch batch){
+        bullets.draw(batch);
+    }
+
+
     public void draw(SpriteBatch batch){
-        //If the enemy is flashing set the enemy to a darker color.
+
 
         if(isFlashing) {
-            Color color = getSprite().getColor();
-            this.getSprite().setColor(new Color(0.0f,0.0f,0.0f,0.95f));
-            this.getSprite().draw(batch);
+            Color color = batch.getColor();
+            batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
+            batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
             batch.setColor(color);
-            getSprite().setColor(color);
         } else {
-            this.getSprite().draw(batch);
+            batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
-
         BoundsDrawer.drawBounds(batch, bounds);
-
     }
 
 
@@ -74,7 +93,6 @@ public abstract class Enemy {
         if(this.getHealth() <= 0 && getState() != STATE.DYING){
             time = 0;
             this.setState(STATE.DYING);
-            //return;
         }
         resetFlashTimer();
     }
@@ -102,13 +120,25 @@ public abstract class Enemy {
 
 
     public boolean isHit(Rectangle r){
-        return (state == STATE.ALIVE) && this.getSprite().getBoundingRectangle().overlaps(r);
+        for(Rectangle bound: bounds){
+            if((state == STATE.ALIVE) && bound.overlaps(r)){
+                return true;
+            }
+        }
+        return false;
     }
 
 
 
     public void update(float dt, Room r){
         flashTimer(dt);
+        bullets.updateProjectile(dt, r);
+        for(Projectile p : bullets.getActiveBullets()){
+            if(r.getWizard().getBounds().overlaps(p.getSprite().getBoundingRectangle())){
+                r.getWizard().reduceHealth(p.getDamage());
+                p.setState(Projectile.STATE.EXPLODING);
+            }
+        }
     };
 
     public Vector2 getPosition() {
@@ -125,14 +155,6 @@ public abstract class Enemy {
 
     public float getHealth() {
         return health;
-    }
-
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-    }
-
-    public Sprite getSprite() {
-        return sprite;
     }
 
     public Animation getDyingAnimation() {
@@ -153,9 +175,19 @@ public abstract class Enemy {
 
     public void dyingUpdate(float dt){
         time+=dt;
-        this.getSprite().setRegion(this.getDyingAnimation().getKeyFrame(time));
+
+        currentFrame = this.getDyingAnimation().getKeyFrame(time);
+
         if(this.getDyingAnimation().isAnimationFinished(time)){
             this.setState(STATE.DEAD);
         }
+    }
+
+    public Array<Rectangle> getBounds() {
+        return bounds;
+    }
+
+    public ActiveBullets getBullets() {
+        return bullets;
     }
 }

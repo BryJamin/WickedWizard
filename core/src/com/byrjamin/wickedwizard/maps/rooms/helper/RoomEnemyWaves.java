@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * Created by Home on 10/12/2016.
  */
-public class ArenaWaves {
+public class RoomEnemyWaves {
 
     private Array<Array<Enemy>> incomingWaves;
 
@@ -31,7 +31,7 @@ public class ArenaWaves {
 
 
 
-    public ArenaWaves(Room a){
+    public RoomEnemyWaves(Room a){
         room = a;
 
         generateShuffler();
@@ -39,7 +39,7 @@ public class ArenaWaves {
 
 
     public void blob(Array<Enemy> e){
-        e.clear();
+       // e.clear();
         e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
         e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
     }
@@ -47,26 +47,26 @@ public class ArenaWaves {
 
 
     public void blob2(Array<Enemy> e){
-        e.clear();
+      //  e.clear();
         e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
         e.add(EnemyPresets.defaultTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void blob3(Array<Enemy> e){
-        e.clear();
+      //  e.clear();
         e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
         e.add(EnemyPresets.fastTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
 
     public void blob4(Array<Enemy> e){
-        e.clear();
+     //   e.clear();
         e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
         e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
     }
 
     public void turret(Array<Enemy> e){
-        e.clear();
+      //  e.clear();
         e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
         e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
         e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));

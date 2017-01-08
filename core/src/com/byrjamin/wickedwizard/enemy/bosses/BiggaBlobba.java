@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
 import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.enemy.EnemyPresets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -58,13 +57,9 @@ public class BiggaBlobba extends Enemy {
     private Vector2 position;
     private Vector2 velocity;
 
-    private Array<Rectangle> bounds;
-
     private Animation walk;
 
     private Animation currentAnimation;
-
-    TextureRegion currentFrame;
 
     ShapeRenderer shapeRenderer;
 
@@ -197,7 +192,7 @@ public class BiggaBlobba extends Enemy {
         } else if(isLanded){
 
             if(launcher.isReady()){
-                EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(
+                bullets.addProjectile(new Projectile.ProjectileBuilder(
                         this.position.x + Measure.units(25) ,
                         this.position.y + Measure.units(30),
                         a.getWizard().getX(),
@@ -233,58 +228,20 @@ public class BiggaBlobba extends Enemy {
 
 
         g2000.update(dt, position, room.getPlatforms());
-        bounds.get(0).y = position.y;
+        lowerBody.y = position.y;
 
         this.velocity.add(0, GRAVITY * dt);
 
-        boolean canAdd = true;
-
-/*        for (Rectangle r : room.getPlatforms()){
-            if(r.overlaps(bounds.get(0)) || r.getY() + r.getHeight() == position.y ){
-                if(position.y + velocity.y >= (r.y + r.getHeight())){
-                    //Allows for jumping
-                    position.add(velocity);
-                    bounds.get(0).setY(position.y);
-                    break;
-                } else {
-                    position.y = r.y + r.getHeight();
-                    bounds.get(0).setY(position.y);
-                    canAdd = false;
-                    break;
-                }
-            }
-        }
-
-        if(canAdd){
-            position.add(velocity);
-            bounds.get(0).setY(position.y);
-        }*/
-
     }
-
-
-    public boolean isHit(Rectangle r){
-        for(Rectangle bound: bounds){
-            if((state == STATE.ALIVE) && bound.overlaps(r)){
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     @Override
     public void update(float dt, Room r) {
 
         super.update(dt, r);
         time += dt;
-        currentFrame = currentAnimation.getKeyFrame(time);
         applyGravity(dt, r);
         boundsUpdate();
 
-        if(this.getHealth() <= 0 ){
-            this.setState(STATE.DEAD);
-        }
 
         if(state == STATE.ALIVE) {
 
@@ -304,6 +261,15 @@ public class BiggaBlobba extends Enemy {
                 }
             }
 
+            if(this.getHealth() <= 0 ){
+                this.setState(STATE.DYING);
+            }
+
+            currentFrame = currentAnimation.getKeyFrame(time);
+
+
+        } else if(state == STATE.DYING){
+            dyingUpdate(dt);
         }
         //TODO - As slime takes damage it falls
 /*        if(time > 5 && test == true){
@@ -332,9 +298,9 @@ public class BiggaBlobba extends Enemy {
 
 
             if (frameIndex == 4) {
-                bounds.get(0).setHeight(Measure.units(17f - 2.0f));
+                lowerBody.setHeight(Measure.units(17f - 2.0f));
             } else {
-                bounds.get(0).setHeight(Measure.units(17f - (0.5f * frameIndex)));
+                lowerBody.setHeight(Measure.units(17f - (0.5f * frameIndex)));
             }
 
             for (int i = 1; i < bounds.size; i++) {

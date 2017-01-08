@@ -1,6 +1,9 @@
 package com.byrjamin.wickedwizard.item;
 
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.item.Items.AttackUp;
+import com.byrjamin.wickedwizard.item.Items.HealthUp;
+import com.byrjamin.wickedwizard.item.Items.ItemDictionary;
 
 import java.util.Random;
 
@@ -9,18 +12,27 @@ import java.util.Random;
  */
 public class ItemGenerator {
 
+    private ItemDictionary itemDictionary = new ItemDictionary();
 
-    private Array<Item> items;
+    private Array<ItemPresets> avaliableItems;
+
 
     /**
      * Creates an array of items from the ItemPresets list of items.
      */
+    //TODO
     public ItemGenerator(){
-        items = new Array<Item>();
-        for(ItemPresets.itemList i : ItemPresets.itemList.values()){
-            items.add(i.getItem());
-        }
+
+        avaliableItems = new Array<ItemPresets>();
+        avaliableItems.add(ItemPresets.ATTACK_UP);
+        avaliableItems.add(ItemPresets.HEALTH_UP);
+
     }
+
+    public ItemGenerator(Array<ItemPresets> avaliableItems){
+        this.avaliableItems = avaliableItems;
+    }
+
 
 
     /**
@@ -30,7 +42,8 @@ public class ItemGenerator {
      */
     public Item getItem(long seed){
         Random rand = new Random(seed);
-        return ItemPresets.itemList.ATTACK_UP.getItem();
+        //return itemDictionary.getItem(avaliableItems.get(rand.nextInt(avaliableItems.size)));
+        return itemDictionary.getItem(ItemPresets.HEALTH_UP);
         //return items.get(rand.nextInt(items.size));
     }
 

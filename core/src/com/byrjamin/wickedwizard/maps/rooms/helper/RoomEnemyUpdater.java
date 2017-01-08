@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.maps.rooms.helper;
 
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.enemy.enemies.Blob;
@@ -10,20 +11,12 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 /**
  * Created by Home on 06/11/2016.
  */
-public class ArenaSpawner {
+public class RoomEnemyUpdater {
 
     private Array<Enemy> spawnedEnemies;
 
-    public ArenaSpawner(){
+    public RoomEnemyUpdater(){
         spawnedEnemies = new Array<Enemy>();
-    }
-
-    public void spawnBlob(Blob b){
-        spawnedEnemies.add(b);
-    }
-
-    public void spawnTurret(Turret t){
-        spawnedEnemies.add(t);
     }
 
     /**
@@ -33,23 +26,28 @@ public class ArenaSpawner {
      */
     public void update(float dt, Room a){
         for(Enemy e : spawnedEnemies){
-            if(e.getState() == Enemy.STATE.DEAD){
-                spawnedEnemies.removeValue(e, true);
-            } else {
                 e.update(dt, a);
-            }
         }
     }
 
     public void draw(SpriteBatch batch){
         for(Enemy e : spawnedEnemies){
             e.draw(batch);
+            e.bulletDraw(batch);
         }
     }
 
 
     public boolean areAllEnemiesKilled(){
-        return spawnedEnemies.size == 0;
+
+        for(Enemy e : spawnedEnemies) {
+            if(e.getState() == Enemy.STATE.ALIVE){
+                return false;
+            }
+        }
+
+        return true;
+
     }
 
     public Array<Enemy> getSpawnedEnemies() {

@@ -14,9 +14,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.maps.Map;
-import com.byrjamin.wickedwizard.player.ActiveBullets;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
-import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 
 
 //TODO
@@ -25,10 +22,7 @@ import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 /**
  * Created by Home on 15/10/2016.
  */
-public class PlayScreen implements Screen {
-
-
-    private MainGame game;
+public class PlayScreen extends AbstractScreen {
 
     private OrthographicCamera gamecam;
 
@@ -40,33 +34,23 @@ public class PlayScreen implements Screen {
 
     GestureDetector gestureDetector;
 
-    private ActiveBullets activeBullets;
-
     Vector3 input = new Vector3();
     Vector3 touchDownInput = new Vector3();
     Vector3 touchUpInput = new Vector3();
 
     Map map;
 
-    EnemyBullets enemyBullets;
-
-    BlastWave blast;
-
 
     //TODO IF you ever click in the deck area don't cast any spells
 
     public PlayScreen(MainGame game){
-        this.game = game;
-
-        activeBullets = new ActiveBullets();
+        super(game);
 
         gestureDetector = new GestureDetector(new gestures());
 
-        atlas = new TextureAtlas(Gdx.files.internal("sprite.atlas"));
+        atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
+
         map = new Map();
-        enemyBullets = new EnemyBullets();
-
-
         gamecam = new OrthographicCamera();
 
         //Starts in the middle of the screen, on the 1/4 thingie.
@@ -103,8 +87,15 @@ public class PlayScreen implements Screen {
 
                     boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
 
+
+
                     if (!tapped) {
-                        map.getActiveRoom().getWizard().startFiring();
+
+                        if(input.y <= map.getActiveRoom().groundHeight()){
+                            map.getActiveRoom().getWizard().dash(input.x);
+                        } else {
+                            map.getActiveRoom().getWizard().startFiring();
+                        }
                     }
 
 
@@ -158,6 +149,8 @@ public class PlayScreen implements Screen {
         //Updates the positions of all elements on the screen before they are redrawn.
         update(delta);
 
+
+
         //Sets the background color if nothing is on the screen.
         Gdx.gl.glClearColor(0, 0, 0, 0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -165,9 +158,6 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        if(blast != null){
-            blast.draw(game.batch);
-        }
 
         map.draw(game.batch);
 
@@ -218,7 +208,7 @@ public class PlayScreen implements Screen {
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
-            int x1 = Gdx.input.getX();
+/*            int x1 = Gdx.input.getX();
             int y1 = Gdx.input.getY();
             Vector3 input = new Vector3(x1, y1, 0);
 
@@ -232,10 +222,10 @@ public class PlayScreen implements Screen {
             map.getActiveRoom().getWizard().stopFiring();
 
             System.out.println("X is " + input.x);
-            System.out.println("Y is " + input.y);
+            System.out.println("Y is " + input.y);*/
 
             //map.getActiveRoom().itemGet(input.x, input.y);
-            return true;
+            return false;
         }
 
         @Override

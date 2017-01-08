@@ -3,9 +3,12 @@ package com.byrjamin.wickedwizard;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.byrjamin.wickedwizard.screens.LoadingScreen;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 
@@ -21,18 +24,24 @@ public class MainGame extends Game {
 	//60 tiles high
 
 	public SpriteBatch batch;
+	public AssetManager manager = new AssetManager();
+
+	private boolean stop = true;
+
+
 	Texture img;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		manager.load("sprite.atlas", TextureAtlas.class);
+		setScreen(new LoadingScreen(this));
 	}
 
-	@Override
+/*	@Override
 	public void render () {
 		super.render();
-	}
+	}*/
 	
 /*	@Override
 	public void create () {

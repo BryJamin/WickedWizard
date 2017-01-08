@@ -1,10 +1,13 @@
 package com.byrjamin.wickedwizard.enemy.enemies;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.enemy.EnemyBullets;
+import com.byrjamin.wickedwizard.player.ActiveBullets;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -29,15 +32,21 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     private float reloadTimer;
 
+    private ActiveBullets activeBullets = new ActiveBullets();
+
     private float fireRate = 1f;
 
     private boolean isVertical = false;
 
     private Projectile projectile;
 
+    private Rectangle hitBox;
+
     private Array<Dispellable.DISPELL> dispellSequence;
 
     private final float shotspeed;
+
+    private float scale = 1;
 
     public static class TurretBuilder {
 
@@ -96,13 +105,25 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
     public Turret(TurretBuilder builder){
         super();
         this.setHealth(builder.health);
-        this.getSprite().setRegion(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING));
-        this.getSprite().setSize(SQUARE_SIZE * builder.scale, SQUARE_SIZE * builder.scale);
-        this.getSprite().setCenter(builder.posX, builder.posY);
+
+
+        currentFrame = PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING);
+
+        WIDTH = SQUARE_SIZE;
+        HEIGHT = SQUARE_SIZE;
+        position = new Vector2(builder.posX, builder.posY);
+
         this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.BLOB_DYING));
         MOVEMENT = MOVEMENT * builder.speed;
         DEFAULT_SHOT_SPEED = DEFAULT_SHOT_SPEED * builder.shotSpeed;
         reloader = new Reloader(builder.reloadSpeed, builder.initialFiringDelay);
+
+        hitBox  = new Rectangle(builder.posX + (Measure.units(1) * builder.scale), builder.posY,
+                WIDTH - (Measure.units(2.5f) * builder.scale),
+                HEIGHT - (Measure.units(2.5f) * builder.scale));
+
+        bounds.add(hitBox);
+
         if(builder.dispellSequence.size == 0) {
             dispellSequence = new Array<Dispellable.DISPELL>();
             dispellSequence.add(Dispellable.DISPELL.HORIZONTAL);
@@ -114,23 +135,29 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
 
     @Override
     public void update(float dt, Room r) {
-        flashTimer(dt);
-        updateMovement(dt);
-        if(this.getState() == STATE.DYING){
+        super.update(dt, r);
+
+        if(this.getState() == STATE.DYING || this.getState() == STATE.DEAD){
             dyingUpdate(dt);
+        } else {
+            updateMovement(dt);
+            reloader.update(dt);
+            fire(dt, r);
         }
-        reloader.update(dt);
-        fire(dt, r);
     }
 
 
     public void updateMovement(float dt){
-        if(this.getSprite().getX() + this.getSprite().getWidth() > MainGame.GAME_WIDTH){
+        if(position.x + WIDTH > MainGame.GAME_WIDTH){
             MOVEMENT = -MainGame.GAME_UNITS * 10;
-        } else if(this.getSprite().getX() <= 0){
+        } else if(position.x <= 0){
             MOVEMENT = MainGame.GAME_UNITS * 10;
         }
-        this.getSprite().translateX(MOVEMENT * dt);
+
+        position.add(MOVEMENT *dt, 0);
+
+        hitBox.x = position.x + (Measure.units(1) * scale);
+        hitBox.y = position.y;
     }
 
 
@@ -148,7 +175,7 @@ public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
      */
     public void fire(float dt, Room a){
         if (reloader.isReady()) {
-            EnemyBullets.activeBullets.add(new Projectile.ProjectileBuilder(this.getSprite().getX() + this.getSprite().getWidth() / 2, this.getSprite().getY() + this.getSprite().getHeight() / 2, a.getWizard().getCenterX(),a.getWizard().getCenterY())
+            bullets.addProjectile(new Projectile.ProjectileBuilder(position.x + WIDTH / 2, position.y + HEIGHT / 2, a.getWizard().getCenterX(),a.getWizard().getCenterY())
                     .spriteString("bullet")
                     .damage(1)
                     .HORIZONTAL_VELOCITY(15f)

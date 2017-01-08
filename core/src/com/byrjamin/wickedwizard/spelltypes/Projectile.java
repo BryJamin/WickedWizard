@@ -12,9 +12,11 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.player.Wizard;
 import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
 /**
  * Created by Home on 07/11/2016.
@@ -141,11 +143,13 @@ public class Projectile {
         sprite.setOriginCenter();
         sprite.rotate((float) Math.toDegrees(projectAngle));
 
+        //sprite.setBounds();
+
         areaOfEffect = builder.areaOfEffect;
         time = 0;
         state = STATE.ALIVE;
 
-        explosion_animation = AnimationPacker.genAnimation(0.05f / 1f, "explosion");
+        explosion_animation = AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.EXPLOSION);
 
         if(gravity) {
             velocity = new Vector2(0, (float) (VERTICAL_VELOCITY * Math.sin(projectAngle)));
@@ -163,21 +167,7 @@ public class Projectile {
         projectAngle = (Math.atan2(y2 - y1, x2 - x1));
     }
 
-    /**
-     * As this projectile isn't effected by gravity it just travels in a straight line using trigonometry
-     * @param dt
-     */
-    public void update(float dt){
-
-        this.getSprite().setCenter(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)),
-                this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));
-
-
-/*        this.getSprite().setX(this.getSprite().getX() + (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle)));
-        this.getSprite().setY(this.getSprite().getY() + (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle)));*/
-    }
-
-    public void update(float dt, Array<Enemy> e){
+/*    public void update(float dt, Array<Enemy> e){
 
         if(getState() == STATE.ALIVE) {
             aliveUpdate(dt, e);
@@ -203,38 +193,42 @@ public class Projectile {
             explosionTextureRegion = explosion_animation.getKeyFrame(time);
         }
 
+    }*/
+
+
+    public void update(float dt, Room r){
+        if(getState() == STATE.ALIVE) {
+            outOfBoundsCheck(r);
+            travelUpdate();
+        } else if(getState() == STATE.EXPLODING){
+            time += dt;
+            if(explosion_animation.isAnimationFinished(time)){
+                this.setState(STATE.DEAD);
+            }
+            explosionTextureRegion = explosion_animation.getKeyFrame(time);
+        }
     }
 
-
-    public void aliveUpdate(float dt, Array<Enemy> e){
-
-        outOfBoundsCheck();
-        //TODO if bullet hits the ground it shoudl run it's death animation
-        damageCheck(e);
-        travelUpdate();
-
-    }
-
-    public void aliveUpdate(float dt, Wizard w){
+/*    public void aliveUpdate(float dt, Wizard w){
 
         outOfBoundsCheck();
         //TODO if bullet hits the ground it shoudl run it's death animation
         damageCheck(w);
         travelUpdate();
 
-    }
+    }*/
 
 
     /**
      * Checks if the bullets go offScreen, if they do, Remove them.
      */
-    public void outOfBoundsCheck(){
-        if((getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
-                || getSprite().getY() > MainGame.GAME_HEIGHT
-                || getSprite().getY() < 0) && !gravity){
+    public void outOfBoundsCheck(Room r){
+        if((getSprite().getX() > r.WIDTH || getSprite().getX() < 0
+                || getSprite().getY() > r.HEIGHT
+                || getSprite().getY() < r.groundHeight()) && !gravity){
             this.setState(STATE.DEAD);
-        } else if(getSprite().getX() > MainGame.GAME_WIDTH || getSprite().getX() < 0
-                || getSprite().getY() < 0) {
+        } else if(getSprite().getX() > r.WIDTH || getSprite().getX() < 0
+                || getSprite().getY() < r.groundHeight()) {
             this.setState(STATE.DEAD);
         }
     }
@@ -281,11 +275,11 @@ public class Projectile {
             this.setState(STATE.EXPLODING);
     }
 
-    public void damageCheck(Array<Enemy> e){
+   /* public void damageCheck(Rectangle... r){
         if(getSprite().getY() <= PlayScreen.GROUND_Y){
             this.getSprite().setY(PlayScreen.GROUND_Y);
             if(areaOfEffect != null){
-                explosionHit(getSprite(), getAreaOfEffect(), e);
+                explosionHit(getSprite(), getAreaOfEffect(), r);
             }
             this.setState(STATE.EXPLODING);
         }
@@ -314,17 +308,17 @@ public class Projectile {
     }
 
 
-    /**
+    *//**
      * Checks if the projectile has hit any of the enemies on screen, if it has the bullet deals damage
      * and switches to another state.
      *
      * If the enemy is already dying the bullet passes through the enemy.
      *
      * @param enemies - Array of Enemies
-     */
-    public void singleTargetProjectileDamageCheck(Array<Enemy> enemies){
+     *//*
+    public void singleTargetProjectileDamageCheck(Rectangle... hitboxes){
 
-        for (Enemy e : enemies) {
+        for (Rectangle r : hitboxes) {
             if(e.isHit(getSprite().getBoundingRectangle())){
                 e.reduceHealth(damage);
                 this.setState(STATE.EXPLODING);
@@ -333,10 +327,10 @@ public class Projectile {
         }
     }
 
-    /**
+    *//**
      * Checks if the projectile has hit the wizard, if it has the projectile deals damage and switches state.
      * @param w
-     */
+     *//*
     public void singleTargetProjectileDamageCheck(Wizard w){
         if(getSprite().getBoundingRectangle().overlaps(w.getBounds())){
             w.reduceHealth(damage);
@@ -344,16 +338,18 @@ public class Projectile {
         }
     }
 
-    /**
+    *//**
      * For reach enemy that exists check if the bullet hit the enemy,
      * If this is the case check to see if the rectangle hits any other enemies
      * @param e
-     */
+     *//*
     public void multipleTargetProjectileDamageCheck(Array<Enemy> e) {
         for (Enemy enemy : e) {
-            if(getSprite().getBoundingRectangle().overlaps(enemy.getSprite().getBoundingRectangle())){
-                explosionHit(getSprite(), getAreaOfEffect(), e);
-                return;
+            for(Rectangle r : enemy.getBounds()){
+                if(getSprite().getBoundingRectangle().overlaps(r)){
+                    explosionHit(getSprite(), getAreaOfEffect(), e);
+                    return;
+                }
             }
         }
     }
@@ -364,16 +360,13 @@ public class Projectile {
         }
     }
 
-    /**
+    *//**
      * Gets the center of the Projectile Sprite and applies the Area of effect Rectangle from
      * that position.
      *
      * Then checks to see how many enemies were within the area of effect and applies damage.
      *
-     * @param bullet - The projectile's Sprite
-     * @param explosionRadius - Area of Effect of the Explosion
-     * @param enemies - Array of enemies
-     */
+     *//*
     public void explosionHit(Sprite bullet, Rectangle explosionRadius, Array<Enemy> enemies){
         Vector2 temp = new Vector2();
         bullet.getBoundingRectangle().getCenter(temp);
@@ -396,7 +389,7 @@ public class Projectile {
             w.reduceHealth(damage);
             this.setState(STATE.EXPLODING);
         }
-    }
+    }*/
 
     public void draw(SpriteBatch batch){
 

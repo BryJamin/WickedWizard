@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -34,7 +36,8 @@ public class Wizard {
 
     private float invinciblityFrames = 1.0f;
     private float invinciblityTimer;
-    private boolean hitFlash;
+    private float blinkTimer;
+    private boolean isInvisible;
 
     private Vector2 position;
     private Vector2 velocity = new Vector2(0, 0);
@@ -56,7 +59,7 @@ public class Wizard {
     private float dashTarget;
 
     public enum STATE {
-        CHARGING, FIRING, STANDING,AOECIRCLETHING
+        CHARGING, FIRING, STANDING
     }
 
     private enum DIRECTION {
@@ -75,7 +78,7 @@ public class Wizard {
     private float damage = 1;
     private float reloadRate = 0.3f;
     //private float windUp = 0.5f;
-    private float windUpAnimationTime = 0.02f;
+    private float windUpAnimationTime = 0.0f;
 
     private float animationTime;
     private float chargeTime;
@@ -83,12 +86,13 @@ public class Wizard {
     private Animation standing;
     private Animation firing;
     private Animation windUpAnimation;
+    private Animation dashAnimation;
     private Animation currentAnimation;
 
     private TextureRegion currentFrame;
 
 
-    private Array<Item> items = new Array<Item>();
+    private Array<ItemPresets> items = new Array<ItemPresets>();
 
 
     public Wizard(float posX, float posY) {
@@ -106,6 +110,7 @@ public class Wizard {
         standing = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
         firing = AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
         windUpAnimation = AnimationPacker.genAnimation(windUpAnimationTime, "circle");
+        dashAnimation = AnimationPacker.genAnimation(0.05f, "squ_dash", Animation.PlayMode.LOOP_REVERSED);
 
     }
 
@@ -142,15 +147,33 @@ public class Wizard {
 
 
         if(dashing){
+            currentAnimation = dashAnimation;
             dashing = dashUpdate(dt);
         }
 
-        activeBullets.update(dt, gamecam, room.getEnemies());
+        activeBullets.updateProjectile(dt, room);
+
+        for(Projectile p : activeBullets.getActiveBullets()){
+            for(Enemy e : room.getEnemies()){
+                if(e.isHit(p.getSprite().getBoundingRectangle())){
+                    e.reduceHealth(p.getDamage());
+                    p.setState(Projectile.STATE.EXPLODING);
+                };
+            }
+        }
 
         for(DispelWave d : dispelWaves){
             d.update(dt);
             if(d.outOfBounds(room)){
                 dispelWaves.removeValue(d, true);
+            }
+
+            for(Enemy e : room.getEnemies()){
+                for(Projectile p : e.getBullets().getActiveBullets()){
+                    if(d.collides(p.getSprite().getBoundingRectangle())){
+                        p.dispellProjectile(d.getDispelDirection());
+                    }
+                }
             }
         }
 
@@ -171,7 +194,7 @@ public class Wizard {
         }
 
 
-        if(!hitFlash) {
+        if(!isInvisible) {
             boolean flip = (getDirection() == DIRECTION.LEFT);
             batch.draw(currentFrame, flip ? position.x + WIDTH : position.x, position.y, flip ? -WIDTH : WIDTH, HEIGHT);
         }
@@ -186,7 +209,7 @@ public class Wizard {
             b.draw(batch);
         }
 
-        //BoundsDrawer.drawBounds(batch, bounds);
+        BoundsDrawer.drawBounds(batch, bounds);
     }
 
     private void boundsUpdate(){
@@ -210,14 +233,29 @@ public class Wizard {
         direction = DIRECTION.LEFT;
     }
 
+    public void moveDown(float dt){
+        position.y = position.y - MOVEMENT * dt;
+        boundsUpdate();
+        direction = DIRECTION.RIGHT;
+    }
+
+    public void moveUp(float dt){
+        position.y = position.y + MOVEMENT * dt;
+        boundsUpdate();
+        direction = DIRECTION.RIGHT;
+    }
+
     public void dash(float sectionCenter) {
         if(!dashing && !isFiring()) {
             dashing = true;
+            currentAnimation = dashAnimation;
             dashTarget = sectionCenter;
         }
     }
 
+    //TODO can be refactored for sure.
     public boolean dashUpdate(float dt){
+
         if(dashTarget <= getCenterX()){
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
@@ -253,78 +291,39 @@ public class Wizard {
 
     public void damageFramesUpdate(float dt){
 
-
-        invinciblityTimer -= dt;
-
-        if(invinciblityTimer < 0.9f){
-            hitFlash = true;
+        if(invinciblityTimer >= 0) {
+            invinciblityTimer -= dt;
+            blinkTimer -= dt;
+            if (blinkTimer < 0) {
+                blinkTimer = 0.1f;
+                isInvisible = !isInvisible;
+            }
+        } else {
+            isInvisible = false;
         }
-
-        if(invinciblityTimer < 0.8f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.7f){
-            hitFlash = true;
-        }
-
-        if(invinciblityTimer < 0.6f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.5f){
-            hitFlash = true;
-        }
-
-
-        if(invinciblityTimer < 0.4f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.3f){
-            hitFlash = true;
-        }
-
-        if(invinciblityTimer < 0.2f){
-            hitFlash = false;
-        }
-
-        if(invinciblityTimer < 0.1f){
-            hitFlash = true;
-        }
-
-        if(invinciblityTimer < 0.0f){
-            hitFlash = false;
-        }
-
-
-
     }
 
 
-
-    public void applyItem(Item i){
-        this.damage += i.getDamageIncrease();
-        this.health += i.getHealthIncrease();
-    items.add(i);
-}
-
    public void applyGravity(float dt, Room room){
 
-       if(isFalling) {
-           velocity.add(gravity);
-           position.add(velocity.x * dt, velocity.y * dt);
-           bounds.y = position.y;
-       }
+       if(room.state != Room.STATE.EXIT) {
+
+           if (isFalling) {
+               velocity.add(gravity);
+               position.add(velocity.x * dt, velocity.y * dt);
+               bounds.y = position.y;
+           }
 
 
-       Rectangle r = room.getOverlappingRectangle(bounds);
-       if(r != null) {
-           isFalling = false;
-           velocity = new Vector2();
-           position.y = r.getY() + r.getHeight();
-           bounds.y = r.getY() + r.getHeight();
-       } else {
+           Rectangle r = room.getOverlappingRectangle(bounds);
+           if (r != null) {
+               isFalling = false;
+               velocity = new Vector2();
+               position.y = r.getY() + r.getHeight();
+               bounds.y = r.getY() + r.getHeight();
+           } else {
+
+           }
 
        }
     }
@@ -461,7 +460,7 @@ public class Wizard {
         health += h;
     }
 
-    public void addItem(Item i){
+    public void addItem(ItemPresets i){
         items.add(i);
     }
 
