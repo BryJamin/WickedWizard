@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.byrjamin.wickedwizard.enemy.bosses.BiggaBlobba;
+import com.byrjamin.wickedwizard.entity.bosses.BiggaBlobba;
 
 /**
  * Created by Home on 24/12/2016.

@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.enemy.enemies;
+package com.byrjamin.wickedwizard.entity.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.enemy.Enemy;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
@@ -32,7 +31,7 @@ public class SilverHead extends Enemy {
     private Animation openingAnimation;
     private Animation currentAnimation;
 
-    private Rectangle bounds;
+    private Rectangle hitBox;
 
 
     private GravMaster2000 g200 = new GravMaster2000();
@@ -87,9 +86,11 @@ public class SilverHead extends Enemy {
 
         position = new Vector2(silverHeadBuilder.posX, silverHeadBuilder.posY);
 
-        bounds = new Rectangle(position.x + (Measure.units(1.5f) * scale), position.y,
+        hitBox = new Rectangle(position.x + (Measure.units(1.5f) * scale), position.y,
                 WIDTH - (Measure.units(3f) * scale),
                 HEIGHT - (Measure.units(2.5f) * scale));
+
+        bounds.add(hitBox);
 
         standingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP);
         chargingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING);
@@ -109,8 +110,8 @@ public class SilverHead extends Enemy {
     public void update(float dt, Room r) {
         super.update(dt, r);
 
-        g200.update(dt, bounds, r.getBoundaries());
-        position.y = bounds.y;
+        g200.update(dt, hitBox, r.getBoundaries());
+        position.y = hitBox.y;
 
         time += dt;
 
@@ -190,11 +191,6 @@ public class SilverHead extends Enemy {
         time = 0;
     }
 
-    public boolean isHit(Rectangle r){
-        return ((state == STATE.ALIVE) && bounds.overlaps(r));
-    }
-
-
     public void draw(SpriteBatch batch){
         if(isFlashing) {
 
@@ -212,7 +208,7 @@ public class SilverHead extends Enemy {
             b.draw(batch);
         }
 
-        BoundsDrawer.drawBounds(batch, bounds);
+        BoundsDrawer.drawBounds(batch, hitBox);
     }
 
 

@@ -1,11 +1,8 @@
 package com.byrjamin.wickedwizard.maps.rooms.helper;
 
-import com.badlogic.gdx.graphics.g2d.PixmapPacker;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.enemy.enemies.Blob;
-import com.byrjamin.wickedwizard.enemy.Enemy;
-import com.byrjamin.wickedwizard.enemy.enemies.Turret;
+import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 
 /**

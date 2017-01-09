@@ -1,17 +1,17 @@
-package com.byrjamin.wickedwizard.enemy;
+package com.byrjamin.wickedwizard.entity.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.entity.Entity;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
-import com.byrjamin.wickedwizard.player.ActiveBullets;
+import com.byrjamin.wickedwizard.entity.player.ActiveBullets;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
@@ -19,7 +19,7 @@ import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
  * Abstract class for enemies within the game
  * Most enemies will draw from this class.
  */
-public abstract class Enemy {
+public abstract class Enemy extends Entity{
 
     public enum STATE {
         DEAD, DYING, ALIVE
@@ -44,7 +44,6 @@ public abstract class Enemy {
     protected Array<Rectangle> bounds = new Array<Rectangle>();
     protected ActiveBullets bullets = new ActiveBullets();
 
-
     protected Color drawingColor;
 
     protected TextureRegion currentFrame;
@@ -53,9 +52,7 @@ public abstract class Enemy {
     public Enemy(){
         state = STATE.ALIVE;
         isFlashing = false;
-
         dyingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION);
-
     }
 
 
@@ -119,20 +116,9 @@ public abstract class Enemy {
     }
 
 
-    public boolean isHit(Rectangle r){
-        for(Rectangle bound: bounds){
-            if((state == STATE.ALIVE) && bound.overlaps(r)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
     public void update(float dt, Room r){
         flashTimer(dt);
-        bullets.updateProjectile(dt, r);
+        bullets.updateProjectile(dt, r, r.getWizard());
         for(Projectile p : bullets.getActiveBullets()){
             if(r.getWizard().getBounds().overlaps(p.getSprite().getBoundingRectangle())){
                 r.getWizard().reduceHealth(p.getDamage());
@@ -181,6 +167,16 @@ public abstract class Enemy {
         if(this.getDyingAnimation().isAnimationFinished(time)){
             this.setState(STATE.DEAD);
         }
+    }
+
+
+    public boolean isHit(Rectangle r){
+        for(Rectangle bound : bounds){
+            if((state == STATE.ALIVE) && bound.overlaps(r)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Array<Rectangle> getBounds() {

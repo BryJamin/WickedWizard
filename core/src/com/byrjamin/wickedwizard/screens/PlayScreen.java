@@ -110,11 +110,6 @@ public class PlayScreen extends AbstractScreen {
                     touchUpInput = new Vector3(x1, y1, 0);
 
                     gamePort.unproject(touchUpInput);
-
-                    if (map.getActiveRoom().getWizard().isCharing()) {
-                        map.getActiveRoom().getWizard().dispel(touchDownInput, touchUpInput);
-                    }
-
                     map.getActiveRoom().getWizard().stopFiring();
                     // your touch down code here
                     return true; // return true to indicate the event was handled

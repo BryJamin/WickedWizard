@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.enemy.enemies;
+package com.byrjamin.wickedwizard.entity.enemies;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.player.ActiveBullets;
+import com.byrjamin.wickedwizard.entity.player.ActiveBullets;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -18,7 +18,7 @@ import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 /**
  * Created by Home on 20/11/2016.
  */
-public class Turret extends com.byrjamin.wickedwizard.enemy.Enemy {
+public class Turret extends Enemy {
 
     private enum movement {
         WALKING, ATTACKING

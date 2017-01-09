@@ -1,8 +1,7 @@
 package com.byrjamin.wickedwizard.maps.rooms.helper;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.player.Wizard;
+import com.byrjamin.wickedwizard.entity.player.Wizard;
 
 /**
  * Created by Home on 08/01/2017.

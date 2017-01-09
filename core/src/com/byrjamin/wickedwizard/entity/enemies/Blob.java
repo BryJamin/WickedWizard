@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.enemy.enemies;
+package com.byrjamin.wickedwizard.entity.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -17,7 +17,7 @@ import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 /**
  * Basic starter enemy, used for testing purposes.
  */
-public class Blob extends com.byrjamin.wickedwizard.enemy.Enemy {
+public class Blob extends Enemy {
 
     private Animation walk;
     private Animation attack;

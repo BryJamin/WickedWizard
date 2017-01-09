@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.item.Items;
 
 import com.byrjamin.wickedwizard.item.Item;
-import com.byrjamin.wickedwizard.player.Wizard;
+import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**

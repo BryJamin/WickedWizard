@@ -1,6 +1,5 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,8 +19,8 @@ import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyUpdater;
 import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.player.Wizard;
-import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -40,8 +39,6 @@ public abstract class Room {
     private float y = 0;
 
     private float[] sectionCenters;
-
-    private int currentSection;
 
     private ShapeRenderer mapRenderer = new ShapeRenderer();
 
@@ -138,7 +135,6 @@ public abstract class Room {
         }
 
         //TODO this only really works if the length of the array is odd.
-        currentSection = (sectionCenters.length - 1) / 2;
     }
 
     public void update(float dt, OrthographicCamera gamecam){
@@ -391,6 +387,7 @@ public abstract class Room {
         bottomArrow.setCenter(WIDTH / 2 - bottomArrow.getWidth() / 2, 50);
         bottomArrow.setSize(Measure.units(5), Measure.units(5));
         bottomArrow.setOriginCenter();
+        bottomArrow.setBounds(bottomArrow.getX(), bottomArrow.getY(), 200, 200);
         bottomArrow.rotate((float) Math.toDegrees(-Math.PI / 2));
         bottom = true;
         exits.add(bottomArrow);

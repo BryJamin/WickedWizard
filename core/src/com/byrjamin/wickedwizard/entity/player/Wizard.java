@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.player;
+package com.byrjamin.wickedwizard.entity.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,24 +10,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.entity.Entity;
+import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
-import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.Reloader;
-import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.spelltypes.blastwaves.DispelWave;
 
 /**
  * Created by Home on 23/10/2016.
  */
-public class Wizard {
+public class Wizard extends Entity{
 
     public float HEIGHT = Measure.units(7);
     public float WIDTH = Measure.units(7);
@@ -45,12 +42,9 @@ public class Wizard {
 
     private Vector3 input = new Vector3();
 
-    private float Acceleration = 20f;
-
     private Rectangle bounds;
 
-    private ActiveBullets activeBullets = new ActiveBullets();
-    private Array<DispelWave> dispelWaves = new Array<DispelWave>();
+    private com.byrjamin.wickedwizard.entity.player.ActiveBullets activeBullets = new com.byrjamin.wickedwizard.entity.player.ActiveBullets();
 
     private Reloader reloader;
 
@@ -83,8 +77,8 @@ public class Wizard {
     private float animationTime;
     private float chargeTime;
 
-    private Animation standing;
-    private Animation firing;
+    private Animation standingAnimation;
+    private Animation firingAnimation;
     private Animation windUpAnimation;
     private Animation dashAnimation;
     private Animation currentAnimation;
@@ -107,8 +101,8 @@ public class Wizard {
         reloader = new Reloader(reloadRate);
 
         //Note firing animation speed is equal to the reloadRate divided by 10.
-        standing = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
-        firing = AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
+        standingAnimation = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
+        firingAnimation = AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
         windUpAnimation = AnimationPacker.genAnimation(windUpAnimationTime, "circle");
         dashAnimation = AnimationPacker.genAnimation(0.05f, "squ_dash", Animation.PlayMode.LOOP_REVERSED);
 
@@ -119,7 +113,7 @@ public class Wizard {
         animationTime += dt;
 
         if(currentState == STATE.STANDING){
-            currentAnimation = standing;
+            currentAnimation = standingAnimation;
         }
 
         if(currentState == STATE.CHARGING){
@@ -151,31 +145,7 @@ public class Wizard {
             dashing = dashUpdate(dt);
         }
 
-        activeBullets.updateProjectile(dt, room);
-
-        for(Projectile p : activeBullets.getActiveBullets()){
-            for(Enemy e : room.getEnemies()){
-                if(e.isHit(p.getSprite().getBoundingRectangle())){
-                    e.reduceHealth(p.getDamage());
-                    p.setState(Projectile.STATE.EXPLODING);
-                };
-            }
-        }
-
-        for(DispelWave d : dispelWaves){
-            d.update(dt);
-            if(d.outOfBounds(room)){
-                dispelWaves.removeValue(d, true);
-            }
-
-            for(Enemy e : room.getEnemies()){
-                for(Projectile p : e.getBullets().getActiveBullets()){
-                    if(d.collides(p.getSprite().getBoundingRectangle())){
-                        p.dispellProjectile(d.getDispelDirection());
-                    }
-                }
-            }
-        }
+        activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
 
         applyGravity(dt, room);
 
@@ -193,7 +163,6 @@ public class Wizard {
             return;
         }
 
-
         if(!isInvisible) {
             boolean flip = (getDirection() == DIRECTION.LEFT);
             batch.draw(currentFrame, flip ? position.x + WIDTH : position.x, position.y, flip ? -WIDTH : WIDTH, HEIGHT);
@@ -204,11 +173,6 @@ public class Wizard {
         }
 
         activeBullets.draw(batch);
-
-        for(BlastWave b : dispelWaves){
-            b.draw(batch);
-        }
-
         BoundsDrawer.drawBounds(batch, bounds);
     }
 
@@ -223,33 +187,29 @@ public class Wizard {
 
     public void moveRight(float dt){
         position.x = position.x + MOVEMENT * dt;
-        boundsUpdate();
         direction = DIRECTION.RIGHT;
     }
 
     public void moveLeft(float dt){
         position.x = position.x - MOVEMENT * dt;
-        boundsUpdate();
         direction = DIRECTION.LEFT;
     }
 
     public void moveDown(float dt){
         position.y = position.y - MOVEMENT * dt;
-        boundsUpdate();
         direction = DIRECTION.RIGHT;
     }
 
     public void moveUp(float dt){
         position.y = position.y + MOVEMENT * dt;
-        boundsUpdate();
         direction = DIRECTION.RIGHT;
     }
 
-    public void dash(float sectionCenter) {
-        if(!dashing && !isFiring()) {
+    public void dash(float dashTarget) {
+        if(!dashing && !getFiringAnimation()) {
             dashing = true;
             currentAnimation = dashAnimation;
-            dashTarget = sectionCenter;
+            this.dashTarget = dashTarget;
         }
     }
 
@@ -284,6 +244,12 @@ public class Wizard {
             health -= i;
         }
     }
+
+    @Override
+    public boolean isHit(Rectangle r) {
+        return r.overlaps(bounds);
+    }
+
 
     public boolean isInvunerable(){
         return invinciblityTimer > 0;
@@ -356,7 +322,7 @@ public class Wizard {
     }
 
     private void startfireAnimation() {
-        currentAnimation = firing;
+        currentAnimation = firingAnimation;
         animationTime = 0;
     }
 
@@ -364,31 +330,11 @@ public class Wizard {
         return (float) (Math.atan2(y2 - y1, x2 - x1));
     }
 
-    public void dispel(Vector3 touchDownInput, Vector3 touchUpInput) {
-
-        float x1 = touchDownInput.x;
-        float y1 = touchDownInput.y;
-
-        float x2 = touchUpInput.x;
-        float y2 = touchUpInput.y;
-
-        if(Math.abs(x1 - x2) > Measure.units(10) && Math.abs(y1 - y2) < Math.abs(x1 - x2)){
-            dispelWaves.add(new DispelWave(getCenterX(), getCenterY(), Dispellable.DISPELL.HORIZONTAL));
-            currentState = STATE.STANDING;
-        } else if((Math.abs(y1 - y2) > Measure.units(10) && Math.abs(x1 - x2) < Math.abs(y1 - y2))) {
-            dispelWaves.add(new DispelWave(getCenterX(), getCenterY(), Dispellable.DISPELL.VERTICAL));
-            currentState = STATE.STANDING;
-        }
-        currentState = STATE.STANDING;
-
-    }
-
     public void startFiring() {
-            currentState = STATE.CHARGING;
-            currentAnimation = firing;
+            currentState = STATE.FIRING;
+            currentAnimation = firingAnimation;
             animationTime = 0;
             chargeTime = 0;
-
     }
 
 
@@ -402,14 +348,6 @@ public class Wizard {
 
     public int getHealth() {
         return health;
-    }
-
-    public Reloader getReloader() {
-        return reloader;
-    }
-
-    public void setReloader(Reloader reloader) {
-        this.reloader = reloader;
     }
 
     public void setX(float x){
@@ -431,10 +369,6 @@ public class Wizard {
 
     public Rectangle getBounds(){
         return bounds;
-    }
-
-    public Vector2 getCenter(){
-        return new Vector2(getCenterX(), getCenterY());
     }
 
     public void setCenterX(float posX){
@@ -473,7 +407,7 @@ public class Wizard {
         return dashing;
     }
 
-    public boolean isFiring(){
+    public boolean getFiringAnimation(){
         return currentState == STATE.FIRING;
     }
 
@@ -485,7 +419,4 @@ public class Wizard {
         this.currentState = currentState;
     }
 
-    public Array<DispelWave> getDispelWaves() {
-        return dispelWaves;
-    }
 }
