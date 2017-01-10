@@ -11,13 +11,7 @@ import com.byrjamin.wickedwizard.spelltypes.Projectile;
  */
 public class ActiveBullets {
 
-    private Array<Projectile> activeBullets;
-    private Array<Projectile> inActiveBullets;
-
-    public ActiveBullets(){
-        activeBullets = new Array<Projectile>();
-        inActiveBullets = new Array<Projectile>();
-    }
+    private Array<Projectile> activeBullets = new Array<Projectile>();
 
     /**
      * Adds a bullet to the active ActiveBullets array
@@ -35,9 +29,11 @@ public class ActiveBullets {
     public void updateProjectile(float dt, Room r, Entity... targets){
 
         for(Projectile p : activeBullets) {
-            if(p.getState() == Projectile.STATE.ALIVE) {
-                p.update(dt, r);
 
+            p.update(dt);
+            outOfBoundsCheck(p, r);
+
+            if(p.getState() == Projectile.STATE.ALIVE) {
                 for(Entity e : targets){
                     if(e.isHit(p.getSprite().getBoundingRectangle())){
                         e.reduceHealth(p.getDamage());
@@ -45,39 +41,29 @@ public class ActiveBullets {
                     };
                 }
 
-            } else {
-                inActiveBullets.add(p);
+            } else if(p.getState() == Projectile.STATE.DEAD){
                 activeBullets.removeValue(p, true);
             }
 
         }
-
-        for(Projectile p : inActiveBullets){
-            p.update(dt, r);
-            if(p.getState() == Projectile.STATE.DEAD){
-                inActiveBullets.removeValue(p, true);
-            }
-        }
-
-        inActiveBulletUpdate(dt, r);
-
-
     }
 
-    public void inActiveBulletUpdate(float dt, Room r){
-        for(Projectile p : inActiveBullets){
-            p.update(dt, r);
-            if(p.getState() == Projectile.STATE.DEAD){
-                inActiveBullets.removeValue(p, true);
-            }
+
+    //TODO just check the Height and Width and then get RoomGround to see if it hits.
+    public void outOfBoundsCheck(Projectile p, Room r){
+        if((p.getSprite().getX() > r.WIDTH || p.getSprite().getX() < 0
+                || p.getSprite().getY() > r.HEIGHT
+                || p.getSprite().getY() < r.groundHeight()) && !p.isGravity()){
+            p.setState(Projectile.STATE.DEAD);
+        } else if(p.getSprite().getX() > r.WIDTH || p.getSprite().getX() < 0
+                || p.getSprite().getY() < r.groundHeight()) {
+            p.setState(Projectile.STATE.DEAD);
         }
     }
 
     public void draw(SpriteBatch batch){
+
         for(Projectile p : activeBullets){
-            p.draw(batch);
-        }
-        for(Projectile p : inActiveBullets){
             p.draw(batch);
         }
     }

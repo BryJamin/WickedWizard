@@ -25,15 +25,9 @@ public class Blob extends Enemy {
 
     private TextureRegion currentFrame;
 
-    private boolean isFalling = true;
-
-    private static final float GRAVITY = -100;
-
     private GravMaster2000 g2000 = new GravMaster2000();
 
     private Rectangle hitBoz;
-
-    private Vector2 velocity;
 
     //Optional Parameters
     private float MOVEMENT;
@@ -104,7 +98,6 @@ public class Blob extends Enemy {
         MOVEMENT = b.MOVEMENT;
         scale = b.scale;
         speed = b.speed;
-        velocity = new Vector2(0, 0);
 
         HEIGHT = b.HEIGHT * scale;
         WIDTH = b.WIDTH * scale;

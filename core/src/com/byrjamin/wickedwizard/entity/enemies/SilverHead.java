@@ -127,10 +127,7 @@ public class SilverHead extends Enemy {
             }
 
         }
-
-
-
-
+        
         if(getState() == STATE.ALIVE) {
             performAction(dt);
 
