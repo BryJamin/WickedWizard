@@ -35,48 +35,6 @@ public class GravMaster2000 {
                 gravity.y = 0;
                 break;
             }
-
-/*
-            Rectangle intersection = new Rectangle();
-            Intersector.intersectRectangles(bounds, r, intersection);
-
-
-            if(intersection.y > bounds.y){
-                bounds.y = r.y + r.getHeight();
-            }
-*/
-
-/*                if(bounds.y >= r.y + r.getHeight()) {
-                if (r.overlaps(bounds)) {
-                    bounds.y = r.y + r.getHeight();
-
-                    System.out.println("Inside");
-
-                } else {
-
-                    canAdd = true;
-                }
-            } else {
-                canAdd = true;
-            }*/
-
-
-
-
-
-
-
-
-/*            if(r.overlaps(bounds) && bounds.y >= (r.y + r.getHeight())){
-                if(bounds.y + gravity.y >= (r.y + r.getHeight())){
-                  //  canAdd = true;
-                    break;
-                } else {
-                    bounds.y = r.y + r.getHeight();
-                    canAdd = false;
-                    break;
-                }
-            }*/
         }
 
 

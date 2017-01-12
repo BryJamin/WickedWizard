@@ -119,13 +119,15 @@ public abstract class Enemy extends Entity{
     public void update(float dt, Room r){
         flashTimer(dt);
         bullets.updateProjectile(dt, r, r.getWizard());
-        for(Projectile p : bullets.getActiveBullets()){
-            if(r.getWizard().getBounds().overlaps(p.getSprite().getBoundingRectangle())){
-                r.getWizard().reduceHealth(p.getDamage());
-                p.setState(Projectile.STATE.EXPLODING);
+
+        if(state == STATE.ALIVE) {
+            for (Rectangle bound : bounds) {
+                if (bound.overlaps(r.getWizard().getBounds())) {
+                    r.getWizard().reduceHealth(1);
+                }
             }
         }
-    };
+    }
 
     public Vector2 getPosition() {
         return position;

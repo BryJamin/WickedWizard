@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.helper;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -48,6 +49,23 @@ public class BoundsDrawer {
         shapeRenderer.setColor(Color.WHITE);
         for(Rectangle r : bounds) {
             shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        }
+        shapeRenderer.end();
+
+
+        batch.begin();
+    }
+
+    public static void drawBounds(SpriteBatch batch, Circle... bounds){
+        initialize();
+
+        batch.end();
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.WHITE);
+        for(Circle r : bounds) {
+            shapeRenderer.circle(r.x, r.y, r.radius);
         }
         shapeRenderer.end();
 

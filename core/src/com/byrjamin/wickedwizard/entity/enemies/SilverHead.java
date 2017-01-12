@@ -38,8 +38,6 @@ public class SilverHead extends Enemy {
 
     private StateTimer standingTime;
 
-    private Vector2 velocity;
-
     private Array<BlastWave> blastWaveArray = new Array<BlastWave>();
 
     private enum ACTION {
@@ -127,7 +125,7 @@ public class SilverHead extends Enemy {
             }
 
         }
-        
+
         if(getState() == STATE.ALIVE) {
             performAction(dt);
 

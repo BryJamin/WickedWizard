@@ -91,7 +91,6 @@ public class BiggaBlobba extends Enemy {
 
         velocity = new Vector2();
         position = new Vector2(posX, posY);
-        //currentFrame = PlayScreen.atlas.findRegion("biggablobba");
         bounds = new Array<Rectangle>();
 
         //17 to 15
@@ -127,12 +126,8 @@ public class BiggaBlobba extends Enemy {
         walk = AnimationPacker.genAnimation(1 / 20f, TextureStrings.BIGGABLOBBA_STANDING, Animation.PlayMode.LOOP_PINGPONG);
         currentAnimation = walk;
 
-        //bounce();
-        //updateLowerBody();
-
-
         phase = PHASE.PHASE1;
-         littleSlimer = new Reloader(0.5f, 3.0f);
+        littleSlimer = new Reloader(0.5f, 3.0f);
 
         time = 0f;
 
@@ -280,13 +275,6 @@ public class BiggaBlobba extends Enemy {
 
 
     }
-
-
-
-    public void slimeAttack(){
-
-    }
-
 
     public void boundsUpdate(){
 
