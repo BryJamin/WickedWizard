@@ -124,8 +124,8 @@ public class Projectile {
 
     public void calculateAngle(float x1, float y1, float x2, float y2) {
         projectAngle = (Math.atan2(y2 - y1, x2 - x1));
-        xDistance = (float) (10f * Math.cos(projectAngle));
-        yDistance = (float) (10f * Math.sin(projectAngle));
+        xDistance = (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle));
+        yDistance = (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle));
     }
 
     public void update(float dt) {
@@ -141,12 +141,8 @@ public class Projectile {
     }
 
     public void travelUpdate(float dt) {
-
-        float x = position.x + (WIDTH / 2) + xDistance;
-        float y = position.y + (HEIGHT / 2) + yDistance;
-
-        position.x = x - WIDTH / 2;
-        position.y = y - HEIGHT / 2;
+        position.x += xDistance * dt;
+        position.y += yDistance * dt;
 
         hitBox.y = position.y;
         hitBox.x = position.x;
@@ -159,7 +155,7 @@ public class Projectile {
             batch.draw(PlayScreen.atlas.findRegion("bullet"), position.x, position.y, WIDTH, HEIGHT);
             batch.setColor(Color.WHITE);
         } else if (getState() == STATE.EXPLODING) {
-            batch.draw(explosionTextureRegion, position.x, position.y, WIDTH, HEIGHT);
+            batch.draw(explosion_animation.getKeyFrame(time), position.x, position.y, WIDTH, HEIGHT);
         }
     }
 
