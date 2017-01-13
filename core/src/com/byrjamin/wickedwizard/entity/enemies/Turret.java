@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.entity.enemies;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -176,10 +177,9 @@ public class Turret extends Enemy {
     public void fire(float dt, Room a){
         if (reloader.isReady()) {
             bullets.addProjectile(new Projectile.ProjectileBuilder(position.x + WIDTH / 2, position.y + HEIGHT / 2, a.getWizard().getCenterX(),a.getWizard().getCenterY())
-                    .spriteString("bullet")
                     .damage(1)
                     .HORIZONTAL_VELOCITY(15f)
-                    .dispellable(new Dispellable(dispellSequence.get(0)))
+                    .drawingColor(Color.CYAN)
                     .build());
 
             dispellSequence.add(dispellSequence.get(0));

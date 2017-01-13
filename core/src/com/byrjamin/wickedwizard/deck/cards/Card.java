@@ -31,11 +31,6 @@ public abstract class Card {
         this.projectile = projectile;
     }
 
-    public Projectile returnProjectile(float x1,float y1, float x2, float y2){
-        this.projectile.projectileSetup(x1, y1, x2, y2);
-        return projectile;
-    }
-
     private String projectileSpriteName;
 
     private Sprite sprite;
@@ -77,20 +72,6 @@ public abstract class Card {
         }
     }
 
-    /**
-     * Generates the projectile that the cards fire.
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @return
-     */
-    public Projectile generateProjectile(float x1, float y1, float x2, float y2){
-        return new Projectile.ProjectileBuilder(x1, y1, x2, y2)
-                .spriteString(projectileSpriteName)
-                .damage(getBaseDamage())
-                .build();
-    }
 
     public int getManaCost() {
         return manaCost;

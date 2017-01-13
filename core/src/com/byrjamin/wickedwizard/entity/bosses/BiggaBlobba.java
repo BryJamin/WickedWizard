@@ -190,10 +190,9 @@ public class BiggaBlobba extends Enemy {
                         this.position.y + Measure.units(30),
                         a.getWizard().getX(),
                         a.getWizard().getY())
-                        .spriteString("bullet")
                         .damage(1)
-                        .HORIZONTAL_VELOCITY(15f)
-                        .dispellable(new Dispellable(Dispellable.DISPELL.HORIZONTAL))
+                        .HORIZONTAL_VELOCITY(Measure.units(100f))
+                        .drawingColor(Color.RED)
                         .build());
             }
 

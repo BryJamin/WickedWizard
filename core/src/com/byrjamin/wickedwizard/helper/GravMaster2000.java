@@ -24,10 +24,6 @@ public class GravMaster2000 {
 
         this.gravity.add(0, GRAVITY * dt);
         bounds.y = bounds.y + gravity.y;
-
-
-        System.out.println(platforms.size);
-
         for (Rectangle r : platforms){
 
             if(bounds.overlaps(r)){

@@ -35,7 +35,7 @@ public class ActiveBullets {
 
             if(p.getState() == Projectile.STATE.ALIVE) {
                 for(Entity e : targets){
-                    if(e.isHit(p.getSprite().getBoundingRectangle())){
+                    if(e.isHit(p.getBounds())){
                         e.reduceHealth(p.getDamage());
                         p.setState(Projectile.STATE.EXPLODING);
                     };
@@ -51,12 +51,8 @@ public class ActiveBullets {
 
     //TODO just check the Height and Width and then get RoomGround to see if it hits.
     public void outOfBoundsCheck(Projectile p, Room r){
-        if((p.getSprite().getX() > r.WIDTH || p.getSprite().getX() < 0
-                || p.getSprite().getY() > r.HEIGHT
-                || p.getSprite().getY() < r.groundHeight()) && !p.isGravity()){
-            p.setState(Projectile.STATE.DEAD);
-        } else if(p.getSprite().getX() > r.WIDTH || p.getSprite().getX() < 0
-                || p.getSprite().getY() < r.groundHeight()) {
+        if(p.getX() > r.WIDTH || p.getX() < 0
+                || p.getY() < r.groundHeight() || p.getY() > r.HEIGHT) {
             p.setState(Projectile.STATE.DEAD);
         }
     }

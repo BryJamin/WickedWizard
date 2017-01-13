@@ -23,9 +23,7 @@ public class FireBlast extends Card {
 
     public Projectile generateProjectile(float x1, float y1, float x2, float y2){
         return new Projectile.ProjectileBuilder(x1, y1, x2, y2)
-                .spriteString("fire")
                 .damage(getBaseDamage())
-                .areaOfEffect(new Rectangle(0,0, MainGame.GAME_UNITS * 30,MainGame.GAME_UNITS * 30))
                 .build();
     }
 }

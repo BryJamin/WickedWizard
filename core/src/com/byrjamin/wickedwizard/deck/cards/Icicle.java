@@ -9,7 +9,6 @@ public class Icicle extends Card {
 
     public Icicle(int posX, int posY) {
         super(posX, posY, CardType.ICE);
-        this.getSprite().setRegion(PlayScreen.atlas.findRegion("card_frost"));
         this.setBaseDamage(3);
         this.setProjectileType(ProjectileType.PROJECTILE);
         this.setFireRate(0.1f);

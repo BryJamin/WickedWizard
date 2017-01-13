@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.entity.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -315,9 +316,9 @@ public class Wizard extends Entity{
         float y1 = (getCenterY()) + ((WIDTH / 2) * (float) Math.sin(angle));; //+ (HEIGHT / 2)) * (float) Math.sin(angle);
 
         activeBullets.addProjectile(new Projectile.ProjectileBuilder(x1 , y1, input_x,input_y)
-                .spriteString("bullet")
                 .damage(1)
-                .HORIZONTAL_VELOCITY(50f)
+                .drawingColor(Color.WHITE)
+                .HORIZONTAL_VELOCITY(Measure.units(150f))
                 .build());
     }
 

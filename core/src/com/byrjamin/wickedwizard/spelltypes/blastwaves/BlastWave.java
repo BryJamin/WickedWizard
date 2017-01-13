@@ -60,14 +60,14 @@ public class BlastWave {
         if(time < 0) {
             secondWave.radius += MOVEMENT * dt * speed;
         }
-        CIRCLE_SIZE += GROWTH_RATE * 1.1 * speed;
+        CIRCLE_SIZE += MOVEMENT * 2.2f * dt* speed;
 
     }
 
     public void draw(SpriteBatch batch){
         BoundsDrawer.drawBounds(batch, wave, secondWave);
         batch.setColor(drawingColor);
-        //batch.draw(PlayScreen.atlas.findRegion("circle"), centerPointX - CIRCLE_SIZE / 2, centerPointY - CIRCLE_SIZE / 2, CIRCLE_SIZE, CIRCLE_SIZE);
+        batch.draw(PlayScreen.atlas.findRegion("circle"), centerPointX - CIRCLE_SIZE / 2, centerPointY - CIRCLE_SIZE / 2, CIRCLE_SIZE, CIRCLE_SIZE);
         batch.setColor(Color.WHITE);
     }
 

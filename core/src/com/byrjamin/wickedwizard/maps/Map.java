@@ -25,7 +25,7 @@ public class Map {
     public Map(){
 
         rooms = new Room[][]{
-                {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(),null, null},
+                {null, null, new BattleRoom(0), new BattleRoom(), new BattleRoom(),null, null},
                 {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, new BattleRoom(), null},
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
         roomSetup();
