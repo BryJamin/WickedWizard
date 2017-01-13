@@ -2,16 +2,13 @@ package com.byrjamin.wickedwizard.spelltypes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
@@ -47,7 +44,7 @@ public class Projectile {
 
     TextureRegion explosionTextureRegion;
 
-    private float HORIZONTAL_VELOCITY = Measure.units(200f);
+    private float speed = Measure.units(200f);
 
     //Required Parameters
     private final float x1;
@@ -55,8 +52,8 @@ public class Projectile {
     private final float x2;
     private final float y2;
 
-    private float WIDTH = Measure.units(3);
-    private float HEIGHT = Measure.units(3);
+    private float WIDTH = Measure.units(2);
+    private float HEIGHT = Measure.units(2);
 
     //Optional Parameters
     private float damage;
@@ -72,7 +69,7 @@ public class Projectile {
 
         //Optional Parameters
         private float damage = 0;
-        private float HORIZONTAL_VELOCITY = Measure.units(50f);
+        private float speed = Measure.units(50f);
         private Color drawingColor;
 
 
@@ -93,8 +90,8 @@ public class Projectile {
             return this;
         }
 
-        public ProjectileBuilder HORIZONTAL_VELOCITY(float val) {
-            HORIZONTAL_VELOCITY = val;
+        public ProjectileBuilder speed(float val) {
+            speed = val;
             return this;
         }
 
@@ -111,7 +108,7 @@ public class Projectile {
         y1 = builder.y1 - (HEIGHT / 2);
         y2 = builder.y2 - (HEIGHT / 2);
         damage = builder.damage;
-        HORIZONTAL_VELOCITY = builder.HORIZONTAL_VELOCITY;
+        speed = builder.speed;
         drawingColor = builder.drawingColor;
         //TODO fix this crap
         position = new Vector2(x1, y1);
@@ -124,8 +121,8 @@ public class Projectile {
 
     public void calculateAngle(float x1, float y1, float x2, float y2) {
         projectAngle = (Math.atan2(y2 - y1, x2 - x1));
-        xDistance = (float) (HORIZONTAL_VELOCITY * Math.cos(projectAngle));
-        yDistance = (float) (HORIZONTAL_VELOCITY * Math.sin(projectAngle));
+        xDistance = (float) (speed * Math.cos(projectAngle));
+        yDistance = (float) (speed * Math.sin(projectAngle));
     }
 
     public void update(float dt) {
@@ -143,20 +140,20 @@ public class Projectile {
     public void travelUpdate(float dt) {
         position.x += xDistance * dt;
         position.y += yDistance * dt;
-
         hitBox.y = position.y;
         hitBox.x = position.x;
     }
 
     public void draw(SpriteBatch batch) {
-        BoundsDrawer.drawBounds(batch, hitBox);
         if (getState() == STATE.ALIVE) {
             batch.setColor(drawingColor);
-            batch.draw(PlayScreen.atlas.findRegion("bullet"), position.x, position.y, WIDTH, HEIGHT);
+            batch.draw(PlayScreen.atlas.findRegion("bullet"), position.x - WIDTH / 2, position.y - HEIGHT / 2, WIDTH + WIDTH, HEIGHT + HEIGHT);
             batch.setColor(Color.WHITE);
         } else if (getState() == STATE.EXPLODING) {
-            batch.draw(explosion_animation.getKeyFrame(time), position.x, position.y, WIDTH, HEIGHT);
+            batch.draw(explosion_animation.getKeyFrame(time), position.x - WIDTH / 2, position.y - HEIGHT / 2, WIDTH + WIDTH, HEIGHT + HEIGHT);
         }
+
+        BoundsDrawer.drawBounds(batch, hitBox);
     }
 
     public Rectangle getBounds() {

@@ -17,7 +17,6 @@ import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
 
@@ -191,7 +190,7 @@ public class BiggaBlobba extends Enemy {
                         a.getWizard().getX(),
                         a.getWizard().getY())
                         .damage(1)
-                        .HORIZONTAL_VELOCITY(Measure.units(100f))
+                        .speed(Measure.units(100f))
                         .drawingColor(Color.RED)
                         .build());
             }

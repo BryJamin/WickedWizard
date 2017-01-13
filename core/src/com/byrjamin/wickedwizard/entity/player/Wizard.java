@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.Entity;
-import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -318,7 +317,7 @@ public class Wizard extends Entity{
         activeBullets.addProjectile(new Projectile.ProjectileBuilder(x1 , y1, input_x,input_y)
                 .damage(1)
                 .drawingColor(Color.WHITE)
-                .HORIZONTAL_VELOCITY(Measure.units(150f))
+                .speed(Measure.units(150f))
                 .build());
     }
 

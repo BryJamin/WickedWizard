@@ -178,7 +178,7 @@ public class Turret extends Enemy {
         if (reloader.isReady()) {
             bullets.addProjectile(new Projectile.ProjectileBuilder(position.x + WIDTH / 2, position.y + HEIGHT / 2, a.getWizard().getCenterX(),a.getWizard().getCenterY())
                     .damage(1)
-                    .HORIZONTAL_VELOCITY(15f)
+                    .speed(15f)
                     .drawingColor(Color.CYAN)
                     .build());
 
