@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps.rooms.helper;
+package com.byrjamin.wickedwizard.maps.rooms.layout;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 

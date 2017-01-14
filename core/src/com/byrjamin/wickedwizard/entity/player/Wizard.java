@@ -26,8 +26,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Wizard extends Entity{
 
-    public float HEIGHT = Measure.units(7);
-    public float WIDTH = Measure.units(7);
+    public float HEIGHT = Measure.units(6);
+    public float WIDTH = Measure.units(6);
     private float MOVEMENT = Measure.units(200f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
@@ -96,7 +96,7 @@ public class Wizard extends Entity{
 
         position = new Vector2(posX, posY);
         velocity = new Vector2();
-        bounds = new Rectangle(posX + Measure.units(0.5f),posY,WIDTH - Measure.units(1f), HEIGHT - Measure.units(1));
+        bounds = new Rectangle(posX,posY,WIDTH, HEIGHT);
 
         reloader = new Reloader(reloadRate);
 
@@ -165,7 +165,7 @@ public class Wizard extends Entity{
 
         if(!isInvisible) {
             boolean flip = (getDirection() == DIRECTION.LEFT);
-            batch.draw(currentFrame, flip ? position.x + WIDTH : position.x, position.y, flip ? -WIDTH : WIDTH, HEIGHT);
+            batch.draw(currentFrame, flip ? position.x + WIDTH + Measure.units(0.5f) : position.x - Measure.units(0.5f), position.y, flip ? - (WIDTH + WIDTH / 6) : WIDTH + WIDTH / 6, HEIGHT + HEIGHT / 6);
         }
 
         if(currentState == STATE.CHARGING) {
@@ -177,7 +177,7 @@ public class Wizard extends Entity{
     }
 
     private void boundsUpdate(){
-        bounds.x = position.x + Measure.units(0.5f);
+        bounds.x = position.x;
         bounds.y = position.y;
     }
 
@@ -219,8 +219,8 @@ public class Wizard extends Entity{
 
     //TODO can be refactored for sure.
     public boolean dashUpdate(float dt){
-
         if(dashTarget <= getCenterX()){
+            direction = DIRECTION.LEFT;
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
             if(this.getCenterX() <= dashTarget){
@@ -230,6 +230,7 @@ public class Wizard extends Entity{
         }
 
         if(dashTarget >= getCenterX()){
+            direction = DIRECTION.RIGHT;
             position.x = position.x + MOVEMENT * dt;
             boundsUpdate();
             if(this.getCenterX() >= dashTarget){
@@ -237,9 +238,7 @@ public class Wizard extends Entity{
                 return false;
             }
         }
-
         return true;
-
     }
 
     public void reduceHealth(float i){
@@ -271,6 +270,10 @@ public class Wizard extends Entity{
         } else {
             isInvisible = false;
         }
+    }
+
+    public void cancelDash(){
+        dashing = false;
     }
 
 
@@ -370,6 +373,10 @@ public class Wizard extends Entity{
         return position.y;
     }
 
+
+    public boolean isFalling() {
+        return isFalling;
+    }
 
     public Rectangle getBounds(){
         return bounds;

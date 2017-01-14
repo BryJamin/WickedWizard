@@ -218,7 +218,7 @@ public class BiggaBlobba extends Enemy {
     public void applyGravity(float dt, Room room){
 
 
-        g2000.update(dt, lowerBody, room.getBoundaries());
+        g2000.update(dt, lowerBody, room.getGroundBoundaries());
         position.y = lowerBody.y;
 
         this.velocity.add(0, GRAVITY * dt);

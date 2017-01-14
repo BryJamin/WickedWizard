@@ -30,7 +30,7 @@ public class Map {
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
         roomSetup();
         mapY = 0;
-        mapX = 2;
+        mapX = 3;
 
     }
 
@@ -80,21 +80,17 @@ public class Map {
 
             if(rooms[mapY][mapX].isExitTransitionFinished()){
                 if(rooms[mapY][mapX].isExitPointRight()){
-                    Wizard w = rooms[mapY][mapX].getWizard();
+                    rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
                     mapX++;
-                    rooms[mapY][mapX].enterRoom(w, Room.ENTRY_POINT.LEFT);
                 } else if(rooms[mapY][mapX].isExitPointLeft()){
-                    Wizard w = rooms[mapY][mapX].getWizard();
+                    rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
                     mapX--;
-                    rooms[mapY][mapX].enterRoom(w, Room.ENTRY_POINT.RIGHT);
                 } else if(rooms[mapY][mapX].isExitPointUp()) {
-                    Wizard w = rooms[mapY][mapX].getWizard();
+                    rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
                     mapY--;
-                    rooms[mapY][mapX].enterRoom(w, Room.ENTRY_POINT.DOWN);
                 } else if(rooms[mapY][mapX].isExitPointDown()){
-                    Wizard w = rooms[mapY][mapX].getWizard();
+                    rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
                     mapY++;
-                    rooms[mapY][mapX].enterRoom(w, Room.ENTRY_POINT.UP);
                 }
             }
     }

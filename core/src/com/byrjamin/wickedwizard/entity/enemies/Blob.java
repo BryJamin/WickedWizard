@@ -206,7 +206,7 @@ public class Blob extends Enemy {
 
     public void applyGravity(float dt, Room room){
 
-        g2000.update(dt, hitBoz, room.getBoundaries());
+        g2000.update(dt, hitBoz, room.getGroundBoundaries());
         position.y = hitBoz.y;
 
     }

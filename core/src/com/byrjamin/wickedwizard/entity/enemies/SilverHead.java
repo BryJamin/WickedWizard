@@ -108,7 +108,7 @@ public class SilverHead extends Enemy {
     public void update(float dt, Room r) {
         super.update(dt, r);
 
-        g200.update(dt, hitBox, r.getBoundaries());
+        g200.update(dt, hitBox, r.getGroundBoundaries());
         position.y = hitBox.y;
 
         time += dt;
