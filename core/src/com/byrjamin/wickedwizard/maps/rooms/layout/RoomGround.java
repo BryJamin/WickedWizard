@@ -91,7 +91,7 @@ public class RoomGround {
 
         for(float x : xPositions) {
             for(float y: yPositions) {
-                batch.draw(groundTexture, x, y, size, size);
+                batch.draw(groundTexture, x, y, size + 1, size + 1);
             }
         }
 

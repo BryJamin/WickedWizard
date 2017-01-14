@@ -50,21 +50,26 @@ public class Wizard extends Entity{
 
     private boolean isFalling = true;
 
-    private float dashTarget;
+    private float moveTarget;
+
 
     public enum STATE {
-        CHARGING, FIRING, STANDING
+        CHARGING, FIRING, IDLE
+    }
+
+    public enum MOVESTATE {
+        DASHING, MOVING, STANDING
     }
 
     private enum DIRECTION {
         LEFT, RIGHT, UP, DOWN
     }
 
-    private STATE currentState = STATE.STANDING;
+    private STATE currentState = STATE.IDLE;
+
+    private MOVESTATE movementState = MOVESTATE.STANDING;
 
     private DIRECTION direction = DIRECTION.RIGHT;
-
-    private boolean dashing = false;
 
     //STATS
     private int health = 3;
@@ -112,7 +117,7 @@ public class Wizard extends Entity{
     public void update(float dt, OrthographicCamera gamecam, Room room){
         animationTime += dt;
 
-        if(currentState == STATE.STANDING){
+        if(currentState == STATE.IDLE){
             currentAnimation = standingAnimation;
         }
 
@@ -140,9 +145,12 @@ public class Wizard extends Entity{
 
 
 
-        if(dashing){
-            currentAnimation = dashAnimation;
-            dashing = dashUpdate(dt);
+        if(movementState != MOVESTATE.STANDING){
+
+            if(isDashing()) {
+                currentAnimation = dashAnimation;
+            }
+            movementUpdate(dt);
         }
 
         activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
@@ -205,44 +213,55 @@ public class Wizard extends Entity{
         direction = DIRECTION.RIGHT;
     }
 
-    public void moveTo(){
+    public void moveTo(float dt){
 
     }
 
     public void dash(float dashTarget) {
-        if(!dashing && !getFiringAnimation()) {
-            dashing = true;
+        if(!isDashing() && !isFiring()) {
+            movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
-            this.dashTarget = dashTarget;
+            this.moveTarget = dashTarget;
         }
+    }
+
+    public void move(float moveTarget) {
+        movementState = MOVESTATE.MOVING;
+        this.moveTarget = moveTarget;
+    }
+
+
+    public void cancelMovement(){
+
     }
 
     //TODO can be refactored for sure.
-    public boolean dashUpdate(float dt){
-        if(dashTarget <= getCenterX()){
+    public void movementUpdate(float dt){
+        if(moveTarget <= getCenterX()){
             direction = DIRECTION.LEFT;
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
-            if(this.getCenterX() <= dashTarget){
-                this.setCenterX(dashTarget);
-                return false;
+            if(this.getCenterX() <= moveTarget){
+                this.setCenterX(moveTarget);
+                movementState = MOVESTATE.STANDING;
+                return;
             }
         }
 
-        if(dashTarget >= getCenterX()){
+        if(moveTarget >= getCenterX()){
             direction = DIRECTION.RIGHT;
             position.x = position.x + MOVEMENT * dt;
             boundsUpdate();
-            if(this.getCenterX() >= dashTarget){
-                this.setCenterX(dashTarget);
-                return false;
+            if(this.getCenterX() >= moveTarget){
+                this.setCenterX(moveTarget);
+                movementState = MOVESTATE.STANDING;
+                return;
             }
         }
-        return true;
     }
 
     public void reduceHealth(float i){
-        if(!dashing && !isInvunerable()) {
+        if(!isDashing() && !isInvunerable()) {
             invinciblityTimer = invinciblityFrames;
             health -= i;
         }
@@ -273,7 +292,7 @@ public class Wizard extends Entity{
     }
 
     public void cancelDash(){
-        dashing = false;
+        movementState = MOVESTATE.STANDING;
     }
 
 
@@ -347,7 +366,7 @@ public class Wizard extends Entity{
 
     public void stopFiring() {
         if(currentState == STATE.FIRING || currentState == STATE.CHARGING){
-            currentState = STATE.STANDING;
+            currentState = STATE.IDLE;
             chargeTime = 0;
         }
     }
@@ -415,10 +434,10 @@ public class Wizard extends Entity{
     }
 
     public boolean isDashing(){
-        return dashing;
+        return movementState == MOVESTATE.DASHING;
     }
 
-    public boolean getFiringAnimation(){
+    public boolean isFiring(){
         return currentState == STATE.FIRING;
     }
 

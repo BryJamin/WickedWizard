@@ -124,38 +124,21 @@ public abstract class Room {
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt, gamecam, this);
 
-
         if(state == STATE.ENTRY) {
 
             boolean inPosition = false;
 
             switch(entry_point){
                 case RIGHT:
-                    wizard.moveLeft(dt);
-                    if(wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1)]) {
-                        wizard.setCenterX(sectionCenters[(sectionCenters.length - 1)]);
-                        inPosition = true;
-                    }
+                    wizard.move(sectionCenters[(sectionCenters.length - 1)]);
+                    inPosition = wizard.getCenterX() == sectionCenters[(sectionCenters.length - 1)];
                     break;
                 case LEFT:
-                    wizard.moveRight(dt);
-                    if(wizard.getCenterX() > sectionCenters[0]){
-                        wizard.setCenterX(sectionCenters[0]);
-                        inPosition = true;
-                    }
+                    wizard.move(sectionCenters[0]);
+                    inPosition = wizard.getCenterX() == sectionCenters[0];
                     break;
                 case UP:
-                    for(Rectangle r : groundBoundaries){
-                        if(r.overlaps(wizard.getBounds())){
-                            wizard.setY(r.getY() + r.getHeight());
-                            inPosition = true;
-                        }
-                    }
-
-                    if(!inPosition){
-                        wizard.moveDown(dt);
-                    }
-
+                    inPosition = !wizard.isFalling();
                     break;
                 case DOWN:
                     wizard.moveUp(dt);
@@ -251,14 +234,13 @@ public abstract class Room {
     public void enterRoom(Wizard w, ENTRY_POINT entry_point){
 
         this.wizard = w;
-        wizard.setCurrentState(Wizard.STATE.STANDING);
+        wizard.setCurrentState(Wizard.STATE.IDLE);
         wizard.cancelDash();
         state = STATE.ENTRY;
         this.entry_point = entry_point;
         switch(entry_point){
             case LEFT:
                 wizard.setX(0);
-               // roomTransition.enterFromLeft();
                 break;
             case RIGHT:
                 wizard.setX(WIDTH);
@@ -273,7 +255,6 @@ public abstract class Room {
     }
 
     public boolean isExitTransitionFinished(){
-        //return roomTransition.isFinished() && state == STATE.EXIT;
         return state == STATE.EXIT;
     }
 
@@ -343,14 +324,14 @@ public abstract class Room {
         }
     }
 
-    public void wallCollisionCheck(Wizard entityBound, Rectangle wallBound){
-        if(wallBound.overlaps(entityBound.getBounds())){
-            if(entityBound.getX() < wallBound.x) { //Hit was on left
-                entityBound.setX(wallBound.x - entityBound.WIDTH);
-            } else if(entityBound.getX() > wallBound.x) {//Hit was on right
-                entityBound.setX(wallBound.x + wallBound.getWidth());
+    public void wallCollisionCheck(Wizard w, Rectangle wallBound){
+        if(wallBound.overlaps(w.getBounds())){
+            if(w.getX() < wallBound.x) { //Hit was on left
+                w.setX(wallBound.x - w.WIDTH);
+            } else if(w.getX() > wallBound.x) {//Hit was on right
+                w.setX(wallBound.x + wallBound.getWidth());
             }
-            entityBound.cancelDash();
+            w.cancelDash();
         }
     }
 
@@ -363,8 +344,6 @@ public abstract class Room {
     public void addRightExit() {
         roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.RIGHT));
         rightWall = new RoomWall(WIDTH - WALLWIDTH, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
-        System.out.println(rightWall.getBounds().y);
-        roomWalls.add(rightWall);
     }
 
     public void addTopExit() {
@@ -451,11 +430,6 @@ public abstract class Room {
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
-    }
-
-    public void placeWizard(Wizard wizard) {
-        this.wizard = wizard;
-        wizard.setCurrentState(Wizard.STATE.STANDING);
     }
 
     public float groundHeight(){
