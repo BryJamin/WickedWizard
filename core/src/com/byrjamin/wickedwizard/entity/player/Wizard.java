@@ -205,6 +205,10 @@ public class Wizard extends Entity{
         direction = DIRECTION.RIGHT;
     }
 
+    public void moveTo(){
+
+    }
+
     public void dash(float dashTarget) {
         if(!dashing && !getFiringAnimation()) {
             dashing = true;

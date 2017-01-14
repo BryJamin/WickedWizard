@@ -32,6 +32,8 @@ public abstract class Room {
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
 
+    public float TILE_SIZE = MainGame.GAME_WIDTH / 10;
+
     private float tile_height;
     private float tile_width;
 
@@ -73,10 +75,6 @@ public abstract class Room {
 
     public STATE state;
 
-    public enum DIRECTION {
-        RIGHT, LEFT, UP, DOWN
-    }
-
     public enum ENTRY_POINT {
         RIGHT, LEFT, UP, DOWN
     }
@@ -90,13 +88,8 @@ public abstract class Room {
     public EXIT_POINT exit_point;
 
 
-    private RoomTransition roomTransition;
     private RoomBackground roomBackground;
     private RoomGround roomGround;
-
-    private TextureRegion groundTexture;
-
-
 
     public Room(){
         roomEnemyUpdater = new RoomEnemyUpdater();
@@ -106,19 +99,15 @@ public abstract class Room {
         roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this, 200, false);
 
         roomEnemyWaves = new RoomEnemyWaves(this);
-        groundTexture = PlayScreen.atlas.findRegion("brick");
-
         sectionSetup();
+
+        platforms.add(new RoomPlatform(WIDTH - WIDTH /3, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH / 3, Measure.units(2)));
 
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
-
-       // roomTransition = new RoomTransition(WIDTH, HEIGHT);
-       // roomTransition.enterFromLeft();
-
         roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT);
-
         boundaries.addAll(roomGround.getBounds());
+        boundaries.addAll(platforms);
 
     }
 
@@ -256,10 +245,12 @@ public abstract class Room {
 
     }
 
-    public void enterRoom(ENTRY_POINT entry_point){
+    public void enterRoom(Wizard w, ENTRY_POINT entry_point){
+
+        this.wizard = w;
+        wizard.setCurrentState(Wizard.STATE.STANDING);
         state = STATE.ENTRY;
         this.entry_point = entry_point;
-
         switch(entry_point){
             case LEFT:
                 wizard.setX(0);
@@ -274,23 +265,8 @@ public abstract class Room {
             case DOWN:
                 wizard.setY(0);
                 break;
-
-            // roomTransition.enterFromRight();
         }
-
     }
-
-    /**
-     * Checks to see if the Room Transition has finished it's animation.
-     * @return
-     */
-    public boolean isRoomTransitionFinished(){
-        if(roomTransition != null){
-            return roomTransition.isFinished();
-        }
-        return false;
-    }
-
 
     public boolean isExitTransitionFinished(){
         //return roomTransition.isFinished() && state == STATE.EXIT;
@@ -443,6 +419,11 @@ public abstract class Room {
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
+    }
+
+    public void placeWizard(Wizard wizard) {
+        this.wizard = wizard;
+        wizard.setCurrentState(Wizard.STATE.STANDING);
     }
 
     public float groundHeight(){
