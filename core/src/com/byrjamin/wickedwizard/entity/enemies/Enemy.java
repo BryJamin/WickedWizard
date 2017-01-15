@@ -12,8 +12,7 @@ import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.entity.player.ActiveBullets;
-import com.byrjamin.wickedwizard.spelltypes.Projectile;
-import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**
  * Abstract class for enemies within the game

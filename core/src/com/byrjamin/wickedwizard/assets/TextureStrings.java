@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.staticstrings;
+package com.byrjamin.wickedwizard.assets;
 
 /**
  * Created by Home on 01/01/2017.

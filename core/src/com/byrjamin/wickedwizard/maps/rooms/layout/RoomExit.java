@@ -62,7 +62,7 @@ public class RoomExit {
 
     public void draw(SpriteBatch batch){
         BoundsDrawer.drawBounds(batch, bound);
-        batch.draw(currentAnimation.getKeyFrame(time), posX - Measure.units(10), posY, HEIGHT + Measure.units(5), HEIGHT);
+        batch.draw(currentAnimation.getKeyFrame(time), posX, posY, HEIGHT + Measure.units(5), HEIGHT);
     }
 
 

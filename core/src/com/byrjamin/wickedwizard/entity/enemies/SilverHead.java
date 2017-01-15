@@ -13,7 +13,7 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
-import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**
  * Created by Home on 01/01/2017.

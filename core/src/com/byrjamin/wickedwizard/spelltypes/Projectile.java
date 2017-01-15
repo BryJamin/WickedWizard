@@ -10,7 +10,7 @@ import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**
  * Created by Home on 07/11/2016.

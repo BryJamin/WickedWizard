@@ -12,7 +12,7 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**
  * Basic starter enemy, used for testing purposes.

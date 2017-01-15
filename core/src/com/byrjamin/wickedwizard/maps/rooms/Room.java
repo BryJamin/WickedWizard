@@ -340,6 +340,12 @@ public abstract class Room {
         }
     }
 
+    public void setUpBoundaries() {
+        groundBoundaries = new Array<Rectangle>();
+        groundBoundaries.addAll(roomGround.getBounds());
+        groundBoundaries.addAll(platforms);
+    }
+
 
     public void addLeftExit() {
         roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.LEFT));
@@ -370,9 +376,6 @@ public abstract class Room {
         bottom = true;
         exits.add(bottomArrow);
         roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this, WIDTH, 200, true);
-        groundBoundaries = new Array<Rectangle>();
-        groundBoundaries.addAll(roomGround.getBounds());
-        groundBoundaries.addAll(platforms);
     }
 
     public void lock() {

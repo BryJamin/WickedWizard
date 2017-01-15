@@ -14,7 +14,7 @@ import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.staticstrings.TextureStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**
  * Created by Home on 20/11/2016.

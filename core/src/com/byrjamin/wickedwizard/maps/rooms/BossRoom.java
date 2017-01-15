@@ -15,8 +15,7 @@ public class BossRoom extends Room {
         //customise platform placement and generally a lot of unfinished stuff.
         getRoomEnemyUpdater().getSpawnedEnemies().add(new BiggaBlobba(1100, 2000));
         getPlatforms().clear();
-        getGroundBoundaries().clear();
-        getGroundBoundaries().addAll(roomGround.getBounds());
+        setUpBoundaries();
     }
 
 

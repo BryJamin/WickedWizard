@@ -36,11 +36,9 @@ public class Map {
 
     public void roomSetup(){
 
-
         for(int i = 0; i < rooms.length; i++){
 
             for(int j = 0; j < rooms[i].length; j++) {
-
                 if (rooms[i][j] == null) {
                     continue;
                 }
@@ -68,6 +66,8 @@ public class Map {
                         rooms[i][j].setBottomExit();
                     }
                 }
+
+                rooms[i][j].setUpBoundaries();
             }
         }
     }
