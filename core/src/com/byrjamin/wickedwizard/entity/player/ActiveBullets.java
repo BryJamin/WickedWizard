@@ -11,14 +11,14 @@ import com.byrjamin.wickedwizard.spelltypes.Projectile;
  */
 public class ActiveBullets {
 
-    private Array<Projectile> activeBullets = new Array<Projectile>();
+    private Array<Projectile> bullets = new Array<Projectile>();
 
     /**
      * Adds a bullet to the active ActiveBullets array
      * @param p - Projectile
      */
     public void addProjectile(Projectile p){
-        activeBullets.add(p);
+        bullets.add(p);
     }
 
     /**
@@ -28,21 +28,21 @@ public class ActiveBullets {
      */
     public void updateProjectile(float dt, Room r, Entity... targets){
 
-        for(Projectile p : activeBullets) {
+        for(Projectile p : bullets) {
 
             p.update(dt);
-            outOfBoundsCheck(p, r);
 
             if(p.getState() == Projectile.STATE.ALIVE) {
                 for(Entity e : targets){
                     if(e.isHit(p.getBounds())){
                         e.reduceHealth(p.getDamage());
                         p.setState(Projectile.STATE.EXPLODING);
-                    };
+                    }
                 }
+                outOfBoundsCheck(p, r);
 
             } else if(p.getState() == Projectile.STATE.DEAD){
-                activeBullets.removeValue(p, true);
+                bullets.removeValue(p, true);
             }
 
         }
@@ -53,18 +53,17 @@ public class ActiveBullets {
     public void outOfBoundsCheck(Projectile p, Room r){
         if(p.getX() > r.WIDTH || p.getX() < 0
                 || p.getY() < r.groundHeight() || p.getY() > r.HEIGHT) {
-            p.setState(Projectile.STATE.DEAD);
+            p.setState(Projectile.STATE.EXPLODING);
         }
     }
 
     public void draw(SpriteBatch batch){
-
-        for(Projectile p : activeBullets){
+        for(Projectile p : bullets){
             p.draw(batch);
         }
     }
 
-    public Array<Projectile> getActiveBullets() {
-        return activeBullets;
+    public Array<Projectile> getBullets() {
+        return bullets;
     }
 }

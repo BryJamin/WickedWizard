@@ -190,7 +190,7 @@ public class BiggaBlobba extends Enemy {
                         a.getWizard().getX(),
                         a.getWizard().getY())
                         .damage(1)
-                        .speed(Measure.units(100f))
+                        .speed(Measure.units(60f))
                         .drawingColor(Color.RED)
                         .build());
             }

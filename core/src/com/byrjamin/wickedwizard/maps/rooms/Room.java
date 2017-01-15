@@ -86,7 +86,7 @@ public abstract class Room {
 
 
     private RoomBackground roomBackground;
-    private RoomGround roomGround;
+    protected RoomGround roomGround;
 
     public Room(){
         roomEnemyUpdater = new RoomEnemyUpdater();
@@ -176,12 +176,17 @@ public abstract class Room {
 
         }
 
-        for(RoomExit r : roomExits){
-            if(r.canEnter(wizard.getBounds())){
-                state = STATE.EXIT;
-                exit_point = r.getExit();
-                r.lock();
+        if(state == STATE.UNLOCKED) {
+            for (RoomExit r : roomExits) {
+                if (r.hasEntered(wizard.getBounds())) {
+                    state = STATE.EXIT;
+                    exit_point = r.getExit();
+                }
             }
+        }
+
+        for (RoomExit r : roomExits) {
+            r.update(dt);
         }
 
         doorCollisionCheck(wizard);
@@ -374,6 +379,7 @@ public abstract class Room {
         state = STATE.LOCKED;
         for(RoomExit r : roomExits){
             r.lock();
+            r.lockAnimation();
         }
     }
 
@@ -381,7 +387,12 @@ public abstract class Room {
         state = STATE.UNLOCKED;
         for(RoomExit r : roomExits){
             r.unlock();
+            r.unlockAnimation();
         }
+    }
+
+    public boolean inTransition(){
+        return state == STATE.ENTRY || state == STATE.EXIT;
     }
 
     public EXIT_POINT getExit_point() {

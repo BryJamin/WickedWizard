@@ -232,15 +232,18 @@ public class Wizard extends Entity{
 
 
     public void cancelMovement(){
-
+        movementState = MOVESTATE.MOVING;
     }
 
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
         if(moveTarget <= getCenterX()){
             direction = DIRECTION.LEFT;
+
+//            System.out.println("Oh jeez");
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
+
             if(this.getCenterX() <= moveTarget){
                 this.setCenterX(moveTarget);
                 movementState = MOVESTATE.STANDING;
@@ -249,6 +252,7 @@ public class Wizard extends Entity{
         }
 
         if(moveTarget >= getCenterX()){
+  //          System.out.println("rIGHT JEEZ");
             direction = DIRECTION.RIGHT;
             position.x = position.x + MOVEMENT * dt;
             boundsUpdate();
