@@ -47,7 +47,7 @@ public abstract class Room {
     protected Array<RoomWall> roomWalls = new Array<RoomWall>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
-    protected Wizard wizard = new Wizard(0, 0);
+    protected Wizard wizard = new Wizard(WALLWIDTH, 0);
 
     private RoomWall leftWall = new RoomWall(0, 0, WALLWIDTH, HEIGHT);
     private RoomWall rightWall = new RoomWall(WIDTH - WALLWIDTH, 0, WALLWIDTH, HEIGHT);;
@@ -245,10 +245,10 @@ public abstract class Room {
         this.entry_point = entry_point;
         switch(entry_point){
             case LEFT:
-                wizard.setX(0);
+                wizard.setX(WALLWIDTH);
                 break;
             case RIGHT:
-                wizard.setX(WIDTH);
+                wizard.setX(WIDTH - WALLWIDTH);
                 break;
             case UP:
                 wizard.setY(HEIGHT);

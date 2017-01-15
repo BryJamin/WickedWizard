@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.entity.player.ActiveBullets;
+import com.byrjamin.wickedwizard.entity.ActiveBullets;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -178,7 +178,7 @@ public class Turret extends Enemy {
         if (reloader.isReady()) {
             bullets.addProjectile(new Projectile.ProjectileBuilder(position.x + WIDTH / 2, position.y + HEIGHT / 2, a.getWizard().getCenterX(),a.getWizard().getCenterY())
                     .damage(1)
-                    .speed(15f)
+                    .speed(Measure.units(60f))
                     .drawingColor(Color.CYAN)
                     .build());
 

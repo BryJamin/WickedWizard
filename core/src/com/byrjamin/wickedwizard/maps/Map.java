@@ -30,7 +30,7 @@ public class Map {
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
         roomSetup();
         mapY = 0;
-        mapX = 3;
+        mapX = 2;
 
     }
 

@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity.player;
+package com.byrjamin.wickedwizard.entity;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;

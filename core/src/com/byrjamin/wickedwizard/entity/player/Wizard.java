@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.entity.Entity;
+import com.byrjamin.wickedwizard.entity.*;
 import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -44,7 +44,7 @@ public class Wizard extends Entity{
 
     private Rectangle bounds;
 
-    private com.byrjamin.wickedwizard.entity.player.ActiveBullets activeBullets = new com.byrjamin.wickedwizard.entity.player.ActiveBullets();
+    private com.byrjamin.wickedwizard.entity.ActiveBullets activeBullets = new com.byrjamin.wickedwizard.entity.ActiveBullets();
 
     private Reloader reloader;
 
@@ -222,12 +222,21 @@ public class Wizard extends Entity{
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
             this.moveTarget = dashTarget;
+            direction = moveTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
         }
     }
 
+    /**
+     * Sets the next movement location of the wizard, as long as the wizard isn't already moving
+     * and the target isn't the same target
+     * @param moveTarget - Movement Target
+     */
     public void move(float moveTarget) {
-        movementState = MOVESTATE.MOVING;
-        this.moveTarget = moveTarget;
+        if(movementState != MOVESTATE.MOVING && moveTarget != this.moveTarget) {
+            movementState = MOVESTATE.MOVING;
+            this.moveTarget = moveTarget;
+            direction = moveTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
+        }
     }
 
 
@@ -238,28 +247,21 @@ public class Wizard extends Entity{
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
         if(moveTarget <= getCenterX()){
-            direction = DIRECTION.LEFT;
-
-//            System.out.println("Oh jeez");
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
 
             if(this.getCenterX() <= moveTarget){
                 this.setCenterX(moveTarget);
                 movementState = MOVESTATE.STANDING;
-                return;
             }
         }
 
         if(moveTarget >= getCenterX()){
-  //          System.out.println("rIGHT JEEZ");
-            direction = DIRECTION.RIGHT;
             position.x = position.x + MOVEMENT * dt;
             boundsUpdate();
             if(this.getCenterX() >= moveTarget){
                 this.setCenterX(moveTarget);
                 movementState = MOVESTATE.STANDING;
-                return;
             }
         }
     }
@@ -301,7 +303,6 @@ public class Wizard extends Entity{
 
 
    public void applyGravity(float dt, Room room){
-
        if(room.state != Room.STATE.EXIT) {
 
            if (isFalling) {
@@ -327,25 +328,19 @@ public class Wizard extends Entity{
 
     public void fireProjectile(float input_x, float input_y){
         startfireAnimation();
-
         //This only really matters if I make it so the bullets are drawn in front so they don't appear from
         //the middle of the character. If to decide to just draw from the back I can remove this piece of code
         //angle bits.
         float angle = calculateAngle(getCenterX(), getCenterY(), input_x,input_y);
 
-        if(angle >= 0){
-            if(angle <= (Math.PI / 2)) direction = DIRECTION.RIGHT;
-            else direction = DIRECTION.LEFT;
-        } else {
-            if(angle >= -(Math.PI / 2)) direction = DIRECTION.RIGHT;
-            else direction = DIRECTION.LEFT;
-        }
+        if(angle >= 0) direction = (angle <= (Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
+         else direction = (angle >= -(Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
 
         float x1 = (getCenterX()) + ((WIDTH / 2) * (float) Math.cos(angle)); //+ (WIDTH / 2)) * (float) Math.cos(angle);
         float y1 = (getCenterY()) + ((WIDTH / 2) * (float) Math.sin(angle));; //+ (HEIGHT / 2)) * (float) Math.sin(angle);
 
         activeBullets.addProjectile(new Projectile.ProjectileBuilder(x1 , y1, input_x,input_y)
-                .damage(1)
+                .damage(damage)
                 .drawingColor(Color.WHITE)
                 .speed(Measure.units(150f))
                 .build());

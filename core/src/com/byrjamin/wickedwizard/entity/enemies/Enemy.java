@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.entity.Entity;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
-import com.byrjamin.wickedwizard.entity.player.ActiveBullets;
+import com.byrjamin.wickedwizard.entity.ActiveBullets;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**

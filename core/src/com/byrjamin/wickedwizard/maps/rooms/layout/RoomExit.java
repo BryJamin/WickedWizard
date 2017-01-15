@@ -75,7 +75,6 @@ public class RoomExit {
     }
 
     public void lockAnimation(){
-
         if(currentAnimation != closingAnimation) {
             currentAnimation = closingAnimation;
             time = 0;

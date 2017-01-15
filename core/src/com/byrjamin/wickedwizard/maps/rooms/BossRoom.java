@@ -24,9 +24,9 @@ public class BossRoom extends Room {
 
         if(state != STATE.ENTRY && state != STATE.EXIT) {
             if(getRoomEnemyUpdater().areAllEnemiesKilled()){
-                lock();
-            } else {
                 unlock();
+            } else {
+                lock();
             }
         }
 
