@@ -6,13 +6,17 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
+import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.Map;
 
 
@@ -36,7 +40,12 @@ public class PlayScreen extends AbstractScreen {
     Vector3 touchDownInput = new Vector3();
     Vector3 touchUpInput = new Vector3();
 
+    private boolean gameOver = false;
+
+    BitmapFont font = new BitmapFont();
+
     Map map;
+    private GestureDetector gameOvergestureDetector;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -45,6 +54,8 @@ public class PlayScreen extends AbstractScreen {
         super(game);
 
         gestureDetector = new GestureDetector(new gestures());
+
+        font.getData().setScale(5, 5);
 
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
 
@@ -66,57 +77,61 @@ public class PlayScreen extends AbstractScreen {
         if(!map.isTransitioning()) {
 
             InputMultiplexer multiplexer = new InputMultiplexer();
-            multiplexer.addProcessor(gestureDetector);
-            multiplexer.addProcessor(new InputAdapter() {
 
-                @Override
-                public boolean touchDown(int x, int y, int pointer, int button) {
+            if(!gameOver) {
+                multiplexer.addProcessor(new InputAdapter() {
 
-
-                    //System.out.println("TOUCHDOWN");
-
-                    float x1 = Gdx.input.getX();
-                    float y1 = Gdx.input.getY();
-                    input = new Vector3(x1, y1, 0);
-                    touchDownInput = new Vector3(x1, y1, 0);
-
-                    gamePort.unproject(input);
-                    gamePort.unproject(touchDownInput);
-
-                    boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
+                    @Override
+                    public boolean touchDown(int x, int y, int pointer, int button) {
 
 
+                        //System.out.println("TOUCHDOWN");
 
-                    if (!tapped) {
+                        float x1 = Gdx.input.getX();
+                        float y1 = Gdx.input.getY();
+                        input = new Vector3(x1, y1, 0);
+                        touchDownInput = new Vector3(x1, y1, 0);
 
-                        if(input.y <= map.getActiveRoom().groundHeight()){
-                            map.getActiveRoom().getWizard().dash(input.x);
-                        } else {
-                            map.getActiveRoom().getWizard().startFiring();
+                        gamePort.unproject(input);
+                        gamePort.unproject(touchDownInput);
+
+                        boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
+
+
+                        if (!tapped) {
+
+                            if (input.y <= map.getActiveRoom().groundHeight()) {
+                                map.getActiveRoom().getWizard().dash(input.x);
+                            } else {
+                                map.getActiveRoom().getWizard().startFiring();
+                            }
                         }
+
+
+                        //This is so inputs match up to the game co-ordinates.
+                        // your touch down code here
+                        return true; // return true to indicate the event was handled
+                    }
+
+                    @Override
+                    public boolean touchUp(int x, int y, int pointer, int button) {
+
+                        float x1 = Gdx.input.getX();
+                        float y1 = Gdx.input.getY();
+                        touchUpInput = new Vector3(x1, y1, 0);
+
+                        gamePort.unproject(touchUpInput);
+                        map.getActiveRoom().getWizard().stopFiring();
+                        // your touch down code here
+                        return true; // return true to indicate the event was handled
                     }
 
 
-                    //This is so inputs match up to the game co-ordinates.
-                    // your touch down code here
-                    return true; // return true to indicate the event was handled
-                }
+                });
 
-                @Override
-                public boolean touchUp(int x, int y, int pointer, int button) {
-
-                    float x1 = Gdx.input.getX();
-                    float y1 = Gdx.input.getY();
-                    touchUpInput = new Vector3(x1, y1, 0);
-
-                    gamePort.unproject(touchUpInput);
-                    map.getActiveRoom().getWizard().stopFiring();
-                    // your touch down code here
-                    return true; // return true to indicate the event was handled
-                }
-
-
-            });
+            } else {
+                multiplexer.addProcessor(gestureDetector);
+            }
 
             Gdx.input.setInputProcessor(multiplexer);
 
@@ -129,6 +144,9 @@ public class PlayScreen extends AbstractScreen {
     public void update(float dt){
         handleInput(dt);
         map.update(dt, gamecam);
+        if(map.getActiveRoom().getWizard().isDead()){
+            gameOver = true;
+        }
     }
 
     @Override
@@ -151,11 +169,16 @@ public class PlayScreen extends AbstractScreen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-
         map.draw(game.batch);
 
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
             game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().HEIGHT - 150,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        }
+
+
+        if(gameOver){
+            font.draw(game.batch, "You died :[\nTap to restart", 550, gamecam.viewportHeight - 500, Measure.units(40), Align.center, true);
+
         }
 
         game.batch.end();
@@ -189,7 +212,7 @@ public class PlayScreen extends AbstractScreen {
 
     }
 
-    public class gestures implements GestureDetector.GestureListener {
+    public class gestures extends AbstractGestureDectector {
 
 
         @Override
@@ -201,58 +224,18 @@ public class PlayScreen extends AbstractScreen {
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
-/*            int x1 = Gdx.input.getX();
-            int y1 = Gdx.input.getY();
-            Vector3 input = new Vector3(x1, y1, 0);
+            if(gameOver){
+                map = new Map();
+                gameOver = false;
+            }
 
-            //This is so inputs match up to the game co-ordinates.
-            gamePort.unproject(input);
-
-
-            //System.out.println("Is wizard not firing?" + !map.getActiveRoom().getWizard().isFiring());
-
-            map.getActiveRoom().shift(input.x);
-            map.getActiveRoom().getWizard().stopFiring();
-
-            System.out.println("X is " + input.x);
-            System.out.println("Y is " + input.y);*/
-
-            //map.getActiveRoom().itemGet(input.x, input.y);
-            return false;
-        }
-
-        @Override
-        public boolean longPress(float x, float y) {
-            System.out.println("LongPress");
             return true;
         }
 
         @Override
-        public boolean fling(float velocityX, float velocityY, int button) {
+        public boolean longPress(float x, float y) {
 
-            return false;
-        }
-
-        @Override
-        public boolean pan(float x, float y, float deltaX, float deltaY) {
-
-            return false;
-        }
-
-
-        @Override
-        public boolean panStop(float x, float y, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean zoom(float initialDistance, float distance) {
-            return false;
-        }
-
-        @Override
-        public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-            return false;
+            return true;
         }
 
     }

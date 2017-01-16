@@ -28,7 +28,7 @@ public class Wizard extends Entity{
 
     public float HEIGHT = Measure.units(6);
     public float WIDTH = Measure.units(6);
-    private float MOVEMENT = Measure.units(200f);
+    private float MOVEMENT = Measure.units(150f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private float invinciblityFrames = 1.0f;
@@ -51,6 +51,10 @@ public class Wizard extends Entity{
     private boolean isFalling = true;
 
     private float moveTarget;
+
+    public boolean isDead() {
+        return health <= 0;
+    }
 
 
     public enum STATE {
