@@ -61,6 +61,8 @@ public class Wizard extends Entity{
         CHARGING, FIRING, IDLE
     }
 
+    private boolean controlScheme = true;
+
     public enum MOVESTATE {
         DASHING, MOVING, STANDING
     }
@@ -93,6 +95,8 @@ public class Wizard extends Entity{
     private Animation currentAnimation;
 
     private TextureRegion currentFrame;
+
+    private int inputPoll;
 
 
     private Array<ItemPresets> items = new Array<ItemPresets>();
@@ -133,24 +137,42 @@ public class Wizard extends Entity{
             }
         }
 
-        if(currentState == STATE.FIRING){
-            reloader.update(dt);
-           // stateTime+= dt;
-            if(reloader.isReady()){
-                float x1 = Gdx.input.getX();
-                float y1 = Gdx.input.getY();
-                input = new Vector3(x1, y1, 0);
-                //This is so inputs match up to the game co-ordinates.
-                gamecam.unproject(input);
-                fireProjectile(input.x, input.y);
-                //reloader.update(dt);
+        //Purely for testing
+
+        if(controlScheme){
+            if(currentState == STATE.FIRING){
+                reloader.update(dt);
+                // stateTime+= dt;
+                if(reloader.isReady()){
+                    float x1 = Gdx.input.getX(inputPoll);
+                    float y1 = Gdx.input.getY(inputPoll);
+                    input = new Vector3(x1, y1, 0);
+                    //This is so inputs match up to the game co-ordinates.
+                    gamecam.unproject(input);
+                    fireProjectile(input.x, input.y);
+                    reloader.update(dt);
+                }
+            }
+        } else {
+
+            if (currentState == STATE.FIRING && !isDashing()) {
+                reloader.update(dt);
+                // stateTime+= dt;
+                if (reloader.isReady()) {
+                    float x1 = Gdx.input.getX(inputPoll);
+                    float y1 = Gdx.input.getY(inputPoll);
+                    input = new Vector3(x1, y1, 0);
+                    //This is so inputs match up to the game co-ordinates.
+                    gamecam.unproject(input);
+                    fireProjectile(input.x, input.y);
+                    reloader.update(dt);
+                }
             }
         }
 
 
 
         if(movementState != MOVESTATE.STANDING){
-
             if(isDashing()) {
                 currentAnimation = dashAnimation;
             }
@@ -168,6 +190,10 @@ public class Wizard extends Entity{
 
         //System.out.println("STATE IS: " + currentState);
 
+    }
+
+    public void switchControlScheme(){
+        controlScheme = !controlScheme;
     }
 
     public void draw(SpriteBatch batch){
@@ -222,7 +248,7 @@ public class Wizard extends Entity{
     }
 
     public void dash(float dashTarget) {
-        if(!isDashing() && !isFiring()) {
+        if(!isDashing()) {
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
             this.moveTarget = dashTarget;
@@ -359,11 +385,14 @@ public class Wizard extends Entity{
         return (float) (Math.atan2(y2 - y1, x2 - x1));
     }
 
-    public void startFiring() {
+    public void startFiring(int poll) {
+        if(!isFiring()) {
             currentState = STATE.FIRING;
             currentAnimation = firingAnimation;
             animationTime = 0;
             chargeTime = 0;
+            this.inputPoll = poll;
+        }
     }
 
 
@@ -430,6 +459,10 @@ public class Wizard extends Entity{
 
     public void addItem(ItemPresets i){
         items.add(i);
+    }
+
+    public int getInputPoll() {
+        return inputPoll;
     }
 
     public boolean isCharing(){

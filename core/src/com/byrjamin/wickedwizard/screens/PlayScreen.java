@@ -35,6 +35,7 @@ public class PlayScreen extends AbstractScreen {
     public static TextureAtlas atlas;
 
     GestureDetector gestureDetector;
+    GestureDetector controlschemeDetector;
 
     Vector3 input = new Vector3();
     Vector3 touchDownInput = new Vector3();
@@ -54,6 +55,8 @@ public class PlayScreen extends AbstractScreen {
         super(game);
 
         gestureDetector = new GestureDetector(new gestures());
+        controlschemeDetector = new GestureDetector(new controlSchemeGesture());
+
 
         font.getData().setScale(5, 5);
 
@@ -79,16 +82,17 @@ public class PlayScreen extends AbstractScreen {
             InputMultiplexer multiplexer = new InputMultiplexer();
 
             if(!gameOver) {
+                multiplexer.addProcessor(controlschemeDetector);
                 multiplexer.addProcessor(new InputAdapter() {
 
                     @Override
                     public boolean touchDown(int x, int y, int pointer, int button) {
 
 
-                        //System.out.println("TOUCHDOWN");
+                        System.out.println("TOUCHDOWN");
 
-                        float x1 = Gdx.input.getX();
-                        float y1 = Gdx.input.getY();
+                        float x1 = Gdx.input.getX(pointer);
+                        float y1 = Gdx.input.getY(pointer);
                         input = new Vector3(x1, y1, 0);
                         touchDownInput = new Vector3(x1, y1, 0);
 
@@ -98,12 +102,15 @@ public class PlayScreen extends AbstractScreen {
                         boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
 
 
+                        System.out.println(pointer);
+
                         if (!tapped) {
 
                             if (input.y <= map.getActiveRoom().groundHeight()) {
                                 map.getActiveRoom().getWizard().dash(input.x);
+                                System.out.println("Inside dash");
                             } else {
-                                map.getActiveRoom().getWizard().startFiring();
+                                map.getActiveRoom().getWizard().startFiring(pointer);
                             }
                         }
 
@@ -116,12 +123,17 @@ public class PlayScreen extends AbstractScreen {
                     @Override
                     public boolean touchUp(int x, int y, int pointer, int button) {
 
+                        System.out.println(pointer);
+
                         float x1 = Gdx.input.getX();
                         float y1 = Gdx.input.getY();
                         touchUpInput = new Vector3(x1, y1, 0);
 
                         gamePort.unproject(touchUpInput);
+
+                        if(map.getActiveRoom().getWizard().getInputPoll() == pointer)
                         map.getActiveRoom().getWizard().stopFiring();
+
                         // your touch down code here
                         return true; // return true to indicate the event was handled
                     }
@@ -235,6 +247,17 @@ public class PlayScreen extends AbstractScreen {
         @Override
         public boolean longPress(float x, float y) {
 
+            return true;
+        }
+
+    }
+
+    public class controlSchemeGesture extends AbstractGestureDectector {
+
+        @Override
+        public boolean longPress(float x, float y) {
+            System.out.println("longpress");
+            map.getActiveRoom().getWizard().switchControlScheme();
             return true;
         }
 
