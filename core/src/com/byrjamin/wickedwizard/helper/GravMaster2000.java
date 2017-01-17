@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.helper;
 
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -18,31 +19,20 @@ public class GravMaster2000 {
     }
 
 
-    public void update(float dt, Vector2 position, Array<Rectangle> platforms){
+    public void update(float dt, Rectangle bounds,  Array<Rectangle> platforms){
+        //boolean canAdd = false;
 
         this.gravity.add(0, GRAVITY * dt);
-
-        boolean canAdd = true;
-
+        bounds.y = bounds.y + gravity.y;
         for (Rectangle r : platforms){
-            if(r.contains(position.x, position.y) || r.getY() + r.getHeight() <= position.y ){
-                if(position.y + gravity.y >= (r.y + r.getHeight())){
-                    //System.out.println("INSIDE 1");
-                    //Allows for jumping
-                    position.add(gravity);
-                    break;
-                } else {
-                    //System.out.println("INSIDE 2");
-                    position.y = r.y + r.getHeight();
-                    canAdd = false;
-                    break;
-                }
+
+            if(bounds.overlaps(r)){
+                bounds.y = r.y + r.getHeight();
+                gravity.y = 0;
+                break;
             }
         }
 
-        if(canAdd){
-            position.add(gravity);
-        }
 
     }
 

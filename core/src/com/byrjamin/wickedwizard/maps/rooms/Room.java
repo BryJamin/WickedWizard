@@ -3,22 +3,22 @@ package com.byrjamin.wickedwizard.maps.rooms;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.item.Item;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomBackground;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomTransition;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyUpdater;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyWaves;
-import com.byrjamin.wickedwizard.item.ItemGenerator;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomBackground;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomGround;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomPlatform;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyUpdater;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.player.Wizard;
-import com.byrjamin.wickedwizard.enemy.Enemy;
+import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -30,6 +30,10 @@ public abstract class Room {
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
 
+    public float TILE_SIZE = MainGame.GAME_WIDTH / 10;
+
+    private float WALLWIDTH = Measure.units(5);
+
     private float tile_height;
     private float tile_width;
 
@@ -38,28 +42,26 @@ public abstract class Room {
 
     private float[] sectionCenters;
 
-    private int currentSection;
-
     protected Array<Item> items = new Array<Item>();
+    protected Array<RoomExit> roomExits = new Array<RoomExit>();
+    protected Array<RoomWall> roomWalls = new Array<RoomWall>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
-    protected Wizard wizard;
+    protected Wizard wizard = new Wizard(WALLWIDTH, 0);
 
-    private Rectangle ground;
-
-    private Array<Vector2> groundTileTextureCoords;
+    private RoomWall leftWall = new RoomWall(0, 0, WALLWIDTH, HEIGHT);
+    private RoomWall rightWall = new RoomWall(WIDTH - WALLWIDTH, 0, WALLWIDTH, HEIGHT);;
 
     private long seed = 2;
 
-    private boolean transition = false;
-
-    private Sprite leftArrow;
-    private Sprite rightArrow;
     private Sprite topArrow;
     private Sprite bottomArrow;
 
+    private boolean bottom = false;
 
-    private Array<Rectangle> platforms;
+
+    private Array<Rectangle> groundBoundaries = new Array<Rectangle>();
+    private Array<RoomPlatform> platforms = new Array<RoomPlatform>();
 
     private RoomEnemyWaves roomEnemyWaves;
     private Array<Sprite> exits = new Array<Sprite>();
@@ -83,34 +85,28 @@ public abstract class Room {
     public EXIT_POINT exit_point;
 
 
-    private RoomTransition roomTransition;
     private RoomBackground roomBackground;
-
-    private TextureRegion groundTexture;
-
-
+    protected RoomGround roomGround;
 
     public Room(){
         roomEnemyUpdater = new RoomEnemyUpdater();
-        wizard = new Wizard(0, 0);
-        ground = new Rectangle(0,0, WIDTH, 200);
-        genGroundCoords(ground.getWidth(), ground.getHeight(), 1);
-        platforms = new Array<Rectangle>();
-        platforms.add(ground);
-
+        roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this,WIDTH, Measure.units(10), false);
         roomEnemyWaves = new RoomEnemyWaves(this);
-        groundTexture = PlayScreen.atlas.findRegion("brick");
-
         sectionSetup();
 
+        platforms.add(new RoomPlatform(WIDTH - WIDTH /3, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH / 3, Measure.units(2)));
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT);
 
-       // roomTransition = new RoomTransition(WIDTH, HEIGHT);
-       // roomTransition.enterFromLeft();
+        roomWalls.add(leftWall);
+        roomWalls.add(rightWall);
 
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 + ground.getHeight(), this.WIDTH, this.HEIGHT - ground.getHeight());
-
+        groundBoundaries.addAll(roomGround.getBounds());
+        groundBoundaries.addAll(platforms);
+        /* for(RoomWall wall : roomWalls){
+            boundaries.add(wall.getBounds());
+        }*/
     }
 
     /**
@@ -118,61 +114,36 @@ public abstract class Room {
      * A player can dodge between these 3 sections.
      */
     public void sectionSetup(){
-
         sectionCenters = new float[3];
         float lengths = WIDTH / 3;
         for(int i = 0; i < sectionCenters.length; i++){
             sectionCenters[i] = (i * lengths) + (lengths / 2);
         }
-
-        //TODO this only really works if the length of the array is odd.
-        currentSection = (sectionCenters.length - 1) / 2;
     }
 
     public void update(float dt, OrthographicCamera gamecam){
-
         wizard.update(dt, gamecam, this);
 
         if(state == STATE.ENTRY) {
 
-           // roomTransition.update(dt);
-
-           // if(roomTransition.isFinished()){
-
-                boolean inPosition = false;
+            boolean inPosition = false;
 
             switch(entry_point){
                 case RIGHT:
-                    wizard.moveLeft(dt);
-                    if(wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1)]) {
-                        wizard.setCenterX(sectionCenters[(sectionCenters.length - 1)]);
-                        inPosition = true;
-                    }
+                    wizard.move(sectionCenters[(sectionCenters.length - 1)]);
+                    inPosition = wizard.getCenterX() == sectionCenters[(sectionCenters.length - 1)];
                     break;
                 case LEFT:
-                    wizard.moveRight(dt);
-                    if(wizard.getCenterX() > sectionCenters[0]){
-                        wizard.setCenterX(sectionCenters[0]);
-                        inPosition = true;
-                    }
+                    wizard.move(sectionCenters[0]);
+                    inPosition = wizard.getCenterX() == sectionCenters[0];
                     break;
                 case UP:
-                    wizard.moveDown(dt);
-
-                    System.out.println("INSIDE UP");
-                    if(wizard.getY() <= ground.getHeight()){
-
-                        System.out.println("OH SHIZZ");
-                        wizard.setY(ground.getHeight());
-                        inPosition = true;
-                    }
+                    inPosition = !wizard.isFalling();
                     break;
                 case DOWN:
                     wizard.moveUp(dt);
-
-                    System.out.println("INSIDE DOWN");
-                    if(wizard.getY() >= ground.getHeight()){
-                        wizard.setY(ground.getHeight());
+                    if(wizard.getY() >= roomGround.getHeight()){
+                        wizard.setY(roomGround.getHeight());
                         inPosition = true;
                     }
                     break;
@@ -181,6 +152,9 @@ public abstract class Room {
 
                 if(inPosition) {
                     state = STATE.UNLOCKED;
+                    for(RoomExit r : roomExits){
+                        r.unlock();
+                    }
                 }
            // }
 
@@ -202,32 +176,22 @@ public abstract class Room {
 
         }
 
-        if (state == STATE.EXIT) {
-            if(exit_point == EXIT_POINT.RIGHT) {
-                if(!wizard.isDashing()) {
-                    wizard.moveRight(dt);
-                }
-            } else if(exit_point == EXIT_POINT.LEFT){
-                if(!wizard.isDashing()) {
-                    wizard.moveLeft(dt);
-                }
-            } else if(exit_point == EXIT_POINT.DOWN){
-                if(!wizard.isDashing()){
-                    wizard.moveDown(dt);
-                }
-            } else if(exit_point == EXIT_POINT.UP) {
-                if(!wizard.isDashing()) {
-                    wizard.moveUp(dt);
+        if(state == STATE.UNLOCKED) {
+            for (RoomExit r : roomExits) {
+                if (r.hasEntered(wizard.getBounds())) {
+                    state = STATE.EXIT;
+                    exit_point = r.getExit();
                 }
             }
-
-            if (isWizardOfScreen()) {
-              //  roomTransition.update(dt);
-            }
-
-            //System.out.println(wizard.getY());
-
         }
+
+        for (RoomExit r : roomExits) {
+            r.update(dt);
+        }
+
+        doorCollisionCheck(wizard);
+        wallCollisionCheck(wizard, leftWall.getBounds());
+        wallCollisionCheck(wizard, rightWall.getBounds());
 
     }
 
@@ -241,10 +205,27 @@ public abstract class Room {
             BoundsDrawer.drawBounds(batch, item.getBoundingRectangle());
         }
 
-        wizard.draw(batch);
-        for(Vector2 v : groundTileTextureCoords){
-            batch.draw(groundTexture, v.x, v.y, tile_width, tile_height);
+        for(RoomExit r : roomExits){
+            r.draw(batch);
         }
+
+/*        for(RoomWall r : roomWalls){
+            r.draw(batch);
+            //System.out.println("WALL DRAWIN");
+        }*/
+
+        rightWall.draw(batch);
+        leftWall.draw(batch);
+
+        BoundsDrawer.drawBounds(batch, groundBoundaries);
+
+        wizard.draw(batch);
+
+        roomGround.draw(batch);
+
+/*        if(platforms.size != 0) {
+            BoundsDrawer.drawBounds(batch, platforms);
+        }*/
 
         if(state == STATE.UNLOCKED) {
             for(Sprite arrow : exits){
@@ -255,36 +236,19 @@ public abstract class Room {
 
     }
 
+    public void enterRoom(Wizard w, ENTRY_POINT entry_point){
 
-    public void genGroundCoords(float ground_width, float ground_height, float rows){
-
-        groundTileTextureCoords = new Array<Vector2>();
-
-        tile_height = ground_height / rows;
-        tile_width = ground_height / rows;
-        //Assuming were using square tiles here
-        float columns = ground_width / tile_width;
-
-        for(float i = 0; i < columns; i++){
-            for(float j = 0; j < rows; j++){
-                groundTileTextureCoords.add(new Vector2(((i * tile_height - 5)),(j * tile_width - 5)));
-            }
-        }
-    }
-
-
-    public void enterRoom(ENTRY_POINT entry_point){
+        this.wizard = w;
+        wizard.setCurrentState(Wizard.STATE.IDLE);
+        wizard.cancelDash();
         state = STATE.ENTRY;
         this.entry_point = entry_point;
-
         switch(entry_point){
             case LEFT:
-                wizard.setX(0);
-               // roomTransition.enterFromLeft();
-
+                wizard.setX(WALLWIDTH);
                 break;
             case RIGHT:
-                wizard.setX(WIDTH);
+                wizard.setX(WIDTH - WALLWIDTH);
                 break;
             case UP:
                 wizard.setY(HEIGHT);
@@ -292,54 +256,15 @@ public abstract class Room {
             case DOWN:
                 wizard.setY(0);
                 break;
-
-            // roomTransition.enterFromRight();
         }
-
     }
-
-    /**
-     * Checks to see if the Room Transition has finished it's animation.
-     * @return
-     */
-    public boolean isRoomTransitionFinished(){
-        if(roomTransition != null){
-            return roomTransition.isFinished();
-        }
-        return false;
-    }
-
 
     public boolean isExitTransitionFinished(){
-        //return roomTransition.isFinished() && state == STATE.EXIT;
-        return isWizardOfScreen() && state == STATE.EXIT;
+        return state == STATE.EXIT;
     }
 
 
     public boolean tapArrow(float input_x, float input_y){
-
-        if(rightArrow != null && state == STATE.UNLOCKED){
-            if(rightArrow.getBoundingRectangle().contains(input_x, input_y)){
-                state = STATE.EXIT;
-                exit_point = EXIT_POINT.RIGHT;
-               // roomTransition.exitToRight();
-               // System.out.println("INSIDE RIGHT ARROW METHOD");
-                return true;
-            }
-        }
-
-
-        if(leftArrow != null && state == STATE.UNLOCKED){
-            if(leftArrow.getBoundingRectangle().contains(input_x, input_y)){
-                state = STATE.EXIT;
-                exit_point = EXIT_POINT.LEFT;
-               // roomTransition.exitToLeft();
-               // System.out.println("INSIDE LEFT ARROW METHOD");
-                return true;
-            }
-        }
-
-
         if(topArrow != null && state == STATE.UNLOCKED){
             if(topArrow.getBoundingRectangle().contains(input_x, input_y)){
                 state = STATE.EXIT;
@@ -366,7 +291,7 @@ public abstract class Room {
     }
 
     public Rectangle getOverlappingRectangle(Rectangle r){
-        for(Rectangle rect : platforms){
+        for(Rectangle rect : groundBoundaries){
             if (r.overlaps(rect)){
                 return rect;
             }
@@ -375,25 +300,61 @@ public abstract class Room {
     }
 
 
+    public void doorCollisionCheck(Wizard w){
+        for(RoomExit exit : roomExits){
+            if(!exit.isUnlocked() && state != STATE.ENTRY){
+                if(exit.getBound().overlaps(wizard.getBounds())) {
+                    Rectangle r1 = w.getBounds();
+                    Rectangle r2 = exit.getBound();
+                    //Hit was on left
+                    if(r1.x < r2.x) {
+                        r1.x = r2.x - wizard.WIDTH;
+                    } else if(r1.x > r2.x) {
+                        r1.x = r2.x + r2.getWidth();
+                    }
+                    w.cancelDash();
+                    wizard.setX(r1.x);
+                }
+            }
+        }
+    }
 
-    public void exitRight(){
+    public void wallCollisionCheck(Rectangle entityBound, Rectangle wallBound){
+        if(wallBound.overlaps(entityBound)){
+            if(entityBound.x < wallBound.x) { //Hit was on left
+                entityBound.setX(wallBound.x - entityBound.width);
+            } else if(entityBound.x > wallBound.x) {//Hit was on right
+                entityBound.setX(wallBound.x + wallBound.getWidth());
+            }
+        }
+    }
 
+    public void wallCollisionCheck(Wizard w, Rectangle wallBound){
+        if(wallBound.overlaps(w.getBounds())){
+            if(w.getX() < wallBound.x) { //Hit was on left
+                w.setX(wallBound.x - w.WIDTH);
+            } else if(w.getX() > wallBound.x) {//Hit was on right
+                w.setX(wallBound.x + wallBound.getWidth());
+            }
+            w.cancelDash();
+        }
+    }
+
+    public void setUpBoundaries() {
+        groundBoundaries = new Array<Rectangle>();
+        groundBoundaries.addAll(roomGround.getBounds());
+        groundBoundaries.addAll(platforms);
     }
 
 
     public void addLeftExit() {
-        leftArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        leftArrow.setCenter(200, 500);
-        leftArrow.setSize(Measure.units(10), Measure.units(10));
-        leftArrow.setFlip(true, true);
-        exits.add(leftArrow);
+        roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.LEFT));
+        leftWall = new RoomWall(0, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
     }
 
     public void addRightExit() {
-        rightArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        rightArrow.setCenter(1700, 500);
-        rightArrow.setSize(Measure.units(10), Measure.units(10));
-        exits.add(rightArrow);
+        roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.RIGHT));
+        rightWall = new RoomWall(WIDTH - WALLWIDTH, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
     }
 
     public void addTopExit() {
@@ -407,11 +368,34 @@ public abstract class Room {
 
     public void setBottomExit() {
         bottomArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        bottomArrow.setCenter(WIDTH / 2 - 300, 1000);
-        bottomArrow.setSize(Measure.units(10), Measure.units(10));
+        bottomArrow.setCenter(WIDTH / 2 - bottomArrow.getWidth() / 2, 50);
+        bottomArrow.setSize(Measure.units(5), Measure.units(5));
         bottomArrow.setOriginCenter();
-        bottomArrow.rotate((float) -Math.toDegrees(Math.PI / 2));
+        bottomArrow.setBounds(bottomArrow.getX(), bottomArrow.getY(), 200, 200);
+        bottomArrow.rotate((float) Math.toDegrees(-Math.PI / 2));
+        bottom = true;
         exits.add(bottomArrow);
+        roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this, WIDTH, 200, true);
+    }
+
+    public void lock() {
+        state = STATE.LOCKED;
+        for(RoomExit r : roomExits){
+            r.lock();
+            r.lockAnimation();
+        }
+    }
+
+    public void unlock() {
+        state = STATE.UNLOCKED;
+        for(RoomExit r : roomExits){
+            r.unlock();
+            r.unlockAnimation();
+        }
+    }
+
+    public boolean inTransition(){
+        return state == STATE.ENTRY || state == STATE.EXIT;
     }
 
     public EXIT_POINT getExit_point() {
@@ -434,8 +418,16 @@ public abstract class Room {
         return exit_point == EXIT_POINT.DOWN;
     }
 
-    public Array<Rectangle> getPlatforms() {
+    public Array<Rectangle> getGroundBoundaries() {
+        return groundBoundaries;
+    }
+
+    public Array<RoomPlatform> getPlatforms() {
         return platforms;
+    }
+
+    public void setPlatforms(Array<RoomPlatform> platforms) {
+        this.platforms = platforms;
     }
 
     public Array<Enemy> getEnemies() {
@@ -455,7 +447,7 @@ public abstract class Room {
     }
 
     public float groundHeight(){
-        return ground.getHeight();
+        return roomGround.getHeight();
     }
 
 

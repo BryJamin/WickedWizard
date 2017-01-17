@@ -2,7 +2,7 @@ package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.byrjamin.wickedwizard.maps.rooms.helper.RoomEnemyWaves;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 
 /**
  * Created by Home on 24/12/2016.
@@ -38,9 +38,9 @@ public class BattleRoom extends Room {
         if(state != STATE.ENTRY && state != STATE.EXIT) {
 
             if (numberOfWaves == 0 && getRoomEnemyUpdater().areAllEnemiesKilled()) {
-                state = STATE.UNLOCKED;
+                unlock();
             } else {
-                state = STATE.LOCKED;
+                lock();
                 if (getRoomEnemyUpdater().areAllEnemiesKilled()) {
                     roomEnemyWaves.nextWaveTest(this.getEnemies());
                     numberOfWaves--;

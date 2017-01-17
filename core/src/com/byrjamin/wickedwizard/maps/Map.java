@@ -4,13 +4,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.player.Wizard;
+import com.byrjamin.wickedwizard.entity.player.Wizard;
 
 /**
  * Created by Home on 24/12/2016.
@@ -18,8 +17,8 @@ import com.byrjamin.wickedwizard.player.Wizard;
 public class Map {
 
     private Room[][] rooms;
-    private int playPositionY;
-    private int playPositionX;
+    private int mapY;
+    private int mapX;
 
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
@@ -27,26 +26,19 @@ public class Map {
 
         rooms = new Room[][]{
                 {null, null, new BattleRoom(0), new BattleRoom(), new BattleRoom(),null, null},
-                {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, new BattleRoom(), null},
+                {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, null, null},
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
         roomSetup();
-        playPositionY = 0;
-        playPositionX = 2;
+        mapY = 0;
+        mapX = 2;
 
     }
 
     public void roomSetup(){
 
-
         for(int i = 0; i < rooms.length; i++){
 
-            boolean inBoundsI = (i >= 0) && (i < rooms.length);
-
             for(int j = 0; j < rooms[i].length; j++) {
-
-
-                boolean inBoundsJ = (j >= 0) && (j < rooms[i].length);
-
                 if (rooms[i][j] == null) {
                     continue;
                 }
@@ -74,6 +66,8 @@ public class Map {
                         rooms[i][j].setBottomExit();
                     }
                 }
+
+                rooms[i][j].setUpBoundaries();
             }
         }
     }
@@ -82,58 +76,37 @@ public class Map {
 
 
     public void update(float dt, OrthographicCamera gamecam){
-            rooms[playPositionY][playPositionX].update(dt, gamecam);
+            rooms[mapY][mapX].update(dt, gamecam);
 
-            if(rooms[playPositionY][playPositionX].isExitTransitionFinished()){
-                if(rooms[playPositionY][playPositionX].isExitPointRight()){
-                    Wizard w = rooms[playPositionY][playPositionX].getWizard();
-                    playPositionX++;
-                    rooms[playPositionY][playPositionX].setWizard(w);
-                    rooms[playPositionY][playPositionX].enterRoom(Room.ENTRY_POINT.LEFT);
-                } else if(rooms[playPositionY][playPositionX].isExitPointLeft()){
-                    Wizard w = rooms[playPositionY][playPositionX].getWizard();
-                    playPositionX--;
-                    rooms[playPositionY][playPositionX].enterRoom(Room.ENTRY_POINT.RIGHT);
-                    rooms[playPositionY][playPositionX].setWizard(w);
-                    rooms[playPositionY][playPositionX].getWizard().setCurrentState(Wizard.STATE.STANDING);
-                } else if(rooms[playPositionY][playPositionX].isExitPointUp()) {
-                    Wizard w = rooms[playPositionY][playPositionX].getWizard();
-                    playPositionY--;
-                    rooms[playPositionY][playPositionX].enterRoom(Room.ENTRY_POINT.DOWN);
-                    rooms[playPositionY][playPositionX].setWizard(w);
-                    rooms[playPositionY][playPositionX].getWizard().setCurrentState(Wizard.STATE.STANDING);
-                } else if(rooms[playPositionY][playPositionX].isExitPointDown()){
-                    Wizard w = rooms[playPositionY][playPositionX].getWizard();
-                    playPositionY++;
-                    rooms[playPositionY][playPositionX].enterRoom(Room.ENTRY_POINT.UP);
-                    rooms[playPositionY][playPositionX].setWizard(w);
-                    rooms[playPositionY][playPositionX].getWizard().setCurrentState(Wizard.STATE.STANDING);
+            if(rooms[mapY][mapX].isExitTransitionFinished()){
+                if(rooms[mapY][mapX].isExitPointRight()){
+                    rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
+                    mapX++;
+                } else if(rooms[mapY][mapX].isExitPointLeft()){
+                    rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
+                    mapX--;
+                } else if(rooms[mapY][mapX].isExitPointUp()) {
+                    rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
+                    mapY--;
+                } else if(rooms[mapY][mapX].isExitPointDown()){
+                    rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
+                    mapY++;
                 }
             }
     }
 
     public boolean isTransitioning(){
-        return rooms[playPositionY][playPositionX].state == Room.STATE.ENTRY || rooms[playPositionY][playPositionX].state == Room.STATE.EXIT;
+        return rooms[mapY][mapX].state == Room.STATE.ENTRY || rooms[mapY][mapX].state == Room.STATE.EXIT;
     }
 
 
     public void draw(SpriteBatch batch){
 
-
-        //essentialy draw a square at certain points
-        //is going to be 3x3 so needs player postion
-
-
-
-
-        rooms[playPositionY][playPositionX].draw(batch);
+        rooms[mapY][mapX].draw(batch);
 
 
 
         batch.end();
-
-
-
 
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -143,26 +116,26 @@ public class Map {
         float mapy = 1000;
         float mapx = 1700;
 
-        if(playPositionY + 1 < rooms.length){
-            if(rooms[playPositionY + 1][playPositionX] != null){
+        if(mapY + 1 < rooms.length){
+            if(rooms[mapY + 1][mapX] != null){
                 mapRenderer.rect(mapx, mapy - SIZE, SIZE, SIZE);
             }
         }
 
-        if(playPositionY - 1 >= 0){
-            if(rooms[playPositionY - 1][playPositionX] != null){
+        if(mapY - 1 >= 0){
+            if(rooms[mapY - 1][mapX] != null){
                 mapRenderer.rect(mapx, mapy + SIZE, SIZE, SIZE);
             }
         }
 
-        if(playPositionX + 1 < rooms[playPositionY].length){
-            if(rooms[playPositionY][playPositionX + 1] != null){
+        if(mapX + 1 < rooms[mapY].length){
+            if(rooms[mapY][mapX + 1] != null){
                 mapRenderer.rect(mapx + SIZE , mapy, SIZE, SIZE);
             }
         }
 
-        if(playPositionX - 1 >= 0){
-            if(rooms[playPositionY][playPositionX - 1] != null){
+        if(mapX - 1 >= 0){
+            if(rooms[mapY][mapX - 1] != null){
                 mapRenderer.rect(mapx - SIZE, mapy, SIZE, SIZE);
             }
         }
@@ -184,6 +157,6 @@ public class Map {
     }
 
     public Room getActiveRoom() {
-        return rooms[playPositionY][playPositionX];
+        return rooms[mapY][mapX];
     }
 }

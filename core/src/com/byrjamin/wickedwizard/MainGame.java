@@ -15,7 +15,7 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class MainGame extends Game {
 
 	public static final float GAME_HEIGHT = 1200;
-	public static final float GAME_WIDTH = 1920;
+	public static final float GAME_WIDTH = 2000;
 
 
 	public static final int GAME_UNITS = 20;
