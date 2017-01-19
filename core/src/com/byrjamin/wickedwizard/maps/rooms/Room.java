@@ -19,7 +19,6 @@ import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
-import com.sun.corba.se.spi.extension.RequestPartitioningPolicy;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -95,7 +94,7 @@ public abstract class Room {
         roomEnemyWaves = new RoomEnemyWaves(this);
         sectionSetup();
 
-        platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(2)));
+        platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
         roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT);
@@ -197,6 +196,7 @@ public abstract class Room {
         doorCollisionCheck(wizard);
         wallCollisionCheck(wizard, leftWall.getBounds());
         wallCollisionCheck(wizard, rightWall.getBounds());
+        groundsCollisionCheck(wizard);
 
     }
 
@@ -321,6 +321,35 @@ public abstract class Room {
         }
 
         return false;
+    }
+
+    private void groundsCollisionCheck(Wizard wizard) {
+
+        boolean fall = false;
+
+        for(RoomPlatform platform : platforms){
+            if (platform.overlaps(wizard.getBounds())){
+                wizard.land();
+                wizard.setY(platform.getY() + platform.getHeight());
+                System.out.println("LAND THOUGH");
+            } else {
+                //wizard.fall();
+            }
+        }
+
+
+
+        for(Rectangle rect : roomGround.getBounds()){
+            if(rect.overlaps(wizard.getBounds())){
+                wizard.land();
+                wizard.setY(rect.getY() + rect.getHeight());
+            } else {
+                System.out.println("Toggle fall");
+                wizard.fall();
+            }
+        }
+
+
     }
 
     public void doorCollisionCheck(Wizard w){

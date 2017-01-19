@@ -44,7 +44,6 @@ public class BattleRoom extends Room {
                 if (getRoomEnemyUpdater().areAllEnemiesKilled()) {
                     roomEnemyWaves.nextWaveTest(this.getEnemies());
                     numberOfWaves--;
-                    System.out.println("NUMBER OF WAVES: " + numberOfWaves);
                 }
             }
 

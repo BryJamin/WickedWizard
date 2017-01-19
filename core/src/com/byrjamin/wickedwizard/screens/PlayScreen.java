@@ -3,18 +3,18 @@ package com.byrjamin.wickedwizard.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.Map;
@@ -88,9 +88,6 @@ public class PlayScreen extends AbstractScreen {
                     @Override
                     public boolean touchDown(int x, int y, int pointer, int button) {
 
-
-                        System.out.println("TOUCHDOWN");
-
                         float x1 = Gdx.input.getX(pointer);
                         float y1 = Gdx.input.getY(pointer);
                         input = new Vector3(x1, y1, 0);
@@ -104,23 +101,95 @@ public class PlayScreen extends AbstractScreen {
 
                         System.out.println(pointer);
 
+
+                        //if you touch a platform you grappl up towards it.
+
+                        //If you touch the ground below said platform you drop below it.
+
+                        //If you
+
                         if (!tapped) {
 
-                            if (input.y <= map.getActiveRoom().groundHeight()) {
+                            Wizard w = map.getActiveRoom().getWizard();
+
+                            boolean fire = true;
+
+                            for(Rectangle r : map.getActiveRoom().getGroundBoundaries()){
+                                if(r.contains(input.x, input.y)){
+                                    if(w.getY() > r.getY() + r.getHeight()){
+                                        w.toggleFallthroughOn();
+                                        System.out.println("INASFYU");
+                                        break;
+                                    } else if(w.getY() == r.getY() + r.getHeight()){
+                                        map.getActiveRoom().getWizard().dash(input.x);
+                                        fire = false;
+                                        w.toggleFallthroughOff();
+                                        break;
+                                    } else if(w.getY() < r.getY() + r.getHeight()){
+                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
+                                        w.toggleFallthroughOff();
+                                        //System.out.println("Inside");
+                                        fire = false;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if(fire) {
+                                map.getActiveRoom().getWizard().startFiring(pointer);
+                            }
+
+ /*                           if (input.y <= map.getActiveRoom().groundHeight()) {
                                 map.getActiveRoom().getWizard().dash(input.x);
                                 System.out.println("Inside dash");
                             } else {
 
-                                if(map.getActiveRoom().isTouchingPlatform(input.x, input.y)) {
-                                    map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                } else {
-                                    System.out.println("INSIDE");
-                                    map.getActiveRoom().getWizard().setY(map.getActiveRoom().getWizard().getY() - 5);
-                                }
+                                Wizard w = map.getActiveRoom().getWizard();
 
-                                map.getActiveRoom().getWizard().startFiring(pointer);
+                                for(Rectangle r : map.getActiveRoom().getGroundBoundaries()){
+                                    if(r.contains(input.x, input.y)){
+                                        if(w.getY() > r.getY() + r.getHeight()){
+                                            w.setY(map.getActiveRoom().getWizard().getY() - 5);
+                                            break;
+                                        } else if(w.getY() == r.getY() + r.getHeight()){
+                                            map.getActiveRoom().getWizard().dash(input.x);
+                                            break;
+                                        } else if(w.getY() < r.getY() + r.getHeight()){
+                                            map.getActiveRoom().getWizard().flyTo(input.x, input.y);
+                                            break;
+                                        }
+                                    }
+                                }
+*/
+/*                                if(map.getActiveRoom().isTouchingPlatform(input.x, input.y)) {
+
+                                    if(w.getY() < input.y){
+                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
+                                    } else {
+                                        map.getActiveRoom().getWizard().dash(input.x);
+                                    }
+
+                                } else {
+
+                                    for(Rectangle r : map.getActiveRoom().getGroundBoundaries()){
+                                        if(r.contains(input.x, input.y)){
+                                            if(w.getY() > r.getY() + r.getHeight()){
+                                                w.setY(map.getActiveRoom().getWizard().getY() - 5);
+                                            } else if(w.getY() == r.getY() + r.getHeight()){
+                                                map.getActiveRoom().getWizard().dash(input.x);
+                                            } else if(w.getY() < r.getY() + r.getHeight()){
+                                                map.getActiveRoom().getWizard().flyTo(input.x, input.y);
+                                            }
+                                        }
+                                    }
+
+                                    System.out.println("INSIDE");
+                                    //map.getActiveRoom().getWizard().setY(map.getActiveRoom().getWizard().getY() - 5);
+                                }*/
+
+                                //map.getActiveRoom().getWizard().startFiring(pointer);
                             }
-                        }
+
 
 
                         //This is so inputs match up to the game co-ordinates.
@@ -167,6 +236,7 @@ public class PlayScreen extends AbstractScreen {
         if(map.getActiveRoom().getWizard().isDead()){
             gameOver = true;
         }
+        //handleInput(dt);
     }
 
     @Override
@@ -264,18 +334,20 @@ public class PlayScreen extends AbstractScreen {
 
         @Override
         public boolean longPress(float x, float y) {
-            System.out.println("longpress");
+       //     System.out.println("longpress");
 //            map.getActiveRoom().getWizard().switchControlScheme();
             return true;
         }
 
         public boolean fling(float velocityX, float velocityY, int button) {
+/*
 
 
             if(Math.abs(velocityX) > 5000) {
                 map.getActiveRoom().getWizard().switchControlScheme();
                 System.out.println("fling x velocity :" +velocityX);
             }
+*/
 
             return false;
         }

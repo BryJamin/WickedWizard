@@ -29,8 +29,8 @@ public class Wizard extends Entity{
     public float HEIGHT = Measure.units(6);
     public float WIDTH = Measure.units(6);
     private float MOVEMENT = Measure.units(150f);
-    private float GRAPPLE_MOVEMENT = Measure.units(5f);
-    private float MAX_GRAPPLE_LAUNCH = Measure.units(50F);
+    private float GRAPPLE_MOVEMENT = Measure.units(15f);
+    private float MAX_GRAPPLE_LAUNCH = Measure.units(50f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private float invinciblityFrames = 1.0f;
@@ -51,6 +51,7 @@ public class Wizard extends Entity{
     private Reloader reloader;
 
     private boolean isFalling = true;
+    private boolean fallThrough = true;
 
     private float moveTarget;
 
@@ -176,16 +177,13 @@ public class Wizard extends Entity{
         activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
 
         if(!isFlying()) {
-            applyGravity(dt, room);
+            applyGravity(dt);
         }
 
         currentFrame = currentAnimation.getKeyFrame(animationTime+=dt);
 
         damageFramesUpdate(dt);
         boundsUpdate();
-
-        System.out.println(velocity.y);
-
     }
 
     public void switchControlScheme(){
@@ -261,10 +259,10 @@ public class Wizard extends Entity{
         yTarget = y;
 
         flyVelocity = new Vector2((float) Math.cos(angle) * GRAPPLE_MOVEMENT, (float) Math.sin(angle) * GRAPPLE_MOVEMENT);
+        velocity = new Vector2();
 
         movementState = MOVESTATE.FLYING;
     }
-
 
     public void cancelMovement(){
         movementState = MOVESTATE.MOVING;
@@ -272,9 +270,6 @@ public class Wizard extends Entity{
 
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
-
-        System.out.println("update?");
-
         if(moveTarget <= getCenterX()){
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
@@ -352,28 +347,39 @@ public class Wizard extends Entity{
     }
 
 
-   public void applyGravity(float dt, Room room){
-       if(room.state != Room.STATE.EXIT) {
-
-           if (isFalling) {
-               velocity.add(gravity);
-               position.add(velocity.x * dt, velocity.y * dt);
-               bounds.y = position.y;
-           }
-
-
-           Rectangle r = room.getOverlappingRectangle(bounds);
-           if (r != null) {
-
-               isFalling = false;
-               velocity = new Vector2();
-               position.y = r.getY() + r.getHeight();
-               bounds.y = r.getY() + r.getHeight();
-           } else {
-               isFalling = true;
-           }
-
+   public void applyGravity(float dt){
+       if (isFalling) {
+           velocity.add(gravity);
+           position.add(velocity.x * dt, velocity.y * dt);
+           bounds.y = position.y;
        }
+    }
+
+    public void fall(){
+        isFalling = true;
+        fallThrough = false;
+    }
+
+    public void land(){
+        isFalling = false;
+        velocity.y = 0;
+    }
+
+    public float getMockFallY() {
+        System.out.println("MOCK Y = " + (position.y + velocity.y));
+        return (position.y + velocity.y);
+    }
+
+    public void toggleFallthroughOn(){
+        fallThrough = true;
+    }
+
+    public void toggleFallthroughOff(){
+        fallThrough = false;
+    }
+
+    public boolean isFallThrough() {
+        return fallThrough;
     }
 
     public void fireProjectile(float input_x, float input_y){

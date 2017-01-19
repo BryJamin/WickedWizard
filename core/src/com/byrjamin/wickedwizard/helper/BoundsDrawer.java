@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class BoundsDrawer {
 
-    private static ShapeRenderer shapeRenderer;
+    private static ShapeRenderer shapeRenderer = new ShapeRenderer();;
 
     /**
      * Draws the boundarys of an Array of Rectangles
@@ -23,7 +23,6 @@ public class BoundsDrawer {
      * @param bounds - Rectangle Array
      */
     public static void drawBounds(SpriteBatch batch, Array<? extends Rectangle> bounds){
-        initialize();
 
         batch.end();
 
@@ -40,7 +39,6 @@ public class BoundsDrawer {
     }
 
     public static void drawBounds(SpriteBatch batch, Rectangle... bounds){
-        initialize();
 
         batch.end();
 
@@ -57,7 +55,6 @@ public class BoundsDrawer {
     }
 
     public static void drawBounds(SpriteBatch batch, Circle... bounds){
-        initialize();
 
         batch.end();
 
@@ -73,13 +70,4 @@ public class BoundsDrawer {
         batch.begin();
     }
 
-
-    /**
-     * Initializes the Global ShapeRenderer.
-     */
-    private static void initialize(){
-        if(shapeRenderer == null){
-            shapeRenderer = new ShapeRenderer();
-        }
-    }
 }
