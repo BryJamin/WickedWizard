@@ -28,7 +28,12 @@ public class RoomPlatform extends Rectangle{
 
 
     public void update(Wizard wizard){
-        collisionOn =  wizard.getY() >= y;
+        collisionOn =  wizard.getY() >= y + height;
+        System.out.println(collisionOn);
+
+        System.out.println(wizard.getY());
+        System.out.println(y);
+
     }
 
 

@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
+import com.sun.corba.se.spi.extension.RequestPartitioningPolicy;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -94,7 +95,7 @@ public abstract class Room {
         roomEnemyWaves = new RoomEnemyWaves(this);
         sectionSetup();
 
-        platforms.add(new RoomPlatform(WIDTH - WIDTH /3, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH / 3, Measure.units(2)));
+        platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(2)));
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
         roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT);
@@ -183,6 +184,10 @@ public abstract class Room {
                     exit_point = r.getExit();
                 }
             }
+        }
+
+        for (RoomPlatform r : platforms) {
+            r.update(wizard);
         }
 
         for (RoomExit r : roomExits) {
@@ -291,14 +296,32 @@ public abstract class Room {
     }
 
     public Rectangle getOverlappingRectangle(Rectangle r){
-        for(Rectangle rect : groundBoundaries){
-            if (r.overlaps(rect)){
+        for(RoomPlatform platform : platforms){
+            if (platform.overlaps(r)){
+                return platform;
+            }
+        }
+
+
+
+        for(Rectangle rect : roomGround.getBounds()){
+            if(rect.overlaps(r)){
                 return rect;
             }
         }
+
         return null;
     }
 
+
+    public boolean isTouchingPlatform(float x, float y){
+
+        for(RoomPlatform r : platforms){
+            if(r.contains(x, y)) return true;
+        }
+
+        return false;
+    }
 
     public void doorCollisionCheck(Wizard w){
         for(RoomExit exit : roomExits){

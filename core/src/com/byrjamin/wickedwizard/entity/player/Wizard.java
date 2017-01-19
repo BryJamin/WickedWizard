@@ -29,6 +29,8 @@ public class Wizard extends Entity{
     public float HEIGHT = Measure.units(6);
     public float WIDTH = Measure.units(6);
     private float MOVEMENT = Measure.units(150f);
+    private float GRAPPLE_MOVEMENT = Measure.units(5f);
+    private float MAX_GRAPPLE_LAUNCH = Measure.units(50F);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private float invinciblityFrames = 1.0f;
@@ -52,6 +54,11 @@ public class Wizard extends Entity{
 
     private float moveTarget;
 
+    private float yTarget;
+    private float xTarget;
+
+    private Vector2 flyVelocity = new Vector2();
+
     public boolean isDead() {
         return health <= 0;
     }
@@ -64,7 +71,7 @@ public class Wizard extends Entity{
     private boolean controlScheme = true;
 
     public enum MOVESTATE {
-        DASHING, MOVING, STANDING
+        DASHING, MOVING, STANDING, FLYING
     }
 
     private enum DIRECTION {
@@ -123,7 +130,7 @@ public class Wizard extends Entity{
 
 
     public void update(float dt, OrthographicCamera gamecam, Room room){
-        animationTime += dt;
+        //animationTime += dt;
 
         if(currentState == STATE.IDLE){
             currentAnimation = standingAnimation;
@@ -139,56 +146,45 @@ public class Wizard extends Entity{
 
         //Purely for testing
 
-        if(controlScheme){
-            if(currentState == STATE.FIRING){
-                reloader.update(dt);
+        if(currentState == STATE.FIRING){
+            reloader.update(dt);
                 // stateTime+= dt;
-                if(reloader.isReady()){
-                    float x1 = Gdx.input.getX(inputPoll);
-                    float y1 = Gdx.input.getY(inputPoll);
-                    input = new Vector3(x1, y1, 0);
-                    //This is so inputs match up to the game co-ordinates.
-                    gamecam.unproject(input);
-                    fireProjectile(input.x, input.y);
-                    reloader.update(dt);
-                }
-            }
-        } else {
-
-            if (currentState == STATE.FIRING && !isDashing()) {
-                reloader.update(dt);
-                // stateTime+= dt;
-                if (reloader.isReady()) {
-                    float x1 = Gdx.input.getX(inputPoll);
-                    float y1 = Gdx.input.getY(inputPoll);
-                    input = new Vector3(x1, y1, 0);
-                    //This is so inputs match up to the game co-ordinates.
-                    gamecam.unproject(input);
-                    fireProjectile(input.x, input.y);
-                    reloader.update(dt);
-                }
+            if(reloader.isReady()){
+                float x1 = Gdx.input.getX(inputPoll);
+                float y1 = Gdx.input.getY(inputPoll);
+                input = new Vector3(x1, y1, 0);
+                //This is so inputs match up to the game co-ordinates.
+                gamecam.unproject(input);
+                fireProjectile(input.x, input.y);
+                //reloader.update(dt);
             }
         }
 
 
 
-        if(movementState != MOVESTATE.STANDING){
+        if(movementState != MOVESTATE.STANDING && movementState != MOVESTATE.FLYING){
             if(isDashing()) {
                 currentAnimation = dashAnimation;
             }
             movementUpdate(dt);
         }
 
+        if(movementState == MOVESTATE.FLYING){
+            flyUpdate(dt);
+        }
+
         activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
 
-        applyGravity(dt, room);
+        if(!isFlying()) {
+            applyGravity(dt, room);
+        }
 
-        currentFrame = currentAnimation.getKeyFrame(animationTime);
+        currentFrame = currentAnimation.getKeyFrame(animationTime+=dt);
 
         damageFramesUpdate(dt);
         boundsUpdate();
 
-        //System.out.println("STATE IS: " + currentState);
+        System.out.println(velocity.y);
 
     }
 
@@ -221,16 +217,6 @@ public class Wizard extends Entity{
 
     public DIRECTION getDirection() {
         return direction;
-    }
-
-    public void moveRight(float dt){
-        position.x = position.x + MOVEMENT * dt;
-        direction = DIRECTION.RIGHT;
-    }
-
-    public void moveLeft(float dt){
-        position.x = position.x - MOVEMENT * dt;
-        direction = DIRECTION.LEFT;
     }
 
     public void moveDown(float dt){
@@ -269,6 +255,16 @@ public class Wizard extends Entity{
         }
     }
 
+    public void flyTo(float x, float y) {
+        float angle = calculateAngle(getCenterX(), getCenterY(), x, y);
+        xTarget = x;
+        yTarget = y;
+
+        flyVelocity = new Vector2((float) Math.cos(angle) * GRAPPLE_MOVEMENT, (float) Math.sin(angle) * GRAPPLE_MOVEMENT);
+
+        movementState = MOVESTATE.FLYING;
+    }
+
 
     public void cancelMovement(){
         movementState = MOVESTATE.MOVING;
@@ -276,6 +272,9 @@ public class Wizard extends Entity{
 
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
+
+        System.out.println("update?");
+
         if(moveTarget <= getCenterX()){
             position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
@@ -294,6 +293,27 @@ public class Wizard extends Entity{
                 movementState = MOVESTATE.STANDING;
             }
         }
+    }
+
+    public void flyUpdate(float dt){
+        velocity.add(flyVelocity);
+        position.add(velocity.x * dt, velocity.y * dt);
+        bounds.y = position.y;
+
+        if(getCenterY() > yTarget){
+            velocity.x = 0;
+
+            //max grapple launch speed
+            if(velocity.y > MAX_GRAPPLE_LAUNCH) {
+                velocity.y = MAX_GRAPPLE_LAUNCH;
+            }
+
+            setCenterY(yTarget);
+            setCenterX(xTarget);
+
+            movementState = MOVESTATE.STANDING;
+        }
+
     }
 
     public void reduceHealth(float i){
@@ -475,6 +495,10 @@ public class Wizard extends Entity{
 
     public boolean isFiring(){
         return currentState == STATE.FIRING;
+    }
+
+    public boolean isFlying(){
+        return movementState == MOVESTATE.FLYING;
     }
 
     public STATE getCurrentState() {

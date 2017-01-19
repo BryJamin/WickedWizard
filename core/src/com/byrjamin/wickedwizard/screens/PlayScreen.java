@@ -110,6 +110,14 @@ public class PlayScreen extends AbstractScreen {
                                 map.getActiveRoom().getWizard().dash(input.x);
                                 System.out.println("Inside dash");
                             } else {
+
+                                if(map.getActiveRoom().isTouchingPlatform(input.x, input.y)) {
+                                    map.getActiveRoom().getWizard().flyTo(input.x, input.y);
+                                } else {
+                                    System.out.println("INSIDE");
+                                    map.getActiveRoom().getWizard().setY(map.getActiveRoom().getWizard().getY() - 5);
+                                }
+
                                 map.getActiveRoom().getWizard().startFiring(pointer);
                             }
                         }
@@ -257,8 +265,19 @@ public class PlayScreen extends AbstractScreen {
         @Override
         public boolean longPress(float x, float y) {
             System.out.println("longpress");
-            map.getActiveRoom().getWizard().switchControlScheme();
+//            map.getActiveRoom().getWizard().switchControlScheme();
             return true;
+        }
+
+        public boolean fling(float velocityX, float velocityY, int button) {
+
+
+            if(Math.abs(velocityX) > 5000) {
+                map.getActiveRoom().getWizard().switchControlScheme();
+                System.out.println("fling x velocity :" +velocityX);
+            }
+
+            return false;
         }
 
     }
