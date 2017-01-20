@@ -30,10 +30,18 @@ public class RoomPlatform extends Rectangle{
 
     public void update(Wizard wizard){
 
-        if(wizard.getY() >= getY() + getHeight()) {
-            collisionOn = true;
+        if(toggle) {
+            if (wizard.getY() >= getY() + getHeight()) {
+                collisionOn = true;
+                toggle = false;
+            } else if (wizard.isFallThrough()) {
+                collisionOn = false;
+            } else {
+                collisionOn = false;
+            }
         } else if(wizard.isFallThrough()){
             collisionOn = false;
+            toggle = true;
         }
 
 

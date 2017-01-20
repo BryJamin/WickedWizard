@@ -331,7 +331,8 @@ public abstract class Room {
             if (platform.overlaps(wizard.getBounds())){
                 wizard.land();
                 wizard.setY(platform.getY() + platform.getHeight());
-                System.out.println("LAND THOUGH");
+                return;
+                //System.out.println("LAND THOUGH");
             } else {
                 //wizard.fall();
             }
@@ -343,6 +344,7 @@ public abstract class Room {
             if(rect.overlaps(wizard.getBounds())){
                 wizard.land();
                 wizard.setY(rect.getY() + rect.getHeight());
+                return;
             } else {
                 System.out.println("Toggle fall");
                 wizard.fall();

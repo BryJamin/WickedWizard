@@ -118,7 +118,7 @@ public class PlayScreen extends AbstractScreen {
                                 if(r.contains(input.x, input.y)){
                                     if(w.getY() > r.getY() + r.getHeight()){
                                         w.toggleFallthroughOn();
-                                        System.out.println("INASFYU");
+                                        fire = false;
                                         break;
                                     } else if(w.getY() == r.getY() + r.getHeight()){
                                         map.getActiveRoom().getWizard().dash(input.x);
@@ -139,55 +139,7 @@ public class PlayScreen extends AbstractScreen {
                                 map.getActiveRoom().getWizard().startFiring(pointer);
                             }
 
- /*                           if (input.y <= map.getActiveRoom().groundHeight()) {
-                                map.getActiveRoom().getWizard().dash(input.x);
-                                System.out.println("Inside dash");
-                            } else {
 
-                                Wizard w = map.getActiveRoom().getWizard();
-
-                                for(Rectangle r : map.getActiveRoom().getGroundBoundaries()){
-                                    if(r.contains(input.x, input.y)){
-                                        if(w.getY() > r.getY() + r.getHeight()){
-                                            w.setY(map.getActiveRoom().getWizard().getY() - 5);
-                                            break;
-                                        } else if(w.getY() == r.getY() + r.getHeight()){
-                                            map.getActiveRoom().getWizard().dash(input.x);
-                                            break;
-                                        } else if(w.getY() < r.getY() + r.getHeight()){
-                                            map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                            break;
-                                        }
-                                    }
-                                }
-*/
-/*                                if(map.getActiveRoom().isTouchingPlatform(input.x, input.y)) {
-
-                                    if(w.getY() < input.y){
-                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                    } else {
-                                        map.getActiveRoom().getWizard().dash(input.x);
-                                    }
-
-                                } else {
-
-                                    for(Rectangle r : map.getActiveRoom().getGroundBoundaries()){
-                                        if(r.contains(input.x, input.y)){
-                                            if(w.getY() > r.getY() + r.getHeight()){
-                                                w.setY(map.getActiveRoom().getWizard().getY() - 5);
-                                            } else if(w.getY() == r.getY() + r.getHeight()){
-                                                map.getActiveRoom().getWizard().dash(input.x);
-                                            } else if(w.getY() < r.getY() + r.getHeight()){
-                                                map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                            }
-                                        }
-                                    }
-
-                                    System.out.println("INSIDE");
-                                    //map.getActiveRoom().getWizard().setY(map.getActiveRoom().getWizard().getY() - 5);
-                                }*/
-
-                                //map.getActiveRoom().getWizard().startFiring(pointer);
                             }
 
 
