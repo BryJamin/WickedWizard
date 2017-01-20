@@ -51,7 +51,7 @@ public class Wizard extends Entity{
     private Reloader reloader;
 
     private boolean isFalling = true;
-    private boolean fallThrough = true;
+    private boolean fallThrough = false;
 
     private float moveTarget;
 
