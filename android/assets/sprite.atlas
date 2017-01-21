@@ -192,13 +192,6 @@ blob_attack
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
-blob_attack
-  rotate: false
-  xy: 1316, 164
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
   index: 0
 blob_attack
   rotate: false
@@ -207,6 +200,13 @@ blob_attack
   orig: 32, 32
   offset: 0, 0
   index: 1
+blob_attack
+  rotate: false
+  xy: 1316, 164
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
 blob_dying
   rotate: false
   xy: 1350, 198
@@ -431,13 +431,6 @@ door
   orig: 64, 64
   offset: 0, 0
   index: 9
-door
-  rotate: false
-  xy: 722, 100
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 10
 exit_arrow
   rotate: false
   xy: 1520, 130

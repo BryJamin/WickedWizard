@@ -18,6 +18,7 @@ import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.Map;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
 
 
 //TODO
@@ -132,6 +133,17 @@ public class PlayScreen extends AbstractScreen {
                                         fire = false;
                                         break;
                                     }
+                                }
+                            }
+
+                            for(RoomExit r : map.getActiveRoom().getRoomExits()){
+                                if(r.getBound().contains(input.x, input.y)){
+                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
+                                        w.toggleFallthroughOn();
+                                        //System.out.println("Inside");
+                                        fire = false;
+                                        break;
+
                                 }
                             }
 

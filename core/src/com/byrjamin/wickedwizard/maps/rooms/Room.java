@@ -132,10 +132,12 @@ public abstract class Room {
                 case RIGHT:
                     wizard.move(sectionCenters[(sectionCenters.length - 1)]);
                     inPosition = wizard.getCenterX() == sectionCenters[(sectionCenters.length - 1)];
+                    System.out.println("Trying to move right");
                     break;
                 case LEFT:
                     wizard.move(sectionCenters[0]);
                     inPosition = wizard.getCenterX() == sectionCenters[0];
+                    System.out.println("Trying to move left");
                     break;
                 case UP:
                     inPosition = !wizard.isFalling();
@@ -183,6 +185,7 @@ public abstract class Room {
                     exit_point = r.getExit();
                 }
             }
+
         }
 
         for (RoomPlatform r : platforms) {
@@ -295,25 +298,6 @@ public abstract class Room {
         return (wizard.getX() > WIDTH) || wizard.getX() < -wizard.WIDTH || wizard.getY() + wizard.WIDTH < 0 || wizard.getY() > HEIGHT;
     }
 
-    public Rectangle getOverlappingRectangle(Rectangle r){
-        for(RoomPlatform platform : platforms){
-            if (platform.overlaps(r)){
-                return platform;
-            }
-        }
-
-
-
-        for(Rectangle rect : roomGround.getBounds()){
-            if(rect.overlaps(r)){
-                return rect;
-            }
-        }
-
-        return null;
-    }
-
-
     public boolean isTouchingPlatform(float x, float y){
 
         for(RoomPlatform r : platforms){
@@ -346,7 +330,6 @@ public abstract class Room {
                 wizard.setY(rect.getY() + rect.getHeight());
                 return;
             } else {
-                System.out.println("Toggle fall");
                 wizard.fall();
             }
         }
@@ -402,22 +385,17 @@ public abstract class Room {
 
 
     public void addLeftExit() {
-        roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.LEFT));
+        roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.LEFT,false));
         leftWall = new RoomWall(0, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
     }
 
     public void addRightExit() {
-        roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.RIGHT));
+        roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.RIGHT,false));
         rightWall = new RoomWall(WIDTH - WALLWIDTH, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
     }
 
     public void addTopExit() {
-        topArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        topArrow.setCenter(WIDTH / 2, 1000);
-        topArrow.setSize(Measure.units(10), Measure.units(10));
-        topArrow.setOriginCenter();
-        topArrow.rotate((float) Math.toDegrees(Math.PI / 2));
-        exits.add(topArrow);
+        roomExits.add(new RoomExit((WIDTH / 2) - Measure.units(10),HEIGHT - WALLWIDTH, Measure.units(20), WALLWIDTH,EXIT_POINT.UP,true));
     }
 
     public void setBottomExit() {
@@ -504,6 +482,9 @@ public abstract class Room {
         return roomGround.getHeight();
     }
 
+    public Array<RoomExit> getRoomExits() {
+        return roomExits;
+    }
 
     public boolean isUnlocked(){
         return state == state.UNLOCKED;

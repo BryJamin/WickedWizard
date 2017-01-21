@@ -43,35 +43,6 @@ public class RoomPlatform extends Rectangle{
             collisionOn = false;
             toggle = true;
         }
-
-
-/*        if(toggle) {
-
-            if (wizard.getY() > getY() + getHeight() + 10) {
-                collisionOn = true;
-                toggle = false;
-            } else {
-                collisionOn = false;
-            }
-        }
-
-
-        if(wizard.isFallThrough() && !(wizard.getY() > getY() + getHeight() + 10)){
-            collisionOn = false;
-            toggle = true;
-        }*/
-
-        //collisionOn =  wizard.getY() >= y + height;
-
-/*        System.out.println("Wizard y is :" + wizard.getY());
-        System.out.println("platform y is :" +  y + height);
-        System.out.println(collisionOn);
-        System.out.println(wizard.isFallThrough());*/
-/*        System.out.println(collisionOn);
-
-        System.out.println(wizard.getY());
-        System.out.println(y);*/
-
     }
 
     public void turnOffCollsion(){

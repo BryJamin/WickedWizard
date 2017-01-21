@@ -246,7 +246,9 @@ public class Wizard extends Entity{
      * @param moveTarget - Movement Target
      */
     public void move(float moveTarget) {
-        if(movementState != MOVESTATE.MOVING && moveTarget != this.moveTarget) {
+        System.out.println("ABOVE MOVE IF");
+        if(movementState != MOVESTATE.MOVING) {
+            System.out.println("INSIDE MOVE IF");
             movementState = MOVESTATE.MOVING;
             this.moveTarget = moveTarget;
             direction = moveTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
@@ -257,6 +259,8 @@ public class Wizard extends Entity{
         float angle = calculateAngle(getCenterX(), getCenterY(), x, y);
         xTarget = x;
         yTarget = y;
+
+        fallThrough = false;
 
         flyVelocity = new Vector2((float) Math.cos(angle) * GRAPPLE_MOVEMENT, (float) Math.sin(angle) * GRAPPLE_MOVEMENT);
         velocity = new Vector2();
@@ -344,6 +348,7 @@ public class Wizard extends Entity{
 
     public void cancelDash(){
         movementState = MOVESTATE.STANDING;
+        velocity = new Vector2();
     }
 
 
@@ -356,8 +361,10 @@ public class Wizard extends Entity{
     }
 
     public void fall(){
-        isFalling = true;
-        fallThrough = false;
+        if(!isFlying()) {
+            isFalling = true;
+            fallThrough = false;
+        }
     }
 
     public void land(){
