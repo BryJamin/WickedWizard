@@ -130,14 +130,22 @@ public abstract class Room {
 
             switch(entry_point){
                 case RIGHT:
-                    wizard.move(sectionCenters[(sectionCenters.length - 1)]);
-                    inPosition = wizard.getCenterX() == sectionCenters[(sectionCenters.length - 1)];
+                   // wizard.move(sectionCenters[(sectionCenters.length - 1)]);
+                    inPosition = !wizard.isFalling() || wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1)];
+                    if(inPosition) {
+                        wizard.land();
+                    }
+                   // inPosition = wizard.getCenterX() == sectionCenters[(sectionCenters.length - 1)];
                     System.out.println("Trying to move right");
                     break;
                 case LEFT:
-                    wizard.move(sectionCenters[0]);
-                    inPosition = wizard.getCenterX() == sectionCenters[0];
-                    System.out.println("Trying to move left");
+                  //  wizard.move(sectionCenters[0]);
+                    inPosition = !wizard.isFalling() || wizard.getCenterX() > sectionCenters[(sectionCenters.length - 1)];
+                    if(inPosition){
+                        wizard.land();
+                    }
+                    //inPosition = wizard.getCenterX() == sectionCenters[0];
+                    //System.out.println("Trying to move left");
                     break;
                 case UP:
                     inPosition = !wizard.isFalling();
@@ -256,13 +264,13 @@ public abstract class Room {
                 wizard.setX(WALLWIDTH);
                 break;
             case RIGHT:
-                wizard.setX(WIDTH - WALLWIDTH);
+                wizard.setX((WIDTH - WALLWIDTH) - wizard.WIDTH);
                 break;
             case UP:
-                wizard.setY(HEIGHT);
+                wizard.setY((HEIGHT - WALLWIDTH) - wizard.HEIGHT);
                 break;
             case DOWN:
-                wizard.setY(0);
+                wizard.setY(groundHeight());
                 break;
         }
     }
@@ -383,7 +391,6 @@ public abstract class Room {
         groundBoundaries.addAll(platforms);
     }
 
-
     public void addLeftExit() {
         roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.LEFT,false));
         leftWall = new RoomWall(0, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
@@ -399,14 +406,7 @@ public abstract class Room {
     }
 
     public void setBottomExit() {
-        bottomArrow = PlayScreen.atlas.createSprite("exit_arrow");
-        bottomArrow.setCenter(WIDTH / 2 - bottomArrow.getWidth() / 2, 50);
-        bottomArrow.setSize(Measure.units(5), Measure.units(5));
-        bottomArrow.setOriginCenter();
-        bottomArrow.setBounds(bottomArrow.getX(), bottomArrow.getY(), 200, 200);
-        bottomArrow.rotate((float) Math.toDegrees(-Math.PI / 2));
-        bottom = true;
-        exits.add(bottomArrow);
+        roomExits.add(new RoomExit((WIDTH / 2) - Measure.units(10),0 + WALLWIDTH / 2, Measure.units(20), WALLWIDTH,EXIT_POINT.DOWN,true));
         roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this, WIDTH, 200, true);
     }
 

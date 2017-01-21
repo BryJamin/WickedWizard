@@ -29,8 +29,11 @@ public class Wizard extends Entity{
     public float HEIGHT = Measure.units(6);
     public float WIDTH = Measure.units(6);
     private float MOVEMENT = Measure.units(150f);
-    private float GRAPPLE_MOVEMENT = Measure.units(15f);
+    private float DRAG = Measure.units(20f);
+
+    private float GRAPPLE_MOVEMENT = Measure.units(10f);
     private float MAX_GRAPPLE_LAUNCH = Measure.units(50f);
+    private float MAX_GRAPPLE_MOVEMENT = Measure.units(50f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private float invinciblityFrames = 1.0f;
@@ -174,6 +177,12 @@ public class Wizard extends Entity{
             flyUpdate(dt);
         }
 
+        if(movementState == MOVESTATE.STANDING){
+            applyDrag(dt);
+        }
+
+        //applyDrag(dt);
+
         activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
 
         if(!isFlying()) {
@@ -215,11 +224,6 @@ public class Wizard extends Entity{
 
     public DIRECTION getDirection() {
         return direction;
-    }
-
-    public void moveDown(float dt){
-        position.y = position.y - MOVEMENT * dt;
-        direction = DIRECTION.RIGHT;
     }
 
     public void moveUp(float dt){
@@ -302,6 +306,8 @@ public class Wizard extends Entity{
         if(getCenterY() > yTarget){
             velocity.x = 0;
 
+            System.out.println("SAY WHAT");
+
             //max grapple launch speed
             if(velocity.y > MAX_GRAPPLE_LAUNCH) {
                 velocity.y = MAX_GRAPPLE_LAUNCH;
@@ -313,6 +319,22 @@ public class Wizard extends Entity{
             movementState = MOVESTATE.STANDING;
         }
 
+    }
+
+    public void applyDrag(float dt){
+
+/*        System.out.println("DRAG");
+
+        if(velocity.x == 0) {
+            System.out.println("NO DRAG");
+            return;
+        }
+
+        //If velocity.x is greater
+
+        if(velocity.x > 0)
+        velocity.x = (velocity.x - DRAG * dt) <=0  ? 0 : (velocity.x - DRAG);
+        else velocity.x = (velocity.x + DRAG * dt) >=0  ? 0 : (velocity.x + DRAG);*/
     }
 
     public void reduceHealth(float i){
@@ -348,14 +370,14 @@ public class Wizard extends Entity{
 
     public void cancelDash(){
         movementState = MOVESTATE.STANDING;
-        velocity = new Vector2();
+        //velocity.x = 0;
     }
 
 
    public void applyGravity(float dt){
        if (isFalling) {
            velocity.add(gravity);
-           position.add(velocity.x * dt, velocity.y * dt);
+           position.add(0, velocity.y * dt);
            bounds.y = position.y;
        }
     }
@@ -369,12 +391,7 @@ public class Wizard extends Entity{
 
     public void land(){
         isFalling = false;
-        velocity.y = 0;
-    }
-
-    public float getMockFallY() {
-        System.out.println("MOCK Y = " + (position.y + velocity.y));
-        return (position.y + velocity.y);
+        velocity = new Vector2();
     }
 
     public void toggleFallthroughOn(){
