@@ -33,7 +33,7 @@ public class Wizard extends Entity{
 
     private float GRAPPLE_MOVEMENT = Measure.units(10f);
     private float MAX_GRAPPLE_LAUNCH = Measure.units(50f);
-    private float MAX_GRAPPLE_MOVEMENT = Measure.units(50f);
+    private float MAX_GRAPPLE_MOVEMENT = Measure.units(150f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 
     private float invinciblityFrames = 1.0f;
@@ -177,12 +177,6 @@ public class Wizard extends Entity{
             flyUpdate(dt);
         }
 
-        if(movementState == MOVESTATE.STANDING){
-            applyDrag(dt);
-        }
-
-        //applyDrag(dt);
-
         activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
 
         if(!isFlying()) {
@@ -300,10 +294,14 @@ public class Wizard extends Entity{
     }
 
     public void flyUpdate(float dt){
-        velocity.add(flyVelocity);
+
+        if(Math.abs(velocity.x) < MAX_GRAPPLE_MOVEMENT && Math.abs(velocity.y) < MAX_GRAPPLE_MOVEMENT) {
+            velocity.add(flyVelocity);
+        }
         position.add(velocity.x * dt, velocity.y * dt);
         bounds.y = position.y;
 
+/*
         if(getCenterY() > yFlyTarget){
             velocity.x = 0;
 
@@ -319,23 +317,8 @@ public class Wizard extends Entity{
 
             movementState = MOVESTATE.STANDING;
         }
+*/
 
-    }
-
-    public void applyDrag(float dt){
-
-/*        System.out.println("DRAG");
-
-        if(velocity.x == 0) {
-            System.out.println("NO DRAG");
-            return;
-        }
-
-        //If velocity.x is greater
-
-        if(velocity.x > 0)
-        velocity.x = (velocity.x - DRAG * dt) <=0  ? 0 : (velocity.x - DRAG);
-        else velocity.x = (velocity.x + DRAG * dt) >=0  ? 0 : (velocity.x + DRAG);*/
     }
 
     public void reduceHealth(float i){
