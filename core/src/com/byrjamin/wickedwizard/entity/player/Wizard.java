@@ -58,8 +58,8 @@ public class Wizard extends Entity{
 
     private float moveTarget;
 
-    private float yTarget;
-    private float xTarget;
+    private float yFlyTarget;
+    private float xFlyTarget;
 
     private Vector2 flyVelocity = new Vector2();
 
@@ -261,10 +261,10 @@ public class Wizard extends Entity{
 
     public void flyTo(float x, float y) {
         float angle = calculateAngle(getCenterX(), getCenterY(), x, y);
-        xTarget = x;
-        yTarget = y;
+        xFlyTarget = x;
+        yFlyTarget = y;
 
-        fallThrough = false;
+        fallThrough = true;
 
         flyVelocity = new Vector2((float) Math.cos(angle) * GRAPPLE_MOVEMENT, (float) Math.sin(angle) * GRAPPLE_MOVEMENT);
         velocity = new Vector2();
@@ -293,6 +293,7 @@ public class Wizard extends Entity{
             boundsUpdate();
             if(this.getCenterX() >= moveTarget){
                 this.setCenterX(moveTarget);
+                System.out.println("HMM");
                 movementState = MOVESTATE.STANDING;
             }
         }
@@ -303,7 +304,7 @@ public class Wizard extends Entity{
         position.add(velocity.x * dt, velocity.y * dt);
         bounds.y = position.y;
 
-        if(getCenterY() > yTarget){
+        if(getCenterY() > yFlyTarget){
             velocity.x = 0;
 
             System.out.println("SAY WHAT");
@@ -313,8 +314,8 @@ public class Wizard extends Entity{
                 velocity.y = MAX_GRAPPLE_LAUNCH;
             }
 
-            setCenterY(yTarget);
-            setCenterX(xTarget);
+            setCenterY(yFlyTarget);
+            setCenterX(xFlyTarget);
 
             movementState = MOVESTATE.STANDING;
         }
@@ -368,8 +369,13 @@ public class Wizard extends Entity{
         }
     }
 
-    public void cancelDash(){
+    public void cancelMovementAction(){
         movementState = MOVESTATE.STANDING;
+
+        if(velocity.y > MAX_GRAPPLE_LAUNCH) {
+            velocity.y = MAX_GRAPPLE_LAUNCH;
+        }
+
         //velocity.x = 0;
     }
 

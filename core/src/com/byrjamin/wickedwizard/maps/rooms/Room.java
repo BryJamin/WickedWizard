@@ -49,8 +49,8 @@ public abstract class Room {
     private RoomEnemyUpdater roomEnemyUpdater;
     protected Wizard wizard = new Wizard(WALLWIDTH, 0);
 
-    private RoomWall leftWall = new RoomWall(0, 0, WALLWIDTH, HEIGHT);
-    private RoomWall rightWall = new RoomWall(WIDTH - WALLWIDTH, 0, WALLWIDTH, HEIGHT);;
+    private RoomWall leftWall;
+    private RoomWall rightWall;
 
     private long seed = 2;
 
@@ -93,6 +93,9 @@ public abstract class Room {
         roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this,WIDTH, Measure.units(10), false);
         roomEnemyWaves = new RoomEnemyWaves(this);
         sectionSetup();
+
+        leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT);
+        rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT);
 
         platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
         state = STATE.ENTRY;
@@ -256,7 +259,7 @@ public abstract class Room {
 
         this.wizard = w;
         wizard.setCurrentState(Wizard.STATE.IDLE);
-        wizard.cancelDash();
+        wizard.cancelMovementAction();
         state = STATE.ENTRY;
         this.entry_point = entry_point;
         switch(entry_point){
@@ -336,6 +339,8 @@ public abstract class Room {
             if(rect.overlaps(wizard.getBounds())){
                 wizard.land();
                 wizard.setY(rect.getY() + rect.getHeight());
+                System.out.println("COLLISION");
+                System.out.println("COLLISION");
                 return;
             } else {
                 wizard.fall();
@@ -357,7 +362,7 @@ public abstract class Room {
                     } else if(r1.x > r2.x) {
                         r1.x = r2.x + r2.getWidth();
                     }
-                    w.cancelDash();
+                    w.cancelMovementAction();
                     wizard.setX(r1.x);
                 }
             }
@@ -381,7 +386,7 @@ public abstract class Room {
             } else if(w.getX() > wallBound.x) {//Hit was on right
                 w.setX(wallBound.x + wallBound.getWidth());
             }
-            w.cancelDash();
+            w.cancelMovementAction();
         }
     }
 
@@ -389,6 +394,8 @@ public abstract class Room {
         groundBoundaries = new Array<Rectangle>();
         groundBoundaries.addAll(roomGround.getBounds());
         groundBoundaries.addAll(platforms);
+        roomWalls = new Array<RoomWall>();
+        roomWalls.addAll(leftWall, rightWall);
     }
 
     public void addLeftExit() {
@@ -484,6 +491,10 @@ public abstract class Room {
 
     public Array<RoomExit> getRoomExits() {
         return roomExits;
+    }
+
+    public Array<RoomWall> getRoomWalls() {
+        return roomWalls;
     }
 
     public boolean isUnlocked(){
