@@ -51,7 +51,7 @@ public abstract class Room {
 
     private RoomWall leftWall;
     private RoomWall rightWall;
-    private RoomWall topWall;
+    private Array<RoomWall> topWall = new Array<RoomWall>();
 
     private long seed = 2;
 
@@ -99,7 +99,7 @@ public abstract class Room {
 
         leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT);
         rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT);
-        topWall = new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH);
+        topWall.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
 
         platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
         state = STATE.ENTRY;
@@ -211,13 +211,16 @@ public abstract class Room {
             r.update(dt);
         }
 
-        //justfornowomg = false;
+        justfornowomg = false;
 
         doorCollisionCheck(wizard, dt);
         groundsCollisionCheck(wizard);
         wallCollisionCheck(wizard, leftWall.getBounds(), dt);
         wallCollisionCheck(wizard, rightWall.getBounds(), dt);
-        wallCollisionCheck(wizard, topWall.getBounds(), dt);
+
+        for(RoomWall r : topWall){
+            wallCollisionCheck(wizard, r.getBounds(), dt);
+        }
 
     }
 
@@ -242,7 +245,10 @@ public abstract class Room {
 
         rightWall.draw(batch);
         leftWall.draw(batch);
-        topWall.draw(batch);
+
+        for(RoomWall r : topWall){
+            r.draw(batch);
+        }
 
         BoundsDrawer.drawBounds(batch, groundBoundaries);
 
@@ -328,9 +334,8 @@ public abstract class Room {
                 //wizard.cancelMovement();
                 return;
             } else {
-                if(!justfornowomg) {
-                    wizard.fall();
-                }
+                wizard.fall();
+
             }
         }
 
@@ -369,6 +374,7 @@ public abstract class Room {
 
 
         //Checks if there is a left or right collision
+        //TODO convert this into a collision task the +5 is for variance,
         if(wallBound.overlaps(nextWizardPosition) && ((w.getY() + w.HEIGHT > wallBound.y + 5) && w.getY() < wallBound.y + wallBound.getHeight() - 5)) {
             System.out.println("Inside the top one");
             System.out.println(nextWizardPosition.x); System.out.println(nextWizardPosition.y);
@@ -392,8 +398,7 @@ public abstract class Room {
                 System.out.println("hit top");//Hit was on top
                 w.setY(wallBound.y + wallBound.getHeight());
                 w.stopMovement();
-
-                justfornowomg = true;
+                w.land();
                 //w.land();
             }
         }
@@ -409,7 +414,8 @@ public abstract class Room {
         groundBoundaries.addAll(roomGround.getBounds());
         groundBoundaries.addAll(platforms);
         roomWalls = new Array<RoomWall>();
-        roomWalls.addAll(leftWall, rightWall, topWall);
+        roomWalls.addAll(leftWall, rightWall);
+        roomWalls.addAll(topWall);
     }
 
     public void addLeftExit() {
@@ -424,6 +430,9 @@ public abstract class Room {
 
     public void addTopExit() {
         roomExits.add(new RoomExit((WIDTH / 2) - Measure.units(10),HEIGHT - WALLWIDTH, Measure.units(20), WALLWIDTH,EXIT_POINT.UP,true));
+        topWall = new Array<RoomWall>();
+        topWall.add(new RoomWall(0, HEIGHT - WALLWIDTH, WIDTH / 3, WALLWIDTH));
+        topWall.add(new RoomWall(WIDTH / 3 * 2, HEIGHT - WALLWIDTH, WIDTH / 3, WALLWIDTH));
     }
 
     public void setBottomExit() {
