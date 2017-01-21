@@ -51,6 +51,7 @@ public abstract class Room {
 
     private RoomWall leftWall;
     private RoomWall rightWall;
+    private RoomWall topWall;
 
     private long seed = 2;
 
@@ -58,6 +59,8 @@ public abstract class Room {
     private Sprite bottomArrow;
 
     private boolean bottom = false;
+
+    private boolean justfornowomg = false;
 
 
     private Array<Rectangle> groundBoundaries = new Array<Rectangle>();
@@ -96,6 +99,7 @@ public abstract class Room {
 
         leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT);
         rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT);
+        topWall = new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH);
 
         platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
         state = STATE.ENTRY;
@@ -207,10 +211,13 @@ public abstract class Room {
             r.update(dt);
         }
 
-        doorCollisionCheck(wizard);
-        wallCollisionCheck(wizard, leftWall.getBounds());
-        wallCollisionCheck(wizard, rightWall.getBounds());
+        //justfornowomg = false;
+
+        doorCollisionCheck(wizard, dt);
         groundsCollisionCheck(wizard);
+        wallCollisionCheck(wizard, leftWall.getBounds(), dt);
+        wallCollisionCheck(wizard, rightWall.getBounds(), dt);
+        wallCollisionCheck(wizard, topWall.getBounds(), dt);
 
     }
 
@@ -235,6 +242,7 @@ public abstract class Room {
 
         rightWall.draw(batch);
         leftWall.draw(batch);
+        topWall.draw(batch);
 
         BoundsDrawer.drawBounds(batch, groundBoundaries);
 
@@ -259,7 +267,7 @@ public abstract class Room {
 
         this.wizard = w;
         wizard.setCurrentState(Wizard.STATE.IDLE);
-        wizard.cancelMovementAction();
+        wizard.cancelMovementRetainSpeed();
         state = STATE.ENTRY;
         this.entry_point = entry_point;
         switch(entry_point){
@@ -282,29 +290,6 @@ public abstract class Room {
         return state == STATE.EXIT;
     }
 
-
-    public boolean tapArrow(float input_x, float input_y){
-        if(topArrow != null && state == STATE.UNLOCKED){
-            if(topArrow.getBoundingRectangle().contains(input_x, input_y)){
-                state = STATE.EXIT;
-                exit_point = EXIT_POINT.UP;
-                return true;
-            }
-        }
-
-        if(bottomArrow != null && state == STATE.UNLOCKED){
-            if(bottomArrow.getBoundingRectangle().contains(input_x, input_y)){
-                state = STATE.EXIT;
-                exit_point = EXIT_POINT.DOWN;
-                return true;
-            }
-        }
-
-        return false;
-
-    }
-
-
     public boolean isWizardOfScreen(){
         return (wizard.getX() > WIDTH) || wizard.getX() < -wizard.WIDTH || wizard.getY() + wizard.WIDTH < 0 || wizard.getY() > HEIGHT;
     }
@@ -326,6 +311,7 @@ public abstract class Room {
             if (platform.overlaps(wizard.getBounds())){
                 wizard.land();
                 wizard.setY(platform.getY() + platform.getHeight());
+                //wizard.cancelMovement();
                 return;
                 //System.out.println("LAND THOUGH");
             } else {
@@ -339,32 +325,24 @@ public abstract class Room {
             if(rect.overlaps(wizard.getBounds())){
                 wizard.land();
                 wizard.setY(rect.getY() + rect.getHeight());
-                System.out.println("COLLISION");
-                System.out.println("COLLISION");
+                //wizard.cancelMovement();
                 return;
             } else {
-                wizard.fall();
+                if(!justfornowomg) {
+                    wizard.fall();
+                }
             }
         }
 
 
     }
 
-    public void doorCollisionCheck(Wizard w){
+    public void doorCollisionCheck(Wizard w, float dt){
+
+
         for(RoomExit exit : roomExits){
             if(!exit.isUnlocked() && state != STATE.ENTRY){
-                if(exit.getBound().overlaps(wizard.getBounds())) {
-                    Rectangle r1 = w.getBounds();
-                    Rectangle r2 = exit.getBound();
-                    //Hit was on left
-                    if(r1.x < r2.x) {
-                        r1.x = r2.x - wizard.WIDTH;
-                    } else if(r1.x > r2.x) {
-                        r1.x = r2.x + r2.getWidth();
-                    }
-                    w.cancelMovementAction();
-                    wizard.setX(r1.x);
-                }
+                wallCollisionCheck(w, exit.getBound(), dt);
             }
         }
     }
@@ -379,15 +357,51 @@ public abstract class Room {
         }
     }
 
-    public void wallCollisionCheck(Wizard w, Rectangle wallBound){
-        if(wallBound.overlaps(w.getBounds())){
-            if(w.getX() < wallBound.x) { //Hit was on left
+    public void wallCollisionCheck(Wizard w, Rectangle wallBound , float dt){
+
+        Rectangle nextWizardPosition = w.mockUpdate(dt);
+
+       // System.out.println(nextWizardPosition.x);
+
+
+
+//        if((wallBound.overlaps(nextWizardPosition) && ((w.getY() > wallBound.y) && (w.getY() < wallBound.y + wallBound.getHeight())){                                                                                                                                                                                                                                                                                                                                                                                                                                                                      < wallBound.y)
+
+
+        //Checks if there is a left or right collision
+        if(wallBound.overlaps(nextWizardPosition) && ((w.getY() + w.HEIGHT > wallBound.y + 5) && w.getY() < wallBound.y + wallBound.getHeight() - 5)) {
+            System.out.println("Inside the top one");
+            System.out.println(nextWizardPosition.x); System.out.println(nextWizardPosition.y);
+            System.out.println(w.getX());
+            System.out.println(w.getY());
+            if (nextWizardPosition.getX() < wallBound.x) {
+                //Hit was on left
                 w.setX(wallBound.x - w.WIDTH);
-            } else if(w.getX() > wallBound.x) {//Hit was on right
+                w.cancelMovementRetainSpeed();
+            } else if (nextWizardPosition.getX() > wallBound.x) {//Hit was on right
                 w.setX(wallBound.x + wallBound.getWidth());
+                w.cancelMovementRetainSpeed();
             }
-            w.cancelMovementAction();
+        } else if(wallBound.overlaps(nextWizardPosition)) {
+            System.out.println("Inside the bottom one");
+            if (nextWizardPosition.getY() < wallBound.y) { //Hit was on bottom
+                System.out.println("hit Bottom");
+                w.setY(wallBound.y - w.HEIGHT);
+                w.stopMovement();
+            } else if (nextWizardPosition.getY() > wallBound.y) {
+                System.out.println("hit top");//Hit was on top
+                w.setY(wallBound.y + wallBound.getHeight());
+                w.stopMovement();
+
+                justfornowomg = true;
+                //w.land();
+            }
         }
+
+     /*       if(w.getY() )
+            w.cancelMovementRetainSpeed();*/
+
+
     }
 
     public void setUpBoundaries() {
@@ -395,7 +409,7 @@ public abstract class Room {
         groundBoundaries.addAll(roomGround.getBounds());
         groundBoundaries.addAll(platforms);
         roomWalls = new Array<RoomWall>();
-        roomWalls.addAll(leftWall, rightWall);
+        roomWalls.addAll(leftWall, rightWall, topWall);
     }
 
     public void addLeftExit() {

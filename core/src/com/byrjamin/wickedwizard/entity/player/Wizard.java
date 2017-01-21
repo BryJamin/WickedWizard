@@ -301,6 +301,17 @@ public class Wizard extends Entity{
         position.add(velocity.x * dt, velocity.y * dt);
         bounds.y = position.y;
 
+        if(bounds.contains(xFlyTarget, yFlyTarget)){
+            velocity.x = 0;
+
+            if(velocity.y > MAX_GRAPPLE_LAUNCH) {
+                velocity.y = MAX_GRAPPLE_LAUNCH;
+            }
+
+            movementState = MOVESTATE.STANDING;
+
+        }
+
 /*
         if(getCenterY() > yFlyTarget){
             velocity.x = 0;
@@ -319,6 +330,15 @@ public class Wizard extends Entity{
         }
 */
 
+    }
+
+    public Rectangle mockUpdate(float dt) {
+        Rectangle mock = new Rectangle(bounds);
+        mock.x = position.x + velocity.x * dt;
+        mock.y = position.y + velocity.y * dt;
+        //System.out.println(velocity.x);
+
+        return mock;
     }
 
     public void reduceHealth(float i){
@@ -352,14 +372,21 @@ public class Wizard extends Entity{
         }
     }
 
-    public void cancelMovementAction(){
+    public void cancelMovementRetainSpeed(){
         movementState = MOVESTATE.STANDING;
 
         if(velocity.y > MAX_GRAPPLE_LAUNCH) {
             velocity.y = MAX_GRAPPLE_LAUNCH;
         }
 
+
+
         //velocity.x = 0;
+    }
+
+    public void stopMovement(){
+        movementState = MOVESTATE.STANDING;
+        velocity = new Vector2();
     }
 
 

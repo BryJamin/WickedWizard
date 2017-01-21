@@ -98,7 +98,6 @@ public class PlayScreen extends AbstractScreen {
                         gamePort.unproject(input);
                         gamePort.unproject(touchDownInput);
 
-                        boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
 
 
                         System.out.println(pointer);
@@ -110,7 +109,6 @@ public class PlayScreen extends AbstractScreen {
 
                         //If you
 
-                        if (!tapped) {
 
                             Wizard w = map.getActiveRoom().getWizard();
 
@@ -164,7 +162,7 @@ public class PlayScreen extends AbstractScreen {
                             }
 
 
-                            }
+
 
 
 
