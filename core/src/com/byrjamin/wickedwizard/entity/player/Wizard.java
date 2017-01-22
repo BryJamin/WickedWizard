@@ -312,24 +312,6 @@ public class Wizard extends Entity{
 
         }
 
-/*
-        if(getCenterY() > yFlyTarget){
-            velocity.x = 0;
-
-            System.out.println("SAY WHAT");
-
-            //max grapple launch speed
-            if(velocity.y > MAX_GRAPPLE_LAUNCH) {
-                velocity.y = MAX_GRAPPLE_LAUNCH;
-            }
-
-            setCenterY(yFlyTarget);
-            setCenterX(xFlyTarget);
-
-            movementState = MOVESTATE.STANDING;
-        }
-*/
-
     }
 
     public Rectangle mockUpdate(float dt) {
@@ -372,16 +354,25 @@ public class Wizard extends Entity{
         }
     }
 
-    public void cancelMovementRetainSpeed(){
+    public void cancelMovementRetainVerticalSpeed(){
         movementState = MOVESTATE.STANDING;
 
         if(velocity.y > MAX_GRAPPLE_LAUNCH) {
             velocity.y = MAX_GRAPPLE_LAUNCH;
         }
+        velocity.x = 0;
+    }
 
+    public void cancelMovementHorizontalSpeed(){
+        movementState = MOVESTATE.STANDING;
 
+        if(Math.abs(velocity.x) > MAX_GRAPPLE_LAUNCH / 2) {
+            velocity.x = velocity.x > 0 ? MAX_GRAPPLE_LAUNCH / 2 : -MAX_GRAPPLE_LAUNCH / 2;
+        }
 
-        //velocity.x = 0;
+        if(velocity.y > MAX_GRAPPLE_LAUNCH) {
+            velocity.y = MAX_GRAPPLE_LAUNCH;
+        }
     }
 
     public void stopMovement(){
@@ -393,7 +384,7 @@ public class Wizard extends Entity{
    public void applyGravity(float dt){
        if (isFalling) {
            velocity.add(gravity);
-           position.add(0, velocity.y * dt);
+           position.add(velocity.x * dt, velocity.y * dt);
            bounds.y = position.y;
        }
     }
@@ -408,6 +399,8 @@ public class Wizard extends Entity{
     public void land(){
         isFalling = false;
         velocity = new Vector2();
+        flyVelocity = new Vector2();
+        System.out.println(velocity.x);
     }
 
     public void toggleFallthroughOn(){

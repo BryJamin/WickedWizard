@@ -3,8 +3,10 @@ package com.byrjamin.wickedwizard.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
@@ -36,6 +38,8 @@ public class PlayScreen extends AbstractScreen {
 
     public static TextureAtlas atlas;
 
+    private Pixmap pixmap;
+
     GestureDetector gestureDetector;
     GestureDetector controlschemeDetector;
 
@@ -66,6 +70,15 @@ public class PlayScreen extends AbstractScreen {
 
         map = new Map();
         gamecam = new OrthographicCamera();
+
+        pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.drawCircle(15, 15, 10);
+
+
+        Pixmap pm = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        Gdx.input.setCursorImage(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+        pm.dispose();
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 
@@ -148,12 +161,19 @@ public class PlayScreen extends AbstractScreen {
 
                             for(RoomWall r : map.getActiveRoom().getRoomWalls()){
                                 if(r.getBounds().contains(input.x, input.y)){
-                                    map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                    w.toggleFallthroughOn();
-                                    //System.out.println("Inside");
-                                    fire = false;
-                                    break;
 
+                                    if(w.getY() == r.getBounds().getY() + r.getBounds().getHeight()){
+                                        map.getActiveRoom().getWizard().dash(input.x);
+                                        fire = false;
+                                        w.toggleFallthroughOff();
+                                        break;
+                                    } else {
+                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
+                                        w.toggleFallthroughOn();
+                                        //System.out.println("Inside");
+                                        fire = false;
+                                        break;
+                                    }
                                 }
                             }
 
@@ -205,10 +225,21 @@ public class PlayScreen extends AbstractScreen {
     }
 
     public void update(float dt){
-        handleInput(dt);
-        map.update(dt, gamecam);
-        if(map.getActiveRoom().getWizard().isDead()){
-            gameOver = true;
+
+        //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
+        //TODO touching the screen pause the game.
+        //caps the delta time if the game is paused for some reason.
+
+        if(dt > 0.20) {
+            System.out.println(" dt" + dt);
+        }
+
+        if(dt < 0.20f) {
+            handleInput(dt);
+            map.update(dt, gamecam);
+            if (map.getActiveRoom().getWizard().isDead()) {
+                gameOver = true;
+            }
         }
         //handleInput(dt);
     }
@@ -235,6 +266,7 @@ public class PlayScreen extends AbstractScreen {
 
         map.draw(game.batch);
 
+
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
             game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().HEIGHT - 150,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
@@ -246,6 +278,8 @@ public class PlayScreen extends AbstractScreen {
         }
 
         game.batch.end();
+
+        Gdx.input.setCursorImage(pixmap, 16, 16);
 
     }
 

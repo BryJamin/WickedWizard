@@ -47,21 +47,14 @@ public abstract class Room {
     protected Array<RoomWall> roomWalls = new Array<RoomWall>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
-    protected Wizard wizard = new Wizard(WALLWIDTH, 0);
+    protected Wizard wizard = new Wizard(WALLWIDTH, 200);
 
     private RoomWall leftWall;
     private RoomWall rightWall;
-    private Array<RoomWall> topWall = new Array<RoomWall>();
+    private Array<RoomWall> ceiling = new Array<RoomWall>();
+    private Array<RoomWall> ground = new Array<RoomWall>();
 
     private long seed = 2;
-
-    private Sprite topArrow;
-    private Sprite bottomArrow;
-
-    private boolean bottom = false;
-
-    private boolean justfornowomg = false;
-
 
     private Array<Rectangle> groundBoundaries = new Array<Rectangle>();
     private Array<RoomPlatform> platforms = new Array<RoomPlatform>();
@@ -97,11 +90,12 @@ public abstract class Room {
         roomEnemyWaves = new RoomEnemyWaves(this);
         sectionSetup();
 
-        leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT);
-        rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT);
-        topWall.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
+        leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
+        rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
+        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
+        ground.add(new RoomWall(0,  0, WIDTH, WALLWIDTH * 2, WALLWIDTH));
 
-        platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
+//        platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
         roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT);
@@ -140,7 +134,7 @@ public abstract class Room {
                    // wizard.move(sectionCenters[(sectionCenters.length - 1)]);
                     inPosition = !wizard.isFalling() || wizard.getCenterX() < sectionCenters[(sectionCenters.length - 1)];
                     if(inPosition) {
-                        wizard.land();
+                        //wizard.land();
                     }
                    // inPosition = wizard.getCenterX() == sectionCenters[(sectionCenters.length - 1)];
                     System.out.println("Trying to move right");
@@ -149,7 +143,7 @@ public abstract class Room {
                   //  wizard.move(sectionCenters[0]);
                     inPosition = !wizard.isFalling() || wizard.getCenterX() > sectionCenters[(sectionCenters.length - 1)];
                     if(inPosition){
-                        wizard.land();
+                        //wizard.land();
                     }
                     //inPosition = wizard.getCenterX() == sectionCenters[0];
                     //System.out.println("Trying to move left");
@@ -211,14 +205,16 @@ public abstract class Room {
             r.update(dt);
         }
 
-        justfornowomg = false;
-
         doorCollisionCheck(wizard, dt);
         groundsCollisionCheck(wizard);
         wallCollisionCheck(wizard, leftWall.getBounds(), dt);
         wallCollisionCheck(wizard, rightWall.getBounds(), dt);
 
-        for(RoomWall r : topWall){
+        for(RoomWall r : ceiling){
+            wallCollisionCheck(wizard, r.getBounds(), dt);
+        }
+
+        for(RoomWall r : ground){
             wallCollisionCheck(wizard, r.getBounds(), dt);
         }
 
@@ -246,15 +242,17 @@ public abstract class Room {
         rightWall.draw(batch);
         leftWall.draw(batch);
 
-        for(RoomWall r : topWall){
+        for(RoomWall r : ceiling){
             r.draw(batch);
         }
 
-        BoundsDrawer.drawBounds(batch, groundBoundaries);
+        for(RoomWall r : ground){
+            r.draw(batch);
+        }
+
+        BoundsDrawer.drawBounds(batch, platforms);
 
         wizard.draw(batch);
-
-        roomGround.draw(batch);
 
 /*        if(platforms.size != 0) {
             BoundsDrawer.drawBounds(batch, platforms);
@@ -273,7 +271,7 @@ public abstract class Room {
 
         this.wizard = w;
         wizard.setCurrentState(Wizard.STATE.IDLE);
-        wizard.cancelMovementRetainSpeed();
+        wizard.cancelMovementHorizontalSpeed();
         state = STATE.ENTRY;
         this.entry_point = entry_point;
         switch(entry_point){
@@ -321,24 +319,11 @@ public abstract class Room {
                 return;
                 //System.out.println("LAND THOUGH");
             } else {
-                //wizard.fall();
-            }
-        }
-
-
-
-        for(Rectangle rect : roomGround.getBounds()){
-            if(rect.overlaps(wizard.getBounds())){
-                wizard.land();
-                wizard.setY(rect.getY() + rect.getHeight());
-                //wizard.cancelMovement();
-                return;
-            } else {
-                wizard.fall();
 
             }
         }
 
+        wizard.fall();
 
     }
 
@@ -365,28 +350,20 @@ public abstract class Room {
     public void wallCollisionCheck(Wizard w, Rectangle wallBound , float dt){
 
         Rectangle nextWizardPosition = w.mockUpdate(dt);
-
-       // System.out.println(nextWizardPosition.x);
-
-
-
-//        if((wallBound.overlaps(nextWizardPosition) && ((w.getY() > wallBound.y) && (w.getY() < wallBound.y + wallBound.getHeight())){                                                                                                                                                                                                                                                                                                                                                                                                                                                                      < wallBound.y)
-
-
         //Checks if there is a left or right collision
         //TODO convert this into a collision task the +5 is for variance,
         if(wallBound.overlaps(nextWizardPosition) && ((w.getY() + w.HEIGHT > wallBound.y + 5) && w.getY() < wallBound.y + wallBound.getHeight() - 5)) {
-            System.out.println("Inside the top one");
+/*            System.out.println("Inside the top one");
             System.out.println(nextWizardPosition.x); System.out.println(nextWizardPosition.y);
             System.out.println(w.getX());
-            System.out.println(w.getY());
+            System.out.println(w.getY());*/
             if (nextWizardPosition.getX() < wallBound.x) {
                 //Hit was on left
                 w.setX(wallBound.x - w.WIDTH);
-                w.cancelMovementRetainSpeed();
+                w.cancelMovementRetainVerticalSpeed();
             } else if (nextWizardPosition.getX() > wallBound.x) {//Hit was on right
                 w.setX(wallBound.x + wallBound.getWidth());
-                w.cancelMovementRetainSpeed();
+                w.cancelMovementRetainVerticalSpeed();
             }
         } else if(wallBound.overlaps(nextWizardPosition)) {
             System.out.println("Inside the bottom one");
@@ -397,14 +374,14 @@ public abstract class Room {
             } else if (nextWizardPosition.getY() > wallBound.y) {
                 System.out.println("hit top");//Hit was on top
                 w.setY(wallBound.y + wallBound.getHeight());
-                w.stopMovement();
+                //w.stopMovement();
                 w.land();
                 //w.land();
             }
         }
 
      /*       if(w.getY() )
-            w.cancelMovementRetainSpeed();*/
+            w.cancelMovementRetainVerticalSpeed();*/
 
 
     }
@@ -415,29 +392,33 @@ public abstract class Room {
         groundBoundaries.addAll(platforms);
         roomWalls = new Array<RoomWall>();
         roomWalls.addAll(leftWall, rightWall);
-        roomWalls.addAll(topWall);
+        roomWalls.addAll(ceiling);
+        roomWalls.addAll(ground);
     }
 
     public void addLeftExit() {
         roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.LEFT,false));
-        leftWall = new RoomWall(0, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
+        leftWall = new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH);
     }
 
     public void addRightExit() {
         roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),EXIT_POINT.RIGHT,false));
-        rightWall = new RoomWall(WIDTH - WALLWIDTH, groundHeight() + Measure.units(20), WALLWIDTH, HEIGHT);
+        rightWall = new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH);
     }
 
     public void addTopExit() {
         roomExits.add(new RoomExit((WIDTH / 2) - Measure.units(10),HEIGHT - WALLWIDTH, Measure.units(20), WALLWIDTH,EXIT_POINT.UP,true));
-        topWall = new Array<RoomWall>();
-        topWall.add(new RoomWall(0, HEIGHT - WALLWIDTH, WIDTH / 3, WALLWIDTH));
-        topWall.add(new RoomWall(WIDTH / 3 * 2, HEIGHT - WALLWIDTH, WIDTH / 3, WALLWIDTH));
+        ceiling = new Array<RoomWall>();
+        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WALLWIDTH * 8, WALLWIDTH, WALLWIDTH));
+        ceiling.add(new RoomWall(WIDTH - WALLWIDTH * 8, HEIGHT - WALLWIDTH, WALLWIDTH * 8, WALLWIDTH, WALLWIDTH));
     }
 
     public void setBottomExit() {
-        roomExits.add(new RoomExit((WIDTH / 2) - Measure.units(10),0 + WALLWIDTH / 2, Measure.units(20), WALLWIDTH,EXIT_POINT.DOWN,true));
-        roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this, WIDTH, 200, true);
+        roomExits.add(new RoomExit(WALLWIDTH * 8,0, Measure.units(20), WALLWIDTH,EXIT_POINT.DOWN,true));
+        platforms.add(new RoomPlatform(WALLWIDTH * 8, WALLWIDTH, Measure.units(20), WALLWIDTH));
+        ground = new Array<RoomWall>();
+        ground.add(new RoomWall(0,  0, WALLWIDTH * 8, WALLWIDTH * 2, WALLWIDTH));
+        ground.add(new RoomWall(WIDTH - WALLWIDTH * 8,  0, WALLWIDTH * 8, WALLWIDTH * 2, WALLWIDTH));
     }
 
     public void lock() {
@@ -509,7 +490,7 @@ public abstract class Room {
     }
 
     public float groundHeight(){
-        return roomGround.getHeight();
+        return 200;
     }
 
     public Array<RoomExit> getRoomExits() {
