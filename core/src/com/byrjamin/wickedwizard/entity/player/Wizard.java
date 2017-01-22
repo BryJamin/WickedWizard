@@ -216,6 +216,11 @@ public class Wizard extends Entity{
         bounds.y = position.y;
     }
 
+    public void positionUpdate(){
+        position.x = bounds.x;
+        position.y = bounds.y;
+    }
+
     public DIRECTION getDirection() {
         return direction;
     }
@@ -257,6 +262,10 @@ public class Wizard extends Entity{
         float angle = calculateAngle(getCenterX(), getCenterY(), x, y);
         xFlyTarget = x;
         yFlyTarget = y;
+
+        direction = xFlyTarget > getX() ? DIRECTION.RIGHT : DIRECTION.LEFT;
+
+        velocity.x = velocity.x > 0 ? MAX_GRAPPLE_LAUNCH / 2 : -MAX_GRAPPLE_LAUNCH / 2;
 
         fallThrough = true;
 
@@ -324,7 +333,7 @@ public class Wizard extends Entity{
     }
 
     public void reduceHealth(float i){
-        if(!isDashing() && !isInvunerable()) {
+        if(!isDashing() && !isInvunerable() && !isFlying()) {//TODO so op.
             invinciblityTimer = invinciblityFrames;
             health -= i;
         }

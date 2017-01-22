@@ -77,7 +77,7 @@ public class RoomExit {
         //HEIGHT + Measure.units(5);
 
         batch.draw(currentAnimation.getKeyFrame(time), x, y, (width / 2), (height / 2), width,height,1,1,flip ? 90 : rotation);
-        BoundsDrawer.drawBounds(batch, new Rectangle(x, y, width, height));
+       // BoundsDrawer.drawBounds(batch, new Rectangle(x, y, width, height));
     }
 
 

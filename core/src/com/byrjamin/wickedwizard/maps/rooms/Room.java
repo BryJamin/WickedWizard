@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.collider.WizardCollider;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
@@ -47,7 +48,7 @@ public abstract class Room {
     protected Array<RoomWall> roomWalls = new Array<RoomWall>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
-    protected Wizard wizard = new Wizard(WALLWIDTH, 200);
+    protected Wizard wizard = new Wizard(WALLWIDTH, 400);
 
     private RoomWall leftWall;
     private RoomWall rightWall;
@@ -348,42 +349,7 @@ public abstract class Room {
     }
 
     public void wallCollisionCheck(Wizard w, Rectangle wallBound , float dt){
-
-        Rectangle nextWizardPosition = w.mockUpdate(dt);
-        //Checks if there is a left or right collision
-        //TODO convert this into a collision task the +5 is for variance,
-        if(wallBound.overlaps(nextWizardPosition) && ((w.getY() + w.HEIGHT > wallBound.y + 5) && w.getY() < wallBound.y + wallBound.getHeight() - 5)) {
-/*            System.out.println("Inside the top one");
-            System.out.println(nextWizardPosition.x); System.out.println(nextWizardPosition.y);
-            System.out.println(w.getX());
-            System.out.println(w.getY());*/
-            if (nextWizardPosition.getX() < wallBound.x) {
-                //Hit was on left
-                w.setX(wallBound.x - w.WIDTH);
-                w.cancelMovementRetainVerticalSpeed();
-            } else if (nextWizardPosition.getX() > wallBound.x) {//Hit was on right
-                w.setX(wallBound.x + wallBound.getWidth());
-                w.cancelMovementRetainVerticalSpeed();
-            }
-        } else if(wallBound.overlaps(nextWizardPosition)) {
-            System.out.println("Inside the bottom one");
-            if (nextWizardPosition.getY() < wallBound.y) { //Hit was on bottom
-                System.out.println("hit Bottom");
-                w.setY(wallBound.y - w.HEIGHT);
-                w.stopMovement();
-            } else if (nextWizardPosition.getY() > wallBound.y) {
-                System.out.println("hit top");//Hit was on top
-                w.setY(wallBound.y + wallBound.getHeight());
-                //w.stopMovement();
-                w.land();
-                //w.land();
-            }
-        }
-
-     /*       if(w.getY() )
-            w.cancelMovementRetainVerticalSpeed();*/
-
-
+        WizardCollider.collisionCheck(w, wallBound, dt);
     }
 
     public void setUpBoundaries() {
