@@ -71,14 +71,14 @@ public class PlayScreen extends AbstractScreen {
         map = new Map();
         gamecam = new OrthographicCamera();
 
-        pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+/*        pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawCircle(15, 15, 10);
 
 
         Pixmap pm = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         Gdx.input.setCursorImage(pm, pm.getWidth() / 2, pm.getHeight() / 2);
-        pm.dispose();
+        pm.dispose();*/
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 

@@ -409,7 +409,6 @@ public class Wizard extends Entity{
         isFalling = false;
         velocity = new Vector2();
         flyVelocity = new Vector2();
-        System.out.println(velocity.x);
     }
 
     public void toggleFallthroughOn(){

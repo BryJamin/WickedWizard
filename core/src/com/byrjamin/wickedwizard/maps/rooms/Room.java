@@ -48,7 +48,7 @@ public abstract class Room {
     protected Array<RoomWall> roomWalls = new Array<RoomWall>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
-    protected Wizard wizard = new Wizard(WALLWIDTH, 400);
+    protected Wizard wizard = new Wizard(WALLWIDTH * 2, 600);
 
     private RoomWall leftWall;
     private RoomWall rightWall;
