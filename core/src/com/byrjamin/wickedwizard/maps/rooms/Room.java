@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.collider.WizardCollider;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomBackground;
@@ -20,6 +21,8 @@ import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
+
+import java.util.Random;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class
@@ -104,8 +107,16 @@ public abstract class Room {
         roomWalls.add(leftWall);
         roomWalls.add(rightWall);
 
+        Random random = new Random();
+       // if(random.nextBoolean()){
+            platforms.add(new RoomPlatform(WIDTH - WALLWIDTH * 9, HEIGHT / 2, WALLWIDTH * 9, WALLWIDTH));
+       // }
+
+
+
         groundBoundaries.addAll(roomGround.getBounds());
         groundBoundaries.addAll(platforms);
+        System.out.println("PLATFORM SIZE IS: " + platforms.size);
         /* for(RoomWall wall : roomWalls){
             boundaries.add(wall.getBounds());
         }*/
@@ -310,7 +321,7 @@ public abstract class Room {
 
     private void groundsCollisionCheck(Wizard wizard) {
 
-        boolean fall = false;
+        boolean fall = true;
 
         for(RoomPlatform platform : platforms){
             if (platform.overlaps(wizard.getBounds())){
@@ -319,13 +330,25 @@ public abstract class Room {
                 //wizard.cancelMovement();
                 return;
                 //System.out.println("LAND THOUGH");
-            } else {
-
+            } else if(Collider.isOnTop(wizard.getBounds(), platform)){
+                fall = false;
+                break;
             }
         }
 
-        wizard.fall();
 
+        for(RoomWall rw : roomWalls){
+            if(Collider.isOnTop(wizard.getBounds(), rw.getBounds())) {
+                fall = false;
+                break;
+            }
+        }
+
+
+
+        if(fall){
+            wizard.fall();
+        }
     }
 
     public void doorCollisionCheck(Wizard w, float dt){
@@ -351,6 +374,12 @@ public abstract class Room {
     public void wallCollisionCheck(Wizard w, Rectangle wallBound , float dt){
         WizardCollider.collisionCheck(w, wallBound, dt);
     }
+
+    //TODO move this an appropiate location since this location is grab
+    public void isWizardGrounded(){
+
+    }
+
 
     public void setUpBoundaries() {
         groundBoundaries = new Array<Rectangle>();

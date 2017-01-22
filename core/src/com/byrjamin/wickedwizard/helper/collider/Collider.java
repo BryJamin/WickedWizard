@@ -49,6 +49,11 @@ public class Collider {
     }
 
 
+    public static boolean isOnTop(Rectangle bound, Rectangle wall){
+        return (bound.getY() == wall.getY() + wall.getHeight());
+    }
+
+
 
 
 

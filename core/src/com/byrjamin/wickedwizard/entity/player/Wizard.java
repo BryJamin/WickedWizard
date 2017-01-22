@@ -28,7 +28,7 @@ public class Wizard extends Entity{
 
     public float HEIGHT = Measure.units(6);
     public float WIDTH = Measure.units(6);
-    private float MOVEMENT = Measure.units(150f);
+    private float MOVEMENT = Measure.units(125f);
     private float DRAG = Measure.units(20f);
 
     private float GRAPPLE_MOVEMENT = Measure.units(10f);
@@ -187,6 +187,7 @@ public class Wizard extends Entity{
 
         damageFramesUpdate(dt);
         boundsUpdate();
+        System.out.println(movementState);
     }
 
     public void switchControlScheme(){
@@ -282,21 +283,26 @@ public class Wizard extends Entity{
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
         if(moveTarget <= getCenterX()){
-            position.x = position.x - MOVEMENT * dt;
+            velocity.x = (-MOVEMENT);
+            position.add(velocity.x * dt, 0);
+            //position.x = position.x - MOVEMENT * dt;
             boundsUpdate();
 
             if(this.getCenterX() <= moveTarget){
                 this.setCenterX(moveTarget);
                 movementState = MOVESTATE.STANDING;
+                velocity.x = 0;
             }
         }
 
         if(moveTarget >= getCenterX()){
-            position.x = position.x + MOVEMENT * dt;
+            velocity.x = (MOVEMENT);
+            position.add(velocity.x * dt, 0);
             boundsUpdate();
             if(this.getCenterX() >= moveTarget){
                 this.setCenterX(moveTarget);
                 System.out.println("HMM");
+                velocity.x = 0;
                 movementState = MOVESTATE.STANDING;
             }
         }
@@ -386,7 +392,7 @@ public class Wizard extends Entity{
 
     public void stopMovement(){
         movementState = MOVESTATE.STANDING;
-        velocity = new Vector2();
+        velocity.setZero();
     }
 
 
@@ -407,9 +413,11 @@ public class Wizard extends Entity{
 
     public void land(){
         isFalling = false;
-        velocity = new Vector2();
-        flyVelocity = new Vector2();
+        velocity.setZero();
+        flyVelocity.setZero();
+        movementState = MOVESTATE.STANDING;
     }
+
 
     public void toggleFallthroughOn(){
         fallThrough = true;
