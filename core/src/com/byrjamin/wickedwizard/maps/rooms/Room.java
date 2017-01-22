@@ -108,9 +108,9 @@ public abstract class Room {
         roomWalls.add(rightWall);
 
         Random random = new Random();
-       // if(random.nextBoolean()){
+        if(random.nextBoolean()){
             platforms.add(new RoomPlatform(WIDTH - WALLWIDTH * 9, HEIGHT / 2, WALLWIDTH * 9, WALLWIDTH));
-       // }
+        }
 
 
 

@@ -50,7 +50,7 @@ public class RoomEnemyWaves {
     public void blob2(Array<Enemy> e){
       //  e.clear();
         e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.defaultTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.defaultTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 
     public void blob3(Array<Enemy> e){
@@ -63,7 +63,7 @@ public class RoomEnemyWaves {
     public void blob4(Array<Enemy> e){
      //   e.clear();
         e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
-        e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 
     public void turret(Array<Enemy> e){
@@ -78,11 +78,11 @@ public class RoomEnemyWaves {
     }
 
     private Waves[] spawnWave = new Waves[] {
-            //new Waves() { public void spawnWave(Array<Enemy> enemies) { blob(enemies); } },
-            //new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
-            //new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
             new Waves() { public void spawnWave(Array<Enemy> enemies) { blob3(enemies); } },
-            //new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },
+            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },
     };
 
 

@@ -20,6 +20,9 @@ public class Map {
     private int mapY;
     private int mapX;
 
+    private float mapBlinker;
+    private boolean blink = true;
+
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
     public Map(){
@@ -76,6 +79,15 @@ public class Map {
 
 
     public void update(float dt, OrthographicCamera gamecam){
+
+        mapBlinker += dt;
+
+        if(mapBlinker > 1.0){
+            blink = !blink;
+            mapBlinker = 0;
+        }
+
+
             rooms[mapY][mapX].update(dt, gamecam);
 
             if(rooms[mapY][mapX].isExitTransitionFinished()){
@@ -140,13 +152,17 @@ public class Map {
             }
         }
 
-
-
         mapRenderer.setColor(Color.WHITE);
         mapRenderer.rect(mapx, mapy, SIZE, SIZE);
-        mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
+
 
         mapRenderer.end();
+
+        if(blink) {
+            mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
+            mapRenderer.end();
+        }
 
 
         batch.begin();
