@@ -6,9 +6,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.ActiveBullets;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
 import com.byrjamin.wickedwizard.spelltypes.Dispellable;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -25,9 +28,13 @@ public class Turret extends Enemy {
         WALKING, ATTACKING
     }
 
-    private float MOVEMENT = MainGame.GAME_UNITS * 30;
+    private float MOVEMENT = Measure.units(15);
+    private float NMOVEMENT = -MOVEMENT;
+    private float PMOVEMENT = MOVEMENT;
     private float SQUARE_SIZE = MainGame.GAME_UNITS * 10;
     private float DEFAULT_SHOT_SPEED = 2.5f;
+
+    private Vector2 velocity = new Vector2();
 
     private Reloader reloader;
 
@@ -125,6 +132,8 @@ public class Turret extends Enemy {
 
         bounds.add(hitBox);
 
+        velocity = new Vector2(MOVEMENT, 0);
+
         if(builder.dispellSequence.size == 0) {
             dispellSequence = new Array<Dispellable.DISPELL>();
             dispellSequence.add(Dispellable.DISPELL.HORIZONTAL);
@@ -141,21 +150,32 @@ public class Turret extends Enemy {
         if(this.getState() == STATE.DYING || this.getState() == STATE.DEAD){
             dyingUpdate(dt);
         } else {
-            updateMovement(dt);
+            updateMovement(dt, r);
             reloader.update(dt);
             fire(dt, r);
         }
     }
 
 
-    public void updateMovement(float dt){
-        if(position.x + WIDTH > MainGame.GAME_WIDTH){
-            MOVEMENT = -MainGame.GAME_UNITS * 10;
-        } else if(position.x <= 0){
-            MOVEMENT = MainGame.GAME_UNITS * 10;
+    public void updateMovement(float dt, Room r){
+
+        Collider.Collision collision;
+
+        for(RoomWall rw : r.getRoomWalls()) {
+            collision = Collider.collision(hitBox, hitBox, rw.getBounds());
+            if(collision != Collider.Collision.NONE){
+                System.out.println(collision);
+                if(collision == Collider.Collision.LEFT){
+                    velocity.x = -MOVEMENT;
+                    break;
+                } else if(collision == Collider.Collision.RIGHT){
+                    velocity.x = MOVEMENT;
+                    break;
+                }
+            }
         }
 
-        position.add(MOVEMENT *dt, 0);
+        position.add(velocity.x * dt, 0);
 
         hitBox.x = position.x + (Measure.units(1) * scale);
         hitBox.y = position.y;
@@ -192,6 +212,8 @@ public class Turret extends Enemy {
     public void draw(SpriteBatch batch){
 
         super.draw(batch);
+
+        //BoundsDrawer.drawBounds(batch, hitBox);
 
 
 

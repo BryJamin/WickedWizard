@@ -354,12 +354,17 @@ public abstract class Room {
 
     public void setUpBoundaries() {
         groundBoundaries = new Array<Rectangle>();
-        groundBoundaries.addAll(roomGround.getBounds());
+        //groundBoundaries.addAll(roomGround.getBounds());
+
         groundBoundaries.addAll(platforms);
         roomWalls = new Array<RoomWall>();
         roomWalls.addAll(leftWall, rightWall);
         roomWalls.addAll(ceiling);
         roomWalls.addAll(ground);
+
+        for(RoomWall roomWall : ground){
+            groundBoundaries.add(roomWall.getBounds());
+        }
     }
 
     public void addLeftExit() {
