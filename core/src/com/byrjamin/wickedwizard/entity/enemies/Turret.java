@@ -164,7 +164,6 @@ public class Turret extends Enemy {
         for(RoomWall rw : r.getRoomWalls()) {
             collision = Collider.collision(hitBox, hitBox, rw.getBounds());
             if(collision != Collider.Collision.NONE){
-                System.out.println(collision);
                 if(collision == Collider.Collision.LEFT){
                     velocity.x = -MOVEMENT;
                     break;

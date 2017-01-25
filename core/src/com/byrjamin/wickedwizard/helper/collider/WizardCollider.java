@@ -9,32 +9,35 @@ import com.byrjamin.wickedwizard.entity.player.Wizard;
 public class WizardCollider {
 
 
-    public static void collisionCheck(Wizard w, Rectangle wall, float dt){
+    public static boolean collisionCheck(Wizard w, Rectangle wall, float dt){
 
         boolean update = true;
 
-        switch(Collider.collision(w.getBounds(), w.mockUpdate(dt), wall)){
+        Collider.Collision collision = Collider.collision(w.getBounds(), w.mockUpdate(dt), wall);
+
+        switch(collision){
             case LEFT:
-                //w.setX(wall.x - w.WIDTH);
                 w.cancelMovementRetainVerticalSpeed();
                 break;
             case RIGHT:
-                //w.setX(wall.x + wall.getWidth());
                 w.cancelMovementRetainVerticalSpeed();
                 break;
             case TOP:
-                //w.setY(wall.y + wall.getHeight());
-                w.land();
+                w.resetGravity();
                 break;
             case BOTTOM:
-                //w.setY(wall.y - w.HEIGHT);
                 w.stopMovement();
                 break;
+            case NONE:
+                update = false;
             default:
                 update = false;
         }
 
+
         if(update) w.positionUpdate();
+
+        return true;
 
     }
 

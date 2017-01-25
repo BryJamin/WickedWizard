@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.helper.collider;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.entity.Entity;
 
 /**
@@ -26,7 +27,7 @@ public class Collider {
     public static Collision collision(Rectangle actual, Rectangle mock, Rectangle wall){
         //Checks if there is a left or right collision
         //TODO convert this into a collision task the +5 is for variance,
-        if(wall.overlaps(mock) && ((actual.getY() + actual.getHeight() > wall.getY() + 5) && actual.getY() < wall.y + wall.getHeight() - 5)) {
+        if(wall.overlaps(mock) && ((actual.getY() + actual.getHeight() > wall.getY() + 20) && actual.getY() < wall.y + wall.getHeight() - 20)) {
             if (mock.getX() < wall.x) {//Hit was on left
                 actual.setX(wall.x - actual.width);
                 return Collision.LEFT;
@@ -51,6 +52,20 @@ public class Collider {
 
     public static boolean isOnTop(Rectangle bound, Rectangle wall){
         return (bound.getY() == wall.getY() + wall.getHeight());
+    }
+
+    public static boolean isOnTop(Rectangle bound, Array<Rectangle> wall){
+        for(Rectangle r : wall){
+            if(isOnTop(bound, r)) return true;
+        }
+        return false;
+    }
+
+    public static boolean isOnTop(Rectangle bound, Rectangle... wall){
+        for(Rectangle r : wall){
+            if(isOnTop(bound, r)) return true;
+        }
+        return false;
     }
 
 

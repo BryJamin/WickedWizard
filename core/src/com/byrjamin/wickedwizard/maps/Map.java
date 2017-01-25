@@ -88,23 +88,27 @@ public class Map {
         }
 
 
-            rooms[mapY][mapX].update(dt, gamecam);
+        rooms[mapY][mapX].update(dt, gamecam);
 
-            if(rooms[mapY][mapX].isExitTransitionFinished()){
-                if(rooms[mapY][mapX].isExitPointRight()){
-                    rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
-                    mapX++;
-                } else if(rooms[mapY][mapX].isExitPointLeft()){
-                    rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
-                    mapX--;
-                } else if(rooms[mapY][mapX].isExitPointUp()) {
-                    rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
-                    mapY--;
-                } else if(rooms[mapY][mapX].isExitPointDown()){
-                    rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
-                    mapY++;
-                }
+        if(rooms[mapY][mapX].isExitTransitionFinished()){
+            if(rooms[mapY][mapX].isExitPointRight()){
+                rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
+                mapX++;
+            } else if(rooms[mapY][mapX].isExitPointLeft()){
+                rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
+                mapX--;
+            } else if(rooms[mapY][mapX].isExitPointUp()) {
+                rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
+                mapY--;
+            } else if(rooms[mapY][mapX].isExitPointDown()){
+                rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
+                mapY++;
             }
+        }
+
+
+        //System.out.println(rooms[mapY][mapX].state);
+
     }
 
     public boolean isTransitioning(){
@@ -122,7 +126,7 @@ public class Map {
 
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
-        mapRenderer.setColor(Color.GRAY);
+        mapRenderer.setColor(Color.CYAN);
 
         float SIZE = Measure.units(3);
         float mapy = 1000;

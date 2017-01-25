@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.*;
+import com.byrjamin.wickedwizard.helper.StateTimer;
 import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -99,6 +100,8 @@ public class Wizard extends Entity{
     private float animationTime;
     private float chargeTime;
 
+    private StateTimer fallthroughTimer = new StateTimer(0.05f);
+
     private Animation standingAnimation;
     private Animation firingAnimation;
     private Animation windUpAnimation;
@@ -135,6 +138,11 @@ public class Wizard extends Entity{
 
     public void update(float dt, OrthographicCamera gamecam, Room room){
         //animationTime += dt;
+
+        fallthroughTimer.update(dt);
+        if(fallthroughTimer.isFinished()){
+            fallThrough = false;
+        }
 
         if(currentState == STATE.IDLE){
             currentAnimation = standingAnimation;
@@ -187,11 +195,10 @@ public class Wizard extends Entity{
 
         damageFramesUpdate(dt);
         boundsUpdate();
-        System.out.println(movementState);
-    }
+        System.out.println(velocity.x);
 
-    public void switchControlScheme(){
-        controlScheme = !controlScheme;
+        position.add(velocity.x * dt, velocity.y * dt);
+        bounds.y = position.y;
     }
 
     public void draw(SpriteBatch batch){
@@ -226,35 +233,11 @@ public class Wizard extends Entity{
         return direction;
     }
 
-    public void moveUp(float dt){
-        position.y = position.y + MOVEMENT * dt;
-        direction = DIRECTION.RIGHT;
-    }
-
-    public void moveTo(float dt){
-
-    }
-
     public void dash(float dashTarget) {
         if(!isDashing()) {
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
             this.moveTarget = dashTarget;
-            direction = moveTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
-        }
-    }
-
-    /**
-     * Sets the next movement location of the wizard, as long as the wizard isn't already moving
-     * and the target isn't the same target
-     * @param moveTarget - Movement Target
-     */
-    public void move(float moveTarget) {
-        System.out.println("ABOVE MOVE IF");
-        if(movementState != MOVESTATE.MOVING) {
-            System.out.println("INSIDE MOVE IF");
-            movementState = MOVESTATE.MOVING;
-            this.moveTarget = moveTarget;
             direction = moveTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
         }
     }
@@ -269,6 +252,7 @@ public class Wizard extends Entity{
         velocity.x = velocity.x > 0 ? MAX_GRAPPLE_LAUNCH / 2 : -MAX_GRAPPLE_LAUNCH / 2;
 
         fallThrough = true;
+        fallthroughTimer.reset();
 
         flyVelocity = new Vector2((float) Math.cos(angle) * GRAPPLE_MOVEMENT, (float) Math.sin(angle) * GRAPPLE_MOVEMENT);
         velocity = new Vector2();
@@ -301,7 +285,6 @@ public class Wizard extends Entity{
             boundsUpdate();
             if(this.getCenterX() >= moveTarget){
                 this.setCenterX(moveTarget);
-                System.out.println("HMM");
                 velocity.x = 0;
                 movementState = MOVESTATE.STANDING;
             }
@@ -313,8 +296,8 @@ public class Wizard extends Entity{
         if(Math.abs(velocity.x) < MAX_GRAPPLE_MOVEMENT && Math.abs(velocity.y) < MAX_GRAPPLE_MOVEMENT) {
             velocity.add(flyVelocity);
         }
-        position.add(velocity.x * dt, velocity.y * dt);
-        bounds.y = position.y;
+        //position.add(velocity.x * dt, velocity.y * dt);
+        //bounds.y = position.y;
 
         if(bounds.contains(xFlyTarget, yFlyTarget)){
             velocity.x = 0;
@@ -390,18 +373,29 @@ public class Wizard extends Entity{
         }
     }
 
+    public void cancelMovementRetainHorizontalSpeed(){
+        movementState = MOVESTATE.STANDING;
+
+        if(Math.abs(velocity.x) > MAX_GRAPPLE_LAUNCH / 2) {
+            velocity.x = velocity.x > 0 ? MAX_GRAPPLE_LAUNCH / 2 : -MAX_GRAPPLE_LAUNCH / 2;
+        }
+
+        System.out.println(velocity.x);
+    }
+
     public void stopMovement(){
         movementState = MOVESTATE.STANDING;
-        velocity.setZero();
+        velocity.setZero();System.out.println(velocity.x);
     }
 
 
    public void applyGravity(float dt){
-       if (isFalling) {
            velocity.add(gravity);
-           position.add(velocity.x * dt, velocity.y * dt);
-           bounds.y = position.y;
-       }
+    }
+
+    public void resetGravity(){
+        velocity.y = 0;
+        isFalling = false;
     }
 
     public void fall(){
@@ -413,14 +407,18 @@ public class Wizard extends Entity{
 
     public void land(){
         isFalling = false;
-        velocity.setZero();
-        flyVelocity.setZero();
+        velocity.y = 0;
+        if(movementState == MOVESTATE.FLYING){
+            velocity.setZero();
+            flyVelocity.setZero();
+        }
         movementState = MOVESTATE.STANDING;
     }
 
 
     public void toggleFallthroughOn(){
         fallThrough = true;
+        fallthroughTimer.reset();
     }
 
     public void toggleFallthroughOff(){
@@ -433,18 +431,13 @@ public class Wizard extends Entity{
 
     public void fireProjectile(float input_x, float input_y){
         startfireAnimation();
-        //This only really matters if I make it so the bullets are drawn in front so they don't appear from
-        //the middle of the character. If to decide to just draw from the back I can remove this piece of code
-        //angle bits.
+
         float angle = calculateAngle(getCenterX(), getCenterY(), input_x,input_y);
 
         if(angle >= 0) direction = (angle <= (Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
          else direction = (angle >= -(Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
 
-        float x1 = (getCenterX()) + ((WIDTH / 2) * (float) Math.cos(angle)); //+ (WIDTH / 2)) * (float) Math.cos(angle);
-        float y1 = (getCenterY()) + ((WIDTH / 2) * (float) Math.sin(angle));; //+ (HEIGHT / 2)) * (float) Math.sin(angle);
-
-        activeBullets.addProjectile(new Projectile.ProjectileBuilder(x1 , y1, input_x,input_y)
+        activeBullets.addProjectile(new Projectile.ProjectileBuilder(getCenterX() , getCenterY(), input_x,input_y)
                 .damage(damage)
                 .drawingColor(Color.WHITE)
                 .speed(Measure.units(150f))
@@ -477,6 +470,10 @@ public class Wizard extends Entity{
             chargeTime = 0;
         }
     }
+
+    public void setVerticalVelocity(float y){
+        velocity.y = y;
+    };
 
 
     public int getHealth() {

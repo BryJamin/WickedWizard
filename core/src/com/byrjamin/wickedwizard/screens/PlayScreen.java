@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
@@ -92,126 +93,14 @@ public class PlayScreen extends AbstractScreen {
 
     public void handleInput(float dt){
 
-        if(!map.isTransitioning()) {
+        //System.out.println("????");
 
+        if(!map.isTransitioning()) {
             InputMultiplexer multiplexer = new InputMultiplexer();
 
             if(!gameOver) {
                 multiplexer.addProcessor(controlschemeDetector);
-                multiplexer.addProcessor(new InputAdapter() {
-
-                    @Override
-                    public boolean touchDown(int x, int y, int pointer, int button) {
-
-                        float x1 = Gdx.input.getX(pointer);
-                        float y1 = Gdx.input.getY(pointer);
-                        input = new Vector3(x1, y1, 0);
-                        touchDownInput = new Vector3(x1, y1, 0);
-
-                        gamePort.unproject(input);
-                        gamePort.unproject(touchDownInput);
-
-
-
-                        System.out.println(pointer);
-
-
-                        //if you touch a platform you grappl up towards it.
-
-                        //If you touch the ground below said platform you drop below it.
-
-                        //If you
-
-
-                            Wizard w = map.getActiveRoom().getWizard();
-
-                            boolean fire = true;
-
-                            for(Rectangle r : map.getActiveRoom().getGroundBoundaries()){
-                                if(r.contains(input.x, input.y)){
-                                    if(w.getY() > r.getY() + r.getHeight()){
-                                        w.toggleFallthroughOn();
-                                        fire = false;
-                                        break;
-                                    } else if(w.getY() == r.getY() + r.getHeight()){
-                                        map.getActiveRoom().getWizard().dash(input.x);
-                                        fire = false;
-                                        w.toggleFallthroughOff();
-                                        break;
-                                    } else if(w.getY() < r.getY() + r.getHeight()){
-                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                        w.toggleFallthroughOff();
-                                        //System.out.println("Inside");
-                                        fire = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            for(RoomExit r : map.getActiveRoom().getRoomExits()){
-                                if(r.getBound().contains(input.x, input.y)){
-                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                        w.toggleFallthroughOn();
-                                        //System.out.println("Inside");
-                                        fire = false;
-                                        break;
-
-                                }
-                            }
-
-                            for(RoomWall r : map.getActiveRoom().getRoomWalls()){
-                                if(r.getBounds().contains(input.x, input.y)){
-
-                                    if(w.getY() == r.getBounds().getY() + r.getBounds().getHeight()){
-                                        map.getActiveRoom().getWizard().dash(input.x);
-                                        fire = false;
-                                        w.toggleFallthroughOff();
-                                        break;
-                                    } else {
-                                        map.getActiveRoom().getWizard().flyTo(input.x, input.y);
-                                        w.toggleFallthroughOn();
-                                        //System.out.println("Inside");
-                                        fire = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if(fire) {
-                                map.getActiveRoom().getWizard().startFiring(pointer);
-                            }
-
-
-
-
-
-
-                        //This is so inputs match up to the game co-ordinates.
-                        // your touch down code here
-                        return true; // return true to indicate the event was handled
-                    }
-
-                    @Override
-                    public boolean touchUp(int x, int y, int pointer, int button) {
-
-                        System.out.println(pointer);
-
-                        float x1 = Gdx.input.getX();
-                        float y1 = Gdx.input.getY();
-                        touchUpInput = new Vector3(x1, y1, 0);
-
-                        gamePort.unproject(touchUpInput);
-
-                        if(map.getActiveRoom().getWizard().getInputPoll() == pointer)
-                        map.getActiveRoom().getWizard().stopFiring();
-
-                        // your touch down code here
-                        return true; // return true to indicate the event was handled
-                    }
-
-
-                });
-
+                multiplexer.addProcessor(new RoomInputAdapter(map.getActiveRoom(), gamePort));
             } else {
                 multiplexer.addProcessor(gestureDetector);
             }
