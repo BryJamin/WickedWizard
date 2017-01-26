@@ -194,14 +194,14 @@ public class Wizard extends Entity{
         currentFrame = currentAnimation.getKeyFrame(animationTime+=dt);
 
         damageFramesUpdate(dt);
-        boundsUpdate();
+        //boundsUpdate();
         //System.out.println(velocity.x * dt);
-        System.out.println(position.x + " BEFORE");
+        //System.out.println(position.x + " BEFORE");
 
         position.add(velocity.x * dt, velocity.y * dt);
-        System.out.println(position.x + " AFTER");
+        //System.out.println(position.x + " AFTER");
         bounds.y = position.y;
-       // bounds.x = position.x;
+        bounds.x = position.x;
     }
 
     public void draw(SpriteBatch batch){
@@ -240,8 +240,8 @@ public class Wizard extends Entity{
         if(!isDashing()) {
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
-            this.moveTarget = dashTarget;
-            direction = moveTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
+            this.xFlyTarget = dashTarget;
+            direction = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
         }
     }
 
@@ -269,25 +269,22 @@ public class Wizard extends Entity{
 
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
-        if(moveTarget <= getCenterX()){
-            velocity.x = (-MOVEMENT);
-            position.add(velocity.x * dt, 0);
-            //position.x = position.x - MOVEMENT * dt;
-            boundsUpdate();
 
-            if(this.getCenterX() <= moveTarget){
-                this.setCenterX(moveTarget);
-                movementState = MOVESTATE.STANDING;
+        if(direction == DIRECTION.LEFT) {
+            if (xFlyTarget <= getCenterX()) {
+                velocity.x = (-MOVEMENT);
+            } else {
+                this.setCenterX(xFlyTarget);
                 velocity.x = 0;
+                movementState = MOVESTATE.STANDING;
             }
         }
 
-        if(moveTarget >= getCenterX()){
-            velocity.x = (MOVEMENT);
-            position.add(velocity.x * dt, 0);
-            boundsUpdate();
-            if(this.getCenterX() >= moveTarget){
-                this.setCenterX(moveTarget);
+        if(direction == DIRECTION.RIGHT) {
+            if (xFlyTarget >= getCenterX()) {
+                velocity.x = (MOVEMENT);
+            } else {
+                this.setCenterX(xFlyTarget);
                 velocity.x = 0;
                 movementState = MOVESTATE.STANDING;
             }
@@ -299,8 +296,6 @@ public class Wizard extends Entity{
         if(Math.abs(velocity.x) < MAX_GRAPPLE_MOVEMENT && Math.abs(velocity.y) < MAX_GRAPPLE_MOVEMENT) {
             velocity.add(flyVelocity);
         }
-        //position.add(velocity.x * dt, velocity.y * dt);
-        //bounds.y = position.y;
 
         if(bounds.contains(xFlyTarget, yFlyTarget)){
             velocity.x = 0;
@@ -401,6 +396,10 @@ public class Wizard extends Entity{
     public void resetGravity(){
         velocity.y = 0;
         isFalling = false;
+
+        if(movementState == MOVESTATE.STANDING){
+            velocity.x = 0;
+        }
     }
 
     public void fall(){
