@@ -55,7 +55,7 @@ public class RoomInputAdapter extends InputAdapter{
         }
 
         for(RoomExit r : room.getRoomExits()){
-            if(r.getBound().contains(input.x, input.y)){
+            if(r.getBound().contains(input.x, input.y) && r.isOpen()){
                 room.getWizard().flyTo(input.x, input.y);
                 w.toggleFallthroughOn();
                 fire = false;
@@ -64,7 +64,7 @@ public class RoomInputAdapter extends InputAdapter{
         }
 
         for(RoomWall r : room.getRoomWalls()){
-            if(r.getBounds().contains(input.x, input.y)){
+            if(r.getBounds().contains(input.x, input.y) ){
                 if(w.getY() >= r.getBounds().getY() + r.getBounds().getHeight() - 100){
                     room.getWizard().dash(input.x);
                     fire = false;
@@ -74,7 +74,7 @@ public class RoomInputAdapter extends InputAdapter{
         }
 
         for(RoomTeleporter r : room.getRoomTeleporters()){
-            if(r.getBounds().contains(input.x, input.y)){
+            if(r.getBounds().contains(input.x, input.y) && r.isOpen()){
                 r.setActive(true);
                 room.getWizard().flyTo(input.x, input.y);
             } else {

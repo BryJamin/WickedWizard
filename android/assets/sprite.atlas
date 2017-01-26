@@ -4,6 +4,48 @@ size: 1024,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+arrow
+  rotate: false
+  xy: 266, 42
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+arrow
+  rotate: false
+  xy: 854, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+arrow
+  rotate: false
+  xy: 920, 204
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+arrow
+  rotate: false
+  xy: 954, 204
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+arrow
+  rotate: false
+  xy: 988, 204
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+arrow
+  rotate: false
+  xy: 266, 8
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
 biggablobba
   rotate: false
   xy: 2, 10
@@ -41,133 +83,133 @@ biggablobba
   index: 4
 blob
   rotate: false
-  xy: 266, 42
+  xy: 854, 104
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 blob
   rotate: false
-  xy: 266, 42
+  xy: 854, 104
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 blob
   rotate: false
-  xy: 788, 138
+  xy: 888, 138
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 blob_attack
   rotate: false
-  xy: 788, 138
+  xy: 888, 138
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 blob
   rotate: false
-  xy: 854, 204
+  xy: 888, 104
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 blob_attack
   rotate: false
-  xy: 854, 204
+  xy: 888, 104
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 blob_attack
   rotate: false
-  xy: 854, 204
+  xy: 888, 104
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
+  index: 2
 blob_attack
   rotate: false
-  xy: 854, 204
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-blob_dying
-  rotate: false
-  xy: 888, 204
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 0
-blob_dying
-  rotate: false
-  xy: 922, 204
+  xy: 888, 104
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-blob_dying
-  rotate: false
-  xy: 956, 204
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-blob_dying
-  rotate: false
-  xy: 990, 204
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 3
-blob_dying
-  rotate: false
-  xy: 266, 8
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
-blob_dying
-  rotate: false
-  xy: 788, 104
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
-blob_dying
-  rotate: false
-  xy: 822, 138
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 6
-blob_dying
-  rotate: false
-  xy: 822, 104
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 7
 blob_dying
   rotate: false
   xy: 326, 72
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 8
+  index: 0
 blob_dying
   rotate: false
   xy: 360, 72
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 1
+blob_dying
+  rotate: false
+  xy: 394, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+blob_dying
+  rotate: false
+  xy: 428, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+blob_dying
+  rotate: false
+  xy: 462, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+blob_dying
+  rotate: false
+  xy: 496, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+blob_dying
+  rotate: false
+  xy: 530, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+blob_dying
+  rotate: false
+  xy: 564, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+blob_dying
+  rotate: false
+  xy: 598, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 8
+blob_dying
+  rotate: false
+  xy: 632, 72
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 9
 brick
   rotate: false
-  xy: 394, 72
+  xy: 666, 72
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -195,56 +237,56 @@ bullet_red
   index: -1
 circle
   rotate: false
-  xy: 428, 72
+  xy: 700, 72
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 circle
   rotate: false
-  xy: 462, 72
+  xy: 734, 72
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 circle
   rotate: false
-  xy: 496, 72
+  xy: 768, 72
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 circle
   rotate: false
-  xy: 530, 72
+  xy: 802, 72
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 circle
   rotate: false
-  xy: 564, 72
+  xy: 836, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 circle
   rotate: false
-  xy: 598, 72
+  xy: 870, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 circle
   rotate: false
-  xy: 632, 72
+  xy: 904, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 circle
   rotate: false
-  xy: 666, 72
+  xy: 300, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -321,91 +363,91 @@ door
   index: 9
 exit_arrow
   rotate: false
-  xy: 700, 72
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 0
-exit_arrow
-  rotate: false
-  xy: 734, 72
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 1
-exit_arrow
-  rotate: false
-  xy: 768, 70
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-exit_arrow
-  rotate: false
-  xy: 802, 70
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 3
-exit_arrow
-  rotate: false
-  xy: 836, 70
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
-exit_arrow
-  rotate: false
-  xy: 300, 38
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
-explosion
-  rotate: false
   xy: 334, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
-explosion
+exit_arrow
   rotate: false
   xy: 368, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-explosion
+exit_arrow
   rotate: false
   xy: 402, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-explosion
+exit_arrow
   rotate: false
   xy: 436, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
-explosion
-  rotate: false
-  xy: 436, 38
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
-explosion
+exit_arrow
   rotate: false
   xy: 470, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
-explosion
+exit_arrow
   rotate: false
   xy: 504, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+explosion
+  rotate: false
+  xy: 538, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+explosion
+  rotate: false
+  xy: 572, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+explosion
+  rotate: false
+  xy: 606, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+explosion
+  rotate: false
+  xy: 640, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+explosion
+  rotate: false
+  xy: 640, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+explosion
+  rotate: false
+  xy: 674, 38
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+explosion
+  rotate: false
+  xy: 708, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -424,296 +466,310 @@ frost
   orig: 160, 160
   offset: 0, 0
   index: -1
+grate
+  rotate: false
+  xy: 788, 172
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+highlightgrate
+  rotate: false
+  xy: 788, 106
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
 ladder
   rotate: false
-  xy: 538, 38
+  xy: 742, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 silverhead_charging
   rotate: false
-  xy: 572, 38
+  xy: 776, 38
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
-silverhead_charging
-  rotate: false
-  xy: 606, 38
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 1
-silverhead_charging
-  rotate: false
-  xy: 640, 38
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-silverhead_charging
-  rotate: false
-  xy: 674, 38
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 3
-silverhead_charging
-  rotate: false
-  xy: 708, 38
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
 silverhead_charging
   rotate: false
   xy: 300, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 5
-silverhead_hiding
-  rotate: false
-  xy: 334, 4
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 0
-silverhead_standing
+  index: 1
+silverhead_charging
   rotate: false
   xy: 334, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-silverhead_hiding
+silverhead_charging
   rotate: false
   xy: 368, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
-silverhead_hiding
+  index: 3
+silverhead_charging
   rotate: false
   xy: 402, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
-silverhead_hiding
+  index: 4
+silverhead_charging
   rotate: false
   xy: 436, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
+  index: 5
 silverhead_hiding
   rotate: false
   xy: 470, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 0
+silverhead_standing
+  rotate: false
+  xy: 470, 4
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
 silverhead_hiding
   rotate: false
   xy: 504, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 5
+  index: 1
 silverhead_hiding
   rotate: false
   xy: 538, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 2
+silverhead_hiding
+  rotate: false
+  xy: 572, 4
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+silverhead_hiding
+  rotate: false
+  xy: 606, 4
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+silverhead_hiding
+  rotate: false
+  xy: 640, 4
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+silverhead_hiding
+  rotate: false
+  xy: 674, 4
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 6
 silverhead_standing
   rotate: false
-  xy: 572, 4
+  xy: 708, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 silverhead_standing
   rotate: false
-  xy: 606, 4
+  xy: 742, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 sprite_health0
   rotate: false
-  xy: 640, 4
+  xy: 776, 4
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health1
   rotate: false
-  xy: 674, 4
+  xy: 810, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health2
   rotate: false
-  xy: 708, 4
+  xy: 844, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health3
   rotate: false
-  xy: 742, 36
+  xy: 878, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health4
   rotate: false
-  xy: 776, 36
+  xy: 810, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health5
   rotate: false
-  xy: 810, 36
+  xy: 844, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 squ_dash
   rotate: false
-  xy: 742, 2
+  xy: 878, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 squ_dash
   rotate: false
-  xy: 776, 2
+  xy: 912, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 squ_dash
   rotate: false
-  xy: 810, 2
+  xy: 912, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 squ_dash
   rotate: false
-  xy: 844, 36
+  xy: 922, 170
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 squ_dash
   rotate: false
-  xy: 844, 2
+  xy: 922, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 squ_dash
   rotate: false
-  xy: 856, 170
+  xy: 956, 170
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 squ_dash
   rotate: false
-  xy: 856, 136
+  xy: 990, 170
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 squ_firing
   rotate: false
-  xy: 890, 170
+  xy: 956, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
 squ_firing
   rotate: false
-  xy: 890, 170
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 5
-squ_firing
-  rotate: false
-  xy: 890, 170
+  xy: 956, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-squ_walk
+squ_firing
   rotate: false
-  xy: 890, 170
+  xy: 956, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 5
 squ_walk
   rotate: false
-  xy: 890, 170
+  xy: 956, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 0
+squ_walk
+  rotate: false
+  xy: 956, 136
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
 squ_firing
   rotate: false
-  xy: 890, 136
+  xy: 990, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 squ_firing
   rotate: false
-  xy: 890, 136
+  xy: 990, 136
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 squ_firing
   rotate: false
-  xy: 924, 170
+  xy: 938, 102
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 squ_walk
   rotate: false
-  xy: 924, 136
+  xy: 972, 102
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 squ_walk
   rotate: false
-  xy: 924, 136
+  xy: 972, 102
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 squ_walk
   rotate: false
-  xy: 958, 170
+  xy: 946, 68
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 tele
   rotate: false
-  xy: 788, 172
+  xy: 854, 172
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

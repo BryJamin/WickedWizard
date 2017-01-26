@@ -20,7 +20,7 @@ public class RoomTeleporter {
     private float posY;
 
     private float height = Measure.units(10);
-    private float width = Measure.units(5);
+    private float width = Measure.units(10);
 
     private boolean flip;
 
@@ -43,7 +43,7 @@ public class RoomTeleporter {
         this.exit = exit;
         bounds = new Rectangle(posX, posY, width, height);
 
-        currentFrame = PlayScreen.atlas.findRegion("tele");
+        currentFrame = PlayScreen.atlas.findRegion("grate");
     }
 
 
@@ -51,18 +51,18 @@ public class RoomTeleporter {
     public void draw(SpriteBatch batch){
 
         if(open){
-            drawingColor = Color.GREEN;
+            batch.draw( PlayScreen.atlas.findRegion("highlightgrate"), posX - Measure.units(0.5f), posY - Measure.units(0.5f), width + Measure.units(1), height + Measure.units(1));
         } else {
-            drawingColor = Color.RED;
+            //drawingColor = Color.RED;
         }
 
         if(active && open) {
-            drawingColor = Color.WHITE;
+            //drawingColor = Color.WHITE;
         }
 
-        batch.setColor(drawingColor);
-        batch.draw(currentFrame, posX - Measure.units(8f), posY - Measure.units(10), Measure.units(20), Measure.units(20));
-        batch.setColor(Color.WHITE);
+       // batch.setColor(drawingColor);
+        batch.draw(currentFrame, posX, posY, width, height);
+       // batch.setColor(Color.WHITE);
 
         drawingColor = Color.WHITE;
         BoundsDrawer.drawBounds(batch, bounds);
@@ -81,6 +81,10 @@ public class RoomTeleporter {
 
     public void setActive(boolean active){
         this.active = active;
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 
     public Rectangle getBounds() {

@@ -12,14 +12,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.*;
-import com.byrjamin.wickedwizard.helper.StateTimer;
+import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
-import com.byrjamin.wickedwizard.helper.Reloader;
+import com.byrjamin.wickedwizard.helper.timer.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -195,10 +195,13 @@ public class Wizard extends Entity{
 
         damageFramesUpdate(dt);
         boundsUpdate();
-        System.out.println(velocity.x);
+        //System.out.println(velocity.x * dt);
+        System.out.println(position.x + " BEFORE");
 
         position.add(velocity.x * dt, velocity.y * dt);
+        System.out.println(position.x + " AFTER");
         bounds.y = position.y;
+       // bounds.x = position.x;
     }
 
     public void draw(SpriteBatch batch){
@@ -309,6 +312,8 @@ public class Wizard extends Entity{
             movementState = MOVESTATE.STANDING;
 
         }
+
+        fallThrough = true;
 
     }
 

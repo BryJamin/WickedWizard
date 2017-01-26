@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.helper;
+package com.byrjamin.wickedwizard.helper.timer;
 
 /**
  * Created by Home on 01/01/2017.

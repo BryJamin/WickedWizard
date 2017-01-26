@@ -114,4 +114,8 @@ public class RoomExit {
     public Rectangle getBound() {
         return bound;
     }
+
+    public boolean isOpen() {
+        return open;
+    }
 }
