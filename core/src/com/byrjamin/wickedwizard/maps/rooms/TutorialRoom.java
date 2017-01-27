@@ -228,9 +228,8 @@ public class TutorialRoom extends Room {
         }
 
         if(dummy.state == Enemy.STATE.DYING){
-
+            isTutorialComplete = true;
             if(dialogue != DIALOGUETREE.ENDING) {
-                isTutorialComplete = true;
                 currentString = early_finish;
             } else {
                 currentString = finish;
