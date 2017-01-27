@@ -28,4 +28,12 @@ public class StateTimer {
         countDown = startTime;
     }
 
+    public void setStartTime(float startTime) {
+        this.startTime = startTime;
+    }
+
+
+    public void setCountDown(float countDown) {
+        this.countDown = countDown;
+    }
 }

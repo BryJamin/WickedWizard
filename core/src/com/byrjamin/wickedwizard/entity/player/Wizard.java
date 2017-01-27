@@ -209,6 +209,8 @@ public class Wizard extends Entity{
             return;
         }
 
+        activeBullets.draw(batch);
+
         if(!isInvisible) {
             boolean flip = (getDirection() == DIRECTION.LEFT);
             batch.draw(currentFrame, flip ? position.x + WIDTH + Measure.units(0.5f) : position.x - Measure.units(0.5f), position.y, flip ? - (WIDTH + WIDTH / 6) : WIDTH + WIDTH / 6, HEIGHT + HEIGHT / 6);
@@ -218,7 +220,6 @@ public class Wizard extends Entity{
             batch.draw(windUpAnimation.getKeyFrame(chargeTime), getCenterX() - 250, getCenterY() - 270, 500, 500);
         }
 
-        activeBullets.draw(batch);
         BoundsDrawer.drawBounds(batch, bounds);
     }
 
@@ -543,6 +544,14 @@ public class Wizard extends Entity{
 
     public boolean isCharing(){
         return currentState == STATE.CHARGING;
+    }
+
+    public boolean isState(STATE state){
+        return state == currentState;
+    }
+
+    public boolean isMovementState(MOVESTATE state){
+        return state == movementState;
     }
 
     public boolean isDashing(){

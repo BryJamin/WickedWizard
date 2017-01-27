@@ -31,7 +31,7 @@ public abstract class Enemy extends Entity{
 
     public STATE state;
 
-    private float health;
+    protected float health;
 
     public boolean isFlashing;
 

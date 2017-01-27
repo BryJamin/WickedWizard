@@ -163,7 +163,6 @@ public class PlayScreen extends AbstractScreen {
 
         if(gameOver){
             font.draw(game.batch, "You died :[\nTap to restart", 550, gamecam.viewportHeight - 500, Measure.units(40), Align.center, true);
-
         }
 
         game.batch.end();

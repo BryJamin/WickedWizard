@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
 
 /**
  * Created by Home on 24/12/2016.
@@ -28,7 +29,7 @@ public class Map {
     public Map(){
 
         rooms = new Room[][]{
-                {null, null, new BattleRoom(0), new BattleRoom(), new BattleRoom(),null, null},
+                {null, null, new TutorialRoom(), new BattleRoom(), new BattleRoom(),null, null},
                 {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, null, null},
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
         roomSetup();

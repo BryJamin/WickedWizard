@@ -1,0 +1,34 @@
+package com.byrjamin.wickedwizard.entity.enemies;
+
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.byrjamin.wickedwizard.entity.Entity;
+
+/**
+ * Created by Home on 26/01/2017.
+ */
+public class Dummy extends Enemy{
+
+    public Dummy(float posX, float posY, float width, float height, TextureRegion currentFrame){
+        super();
+        position = new Vector2(posX, posY);
+        WIDTH = width;
+        HEIGHT = height;
+        health = 10;
+        bounds.add(new Rectangle(posX, posY, WIDTH, HEIGHT));
+        this.currentFrame = currentFrame;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+}
