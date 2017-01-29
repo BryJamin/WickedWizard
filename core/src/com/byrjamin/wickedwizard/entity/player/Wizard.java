@@ -172,16 +172,13 @@ public class Wizard extends Entity{
                 gamecam.unproject(input);
                 fireProjectile(input.x, input.y);
                 stateTimer.reset();
-                //reloader.update(dt);
             }
         }
 
 
 
-        if(movementState != MOVESTATE.STANDING && movementState != MOVESTATE.FLYING){
-            if(isDashing()) {
-                currentAnimation = dashAnimation;
-            }
+        if(movementState == MOVESTATE.DASHING){
+            currentAnimation = dashAnimation;
             movementUpdate(dt);
         }
 
@@ -198,9 +195,6 @@ public class Wizard extends Entity{
         currentFrame = currentAnimation.getKeyFrame(animationTime+=dt);
 
         damageFramesUpdate(dt);
-        //boundsUpdate();
-        //System.out.println(velocity.x * dt);
-        //System.out.println(position.x + " BEFORE");
 
         position.add(velocity.x * dt, velocity.y * dt);
         //System.out.println(position.x + " AFTER");

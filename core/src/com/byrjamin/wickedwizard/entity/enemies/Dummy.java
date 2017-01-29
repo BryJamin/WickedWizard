@@ -3,7 +3,10 @@ package com.byrjamin.wickedwizard.entity.enemies;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.entity.Entity;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
 
 /**
  * Created by Home on 26/01/2017.
@@ -15,9 +18,24 @@ public class Dummy extends Enemy{
         position = new Vector2(posX, posY);
         WIDTH = width;
         HEIGHT = height;
-        health = 10;
+        health = 1;
         bounds.add(new Rectangle(posX, posY, WIDTH, HEIGHT));
         this.currentFrame = currentFrame;
+
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f, TextureStrings.EXPLOSION));
+
+    }
+
+
+
+    @Override
+    public void update(float dt, Room r){
+        super.update(dt, r);
+
+        if(getState() == STATE.DYING){
+            dyingUpdate(dt);
+        }
+
     }
 
 
