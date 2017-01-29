@@ -53,6 +53,7 @@ public class Wizard extends Entity{
     private com.byrjamin.wickedwizard.entity.ActiveBullets activeBullets = new com.byrjamin.wickedwizard.entity.ActiveBullets();
 
     private Reloader reloader;
+    private StateTimer stateTimer;
 
     private boolean isFalling = true;
     private boolean fallThrough = false;
@@ -126,6 +127,7 @@ public class Wizard extends Entity{
         bounds = new Rectangle(posX,posY,WIDTH, HEIGHT);
 
         reloader = new Reloader(reloadRate);
+        stateTimer = new StateTimer(reloadRate, 0);
 
         //Note firing animation speed is equal to the reloadRate divided by 10.
         standingAnimation = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
@@ -138,6 +140,8 @@ public class Wizard extends Entity{
 
     public void update(float dt, OrthographicCamera gamecam, Room room){
         //animationTime += dt;
+
+        stateTimer.update(dt);
 
         fallthroughTimer.update(dt);
         if(fallthroughTimer.isFinished()){
@@ -159,15 +163,15 @@ public class Wizard extends Entity{
         //Purely for testing
 
         if(currentState == STATE.FIRING){
-            reloader.update(dt);
                 // stateTime+= dt;
-            if(reloader.isReady()){
+            if(stateTimer.isFinished()){
                 float x1 = Gdx.input.getX(inputPoll);
                 float y1 = Gdx.input.getY(inputPoll);
                 input = new Vector3(x1, y1, 0);
                 //This is so inputs match up to the game co-ordinates.
                 gamecam.unproject(input);
                 fireProjectile(input.x, input.y);
+                stateTimer.reset();
                 //reloader.update(dt);
             }
         }

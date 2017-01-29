@@ -13,6 +13,12 @@ public class StateTimer {
         this.countDown = startTime;
     }
 
+    public StateTimer(float startTime, float countDown){
+        this.startTime = startTime;
+        this.countDown = countDown;
+    }
+
+
 
     public void update(float dt){
         if(countDown > 0) {
