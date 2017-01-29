@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.helper;
+package com.byrjamin.wickedwizard.helper.timer;
 
 /**
  * Class used for reloading a checking if a person can shoot.

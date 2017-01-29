@@ -5,6 +5,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
 import com.byrjamin.wickedwizard.entity.enemies.SilverHead;
+import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 
 import java.util.Arrays;
@@ -49,20 +50,20 @@ public class RoomEnemyWaves {
     public void blob2(Array<Enemy> e){
       //  e.clear();
         e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.defaultTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.defaultTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 
     public void blob3(Array<Enemy> e){
       //  e.clear();
         e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.fastTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.fastTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 
 
     public void blob4(Array<Enemy> e){
      //   e.clear();
         e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
-        e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH, room.HEIGHT - MainGame.GAME_UNITS * 11));
+        e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 
     public void turret(Array<Enemy> e){

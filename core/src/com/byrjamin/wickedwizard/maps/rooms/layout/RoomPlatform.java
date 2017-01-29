@@ -7,10 +7,11 @@ import com.byrjamin.wickedwizard.entity.player.Wizard;
  * Created by Home on 08/01/2017.
  */
 
-//TODO extend rectangle class add a listener to ignore collision bounds?
+//TODO extend rectangle class add a listener to ignore collisionCheck bounds?
 public class RoomPlatform extends Rectangle{
 
     private boolean collisionOn = true;
+    private boolean toggle = true;
 
     public RoomPlatform(float x, float y, float width, float height) {
         super(x, y, width, height);
@@ -28,7 +29,26 @@ public class RoomPlatform extends Rectangle{
 
 
     public void update(Wizard wizard){
-        collisionOn =  wizard.getY() >= y;
+
+        if (wizard.getY() >= getY() + getHeight() - 20) {
+            collisionOn = true;
+        }
+
+        if(wizard.isFallThrough()) {
+            collisionOn = false;
+        }
+    }
+
+    public boolean isCollisionOn() {
+        return collisionOn;
+    }
+
+    public void turnOffCollsion(){
+        collisionOn = false;
+    }
+
+    public void turnOnCollsion(){
+        collisionOn = true;
     }
 
 

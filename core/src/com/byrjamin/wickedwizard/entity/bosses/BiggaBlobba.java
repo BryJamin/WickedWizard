@@ -15,7 +15,7 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.helper.Reloader;
+import com.byrjamin.wickedwizard.helper.timer.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.assets.TextureStrings;

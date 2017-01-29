@@ -17,7 +17,9 @@ public class RoomExit {
     private float posY;
     private float WIDTH;
     private float HEIGHT;
+    private float rotation;
     private boolean open = false;
+    private boolean flip;
     private Room.EXIT_POINT exit;
 
     private Rectangle bound;
@@ -32,13 +34,17 @@ public class RoomExit {
     //private bounds
 
 
-    public RoomExit(float posX, float posY, float WIDTH, float HEIGHT, Room.EXIT_POINT exit) {
+    public RoomExit(float posX, float posY, float WIDTH, float HEIGHT, Room.EXIT_POINT exit, boolean flip) {
         this.posX = posX;
         this.posY = posY;
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
+
+        this.flip = flip;
         this.exit = exit;
+        this.rotation = rotation;
         bound = new Rectangle(posX, posY, WIDTH, HEIGHT);
+
 
         closingAnimation = AnimationPacker.genAnimation(1 / 35f, "door");
         openingAnimation = AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED);
@@ -62,7 +68,16 @@ public class RoomExit {
 
     public void draw(SpriteBatch batch){
         BoundsDrawer.drawBounds(batch, bound);
-        batch.draw(currentAnimation.getKeyFrame(time), posX, posY, HEIGHT + Measure.units(5), HEIGHT);
+
+        float x =  flip ? posX - HEIGHT / 2 : (posX - (WIDTH * 2));
+        float y =  flip ? (posY - (HEIGHT * 1.5f))  : posY;
+
+        float height = flip ? WIDTH : HEIGHT;
+        float width = flip ? WIDTH + Measure.units(5): HEIGHT + Measure.units(5);
+        //HEIGHT + Measure.units(5);
+
+        batch.draw(currentAnimation.getKeyFrame(time), x, y, (width / 2), (height / 2), width,height,1,1,flip ? 90 : rotation);
+       // BoundsDrawer.drawBounds(batch, new Rectangle(x, y, width, height));
     }
 
 
@@ -98,5 +113,9 @@ public class RoomExit {
 
     public Rectangle getBound() {
         return bound;
+    }
+
+    public boolean isOpen() {
+        return open;
     }
 }

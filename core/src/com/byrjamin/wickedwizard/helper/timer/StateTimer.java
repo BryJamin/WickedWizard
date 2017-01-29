@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.helper;
+package com.byrjamin.wickedwizard.helper.timer;
 
 /**
  * Created by Home on 01/01/2017.
@@ -12,6 +12,12 @@ public class StateTimer {
         this.startTime = startTime;
         this.countDown = startTime;
     }
+
+    public StateTimer(float startTime, float countDown){
+        this.startTime = startTime;
+        this.countDown = countDown;
+    }
+
 
 
     public void update(float dt){
@@ -28,4 +34,12 @@ public class StateTimer {
         countDown = startTime;
     }
 
+    public void setStartTime(float startTime) {
+        this.startTime = startTime;
+    }
+
+
+    public void setCountDown(float countDown) {
+        this.countDown = countDown;
+    }
 }

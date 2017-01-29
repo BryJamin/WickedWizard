@@ -41,8 +41,6 @@ public class RoomGround {
 
         noOfColumns = (int) (width / size);
 
-        System.out.println(noOfColumns);
-
         this.width = width / columns;
         this.height = height;
         xPositions = new float[50];
@@ -96,7 +94,7 @@ public class RoomGround {
         }
 
 
-        //BoundsDrawer.drawBounds(batch, bounds);
+        BoundsDrawer.drawBounds(batch, bounds);
     }
 
 

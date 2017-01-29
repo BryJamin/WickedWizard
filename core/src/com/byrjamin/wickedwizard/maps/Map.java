@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
 
 /**
  * Created by Home on 24/12/2016.
@@ -20,12 +21,16 @@ public class Map {
     private int mapY;
     private int mapX;
 
+    private float mapBlinker;
+    private boolean blink = true;
+
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
     public Map(){
 
         rooms = new Room[][]{
-                {null, null, new BattleRoom(0), new BattleRoom(), new BattleRoom(),null, null},
+                {null, null, new TutorialRoom(), null, null,null, null},
+                {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(),null, null},
                 {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, null, null},
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
         roomSetup();
@@ -76,23 +81,36 @@ public class Map {
 
 
     public void update(float dt, OrthographicCamera gamecam){
-            rooms[mapY][mapX].update(dt, gamecam);
 
-            if(rooms[mapY][mapX].isExitTransitionFinished()){
-                if(rooms[mapY][mapX].isExitPointRight()){
-                    rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
-                    mapX++;
-                } else if(rooms[mapY][mapX].isExitPointLeft()){
-                    rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
-                    mapX--;
-                } else if(rooms[mapY][mapX].isExitPointUp()) {
-                    rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
-                    mapY--;
-                } else if(rooms[mapY][mapX].isExitPointDown()){
-                    rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
-                    mapY++;
-                }
+        mapBlinker += dt;
+
+        if(mapBlinker > 1.0){
+            blink = !blink;
+            mapBlinker = 0;
+        }
+
+
+        rooms[mapY][mapX].update(dt, gamecam);
+
+        if(rooms[mapY][mapX].isExitTransitionFinished()){
+            if(rooms[mapY][mapX].isExitPointRight()){
+                rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
+                mapX++;
+            } else if(rooms[mapY][mapX].isExitPointLeft()){
+                rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
+                mapX--;
+            } else if(rooms[mapY][mapX].isExitPointUp()) {
+                rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
+                mapY--;
+            } else if(rooms[mapY][mapX].isExitPointDown()){
+                rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
+                mapY++;
             }
+        }
+
+
+        //System.out.println(rooms[mapY][mapX].state);
+
     }
 
     public boolean isTransitioning(){
@@ -110,7 +128,7 @@ public class Map {
 
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
-        mapRenderer.setColor(Color.GRAY);
+        mapRenderer.setColor(Color.CYAN);
 
         float SIZE = Measure.units(3);
         float mapy = 1000;
@@ -140,13 +158,17 @@ public class Map {
             }
         }
 
-
-
         mapRenderer.setColor(Color.WHITE);
         mapRenderer.rect(mapx, mapy, SIZE, SIZE);
-        mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
+
 
         mapRenderer.end();
+
+        if(blink) {
+            mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
+            mapRenderer.end();
+        }
 
 
         batch.begin();

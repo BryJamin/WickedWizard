@@ -3,21 +3,26 @@ package com.byrjamin.wickedwizard.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
 
 
 //TODO
@@ -34,7 +39,10 @@ public class PlayScreen extends AbstractScreen {
 
     public static TextureAtlas atlas;
 
+    private Pixmap pixmap;
+
     GestureDetector gestureDetector;
+    GestureDetector controlschemeDetector;
 
     Vector3 input = new Vector3();
     Vector3 touchDownInput = new Vector3();
@@ -54,6 +62,8 @@ public class PlayScreen extends AbstractScreen {
         super(game);
 
         gestureDetector = new GestureDetector(new gestures());
+        controlschemeDetector = new GestureDetector(new controlSchemeGesture());
+
 
         font.getData().setScale(5, 5);
 
@@ -61,6 +71,15 @@ public class PlayScreen extends AbstractScreen {
 
         map = new Map();
         gamecam = new OrthographicCamera();
+
+/*        pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.drawCircle(15, 15, 10);
+
+
+        Pixmap pm = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        Gdx.input.setCursorImage(pm, pm.getWidth() / 2, pm.getHeight() / 2);
+        pm.dispose();*/
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 
@@ -74,61 +93,14 @@ public class PlayScreen extends AbstractScreen {
 
     public void handleInput(float dt){
 
-        if(!map.isTransitioning()) {
+        //System.out.println("????");
 
+        if(!map.isTransitioning()) {
             InputMultiplexer multiplexer = new InputMultiplexer();
 
             if(!gameOver) {
-                multiplexer.addProcessor(new InputAdapter() {
-
-                    @Override
-                    public boolean touchDown(int x, int y, int pointer, int button) {
-
-
-                        //System.out.println("TOUCHDOWN");
-
-                        float x1 = Gdx.input.getX();
-                        float y1 = Gdx.input.getY();
-                        input = new Vector3(x1, y1, 0);
-                        touchDownInput = new Vector3(x1, y1, 0);
-
-                        gamePort.unproject(input);
-                        gamePort.unproject(touchDownInput);
-
-                        boolean tapped = map.getActiveRoom().tapArrow(input.x, input.y);
-
-
-                        if (!tapped) {
-
-                            if (input.y <= map.getActiveRoom().groundHeight()) {
-                                map.getActiveRoom().getWizard().dash(input.x);
-                            } else {
-                                map.getActiveRoom().getWizard().startFiring();
-                            }
-                        }
-
-
-                        //This is so inputs match up to the game co-ordinates.
-                        // your touch down code here
-                        return true; // return true to indicate the event was handled
-                    }
-
-                    @Override
-                    public boolean touchUp(int x, int y, int pointer, int button) {
-
-                        float x1 = Gdx.input.getX();
-                        float y1 = Gdx.input.getY();
-                        touchUpInput = new Vector3(x1, y1, 0);
-
-                        gamePort.unproject(touchUpInput);
-                        map.getActiveRoom().getWizard().stopFiring();
-                        // your touch down code here
-                        return true; // return true to indicate the event was handled
-                    }
-
-
-                });
-
+                multiplexer.addProcessor(controlschemeDetector);
+                multiplexer.addProcessor(new RoomInputAdapter(map.getActiveRoom(), gamePort));
             } else {
                 multiplexer.addProcessor(gestureDetector);
             }
@@ -142,11 +114,23 @@ public class PlayScreen extends AbstractScreen {
     }
 
     public void update(float dt){
-        handleInput(dt);
-        map.update(dt, gamecam);
-        if(map.getActiveRoom().getWizard().isDead()){
-            gameOver = true;
+
+        //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
+        //TODO touching the screen pause the game.
+        //caps the delta time if the game is paused for some reason.
+
+        if(dt > 0.20) {
+            System.out.println(" dt" + dt);
         }
+
+        if(dt < 0.20f) {
+            handleInput(dt);
+            map.update(dt, gamecam);
+            if (map.getActiveRoom().getWizard().isDead()) {
+                gameOver = true;
+            }
+        }
+        //handleInput(dt);
     }
 
     @Override
@@ -171,6 +155,7 @@ public class PlayScreen extends AbstractScreen {
 
         map.draw(game.batch);
 
+
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
             game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().HEIGHT - 150,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
@@ -178,10 +163,11 @@ public class PlayScreen extends AbstractScreen {
 
         if(gameOver){
             font.draw(game.batch, "You died :[\nTap to restart", 550, gamecam.viewportHeight - 500, Measure.units(40), Align.center, true);
-
         }
 
         game.batch.end();
+
+        Gdx.input.setCursorImage(pixmap, 16, 16);
 
     }
 
@@ -236,6 +222,30 @@ public class PlayScreen extends AbstractScreen {
         public boolean longPress(float x, float y) {
 
             return true;
+        }
+
+    }
+
+    public class controlSchemeGesture extends AbstractGestureDectector {
+
+        @Override
+        public boolean longPress(float x, float y) {
+       //     System.out.println("longpress");
+//            map.getActiveRoom().getWizard().switchControlScheme();
+            return true;
+        }
+
+        public boolean fling(float velocityX, float velocityY, int button) {
+/*
+
+
+            if(Math.abs(velocityX) > 5000) {
+                map.getActiveRoom().getWizard().switchControlScheme();
+                System.out.println("fling x velocity :" +velocityX);
+            }
+*/
+
+            return false;
         }
 
     }

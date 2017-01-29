@@ -16,8 +16,9 @@ public class RoomWall {
     private float WIDTH;
     private float HEIGHT;
 
-    private float TEXT_SIZE;
+    private float TILE_SIZE;
 
+    private int noOfRows;
     private int noOfColumns;
 
     private Rectangle bounds;
@@ -25,15 +26,20 @@ public class RoomWall {
     private TextureRegion skin;
 
 
-    public RoomWall(float posX, float posY, float WIDTH, float HEIGHT) {
+    public RoomWall(float posX, float posY, float WIDTH, float HEIGHT, float TILE_SIZE) {
+
         this.posX = posX;
         this.posY = posY;
         this.WIDTH = WIDTH;
-        this.TEXT_SIZE = WIDTH;
+        this.TILE_SIZE = TILE_SIZE;
         this.HEIGHT = HEIGHT;
         bounds = new Rectangle(posX, posY, WIDTH, HEIGHT);
 
-        noOfColumns = (int) HEIGHT / (int) WIDTH;
+        noOfRows = (int) HEIGHT / (int) TILE_SIZE;
+        noOfColumns = (int) WIDTH / (int) TILE_SIZE;
+
+        System.out.println("No rows is" + noOfColumns);
+        System.out.println(noOfRows);
 
         skin = PlayScreen.atlas.findRegion("brick");
 
@@ -47,8 +53,10 @@ public class RoomWall {
     public void draw(SpriteBatch batch){
         BoundsDrawer.drawBounds(batch, bounds);
 
-        for(int i = 0; i < noOfColumns; i++) {
-            batch.draw(skin, posX, posY + (TEXT_SIZE * i), TEXT_SIZE, TEXT_SIZE);
+        for(int j = 0; j < noOfColumns; j++) {
+            for (int i = 0; i < noOfRows; i++) {
+                batch.draw(skin, posX + (TILE_SIZE * j), posY + (TILE_SIZE * i), TILE_SIZE, TILE_SIZE);
+            }
         }
     }
 
