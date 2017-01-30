@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -85,7 +86,7 @@ public class TutorialRoom extends Room {
     private StateTimer timer = new StateTimer(2.0f);
 
 
-    public boolean isTutorialComplete = false;
+    public boolean isTutorialComplete = true;
 
     private Dummy dummy;
 
@@ -244,6 +245,11 @@ public class TutorialRoom extends Room {
     public void draw(SpriteBatch batch) {
         super.draw(batch);
 
-        font.draw(batch, currentString, 0, gamecam.viewportHeight - 500, gamecam.viewportWidth, Align.center, true);
+        font.setColor(Color.WHITE);
+        font.draw(batch, "<-- Touch this area to Shoot and Grapple objects -->", 0, gamecam.viewportHeight - 500, gamecam.viewportWidth, Align.center, true);
+        font.draw(batch, "Leave through this door -->", 500, gamecam.viewportHeight - 800, gamecam.viewportWidth, Align.center, true);
+
+        font.setColor(Color.RED);
+        font.draw(batch, "<-- Touch the ground to Move and Avoid damage-->", 0, 150, gamecam.viewportWidth, Align.center, true);
     }
 }
