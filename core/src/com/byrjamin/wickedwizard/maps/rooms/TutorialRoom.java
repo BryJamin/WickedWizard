@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
+import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -123,6 +124,10 @@ public class TutorialRoom extends Room {
         dummy = new Dummy(WIDTH - Measure.units(10),HEIGHT - Measure.units(10), Measure.units(5), Measure.units(5), PlayScreen.atlas.findRegion("brick"));
         dummy.setDyingAnimation(AnimationPacker.genAnimation(0.5f, TextureStrings.EXPLOSION));
 
+        grapplePoints.add(new GrapplePoint(Measure.units(20), HEIGHT / 2, PlayScreen.atlas.findRegion("grapple")));
+        grapplePoints.add(new GrapplePoint(Measure.units(47), HEIGHT / 2, PlayScreen.atlas.findRegion("grapple")));
+        grapplePoints.add(new GrapplePoint(WIDTH - Measure.units(25), HEIGHT / 2, PlayScreen.atlas.findRegion("grapple")));
+
         this.getEnemies().add(dummy);
     }
 
@@ -139,7 +144,7 @@ public class TutorialRoom extends Room {
         if(alphaPercentage < 0.1){
             fadeIn = true;
             //alphaPercentage = 0;
-        } else if (alphaPercentage > 0.7) {
+        } else if (alphaPercentage > 0.9) {
             fadeIn = false;
             //alphaPercentage = 1;
         }
@@ -153,7 +158,7 @@ public class TutorialRoom extends Room {
                     tutorial_state = TUTORIAL_STATE.SHOOTING;
                     break;
                 case SHOOTING:
-                    tutorial_state = TUTORIAL_STATE.LEAVING;
+                    tutorial_state = TUTORIAL_STATE.GRAPPLING;
                     break;
                 case GRAPPLING:
                     tutorial_state = TUTORIAL_STATE.LEAVING;
@@ -329,14 +334,19 @@ public class TutorialRoom extends Room {
 
             case GRAPPLING:
                 Gdx.gl.glEnable(GL20.GL_BLEND);
+
                 shapeRenderer.setProjectionMatrix(gamecam.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(1,1,1, alphaPercentage);
-                shapeRenderer.rect(0,200,WIDTH, HEIGHT);
+
+                for(GrapplePoint gp : grapplePoints){
+                    shapeRenderer.rect(gp.getBounds().x, gp.getBounds().y, gp.getBounds().getWidth(), gp.getBounds().getHeight());
+                }
+
                 shapeRenderer.end();
                 batch.begin();
-                font.setColor(0,0,0,alphaPercentage);
-                font.draw(batch, " Touch here to Grapply ", 0, gamecam.viewportHeight - 500, gamecam.viewportWidth, Align.center, true);
+                font.setColor(1,1,1,alphaPercentage);
+                font.draw(batch, " Touch these to grapple ", 0, gamecam.viewportHeight - 300, gamecam.viewportWidth, Align.center, true);
                 break;
 
             case LEAVING:

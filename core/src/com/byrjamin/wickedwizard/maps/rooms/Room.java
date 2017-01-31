@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.collider.WizardCollider;
 import com.byrjamin.wickedwizard.item.Item;
+import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomGround;
@@ -51,6 +52,7 @@ public abstract class Room {
     protected Array<RoomExit> roomExits = new Array<RoomExit>();
     protected Array<RoomTeleporter> roomTeleporters = new Array<RoomTeleporter>();
     protected Array<RoomWall> roomWalls = new Array<RoomWall>();
+    protected Array<GrapplePoint> grapplePoints = new Array<GrapplePoint>();
 
     private RoomEnemyUpdater roomEnemyUpdater;
     protected Wizard wizard = new Wizard(WALLWIDTH * 2, 600);
@@ -253,6 +255,10 @@ public abstract class Room {
         }
 
         for(RoomWall r : ground){
+            r.draw(batch);
+        }
+
+        for(GrapplePoint r : grapplePoints){
             r.draw(batch);
         }
 
@@ -462,5 +468,9 @@ public abstract class Room {
 
     public Array<RoomTeleporter> getRoomTeleporters() {
         return roomTeleporters;
+    }
+
+    public Array<GrapplePoint> getGrapplePoints() {
+        return grapplePoints;
     }
 }

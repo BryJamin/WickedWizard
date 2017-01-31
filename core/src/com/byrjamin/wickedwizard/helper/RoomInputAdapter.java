@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomTeleporter;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
@@ -79,6 +80,12 @@ public class RoomInputAdapter extends InputAdapter{
                 room.getWizard().flyTo(input.x, input.y);
             } else {
                 r.setActive(false);
+            }
+        }
+
+        for(GrapplePoint r : room.getGrapplePoints()){
+            if(r.getBounds().contains(input.x, input.y)){
+                room.getWizard().flyTo(input.x, input.y);
             }
         }
 
