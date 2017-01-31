@@ -1,9 +1,12 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.entity.enemies.Dummy;
@@ -32,6 +35,15 @@ public class TutorialRoom extends Room {
     }
 
     private DIALOGUETREE dialogue;
+
+
+    private enum TUTORIAL_STATE {
+        GROUND, SHOOTING, GRAPPLING, LEAVING
+    }
+
+    private TUTORIAL_STATE tutorial_state;
+
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
 
     private String move = "Tap on the ground to move\nTry it";
@@ -83,12 +95,17 @@ public class TutorialRoom extends Room {
 
     private String currentString;
 
-    private StateTimer timer = new StateTimer(2.0f);
+    private StateTimer timer = new StateTimer(7.0f);
 
 
     public boolean isTutorialComplete = true;
 
     private Dummy dummy;
+
+    private float alphaTimer;
+    private float alphaTimeLimit = 1.5f;
+    private float alphaPercentage;
+    private boolean fadeIn = true;
 
 
 
@@ -100,6 +117,8 @@ public class TutorialRoom extends Room {
         font.getData().setScale(5, 5);
         currentString = hello;
         dialogue = DIALOGUETREE.WELCOME;
+
+        tutorial_state = TUTORIAL_STATE.GROUND;
 
         dummy = new Dummy(WIDTH - Measure.units(10),HEIGHT - Measure.units(10), Measure.units(5), Measure.units(5), PlayScreen.atlas.findRegion("brick"));
         dummy.setDyingAnimation(AnimationPacker.genAnimation(0.5f, TextureStrings.EXPLOSION));
@@ -114,6 +133,42 @@ public class TutorialRoom extends Room {
         this.gamecam = gamecam;
 
 
+
+        alphaTimer = fadeIn ? alphaTimer + dt : alphaTimer - dt;
+        alphaPercentage = alphaTimer / alphaTimeLimit;
+        if(alphaPercentage < 0.1){
+            fadeIn = true;
+            //alphaPercentage = 0;
+        } else if (alphaPercentage > 0.7) {
+            fadeIn = false;
+            //alphaPercentage = 1;
+        }
+
+        timer.update(dt);
+
+        if(timer.isFinished() && alphaPercentage < 0.1){
+
+            switch(tutorial_state){
+                case GROUND:
+                    tutorial_state = TUTORIAL_STATE.SHOOTING;
+                    break;
+                case SHOOTING:
+                    tutorial_state = TUTORIAL_STATE.LEAVING;
+                    break;
+                case GRAPPLING:
+                    tutorial_state = TUTORIAL_STATE.LEAVING;
+                    break;
+                case LEAVING:
+                    tutorial_state = TUTORIAL_STATE.GROUND;
+                    break;
+            }
+
+            timer.reset();
+            alphaTimer = 0.1f;
+            fadeIn = true;
+        }
+
+
         if(state != STATE.ENTRY && state != STATE.EXIT) {
 
             if(!isTutorialComplete){
@@ -121,7 +176,6 @@ public class TutorialRoom extends Room {
                 dialogueTree(dt);
             } else {
                 timer.update(dt);
-                System.out.println("unlocked?");
                 unlock();
                 if(timer.isFinished()) {
                     currentString = "";
@@ -245,11 +299,71 @@ public class TutorialRoom extends Room {
     public void draw(SpriteBatch batch) {
         super.draw(batch);
 
-        font.setColor(Color.WHITE);
+        System.out.println(alphaPercentage);
+        batch.end();
+
+        switch(tutorial_state){
+            case GROUND:
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+                shapeRenderer.setProjectionMatrix(gamecam.combined);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(1,1,1, alphaPercentage);
+                shapeRenderer.rect(0,0,WIDTH, 200);
+                shapeRenderer.end();
+                batch.begin();
+                font.setColor(0,0,0,alphaPercentage);
+                font.draw(batch, " Touch here to Move ", 0, 150, gamecam.viewportWidth, Align.center, true);
+                break;
+
+            case SHOOTING:
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+                shapeRenderer.setProjectionMatrix(gamecam.combined);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(1,1,1, alphaPercentage);
+                shapeRenderer.rect(0,200,WIDTH, HEIGHT);
+                shapeRenderer.end();
+                batch.begin();
+                font.setColor(0,0,0,alphaPercentage);
+                font.draw(batch, " Touch here to Shoot ", 0, gamecam.viewportHeight - 500, gamecam.viewportWidth, Align.center, true);
+                break;
+
+            case GRAPPLING:
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+                shapeRenderer.setProjectionMatrix(gamecam.combined);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(1,1,1, alphaPercentage);
+                shapeRenderer.rect(0,200,WIDTH, HEIGHT);
+                shapeRenderer.end();
+                batch.begin();
+                font.setColor(0,0,0,alphaPercentage);
+                font.draw(batch, " Touch here to Grapply ", 0, gamecam.viewportHeight - 500, gamecam.viewportWidth, Align.center, true);
+                break;
+
+            case LEAVING:
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+                shapeRenderer.setProjectionMatrix(gamecam.combined);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(1,1,1, alphaPercentage);
+                shapeRenderer.rect(WIDTH - 100,200,100, 400);
+                shapeRenderer.end();
+                batch.begin();
+                font.setColor(1,1,1,alphaPercentage);
+                font.draw(batch, " Leave through this door --> ", 500, gamecam.viewportHeight - 800, gamecam.viewportWidth, Align.center, true);
+                break;
+
+        }
+
+
+
+/*        font.setColor(1,1,1,alphaPercentage);
         font.draw(batch, "<-- Touch this area to Shoot and Grapple objects -->", 0, gamecam.viewportHeight - 500, gamecam.viewportWidth, Align.center, true);
         font.draw(batch, "Leave through this door -->", 500, gamecam.viewportHeight - 800, gamecam.viewportWidth, Align.center, true);
 
         font.setColor(Color.RED);
         font.draw(batch, "<-- Touch the ground to Move and Avoid damage-->", 0, 150, gamecam.viewportWidth, Align.center, true);
+
+        batch.end();
+        batch.begin();*/
+
     }
 }

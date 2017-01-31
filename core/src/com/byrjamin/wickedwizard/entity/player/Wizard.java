@@ -88,7 +88,8 @@ public class Wizard extends Entity{
 
     private MOVESTATE movementState = MOVESTATE.STANDING;
 
-    private DIRECTION direction = DIRECTION.RIGHT;
+    private DIRECTION facingDirection = DIRECTION.RIGHT;
+    private DIRECTION directionOfTravel = DIRECTION.RIGHT;
 
     //STATS
     private int health = 3;
@@ -210,7 +211,7 @@ public class Wizard extends Entity{
         activeBullets.draw(batch);
 
         if(!isInvisible) {
-            boolean flip = (getDirection() == DIRECTION.LEFT);
+            boolean flip = (getFacingDirection() == DIRECTION.LEFT);
             batch.draw(currentFrame, flip ? position.x + WIDTH + Measure.units(0.5f) : position.x - Measure.units(0.5f), position.y, flip ? - (WIDTH + WIDTH / 6) : WIDTH + WIDTH / 6, HEIGHT + HEIGHT / 6);
         }
 
@@ -231,8 +232,8 @@ public class Wizard extends Entity{
         position.y = bounds.y;
     }
 
-    public DIRECTION getDirection() {
-        return direction;
+    public DIRECTION getFacingDirection() {
+        return facingDirection;
     }
 
     public void dash(float dashTarget) {
@@ -240,7 +241,8 @@ public class Wizard extends Entity{
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
             this.xFlyTarget = dashTarget;
-            direction = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
+            directionOfTravel = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
+            facingDirection = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
         }
     }
 
@@ -249,7 +251,7 @@ public class Wizard extends Entity{
         xFlyTarget = x;
         yFlyTarget = y;
 
-        direction = xFlyTarget > getX() ? DIRECTION.RIGHT : DIRECTION.LEFT;
+        facingDirection = xFlyTarget > getX() ? DIRECTION.RIGHT : DIRECTION.LEFT;
 
         velocity.x = velocity.x > 0 ? MAX_GRAPPLE_LAUNCH / 2 : -MAX_GRAPPLE_LAUNCH / 2;
 
@@ -269,7 +271,7 @@ public class Wizard extends Entity{
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
 
-        if(direction == DIRECTION.LEFT) {
+        if(directionOfTravel == DIRECTION.LEFT) {
             if (xFlyTarget <= getCenterX()) {
                 velocity.x = (-MOVEMENT);
             } else {
@@ -279,7 +281,7 @@ public class Wizard extends Entity{
             }
         }
 
-        if(direction == DIRECTION.RIGHT) {
+        if(directionOfTravel == DIRECTION.RIGHT) {
             if (xFlyTarget >= getCenterX()) {
                 velocity.x = (MOVEMENT);
             } else {
@@ -437,8 +439,8 @@ public class Wizard extends Entity{
 
         float angle = calculateAngle(getCenterX(), getCenterY(), input_x,input_y);
 
-        if(angle >= 0) direction = (angle <= (Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
-         else direction = (angle >= -(Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
+        if(angle >= 0) facingDirection = (angle <= (Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
+         else facingDirection = (angle >= -(Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
 
         activeBullets.addProjectile(new Projectile.ProjectileBuilder(getCenterX() , getCenterY(), input_x,input_y)
                 .damage(damage)
