@@ -92,6 +92,33 @@ public abstract class Room {
     private RoomBackground roomBackground;
     protected RoomGround roomGround;
 
+    public Room(int scalex, int scaley) {
+        WIDTH = WIDTH * scalex;
+        HEIGHT = HEIGHT * scaley;
+
+        roomEnemyUpdater = new RoomEnemyUpdater();
+        roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this,WIDTH, Measure.units(10), false);
+        roomEnemyWaves = new RoomEnemyWaves(this);
+        sectionSetup();
+
+        leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
+        rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
+        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
+        ground.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
+
+//        platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
+        state = STATE.ENTRY;
+        entry_point = ENTRY_POINT.LEFT;
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(10));
+
+        roomWalls.add(leftWall);
+        roomWalls.add(rightWall);
+
+        groundBoundaries.addAll(roomGround.getBounds());
+        groundBoundaries.addAll(platforms);
+
+    }
+
     public Room(){
         roomEnemyUpdater = new RoomEnemyUpdater();
         roomGround = new RoomGround(PlayScreen.atlas.findRegion("brick"), this,WIDTH, Measure.units(10), false);
@@ -106,24 +133,13 @@ public abstract class Room {
 //        platforms.add(new RoomPlatform(0, groundHeight() + (HEIGHT - groundHeight()) / 2, WIDTH, Measure.units(4)));
         state = STATE.ENTRY;
         entry_point = ENTRY_POINT.LEFT;
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT);
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(10));
 
         roomWalls.add(leftWall);
         roomWalls.add(rightWall);
 
-        Random random = new Random();
-        if(random.nextBoolean()){
-            platforms.add(new RoomPlatform(WIDTH - WALLWIDTH * 9, HEIGHT / 2, WALLWIDTH * 9, WALLWIDTH));
-        }
-
-
-
         groundBoundaries.addAll(roomGround.getBounds());
         groundBoundaries.addAll(platforms);
-        System.out.println("PLATFORM SIZE IS: " + platforms.size);
-        /* for(RoomWall wall : roomWalls){
-            boundaries.add(wall.getBounds());
-        }*/
     }
 
     /**

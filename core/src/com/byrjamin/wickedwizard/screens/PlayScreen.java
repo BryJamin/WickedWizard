@@ -129,6 +129,15 @@ public class PlayScreen extends AbstractScreen {
             if (map.getActiveRoom().getWizard().isDead()) {
                 gameOver = true;
             }
+
+            gamecam.position.set(map.getActiveRoom().getWizard().getCenterX(),gamecam.position.y, 0);
+
+            if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
+                gamecam.position.set(gamePort.getWorldWidth() / 2,gamecam.position.y, 0);
+            } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH){
+                gamecam.position.set((map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2),gamecam.position.y, 0);
+            }
+            gamecam.update();
         }
         //handleInput(dt);
     }
@@ -157,7 +166,7 @@ public class PlayScreen extends AbstractScreen {
 
 
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
-            game.batch.draw(atlas.findRegion("sprite_health0"), (100 * i), map.getActiveRoom().HEIGHT - 150,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            game.batch.draw(atlas.findRegion("sprite_health0"), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
 

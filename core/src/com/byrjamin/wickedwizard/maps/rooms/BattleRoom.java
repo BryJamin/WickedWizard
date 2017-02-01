@@ -16,8 +16,11 @@ public class BattleRoom extends Room {
     public BattleRoom(){
         super();
         roomEnemyWaves = new RoomEnemyWaves(this);
-        //arenaWaves.nextWaveTest(this.getEnemies());
-        //arenaWaves.nextWave(this.getEnemies());
+    }
+
+    public BattleRoom(int scalex, int scaley){
+        super(scalex, scaley);
+        roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
     public BattleRoom(int numberOfWaves){

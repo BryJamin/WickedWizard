@@ -201,7 +201,7 @@ public class TutorialRoom extends Room {
             if(timer.isFinished()){
                 timer.reset();
                 arrayPosition++;
-                System.out.println(arrayPosition);
+                //System.out.println(arrayPosition);
                 if(arrayPosition < helloArray.length) {
                     currentString = helloArray[arrayPosition];
                 } else {
@@ -264,7 +264,6 @@ public class TutorialRoom extends Room {
             timer.update(dt);
             if(timer.isFinished()){
                 timer.reset();
-                System.out.println(arrayPosition);
                 if(arrayPosition < grappleArray.length) {
                     currentString = grappleArray[arrayPosition];
                     arrayPosition++;
@@ -304,7 +303,7 @@ public class TutorialRoom extends Room {
     public void draw(SpriteBatch batch) {
         super.draw(batch);
 
-        System.out.println(alphaPercentage);
+        //System.out.println(alphaPercentage);
         batch.end();
 
         switch(tutorial_state){

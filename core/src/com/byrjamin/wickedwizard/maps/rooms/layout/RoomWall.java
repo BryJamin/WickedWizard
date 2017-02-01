@@ -38,8 +38,8 @@ public class RoomWall {
         noOfRows = (int) HEIGHT / (int) TILE_SIZE;
         noOfColumns = (int) WIDTH / (int) TILE_SIZE;
 
-        System.out.println("No rows is" + noOfColumns);
-        System.out.println(noOfRows);
+/*        System.out.println("No rows is" + noOfColumns);
+        System.out.println(noOfRows);*/
 
         skin = PlayScreen.atlas.findRegion("brick");
 

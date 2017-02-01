@@ -20,15 +20,17 @@ public class RoomBackground {
     private float TILE_WIDTH;
     private float TILE_HEIGHT;
 
-    private int columns = 5;
-    private int rows = 3;
+    private float TILE_SIZE;
+
+    private int columns;
+    private int rows;
 
     private Array<TextureAtlas.AtlasRegion> backgrounds;
 
     private int[] backgroundSelection;
 
 
-    public RoomBackground(Array<TextureAtlas.AtlasRegion> backgrounds, float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT){
+    public RoomBackground(Array<TextureAtlas.AtlasRegion> backgrounds, float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE){
 
         this.backgrounds = backgrounds;
 
@@ -36,11 +38,16 @@ public class RoomBackground {
         this.y = y;
         this.BACKGROUND_WIDTH = BACKGROUND_WIDTH;
         this.BACKGROUND_HEIGHT = BACKGROUND_HEIGHT;
+        this.TILE_SIZE = TILE_SIZE;
 
-        this.TILE_WIDTH = BACKGROUND_WIDTH / columns;
-        this.TILE_HEIGHT = BACKGROUND_HEIGHT / rows;
+        this.columns = (int) BACKGROUND_WIDTH / (int) TILE_SIZE;
+        this.rows = (int) BACKGROUND_HEIGHT / (int) TILE_SIZE;
 
         backgroundSelection = new int[columns * rows];
+
+
+        System.out.println("Columns are " +columns);
+        System.out.println("Rows are " + rows);
 
         backgroundSetUp();
 
@@ -53,7 +60,8 @@ public class RoomBackground {
 
         for(int i = 0; i < columns; i++){
             for(int j = 0; j < rows; j ++){
-                batch.draw(backgrounds.get(backgroundSelection[count]), x + (TILE_WIDTH * i), y + (TILE_HEIGHT * j), TILE_WIDTH, TILE_HEIGHT);
+
+                batch.draw(backgrounds.get(backgroundSelection[count]), x + (TILE_SIZE * i), y + (TILE_SIZE * j), TILE_SIZE, TILE_SIZE);
                 count++;
             }
 

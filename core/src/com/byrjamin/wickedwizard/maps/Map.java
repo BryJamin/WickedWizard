@@ -24,12 +24,14 @@ public class Map {
     private float mapBlinker;
     private boolean blink = true;
 
+    private OrthographicCamera gamecam;
+
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
     public Map(){
 
         rooms = new Room[][]{
-                {null, null, new TutorialRoom(), new BattleRoom(), null,null, null},
+                {null, null, new TutorialRoom(), new BattleRoom(2,1), null,null, null},
                 {null, null, null, new BattleRoom(), new BattleRoom(),null, null},
                 {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, null, null},
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
@@ -82,6 +84,8 @@ public class Map {
 
     public void update(float dt, OrthographicCamera gamecam){
 
+        this.gamecam = gamecam;
+
         mapBlinker += dt;
 
         if(mapBlinker > 1.0){
@@ -132,7 +136,7 @@ public class Map {
 
         float SIZE = Measure.units(3);
         float mapy = 1000;
-        float mapx = 1700;
+        float mapx = gamecam.position.x + 800;
 
         if(mapY + 1 < rooms.length){
             if(rooms[mapY + 1][mapX] != null){
