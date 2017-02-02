@@ -119,6 +119,8 @@ public class TutorialRoom extends Room {
         currentString = hello;
         dialogue = DIALOGUETREE.WELCOME;
 
+        shapeRenderer = new ShapeRenderer();
+
         tutorial_state = TUTORIAL_STATE.GROUND;
 
         dummy = new Dummy(WIDTH - Measure.units(10),HEIGHT - Measure.units(10), Measure.units(5), Measure.units(5), PlayScreen.atlas.findRegion("brick"));

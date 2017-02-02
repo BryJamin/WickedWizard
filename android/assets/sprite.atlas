@@ -227,6 +227,13 @@ blob_attack
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 0
+blob_attack
+  rotate: false
+  xy: 1450, 164
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 2
 blob_attack
   rotate: false
@@ -235,13 +242,6 @@ blob_attack
   orig: 32, 32
   offset: 0, 0
   index: 1
-blob_attack
-  rotate: false
-  xy: 1450, 164
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 0
 blob_dying
   rotate: false
   xy: 1484, 198
@@ -815,14 +815,14 @@ squ_firing
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 5
+  index: 1
 squ_firing
   rotate: false
   xy: 700, 66
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
+  index: 5
 squ_walk
   rotate: false
   xy: 700, 66

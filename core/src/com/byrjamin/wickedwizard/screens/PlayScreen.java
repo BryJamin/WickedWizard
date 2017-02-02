@@ -53,6 +53,9 @@ public class PlayScreen extends AbstractScreen {
     BitmapFont font = new BitmapFont();
 
     Map map;
+
+    private RoomInputAdapter roomInputAdapter;
+
     private GestureDetector gameOvergestureDetector;
 
 
@@ -89,6 +92,8 @@ public class PlayScreen extends AbstractScreen {
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
+        roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
+
     }
 
     public void handleInput(float dt){
@@ -99,8 +104,9 @@ public class PlayScreen extends AbstractScreen {
             InputMultiplexer multiplexer = new InputMultiplexer();
 
             if(!gameOver) {
+                roomInputAdapter.update(map.getActiveRoom(), gamePort, gamecam);
                 multiplexer.addProcessor(controlschemeDetector);
-                multiplexer.addProcessor(new RoomInputAdapter(map.getActiveRoom(), gamePort));
+                multiplexer.addProcessor(roomInputAdapter);
             } else {
                 multiplexer.addProcessor(gestureDetector);
             }

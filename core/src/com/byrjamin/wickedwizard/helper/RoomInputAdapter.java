@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.helper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,11 +21,37 @@ public class RoomInputAdapter extends InputAdapter{
     private Room room;
     private Viewport viewport;
 
+    private int movementPoll = 10;
+    private RoomWall movementWall;
+
     Vector3 input;
 
     public RoomInputAdapter(Room room, Viewport viewport){
         this.room = room;
         this.viewport = viewport;
+    }
+
+
+    public void update(Room room, Viewport viewport, OrthographicCamera gamecam){
+        this.room = room;
+        this.viewport = viewport;
+
+        if(Gdx.input.isTouched(movementPoll) && room.getWizard().getInputPoll() != movementPoll) {
+
+            float x1 = Gdx.input.getX(movementPoll);
+            float y1 = Gdx.input.getY(movementPoll);
+            input = new Vector3(x1, y1, 0);
+            //This is so inputs match up to the game co-ordinates.
+            gamecam.unproject(input);
+
+            //TODO once we add the fixed camera movement screen bit this won't be neccesary
+            if (input.y <= 300) {
+                    room.getWizard().dash(input.x);
+            }
+
+
+        }
+
     }
 
     @Override
@@ -68,6 +95,9 @@ public class RoomInputAdapter extends InputAdapter{
             if(r.getBounds().contains(input.x, input.y) ){
                 if(w.getY() >= r.getBounds().getY() + r.getBounds().getHeight() - 100){
                     room.getWizard().dash(input.x);
+                    movementWall = r;
+                    movementPoll = pointer;
+
                     fire = false;
                     break;
                 }
@@ -85,7 +115,8 @@ public class RoomInputAdapter extends InputAdapter{
 
         for(GrapplePoint r : room.getGrapplePoints()){
             if(r.getBounds().contains(input.x, input.y)){
-                room.getWizard().flyTo(input.x, input.y);
+                room.getWizard().flyTo(r.getCenterX(), r.getCenterY());
+                fire = false;
             }
         }
 
@@ -102,6 +133,11 @@ public class RoomInputAdapter extends InputAdapter{
         if(room.getWizard().getInputPoll() == pointer) {
             room.getWizard().stopFiring();
         }
+
+        if(movementPoll != 10){
+           // movementPoll = 10;54
+        }
+
         return true;
     }
 

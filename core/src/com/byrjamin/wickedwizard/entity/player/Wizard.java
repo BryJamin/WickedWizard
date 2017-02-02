@@ -197,7 +197,10 @@ public class Wizard extends Entity{
 
         damageFramesUpdate(dt);
 
+
         position.add(velocity.x * dt, velocity.y * dt);
+
+
         //System.out.println(position.x + " AFTER");
         bounds.y = position.y;
         bounds.x = position.x;
@@ -237,10 +240,15 @@ public class Wizard extends Entity{
     }
 
     public void dash(float dashTarget) {
-        if(!isDashing()) {
+      //  if(!isDashing()) {
+
+
+        if(!bounds.contains(dashTarget, this.getCenterY())) {
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
             this.xFlyTarget = dashTarget;
+
+            System.out.println("DASH TARGET IS: " + dashTarget);
             directionOfTravel = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
             facingDirection = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
         }
@@ -301,6 +309,12 @@ public class Wizard extends Entity{
         if(bounds.contains(xFlyTarget, yFlyTarget)){
             velocity.x = 0;
 
+            System.out.println(xFlyTarget);
+            System.out.println(yFlyTarget);
+
+            setCenterX(xFlyTarget);
+            setCenterY(yFlyTarget);
+
             if(velocity.y > MAX_GRAPPLE_LAUNCH) {
                 velocity.y = MAX_GRAPPLE_LAUNCH;
             }
@@ -308,6 +322,8 @@ public class Wizard extends Entity{
             movementState = MOVESTATE.STANDING;
 
         }
+
+        System.out.println("Postion.x is inside fly" + position.x);
 
         fallThrough = true;
 
@@ -519,7 +535,7 @@ public class Wizard extends Entity{
     }
 
     public void setCenterY(float posY){
-        position.x = posY - HEIGHT / 2;
+        position.y = posY - HEIGHT / 2;
     }
 
     public float getCenterY(){

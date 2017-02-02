@@ -40,6 +40,15 @@ public class GrapplePoint {
     }
 
 
+    public float getCenterX(){
+        return x + width /2;
+    }
+
+    public float getCenterY(){
+        return y + height /2;
+    }
+
+
 
 
 }
