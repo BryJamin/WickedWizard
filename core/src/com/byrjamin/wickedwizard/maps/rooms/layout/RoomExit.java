@@ -31,18 +31,22 @@ public class RoomExit {
 
     private float time = 25;
 
+    private int leaveX;
+    private int leaveY;
+
     //private bounds
 
 
-    public RoomExit(float posX, float posY, float WIDTH, float HEIGHT, Room.EXIT_POINT exit, boolean flip) {
+    public RoomExit(float posX, float posY, float WIDTH, float HEIGHT, int leaveX, int leaveY, boolean flip) {
         this.posX = posX;
         this.posY = posY;
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
 
+        this.leaveX = leaveX;
+        this.leaveY = leaveY;
+
         this.flip = flip;
-        this.exit = exit;
-        this.rotation = rotation;
         bound = new Rectangle(posX, posY, WIDTH, HEIGHT);
 
 
@@ -117,5 +121,21 @@ public class RoomExit {
 
     public boolean isOpen() {
         return open;
+    }
+
+    public int getLeaveX() {
+        return leaveX;
+    }
+
+    public void setLeaveX(int leaveX) {
+        this.leaveX = leaveX;
+    }
+
+    public int getLeaveY() {
+        return leaveY;
+    }
+
+    public void setLeaveY(int leaveY) {
+        this.leaveY = leaveY;
     }
 }

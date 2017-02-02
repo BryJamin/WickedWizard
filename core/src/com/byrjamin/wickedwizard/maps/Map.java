@@ -97,6 +97,21 @@ public class Map {
         rooms[mapY][mapX].update(dt, gamecam);
 
         if(rooms[mapY][mapX].isExitTransitionFinished()){
+
+            int x = rooms[mapY][mapX].getLeaveX();
+            int y = rooms[mapY][mapX].getLeaveY();
+
+            Wizard w = rooms[mapY][mapX].getWizard();
+
+            mapX = mapX + x;
+            mapY = mapY + y;
+
+
+            System.out.println(mapX);
+
+            rooms[mapY][mapX].enterRoom(w, x, y);
+
+/*
             if(rooms[mapY][mapX].isExitPointRight()){
                 rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
                 mapX++;
@@ -109,7 +124,7 @@ public class Map {
             } else if(rooms[mapY][mapX].isExitPointDown()){
                 rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
                 mapY++;
-            }
+            }*/
         }
 
 

@@ -323,7 +323,6 @@ public class Wizard extends Entity{
 
         }
 
-        System.out.println("Postion.x is inside fly" + position.x);
 
         fallThrough = true;
 

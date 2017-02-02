@@ -11,7 +11,7 @@ public class BattleRoom extends Room {
 
     private RoomEnemyWaves roomEnemyWaves;
 
-    private int numberOfWaves = 1;
+    private int numberOfWaves = 0;
 
     public BattleRoom(){
         super();
@@ -38,7 +38,9 @@ public class BattleRoom extends Room {
     public void update(float dt, OrthographicCamera gamecam){
         super.update(dt, gamecam);
 
-        if(state != STATE.ENTRY && state != STATE.EXIT) {
+        //if(state != STATE.ENTRY && state != STATE.EXIT) {
+
+           // System.out.println(state);
 
             if (numberOfWaves == 0 && getRoomEnemyUpdater().areAllEnemiesKilled()) {
                 unlock();
@@ -50,7 +52,7 @@ public class BattleRoom extends Room {
                 }
             }
 
-        }
+        //}
 
     }
 

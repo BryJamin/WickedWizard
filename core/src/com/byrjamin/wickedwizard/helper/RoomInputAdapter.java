@@ -36,7 +36,12 @@ public class RoomInputAdapter extends InputAdapter{
         this.room = room;
         this.viewport = viewport;
 
-        if(Gdx.input.isTouched(movementPoll) && room.getWizard().getInputPoll() != movementPoll) {
+        boolean test = room.getWizard().isFiring() && movementPoll == room.getWizard().getInputPoll();
+
+        if(Gdx.input.isTouched(movementPoll) && ! test) {
+
+
+            System.out.println("INSIDE");
 
             float x1 = Gdx.input.getX(movementPoll);
             float y1 = Gdx.input.getY(movementPoll);
@@ -44,8 +49,12 @@ public class RoomInputAdapter extends InputAdapter{
             //This is so inputs match up to the game co-ordinates.
             gamecam.unproject(input);
 
-            //TODO once we add the fixed camera movement screen bit this won't be neccesary
+            System.out.println(input.y);
+
             if (input.y <= 300) {
+
+                    System.out.println("INSIDE MOVEMENTWALL BIT");
+
                     room.getWizard().dash(input.x);
             }
 
