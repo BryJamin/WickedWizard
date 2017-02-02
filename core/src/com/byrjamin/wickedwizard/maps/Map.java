@@ -111,6 +111,9 @@ public class Map {
 
             rooms[mapY][mapX].enterRoom(w, x, y);
 
+            System.out.println(y);
+            System.out.println("transition?");
+
 /*
             if(rooms[mapY][mapX].isExitPointRight()){
                 rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);

@@ -35,12 +35,19 @@ public class RoomTeleporter {
 
     private TextureRegion currentFrame;
 
-    public RoomTeleporter(float posX, float posY, Room.EXIT_POINT exit, boolean flip) {
+    private int leaveX;
+    private int leaveY;
+
+    public RoomTeleporter(float posX, float posY, int leaveX, int leaveY, boolean flip) {
         this.posX = posX;
         this.posY = posY;
 
         this.flip = flip;
         this.exit = exit;
+
+        this.leaveX = leaveX;
+        this.leaveY = leaveY;
+
         bounds = new Rectangle(posX, posY, width, height);
 
         currentFrame = PlayScreen.atlas.findRegion("grate");
@@ -99,4 +106,24 @@ public class RoomTeleporter {
     public Room.EXIT_POINT getExit() {
         return exit;
     }
+
+
+    public int getLeaveX() {
+        return leaveX;
+    }
+
+    public int getLeaveY() {
+        return leaveY;
+    }
+
+    public float getCenterX(){
+        return bounds.x + bounds.getWidth() /2;
+    }
+
+    public float getCenterY(){
+        return bounds.y + bounds.getHeight() /2;
+    }
+
+
+
 }

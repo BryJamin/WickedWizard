@@ -166,12 +166,8 @@ public abstract class Room {
         if(state == STATE.UNLOCKED && !transition) {
             for (RoomExit r : roomExits) {
                 if (r.hasEntered(wizard.getBounds())) {
-
-                    System.out.println("TRANSITION");
-
                     transition = true;
                     leaveX = r.getLeaveX();
-                    System.out.println(leaveX);
                     leaveY = r.getLeaveY();
                     break;
                 }
@@ -179,9 +175,12 @@ public abstract class Room {
 
             for (RoomTeleporter r : roomTeleporters) {
                 if (r.hasEntered(wizard.getBounds())) {
-                   // state = STATE.EXIT;
-                    //exit_point = r.getExit();
+                    transition = true;
+                    leaveX = r.getLeaveX();
+                    System.out.println(leaveX);
+                    leaveY = r.getLeaveY();
                     r.setActive(false);
+                    break;
                 }
             }
         }
@@ -258,13 +257,13 @@ public abstract class Room {
 
     public void enterRoom(Wizard w, int enterX, int enterY){
 
-
         this.wizard = w;
         wizard.setCurrentState(Wizard.STATE.IDLE);
         wizard.cancelMovementHorizontalSpeed();
         transition = false;
 
         System.out.println(w.getX()  + "is wiz pos");
+        System.out.println(w.getY() + "is wiz y pos");
 
         for(RoomExit r : roomExits){
             if(r.getLeaveX() == enterX * - 1 && r.getLeaveY() == enterY * - 1){
@@ -273,29 +272,26 @@ public abstract class Room {
                 } else if(r.getLeaveX() > 0){
                     wizard.setX(r.getBound().getX() - wizard.WIDTH);
                 }
-
                 System.out.println("Inside if");
                 break;
             }
         }
 
-        //state = STATE.ENTRY;
-        //this.entry_point = entry_point;
-   /*     switch(entry_point){
-            case LEFT:
-                wizard.setX(WALLWIDTH);
+        for(RoomTeleporter r : roomTeleporters){
+            if(r.getLeaveX() == enterX * - 1 && r.getLeaveY() == enterY * - 1){
+                if(r.getLeaveY() < 0) {
+                    wizard.setCenterX(r.getCenterX());
+                    wizard.setCenterY(r.getCenterY());
+                    System.out.println(r.getCenterY()  + "grate center y is");
+                } else if(r.getLeaveY() > 0){
+                    wizard.setCenterX(r.getCenterX());
+                    wizard.setCenterY(r.getCenterY());
+                    System.out.println(r.getCenterY()  + "grate center y is");
+                }
+                System.out.println("Inside if");
                 break;
-            case RIGHT:
-                wizard.setX((WIDTH - WALLWIDTH * 2) - wizard.WIDTH);
-                break;
-            case UP:
-                wizard.setY((HEIGHT - WALLWIDTH) - wizard.HEIGHT * 2);
-                wizard.setVerticalVelocity(-Measure.units(50f));
-                break;
-            case DOWN:
-                wizard.setY(groundHeight() + 50);
-                break;
-        }*/
+            }
+        }
     }
 
     public boolean isExitTransitionFinished(){
@@ -357,11 +353,11 @@ public abstract class Room {
     }
 
     public void addTopExit() {
-        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, HEIGHT - WALLWIDTH * 3,EXIT_POINT.UP, false));
+        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, HEIGHT - WALLWIDTH * 3,0, -1, false));
     }
 
     public void setBottomExit() {
-        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, WALLWIDTH * 3,EXIT_POINT.DOWN, false));
+        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, WALLWIDTH * 3,0, 1, false));
     }
 
     public void lock() {
