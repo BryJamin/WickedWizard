@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -11,6 +10,7 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.collider.WizardCollider;
 import com.byrjamin.wickedwizard.item.Item;
+import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
@@ -23,14 +23,17 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 
-import java.util.Random;
-
 /**
  * Class is currently a stand-in for a future 'Room' Class
  * The idea behind this class is that Arenas/Rooms will decide their layouts, when they enemies spawn
  * and where the wizard is placed inside them
  */
 public abstract class Room {
+
+
+    public float SECTION_WIDTH = MainGame.GAME_WIDTH;
+    public float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
+
 
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
@@ -47,7 +50,12 @@ public abstract class Room {
 
     private boolean transition;
 
-    private float[] sectionCenters;
+    private Array<MapCoords> mapCoordsArray = new Array<MapCoords>();
+
+    private MapCoords startCoords;
+    private MapCoords wizardCoords;
+    private MapCoords leaveMapCoords;
+    private MapCoords leaveEntryMapCoords;
 
     protected Array<Item> items = new Array<Item>();
     protected Array<RoomExit> roomExits = new Array<RoomExit>();
@@ -69,10 +77,7 @@ public abstract class Room {
     private Array<RoomPlatform> platforms = new Array<RoomPlatform>();
 
     private RoomEnemyWaves roomEnemyWaves;
-    private Array<Sprite> exits = new Array<Sprite>();
 
-    private int leaveX;
-    private int leaveY;
 
     public enum STATE {
        ENTRY, LOCKED, UNLOCKED, EXIT
@@ -80,72 +85,98 @@ public abstract class Room {
 
     public STATE state = STATE.UNLOCKED;
 
-    public enum ENTRY_POINT {
-        RIGHT, LEFT, UP, DOWN
-    }
-
-    public ENTRY_POINT entry_point = ENTRY_POINT.LEFT;;
-
-    public enum EXIT_POINT {
-        RIGHT, LEFT, UP, DOWN
-    }
-
-    public EXIT_POINT exit_point;
-
-
     private RoomBackground roomBackground;
 
-    public Room(int scalex, int scaley) {
+    public Room(MapCoords startCoords, int scalex, int scaley) {
+
+        //mapCoordsArray.add(startCoords);
+        this.startCoords = startCoords;
+        wizardCoords = startCoords;
+
         WIDTH = WIDTH * scalex;
         HEIGHT = HEIGHT * scaley;
-        roomEnemyWaves = new RoomEnemyWaves(this);
-        sectionSetup();
 
-        leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
-        rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
-        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
-        ground.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(10));
+        roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),
+                new MapCoords(startCoords.getX(), startCoords.getY()),
+                new MapCoords(startCoords.getX() - 1, startCoords.getY()), false));
+        roomWalls.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
 
-        roomWalls.add(leftWall);
-        roomWalls.add(rightWall);
+        int xs = (int) WIDTH / (int) SECTION_WIDTH;
+        int ys = (int) HEIGHT / (int) SECTION_HEIGHT;
 
-        groundBoundaries.addAll(platforms);
+        System.out.println(startCoords.getX() + xs);
 
-    }
+        System.out.println("XS is " + xs);
+        System.out.println("YS is " + ys);
 
-    public Room(){
-        roomEnemyUpdater = new RoomEnemyUpdater();
-        roomEnemyWaves = new RoomEnemyWaves(this);
-        sectionSetup();
 
-        leftWall= new RoomWall(0, groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
-        rightWall = new RoomWall(WIDTH - WALLWIDTH,  groundHeight(), WALLWIDTH, HEIGHT, WALLWIDTH);
-        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
-        ground.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
+        roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH,
+                Measure.units(20),
+                new MapCoords(startCoords.getX() + xs - 1, startCoords.getY()),
+                new MapCoords(startCoords.getX() + xs, startCoords.getY()),false));
+        roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
 
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(10));
-
-        roomWalls.addAll(leftWall, rightWall);
-
-        groundBoundaries.addAll(platforms);
-    }
-
-    /**
-     * This assumes each arena has 3 sections. (LEFT, MIDDLE, RIGHT)
-     * A player can dodge between these 3 sections.
-     */
-    public void sectionSetup(){
-        sectionCenters = new float[3];
-        float lengths = WIDTH / 3;
-        for(int i = 0; i < sectionCenters.length; i++){
-            sectionCenters[i] = (i * lengths) + (lengths / 2);
+        for(int i = 0; i < xs; i++){
+            //mapCoordsArray.add(new MapCoords(startCoords.getX() + (i + 1), startCoords.getY()));
         }
+
+        for(int i = 1; i < ys; i++){
+            //mapCoordsArray.add(new MapCoords(startCoords.getX(), startCoords.getY()+ (i + 1)));
+
+            roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight() + SECTION_HEIGHT , WALLWIDTH,
+                    Measure.units(20),
+                    new MapCoords(startCoords.getX() + xs - 1, startCoords.getY() + i),
+                    new MapCoords(startCoords.getX() + xs, startCoords.getY() + i),false));
+            roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
+
+            System.out.println("HMMM " + (startCoords.getY() + i + 1));
+
+        }
+
+
+        for(int i = 0; i < xs; i++){
+            for(int j = 0; j < ys; j++){
+                mapCoordsArray.add(new MapCoords(startCoords.getX() + i, startCoords.getY() + j));
+            }
+        }
+
+
+
+
+        for(MapCoords m : mapCoordsArray){
+            System.out.println(m.toString());
+        }
+
+
+    }
+
+    public Room(MapCoords startCoords){
+        mapCoordsArray.add(startCoords);
+        this.startCoords = startCoords;
+
+        roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),
+                new MapCoords(startCoords.getX(), startCoords.getY()),
+                new MapCoords(startCoords.getX() - 1, startCoords.getY()), false));
+        roomWalls.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH));
+        roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),
+                new MapCoords(startCoords.getX(), startCoords.getY()),
+                new MapCoords(startCoords.getX() + 1, startCoords.getY()),false));
+        roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH));
+
+        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, HEIGHT - WALLWIDTH * 3,
+                new MapCoords(startCoords.getX(), startCoords.getY()),
+                new MapCoords(startCoords.getX(), startCoords.getY() + 1)));
+        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, WALLWIDTH * 3,
+                new MapCoords(startCoords.getX(), startCoords.getY()),
+                new MapCoords(startCoords.getX(), startCoords.getY() - 1)));
+
     }
 
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt, gamecam, this);
+
+        //System.out.println(startCoords.getX() + (int) wizard.getX() / (int) SECTION_WIDTH);
 
         roomEnemyUpdater.update(dt, this);
 
@@ -167,8 +198,8 @@ public abstract class Room {
             for (RoomExit r : roomExits) {
                 if (r.hasEntered(wizard.getBounds())) {
                     transition = true;
-                    leaveX = r.getLeaveX();
-                    leaveY = r.getLeaveY();
+                    leaveMapCoords = r.getLeaveCoords();
+                    leaveEntryMapCoords = r.getRoomCoords();
                     break;
                 }
             }
@@ -176,9 +207,8 @@ public abstract class Room {
             for (RoomTeleporter r : roomTeleporters) {
                 if (r.hasEntered(wizard.getBounds())) {
                     transition = true;
-                    leaveX = r.getLeaveX();
-                    System.out.println(leaveX);
-                    leaveY = r.getLeaveY();
+                    leaveMapCoords = r.getLeaveCoords();
+                    leaveEntryMapCoords = r.getRoomCoords();
                     r.setActive(false);
                     break;
                 }
@@ -195,17 +225,10 @@ public abstract class Room {
 
         doorCollisionCheck(wizard, dt);
         groundsCollisionCheck(wizard);
-        wallCollisionCheck(wizard, leftWall.getBounds(), dt);
-        wallCollisionCheck(wizard, rightWall.getBounds(), dt);
 
-        for(RoomWall r : ceiling){
+        for(RoomWall r : roomWalls){
             wallCollisionCheck(wizard, r.getBounds(), dt);
         }
-
-        for(RoomWall r : ground){
-            wallCollisionCheck(wizard, r.getBounds(), dt);
-        }
-
 
     }
 
@@ -226,14 +249,7 @@ public abstract class Room {
             r.draw(batch);
         }
 
-        rightWall.draw(batch);
-        leftWall.draw(batch);
-
-        for(RoomWall r : ceiling){
-            r.draw(batch);
-        }
-
-        for(RoomWall r : ground){
+        for(RoomWall r : roomWalls){
             r.draw(batch);
         }
 
@@ -245,51 +261,57 @@ public abstract class Room {
 
         wizard.draw(batch);
 
-        if(state == STATE.UNLOCKED) {
-            for(Sprite arrow : exits){
-                arrow.draw(batch);
-                BoundsDrawer.drawBounds(batch, arrow.getBoundingRectangle());
-            }
-        }
-
-
     }
 
-    public void enterRoom(Wizard w, int enterX, int enterY){
+    public void enterRoom(Wizard w, MapCoords oldRoomCoords, MapCoords entryCoords){
 
         this.wizard = w;
         wizard.setCurrentState(Wizard.STATE.IDLE);
         wizard.cancelMovementHorizontalSpeed();
         transition = false;
 
-        System.out.println(w.getX()  + "is wiz pos");
-        System.out.println(w.getY() + "is wiz y pos");
+        boolean forbugs = true;
+
+
+        System.out.println(roomExits.size + " The amount of exits");
 
         for(RoomExit r : roomExits){
-            if(r.getLeaveX() == enterX * - 1 && r.getLeaveY() == enterY * - 1){
-                if(r.getLeaveX() < 0) {
+            if(r.getLeaveCoords().sameCoords(oldRoomCoords)){
+                if(r.getLeaveCoords().getX() < entryCoords.getX()){
                     wizard.setX(r.getBound().getX() + r.getBound().getWidth() + wizard.WIDTH);
-                } else if(r.getLeaveX() > 0){
+                    wizard.setY(r.getBound().getY() + r.getBound().getHeight() / 2);
+                    forbugs = false;
+                } else {
                     wizard.setX(r.getBound().getX() - wizard.WIDTH);
+                    wizard.setY(r.getBound().getY() + r.getBound().getHeight() / 2);
+                    forbugs = false;
                 }
-                System.out.println("Inside if");
+
+                forbugs = false;
                 break;
             }
         }
 
+        System.out.println(oldRoomCoords);
+
+
+        System.out.println("Entered Room Co-ordinates are ");
+
+        for(MapCoords r : mapCoordsArray){
+            System.out.println(r);
+        }
+
+        System.out.println(forbugs + "FORBUGS IS");
+
+        if(forbugs){
+            wizard.setX(WIDTH /2);
+            wizard.setY(HEIGHT / 2);
+        }
+
         for(RoomTeleporter r : roomTeleporters){
-            if(r.getLeaveX() == enterX * - 1 && r.getLeaveY() == enterY * - 1){
-                if(r.getLeaveY() < 0) {
-                    wizard.setCenterX(r.getCenterX());
-                    wizard.setCenterY(r.getCenterY());
-                    System.out.println(r.getCenterY()  + "grate center y is");
-                } else if(r.getLeaveY() > 0){
-                    wizard.setCenterX(r.getCenterX());
-                    wizard.setCenterY(r.getCenterY());
-                    System.out.println(r.getCenterY()  + "grate center y is");
-                }
-                System.out.println("Inside if");
-                break;
+            if(r.getLeaveCoords().sameCoords(oldRoomCoords)){
+                wizard.setCenterX(r.getCenterX());
+                wizard.setCenterY(r.getCenterY());
             }
         }
     }
@@ -332,32 +354,21 @@ public abstract class Room {
     public void setUpBoundaries() {
         groundBoundaries = new Array<Rectangle>();
         groundBoundaries.addAll(platforms);
-        roomWalls = new Array<RoomWall>();
-        roomWalls.addAll(leftWall, rightWall);
+
+        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
+        ground.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
+
         roomWalls.addAll(ceiling);
         roomWalls.addAll(ground);
 
         for(RoomWall roomWall : ground){
             groundBoundaries.add(roomWall.getBounds());
         }
-    }
 
-    public void addLeftExit() {
-        roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20), -1, 0, false));
-        leftWall = new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH);
-    }
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(10));
 
-    public void addRightExit() {
-        roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),1, 0,false));
-        rightWall = new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH);
-    }
+        roomEnemyWaves = new RoomEnemyWaves(this);
 
-    public void addTopExit() {
-        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, HEIGHT - WALLWIDTH * 3,0, -1, false));
-    }
-
-    public void setBottomExit() {
-        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, WALLWIDTH * 3,0, 1, false));
     }
 
     public void lock() {
@@ -373,6 +384,11 @@ public abstract class Room {
 
     }
 
+
+    public void replaceDoorwithWall(RoomExit exit){
+        roomWalls.add(new RoomWall(exit.getBound().x, exit.getBound().y, WALLWIDTH, exit.getBound().getHeight(), WALLWIDTH));
+    }
+
     public void unlock() {
         state = STATE.UNLOCKED;
         for(RoomExit r : roomExits){
@@ -385,29 +401,16 @@ public abstract class Room {
         }
     }
 
-    public boolean inTransition(){
-        return state == STATE.ENTRY || state == STATE.EXIT;
+    public boolean containsCoords(MapCoords mc){
+        for(MapCoords m : mapCoordsArray){
+            if(m.sameCoords(mc)){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public EXIT_POINT getExit_point() {
-        return exit_point;
-    }
 
-    public boolean isExitPointRight(){
-        return exit_point == EXIT_POINT.RIGHT;
-    }
-
-    public boolean isExitPointLeft(){
-        return exit_point == EXIT_POINT.LEFT;
-    }
-
-    public boolean isExitPointUp(){
-        return exit_point == EXIT_POINT.UP;
-    }
-
-    public boolean isExitPointDown(){
-        return exit_point == EXIT_POINT.DOWN;
-    }
 
     public Array<Rectangle> getGroundBoundaries() {
         return groundBoundaries;
@@ -453,16 +456,16 @@ public abstract class Room {
         return state == state.UNLOCKED;
     }
 
-    public float[] getSectionCenters() {
-        return sectionCenters;
+    public MapCoords getLeaveEntryMapCoords() {
+        return leaveEntryMapCoords;
     }
 
-    public int getLeaveX() {
-        return leaveX;
+    public MapCoords getLeaveMapCoords() {
+        return leaveMapCoords;
     }
 
-    public int getLeaveY() {
-        return leaveY;
+    public MapCoords getWizardCoords() {
+        return leaveMapCoords;
     }
 
     public Array<RoomTeleporter> getRoomTeleporters() {

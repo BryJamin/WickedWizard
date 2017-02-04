@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
+import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
@@ -111,8 +112,8 @@ public class TutorialRoom extends Room {
 
 
 
-    public TutorialRoom(){
-        super();
+    public TutorialRoom(MapCoords mapCoords){
+        super(mapCoords);
         font = new BitmapFont();
         getPlatforms().clear();
         font.getData().setScale(5, 5);

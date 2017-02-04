@@ -1,14 +1,12 @@
 package com.byrjamin.wickedwizard.maps.rooms.layout;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -22,32 +20,24 @@ public class RoomTeleporter {
     private float height = Measure.units(10);
     private float width = Measure.units(10);
 
-    private boolean flip;
-
     private boolean active;
-    private boolean open;
-
-    private Room.EXIT_POINT exit;
+    private boolean open = true;
 
     private Rectangle bounds;
 
     private Color drawingColor = Color.WHITE;
 
+    private MapCoords leaveCoords;
+    private MapCoords roomCoords;
+
     private TextureRegion currentFrame;
 
-    private int leaveX;
-    private int leaveY;
-
-    public RoomTeleporter(float posX, float posY, int leaveX, int leaveY, boolean flip) {
+    public RoomTeleporter(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords) {
         this.posX = posX;
         this.posY = posY;
 
-        this.flip = flip;
-        this.exit = exit;
-
-        this.leaveX = leaveX;
-        this.leaveY = leaveY;
-
+        this.roomCoords = roomCoords;
+        this.leaveCoords = leaveCoords;
         bounds = new Rectangle(posX, posY, width, height);
 
         currentFrame = PlayScreen.atlas.findRegion("grate");
@@ -77,6 +67,21 @@ public class RoomTeleporter {
     }
 
 
+    public MapCoords getLeaveCoords() {
+        return leaveCoords;
+    }
+
+    public void setLeaveCoords(MapCoords leaveCoords) {
+        this.leaveCoords = leaveCoords;
+    }
+
+    public MapCoords getRoomCoords() {
+        return roomCoords;
+    }
+
+    public void setRoomCoords(MapCoords roomCoords) {
+        this.roomCoords = roomCoords;
+    }
 
     public void lock(){
         open = false;
@@ -100,20 +105,6 @@ public class RoomTeleporter {
 
     public boolean hasEntered(Rectangle r){
         return open && r.overlaps(bounds) && active;
-    }
-
-
-    public Room.EXIT_POINT getExit() {
-        return exit;
-    }
-
-
-    public int getLeaveX() {
-        return leaveX;
-    }
-
-    public int getLeaveY() {
-        return leaveY;
     }
 
     public float getCenterX(){

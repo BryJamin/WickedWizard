@@ -1,16 +1,15 @@
 package com.byrjamin.wickedwizard.maps;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.byrjamin.wickedwizard.helper.Measure;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
-import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 /**
  * Created by Home on 24/12/2016.
@@ -18,6 +17,9 @@ import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
 public class Map {
 
     private Room[][] rooms;
+
+    private Array<Room> roomArray = new Array<Room>();
+    private Room currentRoom;
     private int mapY;
     private int mapX;
 
@@ -29,13 +31,61 @@ public class Map {
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
     public Map(){
-
+/*
         rooms = new Room[][]{
-                {null, null, new TutorialRoom(), new BattleRoom(2,1), new BattleRoom(),null, null},
+                {null, null, new TutorialRoom(), new BattleRoom(1,2), new BattleRoom(),null, null},
                 {null, null, null, new BattleRoom(), new BattleRoom(),null, null},
                 {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, null, null},
                 {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
-        roomSetup();
+        roomSetup();*/
+
+        currentRoom = new BattleRoom(1, 2, new MapCoords(0,0));
+
+        roomArray.add(currentRoom);
+        roomArray.add(new BattleRoom(new MapCoords(1,0)));
+        roomArray.add(new BattleRoom(new MapCoords(3,1)));
+        roomArray.add(new BattleRoom(new MapCoords(-1,0)));
+        roomArray.add(new BattleRoom(new MapCoords(0,1)));
+        roomArray.add(new BattleRoom(new MapCoords(0,2)));
+        roomArray.add(new BattleRoom(new MapCoords(0,3)));
+        roomArray.add(new ItemRoom(new MapCoords(1,1)));
+        roomArray.add(new BattleRoom(new MapCoords(1,2)));
+        roomArray.add(new BattleRoom(new MapCoords(1,3)));
+        roomArray.add(new BattleRoom(new MapCoords(-1,1)));
+        roomArray.add(new BattleRoom(new MapCoords(-1,2)));
+        roomArray.add(new BossRoom(new MapCoords(-1,3)));
+
+        for(Room r : roomArray){
+            r.setUpBoundaries();
+        }
+
+
+        System.out.println("EXIT NUMBER is " + currentRoom.getRoomExits().size);
+
+
+
+
+        for(int i = roomArray.size - 1; i >= 0; i--) {
+            System.out.println(i + "i is");
+            for(int j = roomArray.get(i).getRoomExits().size - 1; j >= 0; j--) {
+                System.out.println(j + " j is");
+                if(findRoom(roomArray.get(i).getRoomExits().get(j).getLeaveCoords()) == null) {
+                    System.out.println(j + " j is");
+                    roomArray.get(i).replaceDoorwithWall(roomArray.get(i).getRoomExits().get(j));
+                    roomArray.get(i).getRoomExits().removeIndex(j);
+                }
+            }
+        }
+
+        for(int i = roomArray.size - 1; i >= 0; i--) {
+            for(int j = roomArray.get(i).getRoomTeleporters().size - 1; j >= 0; j--) {
+                if(findRoom(roomArray.get(i).getRoomTeleporters().get(j).getLeaveCoords()) == null) {
+                    roomArray.get(i).getRoomTeleporters().removeIndex(j);
+                }
+            }
+        }
+
+
         mapY = 0;
         mapX = 2;
 
@@ -43,7 +93,7 @@ public class Map {
 
     public void roomSetup(){
 
-        for(int i = 0; i < rooms.length; i++){
+/*        for(int i = 0; i < rooms.length; i++){
 
             for(int j = 0; j < rooms[i].length; j++) {
                 if (rooms[i][j] == null) {
@@ -76,7 +126,7 @@ public class Map {
 
                 rooms[i][j].setUpBoundaries();
             }
-        }
+        }*/
     }
 
 
@@ -94,59 +144,43 @@ public class Map {
         }
 
 
-        rooms[mapY][mapX].update(dt, gamecam);
+        currentRoom.update(dt, gamecam);
 
-        if(rooms[mapY][mapX].isExitTransitionFinished()){
+        if(currentRoom.isExitTransitionFinished()){
 
-            int x = rooms[mapY][mapX].getLeaveX();
-            int y = rooms[mapY][mapX].getLeaveY();
+            MapCoords mc = currentRoom.getLeaveMapCoords();
+            MapCoords oc = currentRoom.getLeaveEntryMapCoords();
+            Wizard w = currentRoom.getWizard();
 
-            Wizard w = rooms[mapY][mapX].getWizard();
+            currentRoom = findRoom(mc);
 
-            mapX = mapX + x;
-            mapY = mapY + y;
+            System.out.println("Leaving to " + mc);
+            System.out.println("Entering From " + oc);
+
+            currentRoom.enterRoom(w, oc, mc);
+        }
+    }
 
 
-            System.out.println(mapX);
+    public Room findRoom(MapCoords mc){
 
-            rooms[mapY][mapX].enterRoom(w, x, y);
-
-            System.out.println(y);
-            System.out.println("transition?");
-
-/*
-            if(rooms[mapY][mapX].isExitPointRight()){
-                rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
-                mapX++;
-            } else if(rooms[mapY][mapX].isExitPointLeft()){
-                rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
-                mapX--;
-            } else if(rooms[mapY][mapX].isExitPointUp()) {
-                rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
-                mapY--;
-            } else if(rooms[mapY][mapX].isExitPointDown()){
-                rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
-                mapY++;
-            }*/
+        for(Room r : roomArray) {
+            if(r.containsCoords(mc)){
+                return r;
+            };
         }
 
-
-        //System.out.println(rooms[mapY][mapX].state);
-
+        //TODO return an error
+        return null;
     }
-
-    public boolean isTransitioning(){
-        return rooms[mapY][mapX].state == Room.STATE.ENTRY || rooms[mapY][mapX].state == Room.STATE.EXIT;
-    }
-
 
     public void draw(SpriteBatch batch){
 
-        rooms[mapY][mapX].draw(batch);
+        currentRoom.draw(batch);
 
 
 
-        batch.end();
+/*        batch.end();
 
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -193,7 +227,7 @@ public class Map {
         }
 
 
-        batch.begin();
+        batch.begin();*/
 
 
 
@@ -201,6 +235,6 @@ public class Map {
     }
 
     public Room getActiveRoom() {
-        return rooms[mapY][mapX];
+        return currentRoom;
     }
 }

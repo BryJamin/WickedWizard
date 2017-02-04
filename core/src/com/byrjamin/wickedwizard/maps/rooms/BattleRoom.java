@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 
 /**
@@ -13,18 +14,18 @@ public class BattleRoom extends Room {
 
     private int numberOfWaves = 0;
 
-    public BattleRoom(){
-        super();
+    public BattleRoom(MapCoords mapCoords){
+        super(mapCoords);
         roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
-    public BattleRoom(int scalex, int scaley){
-        super(scalex, scaley);
+    public BattleRoom(int scalex, int scaley, MapCoords mapCoords){
+        super(mapCoords, scalex, scaley);
         roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
-    public BattleRoom(int numberOfWaves){
-        super();
+    public BattleRoom(int numberOfWaves, MapCoords mapCoords){
+        super(mapCoords);
 
         this.numberOfWaves = numberOfWaves;
 

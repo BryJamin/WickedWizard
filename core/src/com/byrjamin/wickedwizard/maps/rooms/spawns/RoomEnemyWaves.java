@@ -42,7 +42,7 @@ public class RoomEnemyWaves {
     public void blob(Array<Enemy> e){
        // e.clear();
         e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
-        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
+        e.add(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT).build());
     }
 
 
@@ -62,7 +62,7 @@ public class RoomEnemyWaves {
 
     public void blob4(Array<Enemy> e){
      //   e.clear();
-        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
+        e.add(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT).build());
         e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 

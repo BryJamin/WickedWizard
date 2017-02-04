@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.maps.MapCoords;
 
 /**
  * Created by Home on 08/01/2017.
@@ -18,9 +18,9 @@ public class RoomExit {
     private float WIDTH;
     private float HEIGHT;
     private float rotation;
-    private boolean open = false;
+    private boolean open = true;
+    private boolean active = true;
     private boolean flip;
-    private Room.EXIT_POINT exit;
 
     private Rectangle bound;
 
@@ -31,20 +31,23 @@ public class RoomExit {
 
     private float time = 25;
 
+    private MapCoords leaveCoords;
+    private MapCoords roomCoords;
+
     private int leaveX;
     private int leaveY;
 
     //private bounds
 
 
-    public RoomExit(float posX, float posY, float WIDTH, float HEIGHT, int leaveX, int leaveY, boolean flip) {
+    public RoomExit(float posX, float posY, float WIDTH, float HEIGHT,MapCoords roomCoords, MapCoords leaveCoords, boolean flip) {
         this.posX = posX;
         this.posY = posY;
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
 
-        this.leaveX = leaveX;
-        this.leaveY = leaveY;
+        this.leaveCoords = leaveCoords;
+        this.roomCoords = roomCoords;
 
         this.flip = flip;
         bound = new Rectangle(posX, posY, WIDTH, HEIGHT);
@@ -59,7 +62,7 @@ public class RoomExit {
 
 
     public boolean hasEntered(Rectangle r){
-        return open && r.overlaps(bound);
+        return open && r.overlaps(bound) && active;
     }
 
     public boolean overlaps(Rectangle r){
@@ -107,12 +110,24 @@ public class RoomExit {
         }
     }
 
-    public boolean isUnlocked() {
-        return open;
+    public MapCoords getLeaveCoords() {
+        return leaveCoords;
     }
 
-    public Room.EXIT_POINT getExit() {
-        return exit;
+    public void setLeaveCoords(MapCoords leaveCoords) {
+        this.leaveCoords = leaveCoords;
+    }
+
+    public MapCoords getRoomCoords() {
+        return roomCoords;
+    }
+
+    public void setRoomCoords(MapCoords roomCoords) {
+        this.roomCoords = roomCoords;
+    }
+
+    public boolean isUnlocked() {
+        return open;
     }
 
     public Rectangle getBound() {
@@ -123,19 +138,12 @@ public class RoomExit {
         return open;
     }
 
-    public int getLeaveX() {
-        return leaveX;
+
+    public boolean isActive() {
+        return active;
     }
 
-    public void setLeaveX(int leaveX) {
-        this.leaveX = leaveX;
-    }
-
-    public int getLeaveY() {
-        return leaveY;
-    }
-
-    public void setLeaveY(int leaveY) {
-        this.leaveY = leaveY;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

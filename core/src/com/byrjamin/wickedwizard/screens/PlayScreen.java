@@ -87,7 +87,7 @@ public class PlayScreen extends AbstractScreen {
         //Starts in the middle of the screen, on the 1/4 thingie.
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gamePort = new FitViewport(map.getActiveRoom().WIDTH, map.getActiveRoom().HEIGHT, gamecam);
+        gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
 
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -99,23 +99,18 @@ public class PlayScreen extends AbstractScreen {
     public void handleInput(float dt){
 
         //System.out.println("????");
+        InputMultiplexer multiplexer = new InputMultiplexer();
 
-        if(!map.isTransitioning()) {
-            InputMultiplexer multiplexer = new InputMultiplexer();
-
-            if(!gameOver) {
-                roomInputAdapter.update(map.getActiveRoom(), gamePort, gamecam);
-                multiplexer.addProcessor(controlschemeDetector);
-                multiplexer.addProcessor(roomInputAdapter);
-            } else {
-                multiplexer.addProcessor(gestureDetector);
-            }
-
-            Gdx.input.setInputProcessor(multiplexer);
-
+        if(!gameOver) {
+            roomInputAdapter.update(map.getActiveRoom(), gamePort, gamecam);
+            multiplexer.addProcessor(controlschemeDetector);
+            multiplexer.addProcessor(roomInputAdapter);
         } else {
-            Gdx.input.setInputProcessor(null);
+            multiplexer.addProcessor(gestureDetector);
         }
+
+        Gdx.input.setInputProcessor(multiplexer);
+
 
     }
 
