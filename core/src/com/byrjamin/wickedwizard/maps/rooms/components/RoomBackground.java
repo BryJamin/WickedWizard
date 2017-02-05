@@ -1,7 +1,8 @@
-package com.byrjamin.wickedwizard.maps.rooms.layout;
+package com.byrjamin.wickedwizard.maps.rooms.components;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
@@ -25,12 +26,12 @@ public class RoomBackground {
     private int columns;
     private int rows;
 
-    private Array<TextureAtlas.AtlasRegion> backgrounds;
+    private Array<? extends TextureRegion> backgrounds;
 
     private int[] backgroundSelection;
 
 
-    public RoomBackground(Array<TextureAtlas.AtlasRegion> backgrounds, float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE){
+    public RoomBackground(Array<? extends TextureRegion> backgrounds, float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE){
 
         this.backgrounds = backgrounds;
 
@@ -44,10 +45,6 @@ public class RoomBackground {
         this.rows = ((int) BACKGROUND_HEIGHT / (int) TILE_SIZE) + 1;
 
         backgroundSelection = new int[columns * rows];
-
-
-        System.out.println("Columns are " +columns);
-        System.out.println("Rows are " + rows);
 
         backgroundSetUp();
 

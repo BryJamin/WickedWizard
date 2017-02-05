@@ -33,7 +33,7 @@ public class Wizard extends Entity{
     private float DRAG = Measure.units(20f);
 
     private float GRAPPLE_MOVEMENT = Measure.units(10f);
-    private float MAX_GRAPPLE_LAUNCH = Measure.units(50f);
+    private float MAX_GRAPPLE_LAUNCH = Measure.units(60f);
     private float MAX_GRAPPLE_MOVEMENT = Measure.units(150f);
     private static final int GRAVITY = -MainGame.GAME_UNITS;
 

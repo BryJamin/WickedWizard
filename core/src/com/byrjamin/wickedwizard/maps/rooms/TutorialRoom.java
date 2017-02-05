@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,7 +14,7 @@ import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.maps.MapCoords;
-import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
+import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**

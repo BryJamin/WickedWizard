@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps.rooms.layout;
+package com.byrjamin.wickedwizard.maps.rooms.components;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

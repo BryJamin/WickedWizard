@@ -9,6 +9,8 @@ import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 /**
@@ -32,13 +34,44 @@ public class Map {
 
     public Map(){
 
-        currentRoom = new BattleRoom(new MapCoords(0,2));
+        //currentRoom = new ItemRoom(1, 2, new MapCoords(0,0));
 
+        BasicRoomLayout t = new BasicRoomLayout(PlayScreen.atlas.findRegions("backgrounds/wall"), PlayScreen.atlas.findRegions("brick"));
+
+        Room temp;
+
+        currentRoom = new BattleRoom(new MapCoords(0,0));
+        t.applyLayout(currentRoom);
         roomArray.add(currentRoom);
-        roomArray.add(new BattleRoom(1, 2, new MapCoords(0,0)));
-        roomArray.add(new BattleRoom(new MapCoords(-1,0)));
-        roomArray.add(new BattleRoom(new MapCoords(-1,1)));
-        roomArray.add(new BattleRoom(new MapCoords(-1,2)));
+        temp = new BattleRoom(new MapCoords(1,0));
+        t.applyLayout(temp);
+        roomArray.add(temp);
+        temp = new BattleRoom(new MapCoords(2,0));
+        t.applyLayout(temp);
+        roomArray.add(temp);
+        temp = new BattleRoom(new MapCoords(2,1));
+        t.applyLayout(temp);
+        roomArray.add(temp);
+        temp = new BattleRoom(new MapCoords(2,2));
+        t.applyLayout(temp);
+        roomArray.add(temp);
+        temp = new BattleRoom(new MapCoords(1,2));
+        t.applyLayout(temp);
+        roomArray.add(temp);
+        roomArray.add(new ItemRoom(1,2, new MapCoords(3,1)));
+        temp = new BossRoom(new MapCoords(4,1));
+        t.applyLayout(temp);
+        roomArray.add(temp);
+        temp = new BattleRoom(new MapCoords(4,2));
+        t.applyLayout(temp);
+        roomArray.add(temp);
+        roomArray.add(new BattleRoom(2,1, new MapCoords(5,2)));
+
+
+        //roomArray.add(new BattleRoom(1, 2, new MapCoords(0,0)));
+        //roomArray.add(temp);
+        //roomArray.add(new BattleRoom(new MapCoords(-1,1)));
+        //roomArray.add(new BattleRoom(new MapCoords(-1,2)));
 /*        roomArray.add(new BattleRoom(new MapCoords(2,1)));
 
         roomArray.add(new BattleRoom(new MapCoords(2,0)));
@@ -57,9 +90,6 @@ public class Map {
         for(Room r : roomArray){
             r.setUpBoundaries();
         }
-
-
-        System.out.println("EXIT NUMBER is " + currentRoom.getRoomExits().size);
 
         for(int i = roomArray.size - 1; i >= 0; i--) {
             for(int j = roomArray.get(i).getRoomExits().size - 1; j >= 0; j--) {
@@ -106,9 +136,9 @@ public class Map {
             Wizard w = currentRoom.getWizard();
 
             currentRoom = findRoom(mc);
-
+/*
             System.out.println("Leaving to " + mc);
-            System.out.println("Entering From " + oc);
+            System.out.println("Entering From " + oc);*/
 
             currentRoom.enterRoom(w, oc, mc);
         }
@@ -128,18 +158,12 @@ public class Map {
     }
 
     public Room findDoor(MapCoords EnterFrom, MapCoords LeaveTo){
-
-        System.out.println(EnterFrom);
-        System.out.println(LeaveTo);
-
         for(Room r : roomArray) {
             System.out.println(r.containsExitWithCoords(EnterFrom, LeaveTo));
             if(r.containsExitWithCoords(EnterFrom, LeaveTo)){
-
                 return r;
             };
         }
-        //TODO return an error
         return null;
     }
 

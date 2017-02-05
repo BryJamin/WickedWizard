@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomTeleporter;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
+import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomTeleporter;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 
 /**
  * Created by Home on 18/01/2017.

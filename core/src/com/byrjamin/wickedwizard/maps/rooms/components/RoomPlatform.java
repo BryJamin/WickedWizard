@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps.rooms.layout;
+package com.byrjamin.wickedwizard.maps.rooms.components;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.entity.player.Wizard;

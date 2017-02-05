@@ -2,6 +2,8 @@ package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
@@ -11,12 +13,12 @@ import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.collider.WizardCollider;
 import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.MapCoords;
-import com.byrjamin.wickedwizard.maps.rooms.layout.GrapplePoint;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomBackground;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomPlatform;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomTeleporter;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
+import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomPlatform;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomTeleporter;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyUpdater;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -63,6 +65,9 @@ public abstract class Room {
     protected Array<RoomWall> roomWalls = new Array<RoomWall>();
     protected Array<GrapplePoint> grapplePoints = new Array<GrapplePoint>();
 
+
+    protected Array<? extends TextureRegion> wallTexture = PlayScreen.atlas.findRegions("brick");
+
     private RoomEnemyUpdater roomEnemyUpdater = new RoomEnemyUpdater();
     protected Wizard wizard = new Wizard(WALLWIDTH * 2, 600);
 
@@ -100,7 +105,7 @@ public abstract class Room {
         roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),
                 new MapCoords(startCoords.getX(), startCoords.getY()),
                 new MapCoords(startCoords.getX() - 1, startCoords.getY()), false));
-        roomWalls.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
+        roomWalls.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTexture));
 
         int xs = (int) WIDTH / (int) SECTION_WIDTH;
         int ys = (int) HEIGHT / (int) SECTION_HEIGHT;
@@ -115,7 +120,7 @@ public abstract class Room {
                 Measure.units(20),
                 new MapCoords(startCoords.getX() + xs - 1, startCoords.getY()),
                 new MapCoords(startCoords.getX() + xs, startCoords.getY()),false));
-        roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
+        roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTexture));
 
         for(int i = 0; i < xs; i++){
             //mapCoordsArray.add(new MapCoords(startCoords.getX() + (i + 1), startCoords.getY()));
@@ -128,13 +133,13 @@ public abstract class Room {
                     Measure.units(20),
                     new MapCoords(startCoords.getX() + xs - 1, startCoords.getY() + i),
                     new MapCoords(startCoords.getX() + xs, startCoords.getY() + i),false));
-            roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
+            roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH, wallTexture));
 
             roomExits.add(new RoomExit(0, groundHeight() + SECTION_HEIGHT , WALLWIDTH,
                     Measure.units(20),
                     new MapCoords(startCoords.getX(), startCoords.getY() + i),
                     new MapCoords(startCoords.getX() - 1, startCoords.getY() + i),false));
-            roomWalls.add(new RoomWall(0, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
+            roomWalls.add(new RoomWall(0, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH, wallTexture));
 
         }
 
@@ -155,22 +160,6 @@ public abstract class Room {
     public Room(MapCoords startCoords){
         mapCoordsArray.add(startCoords);
         this.startCoords = startCoords;
-
-        roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),
-                new MapCoords(startCoords.getX(), startCoords.getY()),
-                new MapCoords(startCoords.getX() - 1, startCoords.getY()), false));
-        roomWalls.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH));
-        roomExits.add(new RoomExit(WIDTH - WALLWIDTH, groundHeight(), WALLWIDTH, Measure.units(20),
-                new MapCoords(startCoords.getX(), startCoords.getY()),
-                new MapCoords(startCoords.getX() + 1, startCoords.getY()),false));
-        roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH));
-
-        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, HEIGHT - WALLWIDTH * 3,
-                new MapCoords(startCoords.getX(), startCoords.getY()),
-                new MapCoords(startCoords.getX(), startCoords.getY() + 1)));
-        roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, WALLWIDTH * 3,
-                new MapCoords(startCoords.getX(), startCoords.getY()),
-                new MapCoords(startCoords.getX(), startCoords.getY() - 1)));
     }
 
     public void update(float dt, OrthographicCamera gamecam){
@@ -267,44 +256,23 @@ public abstract class Room {
         wizard.cancelMovementHorizontalSpeed();
         transition = false;
 
-        boolean forbugs = true;
-
-
-        System.out.println(roomExits.size + " The amount of exits");
-
         for(RoomExit r : roomExits){
             if(r.getLeaveCoords().sameCoords(oldRoomCoords)){
                 if(r.getLeaveCoords().getX() < entryCoords.getX()){
                     wizard.setX(r.getBound().getX() + r.getBound().getWidth() + wizard.WIDTH);
                     wizard.setY(r.getBound().getY() + r.getBound().getHeight() / 2);
-                    forbugs = false;
                 } else {
                     wizard.setX(r.getBound().getX() - wizard.WIDTH);
                     wizard.setY(r.getBound().getY() + r.getBound().getHeight() / 2);
-                    forbugs = false;
                 }
 
-                forbugs = false;
                 break;
             }
         }
 
-        System.out.println(oldRoomCoords);
-
-
-        System.out.println("Entered Room Co-ordinates are ");
-
         for(MapCoords r : mapCoordsArray){
             System.out.println(r);
         }
-
-        System.out.println(forbugs + "FORBUGS IS");
-
-        if(forbugs){
-            wizard.setX(WIDTH /2);
-            wizard.setY(HEIGHT / 2);
-        }
-
         for(RoomTeleporter r : roomTeleporters){
             if(r.getLeaveCoords().sameCoords(oldRoomCoords)){
                 wizard.setCenterX(r.getCenterX());
@@ -349,11 +317,8 @@ public abstract class Room {
     }
 
     public void setUpBoundaries() {
-        groundBoundaries = new Array<Rectangle>();
-        groundBoundaries.addAll(platforms);
-
-        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
-        ground.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
+        ceiling.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH, wallTexture));
+        ground.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH, wallTexture));
 
         roomWalls.addAll(ceiling);
         roomWalls.addAll(ground);
@@ -361,6 +326,7 @@ public abstract class Room {
         for(RoomWall roomWall : ground){
             groundBoundaries.add(roomWall.getBounds());
         }
+
 
         roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(15));
 
@@ -383,7 +349,7 @@ public abstract class Room {
 
 
     public void replaceDoorwithWall(RoomExit exit){
-        roomWalls.add(new RoomWall(exit.getBound().x, exit.getBound().y, WALLWIDTH, exit.getBound().getHeight(), WALLWIDTH));
+        roomWalls.add(new RoomWall(exit.getBound().x, exit.getBound().y, WALLWIDTH, exit.getBound().getHeight(), WALLWIDTH, wallTexture));
     }
 
     public void unlock() {
@@ -480,6 +446,27 @@ public abstract class Room {
 
     public MapCoords getWizardCoords() {
         return leaveMapCoords;
+    }
+
+
+    public void add(RoomExit e){
+        roomExits.add(e);
+    }
+
+    public void add(RoomTeleporter e){
+        roomTeleporters.add(e);
+    }
+
+    public void add(RoomWall e){
+        roomWalls.add(e);
+    }
+
+    public void setRoomBackground(RoomBackground e){
+        roomBackground = e;
+    }
+
+    public MapCoords getStartCoords() {
+        return startCoords;
     }
 
     public Array<RoomTeleporter> getRoomTeleporters() {

@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps.rooms.layout;
+package com.byrjamin.wickedwizard.maps.rooms.components;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,8 +15,11 @@ public class GrapplePoint {
     private float x;
     private float y;
 
-    private float width = Measure.units(10);
-    private float height = Measure.units(10);
+    private float width = Measure.units(5);
+    private float height = Measure.units(5);
+
+    private float bound_width = Measure.units(10);
+    private float bound_height = Measure.units(10);
 
     private Rectangle bounds;
 
@@ -25,7 +28,7 @@ public class GrapplePoint {
     public GrapplePoint(float x, float y){
         this.x = x;
         this.y = y;
-        bounds = new Rectangle(x, y, width, height);
+        bounds = new Rectangle(x - width / 2, y - height / 2, bound_width, bound_height);
         this.GRAPPLE_TEXTURE = PlayScreen.atlas.findRegion("grapple");
     }
 
