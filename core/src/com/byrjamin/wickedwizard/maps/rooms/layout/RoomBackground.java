@@ -40,8 +40,8 @@ public class RoomBackground {
         this.BACKGROUND_HEIGHT = BACKGROUND_HEIGHT;
         this.TILE_SIZE = TILE_SIZE;
 
-        this.columns = (int) BACKGROUND_WIDTH / (int) TILE_SIZE;
-        this.rows = (int) BACKGROUND_HEIGHT / (int) TILE_SIZE;
+        this.columns = ((int) BACKGROUND_WIDTH / (int) TILE_SIZE) + 1;
+        this.rows = ((int) BACKGROUND_HEIGHT / (int) TILE_SIZE) + 1;
 
         backgroundSelection = new int[columns * rows];
 

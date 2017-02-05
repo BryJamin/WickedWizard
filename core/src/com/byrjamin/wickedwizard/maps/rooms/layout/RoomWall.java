@@ -26,6 +26,11 @@ public class RoomWall {
     private TextureRegion skin;
 
 
+    public RoomWall(float posX, float posY, float WIDTH, float HEIGHT, float TILE_SIZE, TextureRegion skin) {
+        this(posX, posY, WIDTH, HEIGHT, TILE_SIZE);
+        this.skin = skin;
+    }
+
     public RoomWall(float posX, float posY, float WIDTH, float HEIGHT, float TILE_SIZE) {
 
         this.posX = posX;
@@ -55,7 +60,7 @@ public class RoomWall {
 
         for(int j = 0; j < noOfColumns; j++) {
             for (int i = 0; i < noOfRows; i++) {
-                batch.draw(skin, posX + (TILE_SIZE * j), posY + (TILE_SIZE * i), TILE_SIZE, TILE_SIZE);
+                batch.draw(skin, (int) (posX + (TILE_SIZE * j)),(int) (posY + (TILE_SIZE * i)), (int) TILE_SIZE, (int) TILE_SIZE);
             }
         }
     }

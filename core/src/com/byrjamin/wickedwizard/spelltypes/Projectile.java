@@ -133,8 +133,10 @@ public class Projectile {
             if (explosion_animation.isAnimationFinished(time)) {
                 this.setState(STATE.DEAD);
             }
+
             explosionTextureRegion = explosion_animation.getKeyFrame(time);
         }
+
     }
 
     public void travelUpdate(float dt) {

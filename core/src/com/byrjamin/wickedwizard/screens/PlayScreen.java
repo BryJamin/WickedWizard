@@ -75,19 +75,21 @@ public class PlayScreen extends AbstractScreen {
         map = new Map();
         gamecam = new OrthographicCamera();
 
-/*        pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+       pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawCircle(15, 15, 10);
 
 
         Pixmap pm = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
-        Gdx.input.setCursorImage(pm, pm.getWidth() / 2, pm.getHeight() / 2);
-        pm.dispose();*/
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, pm.getWidth() / 2, pm.getHeight() / 2));
+        pm.dispose();
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
+
+       // gamePort = new FitViewport(map.getActiveRoom().WIDTH, map.getActiveRoom().HEIGHT, gamecam);
 
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -125,20 +127,29 @@ public class PlayScreen extends AbstractScreen {
         }
 
         if(dt < 0.20f) {
+
+            gamecam.position.set((int) map.getActiveRoom().getWizard().getCenterX(),(int) map.getActiveRoom().getWizard().getCenterY(), 0);
+
+            if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
+                gamecam.position.set(gamePort.getWorldWidth() / 2,gamecam.position.y, 0);
+            } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH){
+                gamecam.position.set((int) (map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2),(int) gamecam.position.y, 0);
+            }
+
+            if(gamecam.position.y <= gamePort.getWorldHeight() / 2){
+                gamecam.position.set(gamecam.position.x, gamePort.getWorldHeight() / 2, 0);
+            } else if(gamecam.position.y + gamecam.viewportHeight / 2 >= map.getActiveRoom().HEIGHT){
+                gamecam.position.set((int) gamecam.position.x,(int) (map.getActiveRoom().HEIGHT - gamecam.viewportHeight / 2), 0);
+            }
+
+            gamecam.update();
+
+
             handleInput(dt);
             map.update(dt, gamecam);
             if (map.getActiveRoom().getWizard().isDead()) {
                 gameOver = true;
             }
-
-            gamecam.position.set(map.getActiveRoom().getWizard().getCenterX(),gamecam.position.y, 0);
-
-            if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
-                gamecam.position.set(gamePort.getWorldWidth() / 2,gamecam.position.y, 0);
-            } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH){
-                gamecam.position.set((map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2),gamecam.position.y, 0);
-            }
-            gamecam.update();
         }
         //handleInput(dt);
     }
@@ -176,8 +187,6 @@ public class PlayScreen extends AbstractScreen {
         }
 
         game.batch.end();
-
-        Gdx.input.setCursorImage(pixmap, 16, 16);
 
     }
 

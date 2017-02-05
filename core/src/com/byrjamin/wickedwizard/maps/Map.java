@@ -31,18 +31,17 @@ public class Map {
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
     public Map(){
-/*
-        rooms = new Room[][]{
-                {null, null, new TutorialRoom(), new BattleRoom(1,2), new BattleRoom(),null, null},
-                {null, null, null, new BattleRoom(), new BattleRoom(),null, null},
-                {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, null, null},
-                {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
-        roomSetup();*/
 
-        currentRoom = new BattleRoom(1, 2, new MapCoords(0,0));
+        currentRoom = new BattleRoom(new MapCoords(0,2));
 
         roomArray.add(currentRoom);
-        roomArray.add(new BattleRoom(new MapCoords(1,0)));
+        roomArray.add(new BattleRoom(1, 2, new MapCoords(0,0)));
+        roomArray.add(new BattleRoom(new MapCoords(-1,0)));
+        roomArray.add(new BattleRoom(new MapCoords(-1,1)));
+        roomArray.add(new BattleRoom(new MapCoords(-1,2)));
+/*        roomArray.add(new BattleRoom(new MapCoords(2,1)));
+
+        roomArray.add(new BattleRoom(new MapCoords(2,0)));
         roomArray.add(new BattleRoom(new MapCoords(3,1)));
         roomArray.add(new BattleRoom(new MapCoords(-1,0)));
         roomArray.add(new BattleRoom(new MapCoords(0,1)));
@@ -53,7 +52,7 @@ public class Map {
         roomArray.add(new BattleRoom(new MapCoords(1,3)));
         roomArray.add(new BattleRoom(new MapCoords(-1,1)));
         roomArray.add(new BattleRoom(new MapCoords(-1,2)));
-        roomArray.add(new BossRoom(new MapCoords(-1,3)));
+        roomArray.add(new BossRoom(new MapCoords(-1,3)));*/
 
         for(Room r : roomArray){
             r.setUpBoundaries();
@@ -62,15 +61,9 @@ public class Map {
 
         System.out.println("EXIT NUMBER is " + currentRoom.getRoomExits().size);
 
-
-
-
         for(int i = roomArray.size - 1; i >= 0; i--) {
-            System.out.println(i + "i is");
             for(int j = roomArray.get(i).getRoomExits().size - 1; j >= 0; j--) {
-                System.out.println(j + " j is");
-                if(findRoom(roomArray.get(i).getRoomExits().get(j).getLeaveCoords()) == null) {
-                    System.out.println(j + " j is");
+                if(findDoor(roomArray.get(i).getRoomExits().get(j).getRoomCoords(),roomArray.get(i).getRoomExits().get(j).getLeaveCoords()) == null) {
                     roomArray.get(i).replaceDoorwithWall(roomArray.get(i).getRoomExits().get(j));
                     roomArray.get(i).getRoomExits().removeIndex(j);
                 }
@@ -79,7 +72,7 @@ public class Map {
 
         for(int i = roomArray.size - 1; i >= 0; i--) {
             for(int j = roomArray.get(i).getRoomTeleporters().size - 1; j >= 0; j--) {
-                if(findRoom(roomArray.get(i).getRoomTeleporters().get(j).getLeaveCoords()) == null) {
+                if(findDoor(roomArray.get(i).getRoomTeleporters().get(j).getRoomCoords(), roomArray.get(i).getRoomTeleporters().get(j).getLeaveCoords()) == null) {
                     roomArray.get(i).getRoomTeleporters().removeIndex(j);
                 }
             }
@@ -90,46 +83,6 @@ public class Map {
         mapX = 2;
 
     }
-
-    public void roomSetup(){
-
-/*        for(int i = 0; i < rooms.length; i++){
-
-            for(int j = 0; j < rooms[i].length; j++) {
-                if (rooms[i][j] == null) {
-                    continue;
-                }
-
-                if(j >= 1) {
-                    if (rooms[i][j - 1] != null) {
-                        rooms[i][j].addLeftExit();
-                    }
-                }
-
-                if(j < rooms[i].length - 1) {
-                    if (rooms[i][j + 1] != null) {
-                        rooms[i][j].addRightExit();
-                    }
-                }
-
-
-                if(i >= 1) {
-                    if (rooms[i - 1][j] != null) {
-                        rooms[i][j].addTopExit();
-                    }
-                }
-                if(i < rooms.length - 1) {
-                    if (rooms[i + 1][j] != null) {
-                        rooms[i][j].setBottomExit();
-                    }
-                }
-
-                rooms[i][j].setUpBoundaries();
-            }
-        }*/
-    }
-
-
 
 
     public void update(float dt, OrthographicCamera gamecam){
@@ -170,6 +123,22 @@ public class Map {
             };
         }
 
+        //TODO return an error
+        return null;
+    }
+
+    public Room findDoor(MapCoords EnterFrom, MapCoords LeaveTo){
+
+        System.out.println(EnterFrom);
+        System.out.println(LeaveTo);
+
+        for(Room r : roomArray) {
+            System.out.println(r.containsExitWithCoords(EnterFrom, LeaveTo));
+            if(r.containsExitWithCoords(EnterFrom, LeaveTo)){
+
+                return r;
+            };
+        }
         //TODO return an error
         return null;
     }

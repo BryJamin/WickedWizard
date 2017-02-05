@@ -100,7 +100,7 @@ public abstract class Room {
         roomExits.add(new RoomExit(0, groundHeight(), WALLWIDTH, Measure.units(20),
                 new MapCoords(startCoords.getX(), startCoords.getY()),
                 new MapCoords(startCoords.getX() - 1, startCoords.getY()), false));
-        roomWalls.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
+        roomWalls.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
 
         int xs = (int) WIDTH / (int) SECTION_WIDTH;
         int ys = (int) HEIGHT / (int) SECTION_HEIGHT;
@@ -115,7 +115,7 @@ public abstract class Room {
                 Measure.units(20),
                 new MapCoords(startCoords.getX() + xs - 1, startCoords.getY()),
                 new MapCoords(startCoords.getX() + xs, startCoords.getY()),false));
-        roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
+        roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
 
         for(int i = 0; i < xs; i++){
             //mapCoordsArray.add(new MapCoords(startCoords.getX() + (i + 1), startCoords.getY()));
@@ -130,19 +130,20 @@ public abstract class Room {
                     new MapCoords(startCoords.getX() + xs, startCoords.getY() + i),false));
             roomWalls.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
 
-            System.out.println("HMMM " + (startCoords.getY() + i + 1));
+            roomExits.add(new RoomExit(0, groundHeight() + SECTION_HEIGHT , WALLWIDTH,
+                    Measure.units(20),
+                    new MapCoords(startCoords.getX(), startCoords.getY() + i),
+                    new MapCoords(startCoords.getX() - 1, startCoords.getY() + i),false));
+            roomWalls.add(new RoomWall(0, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH));
 
         }
-
 
         for(int i = 0; i < xs; i++){
             for(int j = 0; j < ys; j++){
                 mapCoordsArray.add(new MapCoords(startCoords.getX() + i, startCoords.getY() + j));
+                grapplePoints.add(new GrapplePoint(WIDTH / 2, (SECTION_HEIGHT / 2) + (SECTION_HEIGHT / 2) * j));
             }
         }
-
-
-
 
         for(MapCoords m : mapCoordsArray){
             System.out.println(m.toString());
@@ -170,14 +171,10 @@ public abstract class Room {
         roomTeleporters.add(new RoomTeleporter(WALLWIDTH * 8, WALLWIDTH * 3,
                 new MapCoords(startCoords.getX(), startCoords.getY()),
                 new MapCoords(startCoords.getX(), startCoords.getY() - 1)));
-
     }
 
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt, gamecam, this);
-
-        //System.out.println(startCoords.getX() + (int) wizard.getX() / (int) SECTION_WIDTH);
-
         roomEnemyUpdater.update(dt, this);
 
         for(Item item : items){
@@ -365,7 +362,7 @@ public abstract class Room {
             groundBoundaries.add(roomWall.getBounds());
         }
 
-        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(10));
+        roomBackground = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , this.WIDTH, this.HEIGHT, Measure.units(15));
 
         roomEnemyWaves = new RoomEnemyWaves(this);
 
@@ -407,6 +404,23 @@ public abstract class Room {
                 return true;
             }
         }
+        return false;
+    }
+
+
+    public boolean containsExitWithCoords(MapCoords EntryCoords, MapCoords LeaveCoords){
+        for(RoomExit re : roomExits){
+            if(re.getRoomCoords().sameCoords(LeaveCoords) && re.getLeaveCoords().sameCoords(EntryCoords)){
+                return true;
+            }
+        }
+
+        for(RoomTeleporter re : roomTeleporters){
+            if(re.getRoomCoords().sameCoords(LeaveCoords) && re.getLeaveCoords().sameCoords(EntryCoords)){
+                return true;
+            }
+        }
+
         return false;
     }
 
