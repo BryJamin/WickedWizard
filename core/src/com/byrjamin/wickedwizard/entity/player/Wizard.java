@@ -104,11 +104,11 @@ public class Wizard extends Entity{
 
     private StateTimer fallthroughTimer = new StateTimer(0.05f);
 
-    private Animation standingAnimation;
-    private Animation firingAnimation;
-    private Animation windUpAnimation;
-    private Animation dashAnimation;
-    private Animation currentAnimation;
+    private Animation<TextureRegion> standingAnimation;
+    private Animation<TextureRegion> firingAnimation;
+    private Animation<TextureRegion> windUpAnimation;
+    private Animation<TextureRegion> dashAnimation;
+    private Animation<TextureRegion> currentAnimation ;
 
     private TextureRegion currentFrame;
 

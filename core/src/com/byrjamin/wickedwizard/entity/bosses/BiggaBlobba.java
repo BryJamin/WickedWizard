@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.entity.bosses;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -54,9 +55,9 @@ public class BiggaBlobba extends Enemy {
 
     private Vector2 velocity;
 
-    private Animation walk;
+    private Animation<TextureRegion> walk;
 
-    private Animation currentAnimation;
+    private Animation<TextureRegion> currentAnimation;
 
     ShapeRenderer shapeRenderer;
 

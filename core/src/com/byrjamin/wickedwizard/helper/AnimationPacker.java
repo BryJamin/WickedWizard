@@ -26,14 +26,14 @@ public class AnimationPacker {
      * @param playmode - Animation playmode
      * @return - Returns a new Animaion
      */
-    public static Animation genAnimation(float animationSpeed, String atlasRegionsName, Animation.PlayMode playmode){
+    public static Animation<TextureRegion> genAnimation(float animationSpeed, String atlasRegionsName, Animation.PlayMode playmode){
         Array<TextureRegion> textureRegions = new Array<TextureRegion>();
 
         for(TextureAtlas.AtlasRegion a : PlayScreen.atlas.findRegions(atlasRegionsName)){
             textureRegions.add(a);
         }
 
-        return new Animation(animationSpeed, textureRegions, playmode);
+        return new Animation<TextureRegion>(animationSpeed, textureRegions, playmode);
 
     }
 
@@ -43,7 +43,7 @@ public class AnimationPacker {
      * @param atlasRegionsName - names of regions
      * @return
      */
-    public static Animation genAnimation(float animationSpeed, String atlasRegionsName){
+    public static Animation<TextureRegion> genAnimation(float animationSpeed, String atlasRegionsName){
 
         Array<TextureRegion> textureRegions = new Array<TextureRegion>();
 
@@ -51,7 +51,7 @@ public class AnimationPacker {
             textureRegions.add(a);
         }
 
-        return new Animation(animationSpeed, textureRegions);
+        return new Animation<TextureRegion>(animationSpeed, textureRegions);
 
     }
 

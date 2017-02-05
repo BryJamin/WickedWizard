@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.maps.rooms.layout;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -24,10 +25,10 @@ public class RoomExit {
 
     private Rectangle bound;
 
-    private Animation currentAnimation;
+    private Animation<TextureRegion> currentAnimation;
 
-    private Animation closingAnimation;
-    private Animation openingAnimation;
+    private Animation<TextureRegion> closingAnimation;
+    private Animation<TextureRegion> openingAnimation;
 
     private float time = 25;
 

@@ -39,7 +39,7 @@ public class Projectile {
 
     Vector2 position;
 
-    private Animation explosion_animation;
+    private Animation<TextureRegion> explosion_animation;
     float time = 0;
 
     TextureRegion explosionTextureRegion;
