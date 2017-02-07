@@ -19,11 +19,6 @@ public class ItemRoom extends Room{
         items.get(0).setCenter(this.WIDTH / 2, this.HEIGHT / 4);
     }
 
-    public ItemRoom(int scalex, int scaley, MapCoords mapCoords){
-        super(mapCoords, scalex, scaley);
-        items.add(ig.getItem(2));
-        items.get(0).setCenter(this.WIDTH / 2, this.groundHeight() * 2);
-    }
 
     public void update(float dt, OrthographicCamera gamecam){
         super.update(dt, gamecam);

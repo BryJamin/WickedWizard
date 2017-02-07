@@ -19,11 +19,6 @@ public class BattleRoom extends Room {
         roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
-    public BattleRoom(int scalex, int scaley, MapCoords mapCoords){
-        super(mapCoords, scalex, scaley);
-        roomEnemyWaves = new RoomEnemyWaves(this);
-    }
-
     public BattleRoom(int numberOfWaves, MapCoords mapCoords){
         super(mapCoords);
 

@@ -43,7 +43,8 @@ public class BasicRoomLayout {
 
 
     public void applyLayout(Room r){
-        defaultCoords = r.getStartCoords();
+
+        MapCoords defaultCoords = r.getStartCoords();
 
         //LEFT
         r.add(new RoomExit(0, Measure.units(10), WALLWIDTH, Measure.units(20),

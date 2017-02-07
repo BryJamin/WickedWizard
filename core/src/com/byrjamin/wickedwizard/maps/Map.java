@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.maps;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
@@ -9,9 +10,11 @@ import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
 import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
+import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
+import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 /**
  * Created by Home on 24/12/2016.
@@ -35,14 +38,21 @@ public class Map {
     public Map(){
 
         //currentRoom = new ItemRoom(1, 2, new MapCoords(0,0));
+        Array<TextureAtlas.AtlasRegion> background = PlayScreen.atlas.findRegions("backgrounds/wall");
+        Array<TextureAtlas.AtlasRegion> walls = PlayScreen.atlas.findRegions("brick");
 
-        BasicRoomLayout t = new BasicRoomLayout(PlayScreen.atlas.findRegions("backgrounds/wall"), PlayScreen.atlas.findRegions("brick"));
 
+        BasicRoomLayout t = new BasicRoomLayout(background, walls);
+        Height2Layout height2Layout = new Height2Layout(background, walls);
+        Width2Layout width2Layout = new Width2Layout(background, walls);
         Room temp;
 
-        currentRoom = new BattleRoom(new MapCoords(0,0));
+        currentRoom = new TutorialRoom(new MapCoords(-1,0));
         t.applyLayout(currentRoom);
         roomArray.add(currentRoom);
+        temp = new BattleRoom(new MapCoords(0,0));
+        t.applyLayout(temp);
+        roomArray.add(temp);
         temp = new BattleRoom(new MapCoords(1,0));
         t.applyLayout(temp);
         roomArray.add(temp);
@@ -58,37 +68,21 @@ public class Map {
         temp = new BattleRoom(new MapCoords(1,2));
         t.applyLayout(temp);
         roomArray.add(temp);
-        roomArray.add(new ItemRoom(1,2, new MapCoords(3,1)));
+        temp = new ItemRoom(new MapCoords(3,1));
+        height2Layout.applyLayout(temp);
+        roomArray.add(temp);
         temp = new BossRoom(new MapCoords(4,1));
         t.applyLayout(temp);
         roomArray.add(temp);
         temp = new BattleRoom(new MapCoords(4,2));
         t.applyLayout(temp);
         roomArray.add(temp);
-        roomArray.add(new BattleRoom(2,1, new MapCoords(5,2)));
-
-
-        //roomArray.add(new BattleRoom(1, 2, new MapCoords(0,0)));
-        //roomArray.add(temp);
-        //roomArray.add(new BattleRoom(new MapCoords(-1,1)));
-        //roomArray.add(new BattleRoom(new MapCoords(-1,2)));
-/*        roomArray.add(new BattleRoom(new MapCoords(2,1)));
-
-        roomArray.add(new BattleRoom(new MapCoords(2,0)));
-        roomArray.add(new BattleRoom(new MapCoords(3,1)));
-        roomArray.add(new BattleRoom(new MapCoords(-1,0)));
-        roomArray.add(new BattleRoom(new MapCoords(0,1)));
-        roomArray.add(new BattleRoom(new MapCoords(0,2)));
-        roomArray.add(new BattleRoom(new MapCoords(0,3)));
-        roomArray.add(new ItemRoom(new MapCoords(1,1)));
-        roomArray.add(new BattleRoom(new MapCoords(1,2)));
-        roomArray.add(new BattleRoom(new MapCoords(1,3)));
-        roomArray.add(new BattleRoom(new MapCoords(-1,1)));
-        roomArray.add(new BattleRoom(new MapCoords(-1,2)));
-        roomArray.add(new BossRoom(new MapCoords(-1,3)));*/
+        temp = new BattleRoom(new MapCoords(5,2));
+        width2Layout.applyLayout(temp);
+        roomArray.add(temp);
 
         for(Room r : roomArray){
-            r.setUpBoundaries();
+            r.turnOnRoomEnemyWaves();
         }
 
         for(int i = roomArray.size - 1; i >= 0; i--) {
@@ -132,7 +126,7 @@ public class Map {
         if(currentRoom.isExitTransitionFinished()){
 
             MapCoords mc = currentRoom.getLeaveMapCoords();
-            MapCoords oc = currentRoom.getLeaveEntryMapCoords();
+            MapCoords oc = currentRoom.getRoomCoords();
             Wizard w = currentRoom.getWizard();
 
             currentRoom = findRoom(mc);
