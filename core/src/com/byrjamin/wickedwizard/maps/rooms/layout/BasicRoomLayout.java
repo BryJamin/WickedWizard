@@ -47,16 +47,16 @@ public class BasicRoomLayout {
         MapCoords defaultCoords = r.getStartCoords();
 
         //LEFT
-        r.add(new RoomExit(0, Measure.units(10), WALLWIDTH, Measure.units(20),
+        r.add(new RoomExit(0, Measure.units(10),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()), false));
+                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY())));
         r.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH, wallTextures));
 
 
         //RIGHT
-        r.add(new RoomExit(WIDTH - WALLWIDTH, Measure.units(10), WALLWIDTH, Measure.units(20),
+        r.add(new RoomExit(WIDTH - WALLWIDTH, Measure.units(10),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),false));
+                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY())));
         r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH, wallTextures));
 
         //TELEPORT UP

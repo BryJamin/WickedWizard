@@ -130,10 +130,6 @@ public class Map {
             Wizard w = currentRoom.getWizard();
 
             currentRoom = findRoom(mc);
-/*
-            System.out.println("Leaving to " + mc);
-            System.out.println("Entering From " + oc);*/
-
             currentRoom.enterRoom(w, oc, mc);
         }
     }

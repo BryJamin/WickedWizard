@@ -192,11 +192,11 @@ public abstract class Room {
         for(RoomExit r : roomExits){
             if(r.getLeaveCoords().sameCoords(oldRoomCoords)){
                 if(r.getLeaveCoords().getX() < entryCoords.getX()){
-                    wizard.setX(r.getBound().getX() + r.getBound().getWidth() + wizard.WIDTH);
-                    wizard.setY(r.getBound().getY() + r.getBound().getHeight() / 2);
+                    wizard.setX(r.getBounds().getX() + r.getBounds().getWidth() + wizard.WIDTH);
+                    wizard.setY(r.getBounds().getY() + r.getBounds().getHeight() / 2);
                 } else {
-                    wizard.setX(r.getBound().getX() - wizard.WIDTH);
-                    wizard.setY(r.getBound().getY() + r.getBound().getHeight() / 2);
+                    wizard.setX(r.getBounds().getX() - wizard.WIDTH);
+                    wizard.setY(r.getBounds().getY() + r.getBounds().getHeight() / 2);
                 }
 
                 break;
@@ -240,7 +240,7 @@ public abstract class Room {
     public void doorCollisionCheck(Wizard w, float dt){
         for(RoomExit exit : roomExits){
             if(!exit.isUnlocked() && state != STATE.ENTRY){
-                wallCollisionCheck(w, exit.getBound(), dt);
+                wallCollisionCheck(w, exit.getBounds(), dt);
             }
         }
     }
@@ -266,7 +266,7 @@ public abstract class Room {
 
 
     public void replaceDoorwithWall(RoomExit exit){
-        roomWalls.add(new RoomWall(exit.getBound().x, exit.getBound().y, WALLWIDTH, exit.getBound().getHeight(), WALLWIDTH, wallTexture));
+        roomWalls.add(new RoomWall(exit.getBounds().x, exit.getBounds().y, WALLWIDTH, exit.getBounds().getHeight(), WALLWIDTH, wallTexture));
     }
 
     public void unlock() {

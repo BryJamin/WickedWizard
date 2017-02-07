@@ -92,7 +92,7 @@ public class RoomInputAdapter extends InputAdapter{
         }
 
         for(RoomExit r : room.getRoomExits()){
-            if(r.getBound().contains(input.x, input.y) && r.isOpen()){
+            if(r.getBounds().contains(input.x, input.y) && r.isOpen()){
                 room.getWizard().flyTo(input.x, input.y);
                 w.toggleFallthroughOn();
                 fire = false;

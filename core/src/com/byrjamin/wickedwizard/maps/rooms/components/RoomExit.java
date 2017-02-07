@@ -16,17 +16,16 @@ public class RoomExit {
 
     private float posX;
     private float posY;
-    private float WIDTH;
-    private float HEIGHT;
+    private float WIDTH = Measure.units(5);
+    private float HEIGHT = Measure.units(20);
     private float rotation;
     private boolean open = true;
     private boolean active = true;
     private boolean flip;
 
-    private Rectangle bound;
+    protected Rectangle bounds;
 
     private Animation<TextureRegion> currentAnimation;
-
     private Animation<TextureRegion> closingAnimation;
     private Animation<TextureRegion> openingAnimation;
 
@@ -35,39 +34,31 @@ public class RoomExit {
     private MapCoords leaveCoords;
     private MapCoords roomCoords;
 
-    private int leaveX;
-    private int leaveY;
 
-    //private bounds
-
-
-    public RoomExit(float posX, float posY, float WIDTH, float HEIGHT,MapCoords roomCoords, MapCoords leaveCoords, boolean flip) {
+    public RoomExit(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords ) {
         this.posX = posX;
         this.posY = posY;
-        this.WIDTH = WIDTH;
-        this.HEIGHT = HEIGHT;
 
         this.leaveCoords = leaveCoords;
         this.roomCoords = roomCoords;
 
         this.flip = flip;
-        bound = new Rectangle(posX, posY, WIDTH, HEIGHT);
+        bounds = new Rectangle(posX, posY, WIDTH, HEIGHT);
 
 
         closingAnimation = AnimationPacker.genAnimation(1 / 35f, "door");
         openingAnimation = AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED);
-
         currentAnimation = openingAnimation;
 
     }
 
 
     public boolean hasEntered(Rectangle r){
-        return open && r.overlaps(bound) && active;
+        return open && r.overlaps(bounds) && active;
     }
 
     public boolean overlaps(Rectangle r){
-        return r.overlaps(bound);
+        return r.overlaps(bounds);
     }
 
     public void update(float dt){
@@ -75,7 +66,7 @@ public class RoomExit {
     }
 
     public void draw(SpriteBatch batch){
-        BoundsDrawer.drawBounds(batch, bound);
+        BoundsDrawer.drawBounds(batch, bounds);
 
         float x =  flip ? posX - HEIGHT / 2 : (posX - (WIDTH * 2));
         float y =  flip ? (posY - (HEIGHT * 1.5f))  : posY;
@@ -131,8 +122,8 @@ public class RoomExit {
         return open;
     }
 
-    public Rectangle getBound() {
-        return bound;
+    public Rectangle getBounds() {
+        return bounds;
     }
 
     public boolean isOpen() {
