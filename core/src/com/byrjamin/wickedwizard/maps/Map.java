@@ -16,6 +16,8 @@ import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
+import java.util.Random;
+
 /**
  * Created by Home on 24/12/2016.
  */
@@ -156,6 +158,33 @@ public class Map {
         }
         return null;
     }
+
+
+
+
+    public void jigsawMap(int numberofRooms){
+
+        Array<Room> preMadeRooms = new Array<Room>();
+        Array<Room> actualRooms = new Array<Room>();
+
+        for(int i = 0; i < numberofRooms; i++) {
+            preMadeRooms.add(new BattleRoom(new MapCoords(0,0)));
+        }
+
+        while(preMadeRooms.size > 1) {
+
+            Random rand = new Random();
+            int nextRoomNumber = rand.nextInt(preMadeRooms.size);
+
+            preMadeRooms.get(i);
+
+        }
+
+
+
+    }
+
+
 
     public void draw(SpriteBatch batch){
 
