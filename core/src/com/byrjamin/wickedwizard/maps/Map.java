@@ -108,6 +108,8 @@ public class Map {
         mapY = 0;
         mapX = 2;
 
+        jigsawMap(10);
+
     }
 
 
@@ -164,24 +166,44 @@ public class Map {
 
     public void jigsawMap(int numberofRooms){
 
+        Array<TextureAtlas.AtlasRegion> background = PlayScreen.atlas.findRegions("backgrounds/wall");
+        Array<TextureAtlas.AtlasRegion> walls = PlayScreen.atlas.findRegions("brick");
+
+        BasicRoomLayout t = new BasicRoomLayout(background, walls);
+
         Array<Room> preMadeRooms = new Array<Room>();
         Array<Room> actualRooms = new Array<Room>();
 
         for(int i = 0; i < numberofRooms; i++) {
-            preMadeRooms.add(new BattleRoom(new MapCoords(0,0)));
+            Room r = new BattleRoom(new MapCoords(0,0));
+            t.applyLayout(r);
+            preMadeRooms.add(r);
         }
 
-        while(preMadeRooms.size > 1) {
+        TutorialRoom tRoom = new TutorialRoom(new MapCoords(0,0));
+        t.applyLayout(tRoom);
 
+        actualRooms.add(tRoom);
+
+        Array<MapCoords> avaliableMapCoords = new Array<MapCoords>();
+        Array<MapCoords> unavaliableMapCoords = new Array<MapCoords>();
+
+        unavaliableMapCoords.addAll(actualRooms.get(0).getMapCoordsArray());
+        avaliableMapCoords.addAll(actualRooms.get(0).getAdjacentMapCoords());
+
+        for(MapCoords m : unavaliableMapCoords){
+            System.out.println("Unavaliable Coords are " + m.toString());
+        }
+
+        for(MapCoords m : avaliableMapCoords){
+            System.out.println("Avaliable Coords are " + m.toString());
+        }
+        
+/*        while(preMadeRooms.size > 1) {
             Random rand = new Random();
-            int nextRoomNumber = rand.nextInt(preMadeRooms.size);
-
+            int i = rand.nextInt(preMadeRooms.size);
             preMadeRooms.get(i);
-
-        }
-
-
-
+        }*/
     }
 
 

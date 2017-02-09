@@ -382,8 +382,27 @@ public abstract class Room {
     }
 
 
+
+
     public Array<MapCoords> getMapCoordsArray() {
         return mapCoordsArray;
+    }
+
+
+    public Array<MapCoords> getAdjacentMapCoords() {
+
+        Array<MapCoords> adjacentCoords = new Array<MapCoords>();
+
+        for(RoomExit e : roomExits){
+            adjacentCoords.add(e.getLeaveCoords());
+        }
+
+        for(RoomTeleporter e : roomTeleporters){
+            adjacentCoords.add(e.getLeaveCoords());
+        }
+
+        return adjacentCoords;
+
     }
 
     public void setRoomBackground(RoomBackground e){
