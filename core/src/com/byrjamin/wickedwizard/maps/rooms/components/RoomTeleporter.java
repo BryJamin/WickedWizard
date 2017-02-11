@@ -23,24 +23,27 @@ public class RoomTeleporter {
     private boolean active;
     private boolean open = true;
 
-    private Rectangle bounds;
+    private Rectangle bounds = new Rectangle();
 
     private Color drawingColor = Color.WHITE;
 
+    //Should this be null?
     private MapCoords leaveCoords;
     private MapCoords roomCoords;
 
     private TextureRegion currentFrame;
 
-    public RoomTeleporter(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords) {
-        this.posX = posX;
-        this.posY = posY;
-
+    public RoomTeleporter(MapCoords roomCoords, MapCoords leaveCoords) {
         this.roomCoords = roomCoords;
         this.leaveCoords = leaveCoords;
         bounds = new Rectangle(posX, posY, width, height);
-
         currentFrame = PlayScreen.atlas.findRegion("grate");
+    }
+
+    public RoomTeleporter(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords) {
+        this(roomCoords, leaveCoords);
+        this.posX = posX;
+        this.posY = posY;
     }
 
 
@@ -113,6 +116,13 @@ public class RoomTeleporter {
 
     public float getCenterY(){
         return bounds.y + bounds.getHeight() /2;
+    }
+
+    public void setCenter(float x, float y) {
+        this.posX = x - width / 2;
+        this.posY = y - height / 2;
+        bounds.x = x - width / 2;
+        bounds.y = y - height / 2;
     }
 
 

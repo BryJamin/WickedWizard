@@ -35,6 +35,8 @@ public class Projectile {
     private float xDistance;
     private float yDistance;
 
+    private float scale;
+
     private Color drawingColor = Color.WHITE;
 
     Vector2 position;
@@ -44,7 +46,7 @@ public class Projectile {
 
     TextureRegion explosionTextureRegion;
 
-    private float speed = Measure.units(200f);
+    private float speed;
 
     //Required Parameters
     private final float x1;
@@ -71,6 +73,7 @@ public class Projectile {
         private float damage = 0;
         private float speed = Measure.units(50f);
         private Color drawingColor;
+        private float scale = 1;
 
 
         public ProjectileBuilder(float x1, float y1, float x2, float y2) {
@@ -95,6 +98,11 @@ public class Projectile {
             return this;
         }
 
+        public ProjectileBuilder scale(float val) {
+            scale = val;
+            return this;
+        }
+
         public Projectile build() {
             return new Projectile(this);
         }
@@ -103,6 +111,11 @@ public class Projectile {
     }
 
     public Projectile(ProjectileBuilder builder) {
+        scale = builder.scale;
+
+        WIDTH = WIDTH * scale;
+        HEIGHT = HEIGHT * scale;
+
         x1 = builder.x1 - (WIDTH / 2);
         x2 = builder.x2 - (WIDTH / 2);
         y1 = builder.y1 - (HEIGHT / 2);

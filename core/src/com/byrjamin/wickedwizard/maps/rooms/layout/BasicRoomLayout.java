@@ -60,14 +60,17 @@ public class BasicRoomLayout {
         r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH, wallTextures));
 
         //TELEPORT UP
-        r.add(new RoomTeleporter(WALLWIDTH * 8, HEIGHT - WALLWIDTH * 3,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1)));
+        RoomTeleporter rt = new RoomTeleporter(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
+        rt.setCenter(WIDTH / 2, HEIGHT - WALLWIDTH * 3);
+        r.add(rt);
+
 
         //TELEPORT DOWN
-        r.add(new RoomTeleporter(WALLWIDTH * 8, WALLWIDTH * 3,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() - 1)));
+        rt = new RoomTeleporter(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() - 1));
+        rt.setCenter(WIDTH / 2, WALLWIDTH * 4);
+        r.add(rt);
 
 
         //CEILING

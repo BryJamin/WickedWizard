@@ -27,8 +27,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class Wizard extends Entity{
 
-    public float HEIGHT = Measure.units(6);
-    public float WIDTH = Measure.units(6);
+    public float HEIGHT = Measure.units(5);
+    public float WIDTH = Measure.units(5);
     private float MOVEMENT = Measure.units(125f);
     private float DRAG = Measure.units(20f);
 
@@ -460,7 +460,8 @@ public class Wizard extends Entity{
         activeBullets.addProjectile(new Projectile.ProjectileBuilder(getCenterX() , getCenterY(), input_x,input_y)
                 .damage(damage)
                 .drawingColor(Color.WHITE)
-                .speed(Measure.units(150f))
+                .speed(Measure.units(100f))
+                .scale(0.7f)
                 .build());
     }
 

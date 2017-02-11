@@ -39,10 +39,6 @@ public class RoomInputAdapter extends InputAdapter{
         boolean test = room.getWizard().isFiring() && movementPoll == room.getWizard().getInputPoll();
 
         if(Gdx.input.isTouched(movementPoll) && ! test) {
-
-
-            System.out.println("INSIDE");
-
             float x1 = Gdx.input.getX(movementPoll);
             float y1 = Gdx.input.getY(movementPoll);
             input = new Vector3(x1, y1, 0);
@@ -51,6 +47,7 @@ public class RoomInputAdapter extends InputAdapter{
 
             System.out.println(input.y);
 
+            //TODO not good;
             if (input.y <= 300) {
 
                     System.out.println("INSIDE MOVEMENTWALL BIT");

@@ -114,7 +114,7 @@ public class Map {
         mapY = 0;
         mapX = 2;*/
 
-        jigsawMap(15);
+        jigsawMap(7, 1, 1);
 
 
         for(Room r : roomArray){
@@ -191,120 +191,154 @@ public class Map {
 
 
 
-    public void jigsawMap(int numberofRooms){
+    public void jigsawMap(int numberOfBattleRooms, int numberOfItemRooms, int numberOfBossRooms){
+
+        int totalRooms = numberOfBattleRooms + numberOfItemRooms + numberOfBossRooms;
 
         Array<TextureAtlas.AtlasRegion> background = PlayScreen.atlas.findRegions("backgrounds/wall");
         Array<TextureAtlas.AtlasRegion> walls = PlayScreen.atlas.findRegions("brick");
 
         BasicRoomLayout t = new BasicRoomLayout(background, walls);
 
-        Array<Room> preMadeRooms = new Array<Room>();
+        Array<Room> roomPieces = new Array<Room>();
+        Array<Room> bossPieces = new Array<Room>();
         Array<Room> actualRooms = new Array<Room>();
 
-        for(int i = 0; i < numberofRooms; i++) {
+        for(int i = 0; i < numberOfBattleRooms; i++) {
             Room r = new BattleRoom(new MapCoords(0,0));
             t.applyLayout(r);
-            preMadeRooms.add(r);
+            roomPieces.add(r);
         }
+
+        for(int i = 0; i < numberOfBossRooms; i++) {
+            Room r = new BossRoom(new MapCoords(0,0));
+            t.applyLayout(r);
+            bossPieces.add(r);
+        }
+
+        for(int i = 0; i < numberOfItemRooms; i++) {
+            Room r = new ItemRoom(new MapCoords(0,0));
+            t.applyLayout(r);
+            roomPieces.add(r);
+        }
+
 
         TutorialRoom tRoom = new TutorialRoom(new MapCoords(0,0));
         t.applyLayout(tRoom);
 
         actualRooms.add(tRoom);
 
-        OrderedSet<MapCoords> avaliableMapCoords = new OrderedSet<MapCoords>();
+        OrderedSet<MapCoords> avaliableMapCoordsSet = new OrderedSet<MapCoords>();
 
 
         ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
         unavaliableMapCoords.addAll(tRoom.getMapCoordsArray());
 
-        System.out.println(unavaliableMapCoords.size + " Set size for test");
+        avaliableMapCoordsSet.addAll(tRoom.getAdjacentMapCoords());
 
-        avaliableMapCoords.addAll(tRoom.getAdjacentMapCoords());
-
-        for(MapCoords m : unavaliableMapCoords){
+/*        for(MapCoords m : unavaliableMapCoords){
             System.out.println("Unavaliable Coords are " + m.toString());
         }
 
         for(MapCoords m : avaliableMapCoords){
             System.out.println("Avaliable Coords are " + m.toString());
+        }*/
+        Random rand = new Random();
+        while(roomPieces.size > 0) {
+            int i = rand.nextInt(roomPieces.size);
+            Room nextRoomToBePlaced = roomPieces.get(i);
+            roomPieces.removeIndex(i);
+            placeRoom(nextRoomToBePlaced, avaliableMapCoordsSet, unavaliableMapCoords, rand);
+            actualRooms.add(nextRoomToBePlaced);
         }
 
 
-        MapCoords m = new MapCoords(0,1);
+        for(Room r : bossPieces){
 
-        System.out.println(avaliableMapCoords.contains(m) + " Best be true");
+            int range = (int) Math.floor(Math.sqrt(totalRooms));
 
+            System.out.println("Range of Boss Rooms is" + range);
 
-
-        while(preMadeRooms.size > 1) {
-            Random rand = new Random();
-            int i = rand.nextInt(preMadeRooms.size);
-
-            Room next = preMadeRooms.get(i);
-            preMadeRooms.removeIndex(i);
-
-            System.out.println(next.getStartCoords() + " + START COORDS OF NEXT");
-
-
-            Array<MapCoords> temporaryAvaliableMapCoords = new Array<MapCoords>();
-
-            temporaryAvaliableMapCoords.addAll(avaliableMapCoords.orderedItems());
-
-            rand.nextInt(temporaryAvaliableMapCoords.size);
-
-            boolean roomPlaced = false;
-
-            while(!roomPlaced) {
-
-
-                int selector = rand.nextInt(temporaryAvaliableMapCoords.size);
-
-                MapCoords shiftCoords = temporaryAvaliableMapCoords.get(selector);
-                Array<MapCoords> mockCoords = next.mockShiftCoordinatePosition(shiftCoords);
-                System.out.println("STARTCOORDS IS " + next.getStartCoords());
-                temporaryAvaliableMapCoords.removeIndex(selector);
-
-
-                for (int j = 0; j < mockCoords.size; j++) {
-                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
-                    if (!unavaliableMapCoords.contains(mockCoords.get(j))) {
-                        roomPlaced = true;
-                    } else {
-                        roomPlaced = false;
-                        break;
-                    }
-                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
-
-                }
-
-                if (roomPlaced) {
-                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
-                    next.shiftCoordinatePosition(shiftCoords);
-                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
-                    unavaliableMapCoords.addAll(next.getMapCoordsArray());
-                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
-                    avaliableMapCoords.addAll(next.getAdjacentMapCoords());
-                    actualRooms.add(next);
-                }
+            if(placeBossRoom(r, avaliableMapCoordsSet, unavaliableMapCoords, rand, range)) {
+                actualRooms.add(r);
             }
-
         }
 
-/*
-        for(MapCoords mc : unavaliableMapCoords) {
-            System.out.println(mc);
-        }
-*/
+
+
 
         currentRoom = tRoom;
         roomArray.addAll(actualRooms);
 
-        for(Room r : roomArray) {
-            System.out.println(r.getStartCoords());
+        for(Room room : roomArray) {
+            System.out.println(room.getStartCoords());
         }
 
         System.out.println("MAP SIZE IS SIZE" + roomArray.size);
+    }
+
+
+    //Boss rooms need to placed
+    public boolean placeBossRoom(Room bossRoom, OrderedSet<MapCoords> avaliableMapCoordsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand, int minRange){
+        Array<MapCoords> avaliableMapCoordsArray = new Array<MapCoords>();
+        avaliableMapCoordsArray.addAll(avaliableMapCoordsSet.orderedItems());
+
+        OrderedSet<MapCoords> newavaliableMapCoordsSet = new OrderedSet<MapCoords>();
+
+        System.out.println(avaliableMapCoordsArray.size);
+
+        for(MapCoords m : avaliableMapCoordsArray){
+            if(m.getX() < minRange && m.getY() < minRange && m.getX() > -minRange && m.getY() > -minRange ) {
+                System.out.println("INSIDE AND REMOVING VALUES");
+                avaliableMapCoordsArray.removeValue(m, false);
+            } else {
+                newavaliableMapCoordsSet.add(m);
+            }
+        }
+
+        if(newavaliableMapCoordsSet.size != 0) {
+            return placeRoom(bossRoom, newavaliableMapCoordsSet, unavaliableMapCoords, rand);
+        }
+
+        return false;
+
+    }
+
+
+
+    public boolean placeRoom(Room room, OrderedSet<MapCoords> avaliableMapCoordsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+
+        Array<MapCoords> avaliableMapCoordsArray = new Array<MapCoords>();
+        avaliableMapCoordsArray.addAll(avaliableMapCoordsSet.orderedItems());
+
+        boolean roomPlaced = false;
+
+        while(!roomPlaced) {
+
+            int selector = rand.nextInt(avaliableMapCoordsArray.size);
+            MapCoords shiftCoords = avaliableMapCoordsArray.get(selector);
+            Array<MapCoords> mockCoords = room.mockShiftCoordinatePosition(shiftCoords);
+            avaliableMapCoordsArray.removeIndex(selector);
+
+            for (int j = 0; j < mockCoords.size; j++) {
+                if (!unavaliableMapCoords.contains(mockCoords.get(j))) {
+                    roomPlaced = true;
+                } else {
+                    roomPlaced = false;
+                    break;
+                }
+
+            }
+
+            if (roomPlaced) {
+                room.shiftCoordinatePosition(shiftCoords);
+                unavaliableMapCoords.addAll(room.getMapCoordsArray());
+                avaliableMapCoordsSet.addAll(room.getAdjacentMapCoords());
+            }
+        }
+
+        return roomPlaced;
+
     }
 
 
@@ -322,7 +356,7 @@ public class Map {
         mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
         mapRenderer.setColor(1,1,1,0.5f);
 
-        float SIZE = Measure.units(3);
+        float SIZE = Measure.units(3f);
         float mapy = 1000;
         float mapx = gamecam.position.x + 800;
 
@@ -339,49 +373,43 @@ public class Map {
         }
 
         mapRenderer.setColor(0.8f,0.8f,0.8f,0.8f);
-
         for(Room r : roomArray){
             if(currentCoords != r.getStartCoords()){
+                mapRenderer.setColor(0.5f,0.5f,0.5f,0.8f);
                 int diffX = r.getStartCoords().getX() - currentCoords.getX();
                 int diffY = r.getStartCoords().getY() - currentCoords.getY();
-
                 mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
 
+                if(r instanceof BossRoom){
+                    mapRenderer.setColor(0,1,1,0.5f);
+                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4 , mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                }
+
+                if(r instanceof ItemRoom){
+                    mapRenderer.setColor(1,0,1,0.5f);
+                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4 , mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                }
+
             }
         }
-
-
         mapRenderer.end();
 
+        mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        mapRenderer.begin(ShapeRenderer.ShapeType.Line);
+        mapRenderer.rect(mapx, mapy, SIZE, SIZE);
+        mapRenderer.setColor(0f,0f,0f,0.8f);
+        for(Room r : roomArray){
+            if(currentCoords != r.getStartCoords()){
+                mapRenderer.setColor(0f,0f,0f,0.8f);
+                int diffX = r.getStartCoords().getX() - currentCoords.getX();
+                int diffY = r.getStartCoords().getY() - currentCoords.getY();
+                mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+            }
+        }
+        mapRenderer.end();
+
+
         Gdx.gl.glDisable(GL20.GL_BLEND);
-
-/*
-        if(mapY + 1 < rooms.length){
-            if(rooms[mapY + 1][mapX] != null){
-                mapRenderer.rect(mapx, mapy - SIZE, SIZE, SIZE);
-            }
-        }
-
-        if(mapY - 1 >= 0){
-            if(rooms[mapY - 1][mapX] != null){
-                mapRenderer.rect(mapx, mapy + SIZE, SIZE, SIZE);
-            }
-        }
-
-        if(mapX + 1 < rooms[mapY].length){
-            if(rooms[mapY][mapX + 1] != null){
-                mapRenderer.rect(mapx + SIZE , mapy, SIZE, SIZE);
-            }
-        }
-
-        if(mapX - 1 >= 0){
-            if(rooms[mapY][mapX - 1] != null){
-                mapRenderer.rect(mapx - SIZE, mapy, SIZE, SIZE);
-            }
-        }
-*/
-
-
         batch.begin();
 
 

@@ -445,9 +445,7 @@ public abstract class Room {
 
 
     public Array<MapCoords> getAdjacentMapCoords() {
-
         Array<MapCoords> adjacentCoords = new Array<MapCoords>();
-
         for(RoomExit e : roomExits){
             adjacentCoords.add(e.getLeaveCoords());
         }
@@ -455,9 +453,7 @@ public abstract class Room {
         for(RoomTeleporter e : roomTeleporters){
             adjacentCoords.add(e.getLeaveCoords());
         }
-
         return adjacentCoords;
-
     }
 
     public void setRoomBackground(RoomBackground e){
