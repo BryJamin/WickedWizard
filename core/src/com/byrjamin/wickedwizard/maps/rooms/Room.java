@@ -190,7 +190,7 @@ public abstract class Room {
         transition = false;
 
         for(RoomExit r : roomExits){
-            if(r.getLeaveCoords().sameCoords(oldRoomCoords)){
+            if(r.getLeaveCoords().equals(oldRoomCoords)){
                 if(r.getLeaveCoords().getX() < entryCoords.getX()){
                     wizard.setX(r.getBounds().getX() + r.getBounds().getWidth() + wizard.WIDTH);
                     wizard.setY(r.getBounds().getY() + r.getBounds().getHeight() / 2);
@@ -207,7 +207,7 @@ public abstract class Room {
             System.out.println(r);
         }
         for(RoomTeleporter r : roomTeleporters){
-            if(r.getLeaveCoords().sameCoords(oldRoomCoords)){
+            if(r.getLeaveCoords().equals(oldRoomCoords)){
                 wizard.setCenterX(r.getCenterX());
                 wizard.setCenterY(r.getCenterY());
             }
@@ -283,7 +283,7 @@ public abstract class Room {
 
     public boolean containsCoords(MapCoords mc){
         for(MapCoords m : mapCoordsArray){
-            if(m.sameCoords(mc)){
+            if(m.equals(mc)){
                 return true;
             }
         }
@@ -293,18 +293,73 @@ public abstract class Room {
 
     public boolean containsExitWithCoords(MapCoords EntryCoords, MapCoords LeaveCoords){
         for(RoomExit re : roomExits){
-            if(re.getRoomCoords().sameCoords(LeaveCoords) && re.getLeaveCoords().sameCoords(EntryCoords)){
+            if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
                 return true;
             }
         }
 
         for(RoomTeleporter re : roomTeleporters){
-            if(re.getRoomCoords().sameCoords(LeaveCoords) && re.getLeaveCoords().sameCoords(EntryCoords)){
+            if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
                 return true;
             }
         }
 
         return false;
+    }
+
+    public void shiftCoordinatePosition(MapCoords newPosition){
+
+        System.out.println("STARTCOORD" + startCoords.getX());
+
+        int diffX = startCoords.getX() + newPosition.getX();
+        int diffY = startCoords.getY() + newPosition.getY();
+
+        System.out.println("STARTCOORD" + startCoords.getX());
+
+
+        for(MapCoords m : mapCoordsArray) {
+            m.addX(diffX);
+            m.addY(diffY);
+        }
+
+        for(RoomExit r : roomExits){
+            r.getLeaveCoords().add(diffX, diffY);
+            r.getRoomCoords().add(diffX, diffY);
+        }
+
+        for(RoomTeleporter r : roomTeleporters){
+            r.getLeaveCoords().add(diffX, diffY);
+            r.getRoomCoords().add(diffX, diffY);
+        }
+
+        System.out.println("STARTCOORD" + startCoords.getX());
+
+
+    }
+
+    public Array<MapCoords> mockShiftCoordinatePosition(MapCoords newPosition){
+
+        System.out.println("STARTCOORD" + startCoords.getX());
+
+        int diffX = newPosition.getX() - startCoords.getX();
+        int diffY = newPosition.getY() - startCoords.getY();
+        System.out.println("STARTCOORD" + startCoords.getX());
+
+        Array<MapCoords> mockCoords = new Array<MapCoords>();
+
+        for(MapCoords mc : mapCoordsArray) {
+            mockCoords.add(new MapCoords(mc));
+        }
+
+        System.out.println("Difference in X is " +diffX);
+        System.out.println(diffY);
+
+        for(MapCoords m : mockCoords) {
+            m.addX(diffX);
+            m.addY(diffY);
+        }
+
+        return mockCoords;
     }
 
 

@@ -1,10 +1,16 @@
 package com.byrjamin.wickedwizard.maps;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectSet;
+import com.badlogic.gdx.utils.OrderedSet;
+import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
@@ -40,7 +46,7 @@ public class Map {
     public Map(){
 
         //currentRoom = new ItemRoom(1, 2, new MapCoords(0,0));
-        Array<TextureAtlas.AtlasRegion> background = PlayScreen.atlas.findRegions("backgrounds/wall");
+/*        Array<TextureAtlas.AtlasRegion> background = PlayScreen.atlas.findRegions("backgrounds/wall");
         Array<TextureAtlas.AtlasRegion> walls = PlayScreen.atlas.findRegions("brick");
 
 
@@ -106,9 +112,31 @@ public class Map {
 
 
         mapY = 0;
-        mapX = 2;
+        mapX = 2;*/
 
-        jigsawMap(10);
+        jigsawMap(15);
+
+
+        for(Room r : roomArray){
+            r.turnOnRoomEnemyWaves();
+        }
+
+        for(int i = roomArray.size - 1; i >= 0; i--) {
+            for(int j = roomArray.get(i).getRoomExits().size - 1; j >= 0; j--) {
+                if(findDoor(roomArray.get(i).getRoomExits().get(j).getRoomCoords(),roomArray.get(i).getRoomExits().get(j).getLeaveCoords()) == null) {
+                    roomArray.get(i).replaceDoorwithWall(roomArray.get(i).getRoomExits().get(j));
+                    roomArray.get(i).getRoomExits().removeIndex(j);
+                }
+            }
+        }
+
+        for(int i = roomArray.size - 1; i >= 0; i--) {
+            for(int j = roomArray.get(i).getRoomTeleporters().size - 1; j >= 0; j--) {
+                if(findDoor(roomArray.get(i).getRoomTeleporters().get(j).getRoomCoords(), roomArray.get(i).getRoomTeleporters().get(j).getLeaveCoords()) == null) {
+                    roomArray.get(i).getRoomTeleporters().removeIndex(j);
+                }
+            }
+        }
 
     }
 
@@ -153,7 +181,6 @@ public class Map {
 
     public Room findDoor(MapCoords EnterFrom, MapCoords LeaveTo){
         for(Room r : roomArray) {
-            System.out.println(r.containsExitWithCoords(EnterFrom, LeaveTo));
             if(r.containsExitWithCoords(EnterFrom, LeaveTo)){
                 return r;
             };
@@ -185,11 +212,15 @@ public class Map {
 
         actualRooms.add(tRoom);
 
-        Array<MapCoords> avaliableMapCoords = new Array<MapCoords>();
-        Array<MapCoords> unavaliableMapCoords = new Array<MapCoords>();
+        OrderedSet<MapCoords> avaliableMapCoords = new OrderedSet<MapCoords>();
 
-        unavaliableMapCoords.addAll(actualRooms.get(0).getMapCoordsArray());
-        avaliableMapCoords.addAll(actualRooms.get(0).getAdjacentMapCoords());
+
+        ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
+        unavaliableMapCoords.addAll(tRoom.getMapCoordsArray());
+
+        System.out.println(unavaliableMapCoords.size + " Set size for test");
+
+        avaliableMapCoords.addAll(tRoom.getAdjacentMapCoords());
 
         for(MapCoords m : unavaliableMapCoords){
             System.out.println("Unavaliable Coords are " + m.toString());
@@ -198,12 +229,82 @@ public class Map {
         for(MapCoords m : avaliableMapCoords){
             System.out.println("Avaliable Coords are " + m.toString());
         }
-        
-/*        while(preMadeRooms.size > 1) {
+
+
+        MapCoords m = new MapCoords(0,1);
+
+        System.out.println(avaliableMapCoords.contains(m) + " Best be true");
+
+
+
+        while(preMadeRooms.size > 1) {
             Random rand = new Random();
             int i = rand.nextInt(preMadeRooms.size);
-            preMadeRooms.get(i);
-        }*/
+
+            Room next = preMadeRooms.get(i);
+            preMadeRooms.removeIndex(i);
+
+            System.out.println(next.getStartCoords() + " + START COORDS OF NEXT");
+
+
+            Array<MapCoords> temporaryAvaliableMapCoords = new Array<MapCoords>();
+
+            temporaryAvaliableMapCoords.addAll(avaliableMapCoords.orderedItems());
+
+            rand.nextInt(temporaryAvaliableMapCoords.size);
+
+            boolean roomPlaced = false;
+
+            while(!roomPlaced) {
+
+
+                int selector = rand.nextInt(temporaryAvaliableMapCoords.size);
+
+                MapCoords shiftCoords = temporaryAvaliableMapCoords.get(selector);
+                Array<MapCoords> mockCoords = next.mockShiftCoordinatePosition(shiftCoords);
+                System.out.println("STARTCOORDS IS " + next.getStartCoords());
+                temporaryAvaliableMapCoords.removeIndex(selector);
+
+
+                for (int j = 0; j < mockCoords.size; j++) {
+                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
+                    if (!unavaliableMapCoords.contains(mockCoords.get(j))) {
+                        roomPlaced = true;
+                    } else {
+                        roomPlaced = false;
+                        break;
+                    }
+                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
+
+                }
+
+                if (roomPlaced) {
+                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
+                    next.shiftCoordinatePosition(shiftCoords);
+                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
+                    unavaliableMapCoords.addAll(next.getMapCoordsArray());
+                    System.out.println("STARTCOORDS IS " + next.getStartCoords());
+                    avaliableMapCoords.addAll(next.getAdjacentMapCoords());
+                    actualRooms.add(next);
+                }
+            }
+
+        }
+
+/*
+        for(MapCoords mc : unavaliableMapCoords) {
+            System.out.println(mc);
+        }
+*/
+
+        currentRoom = tRoom;
+        roomArray.addAll(actualRooms);
+
+        for(Room r : roomArray) {
+            System.out.println(r.getStartCoords());
+        }
+
+        System.out.println("MAP SIZE IS SIZE" + roomArray.size);
     }
 
 
@@ -214,16 +315,47 @@ public class Map {
 
 
 
-/*        batch.end();
-
+        batch.end();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        mapRenderer.begin(ShapeRenderer.ShapeType.Line);
-        mapRenderer.setColor(Color.CYAN);
+        mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        mapRenderer.setColor(1,1,1,0.5f);
 
         float SIZE = Measure.units(3);
         float mapy = 1000;
         float mapx = gamecam.position.x + 800;
 
+        MapCoords currentCoords = currentRoom.getStartCoords();
+
+        mapRenderer.setColor(1,1,1,0.8f);
+        mapRenderer.rect(mapx, mapy, SIZE, SIZE);
+        //mapRenderer.end();
+
+        if(blink) {
+            mapRenderer.setColor(0,0,1,0.5f);
+            //mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
+        }
+
+        mapRenderer.setColor(0.8f,0.8f,0.8f,0.8f);
+
+        for(Room r : roomArray){
+            if(currentCoords != r.getStartCoords()){
+                int diffX = r.getStartCoords().getX() - currentCoords.getX();
+                int diffY = r.getStartCoords().getY() - currentCoords.getY();
+
+                mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+
+            }
+        }
+
+
+        mapRenderer.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+
+/*
         if(mapY + 1 < rooms.length){
             if(rooms[mapY + 1][mapX] != null){
                 mapRenderer.rect(mapx, mapy - SIZE, SIZE, SIZE);
@@ -247,21 +379,10 @@ public class Map {
                 mapRenderer.rect(mapx - SIZE, mapy, SIZE, SIZE);
             }
         }
-
-        mapRenderer.setColor(Color.WHITE);
-        mapRenderer.rect(mapx, mapy, SIZE, SIZE);
+*/
 
 
-        mapRenderer.end();
-
-        if(blink) {
-            mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
-            mapRenderer.end();
-        }
-
-
-        batch.begin();*/
+        batch.begin();
 
 
 
