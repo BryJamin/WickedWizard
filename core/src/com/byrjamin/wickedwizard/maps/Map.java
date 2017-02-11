@@ -114,7 +114,7 @@ public class Map {
         mapY = 0;
         mapX = 2;*/
 
-        jigsawMap(9, 1, 1);
+        jigsawMap(10, 1, 1);
 
 
         for(Room r : roomArray){
@@ -199,6 +199,8 @@ public class Map {
         Array<TextureAtlas.AtlasRegion> walls = PlayScreen.atlas.findRegions("brick");
 
         BasicRoomLayout t = new BasicRoomLayout(background, walls);
+        Height2Layout height2Layout = new Height2Layout(background, walls);
+        Width2Layout width2Layout = new Width2Layout(background, walls);
 
         Array<Room> roomPieces = new Array<Room>();
         Array<Room> bossPieces = new Array<Room>();
@@ -207,7 +209,14 @@ public class Map {
 
         for(int i = 0; i < numberOfBattleRooms; i++) {
             Room r = new BattleRoom(new MapCoords(0,0));
-            t.applyLayout(r);
+            if(i == 1){
+                width2Layout.applyLayout(r);
+            } else if(i == 2){
+                height2Layout.applyLayout(r);
+            } else {
+                t.applyLayout(r);
+            }
+
             roomPieces.add(r);
         }
 
@@ -328,14 +337,30 @@ public class Map {
 
         while(!roomPlaced) {
 
+            if(avaliableMapCoordsArray.size <= 0){
+                break;
+            }
+
             int selector = rand.nextInt(avaliableMapCoordsArray.size);
+            //The available co-ordinates we can shift to.
             MapCoords shiftCoords = avaliableMapCoordsArray.get(selector);
+            //Mocks moving the room
             Array<MapCoords> mockCoords = room.mockShiftCoordinatePosition(shiftCoords);
+            //Mocks the co-orindates the room leads to
+            Array<MapCoords> mockAdjacentCoords = room.mockShiftCoordinatePositionAdjacent(shiftCoords);
+            //Removes available map coords for the next loop.
             avaliableMapCoordsArray.removeIndex(selector);
 
             for (int j = 0; j < mockCoords.size; j++) {
                 if (!unavaliableMapCoords.contains(mockCoords.get(j))) {
-                    roomPlaced = true;
+                   // roomPlaced = true;
+                    for(MapCoords m : mockAdjacentCoords){
+                        if(unavaliableMapCoords.contains(m)){
+                            roomPlaced = true;
+                            break;
+                        }
+                    }
+
                 } else {
                     roomPlaced = false;
                     break;

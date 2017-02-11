@@ -362,6 +362,31 @@ public abstract class Room {
         return mockCoords;
     }
 
+    public Array<MapCoords> mockShiftCoordinatePositionAdjacent(MapCoords newPosition){
+
+        System.out.println("STARTCOORD" + startCoords.getX());
+
+        int diffX = newPosition.getX() - startCoords.getX();
+        int diffY = newPosition.getY() - startCoords.getY();
+        System.out.println("STARTCOORD" + startCoords.getX());
+
+        Array<MapCoords> mockCoords = new Array<MapCoords>();
+
+        for(MapCoords mc : getAdjacentMapCoords()) {
+            mockCoords.add(new MapCoords(mc));
+        }
+
+        System.out.println("Difference in X is " +diffX);
+        System.out.println(diffY);
+
+        for(MapCoords m : mockCoords) {
+            m.addX(diffX);
+            m.addY(diffY);
+        }
+
+        return mockCoords;
+    }
+
 
 
     public Array<Rectangle> getGroundBoundaries() {
