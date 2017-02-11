@@ -114,6 +114,7 @@ public class RoomInputAdapter extends InputAdapter{
             if(r.getBounds().contains(input.x, input.y) && r.isOpen()){
                 r.setActive(true);
                 room.getWizard().flyTo(input.x, input.y);
+                fire = false;
             } else {
                 r.setActive(false);
             }

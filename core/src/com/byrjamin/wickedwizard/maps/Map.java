@@ -114,7 +114,7 @@ public class Map {
         mapY = 0;
         mapX = 2;*/
 
-        jigsawMap(7, 1, 1);
+        jigsawMap(9, 1, 1);
 
 
         for(Room r : roomArray){
@@ -202,6 +202,7 @@ public class Map {
 
         Array<Room> roomPieces = new Array<Room>();
         Array<Room> bossPieces = new Array<Room>();
+        Array<Room> itemPieces = new Array<Room>();
         Array<Room> actualRooms = new Array<Room>();
 
         for(int i = 0; i < numberOfBattleRooms; i++) {
@@ -219,7 +220,7 @@ public class Map {
         for(int i = 0; i < numberOfItemRooms; i++) {
             Room r = new ItemRoom(new MapCoords(0,0));
             t.applyLayout(r);
-            roomPieces.add(r);
+            itemPieces.add(r);
         }
 
 
@@ -250,6 +251,18 @@ public class Map {
             roomPieces.removeIndex(i);
             placeRoom(nextRoomToBePlaced, avaliableMapCoordsSet, unavaliableMapCoords, rand);
             actualRooms.add(nextRoomToBePlaced);
+            unavaliableMapCoords.addAll(nextRoomToBePlaced.getMapCoordsArray());
+            avaliableMapCoordsSet.addAll(nextRoomToBePlaced.getAdjacentMapCoords());
+        }
+
+        for(Room r : itemPieces){
+            int range = (int) Math.floor(Math.sqrt(totalRooms));
+            System.out.println("Range of Boss Rooms is" + range);
+            if(placeRoom(r, avaliableMapCoordsSet, unavaliableMapCoords, rand)) {
+                actualRooms.add(r);
+                unavaliableMapCoords.addAll(r.getMapCoordsArray());
+                unavaliableMapCoords.addAll(r.getAdjacentMapCoords());
+            }
         }
 
 
@@ -258,8 +271,8 @@ public class Map {
             int range = (int) Math.floor(Math.sqrt(totalRooms));
 
             System.out.println("Range of Boss Rooms is" + range);
-
-            if(placeBossRoom(r, avaliableMapCoordsSet, unavaliableMapCoords, rand, range)) {
+            //TODO if you find out a way to print out 1000 maps with this method see if -1 range is better than +0 range
+            if(placeBossRoom(r, avaliableMapCoordsSet, unavaliableMapCoords, rand, range - 1)) {
                 actualRooms.add(r);
             }
         }
@@ -332,8 +345,6 @@ public class Map {
 
             if (roomPlaced) {
                 room.shiftCoordinatePosition(shiftCoords);
-                unavaliableMapCoords.addAll(room.getMapCoordsArray());
-                avaliableMapCoordsSet.addAll(room.getAdjacentMapCoords());
             }
         }
 
