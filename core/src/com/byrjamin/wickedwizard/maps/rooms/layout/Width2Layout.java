@@ -6,9 +6,8 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 
 /**
@@ -45,7 +44,7 @@ public class Width2Layout {
 
         WIDTH = SECTION_WIDTH * 2;
 
-        r.add(new RoomExit(0, Measure.units(10),
+        r.add(new RoomDoor(0, Measure.units(10),
                 new MapCoords(startCoords.getX(), startCoords.getY()),
                 new MapCoords(startCoords.getX() - 1, startCoords.getY())));
         r.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTextures));
@@ -59,7 +58,7 @@ public class Width2Layout {
         System.out.println("YS is " + ys);
 
 
-        r.add(new RoomExit(WIDTH - WALLWIDTH, Measure.units(10),
+        r.add(new RoomDoor(WIDTH - WALLWIDTH, Measure.units(10),
                 new MapCoords(startCoords.getX() + xs - 1, startCoords.getY()),
                 new MapCoords(startCoords.getX() + xs, startCoords.getY())));
         r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTextures));
@@ -71,12 +70,12 @@ public class Width2Layout {
         for(int i = 1; i < ys; i++){
             //mapCoordsArray.add(new MapCoords(startCoords.getX(), startCoords.getY()+ (i + 1)));
 
-            r.add(new RoomExit(WIDTH - WALLWIDTH, Measure.units(10) + SECTION_HEIGHT,
+            r.add(new RoomDoor(WIDTH - WALLWIDTH, Measure.units(10) + SECTION_HEIGHT,
                     new MapCoords(startCoords.getX() + xs - 1, startCoords.getY() + i),
                     new MapCoords(startCoords.getX() + xs, startCoords.getY() + i)));
             r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH, wallTextures));
 
-            r.add(new RoomExit(0, Measure.units(10) + SECTION_HEIGHT,
+            r.add(new RoomDoor(0, Measure.units(10) + SECTION_HEIGHT,
                     new MapCoords(startCoords.getX(), startCoords.getY() + i),
                     new MapCoords(startCoords.getX() - 1, startCoords.getY() + i)));
             r.add(new RoomWall(0, WALLWIDTH * 6 + SECTION_HEIGHT, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 6, WALLWIDTH, wallTextures));

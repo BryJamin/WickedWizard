@@ -14,9 +14,9 @@ import com.byrjamin.wickedwizard.item.Item;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomPlatform;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomTeleporter;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyUpdater;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
@@ -57,11 +57,11 @@ public abstract class Room {
     private MapCoords leaveMapCoords;
     private MapCoords roomCoords;
 
-    private RoomExit currentExit;
+    private RoomDoor currentExit;
 
     protected Array<Item> items = new Array<Item>();
-    protected Array<RoomExit> roomExits = new Array<RoomExit>();
-    protected Array<RoomTeleporter> roomTeleporters = new Array<RoomTeleporter>();
+    protected Array<RoomDoor> roomExits = new Array<RoomDoor>();
+    protected Array<RoomGrate> roomTeleporters = new Array<RoomGrate>();
     protected Array<RoomWall> roomWalls = new Array<RoomWall>();
     protected Array<GrapplePoint> grapplePoints = new Array<GrapplePoint>();
 
@@ -114,7 +114,7 @@ public abstract class Room {
 
 
         if(state == STATE.UNLOCKED && !transition) {
-            for (RoomExit r : roomExits) {
+            for (RoomDoor r : roomExits) {
                 if (r.hasEntered(wizard.getBounds())) {
                     transition = true;
                     leaveMapCoords = r.getLeaveCoords();
@@ -123,7 +123,7 @@ public abstract class Room {
                 }
             }
 
-            for (RoomTeleporter r : roomTeleporters) {
+            for (RoomGrate r : roomTeleporters) {
                 if (r.hasEntered(wizard.getBounds())) {
                     transition = true;
                     leaveMapCoords = r.getLeaveCoords();
@@ -138,7 +138,7 @@ public abstract class Room {
             r.update(wizard);
         }
 
-        for (RoomExit r : roomExits) {
+        for (RoomDoor r : roomExits) {
             r.update(dt);
         }
 
@@ -154,7 +154,7 @@ public abstract class Room {
     public void draw(SpriteBatch batch){
 
         roomBackground.draw(batch);
-        for(RoomTeleporter rt: roomTeleporters){
+        for(RoomGrate rt: roomTeleporters){
             rt.draw(batch);
         }
         roomEnemyUpdater.draw(batch);
@@ -164,7 +164,7 @@ public abstract class Room {
             BoundsDrawer.drawBounds(batch, item.getBoundingRectangle());
         }
 
-        for(RoomExit r : roomExits){
+        for(RoomDoor r : roomExits){
             r.draw(batch);
         }
 
@@ -189,7 +189,7 @@ public abstract class Room {
         wizard.cancelMovementHorizontalSpeed();
         transition = false;
 
-        for(RoomExit r : roomExits){
+        for(RoomDoor r : roomExits){
             if(r.getLeaveCoords().equals(oldRoomCoords)){
                 if(r.getLeaveCoords().getX() < entryCoords.getX()){
                     wizard.setX(r.getBounds().getX() + r.getBounds().getWidth() + wizard.WIDTH);
@@ -206,7 +206,7 @@ public abstract class Room {
         for(MapCoords r : mapCoordsArray){
             System.out.println(r);
         }
-        for(RoomTeleporter r : roomTeleporters){
+        for(RoomGrate r : roomTeleporters){
             if(r.getLeaveCoords().equals(oldRoomCoords)){
                 wizard.setCenterX(r.getCenterX());
                 wizard.setCenterY(r.getCenterY());
@@ -238,7 +238,7 @@ public abstract class Room {
     }
 
     public void doorCollisionCheck(Wizard w, float dt){
-        for(RoomExit exit : roomExits){
+        for(RoomDoor exit : roomExits){
             if(!exit.isUnlocked() && state != STATE.ENTRY){
                 wallCollisionCheck(w, exit.getBounds(), dt);
             }
@@ -255,28 +255,28 @@ public abstract class Room {
 
     public void lock() {
         state = STATE.LOCKED;
-        for(RoomExit r : roomExits){
+        for(RoomDoor r : roomExits){
             r.lock();
             r.lockAnimation();
         }
-        for(RoomTeleporter r : roomTeleporters){
+        for(RoomGrate r : roomTeleporters){
             r.lock();
         }
     }
 
 
-    public void replaceDoorwithWall(RoomExit exit){
+    public void replaceDoorwithWall(RoomDoor exit){
         roomWalls.add(new RoomWall(exit.getBounds().x, exit.getBounds().y, WALLWIDTH, exit.getBounds().getHeight(), WALLWIDTH, wallTexture));
     }
 
     public void unlock() {
         state = STATE.UNLOCKED;
-        for(RoomExit r : roomExits){
+        for(RoomDoor r : roomExits){
             r.unlock();
             r.unlockAnimation();
         }
 
-        for(RoomTeleporter r : roomTeleporters){
+        for(RoomGrate r : roomTeleporters){
             r.unlock();
         }
     }
@@ -292,13 +292,13 @@ public abstract class Room {
 
 
     public boolean containsExitWithCoords(MapCoords EntryCoords, MapCoords LeaveCoords){
-        for(RoomExit re : roomExits){
+        for(RoomDoor re : roomExits){
             if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
                 return true;
             }
         }
 
-        for(RoomTeleporter re : roomTeleporters){
+        for(RoomGrate re : roomTeleporters){
             if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
                 return true;
             }
@@ -322,12 +322,12 @@ public abstract class Room {
             m.addY(diffY);
         }
 
-        for(RoomExit r : roomExits){
+        for(RoomDoor r : roomExits){
             r.getLeaveCoords().add(diffX, diffY);
             r.getRoomCoords().add(diffX, diffY);
         }
 
-        for(RoomTeleporter r : roomTeleporters){
+        for(RoomGrate r : roomTeleporters){
             r.getLeaveCoords().add(diffX, diffY);
             r.getRoomCoords().add(diffX, diffY);
         }
@@ -421,7 +421,7 @@ public abstract class Room {
         return 200;
     }
 
-    public Array<RoomExit> getRoomExits() {
+    public Array<RoomDoor> getRoomExits() {
         return roomExits;
     }
 
@@ -441,11 +441,11 @@ public abstract class Room {
         return leaveMapCoords;
     }
 
-    public void add(RoomExit e){
+    public void add(RoomDoor e){
         roomExits.add(e);
     }
 
-    public void add(RoomTeleporter e){
+    public void add(RoomGrate e){
         roomTeleporters.add(e);
     }
 
@@ -471,11 +471,11 @@ public abstract class Room {
 
     public Array<MapCoords> getAdjacentMapCoords() {
         Array<MapCoords> adjacentCoords = new Array<MapCoords>();
-        for(RoomExit e : roomExits){
+        for(RoomDoor e : roomExits){
             adjacentCoords.add(e.getLeaveCoords());
         }
 
-        for(RoomTeleporter e : roomTeleporters){
+        for(RoomGrate e : roomTeleporters){
             adjacentCoords.add(e.getLeaveCoords());
         }
         return adjacentCoords;
@@ -489,7 +489,7 @@ public abstract class Room {
         return startCoords;
     }
 
-    public Array<RoomTeleporter> getRoomTeleporters() {
+    public Array<RoomGrate> getRoomTeleporters() {
         return roomTeleporters;
     }
 

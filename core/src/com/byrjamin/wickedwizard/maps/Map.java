@@ -393,8 +393,8 @@ public class Map {
         mapRenderer.setColor(1,1,1,0.5f);
 
         float SIZE = Measure.units(3f);
-        float mapy = 1000;
-        float mapx = gamecam.position.x + 800;
+        float mapy = gamecam.position.y + Measure.units(15);
+        float mapx = gamecam.position.x + Measure.units(40);
 
         MapCoords currentCoords = currentRoom.getStartCoords();
 

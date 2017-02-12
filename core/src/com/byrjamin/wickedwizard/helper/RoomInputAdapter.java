@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomTeleporter;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 
 /**
@@ -88,8 +88,8 @@ public class RoomInputAdapter extends InputAdapter{
             }
         }
 
-        for(RoomExit r : room.getRoomExits()){
-            if(r.getBounds().contains(input.x, input.y) && r.isOpen()){
+        for(RoomDoor r : room.getRoomExits()){
+            if(r.getBounds().contains(input.x, input.y) && r.isUnlocked()){
                 room.getWizard().flyTo(input.x, input.y);
                 w.toggleFallthroughOn();
                 fire = false;
@@ -110,8 +110,8 @@ public class RoomInputAdapter extends InputAdapter{
             }
         }
 
-        for(RoomTeleporter r : room.getRoomTeleporters()){
-            if(r.getBounds().contains(input.x, input.y) && r.isOpen()){
+        for(RoomGrate r : room.getRoomTeleporters()){
+            if(r.getBounds().contains(input.x, input.y) && r.isUnlocked()){
                 r.setActive(true);
                 room.getWizard().flyTo(input.x, input.y);
                 fire = false;

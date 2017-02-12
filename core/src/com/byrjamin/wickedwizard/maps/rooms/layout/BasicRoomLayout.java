@@ -1,15 +1,14 @@
 package com.byrjamin.wickedwizard.maps.rooms.layout;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomTeleporter;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 
 /**
@@ -47,27 +46,27 @@ public class BasicRoomLayout {
         MapCoords defaultCoords = r.getStartCoords();
 
         //LEFT
-        r.add(new RoomExit(0, Measure.units(10),
+        r.add(new RoomDoor(0, Measure.units(10),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY())));
         r.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH, wallTextures));
 
 
         //RIGHT
-        r.add(new RoomExit(WIDTH - WALLWIDTH, Measure.units(10),
+        r.add(new RoomDoor(WIDTH - WALLWIDTH, Measure.units(10),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY())));
         r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH, wallTextures));
 
         //TELEPORT UP
-        RoomTeleporter rt = new RoomTeleporter(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+        RoomGrate rt = new RoomGrate(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
         rt.setCenter(WIDTH / 2, HEIGHT - WALLWIDTH * 3);
         r.add(rt);
 
 
         //TELEPORT DOWN
-        rt = new RoomTeleporter(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+        rt = new RoomGrate(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() - 1));
         rt.setCenter(WIDTH / 2, WALLWIDTH * 4);
         r.add(rt);

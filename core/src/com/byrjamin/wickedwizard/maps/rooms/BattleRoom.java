@@ -12,7 +12,7 @@ public class BattleRoom extends Room {
 
     private RoomEnemyWaves roomEnemyWaves;
 
-    private int numberOfWaves = 0;
+    private int numberOfWaves = 1;
 
     public BattleRoom(MapCoords mapCoords){
         super(mapCoords);
