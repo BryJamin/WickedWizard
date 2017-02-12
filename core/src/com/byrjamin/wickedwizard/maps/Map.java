@@ -16,7 +16,9 @@ import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
@@ -46,7 +48,7 @@ public class Map {
 
     public Map(){
 
-        jigsawMap(12, 1,1);
+        jigsawMap(13, 1,1);
 
         for(Room r : roomArray){
             r.turnOnRoomEnemyWaves();
@@ -54,17 +56,23 @@ public class Map {
 
         for(int i = roomArray.size - 1; i >= 0; i--) {
             for(int j = roomArray.get(i).getRoomDoors().size - 1; j >= 0; j--) {
-                if(findDoor(roomArray.get(i).getRoomDoors().get(j).getRoomCoords(),roomArray.get(i).getRoomDoors().get(j).getLeaveCoords()) == null) {
-                    roomArray.get(i).replaceDoorwithWall(roomArray.get(i).getRoomDoors().get(j));
+
+                RoomDoor rd = roomArray.get(i).getRoomDoors().get(j);
+
+                if(findDoor(rd.getRoomCoords(),rd.getLeaveCoords()) == null) {
+                    roomArray.get(i).replaceDoorwithWall(rd);
                     roomArray.get(i).getRoomDoors().removeIndex(j);
+                    roomArray.get(i).getRoomExits().removeValue(rd, false);
                 }
             }
         }
 
         for(int i = roomArray.size - 1; i >= 0; i--) {
             for(int j = roomArray.get(i).getRoomGrates().size - 1; j >= 0; j--) {
-                if(findDoor(roomArray.get(i).getRoomGrates().get(j).getRoomCoords(), roomArray.get(i).getRoomGrates().get(j).getLeaveCoords()) == null) {
+                RoomGrate rg =  roomArray.get(i).getRoomGrates().get(j);
+                if(findDoor(rg.getRoomCoords(), rg.getLeaveCoords()) == null) {
                     roomArray.get(i).getRoomGrates().removeIndex(j);
+                    roomArray.get(i).getRoomExits().removeValue(rg, false);
                 }
             }
         }
@@ -446,33 +454,67 @@ public class Map {
         mapRenderer.setColor(0f,0f,0f,0.8f);
         for(Room r : roomArray){
 
-                for(MapCoords m : r.getMapCoordsArray()) {
-                    mapRenderer.setColor(1f, 0f, 0f, 0.9f);
-                    int diffX = m.getX() - currentCoords.getX();
-                    int diffY = m.getY() - currentCoords.getY();
+            for(MapCoords m : r.getMapCoordsArray()) {
+                mapRenderer.setColor(1f, 0f, 0f, 0.9f);
+                int diffX = m.getX() - currentCoords.getX();
+                int diffY = m.getY() - currentCoords.getY();
 
-                    float x = mapx + (SIZE * diffX);
-                    float y = mapy + (SIZE * diffY);
+                float x = mapx + (SIZE * diffX);
+                float y = mapy + (SIZE * diffY);
 
-                    //Left Line
-                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX() - 1,m.getY()), false)) {
-                        mapRenderer.line(x, y, x, y + SIZE);
-                    }
-                    //Right Line
-                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX() + 1,m.getY()), false)) {
-                        mapRenderer.line(x + SIZE, y, x + SIZE, y + SIZE);
-                    }
-
-                    //Top Line
-                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX(),m.getY() + 1), false)) {
-                        mapRenderer.line(x, y + SIZE, x + SIZE, y + SIZE);
-                    }
-
-                    //Bottom Line
-                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX(),m.getY() - 1), false)) {
-                        mapRenderer.line(x, y, x + SIZE, y);
-                    }
+                //Left Line
+                if(!r.getMapCoordsArray().contains(new MapCoords(m.getX() - 1,m.getY()), false)) {
+                    mapRenderer.line(x, y, x, y + SIZE);
                 }
+                //Right Line
+                if(!r.getMapCoordsArray().contains(new MapCoords(m.getX() + 1,m.getY()), false)) {
+                    mapRenderer.line(x + SIZE, y, x + SIZE, y + SIZE);
+                }
+
+                //Top Line
+                if(!r.getMapCoordsArray().contains(new MapCoords(m.getX(),m.getY() + 1), false)) {
+                    mapRenderer.line(x, y + SIZE, x + SIZE, y + SIZE);
+                }
+
+                //Bottom Line
+                if(!r.getMapCoordsArray().contains(new MapCoords(m.getX(),m.getY() - 1), false)) {
+                    mapRenderer.line(x, y, x + SIZE, y);
+                }
+            }
+
+            for(RoomExit re : r.getRoomExits()) {
+                mapRenderer.setColor(0f, 1f, 0f, 0.9f);
+                int diffX = re.getRoomCoords().getX() - currentCoords.getX();
+                int diffY = re.getRoomCoords().getY() - currentCoords.getY();
+
+                float x = mapx + (SIZE * diffX);
+                float y = mapy + (SIZE * diffY);
+
+                float MINI_SIZE = SIZE / 4;
+
+                //Left Line
+                if(re.getDirection() == RoomExit.EXIT_DIRECTION.LEFT) {
+                    mapRenderer.line(x, y + MINI_SIZE, x, y + SIZE - MINI_SIZE);
+                }
+
+                //Right Line
+                if(re.getDirection() == RoomExit.EXIT_DIRECTION.RIGHT) {
+                    mapRenderer.line(x + SIZE, y + MINI_SIZE, x + SIZE, y + SIZE - MINI_SIZE);
+                }
+
+                //Top Line
+                if(re.getDirection() == RoomExit.EXIT_DIRECTION.UP) {
+                    mapRenderer.line(x + MINI_SIZE, y + SIZE, x + SIZE - MINI_SIZE, y + SIZE);
+                }
+
+                //Bottom Line
+                if(re.getDirection() == RoomExit.EXIT_DIRECTION.DOWN) {
+                    mapRenderer.line(x + MINI_SIZE, y, x + SIZE - MINI_SIZE, y);
+                }
+            }
+
+
+
 
         }
         mapRenderer.end();
