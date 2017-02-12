@@ -145,6 +145,7 @@ public class Map {
         Height2Layout height2Layout = new Height2Layout(background, walls);
         Width2Layout width2Layout = new Width2Layout(background, walls);
 
+        //TODO hasn't been properly built but can slot in fine
         LBlockLayout lBlockLayout = new LBlockLayout(background, walls);
 
         Array<Room> roomPieces = new Array<Room>();
@@ -156,7 +157,7 @@ public class Map {
             Room r = new BattleRoom(new MapCoords(0,0));
             if(i == 1){
                 System.out.println("pAST IT");
-                lBlockLayout.applyLayout(r);
+                height2Layout.applyLayout(r);
                 System.out.println("pAST IT");
             } else if(i == 2){
                 width2Layout.applyLayout(r);
@@ -394,7 +395,7 @@ public class Map {
         float mapy = gamecam.position.y + Measure.units(15);
         float mapx = gamecam.position.x + Measure.units(40);
 
-        MapCoords currentCoords = currentRoom.getStartCoords();
+        MapCoords currentCoords = currentRoom.getWizardLocation();
 
         Array<MapCoords> currentRoomMapCoordsArray = currentRoom.getMapCoordsArray();
 

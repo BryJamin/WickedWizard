@@ -56,6 +56,7 @@ public abstract class Room {
     private Array<MapCoords> mapCoordsArray = new Array<MapCoords>();
 
     private MapCoords startCoords;
+    private MapCoords wizardLocCoords;
 
     private RoomExit currentExit;
 
@@ -87,6 +88,7 @@ public abstract class Room {
     public Room(MapCoords startCoords){
         mapCoordsArray.add(startCoords);
         this.startCoords = startCoords;
+        this.wizardLocCoords = startCoords;
     }
 
     public void update(float dt, OrthographicCamera gamecam){
@@ -326,6 +328,10 @@ public abstract class Room {
         System.out.println("STARTCOORD" + startCoords.getX());
 
 
+    }
+
+    public MapCoords getWizardLocation() {
+        return new MapCoords(startCoords.getX() + (int) (wizard.getX() / SECTION_WIDTH), startCoords.getY() + (int) (wizard.getY() / SECTION_HEIGHT));
     }
 
     public Array<MapCoords> mockShiftCoordinatePosition(MapCoords newPosition){
