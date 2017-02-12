@@ -32,9 +32,8 @@ import java.util.Random;
  */
 public class Map {
 
-    private Room[][] rooms;
-
     private Array<Room> roomArray = new Array<Room>();
+    private Array<Room> visitedRoomArray = new Array<Room>();
     private Array<MapCoords> mapCoordsArray = new Array<MapCoords>();
     private Room currentRoom;
     private int mapY;
@@ -83,6 +82,13 @@ public class Map {
             mapCoordsArray.addAll(r.getMapCoordsArray());
         }
 
+        Random random = new Random();
+        if(random.nextBoolean()) {
+            visitedRoomArray.add(currentRoom);
+        } else {
+            visitedRoomArray.addAll(roomArray);
+        }
+
 
     }
 
@@ -106,6 +112,12 @@ public class Map {
             Wizard w = currentRoom.getWizard();
             currentRoom = findRoom(currentExit.getLeaveCoords());
             currentRoom.enterRoom(w, currentExit.getRoomCoords(), currentExit.getLeaveCoords());
+
+            if(!visitedRoomArray.contains(currentRoom, true)){
+                visitedRoomArray.add(currentRoom);
+            }
+
+            System.out.println("VISITED ROOM SIZE IS :" + visitedRoomArray.size);
         }
     }
 
@@ -245,7 +257,7 @@ public class Map {
 
             System.out.println("Range of Boss Rooms is" + range);
             //TODO if you find out a way to print out 1000 maps with this method see if -1 range is better than +0 range
-            if(placeBossRoom(r, avaliableExitsSet, unavaliableMapCoords, rand, range - 1)) {
+            if(placeBossRoom(r, avaliableExitsSet, unavaliableMapCoords, rand, range)) {
                 actualRooms.add(r);
             }
         }
@@ -389,7 +401,6 @@ public class Map {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        mapRenderer.setColor(1,1,1,0.5f);
 
         float SIZE = Measure.units(3f);
         float mapy = gamecam.position.y + Measure.units(15);
@@ -397,13 +408,11 @@ public class Map {
 
         MapCoords currentCoords = currentRoom.getWizardLocation();
 
-        Array<MapCoords> currentRoomMapCoordsArray = currentRoom.getMapCoordsArray();
-
         for(MapCoords m : currentRoom.getMapCoordsArray()) {
             mapRenderer.setColor(1, 1, 1, 0.8f);
             mapRenderer.rect(mapx, mapy, SIZE, SIZE);
 
-            mapRenderer.setColor(0.5f, 0.5f, 0.5f, 0.8f);
+           // mapRenderer.setColor(0.5f, 0.5f, 0.5f, 0.8f);
             int diffX = m.getX() - currentCoords.getX();
             int diffY = m.getY() - currentCoords.getY();
             mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
@@ -428,10 +437,8 @@ public class Map {
             mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
         }
 
-        mapRenderer.setColor(0.8f,0.8f,0.8f,0.8f);
 
-
-        for(Room r : roomArray){
+        for(Room r : visitedRoomArray){
             if(!r.getMapCoordsArray().contains(currentCoords, false)){
 
                 for(MapCoords m : r.getMapCoordsArray()) {
@@ -457,8 +464,7 @@ public class Map {
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
         mapRenderer.rect(mapx, mapy, SIZE, SIZE);
-        mapRenderer.setColor(0f,0f,0f,0.8f);
-        for(Room r : roomArray){
+        for(Room r : visitedRoomArray){
 
             for(MapCoords m : r.getMapCoordsArray()) {
                 mapRenderer.setColor(1f, 0f, 0f, 0.9f);
