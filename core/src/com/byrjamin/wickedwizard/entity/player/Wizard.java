@@ -247,8 +247,6 @@ public class Wizard extends Entity{
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
             this.xFlyTarget = dashTarget;
-
-            System.out.println("DASH TARGET IS: " + dashTarget);
             directionOfTravel = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
             facingDirection = xFlyTarget <= getCenterX() ? DIRECTION.LEFT : DIRECTION.RIGHT;
         }

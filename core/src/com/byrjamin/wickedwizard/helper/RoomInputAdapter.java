@@ -49,9 +49,6 @@ public class RoomInputAdapter extends InputAdapter{
 
             //TODO not good;
             if (input.y <= 300) {
-
-                    System.out.println("INSIDE MOVEMENTWALL BIT");
-
                     room.getWizard().dash(input.x);
             }
 
@@ -88,7 +85,7 @@ public class RoomInputAdapter extends InputAdapter{
             }
         }
 
-        for(RoomDoor r : room.getRoomExits()){
+        for(RoomDoor r : room.getRoomDoors()){
             if(r.getBounds().contains(input.x, input.y) && r.isUnlocked()){
                 room.getWizard().flyTo(input.x, input.y);
                 w.toggleFallthroughOn();
@@ -110,7 +107,7 @@ public class RoomInputAdapter extends InputAdapter{
             }
         }
 
-        for(RoomGrate r : room.getRoomTeleporters()){
+        for(RoomGrate r : room.getRoomGrates()){
             if(r.getBounds().contains(input.x, input.y) && r.isUnlocked()){
                 r.setActive(true);
                 room.getWizard().flyTo(input.x, input.y);

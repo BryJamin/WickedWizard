@@ -27,8 +27,8 @@ public class RoomDoor extends RoomExit{
 
 
 
-    public RoomDoor(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords) {
-        super(roomCoords, leaveCoords);
+    public RoomDoor(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords, EXIT_DIRECTION direction) {
+        super(roomCoords, leaveCoords, direction);
         this.posX = posX;
         this.posY = posY;
         bounds = new Rectangle(posX, posY, WIDTH, HEIGHT);

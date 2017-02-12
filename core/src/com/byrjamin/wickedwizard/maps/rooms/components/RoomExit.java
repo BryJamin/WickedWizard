@@ -8,7 +8,7 @@ import com.byrjamin.wickedwizard.maps.MapCoords;
  */
 public abstract class RoomExit {
 
-    public enum EXIT {
+    public enum EXIT_DIRECTION {
         LEFT, RIGHT, UP, DOWN, ANY
     }
 
@@ -17,10 +17,19 @@ public abstract class RoomExit {
     protected Rectangle bounds;
     protected boolean unlocked = true;
 
+    protected EXIT_DIRECTION direction;
 
-    public RoomExit(MapCoords roomCoords, MapCoords leaveCoords){
+
+/*    public RoomExit(MapCoords roomCoords, MapCoords leaveCoords){
         this.roomCoords = roomCoords;
         this.leaveCoords = leaveCoords;
+        direction = EXIT_DIRECTION.ANY;
+    }*/
+
+    public RoomExit(MapCoords roomCoords, MapCoords leaveCoords, EXIT_DIRECTION direction){
+        this.roomCoords = roomCoords;
+        this.leaveCoords = leaveCoords;
+        this.direction = direction;
     }
 
 
@@ -54,5 +63,32 @@ public abstract class RoomExit {
 
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    public EXIT_DIRECTION getDirection() {
+        return direction;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RoomExit roomExit = (RoomExit) o;
+
+        if (roomCoords != null ? !roomCoords.equals(roomExit.roomCoords) : roomExit.roomCoords != null)
+            return false;
+        if (leaveCoords != null ? !leaveCoords.equals(roomExit.leaveCoords) : roomExit.leaveCoords != null)
+            return false;
+        return direction == roomExit.direction;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = roomCoords != null ? roomCoords.hashCode() : 0;
+        result = 31 * result + (leaveCoords != null ? leaveCoords.hashCode() : 0);
+        result = 31 * result + (direction != null ? direction.hashCode() : 0);
+        return result;
     }
 }

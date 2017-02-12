@@ -23,14 +23,14 @@ public class RoomGrate extends RoomExit{
 
     private TextureRegion currentFrame;
 
-    public RoomGrate(MapCoords roomCoords, MapCoords leaveCoords) {
-        super(roomCoords, leaveCoords);
+    public RoomGrate(MapCoords roomCoords, MapCoords leaveCoords, EXIT_DIRECTION direction) {
+        super(roomCoords, leaveCoords, direction);
         bounds = new Rectangle(posX, posY, width, height);
         currentFrame = PlayScreen.atlas.findRegion("grate");
     }
 
-    public RoomGrate(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords) {
-        this(roomCoords, leaveCoords);
+    public RoomGrate(float posX, float posY, MapCoords roomCoords, MapCoords leaveCoords, EXIT_DIRECTION direction) {
+        this(roomCoords, leaveCoords, direction);
         this.posX = posX;
         this.posY = posY;
     }

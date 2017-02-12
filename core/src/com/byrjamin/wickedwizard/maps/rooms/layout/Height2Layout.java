@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 
 /**
@@ -59,12 +60,14 @@ public class Height2Layout {
 
             r.add(new RoomDoor(WIDTH - WALLWIDTH, Measure.units(10) + SECTION_HEIGHT * i,
                     new MapCoords(startCoords.getX() + xs - 1, startCoords.getY() + i),
-                    new MapCoords(startCoords.getX() + xs, startCoords.getY() + i)));
+                    new MapCoords(startCoords.getX() + xs, startCoords.getY() + i),
+                    RoomExit.EXIT_DIRECTION.RIGHT));
             r.add(new RoomWall(WIDTH - WALLWIDTH, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTextures));
 
             r.add(new RoomDoor(0, Measure.units(10) + SECTION_HEIGHT * i,
                     new MapCoords(startCoords.getX(), startCoords.getY() + i),
-                    new MapCoords(startCoords.getX() - 1, startCoords.getY() + i)));
+                    new MapCoords(startCoords.getX() - 1, startCoords.getY() + i),
+                    RoomExit.EXIT_DIRECTION.LEFT));
             r.add(new RoomWall(0, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, (SECTION_HEIGHT) - WALLWIDTH * 4, WALLWIDTH, wallTextures));
 
         }
@@ -90,6 +93,10 @@ public class Height2Layout {
         }
 
         r.setRoomBackground(new RoomBackground(backgroundTextures, 0, 0 , WIDTH, HEIGHT, Measure.units(15)));
+
+        r.getRoomExits().addAll(r.getRoomDoors());
+        r.getRoomExits().addAll(r.getRoomGrates());
+
 
     }
 
