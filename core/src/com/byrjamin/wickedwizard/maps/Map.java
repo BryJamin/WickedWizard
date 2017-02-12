@@ -32,6 +32,7 @@ public class Map {
     private Room[][] rooms;
 
     private Array<Room> roomArray = new Array<Room>();
+    private Array<MapCoords> mapCoordsArray = new Array<MapCoords>();
     private Room currentRoom;
     private int mapY;
     private int mapX;
@@ -45,7 +46,7 @@ public class Map {
 
     public Map(){
 
-        jigsawMap(10, 1, 1);
+        jigsawMap(12, 1,1);
 
         for(Room r : roomArray){
             r.turnOnRoomEnemyWaves();
@@ -67,6 +68,12 @@ public class Map {
                 }
             }
         }
+
+
+        for(Room r : roomArray){
+            mapCoordsArray.addAll(r.getMapCoordsArray());
+        }
+
 
     }
 
@@ -181,7 +188,7 @@ public class Map {
         for(MapCoords m : avaliableMapCoords){
             System.out.println("Avaliable Coords are " + m.toString());
         }*/
-        Random rand = new Random();
+        Random rand = new Random(3);
 
         while(roomPieces.size > 0) {
             int i = rand.nextInt(roomPieces.size);
@@ -269,66 +276,6 @@ public class Map {
 
     }
 
-
-
-    public boolean placeRoom(Room room, OrderedSet<MapCoords> avaliableMapCoordsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
-
-        Array<MapCoords> avaliableMapCoordsArray = new Array<MapCoords>();
-        avaliableMapCoordsArray.addAll(avaliableMapCoordsSet.orderedItems());
-
-        boolean roomPlaced = false;
-        System.out.println("Avaliable MapCoords While loop start");
-
-        for(MapCoords m : avaliableMapCoordsArray){
-            System.out.println(m);
-        }
-
-        while(!roomPlaced) {
-
-            if(avaliableMapCoordsArray.size <= 0){
-                break;
-            }
-
-            int selector = rand.nextInt(avaliableMapCoordsArray.size);
-            //The available co-ordinates we can shift to.
-            MapCoords shiftCoords = avaliableMapCoordsArray.get(selector);
-
-            //Mocks moving the room
-            Array<MapCoords> mockCoords = room.mockShiftCoordinatePosition(shiftCoords);
-            //Mocks the co-orindates the room leads to
-            Array<MapCoords> mockAdjacentCoords = room.mockShiftCoordinatePositionAdjacent(shiftCoords);
-            //Removes available map coords for the next loop.
-            avaliableMapCoordsArray.removeIndex(selector);
-
-            boolean canCheck = false;
-
-            for (int j = 0; j < mockCoords.size; j++) {
-                if (!unavaliableMapCoords.contains(mockCoords.get(j))) {
-                    canCheck = true;
-                }
-            }
-
-            if(canCheck) {
-
-                for (MapCoords m : mockAdjacentCoords) {
-                    if (unavaliableMapCoords.contains(m)) {
-                        roomPlaced = true;
-                        break;
-                    }
-                }
-
-                if (roomPlaced) {
-                    room.shiftCoordinatePosition(shiftCoords);
-                }
-
-            }
-        }
-
-        return roomPlaced;
-
-    }
-
-
     public boolean placeRoomUsingDoors(Room room, OrderedSet<RoomExit> avaliableExitsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
 
         Array<RoomExit> avaliableExitsArray = new Array<RoomExit>();
@@ -343,16 +290,16 @@ public class Map {
                 break;
             }
 
-            int selector = rand.nextInt(avaliableExitsArray.size);
+            int avaliableExitSelector = rand.nextInt(avaliableExitsArray.size);
             //The available co-ordinates we can shift to.
-            RoomExit selectedExit = avaliableExitsArray.get(selector);
+            RoomExit selectedAvaliableExit = avaliableExitsArray.get(avaliableExitSelector);
 
-            avaliableExitsArray.removeIndex(selector);
+            avaliableExitsArray.removeIndex(avaliableExitSelector);
 
             Array<RoomExit> linkableExitsArray = new Array<RoomExit>();
 
             for(RoomExit re : room.getRoomExits()) {
-                switch (selectedExit.getDirection()){
+                switch (selectedAvaliableExit.getDirection()){
                     case LEFT: if(re.getDirection() == RoomExit.EXIT_DIRECTION.RIGHT)
                         linkableExitsArray.add(re);
                         break;
@@ -374,13 +321,13 @@ public class Map {
                     break;
                 }
 
-                int selector2 = rand.nextInt(linkableExitsArray.size);
+                int linkableExitsSelector = rand.nextInt(linkableExitsArray.size);
                 //The available co-ordinates we can shift to.
-                RoomExit selectedLinkableExit = linkableExitsArray.get(selector2);
+                RoomExit selectedLinkableExit = linkableExitsArray.get(linkableExitsSelector);
 
-                linkableExitsArray.removeIndex(selector2);
+                linkableExitsArray.removeIndex(linkableExitsSelector);
 
-                MapCoords shiftCoords = generateShiftCoords(selectedExit.getLeaveCoords(), selectedLinkableExit.getRoomCoords());
+                MapCoords shiftCoords = generateShiftCoords(selectedAvaliableExit.getLeaveCoords(), selectedLinkableExit.getRoomCoords());
 
                 //Mocks moving the room
                 Array<MapCoords> mockCoords = room.mockShiftCoordinatePosition(shiftCoords);
@@ -396,7 +343,7 @@ public class Map {
 
                 if (roomPlaced) {
                     room.shiftCoordinatePosition(shiftCoords);
-                    avaliableExitsSet.remove(selectedExit);
+                    avaliableExitsSet.remove(selectedAvaliableExit);
                 }
 
             }
@@ -436,8 +383,29 @@ public class Map {
 
         MapCoords currentCoords = currentRoom.getStartCoords();
 
-        mapRenderer.setColor(1,1,1,0.8f);
-        mapRenderer.rect(mapx, mapy, SIZE, SIZE);
+        Array<MapCoords> currentRoomMapCoordsArray = currentRoom.getMapCoordsArray();
+
+        for(MapCoords m : currentRoom.getMapCoordsArray()) {
+            mapRenderer.setColor(1, 1, 1, 0.8f);
+            mapRenderer.rect(mapx, mapy, SIZE, SIZE);
+
+            mapRenderer.setColor(0.5f, 0.5f, 0.5f, 0.8f);
+            int diffX = m.getX() - currentCoords.getX();
+            int diffY = m.getY() - currentCoords.getY();
+            mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+
+            if (currentRoom instanceof BossRoom) {
+                mapRenderer.setColor(0, 1, 1, 0.5f);
+                mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+            }
+
+            if (currentRoom instanceof ItemRoom) {
+                mapRenderer.setColor(1, 0, 1, 0.5f);
+                mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+            }
+
+
+        }
         //mapRenderer.end();
 
         if(blink) {
@@ -447,23 +415,27 @@ public class Map {
         }
 
         mapRenderer.setColor(0.8f,0.8f,0.8f,0.8f);
+
+
         for(Room r : roomArray){
-            if(currentCoords != r.getStartCoords()){
-                mapRenderer.setColor(0.5f,0.5f,0.5f,0.8f);
-                int diffX = r.getStartCoords().getX() - currentCoords.getX();
-                int diffY = r.getStartCoords().getY() - currentCoords.getY();
-                mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+            if(!r.getMapCoordsArray().contains(currentCoords, false)){
 
-                if(r instanceof BossRoom){
-                    mapRenderer.setColor(0,1,1,0.5f);
-                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4 , mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                for(MapCoords m : r.getMapCoordsArray()) {
+                    mapRenderer.setColor(0.5f, 0.5f, 0.5f, 0.8f);
+                    int diffX = m.getX() - currentCoords.getX();
+                    int diffY = m.getY() - currentCoords.getY();
+                    mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+
+                    if (r instanceof BossRoom) {
+                        mapRenderer.setColor(0, 1, 1, 0.5f);
+                        mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                    }
+
+                    if (r instanceof ItemRoom) {
+                        mapRenderer.setColor(1, 0, 1, 0.5f);
+                        mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                    }
                 }
-
-                if(r instanceof ItemRoom){
-                    mapRenderer.setColor(1,0,1,0.5f);
-                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4 , mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
-                }
-
             }
         }
         mapRenderer.end();
@@ -473,12 +445,35 @@ public class Map {
         mapRenderer.rect(mapx, mapy, SIZE, SIZE);
         mapRenderer.setColor(0f,0f,0f,0.8f);
         for(Room r : roomArray){
-            if(currentCoords != r.getStartCoords()){
-                mapRenderer.setColor(0f,0f,0f,0.8f);
-                int diffX = r.getStartCoords().getX() - currentCoords.getX();
-                int diffY = r.getStartCoords().getY() - currentCoords.getY();
-                mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
-            }
+
+                for(MapCoords m : r.getMapCoordsArray()) {
+                    mapRenderer.setColor(1f, 0f, 0f, 0.9f);
+                    int diffX = m.getX() - currentCoords.getX();
+                    int diffY = m.getY() - currentCoords.getY();
+
+                    float x = mapx + (SIZE * diffX);
+                    float y = mapy + (SIZE * diffY);
+
+                    //Left Line
+                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX() - 1,m.getY()), false)) {
+                        mapRenderer.line(x, y, x, y + SIZE);
+                    }
+                    //Right Line
+                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX() + 1,m.getY()), false)) {
+                        mapRenderer.line(x + SIZE, y, x + SIZE, y + SIZE);
+                    }
+
+                    //Top Line
+                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX(),m.getY() + 1), false)) {
+                        mapRenderer.line(x, y + SIZE, x + SIZE, y + SIZE);
+                    }
+
+                    //Bottom Line
+                    if(!r.getMapCoordsArray().contains(new MapCoords(m.getX(),m.getY() - 1), false)) {
+                        mapRenderer.line(x, y, x + SIZE, y);
+                    }
+                }
+
         }
         mapRenderer.end();
 

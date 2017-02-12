@@ -40,7 +40,7 @@ public class Height2Layout {
     public void applyLayout(Room r){
 
         MapCoords startCoords = r.getStartCoords();
-
+        r.addCoords(new MapCoords(startCoords.getX(), startCoords.getY() + 1));
         r.HEIGHT = SECTION_HEIGHT * 2;
         r.WIDTH = SECTION_WIDTH;
 
@@ -83,13 +83,12 @@ public class Height2Layout {
 
         for(int i = 0; i < xs; i++){
             for(int j = 0; j < ys + 1; j++){
-                r.addCoords(new MapCoords(startCoords.getX() + i, startCoords.getY() + j));
                 r.add(new GrapplePoint(WIDTH / 2, (SECTION_HEIGHT / 2) + (SECTION_HEIGHT / 2) * j));
             }
         }
 
         for(MapCoords m : r.getMapCoordsArray()){
-            System.out.println(m.toString());
+            System.out.println("Mapcoords is in height 2 layout: " + m.toString());
         }
 
         r.setRoomBackground(new RoomBackground(backgroundTextures, 0, 0 , WIDTH, HEIGHT, Measure.units(15)));
