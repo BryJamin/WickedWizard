@@ -21,6 +21,7 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
+import com.byrjamin.wickedwizard.maps.rooms.layout.LBlockLayout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
@@ -144,6 +145,8 @@ public class Map {
         Height2Layout height2Layout = new Height2Layout(background, walls);
         Width2Layout width2Layout = new Width2Layout(background, walls);
 
+        LBlockLayout lBlockLayout = new LBlockLayout(background, walls);
+
         Array<Room> roomPieces = new Array<Room>();
         Array<Room> bossPieces = new Array<Room>();
         Array<Room> itemPieces = new Array<Room>();
@@ -152,7 +155,9 @@ public class Map {
         for(int i = 0; i < numberOfBattleRooms; i++) {
             Room r = new BattleRoom(new MapCoords(0,0));
             if(i == 1){
-                height2Layout.applyLayout(r);
+                System.out.println("pAST IT");
+                lBlockLayout.applyLayout(r);
+                System.out.println("pAST IT");
             } else if(i == 2){
                 width2Layout.applyLayout(r);
             } else {
@@ -196,7 +201,7 @@ public class Map {
         for(MapCoords m : avaliableMapCoords){
             System.out.println("Avaliable Coords are " + m.toString());
         }*/
-        Random rand = new Random(3);
+        Random rand = new Random();
 
         while(roomPieces.size > 0) {
             int i = rand.nextInt(roomPieces.size);
