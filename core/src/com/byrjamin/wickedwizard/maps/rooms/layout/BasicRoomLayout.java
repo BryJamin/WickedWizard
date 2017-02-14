@@ -61,6 +61,7 @@ public class BasicRoomLayout {
                 RoomExit.EXIT_DIRECTION.RIGHT));
         r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT, WALLWIDTH, wallTextures));
 
+
         //TELEPORT UP
         RoomGrate rt = new RoomGrate(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),

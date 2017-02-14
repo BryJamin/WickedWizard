@@ -89,6 +89,7 @@ public abstract class Room {
         mapCoordsArray.add(startCoords);
         this.startCoords = startCoords;
         this.wizardLocCoords = startCoords;
+        roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
     public void update(float dt, OrthographicCamera gamecam){
@@ -241,11 +242,6 @@ public abstract class Room {
     public void wallCollisionCheck(Wizard w, Rectangle wallBound , float dt){
         WizardCollider.collisionCheck(w, wallBound, dt);
     }
-
-    public void turnOnRoomEnemyWaves() {
-        roomEnemyWaves = new RoomEnemyWaves(this);
-    }
-
     public void lock() {
         state = STATE.LOCKED;
         for(RoomDoor r : roomDoors){
