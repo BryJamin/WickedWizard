@@ -16,9 +16,11 @@ import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.LBlockLayout;
@@ -50,10 +52,15 @@ public class Map {
         currentRoom = mjg.getStartingRoom();
 
         for(Room room : roomArray) {
-            System.out.println(room.getStartCoords());
-        }
 
-        System.out.println("MAP SIZE IS SIZE" + roomArray.size);
+            for(RoomWall rw : room.getRoomWalls()) {
+                rw.wallSetUp(PlayScreen.atlas.findRegions("brick"));
+            }
+
+            RoomBackground rbg = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , room.WIDTH, room.HEIGHT, Measure.units(15));
+            rbg.backgroundSetUp();
+            room.setRoomBackground(rbg);
+        }
 
         Random random = new Random();
 /*        if(random.nextBoolean()) {

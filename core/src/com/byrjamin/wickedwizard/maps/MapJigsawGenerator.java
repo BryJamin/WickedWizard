@@ -41,15 +41,12 @@ public class MapJigsawGenerator {
 
     public Array<Room> generateJigsaw(){
 
-        Array<TextureAtlas.AtlasRegion> background = PlayScreen.atlas.findRegions("backgrounds/wall");
-        Array<TextureAtlas.AtlasRegion> walls = PlayScreen.atlas.findRegions("brick");
-
-        BasicRoomLayout t = new BasicRoomLayout(background, walls);
-        Height2Layout height2Layout = new Height2Layout(background, walls);
-        Width2Layout width2Layout = new Width2Layout(background, walls);
+        BasicRoomLayout t = new BasicRoomLayout();
+        Height2Layout height2Layout = new Height2Layout();
+        Width2Layout width2Layout = new Width2Layout();
 
         //TODO hasn't been properly built but can slot in fine
-        LBlockLayout lBlockLayout = new LBlockLayout(background, walls);
+        LBlockLayout lBlockLayout = new LBlockLayout();
 
         Array<Room> roomPieces = new Array<Room>();
         Array<Room> bossPieces = new Array<Room>();
@@ -116,7 +113,6 @@ public class MapJigsawGenerator {
 
         for(Room r : itemPieces){
             int range = (int) Math.floor(Math.sqrt(totalRooms));
-            System.out.println("Range of Boss Rooms is" + range);
             if(placeRoomUsingDoors(r, avaliableExitsSet, unavaliableMapCoords, rand)) {
                 actualRooms.add(r);
                 unavaliableMapCoords.addAll(r.getMapCoordsArray());
@@ -124,7 +120,8 @@ public class MapJigsawGenerator {
             }
         }
 
-        int range = (int) Math.floor(Math.sqrt(totalRooms));
+        int range = (int) ((Math.sqrt(totalRooms) - 1) / 2) + 1;
+        System.out.println("range is " + range);
         for(Room r : bossPieces){
             //TODO if you find out a way to print out 1000 maps with this method see if -1 range is better than +0 range
             if(placeRoomAtRange(r, avaliableExitsSet, unavaliableMapCoords, rand, range)) {
@@ -228,29 +225,16 @@ public class MapJigsawGenerator {
 
         OrderedSet<RoomExit> newavaliableMapCoordsSet = new OrderedSet<RoomExit>();
 
-
         //TODO should be minRange from starting room's position inside of just guessing the room's position is 0;
         for(int i = avaliableMapCoordsArray.size - 1; i >= 0; i--) {
             RoomExit re = avaliableMapCoordsArray.get(i);
             if(re.getLeaveCoords().getX() < minRange && re.getLeaveCoords().getY() < minRange &&
                     re.getLeaveCoords().getX() > -minRange && re.getLeaveCoords().getY() > -minRange ) {
-                System.out.println("INSIDE AND REMOVING VALUES");
                 avaliableMapCoordsArray.removeValue(re, false);
             }
         }
 
         newavaliableMapCoordsSet.addAll(avaliableMapCoordsArray);
-
-        //Old version need to run to through tests.
-
-/*        for(RoomExit re : avaliableMapCoordsArray){
-            if(re.getRoomCoords().getX() < minRange && re.getRoomCoords().getY() < minRange && re.getRoomCoords().getX() > -minRange && re.getRoomCoords().getY() > -minRange ) {
-                System.out.println("INSIDE AND REMOVING VALUES");
-                avaliableMapCoordsArray.removeValue(re, false);
-            } else {
-                newavaliableMapCoordsSet.add(re);
-            }
-        }*/
 
         if(newavaliableMapCoordsSet.size != 0) {
             return placeRoomUsingDoors(room, newavaliableMapCoordsSet, unavaliableMapCoords, rand);
@@ -300,6 +284,7 @@ public class MapJigsawGenerator {
         int diffY = newPosition.getY() - oldPosition.getY();
         return new MapCoords(diffX, diffY);
     }
+
 
 
 

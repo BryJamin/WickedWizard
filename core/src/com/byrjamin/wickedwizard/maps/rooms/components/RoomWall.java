@@ -30,13 +30,6 @@ public class RoomWall {
 
     private int[] wallSelection;
 
-    public RoomWall(float posX, float posY, float WIDTH, float HEIGHT, float TILE_SIZE, Array<? extends TextureRegion> skins) {
-        this(posX, posY, WIDTH, HEIGHT, TILE_SIZE);
-        this.skins = skins;
-        wallSelection = new int[noOfRows * noOfColumns];
-        wallSetUp();
-    }
-
     public RoomWall(float posX, float posY, float WIDTH, float HEIGHT, float TILE_SIZE) {
 
         this.posX = posX;
@@ -72,7 +65,11 @@ public class RoomWall {
     }
 
 
-    public void wallSetUp(){
+    public void wallSetUp(Array<? extends TextureRegion> skins){
+
+        this.skins = skins;
+        wallSelection = new int[noOfRows * noOfColumns];
+
         Random random = new Random();
         for(int i = 0; i < wallSelection.length; i++){
             wallSelection[i] = random.nextInt(skins.size);

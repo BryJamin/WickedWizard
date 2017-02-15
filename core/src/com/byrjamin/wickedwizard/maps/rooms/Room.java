@@ -68,9 +68,6 @@ public abstract class Room {
 
     protected Array<RoomExit> roomExits = new Array<RoomExit>();
 
-
-    protected Array<? extends TextureRegion> wallTexture = PlayScreen.atlas.findRegions("brick");
-
     private RoomEnemyUpdater roomEnemyUpdater = new RoomEnemyUpdater();
     protected Wizard wizard = new Wizard(WALLWIDTH * 2, 600);
     private Array<Rectangle> groundBoundaries = new Array<Rectangle>();
@@ -255,7 +252,7 @@ public abstract class Room {
 
 
     public void replaceDoorwithWall(RoomDoor exit){
-        roomWalls.add(new RoomWall(exit.getBounds().x, exit.getBounds().y, WALLWIDTH, exit.getBounds().getHeight(), WALLWIDTH, wallTexture));
+        roomWalls.add(new RoomWall(exit.getBounds().x, exit.getBounds().y, WALLWIDTH, exit.getBounds().getHeight(), WALLWIDTH));
     }
 
     public void unlock() {
@@ -298,12 +295,8 @@ public abstract class Room {
 
     public void shiftCoordinatePosition(MapCoords newPosition){
 
-        System.out.println("STARTCOORD" + startCoords.getX());
-
         int diffX = startCoords.getX() + newPosition.getX();
         int diffY = startCoords.getY() + newPosition.getY();
-
-        System.out.println("STARTCOORD" + startCoords.getX());
 
 
         for(MapCoords m : mapCoordsArray) {
@@ -321,8 +314,6 @@ public abstract class Room {
             r.getRoomCoords().add(diffX, diffY);
         }
 
-        System.out.println("STARTCOORD" + startCoords.getX());
-
 
     }
 
@@ -332,20 +323,14 @@ public abstract class Room {
 
     public Array<MapCoords> mockShiftCoordinatePosition(MapCoords newPosition){
 
-        System.out.println("STARTCOORD" + startCoords.getX());
-
         int diffX = newPosition.getX() - startCoords.getX();
         int diffY = newPosition.getY() - startCoords.getY();
-        System.out.println("STARTCOORD" + startCoords.getX());
 
         Array<MapCoords> mockCoords = new Array<MapCoords>();
 
         for(MapCoords mc : mapCoordsArray) {
             mockCoords.add(new MapCoords(mc));
         }
-
-        System.out.println("Difference in X is " +diffX);
-        System.out.println(diffY);
 
         for(MapCoords m : mockCoords) {
             m.addX(diffX);

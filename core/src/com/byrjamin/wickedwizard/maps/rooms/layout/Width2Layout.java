@@ -30,9 +30,7 @@ public class Width2Layout {
 
     private MapCoords defaultCoords = new MapCoords(0,0);
 
-    public Width2Layout(Array<? extends TextureRegion> backgroundTextures, Array<? extends TextureRegion> wallTextures){
-        this.backgroundTextures = backgroundTextures;
-        this.wallTextures = wallTextures;
+    public Width2Layout(){
     }
 
 
@@ -50,35 +48,26 @@ public class Width2Layout {
                 new MapCoords(startCoords.getX(), startCoords.getY()),
                 new MapCoords(startCoords.getX() - 1, startCoords.getY()),
                 RoomExit.EXIT_DIRECTION.LEFT));
-        r.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTextures));
+        r.add(new RoomWall(0, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
 
         int xs = (int) WIDTH / (int) SECTION_WIDTH;
         int ys = (int) HEIGHT / (int) SECTION_HEIGHT;
-
-        System.out.println(startCoords.getX() + xs);
-
-        System.out.println("XS is " + xs);
-        System.out.println("YS is " + ys);
-
 
         r.add(new RoomDoor(WIDTH - WALLWIDTH, Measure.units(10),
                 new MapCoords(startCoords.getX() + xs - 1, startCoords.getY()),
                 new MapCoords(startCoords.getX() + xs, startCoords.getY()),
                 RoomExit.EXIT_DIRECTION.RIGHT));
-        r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTextures));
+        r.add(new RoomWall(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
 
         //CEILING
-        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH, wallTextures));
-        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH, wallTextures));
+        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
+        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
 
         //GROUND
-        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH, wallTextures));
-        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH, wallTextures));
+        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
+        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
-        for(MapCoords m : r.getMapCoordsArray()){
-            System.out.println(m.toString());
-        }
 
         r.setRoomBackground(new RoomBackground(backgroundTextures, 0, 0 , WIDTH, HEIGHT, Measure.units(15)));
 

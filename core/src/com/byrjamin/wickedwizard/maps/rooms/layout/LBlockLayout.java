@@ -15,15 +15,9 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class LBlockLayout {
 
-
-    private Array<? extends TextureRegion> backgroundTextures;
-    private Array<? extends TextureRegion> wallTextures;
-
     private MapCoords defaultCoords = new MapCoords(0,0);
 
-    public LBlockLayout(Array<? extends TextureRegion> backgroundTextures, Array<? extends TextureRegion> wallTextures){
-        this.backgroundTextures = backgroundTextures;
-        this.wallTextures = wallTextures;
+    public LBlockLayout(){
     }
 
 
@@ -49,9 +43,6 @@ public class LBlockLayout {
                 new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 1),
                 new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY() + 1),
                 RoomExit.EXIT_DIRECTION.RIGHT));
-
-
-        r.setRoomBackground(new RoomBackground(backgroundTextures, 0, 0 , 1000, 1000, Measure.units(15)));
 
 
         r.getRoomExits().addAll(r.getRoomDoors());

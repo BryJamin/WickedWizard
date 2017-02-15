@@ -31,9 +31,8 @@ public class Height2Layout {
 
     private MapCoords defaultCoords = new MapCoords(0,0);
 
-    public Height2Layout(Array<? extends TextureRegion> backgroundTextures, Array<? extends TextureRegion> wallTextures){
-        this.backgroundTextures = backgroundTextures;
-        this.wallTextures = wallTextures;
+    public Height2Layout(){
+
     }
 
 
@@ -51,44 +50,35 @@ public class Height2Layout {
         int xs = (int) WIDTH / (int) SECTION_WIDTH;
         int ys = (int) HEIGHT / (int) SECTION_HEIGHT;
 
-        System.out.println(startCoords.getX() + xs);
-
-        System.out.println("XS is " + xs);
-        System.out.println("YS is " + ys);
-
         for(int i = 0; i < ys; i++){
 
             r.add(new RoomDoor(WIDTH - WALLWIDTH, Measure.units(10) + SECTION_HEIGHT * i,
                     new MapCoords(startCoords.getX() + xs - 1, startCoords.getY() + i),
                     new MapCoords(startCoords.getX() + xs, startCoords.getY() + i),
                     RoomExit.EXIT_DIRECTION.RIGHT));
-            r.add(new RoomWall(WIDTH - WALLWIDTH, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH, wallTextures));
+            r.add(new RoomWall(WIDTH - WALLWIDTH, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
 
             r.add(new RoomDoor(0, Measure.units(10) + SECTION_HEIGHT * i,
                     new MapCoords(startCoords.getX(), startCoords.getY() + i),
                     new MapCoords(startCoords.getX() - 1, startCoords.getY() + i),
                     RoomExit.EXIT_DIRECTION.LEFT));
-            r.add(new RoomWall(0, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, (SECTION_HEIGHT) - WALLWIDTH * 4, WALLWIDTH, wallTextures));
+            r.add(new RoomWall(0, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, (SECTION_HEIGHT) - WALLWIDTH * 4, WALLWIDTH));
 
         }
 
         //CEILING
-        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH, wallTextures));
-        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH, wallTextures));
+        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
+        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
 
         //GROUND
-        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH, wallTextures));
-        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH, wallTextures));
+        r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
+        r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
         for(int i = 0; i < xs; i++){
             for(int j = 0; j < ys + 1; j++){
                 r.add(new GrapplePoint(WIDTH / 2, (SECTION_HEIGHT / 2) + (SECTION_HEIGHT / 2) * j));
             }
-        }
-
-        for(MapCoords m : r.getMapCoordsArray()){
-            System.out.println("Mapcoords is in height 2 layout: " + m.toString());
         }
 
         r.setRoomBackground(new RoomBackground(backgroundTextures, 0, 0 , WIDTH, HEIGHT, Measure.units(15)));

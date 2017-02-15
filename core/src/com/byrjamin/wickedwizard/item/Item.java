@@ -21,7 +21,7 @@ public abstract class Item extends Sprite{
 
 
     public Item(TextureRegion region){
-        setRegion(region);
+//        setRegion(region);
         setBounds(getX(), getY(), Measure.units(10), Measure.units(10));
         isDestroyed = false;
     }

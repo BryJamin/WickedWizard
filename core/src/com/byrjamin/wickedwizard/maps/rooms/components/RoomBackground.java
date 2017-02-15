@@ -46,8 +46,6 @@ public class RoomBackground {
 
         backgroundSelection = new int[columns * rows];
 
-        backgroundSetUp();
-
     }
 
 
