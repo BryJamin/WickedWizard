@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
@@ -41,25 +42,31 @@ public class Map {
     private MapJigsawGenerator mjg;
 
     private OrthographicCamera gamecam;
-
-    ShapeRenderer mapRenderer = new ShapeRenderer();
-
     public Map(){
 
         Random rand = new Random();
-        mjg = new MapJigsawGenerator(3, rand);
+        mjg = new MapJigsawGenerator(10, rand);
+
+        //TODO first generate the map
         roomArray = mjg.generateJigsaw();
         currentRoom = mjg.getStartingRoom();
 
+
+        //TODO use the layouts to add to the room
         for(Room room : roomArray) {
 
             for(RoomWall rw : room.getRoomWalls()) {
                 rw.wallSetUp(PlayScreen.atlas.findRegions("brick"));
             }
+            room.getRoomBackground().backgroundSetUp(PlayScreen.atlas.findRegions("backgrounds/wall"));
 
-            RoomBackground rbg = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , room.WIDTH, room.HEIGHT, Measure.units(15));
-            rbg.backgroundSetUp();
-            room.setRoomBackground(rbg);
+            if(room instanceof BattleRoom) {
+                switch (room.getLayout()) {
+                    case OMNI: room.addEnemy(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
+                        room.addEnemy(EnemyPresets.defaultTurret(room.WIDTH / 4, room.HEIGHT - Measure.units(15)));
+                        break;
+                }
+            }
         }
 
         Random random = new Random();

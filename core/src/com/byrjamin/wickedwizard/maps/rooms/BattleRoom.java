@@ -23,10 +23,6 @@ public class BattleRoom extends Room {
         super(mapCoords);
 
         this.numberOfWaves = numberOfWaves;
-
-        roomEnemyWaves = new RoomEnemyWaves(this);
-        //arenaWaves.nextWaveTest(this.getEnemies());
-        //arenaWaves.nextWave(this.getEnemies());
     }
 
 
@@ -38,13 +34,13 @@ public class BattleRoom extends Room {
 
            // System.out.println(state);
 
-            if (numberOfWaves == 0 && getRoomEnemyUpdater().areAllEnemiesKilled()) {
+            if (getRoomEnemyUpdater().areAllEnemiesKilled()) {
                 unlock();
             } else {
                 lock();
                 if (getRoomEnemyUpdater().areAllEnemiesKilled()) {
-                    roomEnemyWaves.nextWaveTest(this.getEnemies());
-                    numberOfWaves--;
+                    //roomEnemyWaves.nextWaveTest(this.getEnemies());
+                    //numberOfWaves--;
                 }
             }
 

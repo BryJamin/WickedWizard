@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.MainGame;
@@ -20,6 +21,7 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomPlatform;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyUpdater;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -41,12 +43,9 @@ public abstract class Room {
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
 
-    public float TILE_SIZE = MainGame.GAME_WIDTH / 10;
-
     private float WALLWIDTH = Measure.units(5);
 
-    private float tile_height;
-    private float tile_width;
+    private RoomLayout.ROOM_LAYOUT layout;
 
     private float x = 0;
     private float y = 0;
@@ -56,7 +55,6 @@ public abstract class Room {
     private Array<MapCoords> mapCoordsArray = new Array<MapCoords>();
 
     private MapCoords startCoords;
-    private MapCoords wizardLocCoords;
 
     private RoomExit currentExit;
 
@@ -85,8 +83,6 @@ public abstract class Room {
     public Room(MapCoords startCoords){
         mapCoordsArray.add(startCoords);
         this.startCoords = startCoords;
-        this.wizardLocCoords = startCoords;
-        roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
     public void update(float dt, OrthographicCamera gamecam){
@@ -268,23 +264,13 @@ public abstract class Room {
     }
 
     public boolean containsCoords(MapCoords mc){
-        for(MapCoords m : mapCoordsArray){
-            if(m.equals(mc)){
-                return true;
-            }
-        }
-        return false;
+        return mapCoordsArray.contains(mc, false);
     }
 
 
     public boolean containsExitWithCoords(MapCoords EntryCoords, MapCoords LeaveCoords){
-        for(RoomDoor re : roomDoors){
-            if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
-                return true;
-            }
-        }
 
-        for(RoomGrate re : roomGrates){
+        for(RoomExit re : roomExits) {
             if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
                 return true;
             }
@@ -379,6 +365,10 @@ public abstract class Room {
         return roomEnemyUpdater.getSpawnedEnemies();
     }
 
+    public void addEnemy(Enemy e){
+        roomEnemyUpdater.getSpawnedEnemies().add(e);
+    }
+
     public RoomEnemyUpdater getRoomEnemyUpdater() {
         return roomEnemyUpdater;
     }
@@ -455,6 +445,18 @@ public abstract class Room {
         roomBackground = e;
     }
 
+    public RoomBackground getRoomBackground() {
+        return roomBackground;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
     public MapCoords getStartCoords() {
         return startCoords;
     }
@@ -465,5 +467,14 @@ public abstract class Room {
 
     public Array<GrapplePoint> getGrapplePoints() {
         return grapplePoints;
+    }
+
+
+    public RoomLayout.ROOM_LAYOUT getLayout() {
+        return layout;
+    }
+
+    public void setLayout(RoomLayout.ROOM_LAYOUT layout) {
+        this.layout = layout;
     }
 }
