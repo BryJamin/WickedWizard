@@ -120,7 +120,7 @@ public class MapJigsawGenerator {
             }
         }
 
-        int range = (int) ((Math.sqrt(totalRooms) - 1) / 2) + 1;
+        int range = (int) ((Math.sqrt(totalRooms) - 1) / 2);
         System.out.println("range is " + range);
         for(Room r : bossPieces){
             //TODO if you find out a way to print out 1000 maps with this method see if -1 range is better than +0 range

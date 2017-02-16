@@ -47,7 +47,7 @@ public class Map {
     public Map(){
 
         Random rand = new Random();
-        mjg = new MapJigsawGenerator(15, rand);
+        mjg = new MapJigsawGenerator(3, rand);
         roomArray = mjg.generateJigsaw();
         currentRoom = mjg.getStartingRoom();
 

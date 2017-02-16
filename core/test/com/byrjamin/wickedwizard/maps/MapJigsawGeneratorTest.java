@@ -28,11 +28,11 @@ public class MapJigsawGeneratorTest extends GameTest{
 
         PlayScreen.atlas = new TextureAtlas();
 
-        for(int i = 0; i < 10000; i++) {
+        for(int i = 0; i < 500; i++) {
 
             Random random = new Random();
 
-            MapJigsawGenerator mapJigsawGenerator = new MapJigsawGenerator(15, random);
+            MapJigsawGenerator mapJigsawGenerator = new MapJigsawGenerator(3, random);
 
             Array<Room> rooms = mapJigsawGenerator.generateJigsaw();
 
@@ -66,9 +66,6 @@ public class MapJigsawGeneratorTest extends GameTest{
 
         }
 
-
-//        Texture texture = new Texture(512, 512, Pixmap.Format.RGB888);
-  //      Assert.assertNotNull(texture);
 
     }
 }
