@@ -1,9 +1,14 @@
 package com.byrjamin.wickedwizard.maps;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectSet;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
@@ -11,174 +16,111 @@ import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
+import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
+import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
+import com.byrjamin.wickedwizard.maps.rooms.layout.LBlockLayout;
+import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
+
+import java.util.Random;
 
 /**
  * Created by Home on 24/12/2016.
  */
 public class Map {
 
-    private Room[][] rooms;
-    private int mapY;
-    private int mapX;
+    private Array<Room> roomArray = new Array<Room>();
+    private Array<Room> visitedRoomArray = new Array<Room>();
+    private MapGUI mapGUI;
+    private Room currentRoom;
+    private MapJigsawGenerator mjg;
 
-    private float mapBlinker;
-    private boolean blink = true;
+    private OrthographicCamera gamecam;
 
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
     public Map(){
 
-        rooms = new Room[][]{
-                {null, null, new TutorialRoom(), new BattleRoom(), null,null, null},
-                {null, null, null, new BattleRoom(), new BattleRoom(),null, null},
-                {null, new ItemRoom(), new BattleRoom(), new BattleRoom(), null, null, null},
-                {null, null, new BattleRoom(), new BattleRoom(), new BattleRoom(), new BossRoom(), null}};
-        roomSetup();
-        mapY = 0;
-        mapX = 2;
+        Random rand = new Random();
+        mjg = new MapJigsawGenerator(3, rand);
+        roomArray = mjg.generateJigsaw();
+        currentRoom = mjg.getStartingRoom();
 
-    }
+        for(Room room : roomArray) {
 
-    public void roomSetup(){
-
-        for(int i = 0; i < rooms.length; i++){
-
-            for(int j = 0; j < rooms[i].length; j++) {
-                if (rooms[i][j] == null) {
-                    continue;
-                }
-
-                if(j >= 1) {
-                    if (rooms[i][j - 1] != null) {
-                        rooms[i][j].addLeftExit();
-                    }
-                }
-
-                if(j < rooms[i].length - 1) {
-                    if (rooms[i][j + 1] != null) {
-                        rooms[i][j].addRightExit();
-                    }
-                }
-
-
-                if(i >= 1) {
-                    if (rooms[i - 1][j] != null) {
-                        rooms[i][j].addTopExit();
-                    }
-                }
-                if(i < rooms.length - 1) {
-                    if (rooms[i + 1][j] != null) {
-                        rooms[i][j].setBottomExit();
-                    }
-                }
-
-                rooms[i][j].setUpBoundaries();
+            for(RoomWall rw : room.getRoomWalls()) {
+                rw.wallSetUp(PlayScreen.atlas.findRegions("brick"));
             }
+
+            RoomBackground rbg = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , room.WIDTH, room.HEIGHT, Measure.units(15));
+            rbg.backgroundSetUp();
+            room.setRoomBackground(rbg);
         }
+
+        Random random = new Random();
+/*        if(random.nextBoolean()) {
+            visitedRoomArray.add(currentRoom);
+        } else {
+            visitedRoomArray.addAll(roomArray);
+        }*/
+        //visitedRoomArray.add(currentRoom);
+        visitedRoomArray.addAll(roomArray);
+
+        mapGUI = new MapGUI(0,0,visitedRoomArray, currentRoom);
+
+
     }
-
-
 
 
     public void update(float dt, OrthographicCamera gamecam){
 
-        mapBlinker += dt;
+        this.gamecam = gamecam;
 
-        if(mapBlinker > 1.0){
-            blink = !blink;
-            mapBlinker = 0;
-        }
+        currentRoom.update(dt, gamecam);
 
+        if(currentRoom.isExitTransitionFinished()){
+            RoomExit currentExit = currentRoom.getCurrentExit();
+            Wizard w = currentRoom.getWizard();
+            currentRoom = findRoom(currentExit.getLeaveCoords());
+            currentRoom.enterRoom(w, currentExit.getRoomCoords(), currentExit.getLeaveCoords());
 
-        rooms[mapY][mapX].update(dt, gamecam);
-
-        if(rooms[mapY][mapX].isExitTransitionFinished()){
-            if(rooms[mapY][mapX].isExitPointRight()){
-                rooms[mapY][mapX+1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.LEFT);
-                mapX++;
-            } else if(rooms[mapY][mapX].isExitPointLeft()){
-                rooms[mapY][mapX-1].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.RIGHT);
-                mapX--;
-            } else if(rooms[mapY][mapX].isExitPointUp()) {
-                rooms[mapY-1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.DOWN);
-                mapY--;
-            } else if(rooms[mapY][mapX].isExitPointDown()){
-                rooms[mapY+1][mapX].enterRoom(rooms[mapY][mapX].getWizard(), Room.ENTRY_POINT.UP);
-                mapY++;
+            if(!visitedRoomArray.contains(currentRoom, true)){
+                visitedRoomArray.add(currentRoom);
             }
+
+            System.out.println("VISITED ROOM SIZE IS :" + visitedRoomArray.size);
         }
 
-
-        //System.out.println(rooms[mapY][mapX].state);
+        mapGUI.update(dt, gamecam, visitedRoomArray, currentRoom);
 
     }
 
-    public boolean isTransitioning(){
-        return rooms[mapY][mapX].state == Room.STATE.ENTRY || rooms[mapY][mapX].state == Room.STATE.EXIT;
+
+    public Room findRoom(MapCoords mc){
+
+        for(Room r : roomArray) {
+            if(r.containsCoords(mc)){
+                return r;
+            };
+        }
+
+        //TODO return an error
+        return null;
     }
+
 
 
     public void draw(SpriteBatch batch){
-
-        rooms[mapY][mapX].draw(batch);
-
-
-
-        batch.end();
-
-        mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        mapRenderer.begin(ShapeRenderer.ShapeType.Line);
-        mapRenderer.setColor(Color.CYAN);
-
-        float SIZE = Measure.units(3);
-        float mapy = 1000;
-        float mapx = 1700;
-
-        if(mapY + 1 < rooms.length){
-            if(rooms[mapY + 1][mapX] != null){
-                mapRenderer.rect(mapx, mapy - SIZE, SIZE, SIZE);
-            }
-        }
-
-        if(mapY - 1 >= 0){
-            if(rooms[mapY - 1][mapX] != null){
-                mapRenderer.rect(mapx, mapy + SIZE, SIZE, SIZE);
-            }
-        }
-
-        if(mapX + 1 < rooms[mapY].length){
-            if(rooms[mapY][mapX + 1] != null){
-                mapRenderer.rect(mapx + SIZE , mapy, SIZE, SIZE);
-            }
-        }
-
-        if(mapX - 1 >= 0){
-            if(rooms[mapY][mapX - 1] != null){
-                mapRenderer.rect(mapx - SIZE, mapy, SIZE, SIZE);
-            }
-        }
-
-        mapRenderer.setColor(Color.WHITE);
-        mapRenderer.rect(mapx, mapy, SIZE, SIZE);
-
-
-        mapRenderer.end();
-
-        if(blink) {
-            mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            mapRenderer.rect(mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
-            mapRenderer.end();
-        }
-
-
-        batch.begin();
-
-
-
-
+        currentRoom.draw(batch);
+        mapGUI.draw(batch);
     }
 
     public Room getActiveRoom() {
-        return rooms[mapY][mapX];
+        return currentRoom;
     }
 }

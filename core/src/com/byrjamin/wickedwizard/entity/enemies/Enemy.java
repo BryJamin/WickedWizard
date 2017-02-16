@@ -38,7 +38,7 @@ public abstract class Enemy extends Entity{
     private float flashTimer;
     protected float time = 0;
 
-    private Animation dyingAnimation;
+    private Animation<TextureRegion> dyingAnimation;
 
     protected Array<Rectangle> bounds = new Array<Rectangle>();
     protected ActiveBullets bullets = new ActiveBullets();
@@ -144,11 +144,11 @@ public abstract class Enemy extends Entity{
         return health;
     }
 
-    public Animation getDyingAnimation() {
+    public Animation<TextureRegion> getDyingAnimation() {
         return dyingAnimation;
     }
 
-    public void setDyingAnimation(Animation dyingAnimation) {
+    public void setDyingAnimation(Animation<TextureRegion> dyingAnimation) {
         this.dyingAnimation = dyingAnimation;
     }
 

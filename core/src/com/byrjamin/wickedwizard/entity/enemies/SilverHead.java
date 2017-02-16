@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.entity.enemies;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -29,7 +30,7 @@ public class SilverHead extends Enemy {
     private Animation chargingAnimation;
     private Animation closingAnimation;
     private Animation openingAnimation;
-    private Animation currentAnimation;
+    private Animation<TextureRegion> currentAnimation;
 
     private Rectangle hitBox;
 

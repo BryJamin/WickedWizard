@@ -2,14 +2,16 @@ package com.byrjamin.wickedwizard.helper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomTeleporter;
-import com.byrjamin.wickedwizard.maps.rooms.layout.RoomWall;
+import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 
 /**
  * Created by Home on 18/01/2017.
@@ -19,11 +21,40 @@ public class RoomInputAdapter extends InputAdapter{
     private Room room;
     private Viewport viewport;
 
+    private int movementPoll = 10;
+    private RoomWall movementWall;
+
     Vector3 input;
 
     public RoomInputAdapter(Room room, Viewport viewport){
         this.room = room;
         this.viewport = viewport;
+    }
+
+
+    public void update(Room room, Viewport viewport, OrthographicCamera gamecam){
+        this.room = room;
+        this.viewport = viewport;
+
+        boolean test = room.getWizard().isFiring() && movementPoll == room.getWizard().getInputPoll();
+
+        if(Gdx.input.isTouched(movementPoll) && ! test) {
+            float x1 = Gdx.input.getX(movementPoll);
+            float y1 = Gdx.input.getY(movementPoll);
+            input = new Vector3(x1, y1, 0);
+            //This is so inputs match up to the game co-ordinates.
+            gamecam.unproject(input);
+
+            System.out.println(input.y);
+
+            //TODO not good;
+            if (input.y <= 300) {
+                    room.getWizard().dash(input.x);
+            }
+
+
+        }
+
     }
 
     @Override
@@ -54,8 +85,8 @@ public class RoomInputAdapter extends InputAdapter{
             }
         }
 
-        for(RoomExit r : room.getRoomExits()){
-            if(r.getBound().contains(input.x, input.y) && r.isOpen()){
+        for(RoomDoor r : room.getRoomDoors()){
+            if(r.getBounds().contains(input.x, input.y) && r.isUnlocked()){
                 room.getWizard().flyTo(input.x, input.y);
                 w.toggleFallthroughOn();
                 fire = false;
@@ -67,18 +98,29 @@ public class RoomInputAdapter extends InputAdapter{
             if(r.getBounds().contains(input.x, input.y) ){
                 if(w.getY() >= r.getBounds().getY() + r.getBounds().getHeight() - 100){
                     room.getWizard().dash(input.x);
+                    movementWall = r;
+                    movementPoll = pointer;
+
                     fire = false;
                     break;
                 }
             }
         }
 
-        for(RoomTeleporter r : room.getRoomTeleporters()){
-            if(r.getBounds().contains(input.x, input.y) && r.isOpen()){
+        for(RoomGrate r : room.getRoomGrates()){
+            if(r.getBounds().contains(input.x, input.y) && r.isUnlocked()){
                 r.setActive(true);
                 room.getWizard().flyTo(input.x, input.y);
+                fire = false;
             } else {
                 r.setActive(false);
+            }
+        }
+
+        for(GrapplePoint r : room.getGrapplePoints()){
+            if(r.getBounds().contains(input.x, input.y)){
+                room.getWizard().flyTo(r.getCenterX(), r.getCenterY());
+                fire = false;
             }
         }
 
@@ -95,6 +137,11 @@ public class RoomInputAdapter extends InputAdapter{
         if(room.getWizard().getInputPoll() == pointer) {
             room.getWizard().stopFiring();
         }
+
+        if(movementPoll != 10){
+           // movementPoll = 10;54
+        }
+
         return true;
     }
 

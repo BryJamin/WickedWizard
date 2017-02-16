@@ -42,7 +42,7 @@ public class RoomEnemyWaves {
     public void blob(Array<Enemy> e){
        // e.clear();
         e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
-        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
+        e.add(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
 
 
@@ -50,19 +50,19 @@ public class RoomEnemyWaves {
     public void blob2(Array<Enemy> e){
       //  e.clear();
         e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.defaultTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
+        e.add(EnemyPresets.defaultTurret(room.WIDTH / 4, room.HEIGHT - Measure.units(15)));
     }
 
     public void blob3(Array<Enemy> e){
       //  e.clear();
         e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.fastTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
+        e.add(EnemyPresets.fastTurret(room.WIDTH / 4 * 3, room.HEIGHT - Measure.units(15)));
     }
 
 
     public void blob4(Array<Enemy> e){
      //   e.clear();
-        e.add(new SilverHead.SilverHeadBuilder(room.getSectionCenters()[2], room.HEIGHT).build());
+        e.add(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
         e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 

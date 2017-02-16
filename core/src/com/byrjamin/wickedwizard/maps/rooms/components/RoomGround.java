@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.maps.rooms.layout;
+package com.byrjamin.wickedwizard.maps.rooms.components;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 /**
  * Created by Home on 08/01/2017.

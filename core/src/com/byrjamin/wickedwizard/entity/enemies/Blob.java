@@ -19,9 +19,9 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
  */
 public class Blob extends Enemy {
 
-    private Animation walk;
-    private Animation attack;
-    private Animation currentAnimation;
+    private Animation<TextureRegion> walk;
+    private Animation<TextureRegion> attack;
+    private Animation<TextureRegion> currentAnimation;
 
     private TextureRegion currentFrame;
 
