@@ -24,23 +24,23 @@ public class Collider {
 */
 
 
-    public static Collision collision(Rectangle actual, Rectangle mock, Rectangle wall){
+    public static Collision collision(Rectangle currentBound, Rectangle futureBound, Rectangle wall){
         //Checks if there is a left or right collision
         //TODO convert this into a collision task the +5 is for variance,
-        if(wall.overlaps(mock) && ((actual.getY() + actual.getHeight() > wall.getY() + 20) && actual.getY() < wall.y + wall.getHeight() - 20)) {
-            if (mock.getX() < wall.x) {//Hit was on left
-                actual.setX(wall.x - actual.width);
+        if(wall.overlaps(futureBound) && ((currentBound.getY() + currentBound.getHeight() > wall.getY() + 20) && currentBound.getY() < wall.y + wall.getHeight() - 20)) {
+            if (futureBound.getX() < wall.x) {//Hit was on left
+                currentBound.setX(wall.x - currentBound.width);
                 return Collision.LEFT;
-            } else if (mock.getX() > wall.x) {//Hit was on right
-                actual.setX(wall.x + wall.getWidth());
+            } else if (futureBound.getX() > wall.x) {//Hit was on right
+                currentBound.setX(wall.x + wall.getWidth());
                 return Collision.RIGHT;
             }
-        } else if(wall.overlaps(mock)) { //Hit was on top
-            if (mock.getY() > wall.y) {
-                actual.setY(wall.y + wall.getHeight());
+        } else if(wall.overlaps(futureBound)) { //Hit was on top
+            if (futureBound.getY() > wall.y) {
+                currentBound.setY(wall.y + wall.getHeight());
                 return Collision.TOP;
-            } else if (mock.getY() < wall.y) { //Hit was on bottom
-                actual.setY(wall.y - actual.height);
+            } else if (futureBound.getY() < wall.y) { //Hit was on bottom
+                currentBound.setY(wall.y - currentBound.height);
                 return Collision.BOTTOM;
             }
         }

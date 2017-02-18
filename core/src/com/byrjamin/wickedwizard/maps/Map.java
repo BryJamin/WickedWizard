@@ -26,6 +26,7 @@ import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.LBlockLayout;
 import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 import java.util.Random;
@@ -51,6 +52,7 @@ public class Map {
         roomArray = mjg.generateJigsaw();
         currentRoom = mjg.getStartingRoom();
 
+        RoomEnemyWaves rew = new RoomEnemyWaves();
 
         //TODO use the layouts to add to the room
         for(Room room : roomArray) {
@@ -62,8 +64,12 @@ public class Map {
 
             if(room instanceof BattleRoom) {
                 switch (room.getLayout()) {
-                    case OMNI: room.addEnemy(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
-                        room.addEnemy(EnemyPresets.defaultTurret(room.WIDTH / 4, room.HEIGHT - Measure.units(15)));
+                    case OMNI:
+                        //rew.spawnWave[rand.nextInt(rew.spawnWave.length)].spawnWave(room);
+                        rew.spawnWave[4].spawnWave(room);
+                        break;
+                    default:
+                      //  rew.spawnWave[3].spawnWave(room);
                         break;
                 }
             }

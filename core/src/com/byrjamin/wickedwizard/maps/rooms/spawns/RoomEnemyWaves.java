@@ -18,13 +18,6 @@ import java.util.Random;
  */
 public class RoomEnemyWaves {
 
-    private Array<Array<Enemy>> incomingWaves;
-
-    private Room room;
-
-    private Array<Enemy> enemyArray;
-
-    private int currentWave = 0;
     private List<Integer> shuffled;
 
     private long randomSeed = 103354434;
@@ -32,57 +25,52 @@ public class RoomEnemyWaves {
 
 
 
-    public RoomEnemyWaves(Room a){
-        room = a;
-
-        generateShuffler();
+    public RoomEnemyWaves(){
     }
 
 
-    public void blob(Array<Enemy> e){
-       // e.clear();
-        e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
-        e.add(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
+    public void blob(Room room){
+        room.addEnemy((EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight())));
+        room.addEnemy(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
 
 
 
-    public void blob2(Array<Enemy> e){
+    public void blob2(Room room){
       //  e.clear();
-        e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.defaultTurret(room.WIDTH / 4, room.HEIGHT - Measure.units(15)));
+        room.addEnemy(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
+        room.addEnemy(EnemyPresets.defaultTurret(room.WIDTH / 4, room.HEIGHT - Measure.units(15)));
     }
 
-    public void blob3(Array<Enemy> e){
+    public void blob3(Room room){
       //  e.clear();
-        e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.fastTurret(room.WIDTH / 4 * 3, room.HEIGHT - Measure.units(15)));
+        room.addEnemy(EnemyPresets.largeBlob(room.WIDTH - 500, room.groundHeight() + 200));
+        room.addEnemy(EnemyPresets.fastTurret(room.WIDTH / 4 * 3, room.HEIGHT - Measure.units(15)));
     }
 
 
-    public void blob4(Array<Enemy> e){
+    public void blob4(Room room){
      //   e.clear();
-        e.add(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
-        e.add(EnemyPresets.alternarteShotsTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
+        room.addEnemy(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
+        room.addEnemy(EnemyPresets.alternarteShotsTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
     }
 
-    public void turret(Array<Enemy> e){
-      //  e.clear();
-        e.add(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
-        e.add(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
+    public void threeblobs(Room room){
+        room.addEnemy(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
+        room.addEnemy(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
+        room.addEnemy(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
     }
 
-    interface Waves {
-        void spawnWave(Array<Enemy> enemies);
+    public interface Waves {
+        void spawnWave(Room room);
     }
 
-    private Waves[] spawnWave = new Waves[] {
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob2(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { turret(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob3(enemies); } },
-            new Waves() { public void spawnWave(Array<Enemy> enemies) { blob4(enemies); } },
+    public Waves[] spawnWave = new Waves[] {
+            new Waves() { public void spawnWave(Room room) { blob(room); } },
+            new Waves() { public void spawnWave(Room room) { blob2(room); } },
+            new Waves() { public void spawnWave(Room room) { threeblobs(room); } },
+            new Waves() { public void spawnWave(Room room) { blob3(room); } },
+            new Waves() { public void spawnWave(Room room) { blob4(room); } },
     };
 
 
@@ -106,34 +94,5 @@ public class RoomEnemyWaves {
         }
 
     }
-
-    /**
-     * currentWave counts until the number of waves and then resets to zero.
-     * Since shuffled is a randomized number between the size of spawnwave and 0 it can be used
-     * to spawn the nextwave in a random order.
-     *
-     * In future I will need to decide if waves will have more random elements
-     *
-     * @param enemies
-     */
-    public void nextWave(Array<Enemy> enemies) {
-        spawnWave[shuffled.get(currentWave)].spawnWave(enemies);
-        currentWave++;
-        if(currentWave >= spawnWave.length){
-            currentWave = 0;
-        }
-    }
-
-
-    public Array<Array<Enemy>> getIncomingWaves() {
-        return incomingWaves;
-    }
-
-    public void nextWaveTest(Array<Enemy> enemies){
-
-        Random r = new Random();
-        spawnWave[r.nextInt(spawnWave.length)].spawnWave(enemies);
-    }
-
 
 }

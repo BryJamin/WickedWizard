@@ -157,26 +157,19 @@ public class Turret extends Enemy {
 
 
     public void updateMovement(float dt, Room r){
-
-        Collider.Collision collision;
-
-        for(RoomWall rw : r.getRoomWalls()) {
-            collision = Collider.collision(hitBox, hitBox, rw.getBounds());
-            if(collision != Collider.Collision.NONE){
-                if(collision == Collider.Collision.LEFT){
-                    velocity.x = -MOVEMENT;
-                    break;
-                } else if(collision == Collider.Collision.RIGHT){
-                    velocity.x = MOVEMENT;
-                    break;
-                }
-            }
-        }
-
         position.add(velocity.x * dt, 0);
-
         hitBox.x = position.x + (Measure.units(1) * scale);
         hitBox.y = position.y;
+    }
+
+    @Override
+    public void applyCollision(Collider.Collision collision) {
+        switch(collision) {
+            case LEFT: velocity.x = -MOVEMENT;
+                break;
+            case RIGHT: velocity.x = MOVEMENT;
+                break;
+        }
     }
 
 
@@ -199,23 +192,17 @@ public class Turret extends Enemy {
                     .speed(Measure.units(60f))
                     .drawingColor(Color.CYAN)
                     .build());
-
             dispellSequence.add(dispellSequence.get(0));
             dispellSequence.removeIndex(0);
-
         }
     }
 
     @Override
     public void draw(SpriteBatch batch){
-
         super.draw(batch);
-
         //BoundsDrawer.drawBounds(batch, hitBox);
-
-
-
-
     }
+
+
 
 }

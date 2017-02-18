@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -26,6 +27,8 @@ public class Blob extends Enemy {
     private TextureRegion currentFrame;
 
     private GravMaster2000 g2000 = new GravMaster2000();
+
+    private Vector2 velocity = new Vector2();
 
     private Rectangle hitBoz;
 
@@ -130,6 +133,14 @@ public class Blob extends Enemy {
         } else if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
+
+
+        velocity.add(0, g2000.GRAVITY);
+        position.add(velocity);
+        bounds.get(0).y = position.y;
+
+
+
         currentFrame = currentAnimation.getKeyFrame(time);
     }
 
@@ -205,10 +216,8 @@ public class Blob extends Enemy {
     }
 
     public void applyGravity(float dt, Room room){
-
-        g2000.update(dt, hitBoz, room.getGroundBoundaries());
-        position.y = hitBoz.y;
-
+        //g2000.update(dt, position);
+        //hitBoz.y = position.y;
     }
 
     public void multX(){
@@ -221,6 +230,20 @@ public class Blob extends Enemy {
             currentAnimation = attack;
         }
     }
+
+    @Override
+    public void applyCollision(Collider.Collision collision) {
+        switch(collision) {
+            case TOP: g2000.resetGravVelocity();
+                if(velocity.y <= 0){
+                    velocity.y = 0;
+                    //TODO the reason for is
+                        position.y = bounds.get(0).y;
+                }
+                break;
+        }
+    }
+
 
     public movement getBlob_state() {
         return blob;

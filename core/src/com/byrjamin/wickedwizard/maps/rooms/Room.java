@@ -68,7 +68,6 @@ public abstract class Room {
 
     private RoomEnemyUpdater roomEnemyUpdater = new RoomEnemyUpdater();
     protected Wizard wizard = new Wizard(WALLWIDTH * 2, 600);
-    private Array<Rectangle> groundBoundaries = new Array<Rectangle>();
     private Array<RoomPlatform> platforms = new Array<RoomPlatform>();
 
     private RoomEnemyWaves roomEnemyWaves;
@@ -88,6 +87,13 @@ public abstract class Room {
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt, gamecam, this);
         roomEnemyUpdater.update(dt, this);
+
+
+        for(Enemy e : getEnemies()){
+            for(RoomWall rw : roomWalls) {
+                e.applyCollision(Collider.collision(e.getBounds().get(0), e.getBounds().get(0), rw.getBounds()));
+            }
+        }
 
         for(Item item : items){
             if(wizard.getBounds().overlaps(item.getBoundingRectangle())){
@@ -141,18 +147,16 @@ public abstract class Room {
     public void draw(SpriteBatch batch){
 
         roomBackground.draw(batch);
-        for(RoomGrate rt: roomGrates){
-            rt.draw(batch);
+
+        for(RoomExit re : roomExits) {
+            re.draw(batch);
         }
+
         roomEnemyUpdater.draw(batch);
 
         for(Item item : items) {
             item.draw(batch);
             BoundsDrawer.drawBounds(batch, item.getBoundingRectangle());
-        }
-
-        for(RoomDoor r : roomDoors){
-            r.draw(batch);
         }
 
         for(RoomWall r : roomWalls){
@@ -190,9 +194,6 @@ public abstract class Room {
             }
         }
 
-        for(MapCoords r : mapCoordsArray){
-            System.out.println(r);
-        }
         for(RoomGrate r : roomGrates){
             if(r.getLeaveCoords().equals(oldRoomCoords)){
                 wizard.setCenterX(r.getCenterX());
@@ -235,6 +236,7 @@ public abstract class Room {
     public void wallCollisionCheck(Wizard w, Rectangle wallBound , float dt){
         WizardCollider.collisionCheck(w, wallBound, dt);
     }
+
     public void lock() {
         state = STATE.LOCKED;
         for(RoomDoor r : roomDoors){
@@ -349,10 +351,6 @@ public abstract class Room {
         return roomExits;
     }
 
-    public Array<Rectangle> getGroundBoundaries() {
-        return groundBoundaries;
-    }
-
     public Array<RoomPlatform> getPlatforms() {
         return platforms;
     }
@@ -420,9 +418,6 @@ public abstract class Room {
     public void addCoords(MapCoords e){
         mapCoordsArray.add(e);
     }
-
-
-
 
     public Array<MapCoords> getMapCoordsArray() {
         return mapCoordsArray;

@@ -10,13 +10,10 @@ import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
  */
 public class BattleRoom extends Room {
 
-    private RoomEnemyWaves roomEnemyWaves;
-
     private int numberOfWaves = 1;
 
     public BattleRoom(MapCoords mapCoords){
         super(mapCoords);
-        roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
     public BattleRoom(int numberOfWaves, MapCoords mapCoords){

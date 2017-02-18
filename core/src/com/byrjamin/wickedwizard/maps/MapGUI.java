@@ -29,8 +29,8 @@ public class MapGUI {
 
     private Color currentRoomColor = new Color(1, 1, 1, 0.8f);
     private Color roomColor = new Color(0.5f, 0.5f, 0.5f, 0.8f);
-    private Color borderColor = new Color(1f, 0f, 0f, 0.9f);
-    private Color doorColor = new Color(0f, 1f, 0f, 0.9f);
+    private Color borderColor = new Color(0, 1, 1, 1);
+    private Color doorColor = new Color(1f, 0f, 0f, 1f);
     private Color locationBlinkColor = new Color (0,0,1,0.5f);
     private Color bossRoomColor = new Color(0, 1, 1, 0.5f);
     private Color itemRoomColor = new Color (1, 0, 1, 0.5f);

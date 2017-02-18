@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
@@ -34,8 +35,10 @@ public class SilverHead extends Enemy {
 
     private Rectangle hitBox;
 
+    private Vector2 velocity = new Vector2();
 
-    private GravMaster2000 g200 = new GravMaster2000();
+
+    private GravMaster2000 g2000 = new GravMaster2000();
 
     private StateTimer standingTime;
 
@@ -109,7 +112,6 @@ public class SilverHead extends Enemy {
     public void update(float dt, Room r) {
         super.update(dt, r);
 
-        g200.update(dt, hitBox, r.getGroundBoundaries());
         position.y = hitBox.y;
 
         time += dt;
@@ -138,6 +140,10 @@ public class SilverHead extends Enemy {
         } else if(getState() == STATE.DYING){
             dyingUpdate(dt);
         }
+
+        velocity.add(0, g2000.GRAVITY);
+        position.add(velocity);
+        bounds.get(0).y = position.y;
 
     }
 
@@ -185,6 +191,19 @@ public class SilverHead extends Enemy {
     public void changeAnimation(Animation a){
         currentAnimation = a;
         time = 0;
+    }
+
+    @Override
+    public void applyCollision(Collider.Collision collision) {
+        switch(collision) {
+            case TOP: g2000.resetGravVelocity();
+                if(velocity.y <= 0){
+                    velocity.y = 0;
+                    //TODO the reason for is
+                    position.y = bounds.get(0).y;
+                }
+                break;
+        }
     }
 
     public void draw(SpriteBatch batch){

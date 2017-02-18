@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -67,6 +68,8 @@ public class BiggaBlobba extends Enemy {
 
 
     PHASE phase;
+
+    private boolean isJumping = true;
 
     //Phase 1
     private Reloader littleSlimer;
@@ -159,7 +162,7 @@ public class BiggaBlobba extends Enemy {
         littleSlimer.update(dt);
 
         if(littleSlimer.isReady()){
-            a.getEnemies().add(EnemyPresets.smallBlob(a.WIDTH, 0));
+            a.getEnemies().add(EnemyPresets.smallBlob(upperBody.x, upperBody.y));
             slimeCount --;
         }
 
@@ -213,17 +216,20 @@ public class BiggaBlobba extends Enemy {
      * Bigga blobba bounces with a variances of 2 units.
      */
     public void jump(){
-        g2000.jump(25);
+        velocity.y = 25;
+        isJumping = false;
     }
 
     public void applyGravity(float dt, Room room){
 
+        velocity.add(0, g2000.GRAVITY);
 
-        g2000.update(dt, lowerBody, room.getGroundBoundaries());
-        position.y = lowerBody.y;
+        position.add(velocity);
 
-        this.velocity.add(0, GRAVITY * dt);
-
+        System.out.println(position.y);
+        lowerBody.y = position.y;
+        System.out.println(lowerBody.y + " y position of lwer body");
+        //this.velocity.add(0, GRAVITY * dt);
     }
 
     @Override
@@ -294,6 +300,24 @@ public class BiggaBlobba extends Enemy {
 
         //}
 
+    }
+
+    @Override
+    public void applyCollision(Collider.Collision collision) {
+
+
+        System.out.println(collision);
+        switch(collision) {
+            case TOP:
+                if(velocity.y <= 0){
+                    velocity.y = 0;
+                    //TODO the reason for is
+                    position.y = lowerBody.y;
+                }
+
+                break;
+
+        }
     }
 
 

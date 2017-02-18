@@ -28,6 +28,7 @@ public abstract class Enemy extends Entity{
     protected float HEIGHT;
 
     protected Vector2 position;
+    protected Vector2 velocity;
 
     public STATE state;
 

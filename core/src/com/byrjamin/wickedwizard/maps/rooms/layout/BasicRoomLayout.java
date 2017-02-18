@@ -79,10 +79,6 @@ public class BasicRoomLayout extends RoomLayout{
         r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
         r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
-        for(RoomWall rw : r.getRoomWalls()){
-            r.getGroundBoundaries().add(rw.getBounds());
-        }
-
         r.setRoomBackground(new RoomBackground(r.getX(), r.getY(), WIDTH, HEIGHT, Measure.units(15)));
 
         r.getRoomExits().addAll(r.getRoomDoors());
