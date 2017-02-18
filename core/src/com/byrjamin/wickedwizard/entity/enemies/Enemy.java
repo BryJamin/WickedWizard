@@ -27,8 +27,8 @@ public abstract class Enemy extends Entity{
     protected float WIDTH;
     protected float HEIGHT;
 
-    protected Vector2 position;
-    protected Vector2 velocity;
+    protected Vector2 position = new Vector2();
+    protected Vector2 velocity = new Vector2();
 
     public STATE state;
 
@@ -42,6 +42,8 @@ public abstract class Enemy extends Entity{
     private Animation<TextureRegion> dyingAnimation;
 
     protected Array<Rectangle> bounds = new Array<Rectangle>();
+    protected Rectangle collisionBound;
+
     protected ActiveBullets bullets = new ActiveBullets();
 
     protected Color drawingColor;
@@ -183,6 +185,10 @@ public abstract class Enemy extends Entity{
 
     public Array<Rectangle> getBounds() {
         return bounds;
+    }
+
+    public Rectangle getCollisionBound() {
+        return collisionBound;
     }
 
     public ActiveBullets getBullets() {

@@ -30,7 +30,7 @@ public class RoomEnemyWaves {
 
 
     public void blob(Room room){
-        room.addEnemy((EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight())));
+        room.addEnemy((EnemyPresets.defaultBlob(room.WIDTH - 500, room.groundHeight())));
         room.addEnemy(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
 
@@ -38,7 +38,7 @@ public class RoomEnemyWaves {
 
     public void blob2(Room room){
       //  e.clear();
-        room.addEnemy(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
+        room.addEnemy(EnemyPresets.smallBlob(room.WIDTH - 500, room.groundHeight()));
         room.addEnemy(EnemyPresets.defaultTurret(room.WIDTH / 4, room.HEIGHT - Measure.units(15)));
     }
 
@@ -56,9 +56,9 @@ public class RoomEnemyWaves {
     }
 
     public void threeblobs(Room room){
-        room.addEnemy(EnemyPresets.smallBlob(room.WIDTH, room.groundHeight()));
-        room.addEnemy(EnemyPresets.defaultBlob(room.WIDTH, room.groundHeight()));
-        room.addEnemy(EnemyPresets.largeBlob(room.WIDTH, room.groundHeight()));
+        room.addEnemy(EnemyPresets.smallBlob(room.WIDTH - 500, room.groundHeight()));
+        room.addEnemy(EnemyPresets.defaultBlob(room.WIDTH - 500, room.groundHeight()));
+        room.addEnemy(EnemyPresets.largeBlob(room.WIDTH - 500, room.groundHeight()));
     }
 
     public interface Waves {

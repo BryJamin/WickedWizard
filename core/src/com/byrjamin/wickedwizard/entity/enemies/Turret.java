@@ -47,8 +47,6 @@ public class Turret extends Enemy {
 
     private Projectile projectile;
 
-    private Rectangle hitBox;
-
     private Array<Dispellable.DISPELL> dispellSequence;
 
     private final float shotspeed;
@@ -125,11 +123,11 @@ public class Turret extends Enemy {
         DEFAULT_SHOT_SPEED = DEFAULT_SHOT_SPEED * builder.shotSpeed;
         reloader = new Reloader(builder.reloadSpeed, builder.initialFiringDelay);
 
-        hitBox  = new Rectangle(builder.posX + (Measure.units(1) * builder.scale), builder.posY,
+        collisionBound  = new Rectangle(builder.posX + (Measure.units(1) * builder.scale), builder.posY,
                 WIDTH - (Measure.units(2.5f) * builder.scale),
                 HEIGHT - (Measure.units(2.5f) * builder.scale));
 
-        bounds.add(hitBox);
+        bounds.add(collisionBound);
 
         velocity = new Vector2(MOVEMENT, 0);
 
@@ -158,8 +156,8 @@ public class Turret extends Enemy {
 
     public void updateMovement(float dt, Room r){
         position.add(velocity.x * dt, 0);
-        hitBox.x = position.x + (Measure.units(1) * scale);
-        hitBox.y = position.y;
+        collisionBound.x = position.x + (Measure.units(1) * scale);
+        collisionBound.y = position.y;
     }
 
     @Override

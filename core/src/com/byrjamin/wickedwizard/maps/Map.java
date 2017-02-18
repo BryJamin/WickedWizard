@@ -65,8 +65,8 @@ public class Map {
             if(room instanceof BattleRoom) {
                 switch (room.getLayout()) {
                     case OMNI:
-                        //rew.spawnWave[rand.nextInt(rew.spawnWave.length)].spawnWave(room);
-                        rew.spawnWave[4].spawnWave(room);
+                        rew.spawnWave[rand.nextInt(rew.spawnWave.length)].spawnWave(room);
+                      //  rew.spawnWave[2].spawnWave(room);
                         break;
                     default:
                       //  rew.spawnWave[3].spawnWave(room);

@@ -3,9 +3,6 @@ package com.byrjamin.wickedwizard.helper.collider;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 
-/**
- * Created by Home on 22/01/2017.
- */
 public class WizardCollider {
 
 
@@ -17,8 +14,6 @@ public class WizardCollider {
 
         switch(collision){
             case LEFT:
-                w.cancelMovementRetainVerticalSpeed();
-                break;
             case RIGHT:
                 w.cancelMovementRetainVerticalSpeed();
                 break;

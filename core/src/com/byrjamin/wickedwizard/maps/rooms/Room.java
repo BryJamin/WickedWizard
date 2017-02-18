@@ -91,7 +91,7 @@ public abstract class Room {
 
         for(Enemy e : getEnemies()){
             for(RoomWall rw : roomWalls) {
-                e.applyCollision(Collider.collision(e.getBounds().get(0), e.getBounds().get(0), rw.getBounds()));
+                e.applyCollision(Collider.collision(e.getCollisionBound(), e.getCollisionBound(), rw.getBounds()));
             }
         }
 

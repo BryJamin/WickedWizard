@@ -20,7 +20,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 /**
  * Created by Home on 01/01/2017.
  */
-public class SilverHead extends Enemy {
+public class SilverHead extends GroundedEnemy {
 
     private float HEIGHT = Measure.units(10);
     private float WIDTH = Measure.units(10);
@@ -32,14 +32,7 @@ public class SilverHead extends Enemy {
     private Animation closingAnimation;
     private Animation openingAnimation;
     private Animation<TextureRegion> currentAnimation;
-
-    private Rectangle hitBox;
-
-    private Vector2 velocity = new Vector2();
-
-
-    private GravMaster2000 g2000 = new GravMaster2000();
-
+    
     private StateTimer standingTime;
 
     private Array<BlastWave> blastWaveArray = new Array<BlastWave>();
@@ -88,11 +81,11 @@ public class SilverHead extends Enemy {
 
         position = new Vector2(silverHeadBuilder.posX, silverHeadBuilder.posY);
 
-        hitBox = new Rectangle(position.x + (Measure.units(1.5f) * scale), position.y,
+        collisionBound = new Rectangle(position.x + (Measure.units(1.5f) * scale), position.y,
                 WIDTH - (Measure.units(3f) * scale),
                 HEIGHT - (Measure.units(2.5f) * scale));
 
-        bounds.add(hitBox);
+        bounds.add(collisionBound);
 
         standingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP);
         chargingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING);
@@ -111,9 +104,6 @@ public class SilverHead extends Enemy {
     @Override
     public void update(float dt, Room r) {
         super.update(dt, r);
-
-        position.y = hitBox.y;
-
         time += dt;
 
         for(BlastWave b : blastWaveArray){
@@ -140,11 +130,6 @@ public class SilverHead extends Enemy {
         } else if(getState() == STATE.DYING){
             dyingUpdate(dt);
         }
-
-        velocity.add(0, g2000.GRAVITY);
-        position.add(velocity);
-        bounds.get(0).y = position.y;
-
     }
 
 
@@ -188,22 +173,10 @@ public class SilverHead extends Enemy {
     }
 
 
+
     public void changeAnimation(Animation a){
         currentAnimation = a;
         time = 0;
-    }
-
-    @Override
-    public void applyCollision(Collider.Collision collision) {
-        switch(collision) {
-            case TOP: g2000.resetGravVelocity();
-                if(velocity.y <= 0){
-                    velocity.y = 0;
-                    //TODO the reason for is
-                    position.y = bounds.get(0).y;
-                }
-                break;
-        }
     }
 
     public void draw(SpriteBatch batch){
@@ -223,7 +196,7 @@ public class SilverHead extends Enemy {
             b.draw(batch);
         }
 
-        BoundsDrawer.drawBounds(batch, hitBox);
+        BoundsDrawer.drawBounds(batch, bounds);
     }
 
 

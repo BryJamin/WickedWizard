@@ -18,7 +18,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 /**
  * Basic starter enemy, used for testing purposes.
  */
-public class Blob extends Enemy {
+public class Blob extends GroundedEnemy {
 
     private Animation<TextureRegion> walk;
     private Animation<TextureRegion> attack;
@@ -26,11 +26,7 @@ public class Blob extends Enemy {
 
     private TextureRegion currentFrame;
 
-    private GravMaster2000 g2000 = new GravMaster2000();
-
     private Vector2 velocity = new Vector2();
-
-    private Rectangle hitBoz;
 
     //Optional Parameters
     private float MOVEMENT;
@@ -81,9 +77,6 @@ public class Blob extends Enemy {
         public BlobBuilder speed(float val)
         { speed = val; return this; }
 
-        public BlobBuilder MOVEMENT(float val)
-        { MOVEMENT = val; return this; }
-
         public Blob build() {
             return new Blob(this);
         }
@@ -98,19 +91,20 @@ public class Blob extends Enemy {
     public Blob(BlobBuilder b) {
         super();
 
-        MOVEMENT = b.MOVEMENT;
         scale = b.scale;
         speed = b.speed;
+
+        MOVEMENT = b.MOVEMENT * speed;
 
         HEIGHT = b.HEIGHT * scale;
         WIDTH = b.WIDTH * scale;
 
         position = new Vector2(b.posX, b.posY);
-        hitBoz = new Rectangle(b.posX + (Measure.units(1) * scale), b.posY,
+        collisionBound = new Rectangle(b.posX + (Measure.units(1) * scale), b.posY,
                 WIDTH - (Measure.units(2.5f) * scale),
                 HEIGHT - (Measure.units(2.5f) * scale));
 
-        bounds.add(hitBoz);
+        bounds.add(collisionBound);
 
         this.setHealth(b.health);
         this.setBlob_state(movement.WALKING);
@@ -133,14 +127,6 @@ public class Blob extends Enemy {
         } else if(this.getState() == STATE.DYING){
             dyingUpdate(dt);
         }
-
-
-        velocity.add(0, g2000.GRAVITY);
-        position.add(velocity);
-        bounds.get(0).y = position.y;
-
-
-
         currentFrame = currentAnimation.getKeyFrame(time);
     }
 
@@ -160,19 +146,23 @@ public class Blob extends Enemy {
 
         //Changing state of blob to walking or attacking
         if(this.getBlob_state() == movement.WALKING ){
+            if(!collisionBound.overlaps(room.getWizard().getBounds())) {
+                velocity.x = room.getWizard().getCenterX() > position.x ? MOVEMENT * dt : -MOVEMENT * dt;
+            } else {
+                velocity.x = 0;
+            }
 
-            int direction = room.getWizard().getX() > position.x ? -1 : 1;
-            position.x = position.x - MOVEMENT * dt * direction * speed;
-            hitBoz.x = hitBoz.x  - MOVEMENT * dt * direction * speed;
+            position.add(velocity.x, 0);
+            collisionBound.x = collisionBound.x + velocity.x;
 
-            if(hitBoz.overlaps(room.getWizard().getBounds())) {
+            if(collisionBound.overlaps(room.getWizard().getBounds())) {
                 currentAnimation = attack;
                 time = 0;
                 this.setBlob_state(movement.ATTACKING);
             }
         } else {
 
-            if(!hitBoz.overlaps(room.getWizard().getBounds())) {
+            if(!collisionBound.overlaps(room.getWizard().getBounds())) {
                 if(currentAnimation != walk) {
                     currentAnimation = walk;
                     time = 0;
@@ -185,18 +175,11 @@ public class Blob extends Enemy {
                 time = 0;
             }
         }
-
-        //Applying Gravity;
-        applyGravity(dt, room);
-
-
     }
 
     public void dyingUpdate(float dt){
         time+=dt;
-
         currentAnimation = this.getDyingAnimation();
-
         if(this.getDyingAnimation().isAnimationFinished(time)){
             this.setState(STATE.DEAD);
         }
@@ -212,36 +195,7 @@ public class Blob extends Enemy {
         } else {
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
-        BoundsDrawer.drawBounds(batch, hitBoz);
-    }
-
-    public void applyGravity(float dt, Room room){
-        //g2000.update(dt, position);
-        //hitBoz.y = position.y;
-    }
-
-    public void multX(){
-        MOVEMENT = MOVEMENT * -1;
-    }
-
-
-    public void startAttackAnimation(){
-        if(currentAnimation != attack) {
-            currentAnimation = attack;
-        }
-    }
-
-    @Override
-    public void applyCollision(Collider.Collision collision) {
-        switch(collision) {
-            case TOP: g2000.resetGravVelocity();
-                if(velocity.y <= 0){
-                    velocity.y = 0;
-                    //TODO the reason for is
-                        position.y = bounds.get(0).y;
-                }
-                break;
-        }
+        BoundsDrawer.drawBounds(batch, collisionBound);
     }
 
 
