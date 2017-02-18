@@ -32,7 +32,7 @@ public class SilverHead extends GroundedEnemy {
     private Animation closingAnimation;
     private Animation openingAnimation;
     private Animation<TextureRegion> currentAnimation;
-    
+
     private StateTimer standingTime;
 
     private Array<BlastWave> blastWaveArray = new Array<BlastWave>();

@@ -66,12 +66,12 @@ public class Wizard extends Entity{
     private Vector2 flyVelocity = new Vector2();
 
     public boolean isDead() {
-        return health <= 0;
+        return currentState == STATE.DEAD;
     }
 
 
     public enum STATE {
-        CHARGING, FIRING, IDLE
+        CHARGING, FIRING, IDLE, DEAD
     }
 
     private boolean controlScheme = true;
@@ -141,6 +141,11 @@ public class Wizard extends Entity{
 
     public void update(float dt, OrthographicCamera gamecam, Room room){
         //animationTime += dt;
+
+        if(health <= 0) {
+            currentState = STATE.DEAD;
+            return;
+        }
 
         stateTimer.update(dt);
 
@@ -339,6 +344,10 @@ public class Wizard extends Entity{
         if(!isDashing() && !isInvunerable() && !isFlying()) {//TODO so op.
             invinciblityTimer = invinciblityFrames;
             health -= i;
+
+            if(health < 0){
+                currentState = STATE.DEAD;
+            }
         }
     }
 
