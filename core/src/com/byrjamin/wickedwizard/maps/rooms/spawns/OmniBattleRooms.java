@@ -16,7 +16,7 @@ import java.util.Random;
 /**
  * Created by Home on 10/12/2016.
  */
-public class RoomEnemyWaves {
+public class OmniBattleRooms {
 
     private List<Integer> shuffled;
 
@@ -25,7 +25,7 @@ public class RoomEnemyWaves {
 
 
 
-    public RoomEnemyWaves(){
+    public OmniBattleRooms(){
     }
 
 

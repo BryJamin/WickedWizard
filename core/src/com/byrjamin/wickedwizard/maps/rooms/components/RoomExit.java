@@ -74,6 +74,8 @@ public abstract class RoomExit {
     public abstract void draw(SpriteBatch batch);
     public abstract void update(float dt);
 
+    public abstract boolean hasEntered(Rectangle rectangle);
+
 
 
     @Override

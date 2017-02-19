@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.maps.rooms;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.byrjamin.wickedwizard.maps.MapCoords;
-import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
 
 /**
  * Created by Home on 24/12/2016.

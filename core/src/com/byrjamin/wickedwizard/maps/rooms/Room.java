@@ -2,11 +2,8 @@ package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.utils.Layout;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -23,8 +20,7 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyUpdater;
-import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.OmniBattleRooms;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 
@@ -39,7 +35,6 @@ public abstract class Room {
     public float SECTION_WIDTH = MainGame.GAME_WIDTH;
     public float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
 
-
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
 
@@ -53,9 +48,7 @@ public abstract class Room {
     private boolean transition;
 
     private Array<MapCoords> mapCoordsArray = new Array<MapCoords>();
-
     private MapCoords startCoords;
-
     private RoomExit currentExit;
 
     protected Array<Item> items = new Array<Item>();
@@ -69,8 +62,6 @@ public abstract class Room {
     private RoomEnemyUpdater roomEnemyUpdater = new RoomEnemyUpdater();
     protected Wizard wizard = new Wizard(WALLWIDTH * 2, 600);
     private Array<RoomPlatform> platforms = new Array<RoomPlatform>();
-
-    private RoomEnemyWaves roomEnemyWaves;
 
     public enum STATE {
        ENTRY, LOCKED, UNLOCKED, EXIT
@@ -109,19 +100,13 @@ public abstract class Room {
 
 
         if(state == STATE.UNLOCKED && !transition) {
-            for (RoomDoor r : roomDoors) {
-                if (r.hasEntered(wizard.getBounds())) {
+            for (RoomExit re : roomExits) {
+                if (re.hasEntered(wizard.getBounds())) {
                     transition = true;
-                    currentExit = r;
-                    break;
-                }
-            }
-
-            for (RoomGrate r : roomGrates) {
-                if (r.hasEntered(wizard.getBounds())) {
-                    transition = true;
-                    currentExit = r;
-                    r.setActive(false);
+                    currentExit = re;
+                    if(re instanceof RoomGrate) {
+                        ((RoomGrate) re).setActive(false);
+                    }
                     break;
                 }
             }

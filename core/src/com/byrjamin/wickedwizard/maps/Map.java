@@ -1,32 +1,14 @@
 package com.byrjamin.wickedwizard.maps;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectSet;
-import com.badlogic.gdx.utils.OrderedSet;
-import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
-import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
-import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
-import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
-import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
-import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
-import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
-import com.byrjamin.wickedwizard.maps.rooms.layout.LBlockLayout;
-import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
-import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.OmniBattleRooms;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 import java.util.Random;
@@ -52,7 +34,7 @@ public class Map {
         roomArray = mjg.generateJigsaw();
         currentRoom = mjg.getStartingRoom();
 
-        RoomEnemyWaves rew = new RoomEnemyWaves();
+        OmniBattleRooms rew = new OmniBattleRooms();
 
         //TODO use the layouts to add to the room
         for(Room room : roomArray) {
