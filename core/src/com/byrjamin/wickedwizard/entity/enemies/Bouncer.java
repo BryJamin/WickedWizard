@@ -15,6 +15,8 @@ import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
+import java.util.Random;
+
 /**
  * Created by Home on 19/02/2017.
  */
@@ -79,7 +81,12 @@ public class Bouncer extends Enemy{
         WIDTH *= b.scale;
         MOVEMENT *= b.speed;
         collisionBound = new Rectangle(b.posX, b.posY, WIDTH, HEIGHT);
-        velocity = new Vector2(MOVEMENT, MOVEMENT);
+
+        velocity = new Vector2();
+        Random random = new Random();
+
+        velocity.x = random.nextBoolean() ? MOVEMENT : -MOVEMENT;
+        velocity.y = random.nextBoolean() ? MOVEMENT : -MOVEMENT;
 
         defaultAnimation = AnimationPacker.genAnimation(1.0f / 15f, "bouncer", Animation.PlayMode.LOOP);
         stompAnimation = AnimationPacker.genAnimation(1.0f / 7f, "bouncer_stomp", Animation.PlayMode.LOOP);

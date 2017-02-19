@@ -44,11 +44,12 @@ public class OmniBattleRooms {
     }
 
     public static void bouncer(Room room){
-        room.addSpawningEnemy(new Bouncer.BouncerBuilder(room.WIDTH / 2, room.groundHeight() * 2).build());
+        room.addSpawningEnemy(new Bouncer.BouncerBuilder(room.WIDTH / 2, room.groundHeight() * 3).build());
     }
 
-    public static void bouncertwo(Room room){
-        room.addSpawningEnemy(new Bouncer.BouncerBuilder(room.WIDTH / 2, room.groundHeight() * 2).build());
+    public static void bouncerTwo(Room room){
+        room.addSpawningEnemy(new Bouncer.BouncerBuilder(room.WIDTH / 4, room.groundHeight() * 2).build());
+        room.addSpawningEnemy(new Bouncer.BouncerBuilder(room.WIDTH - room.WIDTH / 4, room.groundHeight() * 2).build());
     }
 
     public static void bouncerLarge(Room room){
@@ -86,7 +87,7 @@ public class OmniBattleRooms {
             new Waves() { public void spawnWave(Room room) { blob4(room); } },
             new Waves() { public void spawnWave(Room room) { add2EnemyWave(room);} },
             new Waves() { public void spawnWave(Room room) { bouncer(room);} },
-            new Waves() { public void spawnWave(Room room) { bouncertwo(room);} },
+            new Waves() { public void spawnWave(Room room) { bouncerTwo(room);} },
             new Waves() { public void spawnWave(Room room) { bouncerLarge(room);} },
     };
 }
