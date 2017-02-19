@@ -156,7 +156,7 @@ public class BiggaBlobba extends GroundedEnemy {
         littleSlimer.update(dt);
 
         if(littleSlimer.isReady()){
-            a.getEnemies().add(EnemyPresets.smallBlob(upperBody.x, upperBody.y));
+            a.getEnemies().add(EnemyPresets.smallBlob(lowerBody.x, lowerBody.y));
             slimeCount --;
         }
 
@@ -178,8 +178,8 @@ public class BiggaBlobba extends GroundedEnemy {
         if(jumper.isReady()){
             jump();
             jumpCount --;
-            isLanded = false;
-        } else if(isLanded){
+            //isLanded = false;
+        } else {
 
             if(launcher.isReady()){
                 System.out.println("SHOULD BE FRING SOMETHING");

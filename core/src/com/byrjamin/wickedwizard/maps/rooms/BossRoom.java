@@ -14,22 +14,18 @@ public class BossRoom extends Room {
         super(mapCoords);
         //TODO this is temporary as there currently isn't a way for enemies to tranverse through platforms,
         //customise platform placement and generally a lot of unfinished stuff.
-        getRoomEnemyUpdater().getSpawnedEnemies().add(new BiggaBlobba(1100, HEIGHT / 3));
+        getRoomEnemyUpdater().addSpawningEnemy(new BiggaBlobba(1100, HEIGHT / 3));
         getPlatforms().clear();
     }
 
 
     public void update(float dt, OrthographicCamera gamecam){
         super.update(dt, gamecam);
-
-        if(state != STATE.ENTRY && state != STATE.EXIT) {
-            if(getRoomEnemyUpdater().areAllWavesKilled()){
-                unlock();
-            } else {
-                lock();
-            }
+        if (getRoomEnemyUpdater().areAllWavesKilled()) {
+            unlock();
+        } else {
+            lock();
         }
-
     }
 
 

@@ -9,39 +9,17 @@ import com.byrjamin.wickedwizard.maps.MapCoords;
  */
 public class BattleRoom extends Room {
 
-    private int numberOfWaves = 1;
-
     public BattleRoom(MapCoords mapCoords){
         super(mapCoords);
     }
 
-    public BattleRoom(int numberOfWaves, MapCoords mapCoords){
-        super(mapCoords);
-
-        this.numberOfWaves = numberOfWaves;
-    }
-
-
-
     public void update(float dt, OrthographicCamera gamecam){
         super.update(dt, gamecam);
-
-        //if(state != STATE.ENTRY && state != STATE.EXIT) {
-
-           // System.out.println(state);
-
-            if (getRoomEnemyUpdater().areAllWavesKilled()) {
-                unlock();
-            } else {
-                lock();
-                if (getRoomEnemyUpdater().areAllWavesKilled()) {
-                    //roomEnemyWaves.nextWaveTest(this.getEnemies());
-                    //numberOfWaves--;
-                }
-            }
-
-        //}
-
+        if (getRoomEnemyUpdater().areAllWavesKilled()) {
+            unlock();
+        } else {
+            lock();
+        }
     }
 
 

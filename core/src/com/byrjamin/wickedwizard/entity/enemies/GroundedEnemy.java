@@ -35,6 +35,9 @@ public abstract class GroundedEnemy extends Enemy {
                     position.y = collisionBound.y;
                 }
                 break;
+            case BOTTOM:
+                velocity.y = 0;
+                position.y = collisionBound.y;
         }
     }
 
