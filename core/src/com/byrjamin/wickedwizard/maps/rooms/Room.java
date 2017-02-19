@@ -84,6 +84,10 @@ public abstract class Room {
             for(RoomWall rw : roomWalls) {
                 e.applyCollision(Collider.collision(e.getCollisionBound(), e.getCollisionBound(), rw.getBounds()));
             }
+
+            for(RoomDoor rd : roomDoors) {
+                e.applyCollision(Collider.collision(e.getCollisionBound(), e.getCollisionBound(), rd.getBounds()));
+            }
         }
 
         for(Item item : items){
@@ -348,8 +352,8 @@ public abstract class Room {
         return roomEnemyUpdater.getSpawnedEnemies();
     }
 
-    public void addEnemy(Enemy e){
-        roomEnemyUpdater.getSpawnedEnemies().add(e);
+    public void addSpawningEnemy(Enemy e){
+        roomEnemyUpdater.addSpawningEnemy(e);
     }
 
     public void addEnemyWave(Array<Enemy> e){

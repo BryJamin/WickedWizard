@@ -103,7 +103,7 @@ public class RoomEnemyUpdater {
                 return false;
             }
         }
-        return enemyWaves.size == 0;
+        return enemyWaves.size == 0 && spawningEnemies.size == 0;
     }
 
 
@@ -122,6 +122,10 @@ public class RoomEnemyUpdater {
 
     public void addWave(Array<Enemy> enemyWave){
         enemyWaves.add(enemyWave);
+    }
+
+    public void addSpawningEnemy(Enemy e){
+        spawningEnemies.add(e);
     }
 
 

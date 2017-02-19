@@ -66,8 +66,6 @@ public abstract class Enemy extends Entity{
 
 
     public void draw(SpriteBatch batch){
-
-
         if(isFlashing) {
             Color color = batch.getColor();
             batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
