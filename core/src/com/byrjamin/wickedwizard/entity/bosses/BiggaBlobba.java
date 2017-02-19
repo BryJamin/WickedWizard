@@ -182,6 +182,7 @@ public class BiggaBlobba extends GroundedEnemy {
         } else if(isLanded){
 
             if(launcher.isReady()){
+                System.out.println("SHOULD BE FRING SOMETHING");
                 bullets.addProjectile(new Projectile.ProjectileBuilder(
                         this.position.x + Measure.units(25) ,
                         this.position.y + Measure.units(30),
@@ -252,9 +253,7 @@ public class BiggaBlobba extends GroundedEnemy {
     }
 
     public void boundsUpdate(){
-
         lowerBody.y = collisionBound.y;
-        System.out.println(collisionBound.y +"COLLISION BOUND Y");
         float frameIndex = currentAnimation.getKeyFrameIndex(time);
         if (frameIndex == 4) {
             lowerBody.setHeight(Measure.units(17f - 2.0f));

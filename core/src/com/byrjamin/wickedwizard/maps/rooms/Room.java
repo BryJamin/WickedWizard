@@ -352,6 +352,10 @@ public abstract class Room {
         roomEnemyUpdater.getSpawnedEnemies().add(e);
     }
 
+    public void addEnemyWave(Array<Enemy> e){
+        roomEnemyUpdater.addWave(e);
+    }
+
     public RoomEnemyUpdater getRoomEnemyUpdater() {
         return roomEnemyUpdater;
     }

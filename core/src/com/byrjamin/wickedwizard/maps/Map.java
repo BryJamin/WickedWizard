@@ -34,8 +34,6 @@ public class Map {
         roomArray = mjg.generateJigsaw();
         currentRoom = mjg.getStartingRoom();
 
-        OmniBattleRooms rew = new OmniBattleRooms();
-
         //TODO use the layouts to add to the room
         for(Room room : roomArray) {
 
@@ -47,10 +45,11 @@ public class Map {
             if(room instanceof BattleRoom) {
                 switch (room.getLayout()) {
                     case OMNI:
-                        rew.spawnWave[rand.nextInt(rew.spawnWave.length)].spawnWave(room);
-                      //  rew.spawnWave[2].spawnWave(room);
+                        //OmniBattleRooms.spawnWave[rand.nextInt(OmniBattleRooms.spawnWave.length)].spawnWave(room);
+                        OmniBattleRooms.spawnWave[5].spawnWave(room);
                         break;
                     default:
+                        OmniBattleRooms.spawnWave[rand.nextInt(OmniBattleRooms.spawnWave.length)].spawnWave(room);
                       //  rew.spawnWave[3].spawnWave(room);
                         break;
                 }

@@ -20,21 +20,11 @@ public abstract class GroundedEnemy extends Enemy {
         velocity.add(0, -GRAVITY * dt);
         position.add(velocity);
         collisionBound.y = position.y;
-
-
-        System.out.println("VELOCITY IS " + velocity.y);
-        System.out.println("POSITION IS " + position.y);
-        System.out.println("Collision BOUND Y is  " + collisionBound.y);
-
     }
 
 
     @Override
     public void applyCollision(Collider.Collision collision) {
-
-        if(collision != Collider.Collision.NONE) {
-            System.out.println(collision + "" + collision + "" + collision);
-        }
 
         switch(collision) {
             case TOP:

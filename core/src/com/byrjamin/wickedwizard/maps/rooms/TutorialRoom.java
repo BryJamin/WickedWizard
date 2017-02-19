@@ -255,7 +255,7 @@ public class TutorialRoom extends Room {
                     dialogue = DIALOGUETREE.GRAPPLING;
                     arrayPosition = 0;
                     timer.setCountDown(3.0f);
-                    timer.setStartTime(3.0f);
+                    timer.setDefaultTime(3.0f);
                     //timer.reset();
                 }
             }

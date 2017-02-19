@@ -30,11 +30,11 @@ public class BattleRoom extends Room {
 
            // System.out.println(state);
 
-            if (getRoomEnemyUpdater().areAllEnemiesKilled()) {
+            if (getRoomEnemyUpdater().areAllWavesKilled()) {
                 unlock();
             } else {
                 lock();
-                if (getRoomEnemyUpdater().areAllEnemiesKilled()) {
+                if (getRoomEnemyUpdater().areAllWavesKilled()) {
                     //roomEnemyWaves.nextWaveTest(this.getEnemies());
                     //numberOfWaves--;
                 }

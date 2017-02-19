@@ -23,7 +23,7 @@ public class BossRoom extends Room {
         super.update(dt, gamecam);
 
         if(state != STATE.ENTRY && state != STATE.EXIT) {
-            if(getRoomEnemyUpdater().areAllEnemiesKilled()){
+            if(getRoomEnemyUpdater().areAllWavesKilled()){
                 unlock();
             } else {
                 lock();

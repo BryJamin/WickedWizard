@@ -29,7 +29,7 @@ public class Wizard extends Entity{
 
     public float HEIGHT = Measure.units(5);
     public float WIDTH = Measure.units(5);
-    private float MOVEMENT = Measure.units(125f);
+    private float MOVEMENT = Measure.units(115f);
     private float DRAG = Measure.units(20f);
 
     private float GRAPPLE_MOVEMENT = Measure.units(10f);
