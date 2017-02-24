@@ -46,7 +46,7 @@ public class Bouncer extends Enemy{
         private final float posY;
 
         //Optional Parameters
-        private float health = 7;
+        private float health = 5;
         private float scale = 1;
         private float speed = 1;
 
@@ -86,7 +86,7 @@ public class Bouncer extends Enemy{
         Random random = new Random();
 
         velocity.x = random.nextBoolean() ? MOVEMENT : -MOVEMENT;
-        velocity.y = random.nextBoolean() ? MOVEMENT : -MOVEMENT;
+        velocity.y = MOVEMENT;
 
         defaultAnimation = AnimationPacker.genAnimation(1.0f / 15f, "bouncer", Animation.PlayMode.LOOP);
         stompAnimation = AnimationPacker.genAnimation(1.0f / 7f, "bouncer_stomp", Animation.PlayMode.LOOP);
@@ -136,6 +136,8 @@ public class Bouncer extends Enemy{
                 velocity.y = STOMPSPEED;
                 stompTimer.reset();
             }
+        } else {
+
         }
 
     }

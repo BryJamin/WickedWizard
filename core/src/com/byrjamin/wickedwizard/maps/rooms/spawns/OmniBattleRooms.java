@@ -57,7 +57,6 @@ public class OmniBattleRooms {
     }
 
     public static void threeblobs(Room room){
-        room.addSpawningEnemy(new Bouncer.BouncerBuilder(room.WIDTH - 500, room.groundHeight()).build());
         room.addSpawningEnemy(EnemyPresets.smallBlob(room.WIDTH - 500, room.groundHeight()));
         room.addSpawningEnemy(EnemyPresets.defaultBlob(room.WIDTH - 500, room.groundHeight()));
         room.addSpawningEnemy(EnemyPresets.largeBlob(room.WIDTH - 500, room.groundHeight()));

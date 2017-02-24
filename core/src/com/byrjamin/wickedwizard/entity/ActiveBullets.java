@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.entity.Entity;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 
 /**
@@ -51,8 +53,23 @@ public class ActiveBullets {
 
     //TODO just check the Height and Width and then get RoomGround to see if it hits.
     public void outOfBoundsCheck(Projectile p, Room r){
-        if(p.getX() > r.WIDTH || p.getX() < 0
-                || p.getY() < r.groundHeight() || p.getY() > r.HEIGHT) {
+
+        for(RoomWall rw : r.getRoomWalls()){
+            if(p.getBounds().overlaps(rw.getBounds())) {
+                p.setState(Projectile.STATE.EXPLODING);
+                return;
+            }
+        }
+
+        for(RoomDoor rd : r.getRoomDoors()){
+            if(p.getBounds().overlaps(rd.getBounds()) && !rd.isUnlocked()) {
+                p.setState(Projectile.STATE.EXPLODING);
+                return;
+            }
+        }
+
+        if(p.getX() > r.WIDTH || p.getX() < r.getX()
+                || p.getY() < r.getY() || p.getY() > r.HEIGHT) {
             p.setState(Projectile.STATE.EXPLODING);
         }
     }
