@@ -341,7 +341,7 @@ public class Wizard extends Entity{
     }
 
     public void reduceHealth(float i){
-        if(!isDashing() && !isInvunerable() && !isFlying()) {//TODO so op.
+        if(!isInvunerable()) {//TODO so op.
             invinciblityTimer = invinciblityFrames;
             health -= i;
 
@@ -467,8 +467,9 @@ public class Wizard extends Entity{
         activeBullets.addProjectile(new Projectile.ProjectileBuilder(getCenterX() , getCenterY(), input_x,input_y)
                 .damage(damage)
                 .drawingColor(Color.WHITE)
-                .speed(Measure.units(100f))
+                .speed(Measure.units(150f))
                 .scale(0.7f)
+              //  .gravity(true)
                 .build());
     }
 

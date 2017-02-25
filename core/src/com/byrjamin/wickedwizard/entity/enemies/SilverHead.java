@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.entity.ActiveBullets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
@@ -14,8 +15,10 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 /**
  * Created by Home on 01/01/2017.
@@ -36,6 +39,8 @@ public class SilverHead extends GroundedEnemy {
     private StateTimer standingTime;
 
     private Array<BlastWave> blastWaveArray = new Array<BlastWave>();
+
+    private ActiveBullets activeBullets = new ActiveBullets();
 
     private enum ACTION {
         STANDING, CHARGING, OPENING, CLOSING
@@ -106,7 +111,7 @@ public class SilverHead extends GroundedEnemy {
         super.update(dt, r);
         time += dt;
 
-        for(BlastWave b : blastWaveArray){
+/*        for(BlastWave b : blastWaveArray){
             b.update(dt);
 
             if(b.collides(r.getWizard().getBounds())){
@@ -117,7 +122,9 @@ public class SilverHead extends GroundedEnemy {
                 blastWaveArray.removeValue(b, true);
             }
 
-        }
+        }*/
+
+        activeBullets.updateProjectile(dt, r, r.getWizard());
 
         if(getState() == STATE.ALIVE) {
             performAction(dt);
@@ -149,6 +156,16 @@ public class SilverHead extends GroundedEnemy {
             if(currentAnimation.isAnimationFinished(time)){
                 action = ACTION.OPENING;
                 changeAnimation(openingAnimation);
+
+                activeBullets.addProjectile(getSilverheadProjectile(0));
+                activeBullets.addProjectile(getSilverheadProjectile(30));
+                activeBullets.addProjectile(getSilverheadProjectile(60));
+                activeBullets.addProjectile(getSilverheadProjectile(80));
+                activeBullets.addProjectile(getSilverheadProjectile(100));
+                activeBullets.addProjectile(getSilverheadProjectile(120));
+                activeBullets.addProjectile(getSilverheadProjectile(150));
+                activeBullets.addProjectile(getSilverheadProjectile(180));
+
                 BlastWave b = new BlastWave(this.position.x + WIDTH / 2, this.position.y + HEIGHT / 2);
                 b.setSpeed(0.25f);
                 blastWaveArray.add(b);
@@ -173,6 +190,17 @@ public class SilverHead extends GroundedEnemy {
     }
 
 
+    public Projectile getSilverheadProjectile(double angle){
+        return new Projectile.ProjectileBuilder(position.x + WIDTH / 2 , position.y + HEIGHT / 2, angle)
+                .damage(1)
+                .drawingColor(Color.RED)
+                .speed(Measure.units(75f))
+                .scale(0.7f)
+                .gravity(true)
+                .build();
+    }
+
+
 
     public void changeAnimation(Animation a){
         currentAnimation = a;
@@ -180,6 +208,9 @@ public class SilverHead extends GroundedEnemy {
     }
 
     public void draw(SpriteBatch batch){
+
+        activeBullets.draw(batch);
+
         if(isFlashing) {
 
             //System.out.println("Should be flashing");
@@ -192,9 +223,11 @@ public class SilverHead extends GroundedEnemy {
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
 
-        for(BlastWave b : blastWaveArray){
+/*        for(BlastWave b : blastWaveArray){
             b.draw(batch);
-        }
+        }*/
+
+        System.out.println(activeBullets.getBullets().size);
 
         BoundsDrawer.drawBounds(batch, bounds);
     }
