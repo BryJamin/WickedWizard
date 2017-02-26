@@ -308,6 +308,9 @@ public class TutorialRoom extends Room {
         //System.out.println(alphaPercentage);
         batch.end();
 
+        //TODO figure out the bug where this apparnetly is a null pointer if you remove the shaperenderer.
+        shapeRenderer = new ShapeRenderer();
+
         switch(tutorial_state){
             case GROUND:
                 Gdx.gl.glEnable(GL20.GL_BLEND);

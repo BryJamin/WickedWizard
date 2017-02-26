@@ -368,6 +368,17 @@ public abstract class Room {
         return wizard;
     }
 
+    public Boolean isWizardonGround() {
+
+        for(RoomWall rw : roomWalls){
+            if(Collider.isOnTop(wizard.getBounds(), rw.getBounds())){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
     }

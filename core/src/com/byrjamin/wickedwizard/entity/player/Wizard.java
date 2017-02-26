@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.*;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.item.ItemPresets;
@@ -19,7 +18,6 @@ import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
-import com.byrjamin.wickedwizard.helper.timer.Reloader;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -30,12 +28,13 @@ public class Wizard extends Entity{
     public float HEIGHT = Measure.units(5);
     public float WIDTH = Measure.units(5);
     private float MOVEMENT = Measure.units(115f);
+    private float ACCELERATION = Measure.units(10f);
     private float DRAG = Measure.units(20f);
 
-    private float GRAPPLE_MOVEMENT = Measure.units(10f);
+    private float GRAPPLE_MOVEMENT = Measure.units(15f);
     private float MAX_GRAPPLE_LAUNCH = Measure.units(60f);
     private float MAX_GRAPPLE_MOVEMENT = Measure.units(150f);
-    private static final int GRAVITY = -MainGame.GAME_UNITS;
+    private float JUMP_HEIGHT = Measure.units(3.5f);
 
     private float invinciblityFrames = 1.0f;
     private float invinciblityTimer;
@@ -44,21 +43,22 @@ public class Wizard extends Entity{
 
     private Vector2 position;
     private Vector2 velocity = new Vector2(0, 0);
-    private Vector2 gravity = new Vector2(0, -50f);
+    private Vector2 gravity = new Vector2(0, -Measure.units(3f));
+
+    private int max_airshots = 3;
+    private int airshots = 0;
 
     private Vector3 input = new Vector3();
 
     private Rectangle bounds;
 
-    private com.byrjamin.wickedwizard.entity.ActiveBullets activeBullets = new com.byrjamin.wickedwizard.entity.ActiveBullets();
+    private ActiveBullets activeBullets = new com.byrjamin.wickedwizard.entity.ActiveBullets();
 
-    private Reloader reloader;
-    private StateTimer stateTimer;
+    private StateTimer reloadTimer;
 
     private boolean isFalling = true;
     private boolean fallThrough = false;
-
-    private float moveTarget;
+    private boolean bulletHover = true;
 
     private float yFlyTarget;
     private float xFlyTarget;
@@ -74,10 +74,8 @@ public class Wizard extends Entity{
         CHARGING, FIRING, IDLE, DEAD
     }
 
-    private boolean controlScheme = true;
-
     public enum MOVESTATE {
-        DASHING, MOVING, STANDING, FLYING
+        DASHING, STANDING, FLYING, JUMPING
     }
 
     private enum DIRECTION {
@@ -114,7 +112,6 @@ public class Wizard extends Entity{
 
     private int inputPoll;
 
-
     private Array<ItemPresets> items = new Array<ItemPresets>();
 
 
@@ -126,9 +123,7 @@ public class Wizard extends Entity{
         position = new Vector2(posX, posY);
         velocity = new Vector2();
         bounds = new Rectangle(posX,posY,WIDTH, HEIGHT);
-
-        reloader = new Reloader(reloadRate);
-        stateTimer = new StateTimer(reloadRate, 0);
+        reloadTimer = new StateTimer(reloadRate, 0);
 
         //Note firing animation speed is equal to the reloadRate divided by 10.
         standingAnimation = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
@@ -141,50 +136,37 @@ public class Wizard extends Entity{
 
     public void update(float dt, OrthographicCamera gamecam, Room room){
         //animationTime += dt;
-
         if(health <= 0) {
             currentState = STATE.DEAD;
             return;
         }
 
-        stateTimer.update(dt);
+        reloadTimer.update(dt);
 
         fallthroughTimer.update(dt);
         if(fallthroughTimer.isFinished()){
             fallThrough = false;
         }
 
-        if(currentState == STATE.IDLE){
+        if(currentState == STATE.IDLE) {
             currentAnimation = standingAnimation;
         }
 
-        if(currentState == STATE.CHARGING){
-            //reloader.update(dt);
-            chargeTime += dt;
-            if(windUpAnimation.isAnimationFinished(chargeTime)){
-                currentState = STATE.FIRING;
-            }
-        }
-
-        //Purely for testing
-
         if(currentState == STATE.FIRING){
                 // stateTime+= dt;
-            if(stateTimer.isFinished()){
+            if(reloadTimer.isFinished()){
                 float x1 = Gdx.input.getX(inputPoll);
                 float y1 = Gdx.input.getY(inputPoll);
                 input = new Vector3(x1, y1, 0);
                 //This is so inputs match up to the game co-ordinates.
                 gamecam.unproject(input);
                 fireProjectile(input.x, input.y);
-                stateTimer.reset();
+                reloadTimer.reset();
             }
         }
 
-
-
         if(movementState == MOVESTATE.DASHING){
-            currentAnimation = dashAnimation;
+            currentAnimation = standingAnimation;
             movementUpdate(dt);
         }
 
@@ -194,21 +176,21 @@ public class Wizard extends Entity{
 
         activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
 
-        if(!isFlying()) {
-            applyGravity(dt);
+        if(!isFlying() && bulletHover) {
+            velocity.add(gravity);
         }
 
         currentFrame = currentAnimation.getKeyFrame(animationTime+=dt);
 
         damageFramesUpdate(dt);
 
-
         position.add(velocity.x * dt, velocity.y * dt);
 
-
-        //System.out.println(position.x + " AFTER");
         bounds.y = position.y;
         bounds.x = position.x;
+
+        //System.out.println(movementState);
+        System.out.println(velocity.y);
     }
 
     public void draw(SpriteBatch batch){
@@ -230,11 +212,6 @@ public class Wizard extends Entity{
         BoundsDrawer.drawBounds(batch, bounds);
     }
 
-    private void boundsUpdate(){
-        bounds.x = position.x;
-        bounds.y = position.y;
-    }
-
     public void positionUpdate(){
         position.x = bounds.x;
         position.y = bounds.y;
@@ -244,10 +221,7 @@ public class Wizard extends Entity{
         return facingDirection;
     }
 
-    public void dash(float dashTarget) {
-      //  if(!isDashing()) {
-
-
+    public void moveTo(float dashTarget) {
         if(!bounds.contains(dashTarget, this.getCenterY())) {
             movementState = MOVESTATE.DASHING;
             currentAnimation = dashAnimation;
@@ -261,6 +235,7 @@ public class Wizard extends Entity{
         float angle = calculateAngle(getCenterX(), getCenterY(), x, y);
         xFlyTarget = x;
         yFlyTarget = y;
+        resetAirshots();
 
         facingDirection = xFlyTarget > getX() ? DIRECTION.RIGHT : DIRECTION.LEFT;
 
@@ -275,10 +250,9 @@ public class Wizard extends Entity{
         movementState = MOVESTATE.FLYING;
     }
 
-    public void cancelMovement(){
-        movementState = MOVESTATE.MOVING;
+    public void resetAirshots(){
+        airshots = 0;
     }
-
     //TODO can be refactored for sure.
     public void movementUpdate(float dt){
 
@@ -311,19 +285,12 @@ public class Wizard extends Entity{
 
         if(bounds.contains(xFlyTarget, yFlyTarget)){
             velocity.x = 0;
-
-            System.out.println(xFlyTarget);
-            System.out.println(yFlyTarget);
-
             setCenterX(xFlyTarget);
             setCenterY(yFlyTarget);
-
             if(velocity.y > MAX_GRAPPLE_LAUNCH) {
                 velocity.y = MAX_GRAPPLE_LAUNCH;
             }
-
             movementState = MOVESTATE.STANDING;
-
         }
 
 
@@ -335,8 +302,6 @@ public class Wizard extends Entity{
         Rectangle mock = new Rectangle(bounds);
         mock.x = position.x + velocity.x * dt;
         mock.y = position.y + velocity.y * dt;
-        //System.out.println(velocity.x);
-
         return mock;
     }
 
@@ -354,6 +319,16 @@ public class Wizard extends Entity{
     @Override
     public boolean isHit(Rectangle r) {
         return r.overlaps(bounds);
+    }
+
+    public void jump(){
+        System.out.println("JUMP");
+        System.out.println(velocity.y);
+        velocity.y = Measure.units(JUMP_HEIGHT);
+
+        velocity.x = velocity.x / 2;
+        movementState = MOVESTATE.JUMPING;
+        System.out.println(velocity.y);
     }
 
 
@@ -408,40 +383,24 @@ public class Wizard extends Entity{
 
     public void stopMovement(){
         movementState = MOVESTATE.STANDING;
-        velocity.setZero();System.out.println(velocity.x);
-    }
-
-
-   public void applyGravity(float dt){
-           velocity.add(gravity);
+        velocity.setZero();
     }
 
     public void resetGravity(){
-        velocity.y = 0;
+        if(velocity.y <= 0) {
+            velocity.y = 0;
+        }
         isFalling = false;
 
-        if(movementState == MOVESTATE.STANDING){
+        if(movementState == MOVESTATE.FLYING) {
+            movementState = MOVESTATE.STANDING;
+        }
+
+        if(movementState != MOVESTATE.DASHING){
             velocity.x = 0;
         }
+        resetAirshots();
     }
-
-    public void fall(){
-        if(!isFlying()) {
-            isFalling = true;
-            fallThrough = false;
-        }
-    }
-
-    public void land(){
-        isFalling = false;
-        velocity.y = 0;
-        if(movementState == MOVESTATE.FLYING){
-            velocity.setZero();
-            flyVelocity.setZero();
-        }
-        movementState = MOVESTATE.STANDING;
-    }
-
 
     public void toggleFallthroughOn(){
         fallThrough = true;
@@ -463,6 +422,21 @@ public class Wizard extends Entity{
 
         if(angle >= 0) facingDirection = (angle <= (Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
          else facingDirection = (angle >= -(Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
+
+        if(angle < 0 && airshots != max_airshots && !isFlying()) {
+            //System.out.println(velocity.y);
+            velocity.x = 0;
+            velocity.y = 15;
+            bulletHover = false;
+
+            airshots++;
+            //velocity.add(0, -gravity.y * 2);
+            //System.out.println(velocity.y);
+            //velocity.add(0, 1000);
+            //velocity.x = 0;
+        } else if(airshots == max_airshots) {
+            bulletHover = true;
+        }
 
         activeBullets.addProjectile(new Projectile.ProjectileBuilder(getCenterX() , getCenterY(), input_x,input_y)
                 .damage(damage)
@@ -489,6 +463,12 @@ public class Wizard extends Entity{
             animationTime = 0;
             chargeTime = 0;
             this.inputPoll = poll;
+
+            if(isFlying()){
+                movementState = MOVESTATE.STANDING;
+                velocity.x = 0;
+                velocity.y = 0;x
+            }
         }
     }
 
@@ -497,6 +477,7 @@ public class Wizard extends Entity{
         if(currentState == STATE.FIRING || currentState == STATE.CHARGING){
             currentState = STATE.IDLE;
             chargeTime = 0;
+            bulletHover = true;
         }
     }
 
@@ -564,10 +545,6 @@ public class Wizard extends Entity{
 
     public int getInputPoll() {
         return inputPoll;
-    }
-
-    public boolean isCharing(){
-        return currentState == STATE.CHARGING;
     }
 
     public boolean isState(STATE state){

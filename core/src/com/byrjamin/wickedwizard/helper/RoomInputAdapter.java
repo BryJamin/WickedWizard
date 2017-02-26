@@ -20,8 +20,12 @@ public class RoomInputAdapter extends InputAdapter{
 
     private Room room;
     private Viewport viewport;
+    OrthographicCamera gamecam;
 
-    private int movementPoll = 10;
+    private int movementPoll = -1;
+    private int jumpPoll = -2;
+    private int firingPoll = -3;
+    private boolean jumpBool;
     private RoomWall movementWall;
 
     Vector3 input;
@@ -35,24 +39,27 @@ public class RoomInputAdapter extends InputAdapter{
     public void update(Room room, Viewport viewport, OrthographicCamera gamecam){
         this.room = room;
         this.viewport = viewport;
+        this.gamecam = gamecam;
 
-        boolean test = room.getWizard().isFiring() && movementPoll == room.getWizard().getInputPoll();
+        boolean test = room.getWizard().isFiring() ;
 
-        if(Gdx.input.isTouched(movementPoll) && ! test) {
-            float x1 = Gdx.input.getX(movementPoll);
-            float y1 = Gdx.input.getY(movementPoll);
-            input = new Vector3(x1, y1, 0);
-            //This is so inputs match up to the game co-ordinates.
-            gamecam.unproject(input);
+        if(movementPoll != -1) {
+            if (Gdx.input.isTouched(movementPoll) && movementPoll != firingPoll) {
+                float x1 = Gdx.input.getX(movementPoll);
+                float y1 = Gdx.input.getY(movementPoll);
+                input = new Vector3(x1, y1, 0);
+                //This is so inputs match up to the game co-ordinates.
+                gamecam.unproject(input);
 
-            System.out.println(input.y);
+                //System.out.println(input.y);
 
-            //TODO not good;
-            if (input.y <= 300) {
-                    room.getWizard().dash(input.x);
+                //TODO not good;
+                if (input.y <= 300 && !room.getWizard().isFlying()) {
+                    room.getWizard().moveTo(input.x);
+                    jumpPoll = movementPoll;
+                }
+
             }
-
-
         }
 
     }
@@ -74,7 +81,7 @@ public class RoomInputAdapter extends InputAdapter{
                     fire = false;
                     break;
                 } else if(w.getY() == r.getY() + r.getHeight()){
-                    room.getWizard().dash(input.x);
+                    room.getWizard().moveTo(input.x);
                     fire = false;
                     break;
                 } else if(w.getY() < r.getY() + r.getHeight()){
@@ -96,11 +103,16 @@ public class RoomInputAdapter extends InputAdapter{
 
         for(RoomWall r : room.getRoomWalls()){
             if(r.getBounds().contains(input.x, input.y) ){
-                if(w.getY() >= r.getBounds().getY() + r.getBounds().getHeight() - 100){
-                    room.getWizard().dash(input.x);
+                if(w.getY() > r.getBounds().getY() + r.getBounds().getHeight()) {
+                    room.getWizard().flyTo(input.x, r.getBounds().getY() + r.getBounds().getHeight());
+                    System.out.println("INSIDE");
+                    movementPoll = pointer;
+                    fire = false;
+                    break;
+                } else if(w.getY() >= r.getBounds().getY() + r.getBounds().getHeight() - 100){
+                    room.getWizard().moveTo(input.x);
                     movementWall = r;
                     movementPoll = pointer;
-
                     fire = false;
                     break;
                 }
@@ -125,7 +137,8 @@ public class RoomInputAdapter extends InputAdapter{
         }
 
         if(fire) {
-           room.getWizard().startFiring(pointer);
+            room.getWizard().startFiring(pointer);
+            firingPoll = pointer;
         }
 
         return true;
@@ -136,10 +149,21 @@ public class RoomInputAdapter extends InputAdapter{
     public boolean touchUp(int x, int y, int pointer, int button) {
         if(room.getWizard().getInputPoll() == pointer) {
             room.getWizard().stopFiring();
+            firingPoll = -3;
         }
 
-        if(movementPoll != 10){
-           // movementPoll = 10;54
+        Vector3 input = new Vector3(x,y,0);
+        gamecam.unproject(input);
+
+        System.out.println(jumpPoll +" Jumpoll");
+
+        if(movementPoll == pointer && input.y > 300 && room.isWizardonGround()) {
+            room.getWizard().jump();
+            System.out.println("INSIDE");
+        }
+
+        if(movementPoll == pointer){
+            movementPoll = -1;
         }
 
         return true;
