@@ -23,7 +23,6 @@ import java.util.Random;
 public class Bouncer extends Enemy{
 
     private float MOVEMENT = 600f;
-
     private float STOMPSPEED = -1200f;
 
     private Animation<TextureRegion> defaultAnimation;

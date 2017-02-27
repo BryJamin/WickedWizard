@@ -40,7 +40,7 @@ public class SilverHead extends GroundedEnemy {
 
     private Array<BlastWave> blastWaveArray = new Array<BlastWave>();
 
-    private ActiveBullets activeBullets = new ActiveBullets();
+    //private ActiveBullets activeBullets = new ActiveBullets();
 
     private enum ACTION {
         STANDING, CHARGING, OPENING, CLOSING
@@ -78,7 +78,6 @@ public class SilverHead extends GroundedEnemy {
 
 
     public SilverHead(SilverHeadBuilder silverHeadBuilder){
-
         super();
 
         this.setHealth(silverHeadBuilder.health);
@@ -124,8 +123,6 @@ public class SilverHead extends GroundedEnemy {
 
         }*/
 
-        activeBullets.updateProjectile(dt, r, r.getWizard());
-
         if(getState() == STATE.ALIVE) {
             performAction(dt);
 
@@ -157,14 +154,14 @@ public class SilverHead extends GroundedEnemy {
                 action = ACTION.OPENING;
                 changeAnimation(openingAnimation);
 
-                activeBullets.addProjectile(getSilverheadProjectile(0));
-                activeBullets.addProjectile(getSilverheadProjectile(30));
-                activeBullets.addProjectile(getSilverheadProjectile(60));
-                activeBullets.addProjectile(getSilverheadProjectile(80));
-                activeBullets.addProjectile(getSilverheadProjectile(100));
-                activeBullets.addProjectile(getSilverheadProjectile(120));
-                activeBullets.addProjectile(getSilverheadProjectile(150));
-                activeBullets.addProjectile(getSilverheadProjectile(180));
+                bullets.addProjectile(getSilverheadProjectile(0));
+                bullets.addProjectile(getSilverheadProjectile(30));
+                bullets.addProjectile(getSilverheadProjectile(60));
+                bullets.addProjectile(getSilverheadProjectile(80));
+                bullets.addProjectile(getSilverheadProjectile(100));
+                bullets.addProjectile(getSilverheadProjectile(120));
+                bullets.addProjectile(getSilverheadProjectile(150));
+                bullets.addProjectile(getSilverheadProjectile(180));
 
                 BlastWave b = new BlastWave(this.position.x + WIDTH / 2, this.position.y + HEIGHT / 2);
                 b.setSpeed(0.25f);
@@ -209,7 +206,7 @@ public class SilverHead extends GroundedEnemy {
 
     public void draw(SpriteBatch batch){
 
-        activeBullets.draw(batch);
+        bullets.draw(batch);
 
         if(isFlashing) {
 
@@ -227,7 +224,7 @@ public class SilverHead extends GroundedEnemy {
             b.draw(batch);
         }*/
 
-        System.out.println(activeBullets.getBullets().size);
+        System.out.println(bullets.getBullets().size);
 
         BoundsDrawer.drawBounds(batch, bounds);
     }

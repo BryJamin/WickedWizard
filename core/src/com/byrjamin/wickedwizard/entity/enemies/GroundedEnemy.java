@@ -15,6 +15,20 @@ public abstract class GroundedEnemy extends Enemy {
         super();
     }
 
+    public GroundedEnemy(GBuilder builder){
+        super(builder);
+    }
+
+    public static class GBuilder extends EnemyBuilder {
+        public GBuilder(float posX, float posY) {
+            super(posX, posY);
+        }
+        @Override
+        public EnemyBuilder getThis() {
+            return this;
+        }
+    }
+
     public void update(float dt, Room r){
         super.update(dt, r);
         velocity.add(0, -GRAVITY * dt);

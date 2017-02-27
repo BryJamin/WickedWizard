@@ -45,7 +45,7 @@ public class Wizard extends Entity{
     private Vector2 velocity = new Vector2(0, 0);
     private Vector2 gravity = new Vector2(0, -Measure.units(3f));
 
-    private int max_airshots = 3;
+    private int max_airshots = 2;
     private int airshots = 0;
 
     private Vector3 input = new Vector3();
@@ -423,18 +423,16 @@ public class Wizard extends Entity{
         if(angle >= 0) facingDirection = (angle <= (Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
          else facingDirection = (angle >= -(Math.PI / 2)) ? DIRECTION.RIGHT : DIRECTION.LEFT;
 
-        if(angle < 0 && airshots != max_airshots && !isFlying()) {
+        if((Math.toDegrees(angle) < -10 && Math.toDegrees(angle) > -170) && airshots != max_airshots && !isFlying() && !isMovementState(MOVESTATE.JUMPING)) {
             //System.out.println(velocity.y);
             velocity.x = 0;
-            velocity.y = 15;
+            velocity.y = 10;
             bulletHover = false;
-
             airshots++;
-            //velocity.add(0, -gravity.y * 2);
-            //System.out.println(velocity.y);
-            //velocity.add(0, 1000);
-            //velocity.x = 0;
+            movementState = MOVESTATE.STANDING;
         } else if(airshots == max_airshots) {
+            bulletHover = true;
+        } else {
             bulletHover = true;
         }
 
@@ -464,11 +462,12 @@ public class Wizard extends Entity{
             chargeTime = 0;
             this.inputPoll = poll;
 
-            if(isFlying()){
+            if(isFlying() || isMovementState(MOVESTATE.JUMPING)){
                 movementState = MOVESTATE.STANDING;
-                velocity.x = 0;
-                velocity.y = 0;x
+                //velocity.x = 0;
+                //velocity.y = 0;
             }
+
         }
     }
 
@@ -569,6 +568,10 @@ public class Wizard extends Entity{
 
     public STATE getCurrentState() {
         return currentState;
+    }
+
+    public ActiveBullets getActiveBullets() {
+        return activeBullets;
     }
 
     public void setCurrentState(STATE currentState) {

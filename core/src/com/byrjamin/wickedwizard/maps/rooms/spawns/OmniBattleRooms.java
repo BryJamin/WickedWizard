@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.entity.enemies.Bouncer;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
+import com.byrjamin.wickedwizard.entity.enemies.GroundTurret;
 import com.byrjamin.wickedwizard.entity.enemies.SilverHead;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
@@ -60,6 +61,10 @@ public class OmniBattleRooms {
         room.addSpawningEnemy(EnemyPresets.smallBlob(room.WIDTH - 500, room.groundHeight()));
         room.addSpawningEnemy(EnemyPresets.defaultBlob(room.WIDTH - 500, room.groundHeight()));
         room.addSpawningEnemy(EnemyPresets.largeBlob(room.WIDTH - 500, room.groundHeight()));
+    }
+
+    public static void newEnemy(Room room){
+        room.addSpawningEnemy(new GroundTurret.GroundTurretBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
 
 

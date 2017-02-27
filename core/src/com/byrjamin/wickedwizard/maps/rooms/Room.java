@@ -167,6 +167,7 @@ public abstract class Room {
         this.wizard = w;
         wizard.setCurrentState(Wizard.STATE.IDLE);
         wizard.cancelMovementHorizontalSpeed();
+        wizard.getActiveBullets().getBullets().clear();
         transition = false;
 
         for(RoomDoor r : roomDoors){

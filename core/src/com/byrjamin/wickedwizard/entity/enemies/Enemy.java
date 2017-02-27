@@ -18,7 +18,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
  * Abstract class for enemies within the game
  * Most enemies will draw from this class.
  */
-public abstract class Enemy extends Entity{
+public class Enemy extends Entity{
 
     public enum STATE {
         DEAD, DYING, ALIVE
@@ -26,6 +26,9 @@ public abstract class Enemy extends Entity{
 
     protected float WIDTH;
     protected float HEIGHT;
+
+    protected float scale;
+    protected float speed;
 
     protected Vector2 position = new Vector2();
     protected Vector2 velocity = new Vector2();
@@ -55,6 +58,54 @@ public abstract class Enemy extends Entity{
         state = STATE.ALIVE;
         isFlashing = false;
         dyingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION);
+    }
+
+    protected abstract static class EnemyBuilder<T extends EnemyBuilder> {
+
+        //Required Parameters
+        private final float posX;
+        private final float posY;
+
+        //Optional Parameters
+        private float healthScale = 1;
+        private float scale = 1;
+        private float speed = 1;
+        private float health = 5;
+
+        public EnemyBuilder(float posX, float posY) {
+            this.posX = posX;
+            this.posY = posY;
+        }
+
+        public abstract T getThis();
+
+        public T healthScale(float val)
+        { healthScale = val; return getThis(); }
+
+        public T health(float val)
+        { health = val; return getThis(); }
+
+        public T scale(float val)
+        { scale = val; return getThis(); }
+
+        public T speed(float val)
+        { speed = val; return getThis(); }
+
+        public Enemy build() {
+            return new Enemy(this);
+        }
+
+    }
+
+    public Enemy(EnemyBuilder b){
+        this();
+        position = new Vector2(b.posX, b.posY);
+        speed = b.speed;
+        scale = b.scale;
+        health = b.health;
+        health *= b.healthScale;
+        //HEIGHT *= b.scale;
+        //WIDTH *= b.scale;
     }
 
 
