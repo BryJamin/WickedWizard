@@ -25,11 +25,6 @@ import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
  */
 public class SilverHead extends GroundedEnemy {
 
-    private float HEIGHT = Measure.units(10);
-    private float WIDTH = Measure.units(10);
-
-    private float scale;
-
     private Animation standingAnimation;
     private Animation chargingAnimation;
     private Animation closingAnimation;
@@ -48,42 +43,23 @@ public class SilverHead extends GroundedEnemy {
 
     private ACTION action = ACTION.STANDING;
 
-    public static class SilverHeadBuilder {
-
-        //Required Parameters
-        private final float posX;
-        private final float posY;
-
-        //Optional Parameters
-        private float health = 7;
-        private float scale = 1;
-
+    public static class SilverHeadBuilder extends GroundedEnemy.GBuilder {
         public SilverHeadBuilder(float posX, float posY) {
-            this.posX = posX;
-            this.posY = posY;
+            super(posX, posY);
+            health(7);
         }
 
-        public SilverHeadBuilder health(float val)
-        { health = val; return this; }
-
-        public SilverHeadBuilder scale(float val)
-        { scale = val; return this; }
-
+        @Override
         public SilverHead build() {
             return new SilverHead(this);
         }
-
-
     }
 
 
-    public SilverHead(SilverHeadBuilder silverHeadBuilder){
-        super();
-
-        this.setHealth(silverHeadBuilder.health);
-        scale = silverHeadBuilder.scale;
-
-        position = new Vector2(silverHeadBuilder.posX, silverHeadBuilder.posY);
+    public SilverHead(SilverHeadBuilder b){
+        super(b);
+        HEIGHT = Measure.units(10);
+        WIDTH = Measure.units(10);
 
         collisionBound = new Rectangle(position.x + (Measure.units(1.5f) * scale), position.y,
                 WIDTH - (Measure.units(3f) * scale),
@@ -97,31 +73,14 @@ public class SilverHead extends GroundedEnemy {
         openingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED);
         currentAnimation = standingAnimation;
         currentFrame = currentAnimation.getKeyFrame(time);
-
         this.setDyingAnimation(AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION));
-
         standingTime = new StateTimer(2f);
-
-
     }
 
     @Override
     public void update(float dt, Room r) {
         super.update(dt, r);
         time += dt;
-
-/*        for(BlastWave b : blastWaveArray){
-            b.update(dt);
-
-            if(b.collides(r.getWizard().getBounds())){
-                r.getWizard().reduceHealth(1);
-            }
-
-            if(b.outOfBounds(r)){
-                blastWaveArray.removeValue(b, true);
-            }
-
-        }*/
 
         if(getState() == STATE.ALIVE) {
             performAction(dt);
@@ -154,14 +113,11 @@ public class SilverHead extends GroundedEnemy {
                 action = ACTION.OPENING;
                 changeAnimation(openingAnimation);
 
-                bullets.addProjectile(getSilverheadProjectile(0));
-                bullets.addProjectile(getSilverheadProjectile(30));
-                bullets.addProjectile(getSilverheadProjectile(60));
-                bullets.addProjectile(getSilverheadProjectile(80));
-                bullets.addProjectile(getSilverheadProjectile(100));
-                bullets.addProjectile(getSilverheadProjectile(120));
-                bullets.addProjectile(getSilverheadProjectile(150));
-                bullets.addProjectile(getSilverheadProjectile(180));
+                int[] angles = new int[] {0,30,60,80,100,120,150,180};
+
+                for(int i : angles){
+                    bullets.addProjectile(getSilverheadProjectile(i));
+                }
 
                 BlastWave b = new BlastWave(this.position.x + WIDTH / 2, this.position.y + HEIGHT / 2);
                 b.setSpeed(0.25f);
@@ -210,8 +166,6 @@ public class SilverHead extends GroundedEnemy {
 
         if(isFlashing) {
 
-            //System.out.println("Should be flashing");
-
             Color color = batch.getColor();
             batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
@@ -219,10 +173,6 @@ public class SilverHead extends GroundedEnemy {
         } else {
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
-
-/*        for(BlastWave b : blastWaveArray){
-            b.draw(batch);
-        }*/
 
         System.out.println(bullets.getBullets().size);
 

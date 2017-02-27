@@ -38,7 +38,7 @@ public class OmniBattleRooms {
     }
 
 
-    public static void blob4(Room room){
+    public static void silverhead(Room room){
      //   e.clear();
         room.addSpawningEnemy(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
         room.addSpawningEnemy(EnemyPresets.alternarteShotsTurret(room.WIDTH / 2, room.HEIGHT - Measure.units(15)));
@@ -67,6 +67,10 @@ public class OmniBattleRooms {
         room.addSpawningEnemy(new GroundTurret.GroundTurretBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
 
+    public static void newEnemy2(Room room){
+        room.addSpawningEnemy(new GroundTurret.GroundTurretBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
+    }
+
 
     public static void add2EnemyWave(Room room){
         Array<Enemy> e = new Array<Enemy>();
@@ -88,7 +92,7 @@ public class OmniBattleRooms {
             new Waves() { public void spawnWave(Room room) { blob2(room); } },
             new Waves() { public void spawnWave(Room room) { threeblobs(room); } },
             new Waves() { public void spawnWave(Room room) { blob3(room); } },
-            new Waves() { public void spawnWave(Room room) { blob4(room); } },
+            new Waves() { public void spawnWave(Room room) { silverhead(room); } },
             new Waves() { public void spawnWave(Room room) { add2EnemyWave(room);} },
             new Waves() { public void spawnWave(Room room) { bouncer(room);} },
             new Waves() { public void spawnWave(Room room) { bouncerTwo(room);} },

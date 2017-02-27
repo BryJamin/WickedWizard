@@ -60,7 +60,7 @@ public class Enemy extends Entity{
         dyingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION);
     }
 
-    protected abstract static class EnemyBuilder<T extends EnemyBuilder> {
+    public abstract static class EnemyBuilder<T extends EnemyBuilder> {
 
         //Required Parameters
         private final float posX;

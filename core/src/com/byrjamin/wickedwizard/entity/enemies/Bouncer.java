@@ -22,6 +22,9 @@ import java.util.Random;
  */
 public class Bouncer extends Enemy{
 
+    private float HEIGHT = Measure.units(5f);
+    private float WIDTH = Measure.units(5f);
+
     private float MOVEMENT = 600f;
     private float STOMPSPEED = -1200f;
 
@@ -38,55 +41,30 @@ public class Bouncer extends Enemy{
 
     private ACTION action = ACTION.DEFAULT;
 
-    public static class BouncerBuilder {
-
-        //Required Parameters
-        private final float posX;
-        private final float posY;
-
-        //Optional Parameters
-        private float health = 5;
-        private float scale = 1;
-        private float speed = 1;
-
+    public static class BouncerBuilder extends GroundedEnemy.GBuilder {
         public BouncerBuilder(float posX, float posY) {
-            this.posX = posX;
-            this.posY = posY;
+            super(posX, posY);
+            health(5);
         }
 
-        public BouncerBuilder health(float val)
-        { health = val; return this; }
-
-        public BouncerBuilder scale(float val)
-        { scale = val; return this; }
-
-        public BouncerBuilder speed(float val)
-        { speed = val; return this; }
-
+        @Override
         public Bouncer build() {
             return new Bouncer(this);
         }
-
     }
 
 
     public Bouncer(BouncerBuilder b){
-        HEIGHT = Measure.units(5f);
-        WIDTH = Measure.units(5f);
-
-        this.health = b.health * b.scale;
-        position = new Vector2(b.posX, b.posY);
-        HEIGHT *= b.scale;
-        WIDTH *= b.scale;
-        MOVEMENT *= b.speed;
-        collisionBound = new Rectangle(b.posX, b.posY, WIDTH, HEIGHT);
-
+        super(b);
+        health *= scale;
+        HEIGHT *= scale;
+        WIDTH *= scale;
+        MOVEMENT *= speed;
+        collisionBound = new Rectangle(position.x, position.y, WIDTH, HEIGHT);
         velocity = new Vector2();
         Random random = new Random();
-
         velocity.x = random.nextBoolean() ? MOVEMENT : -MOVEMENT;
         velocity.y = MOVEMENT;
-
         defaultAnimation = AnimationPacker.genAnimation(1.0f / 15f, "bouncer", Animation.PlayMode.LOOP);
         stompAnimation = AnimationPacker.genAnimation(1.0f / 7f, "bouncer_stomp", Animation.PlayMode.LOOP);
         currentAnimation = defaultAnimation;

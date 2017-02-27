@@ -18,56 +18,34 @@ import com.byrjamin.wickedwizard.spelltypes.Projectile;
  */
 public class GroundTurret extends GroundedEnemy {
 
-
     private StateTimer reloadTimer = new StateTimer(2.0f, 2.0f);
 
-    public static class GroundTurretBuilder {
-
-        //Required Parameters
-        private final float posX;
-        private final float posY;
-
-        //Optional Parameters
-        private float health = 7;
-        private float scale = 1;
-        private float speed = 1;
-
+    public static class GroundTurretBuilder extends GroundedEnemy.GBuilder {
         public GroundTurretBuilder(float posX, float posY) {
-            this.posX = posX;
-            this.posY = posY;
+            super(posX, posY);
+            health(7);
         }
 
-        public GroundTurretBuilder health(float val)
-        { health = val; return this; }
-
-        public GroundTurretBuilder scale(float val)
-        { scale = val; return this; }
-
-        public GroundTurretBuilder speed(float val)
-        { speed = val; return this; }
-
+        @Override
         public GroundTurret build() {
             return new GroundTurret(this);
         }
-
     }
 
 
+
     public GroundTurret(GroundTurretBuilder b) {
-        super();
-        health = b.health;
-
-
+        super(b);
         HEIGHT = Measure.units(10);
         WIDTH = Measure.units(10);
 
-        HEIGHT *= b.scale;
-        WIDTH *= b.scale;
+        HEIGHT *= scale;
+        WIDTH *= scale;
 
-        position = new Vector2(b.posX, b.posY);
-        collisionBound = new Rectangle(b.posX + (Measure.units(1) * b.scale), b.posY,
-                WIDTH - (Measure.units(2.5f) * b.scale),
-                HEIGHT - (Measure.units(2.5f) * b.scale));
+        position = new Vector2(position.x, position.y);
+        collisionBound = new Rectangle(position.x + (Measure.units(1) * scale), position.y,
+                WIDTH - (Measure.units(2.5f) * scale),
+                HEIGHT - (Measure.units(2.5f) * scale));
         bounds.add(collisionBound);
         currentFrame = PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING);
         this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.BLOB_DYING));
@@ -78,6 +56,8 @@ public class GroundTurret extends GroundedEnemy {
     @Override
     public void update(float dt, Room r) {
         super.update(dt, r);
+
+        System.out.println(health);
 
         if(this.getState() == STATE.DYING || this.getState() == STATE.DEAD) {
             dyingUpdate(dt);

@@ -34,9 +34,7 @@ public class EnemyPresets {
 
 
     public static com.byrjamin.wickedwizard.entity.enemies.Turret alternarteShotsTurret(float posX, float posY){
-        return new com.byrjamin.wickedwizard.entity.enemies.Turret.TurretBuilder(posX, posY)
-                .dispellSequence(new Dispellable.DISPELL[]{Dispellable.DISPELL.VERTICAL, Dispellable.DISPELL.HORIZONTAL})
-                .build();
+        return new com.byrjamin.wickedwizard.entity.enemies.Turret.TurretBuilder(posX, posY).build();
     }
 
 

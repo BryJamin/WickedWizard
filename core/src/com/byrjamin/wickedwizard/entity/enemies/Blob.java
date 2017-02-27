@@ -31,7 +31,6 @@ public class Blob extends GroundedEnemy {
     private float WIDTH = Measure.units(10);
 
     public static class BlobBuilder extends GBuilder{
-        //Optional Parameters
         public BlobBuilder(float posX, float posY) {
             super(posX, posY);
         }
