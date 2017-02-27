@@ -83,4 +83,10 @@ public class ActiveBullets {
     public Array<Projectile> getBullets() {
         return bullets;
     }
+
+    public void kill(){
+        for(Projectile p : bullets){
+            p.setState(Projectile.STATE.EXPLODING);
+        }
+    }
 }

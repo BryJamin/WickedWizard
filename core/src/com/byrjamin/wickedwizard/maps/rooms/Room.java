@@ -273,8 +273,8 @@ public abstract class Room {
 
     public void shiftCoordinatePosition(MapCoords newPosition){
 
-        int diffX = startCoords.getX() + newPosition.getX();
-        int diffY = startCoords.getY() + newPosition.getY();
+        int diffX = newPosition.getX() - startCoords.getX();
+        int diffY = newPosition.getY() - startCoords.getY();
 
 
         for(MapCoords m : mapCoordsArray) {

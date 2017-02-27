@@ -30,6 +30,14 @@ public class StateTimer {
         return countDown <= 0;
     }
 
+    public boolean isFinishedAndReset(){
+        if(isFinished()){
+            reset();
+            return true;
+        }
+        return false;
+    }
+
     public void reset(){
         countDown = defaultTime;
     }

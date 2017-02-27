@@ -232,6 +232,13 @@ public class Enemy extends Entity{
         return false;
     }
 
+    public void setCenter(float posX, float posY){
+        float diffX = position.x - (posX - WIDTH / 2);
+        float diffY = position.y - posY - HEIGHT / 2;
+        position.x = posX - WIDTH / 2;
+        position.y = posY - HEIGHT / 2;
+    }
+
     public Array<Rectangle> getBounds() {
         return bounds;
     }

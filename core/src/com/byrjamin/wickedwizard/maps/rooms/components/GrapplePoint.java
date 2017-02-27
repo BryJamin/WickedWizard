@@ -48,6 +48,11 @@ public class GrapplePoint {
         BoundsDrawer.drawBounds(batch, bounds);
     }
 
+    public void setCenter(float posX, float posY) {
+        x = posX - width / 2;
+        y = posY - height / 2;
+        bounds = new Rectangle(x - width / 2, y - height / 2, bound_width, bound_height);
+    }
 
     public float getCenterX(){
         return x + width /2;

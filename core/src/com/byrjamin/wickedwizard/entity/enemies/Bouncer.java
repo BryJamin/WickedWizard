@@ -70,6 +70,7 @@ public class Bouncer extends Enemy{
         currentAnimation = defaultAnimation;
         currentFrame = currentAnimation.getKeyFrame(time);
         bounds.add(collisionBound);
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.EXPLOSION));
     }
 
 
@@ -114,7 +115,7 @@ public class Bouncer extends Enemy{
                 stompTimer.reset();
             }
         } else {
-
+            dyingUpdate(dt);
         }
 
     }

@@ -46,6 +46,10 @@ public class Map {
                 switch (room.getLayout()) {
                     case OMNI:
                         OmniBattleRooms.spawnWave[rand.nextInt(OmniBattleRooms.spawnWave.length)].spawnWave(room);
+                        //OmniBattleRooms.spawnWave[4].spawnWave(room);
+                        //OmniBattleRooms.bouncerLarge(room);
+                        //OmniBattleRooms.bouncer(room);
+                        //OmniBattleRooms.kugelDuscheTwoBullets(room);
                         break;
                     case HEIGHT_2:
                         break;

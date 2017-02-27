@@ -5,9 +5,11 @@ import com.byrjamin.wickedwizard.entity.enemies.Bouncer;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
 import com.byrjamin.wickedwizard.entity.enemies.GroundTurret;
+import com.byrjamin.wickedwizard.entity.enemies.KugelDusche;
 import com.byrjamin.wickedwizard.entity.enemies.SilverHead;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
 
 /**
  * Created by Home on 10/12/2016.
@@ -67,10 +69,26 @@ public class OmniBattleRooms {
         room.addSpawningEnemy(new GroundTurret.GroundTurretBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
 
-    public static void newEnemy2(Room room){
+    public static void groundTurret(Room room){
         room.addSpawningEnemy(new GroundTurret.GroundTurretBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
 
+    public static void kugelDusche(Room room){
+        room.addSpawningEnemy(new KugelDusche.KugelDuscheBuilder(room.WIDTH / 2 - Measure.units(5), room.HEIGHT / 2).build());
+    }
+
+    public static void kugelDuscheTwoBullets(Room room){
+        room.addSpawningEnemy(new KugelDusche.KugelDuscheBuilder(room.WIDTH / 2 - Measure.units(5), room.HEIGHT / 2).type(KugelDusche.TYPE.TWO_BULLETS).build());
+        //room.add(new GrapplePoint(room.WIDTH / 4, room.HEIGHT / 5 * 4));
+        //room.add(new GrapplePoint(0, 0));
+
+        GrapplePoint gp = new GrapplePoint(0, 0);
+        gp.setCenter(room.WIDTH / 4, room.HEIGHT / 5 * 4);
+        room.add(gp);
+        gp = new GrapplePoint(0, 0);
+        gp.setCenter(room.WIDTH / 4 * 3, room.HEIGHT / 5 * 4);
+        room.add(gp);
+    }
 
     public static void add2EnemyWave(Room room){
         Array<Enemy> e = new Array<Enemy>();
@@ -97,5 +115,8 @@ public class OmniBattleRooms {
             new Waves() { public void spawnWave(Room room) { bouncer(room);} },
             new Waves() { public void spawnWave(Room room) { bouncerTwo(room);} },
             new Waves() { public void spawnWave(Room room) { bouncerLarge(room);} },
+            new Waves() { public void spawnWave(Room room) { groundTurret(room);} },
+            new Waves() { public void spawnWave(Room room) { kugelDusche(room);} },
+            new Waves() { public void spawnWave(Room room) { kugelDuscheTwoBullets(room);} },
     };
 }
