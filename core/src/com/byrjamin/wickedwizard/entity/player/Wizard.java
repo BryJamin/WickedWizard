@@ -188,9 +188,6 @@ public class Wizard extends Entity{
 
         bounds.y = position.y;
         bounds.x = position.x;
-
-        //System.out.println(movementState);
-        System.out.println(velocity.y);
     }
 
     public void draw(SpriteBatch batch){
@@ -289,6 +286,8 @@ public class Wizard extends Entity{
             setCenterY(yFlyTarget);
             if(velocity.y > MAX_GRAPPLE_LAUNCH) {
                 velocity.y = MAX_GRAPPLE_LAUNCH;
+            } else if(velocity.y < 0){
+                velocity.y = 0;
             }
             movementState = MOVESTATE.STANDING;
         }
@@ -322,13 +321,9 @@ public class Wizard extends Entity{
     }
 
     public void jump(){
-        System.out.println("JUMP");
-        System.out.println(velocity.y);
         velocity.y = Measure.units(JUMP_HEIGHT);
-
         velocity.x = velocity.x / 2;
         movementState = MOVESTATE.JUMPING;
-        System.out.println(velocity.y);
     }
 
 

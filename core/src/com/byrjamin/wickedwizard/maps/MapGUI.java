@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
@@ -22,7 +23,7 @@ public class MapGUI {
 
     private float mapBlinker;
 
-    private Array<Room> rooms;
+    private OrderedSet<Room> rooms;
 
     private Room currentRoom;
     private MapCoords currentCoords;
@@ -40,7 +41,7 @@ public class MapGUI {
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
 
-    public MapGUI(float x, float y, Array<Room> rooms, Room currentRoom) {
+    public MapGUI(float x, float y, OrderedSet<Room> rooms, Room currentRoom) {
         this.mapx = x;
         this.mapy = y;
         this.rooms = rooms;
@@ -49,7 +50,7 @@ public class MapGUI {
 
 
 
-    public void update(float dt, OrthographicCamera gamecam, Array<Room> visitedRooms, Room currentRoom){
+    public void update(float dt, OrthographicCamera gamecam, OrderedSet<Room> visitedRooms, Room currentRoom){
 
         this.currentRoom = currentRoom;
         this.currentCoords = currentRoom.getWizardLocation();

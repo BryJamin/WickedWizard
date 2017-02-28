@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.maps;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
@@ -19,7 +20,7 @@ import java.util.Random;
 public class Map {
 
     private Array<Room> roomArray = new Array<Room>();
-    private Array<Room> visitedRoomArray = new Array<Room>();
+    private OrderedSet<Room> visitedRoomArray = new OrderedSet<Room>();
     private MapGUI mapGUI;
     private Room currentRoom;
     private MapJigsawGenerator mjg;
@@ -68,11 +69,20 @@ public class Map {
             visitedRoomArray.addAll(roomArray);
         }*/
         //visitedRoomArray.add(currentRoom);
-        visitedRoomArray.addAll(roomArray);
+        addAdjacentRoomsToVisitedRooms(currentRoom);
+        //visitedRoomArray.addAll(roomArray);
 
         mapGUI = new MapGUI(0,0,visitedRoomArray, currentRoom);
+    }
 
-
+    public void addAdjacentRoomsToVisitedRooms(Room currentRoom){
+        visitedRoomArray.add(currentRoom);
+        for(RoomExit re : currentRoom.getRoomExits()){
+            Room r = findRoom(re.getLeaveCoords());
+            if(r != null){
+                visitedRoomArray.add(r);
+            }
+        }
     }
 
 
@@ -88,9 +98,8 @@ public class Map {
             currentRoom = findRoom(currentExit.getLeaveCoords());
             currentRoom.enterRoom(w, currentExit.getRoomCoords(), currentExit.getLeaveCoords());
 
-            if(!visitedRoomArray.contains(currentRoom, true)){
-                visitedRoomArray.add(currentRoom);
-            }
+            addAdjacentRoomsToVisitedRooms(currentRoom);
+            //visitedRoomArray.add(currentRoom);
 
             System.out.println("VISITED ROOM SIZE IS :" + visitedRoomArray.size);
         }

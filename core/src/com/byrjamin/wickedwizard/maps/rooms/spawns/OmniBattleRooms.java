@@ -107,12 +107,12 @@ public class OmniBattleRooms {
 
     public static Waves[] spawnWave = new Waves[] {
             new Waves() { public void spawnWave(Room room) { blob(room); } },
-            new Waves() { public void spawnWave(Room room) { blob2(room); } },
+            //new Waves() { public void spawnWave(Room room) { blob2(room); } },
             new Waves() { public void spawnWave(Room room) { threeblobs(room); } },
             new Waves() { public void spawnWave(Room room) { blob3(room); } },
             new Waves() { public void spawnWave(Room room) { silverhead(room); } },
             new Waves() { public void spawnWave(Room room) { add2EnemyWave(room);} },
-            new Waves() { public void spawnWave(Room room) { bouncer(room);} },
+            //new Waves() { public void spawnWave(Room room) { bouncer(room);} },
             new Waves() { public void spawnWave(Room room) { bouncerTwo(room);} },
             new Waves() { public void spawnWave(Room room) { bouncerLarge(room);} },
             new Waves() { public void spawnWave(Room room) { groundTurret(room);} },
