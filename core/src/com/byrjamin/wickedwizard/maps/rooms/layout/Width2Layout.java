@@ -14,7 +14,7 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 /**
  * Created by Home on 07/02/2017.
  */
-public class Width2Layout {
+public class Width2Layout extends RoomLayout{
 
 
     public float SECTION_WIDTH = MainGame.GAME_WIDTH;
@@ -25,16 +25,13 @@ public class Width2Layout {
 
     public float WALLWIDTH = Measure.units(5);
 
-    private Array<? extends TextureRegion> backgroundTextures;
-    private Array<? extends TextureRegion> wallTextures;
-
-    private MapCoords defaultCoords = new MapCoords(0,0);
-
     public Width2Layout(){
+        super(ROOM_LAYOUT.WIDTH_2);
     }
 
 
     public void applyLayout(Room r){
+        super.applyLayout(r);
 
         MapCoords startCoords = r.getStartCoords();
         r.addCoords(new MapCoords(startCoords.getX() + 1, startCoords.getY()));
@@ -69,7 +66,7 @@ public class Width2Layout {
         r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
 
-        r.setRoomBackground(new RoomBackground(backgroundTextures, 0, 0 , WIDTH, HEIGHT, Measure.units(15)));
+        r.setRoomBackground(new RoomBackground(r.getX(), r.getY(), WIDTH, HEIGHT, Measure.units(15)));
 
         r.getRoomExits().addAll(r.getRoomDoors());
         r.getRoomExits().addAll(r.getRoomGrates());

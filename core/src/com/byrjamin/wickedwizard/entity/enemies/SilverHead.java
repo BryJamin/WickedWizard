@@ -7,24 +7,23 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.entity.ActiveBullets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
+import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 /**
  * Created by Home on 01/01/2017.
  */
-public class SilverHead extends Enemy {
-
-    private float HEIGHT = Measure.units(10);
-    private float WIDTH = Measure.units(10);
-
-    private float scale;
+public class SilverHead extends GroundedEnemy {
 
     private Animation standingAnimation;
     private Animation chargingAnimation;
@@ -32,14 +31,11 @@ public class SilverHead extends Enemy {
     private Animation openingAnimation;
     private Animation<TextureRegion> currentAnimation;
 
-    private Rectangle hitBox;
-
-
-    private GravMaster2000 g200 = new GravMaster2000();
-
     private StateTimer standingTime;
 
     private Array<BlastWave> blastWaveArray = new Array<BlastWave>();
+
+    //private ActiveBullets activeBullets = new ActiveBullets();
 
     private enum ACTION {
         STANDING, CHARGING, OPENING, CLOSING
@@ -47,49 +43,29 @@ public class SilverHead extends Enemy {
 
     private ACTION action = ACTION.STANDING;
 
-    public static class SilverHeadBuilder {
-
-        //Required Parameters
-        private final float posX;
-        private final float posY;
-
-        //Optional Parameters
-        private float health = 7;
-        private float scale = 1;
-
+    public static class SilverHeadBuilder extends GroundedEnemy.GBuilder {
         public SilverHeadBuilder(float posX, float posY) {
-            this.posX = posX;
-            this.posY = posY;
+            super(posX, posY);
+            health(7);
         }
 
-        public SilverHeadBuilder health(float val)
-        { health = val; return this; }
-
-        public SilverHeadBuilder scale(float val)
-        { scale = val; return this; }
-
+        @Override
         public SilverHead build() {
             return new SilverHead(this);
         }
-
-
     }
 
 
-    public SilverHead(SilverHeadBuilder silverHeadBuilder){
+    public SilverHead(SilverHeadBuilder b){
+        super(b);
+        HEIGHT = Measure.units(10);
+        WIDTH = Measure.units(10);
 
-        super();
-
-        this.setHealth(silverHeadBuilder.health);
-        scale = silverHeadBuilder.scale;
-
-        position = new Vector2(silverHeadBuilder.posX, silverHeadBuilder.posY);
-
-        hitBox = new Rectangle(position.x + (Measure.units(1.5f) * scale), position.y,
+        collisionBound = new Rectangle(position.x + (Measure.units(1.5f) * scale), position.y,
                 WIDTH - (Measure.units(3f) * scale),
                 HEIGHT - (Measure.units(2.5f) * scale));
 
-        bounds.add(hitBox);
+        bounds.add(collisionBound);
 
         standingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP);
         chargingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING);
@@ -97,35 +73,14 @@ public class SilverHead extends Enemy {
         openingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED);
         currentAnimation = standingAnimation;
         currentFrame = currentAnimation.getKeyFrame(time);
-
         this.setDyingAnimation(AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION));
-
         standingTime = new StateTimer(2f);
-
-
     }
 
     @Override
     public void update(float dt, Room r) {
         super.update(dt, r);
-
-        g200.update(dt, hitBox, r.getGroundBoundaries());
-        position.y = hitBox.y;
-
         time += dt;
-
-        for(BlastWave b : blastWaveArray){
-            b.update(dt);
-
-            if(b.collides(r.getWizard().getBounds())){
-                r.getWizard().reduceHealth(1);
-            }
-
-            if(b.outOfBounds(r)){
-                blastWaveArray.removeValue(b, true);
-            }
-
-        }
 
         if(getState() == STATE.ALIVE) {
             performAction(dt);
@@ -138,7 +93,6 @@ public class SilverHead extends Enemy {
         } else if(getState() == STATE.DYING){
             dyingUpdate(dt);
         }
-
     }
 
 
@@ -158,6 +112,13 @@ public class SilverHead extends Enemy {
             if(currentAnimation.isAnimationFinished(time)){
                 action = ACTION.OPENING;
                 changeAnimation(openingAnimation);
+
+                int[] angles = new int[] {0,30,60,80,100,120,150,180};
+
+                for(int i : angles){
+                    bullets.addProjectile(getSilverheadProjectile(i));
+                }
+
                 BlastWave b = new BlastWave(this.position.x + WIDTH / 2, this.position.y + HEIGHT / 2);
                 b.setSpeed(0.25f);
                 blastWaveArray.add(b);
@@ -182,15 +143,28 @@ public class SilverHead extends Enemy {
     }
 
 
+    public Projectile getSilverheadProjectile(double angle){
+        return new Projectile.ProjectileBuilder(position.x + WIDTH / 2 , position.y + HEIGHT / 2, angle)
+                .damage(1)
+                .drawingColor(Color.RED)
+                .speed(Measure.units(75f))
+                .scale(0.7f)
+                .gravity(true)
+                .build();
+    }
+
+
+
     public void changeAnimation(Animation a){
         currentAnimation = a;
         time = 0;
     }
 
     public void draw(SpriteBatch batch){
-        if(isFlashing) {
 
-            //System.out.println("Should be flashing");
+        bullets.draw(batch);
+
+        if(isFlashing) {
 
             Color color = batch.getColor();
             batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
@@ -200,11 +174,9 @@ public class SilverHead extends Enemy {
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
 
-        for(BlastWave b : blastWaveArray){
-            b.draw(batch);
-        }
+        System.out.println(bullets.getBullets().size);
 
-        BoundsDrawer.drawBounds(batch, hitBox);
+        BoundsDrawer.drawBounds(batch, bounds);
     }
 
 

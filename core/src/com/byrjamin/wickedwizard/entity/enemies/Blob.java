@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -17,109 +15,44 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 /**
  * Basic starter enemy, used for testing purposes.
  */
-public class Blob extends Enemy {
+public class Blob extends GroundedEnemy {
 
-    private Animation<TextureRegion> walk;
-    private Animation<TextureRegion> attack;
+    private Animation<TextureRegion> walk
+    = AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP);
     private Animation<TextureRegion> currentAnimation;
 
     private TextureRegion currentFrame;
 
-    private GravMaster2000 g2000 = new GravMaster2000();
-
-    private Rectangle hitBoz;
+    private Vector2 velocity = new Vector2();
 
     //Optional Parameters
     private float MOVEMENT;
-    private float HEIGHT;
-    private float scale;
-    private float speed;
-    private float WIDTH;
+    private float HEIGHT = Measure.units(10);
+    private float WIDTH = Measure.units(10);
 
-    private enum movement {
-        WALKING, ATTACKING
-    }
-
-    private movement blob;
-
-
-    public static class BlobBuilder{
-
-        //Required Parameters
-        private final float posX;
-        private final float posY;
-
-        //Optional Parameters
-        private float health = 4;
-        private float MOVEMENT = MainGame.GAME_UNITS * 15;
-        private float HEIGHT = Measure.units(10);
-        private float WIDTH = Measure.units(10);
-        private float scale = 1;
-        private float speed = 1;
-
-
+    public static class BlobBuilder extends GBuilder{
         public BlobBuilder(float posX, float posY) {
-            this.posX = posX;
-            this.posY = posY;
+            super(posX, posY);
         }
 
-        public BlobBuilder health(float val)
-        { health = val; return this; }
-
-        public BlobBuilder HEIGHT(float val)
-        { HEIGHT = val; return this; }
-
-        public BlobBuilder WIDTH(float val)
-        { WIDTH = val; return this; }
-
-        public BlobBuilder scale(float val)
-        { scale = val; return this; }
-
-        public BlobBuilder speed(float val)
-        { speed = val; return this; }
-
-        public BlobBuilder MOVEMENT(float val)
-        { MOVEMENT = val; return this; }
-
+        @Override
         public Blob build() {
             return new Blob(this);
         }
-
-
     }
 
-
-
-
-
     public Blob(BlobBuilder b) {
-        super();
-
-        MOVEMENT = b.MOVEMENT;
-        scale = b.scale;
-        speed = b.speed;
-
-        HEIGHT = b.HEIGHT * scale;
-        WIDTH = b.WIDTH * scale;
-
-        position = new Vector2(b.posX, b.posY);
-        hitBoz = new Rectangle(b.posX + (Measure.units(1) * scale), b.posY,
+        super(b);
+        MOVEMENT = Measure.units(15) * speed;
+        HEIGHT *= scale;
+        WIDTH *= scale;
+        collisionBound = new Rectangle(position.x + (Measure.units(1) * scale), position.y,
                 WIDTH - (Measure.units(2.5f) * scale),
                 HEIGHT - (Measure.units(2.5f) * scale));
-
-        bounds.add(hitBoz);
-
-        this.setHealth(b.health);
-        this.setBlob_state(movement.WALKING);
-
-        walk = AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP);
-        attack = AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_ATTACKING);
+        bounds.add(collisionBound);
         this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.BLOB_DYING));
-
         currentAnimation = walk;
         currentFrame = currentAnimation.getKeyFrame(time);
-
-        //this.setDyingAnimation();
     }
 
     @Override
@@ -133,59 +66,20 @@ public class Blob extends Enemy {
         currentFrame = currentAnimation.getKeyFrame(time);
     }
 
-
-    //TODO The way this blob attacks is slightly incorrect, just in the animation is finished no matter
-    //TODO where the wizard is it takes damage.
-    //TODO what should happen is that it attack an area infront of it, which I guess can count as a projectile
     public void aliveUpdate(float dt,  Room room){
-
-
-        //depending on the wizard is flip left or right.
-
-        //TODO this is terrible please fix once you introduced moving wizard
-
-
         time += dt;
-
-        //Changing state of blob to walking or attacking
-        if(this.getBlob_state() == movement.WALKING ){
-
-            int direction = room.getWizard().getX() > position.x ? -1 : 1;
-            position.x = position.x - MOVEMENT * dt * direction * speed;
-            hitBoz.x = hitBoz.x  - MOVEMENT * dt * direction * speed;
-
-            if(hitBoz.overlaps(room.getWizard().getBounds())) {
-                currentAnimation = attack;
-                time = 0;
-                this.setBlob_state(movement.ATTACKING);
-            }
+        if(!collisionBound.overlaps(room.getWizard().getBounds())) {
+            velocity.x = room.getWizard().getCenterX() > position.x ? MOVEMENT * dt : -MOVEMENT * dt;
         } else {
-
-            if(!hitBoz.overlaps(room.getWizard().getBounds())) {
-                if(currentAnimation != walk) {
-                    currentAnimation = walk;
-                    time = 0;
-                }
-                this.setBlob_state(movement.WALKING);
-            }
-
-            if(currentAnimation.isAnimationFinished(time)){
-                room.getWizard().reduceHealth(2);
-                time = 0;
-            }
+            velocity.x = 0;
         }
-
-        //Applying Gravity;
-        applyGravity(dt, room);
-
-
+        position.add(velocity.x, 0);
+        collisionBound.x = collisionBound.x + velocity.x;
     }
 
     public void dyingUpdate(float dt){
         time+=dt;
-
         currentAnimation = this.getDyingAnimation();
-
         if(this.getDyingAnimation().isAnimationFinished(time)){
             this.setState(STATE.DEAD);
         }
@@ -201,36 +95,7 @@ public class Blob extends Enemy {
         } else {
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
-        BoundsDrawer.drawBounds(batch, hitBoz);
+        BoundsDrawer.drawBounds(batch, collisionBound);
     }
-
-    public void applyGravity(float dt, Room room){
-
-        g2000.update(dt, hitBoz, room.getGroundBoundaries());
-        position.y = hitBoz.y;
-
-    }
-
-    public void multX(){
-        MOVEMENT = MOVEMENT * -1;
-    }
-
-
-    public void startAttackAnimation(){
-        if(currentAnimation != attack) {
-            currentAnimation = attack;
-        }
-    }
-
-    public movement getBlob_state() {
-        return blob;
-    }
-
-    public void setBlob_state(movement blob_state) {
-        this.blob = blob_state;
-    }
-
-
-
 
 }

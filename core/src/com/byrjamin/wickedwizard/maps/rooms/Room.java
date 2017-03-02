@@ -2,10 +2,8 @@ package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -20,9 +18,9 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomPlatform;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
+import com.byrjamin.wickedwizard.maps.rooms.layout.RoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyUpdater;
-import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyWaves;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.OmniBattleRooms;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 
@@ -37,16 +35,12 @@ public abstract class Room {
     public float SECTION_WIDTH = MainGame.GAME_WIDTH;
     public float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
 
-
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
 
-    public float TILE_SIZE = MainGame.GAME_WIDTH / 10;
-
     private float WALLWIDTH = Measure.units(5);
 
-    private float tile_height;
-    private float tile_width;
+    private RoomLayout.ROOM_LAYOUT layout;
 
     private float x = 0;
     private float y = 0;
@@ -54,10 +48,7 @@ public abstract class Room {
     private boolean transition;
 
     private Array<MapCoords> mapCoordsArray = new Array<MapCoords>();
-
     private MapCoords startCoords;
-    private MapCoords wizardLocCoords;
-
     private RoomExit currentExit;
 
     protected Array<Item> items = new Array<Item>();
@@ -70,10 +61,7 @@ public abstract class Room {
 
     private RoomEnemyUpdater roomEnemyUpdater = new RoomEnemyUpdater();
     protected Wizard wizard = new Wizard(WALLWIDTH * 2, 600);
-    private Array<Rectangle> groundBoundaries = new Array<Rectangle>();
     private Array<RoomPlatform> platforms = new Array<RoomPlatform>();
-
-    private RoomEnemyWaves roomEnemyWaves;
 
     public enum STATE {
        ENTRY, LOCKED, UNLOCKED, EXIT
@@ -85,13 +73,22 @@ public abstract class Room {
     public Room(MapCoords startCoords){
         mapCoordsArray.add(startCoords);
         this.startCoords = startCoords;
-        this.wizardLocCoords = startCoords;
-        roomEnemyWaves = new RoomEnemyWaves(this);
     }
 
     public void update(float dt, OrthographicCamera gamecam){
         wizard.update(dt, gamecam, this);
         roomEnemyUpdater.update(dt, this);
+
+
+        for(Enemy e : getEnemies()){
+            for(RoomWall rw : roomWalls) {
+                e.applyCollision(Collider.collision(e.getCollisionBound(), e.getCollisionBound(), rw.getBounds()));
+            }
+
+            for(RoomDoor rd : roomDoors) {
+                e.applyCollision(Collider.collision(e.getCollisionBound(), e.getCollisionBound(), rd.getBounds()));
+            }
+        }
 
         for(Item item : items){
             if(wizard.getBounds().overlaps(item.getBoundingRectangle())){
@@ -107,19 +104,13 @@ public abstract class Room {
 
 
         if(state == STATE.UNLOCKED && !transition) {
-            for (RoomDoor r : roomDoors) {
-                if (r.hasEntered(wizard.getBounds())) {
+            for (RoomExit re : roomExits) {
+                if (re.hasEntered(wizard.getBounds())) {
                     transition = true;
-                    currentExit = r;
-                    break;
-                }
-            }
-
-            for (RoomGrate r : roomGrates) {
-                if (r.hasEntered(wizard.getBounds())) {
-                    transition = true;
-                    currentExit = r;
-                    r.setActive(false);
+                    currentExit = re;
+                    if(re instanceof RoomGrate) {
+                        ((RoomGrate) re).setActive(false);
+                    }
                     break;
                 }
             }
@@ -145,18 +136,16 @@ public abstract class Room {
     public void draw(SpriteBatch batch){
 
         roomBackground.draw(batch);
-        for(RoomGrate rt: roomGrates){
-            rt.draw(batch);
+
+        for(RoomExit re : roomExits) {
+            re.draw(batch);
         }
+
         roomEnemyUpdater.draw(batch);
 
         for(Item item : items) {
             item.draw(batch);
             BoundsDrawer.drawBounds(batch, item.getBoundingRectangle());
-        }
-
-        for(RoomDoor r : roomDoors){
-            r.draw(batch);
         }
 
         for(RoomWall r : roomWalls){
@@ -178,6 +167,7 @@ public abstract class Room {
         this.wizard = w;
         wizard.setCurrentState(Wizard.STATE.IDLE);
         wizard.cancelMovementHorizontalSpeed();
+        wizard.getActiveBullets().getBullets().clear();
         transition = false;
 
         for(RoomDoor r : roomDoors){
@@ -194,9 +184,6 @@ public abstract class Room {
             }
         }
 
-        for(MapCoords r : mapCoordsArray){
-            System.out.println(r);
-        }
         for(RoomGrate r : roomGrates){
             if(r.getLeaveCoords().equals(oldRoomCoords)){
                 wizard.setCenterX(r.getCenterX());
@@ -239,6 +226,7 @@ public abstract class Room {
     public void wallCollisionCheck(Wizard w, Rectangle wallBound , float dt){
         WizardCollider.collisionCheck(w, wallBound, dt);
     }
+
     public void lock() {
         state = STATE.LOCKED;
         for(RoomDoor r : roomDoors){
@@ -268,23 +256,13 @@ public abstract class Room {
     }
 
     public boolean containsCoords(MapCoords mc){
-        for(MapCoords m : mapCoordsArray){
-            if(m.equals(mc)){
-                return true;
-            }
-        }
-        return false;
+        return mapCoordsArray.contains(mc, false);
     }
 
 
     public boolean containsExitWithCoords(MapCoords EntryCoords, MapCoords LeaveCoords){
-        for(RoomDoor re : roomDoors){
-            if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
-                return true;
-            }
-        }
 
-        for(RoomGrate re : roomGrates){
+        for(RoomExit re : roomExits) {
             if(re.getRoomCoords().equals(LeaveCoords) && re.getLeaveCoords().equals(EntryCoords)){
                 return true;
             }
@@ -295,8 +273,8 @@ public abstract class Room {
 
     public void shiftCoordinatePosition(MapCoords newPosition){
 
-        int diffX = startCoords.getX() + newPosition.getX();
-        int diffY = startCoords.getY() + newPosition.getY();
+        int diffX = newPosition.getX() - startCoords.getX();
+        int diffY = newPosition.getY() - startCoords.getY();
 
 
         for(MapCoords m : mapCoordsArray) {
@@ -363,10 +341,6 @@ public abstract class Room {
         return roomExits;
     }
 
-    public Array<Rectangle> getGroundBoundaries() {
-        return groundBoundaries;
-    }
-
     public Array<RoomPlatform> getPlatforms() {
         return platforms;
     }
@@ -379,12 +353,31 @@ public abstract class Room {
         return roomEnemyUpdater.getSpawnedEnemies();
     }
 
+    public void addSpawningEnemy(Enemy e){
+        roomEnemyUpdater.addSpawningEnemy(e);
+    }
+
+    public void addEnemyWave(Array<Enemy> e){
+        roomEnemyUpdater.addWave(e);
+    }
+
     public RoomEnemyUpdater getRoomEnemyUpdater() {
         return roomEnemyUpdater;
     }
 
     public Wizard getWizard() {
         return wizard;
+    }
+
+    public Boolean isWizardonGround() {
+
+        for(RoomWall rw : roomWalls){
+            if(Collider.isOnTop(wizard.getBounds(), rw.getBounds())){
+                return true;
+            }
+        }
+        return false;
+
     }
 
     public void setWizard(Wizard wizard) {
@@ -431,9 +424,6 @@ public abstract class Room {
         mapCoordsArray.add(e);
     }
 
-
-
-
     public Array<MapCoords> getMapCoordsArray() {
         return mapCoordsArray;
     }
@@ -455,6 +445,18 @@ public abstract class Room {
         roomBackground = e;
     }
 
+    public RoomBackground getRoomBackground() {
+        return roomBackground;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
     public MapCoords getStartCoords() {
         return startCoords;
     }
@@ -465,5 +467,14 @@ public abstract class Room {
 
     public Array<GrapplePoint> getGrapplePoints() {
         return grapplePoints;
+    }
+
+
+    public RoomLayout.ROOM_LAYOUT getLayout() {
+        return layout;
+    }
+
+    public void setLayout(RoomLayout.ROOM_LAYOUT layout) {
+        this.layout = layout;
     }
 }

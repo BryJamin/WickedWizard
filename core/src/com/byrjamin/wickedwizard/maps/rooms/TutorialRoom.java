@@ -255,7 +255,7 @@ public class TutorialRoom extends Room {
                     dialogue = DIALOGUETREE.GRAPPLING;
                     arrayPosition = 0;
                     timer.setCountDown(3.0f);
-                    timer.setStartTime(3.0f);
+                    timer.setDefaultTime(3.0f);
                     //timer.reset();
                 }
             }
@@ -307,6 +307,9 @@ public class TutorialRoom extends Room {
 
         //System.out.println(alphaPercentage);
         batch.end();
+
+        //TODO figure out the bug where this apparnetly is a null pointer if you remove the shaperenderer.
+        shapeRenderer = new ShapeRenderer();
 
         switch(tutorial_state){
             case GROUND:

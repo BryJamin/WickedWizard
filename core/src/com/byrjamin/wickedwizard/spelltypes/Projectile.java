@@ -31,7 +31,7 @@ public class Projectile {
 
     STATE state;
 
-    private double projectAngle;
+    private double angleOfTravel;
     private float xDistance;
     private float yDistance;
 
@@ -40,6 +40,7 @@ public class Projectile {
     private Color drawingColor = Color.WHITE;
 
     Vector2 position;
+    Vector2 velocity;
 
     private Animation<TextureRegion> explosion_animation;
     float time = 0;
@@ -51,8 +52,6 @@ public class Projectile {
     //Required Parameters
     private final float x1;
     private final float y1;
-    private final float x2;
-    private final float y2;
 
     private float WIDTH = Measure.units(2);
     private float HEIGHT = Measure.units(2);
@@ -60,27 +59,33 @@ public class Projectile {
     //Optional Parameters
     private float damage;
     private Rectangle hitBox;
+    private boolean gravity;
 
     public static class ProjectileBuilder {
 
         //Required Parameters
         private final float x1;
         private final float y1;
-        private final float x2;
-        private final float y2;
+        private final double angleOfTravel;
 
         //Optional Parameters
         private float damage = 0;
         private float speed = Measure.units(50f);
         private Color drawingColor;
         private float scale = 1;
+        private boolean gravity;
 
 
         public ProjectileBuilder(float x1, float y1, float x2, float y2) {
             this.x1 = x1;
             this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
+            angleOfTravel = (Math.atan2(y2 - y1, x2 - x1));
+        }
+
+        public ProjectileBuilder(float x1, float y1, double angleOfTravelInDegress) {
+            this.x1 = x1;
+            this.y1 = y1;
+            angleOfTravel = Math.toRadians(angleOfTravelInDegress);
         }
 
         public ProjectileBuilder damage(float val) {
@@ -103,6 +108,11 @@ public class Projectile {
             return this;
         }
 
+        public ProjectileBuilder gravity(boolean val) {
+            gravity = val;
+            return this;
+        }
+
         public Projectile build() {
             return new Projectile(this);
         }
@@ -117,25 +127,20 @@ public class Projectile {
         HEIGHT = HEIGHT * scale;
 
         x1 = builder.x1 - (WIDTH / 2);
-        x2 = builder.x2 - (WIDTH / 2);
         y1 = builder.y1 - (HEIGHT / 2);
-        y2 = builder.y2 - (HEIGHT / 2);
         damage = builder.damage;
         speed = builder.speed;
         drawingColor = builder.drawingColor;
+        angleOfTravel = builder.angleOfTravel;
         //TODO fix this crap
         position = new Vector2(x1, y1);
+        velocity = new Vector2((float) (speed * Math.cos(angleOfTravel)), (float) (speed * Math.sin(angleOfTravel)));
         hitBox = new Rectangle(x1, y1, WIDTH, HEIGHT);
-        calculateAngle(x1, y1, x2, y2);
+        gravity = builder.gravity;
+
         //sprite.rotate((float) Math.toDegrees(projectAngle));
         state = STATE.ALIVE;
         explosion_animation = AnimationPacker.genAnimation(0.02f / 1f, TextureStrings.EXPLOSION);
-    }
-
-    public void calculateAngle(float x1, float y1, float x2, float y2) {
-        projectAngle = (Math.atan2(y2 - y1, x2 - x1));
-        xDistance = (float) (speed * Math.cos(projectAngle));
-        yDistance = (float) (speed * Math.sin(projectAngle));
     }
 
     public void update(float dt) {
@@ -153,8 +158,12 @@ public class Projectile {
     }
 
     public void travelUpdate(float dt) {
-        position.x += xDistance * dt;
-        position.y += yDistance * dt;
+
+        if(gravity) {
+            velocity.add(0, -Measure.units(1.5f));
+        }
+
+        position.add(velocity.x * dt, velocity.y * dt);
         hitBox.y = position.y;
         hitBox.x = position.x;
     }

@@ -11,7 +11,7 @@ public class EnemyPresets {
         return new com.byrjamin.wickedwizard.entity.enemies.Blob.BlobBuilder(posX, posY).build();
     }
 
-    public static com.byrjamin.wickedwizard.entity.enemies.Blob largeBlob(float posX, float posY){
+    public static Enemy largeBlob(float posX, float posY){
         return new com.byrjamin.wickedwizard.entity.enemies.Blob.BlobBuilder(posX, posY)
                 .health(10)
                 .speed(0.5f)
@@ -19,7 +19,7 @@ public class EnemyPresets {
                 .build();
     }
 
-    public static com.byrjamin.wickedwizard.entity.enemies.Blob smallBlob(float posX, float posY){
+    public static Enemy smallBlob(float posX, float posY){
         return new com.byrjamin.wickedwizard.entity.enemies.Blob.BlobBuilder(posX, posY)
                 .health(1)
                 .speed(3.0f)
@@ -34,9 +34,7 @@ public class EnemyPresets {
 
 
     public static com.byrjamin.wickedwizard.entity.enemies.Turret alternarteShotsTurret(float posX, float posY){
-        return new com.byrjamin.wickedwizard.entity.enemies.Turret.TurretBuilder(posX, posY)
-                .dispellSequence(new Dispellable.DISPELL[]{Dispellable.DISPELL.VERTICAL, Dispellable.DISPELL.HORIZONTAL})
-                .build();
+        return new com.byrjamin.wickedwizard.entity.enemies.Turret.TurretBuilder(posX, posY).build();
     }
 
 

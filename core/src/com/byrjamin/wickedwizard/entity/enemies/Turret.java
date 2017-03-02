@@ -47,15 +47,11 @@ public class Turret extends Enemy {
 
     private Projectile projectile;
 
-    private Rectangle hitBox;
-
-    private Array<Dispellable.DISPELL> dispellSequence;
-
     private final float shotspeed;
 
     private float scale = 1;
 
-    public static class TurretBuilder {
+/*    public static class TurretBuilder {
 
         //Required Parameters
         private final float posX;
@@ -95,51 +91,64 @@ public class Turret extends Enemy {
         public TurretBuilder reloadSpeed(float val)
         { reloadSpeed = val; return this; }
 
-        public TurretBuilder dispellSequence(Dispellable.DISPELL val)
-        { dispellSequence.add(val); return this; }
-
-        public TurretBuilder dispellSequence(Dispellable.DISPELL[] val)
-        { dispellSequence.addAll(val); return this; }
-
-
         public Turret build() {
             return new Turret(this);
         }
 
 
+    }*/
+
+
+    public static class TurretBuilder extends GroundedEnemy.GBuilder {
+
+        //Optional Parameters
+        private float scale = 1;
+        private float speed = 1;
+        private float shotSpeed = 1;
+        private float initialFiringDelay = 3.0f;
+        private float reloadSpeed = 1f;
+
+
+        public TurretBuilder(float posX, float posY) {
+            super(posX, posY);
+            health(7);
+        }
+
+        public TurretBuilder shotSpeed(float val)
+        { shotSpeed = val; return this; }
+
+        public TurretBuilder initialFiringDelay(float val)
+        { initialFiringDelay = val; return this; }
+
+        public TurretBuilder reloadSpeed(float val)
+        { reloadSpeed = val; return this; }
+
+        @Override
+        public Turret build() {
+            return new Turret(this);
+        }
     }
 
-    public Turret(TurretBuilder builder){
-        super();
-        this.setHealth(builder.health);
 
 
+
+
+    public Turret(TurretBuilder b){
+        super(b);
         currentFrame = PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING);
-
         WIDTH = SQUARE_SIZE;
         HEIGHT = SQUARE_SIZE;
-        position = new Vector2(builder.posX, builder.posY);
+        MOVEMENT = MOVEMENT * speed;
+        DEFAULT_SHOT_SPEED = DEFAULT_SHOT_SPEED * b.shotSpeed;
+        reloader = new Reloader(b.reloadSpeed, b.initialFiringDelay);
+        collisionBound  = new Rectangle(position.x + (Measure.units(1) * scale), position.y,
+                WIDTH - (Measure.units(2.5f) * scale),
+                HEIGHT - (Measure.units(2.5f) * scale));
 
-        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.BLOB_DYING));
-        MOVEMENT = MOVEMENT * builder.speed;
-        DEFAULT_SHOT_SPEED = DEFAULT_SHOT_SPEED * builder.shotSpeed;
-        reloader = new Reloader(builder.reloadSpeed, builder.initialFiringDelay);
-
-        hitBox  = new Rectangle(builder.posX + (Measure.units(1) * builder.scale), builder.posY,
-                WIDTH - (Measure.units(2.5f) * builder.scale),
-                HEIGHT - (Measure.units(2.5f) * builder.scale));
-
-        bounds.add(hitBox);
-
+        bounds.add(collisionBound);
         velocity = new Vector2(MOVEMENT, 0);
-
-        if(builder.dispellSequence.size == 0) {
-            dispellSequence = new Array<Dispellable.DISPELL>();
-            dispellSequence.add(Dispellable.DISPELL.HORIZONTAL);
-        } else {
-            dispellSequence = builder.dispellSequence;
-        }
-        shotspeed = builder.shotSpeed;
+        shotspeed = b.shotSpeed;
+        this.setDyingAnimation(AnimationPacker.genAnimation(0.05f / 1f, TextureStrings.BLOB_DYING));
     }
 
     @Override
@@ -157,26 +166,19 @@ public class Turret extends Enemy {
 
 
     public void updateMovement(float dt, Room r){
-
-        Collider.Collision collision;
-
-        for(RoomWall rw : r.getRoomWalls()) {
-            collision = Collider.collision(hitBox, hitBox, rw.getBounds());
-            if(collision != Collider.Collision.NONE){
-                if(collision == Collider.Collision.LEFT){
-                    velocity.x = -MOVEMENT;
-                    break;
-                } else if(collision == Collider.Collision.RIGHT){
-                    velocity.x = MOVEMENT;
-                    break;
-                }
-            }
-        }
-
         position.add(velocity.x * dt, 0);
+        collisionBound.x = position.x + (Measure.units(1) * scale);
+        collisionBound.y = position.y;
+    }
 
-        hitBox.x = position.x + (Measure.units(1) * scale);
-        hitBox.y = position.y;
+    @Override
+    public void applyCollision(Collider.Collision collision) {
+        switch(collision) {
+            case LEFT: velocity.x = -MOVEMENT;
+                break;
+            case RIGHT: velocity.x = MOVEMENT;
+                break;
+        }
     }
 
 
@@ -199,23 +201,15 @@ public class Turret extends Enemy {
                     .speed(Measure.units(60f))
                     .drawingColor(Color.CYAN)
                     .build());
-
-            dispellSequence.add(dispellSequence.get(0));
-            dispellSequence.removeIndex(0);
-
         }
     }
 
     @Override
     public void draw(SpriteBatch batch){
-
         super.draw(batch);
-
         //BoundsDrawer.drawBounds(batch, hitBox);
-
-
-
-
     }
+
+
 
 }

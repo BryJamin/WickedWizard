@@ -54,6 +54,11 @@ public class RoomGrate extends RoomExit{
         return unlocked && r.overlaps(bounds) && active;
     }
 
+    @Override
+    public void update(float dt) {
+
+    }
+
     public float getCenterX(){
         return bounds.x + bounds.getWidth() /2;
     }

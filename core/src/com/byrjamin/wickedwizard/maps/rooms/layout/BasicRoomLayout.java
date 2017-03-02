@@ -15,7 +15,7 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 /**
  * Created by Home on 05/02/2017.
  */
-public class BasicRoomLayout {
+public class BasicRoomLayout extends RoomLayout{
 
     public float SECTION_WIDTH = MainGame.GAME_WIDTH;
     public float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
@@ -27,15 +27,14 @@ public class BasicRoomLayout {
 
     private MapCoords defaultCoords = new MapCoords(0,0);
 
-    public BasicRoomLayout(MapCoords defaultCoords, Array<? extends TextureRegion> backgroundTextures, Array<? extends TextureRegion> wallTextures){
-        this.defaultCoords = defaultCoords;
-    }
 
-    public BasicRoomLayout(){
+    public BasicRoomLayout() {
+        super(ROOM_LAYOUT.OMNI);
     }
 
 
     public void applyLayout(Room r){
+        super.applyLayout(r);
 
         MapCoords defaultCoords = r.getStartCoords();
 
@@ -80,9 +79,7 @@ public class BasicRoomLayout {
         r.add(new RoomWall(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH, WALLWIDTH));
         r.add(new RoomWall(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3, WALLWIDTH));
 
-        for(RoomWall rw : r.getRoomWalls()){
-            r.getGroundBoundaries().add(rw.getBounds());
-        }
+        r.setRoomBackground(new RoomBackground(r.getX(), r.getY(), WIDTH, HEIGHT, Measure.units(15)));
 
         r.getRoomExits().addAll(r.getRoomDoors());
         r.getRoomExits().addAll(r.getRoomGrates());

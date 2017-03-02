@@ -11,7 +11,9 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.entity.enemies.Enemy;
 import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
+import com.byrjamin.wickedwizard.entity.enemies.GroundedEnemy;
 import com.byrjamin.wickedwizard.helper.GravMaster2000;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
@@ -24,7 +26,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 /**
  * Created by Home on 16/12/2016.
  */
-public class BiggaBlobba extends Enemy {
+public class BiggaBlobba extends GroundedEnemy {
 
 
     private final Rectangle lowerBody;
@@ -45,16 +47,6 @@ public class BiggaBlobba extends Enemy {
 
     private float MOVEMENT = MainGame.GAME_UNITS * 5;
 
-    private boolean isFalling = true;
-    private boolean test = true;
-
-    private float lowerbodyHeight;
-
-
-    private GravMaster2000 g2000 = new GravMaster2000();
-
-    private Vector2 velocity;
-
     private Animation<TextureRegion> walk;
 
     private Animation<TextureRegion> currentAnimation;
@@ -67,6 +59,8 @@ public class BiggaBlobba extends Enemy {
 
 
     PHASE phase;
+
+    private boolean isJumping = true;
 
     //Phase 1
     private Reloader littleSlimer;
@@ -115,6 +109,8 @@ public class BiggaBlobba extends Enemy {
                 Measure.units(9),
                 Measure.units(9));
 
+        collisionBound = new Rectangle(lowerBody.x, lowerBody.y, lowerBody.width, Measure.units(38));
+
 
         bounds.add(lowerBody);
         bounds.add(upperBody);
@@ -145,6 +141,7 @@ public class BiggaBlobba extends Enemy {
             batch.draw(currentFrame, position.x, position.y, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
         BoundsDrawer.drawBounds(batch, bounds);
+        BoundsDrawer.drawBounds(batch, collisionBound);
     }
 
 
@@ -159,7 +156,7 @@ public class BiggaBlobba extends Enemy {
         littleSlimer.update(dt);
 
         if(littleSlimer.isReady()){
-            a.getEnemies().add(EnemyPresets.smallBlob(a.WIDTH, 0));
+            a.getEnemies().add(EnemyPresets.smallBlob(lowerBody.x, lowerBody.y));
             slimeCount --;
         }
 
@@ -181,10 +178,11 @@ public class BiggaBlobba extends Enemy {
         if(jumper.isReady()){
             jump();
             jumpCount --;
-            isLanded = false;
-        } else if(isLanded){
+            //isLanded = false;
+        } else {
 
             if(launcher.isReady()){
+                System.out.println("SHOULD BE FRING SOMETHING");
                 bullets.addProjectile(new Projectile.ProjectileBuilder(
                         this.position.x + Measure.units(25) ,
                         this.position.y + Measure.units(30),
@@ -195,17 +193,7 @@ public class BiggaBlobba extends Enemy {
                         .drawingColor(Color.RED)
                         .build());
             }
-
-
         }
-/*        System.out.println(position.y <= a.groundHeight());
-        System.out.println(position.y);
-        System.out.println(a.groundHeight());*/
-        if(position.y <= a.groundHeight()) {
-/*            System.out.println(position.y <= a.groundHeight());*/
-            isLanded = true;
-        }
-
     }
 
 
@@ -213,25 +201,14 @@ public class BiggaBlobba extends Enemy {
      * Bigga blobba bounces with a variances of 2 units.
      */
     public void jump(){
-        g2000.jump(25);
-    }
-
-    public void applyGravity(float dt, Room room){
-
-
-        g2000.update(dt, lowerBody, room.getGroundBoundaries());
-        position.y = lowerBody.y;
-
-        this.velocity.add(0, GRAVITY * dt);
-
+        velocity.y = 15;
+        isJumping = false;
     }
 
     @Override
     public void update(float dt, Room r) {
-
         super.update(dt, r);
         time += dt;
-        applyGravity(dt, r);
         boundsUpdate();
 
 
@@ -276,25 +253,16 @@ public class BiggaBlobba extends Enemy {
     }
 
     public void boundsUpdate(){
+        lowerBody.y = collisionBound.y;
+        float frameIndex = currentAnimation.getKeyFrameIndex(time);
+        if (frameIndex == 4) {
+            lowerBody.setHeight(Measure.units(17f - 2.0f));
+        } else {
+            lowerBody.setHeight(Measure.units(17f - (0.5f * frameIndex)));
+        }
 
-        //if(test) {
-
-            float frameIndex = currentAnimation.getKeyFrameIndex(time);
-
-
-            if (frameIndex == 4) {
-                lowerBody.setHeight(Measure.units(17f - 2.0f));
-            } else {
-                lowerBody.setHeight(Measure.units(17f - (0.5f * frameIndex)));
-            }
-
-            for (int i = 1; i < bounds.size; i++) {
-                bounds.get(i).setY(bounds.get(i - 1).getY() + bounds.get(i - 1).getHeight());
-            }
-
-        //}
-
+        for (int i = 1; i < bounds.size; i++) {
+            bounds.get(i).setY(bounds.get(i - 1).getY() + bounds.get(i - 1).getHeight());
+        }
     }
-
-
 }

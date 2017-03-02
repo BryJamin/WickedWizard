@@ -15,31 +15,23 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 /**
  * Created by Home on 07/02/2017.
  */
-public class Height2Layout {
-
-
-    public float SECTION_WIDTH = MainGame.GAME_WIDTH;
-    public float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
+public class Height2Layout extends RoomLayout{
 
     public float WIDTH = MainGame.GAME_WIDTH;
     public float HEIGHT = MainGame.GAME_HEIGHT;
 
     public float WALLWIDTH = Measure.units(5);
 
-    private Array<? extends TextureRegion> backgroundTextures;
-    private Array<? extends TextureRegion> wallTextures;
-
-    private MapCoords defaultCoords = new MapCoords(0,0);
-
     public Height2Layout(){
-
+        super(ROOM_LAYOUT.HEIGHT_2);
     }
 
 
     public void applyLayout(Room r){
+        super.applyLayout(r);
 
-        MapCoords startCoords = r.getStartCoords();
-        r.addCoords(new MapCoords(startCoords.getX(), startCoords.getY() + 1));
+        MapCoords sc = r.getStartCoords();
+        r.addCoords(new MapCoords(sc.getX(), sc.getY() + 1));
         r.HEIGHT = SECTION_HEIGHT * 2;
         r.WIDTH = SECTION_WIDTH;
 
@@ -53,14 +45,14 @@ public class Height2Layout {
         for(int i = 0; i < ys; i++){
 
             r.add(new RoomDoor(WIDTH - WALLWIDTH, Measure.units(10) + SECTION_HEIGHT * i,
-                    new MapCoords(startCoords.getX() + xs - 1, startCoords.getY() + i),
-                    new MapCoords(startCoords.getX() + xs, startCoords.getY() + i),
+                    new MapCoords(sc.getX() + xs - 1, sc.getY() + i),
+                    new MapCoords(sc.getX() + xs, sc.getY() + i),
                     RoomExit.EXIT_DIRECTION.RIGHT));
             r.add(new RoomWall(WIDTH - WALLWIDTH, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, WALLWIDTH));
 
             r.add(new RoomDoor(0, Measure.units(10) + SECTION_HEIGHT * i,
-                    new MapCoords(startCoords.getX(), startCoords.getY() + i),
-                    new MapCoords(startCoords.getX() - 1, startCoords.getY() + i),
+                    new MapCoords(sc.getX(), sc.getY() + i),
+                    new MapCoords(sc.getX() - 1, sc.getY() + i),
                     RoomExit.EXIT_DIRECTION.LEFT));
             r.add(new RoomWall(0, Measure.units(30) + SECTION_HEIGHT * i, WALLWIDTH, (SECTION_HEIGHT) - WALLWIDTH * 4, WALLWIDTH));
 
@@ -81,7 +73,7 @@ public class Height2Layout {
             }
         }
 
-        r.setRoomBackground(new RoomBackground(backgroundTextures, 0, 0 , WIDTH, HEIGHT, Measure.units(15)));
+        r.setRoomBackground(new RoomBackground(r.getX(), r.getY(), WIDTH, HEIGHT, Measure.units(15)));
 
         r.getRoomExits().addAll(r.getRoomDoors());
         r.getRoomExits().addAll(r.getRoomGrates());

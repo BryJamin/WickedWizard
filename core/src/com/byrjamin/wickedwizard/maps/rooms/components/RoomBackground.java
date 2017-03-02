@@ -31,7 +31,7 @@ public class RoomBackground {
     private int[] backgroundSelection;
 
 
-    public RoomBackground(Array<? extends TextureRegion> backgrounds, float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE){
+    public RoomBackground(float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE){
 
         this.backgrounds = backgrounds;
 
@@ -66,10 +66,9 @@ public class RoomBackground {
 
 
 
-    public void backgroundSetUp(){
-
+    public void backgroundSetUp(Array<? extends TextureRegion> backgrounds){
+        this.backgrounds = backgrounds;
         Random random = new Random();
-
         for(int i = 0; i < backgroundSelection.length; i++){
             if(i != 0) {
                 do {

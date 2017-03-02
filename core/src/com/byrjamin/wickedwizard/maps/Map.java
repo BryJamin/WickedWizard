@@ -1,30 +1,15 @@
 package com.byrjamin.wickedwizard.maps;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
-import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
-import com.byrjamin.wickedwizard.maps.rooms.BossRoom;
-import com.byrjamin.wickedwizard.maps.rooms.ItemRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.entity.player.Wizard;
-import com.byrjamin.wickedwizard.maps.rooms.TutorialRoom;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomBackground;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
-import com.byrjamin.wickedwizard.maps.rooms.layout.BasicRoomLayout;
-import com.byrjamin.wickedwizard.maps.rooms.layout.Height2Layout;
-import com.byrjamin.wickedwizard.maps.rooms.layout.LBlockLayout;
-import com.byrjamin.wickedwizard.maps.rooms.layout.Width2Layout;
+import com.byrjamin.wickedwizard.maps.rooms.spawns.OmniBattleRooms;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 import java.util.Random;
@@ -35,31 +20,46 @@ import java.util.Random;
 public class Map {
 
     private Array<Room> roomArray = new Array<Room>();
-    private Array<Room> visitedRoomArray = new Array<Room>();
+    private OrderedSet<Room> visitedRoomArray = new OrderedSet<Room>();
     private MapGUI mapGUI;
     private Room currentRoom;
     private MapJigsawGenerator mjg;
 
     private OrthographicCamera gamecam;
-
-    ShapeRenderer mapRenderer = new ShapeRenderer();
-
     public Map(){
 
         Random rand = new Random();
-        mjg = new MapJigsawGenerator(3, rand);
+        mjg = new MapJigsawGenerator(13, rand);
+
+        //TODO first generate the map
         roomArray = mjg.generateJigsaw();
         currentRoom = mjg.getStartingRoom();
 
+        //TODO use the layouts to add to the room
         for(Room room : roomArray) {
 
             for(RoomWall rw : room.getRoomWalls()) {
                 rw.wallSetUp(PlayScreen.atlas.findRegions("brick"));
             }
+            room.getRoomBackground().backgroundSetUp(PlayScreen.atlas.findRegions("backgrounds/wall"));
 
-            RoomBackground rbg = new RoomBackground(PlayScreen.atlas.findRegions("backgrounds/wall"), 0, 0 , room.WIDTH, room.HEIGHT, Measure.units(15));
-            rbg.backgroundSetUp();
-            room.setRoomBackground(rbg);
+            if(room instanceof BattleRoom) {
+                switch (room.getLayout()) {
+                    case OMNI:
+                        OmniBattleRooms.spawnWave[rand.nextInt(OmniBattleRooms.spawnWave.length)].spawnWave(room);
+                        //OmniBattleRooms.spawnWave[4].spawnWave(room);
+                        //OmniBattleRooms.bouncerLarge(room);
+                        //OmniBattleRooms.bouncer(room);
+                        //OmniBattleRooms.kugelDuscheTwoBullets(room);
+                        break;
+                    case HEIGHT_2:
+                        break;
+                    default:
+                        OmniBattleRooms.spawnWave[rand.nextInt(OmniBattleRooms.spawnWave.length)].spawnWave(room);
+                      //  rew.spawnWave[3].spawnWave(room);
+                        break;
+                }
+            }
         }
 
         Random random = new Random();
@@ -69,11 +69,20 @@ public class Map {
             visitedRoomArray.addAll(roomArray);
         }*/
         //visitedRoomArray.add(currentRoom);
-        visitedRoomArray.addAll(roomArray);
+        addAdjacentRoomsToVisitedRooms(currentRoom);
+        //visitedRoomArray.addAll(roomArray);
 
         mapGUI = new MapGUI(0,0,visitedRoomArray, currentRoom);
+    }
 
-
+    public void addAdjacentRoomsToVisitedRooms(Room currentRoom){
+        visitedRoomArray.add(currentRoom);
+        for(RoomExit re : currentRoom.getRoomExits()){
+            Room r = findRoom(re.getLeaveCoords());
+            if(r != null){
+                visitedRoomArray.add(r);
+            }
+        }
     }
 
 
@@ -89,9 +98,8 @@ public class Map {
             currentRoom = findRoom(currentExit.getLeaveCoords());
             currentRoom.enterRoom(w, currentExit.getRoomCoords(), currentExit.getLeaveCoords());
 
-            if(!visitedRoomArray.contains(currentRoom, true)){
-                visitedRoomArray.add(currentRoom);
-            }
+            addAdjacentRoomsToVisitedRooms(currentRoom);
+            //visitedRoomArray.add(currentRoom);
 
             System.out.println("VISITED ROOM SIZE IS :" + visitedRoomArray.size);
         }

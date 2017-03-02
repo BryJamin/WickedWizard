@@ -5,16 +5,16 @@ package com.byrjamin.wickedwizard.helper.timer;
  */
 public class StateTimer {
 
-    private float startTime;
+    private float defaultTime;
     private float countDown;
 
-    public StateTimer(float startTime){
-        this.startTime = startTime;
-        this.countDown = startTime;
+    public StateTimer(float timer){
+        this.defaultTime = timer;
+        this.countDown = timer;
     }
 
-    public StateTimer(float startTime, float countDown){
-        this.startTime = startTime;
+    public StateTimer(float defaultTime, float countDown){
+        this.defaultTime = defaultTime;
         this.countDown = countDown;
     }
 
@@ -30,14 +30,29 @@ public class StateTimer {
         return countDown <= 0;
     }
 
+    public boolean isFinishedAndReset(){
+        if(isFinished()){
+            reset();
+            return true;
+        }
+        return false;
+    }
+
     public void reset(){
-        countDown = startTime;
+        countDown = defaultTime;
     }
 
-    public void setStartTime(float startTime) {
-        this.startTime = startTime;
+    public void setDefaultTime(float defaultTime) {
+        this.defaultTime = defaultTime;
     }
 
+    public float getDefaultTime() {
+        return defaultTime;
+    }
+
+    public float getCountDown() {
+        return countDown;
+    }
 
     public void setCountDown(float countDown) {
         this.countDown = countDown;

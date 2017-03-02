@@ -228,8 +228,8 @@ public class MapJigsawGenerator {
         //TODO should be minRange from starting room's position inside of just guessing the room's position is 0;
         for(int i = avaliableMapCoordsArray.size - 1; i >= 0; i--) {
             RoomExit re = avaliableMapCoordsArray.get(i);
-            if(re.getLeaveCoords().getX() < minRange && re.getLeaveCoords().getY() < minRange &&
-                    re.getLeaveCoords().getX() > -minRange && re.getLeaveCoords().getY() > -minRange ) {
+            if(re.getLeaveCoords().getX() <= minRange && re.getLeaveCoords().getY() <= minRange &&
+                    re.getLeaveCoords().getX() >= -minRange && re.getLeaveCoords().getY() >= -minRange ) {
                 avaliableMapCoordsArray.removeValue(re, false);
             }
         }

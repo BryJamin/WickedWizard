@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 public class GravMaster2000 {
 
 
-    private float GRAVITY = -75;
+    public float GRAVITY = -1;
     private Vector2 gravity;
 
     public GravMaster2000(){
@@ -19,21 +19,10 @@ public class GravMaster2000 {
     }
 
 
-    public void update(float dt, Rectangle bounds,  Array<Rectangle> platforms){
+    public void update(float dt, Vector2 velocity){
         //boolean canAdd = false;
-
         this.gravity.add(0, GRAVITY * dt);
-        bounds.y = bounds.y + gravity.y;
-        for (Rectangle r : platforms){
-
-            if(bounds.overlaps(r)){
-                bounds.y = r.y + r.getHeight();
-                gravity.y = 0;
-                break;
-            }
-        }
-
-
+        velocity.add(gravity);
     }
 
     public float getGRAVITY() {
@@ -47,5 +36,9 @@ public class GravMaster2000 {
 
     public void jump(float distance){
         gravity.y = distance;
+    }
+
+    public void resetGravVelocity(){
+            gravity.y = 0;
     }
 }

@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.maps.rooms.components;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 
@@ -68,6 +69,14 @@ public abstract class RoomExit {
     public EXIT_DIRECTION getDirection() {
         return direction;
     }
+
+
+    public abstract void draw(SpriteBatch batch);
+    public abstract void update(float dt);
+
+    public abstract boolean hasEntered(Rectangle rectangle);
+
+
 
     @Override
     public boolean equals(Object o) {

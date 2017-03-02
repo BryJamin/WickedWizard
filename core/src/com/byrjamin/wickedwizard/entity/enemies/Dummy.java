@@ -19,7 +19,8 @@ public class Dummy extends Enemy{
         WIDTH = width;
         HEIGHT = height;
         health = 1;
-        bounds.add(new Rectangle(posX, posY, WIDTH, HEIGHT));
+        collisionBound = new Rectangle(posX, posY, WIDTH, HEIGHT);
+        bounds.add(collisionBound);
         this.currentFrame = currentFrame;
 
         this.setDyingAnimation(AnimationPacker.genAnimation(0.05f, TextureStrings.EXPLOSION));

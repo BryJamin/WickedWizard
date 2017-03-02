@@ -18,7 +18,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
  * Abstract class for enemies within the game
  * Most enemies will draw from this class.
  */
-public abstract class Enemy extends Entity{
+public class Enemy extends Entity{
 
     public enum STATE {
         DEAD, DYING, ALIVE
@@ -27,7 +27,11 @@ public abstract class Enemy extends Entity{
     protected float WIDTH;
     protected float HEIGHT;
 
-    protected Vector2 position;
+    protected float scale;
+    protected float speed;
+
+    protected Vector2 position = new Vector2();
+    protected Vector2 velocity = new Vector2();
 
     public STATE state;
 
@@ -41,6 +45,8 @@ public abstract class Enemy extends Entity{
     private Animation<TextureRegion> dyingAnimation;
 
     protected Array<Rectangle> bounds = new Array<Rectangle>();
+    protected Rectangle collisionBound;
+
     protected ActiveBullets bullets = new ActiveBullets();
 
     protected Color drawingColor;
@@ -54,6 +60,54 @@ public abstract class Enemy extends Entity{
         dyingAnimation = AnimationPacker.genAnimation(0.1f, TextureStrings.EXPLOSION);
     }
 
+    public abstract static class EnemyBuilder<T extends EnemyBuilder> {
+
+        //Required Parameters
+        private final float posX;
+        private final float posY;
+
+        //Optional Parameters
+        private float healthScale = 1;
+        private float scale = 1;
+        private float speed = 1;
+        private float health = 5;
+
+        public EnemyBuilder(float posX, float posY) {
+            this.posX = posX;
+            this.posY = posY;
+        }
+
+        public abstract T getThis();
+
+        public T healthScale(float val)
+        { healthScale = val; return getThis(); }
+
+        public T health(float val)
+        { health = val; return getThis(); }
+
+        public T scale(float val)
+        { scale = val; return getThis(); }
+
+        public T speed(float val)
+        { speed = val; return getThis(); }
+
+        public Enemy build() {
+            return new Enemy(this);
+        }
+
+    }
+
+    public Enemy(EnemyBuilder b){
+        this();
+        position = new Vector2(b.posX, b.posY);
+        speed = b.speed;
+        scale = b.scale;
+        health = b.health;
+        health *= b.healthScale;
+        //HEIGHT *= b.scale;
+        //WIDTH *= b.scale;
+    }
+
 
     //TODO this is a cop out method since I can't really think of a way to do this
     //TODO just in draw when draw itself is currently not well crafted.
@@ -63,8 +117,6 @@ public abstract class Enemy extends Entity{
 
 
     public void draw(SpriteBatch batch){
-
-
         if(isFlashing) {
             Color color = batch.getColor();
             batch.setColor(new Color(0.0f,0.0f,0.0f,0.95f));
@@ -180,8 +232,19 @@ public abstract class Enemy extends Entity{
         return false;
     }
 
+    public void setCenter(float posX, float posY){
+        float diffX = position.x - (posX - WIDTH / 2);
+        float diffY = position.y - posY - HEIGHT / 2;
+        position.x = posX - WIDTH / 2;
+        position.y = posY - HEIGHT / 2;
+    }
+
     public Array<Rectangle> getBounds() {
         return bounds;
+    }
+
+    public Rectangle getCollisionBound() {
+        return collisionBound;
     }
 
     public ActiveBullets getBullets() {
