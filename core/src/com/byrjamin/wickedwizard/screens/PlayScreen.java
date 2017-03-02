@@ -59,6 +59,8 @@ public class PlayScreen extends AbstractScreen {
     public PlayScreen(MainGame game){
         super(game);
 
+
+
         gestureDetector = new GestureDetector(new gestures());
         controlschemeDetector = new GestureDetector(new controlSchemeGesture());
 
