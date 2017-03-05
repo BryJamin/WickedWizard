@@ -1,5 +1,9 @@
 package com.byrjamin.wickedwizard.screens;
 
+import com.artemis.Entity;
+import com.artemis.World;
+import com.artemis.WorldConfiguration;
+import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
@@ -9,15 +13,32 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.components.GravityComponent;
+import com.byrjamin.wickedwizard.components.PlayerComponent;
+import com.byrjamin.wickedwizard.components.PositionComponent;
+import com.byrjamin.wickedwizard.components.TextureRegionComponent;
+import com.byrjamin.wickedwizard.components.VelocityComponent;
+import com.byrjamin.wickedwizard.components.WallComponent;
+import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
+import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
+import com.byrjamin.wickedwizard.systems.GravitySystem;
+import com.byrjamin.wickedwizard.systems.MovementSystem;
+import com.byrjamin.wickedwizard.systems.PlayerInputSystem;
+import com.byrjamin.wickedwizard.systems.RenderingSystem;
+import com.byrjamin.wickedwizard.systems.WallCollisionSystem;
+import com.byrjamin.wickedwizard.systems.WallSystem;
 
 
 //TODO
@@ -35,6 +56,8 @@ public class PlayScreen extends AbstractScreen {
     public static TextureAtlas atlas;
 
     private Pixmap pixmap;
+
+    private World world;
 
     GestureDetector gestureDetector;
     GestureDetector controlschemeDetector;
@@ -93,6 +116,56 @@ public class PlayScreen extends AbstractScreen {
 
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
+
+        WorldConfiguration config = new WorldConfigurationBuilder()
+                .with(new MovementSystem(), new GravitySystem(),new PlayerInputSystem(gamecam),
+                        new WallSystem(),
+                        new WallCollisionSystem(),
+                        new RenderingSystem(game.batch, gamecam))
+                .build();
+        world = new World(config);
+        Entity e = world.createEntity();
+/*        e.edit().add(new PositionComponent(0,0));
+        e.edit().add(new VelocityComponent(500, 3000));
+        e.edit().add(new GravityComponent());
+        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING)));
+
+
+        e = world.createEntity();
+        e.edit().add(new PositionComponent(0,0));
+        e.edit().add(new VelocityComponent(500, 2000));
+        e.edit().add(new GravityComponent());
+        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING)));*/
+
+        e = world.createEntity();
+        e.edit().add(new PositionComponent(600,900));
+        e.edit().add(new VelocityComponent(0, 0));
+        e.edit().add(new PlayerComponent());
+        e.edit().add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
+        e.edit().add(new GravityComponent());
+        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.SILVERHEAD_ST)));
+
+/*        e = world.createEntity();
+        e.edit().add(new PositionComponent(400,900));
+        e.edit().add(new VelocityComponent(500, 0));
+        e.edit().add(new GravityComponent());
+        e.edit().add(new CollisionBoundComponent(new Rectangle(400,900,100, 100)));
+        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.SILVERHEAD_ST)));*/
+
+
+/*        e = world.createEntity();
+        e.edit().add(new PositionComponent(0,0));
+        e.edit().add(new WallComponent(new Rectangle(600,0, Measure.units(50), Measure.units(10))));*/
+        //e.edit().add(new GravityComponent());
+
+        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
+            EntityFactory.createWall(world, rw.getBounds());
+        }
+
+
+
+
+
     }
 
     public void handleInput(float dt){
@@ -108,7 +181,7 @@ public class PlayScreen extends AbstractScreen {
             multiplexer.addProcessor(gestureDetector);
         }
 
-        Gdx.input.setInputProcessor(multiplexer);
+        //Gdx.input.setInputProcessor(multiplexer);
 
 
     }
@@ -184,6 +257,13 @@ public class PlayScreen extends AbstractScreen {
         }
 
         game.batch.end();
+
+
+        if(delta < 0.20f) {
+            world.setDelta(delta);
+        }
+
+        world.process();
 
     }
 

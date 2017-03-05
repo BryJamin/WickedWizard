@@ -50,7 +50,7 @@ public class Collider {
         }
 
     } else {
-        if (wall.overlaps(futureBound) && ((currentBound.getX() > wall.getX() && currentBound.getX() + currentBound.getWidth() < wall.getX() + wall.getWidth()))) {
+        if (wall.overlaps(futureBound) && ((currentBound.getX() >= wall.getX() - currentBound.getWidth() / 2 && currentBound.getX() + currentBound.getWidth() <= wall.getX() + wall.getWidth() + currentBound.getWidth() / 2))) {
             if (futureBound.getY() > wall.y) {
                 currentBound.setY(wall.y + wall.getHeight());
                 return Collision.TOP;

@@ -306,7 +306,7 @@ public class TutorialRoom extends Room {
         super.draw(batch);
 
         //System.out.println(alphaPercentage);
-        batch.end();
+  /*      batch.end();
 
         //TODO figure out the bug where this apparnetly is a null pointer if you remove the shaperenderer.
         shapeRenderer = new ShapeRenderer();
@@ -365,7 +365,7 @@ public class TutorialRoom extends Room {
                 font.draw(batch, " Leave through this door --> ", 500, gamecam.viewportHeight - 800, gamecam.viewportWidth, Align.center, true);
                 break;
 
-        }
+        }*/
 
 
 

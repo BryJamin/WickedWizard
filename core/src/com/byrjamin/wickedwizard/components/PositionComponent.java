@@ -8,8 +8,6 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class PositionComponent extends Component {
 
-    public float x;
-    public float y;
     public Vector2 position;
 
     public PositionComponent(float x, float y){
@@ -18,6 +16,14 @@ public class PositionComponent extends Component {
 
     public PositionComponent(){
         this(0,0);
+    }
+
+    public float getX(){
+        return position.x;
+    }
+
+    public float getY(){
+        return position.y;
     }
 
 

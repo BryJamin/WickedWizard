@@ -69,7 +69,8 @@ public class RoomInputAdapter extends InputAdapter{
         float x1 = Gdx.input.getX(pointer);
         float y1 = Gdx.input.getY(pointer);
         input = new Vector3(x1, y1, 0);
-        viewport.unproject(input);
+        //viewport.unproject(input);
+        gamecam.unproject(input);
 
         Wizard w = room.getWizard();
 
