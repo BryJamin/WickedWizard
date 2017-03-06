@@ -29,7 +29,7 @@ public class Map {
     public Map(){
 
         Random rand = new Random();
-        mjg = new MapJigsawGenerator(13, rand);
+        mjg = new MapJigsawGenerator(1, rand);
 
         //TODO first generate the map
         roomArray = mjg.generateJigsaw();

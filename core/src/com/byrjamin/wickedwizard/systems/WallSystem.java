@@ -35,6 +35,11 @@ public class WallSystem extends EntityProcessingSystem {
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, walls.orderedItems());
     }
 
+    @Override
+    protected boolean checkProcessing() {
+        return walls.size == 0;
+    }
+
     public OrderedSet<Rectangle> getWalls() {
         return walls;
     }

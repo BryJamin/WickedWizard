@@ -43,7 +43,9 @@ public class BoundsDrawer {
 
     public static void drawBounds(SpriteBatch batch, Rectangle... bounds){
 
-        batch.end();
+        if(batch.isDrawing()) {
+            batch.end();
+        }
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -53,8 +55,9 @@ public class BoundsDrawer {
         }
         shapeRenderer.end();
 
-
-        batch.begin();
+        if(!batch.isDrawing()) {
+            batch.begin();
+        }
     }
 
     public static void drawBounds(SpriteBatch batch, Circle... bounds){

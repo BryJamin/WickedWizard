@@ -33,7 +33,10 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
+import com.byrjamin.wickedwizard.systems.BulletSystem;
+import com.byrjamin.wickedwizard.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.systems.GravitySystem;
+import com.byrjamin.wickedwizard.systems.HealthSystem;
 import com.byrjamin.wickedwizard.systems.MovementSystem;
 import com.byrjamin.wickedwizard.systems.PlayerInputSystem;
 import com.byrjamin.wickedwizard.systems.RenderingSystem;
@@ -95,14 +98,14 @@ public class PlayScreen extends AbstractScreen {
         map = new Map();
         gamecam = new OrthographicCamera();
 
-       pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+/*       pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawCircle(15, 15, 10);
 
 
         Pixmap pm = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, pm.getWidth() / 2, pm.getHeight() / 2));
-        pm.dispose();
+        pm.dispose();*/
 
         //Starts in the middle of the screen, on the 1/4 thingie.
 
@@ -119,53 +122,21 @@ public class PlayScreen extends AbstractScreen {
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(new MovementSystem(), new GravitySystem(),new PlayerInputSystem(gamecam),
-                        new WallSystem(),
-                        new WallCollisionSystem(),
+                        new WallCollisionSystem(), new BulletSystem(), new HealthSystem(), new EnemyCollisionSystem(),
                         new RenderingSystem(game.batch, gamecam))
                 .build();
         world = new World(config);
-        Entity e = world.createEntity();
-/*        e.edit().add(new PositionComponent(0,0));
-        e.edit().add(new VelocityComponent(500, 3000));
-        e.edit().add(new GravityComponent());
-        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING)));
 
+        EntityFactory.createPlayer(world);
+        EntityFactory.createBlob(world, 300, 500);
+        EntityFactory.createBlob(world, 500, 500);
+        EntityFactory.createBlob(world, 700, 500);
+        EntityFactory.createBlob(world, 900, 500);
 
-        e = world.createEntity();
-        e.edit().add(new PositionComponent(0,0));
-        e.edit().add(new VelocityComponent(500, 2000));
-        e.edit().add(new GravityComponent());
-        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING)));*/
-
-        e = world.createEntity();
-        e.edit().add(new PositionComponent(600,900));
-        e.edit().add(new VelocityComponent(0, 0));
-        e.edit().add(new PlayerComponent());
-        e.edit().add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
-        e.edit().add(new GravityComponent());
-        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.SILVERHEAD_ST)));
-
-/*        e = world.createEntity();
-        e.edit().add(new PositionComponent(400,900));
-        e.edit().add(new VelocityComponent(500, 0));
-        e.edit().add(new GravityComponent());
-        e.edit().add(new CollisionBoundComponent(new Rectangle(400,900,100, 100)));
-        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.SILVERHEAD_ST)));*/
-
-
-/*        e = world.createEntity();
-        e.edit().add(new PositionComponent(0,0));
-        e.edit().add(new WallComponent(new Rectangle(600,0, Measure.units(50), Measure.units(10))));*/
-        //e.edit().add(new GravityComponent());
 
         for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
             EntityFactory.createWall(world, rw.getBounds());
         }
-
-
-
-
-
     }
 
     public void handleInput(float dt){

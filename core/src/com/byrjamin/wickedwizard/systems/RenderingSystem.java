@@ -42,7 +42,11 @@ public class RenderingSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
         TextureRegionComponent trc = trm.get(e);
 
-        batch.draw(trc.region, pc.position.x, pc.position.y, 100, 100);
+        batch.draw(trc.region,
+                pc.position.x + trc.offsetX,
+                pc.position.y + trc.offsetY,
+                trc.width,
+                trc.height);
 
     }
 
