@@ -30,8 +30,4 @@ public class MovementSystem extends EntityProcessingSystem {
 
     }
 
-
-
-
-
 }

@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.components.GravityComponent;
 import com.byrjamin.wickedwizard.components.HealthComponent;
 import com.byrjamin.wickedwizard.components.PlayerComponent;
 import com.byrjamin.wickedwizard.components.PositionComponent;
+import com.byrjamin.wickedwizard.components.TargetPlayerComponent;
 import com.byrjamin.wickedwizard.components.TextureRegionComponent;
 import com.byrjamin.wickedwizard.components.VelocityComponent;
 import com.byrjamin.wickedwizard.components.WallComponent;
@@ -57,6 +58,7 @@ public class EntityFactory {
         e.edit().add(new CollisionBoundComponent(new Rectangle(0,0,Measure.units(9), Measure.units(9))));
         e.edit().add(new GravityComponent());
         e.edit().add(new EnemyComponent());
+        e.edit().add(new TargetPlayerComponent());
         e.edit().add(new HealthComponent(15));
         e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
         return e;

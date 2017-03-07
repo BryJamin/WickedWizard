@@ -37,6 +37,7 @@ import com.byrjamin.wickedwizard.systems.BulletSystem;
 import com.byrjamin.wickedwizard.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.systems.GravitySystem;
 import com.byrjamin.wickedwizard.systems.HealthSystem;
+import com.byrjamin.wickedwizard.systems.MoveToPlayerAISystem;
 import com.byrjamin.wickedwizard.systems.MovementSystem;
 import com.byrjamin.wickedwizard.systems.PlayerInputSystem;
 import com.byrjamin.wickedwizard.systems.RenderingSystem;
@@ -123,6 +124,7 @@ public class PlayScreen extends AbstractScreen {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(new MovementSystem(), new GravitySystem(),new PlayerInputSystem(gamecam),
                         new WallCollisionSystem(), new BulletSystem(), new HealthSystem(), new EnemyCollisionSystem(),
+                        new MoveToPlayerAISystem(),
                         new RenderingSystem(game.batch, gamecam))
                 .build();
         world = new World(config);
