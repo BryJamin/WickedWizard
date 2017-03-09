@@ -81,22 +81,7 @@ public class WallCollisionSystem extends EntityProcessingSystem {
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, r);
         }
 
-/*        for(int r : entityIds){
-            Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, r);
-            if(c != Collider.Collision.NONE){
-                switch(c){
-                    case TOP: vc.velocity.y = 0;
-                        break;
-                }
-                pc.position.x = cbc.bound.getX();
-                pc.position.y = cbc.bound.getY();
-                break;
-
-            }
-            //System.out.println("NO COLLISION");
-        }*/
-
-        BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);
+        //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);
 
         //pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
 

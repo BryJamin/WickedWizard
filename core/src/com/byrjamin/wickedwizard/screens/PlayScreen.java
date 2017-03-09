@@ -33,6 +33,8 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
+import com.byrjamin.wickedwizard.systems.AnimationSystem;
+import com.byrjamin.wickedwizard.systems.BlinkSystem;
 import com.byrjamin.wickedwizard.systems.BulletSystem;
 import com.byrjamin.wickedwizard.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.systems.GravitySystem;
@@ -41,6 +43,7 @@ import com.byrjamin.wickedwizard.systems.MoveToPlayerAISystem;
 import com.byrjamin.wickedwizard.systems.MovementSystem;
 import com.byrjamin.wickedwizard.systems.PlayerInputSystem;
 import com.byrjamin.wickedwizard.systems.RenderingSystem;
+import com.byrjamin.wickedwizard.systems.StateSystem;
 import com.byrjamin.wickedwizard.systems.WallCollisionSystem;
 import com.byrjamin.wickedwizard.systems.WallSystem;
 
@@ -124,14 +127,13 @@ public class PlayScreen extends AbstractScreen {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(new MovementSystem(), new GravitySystem(),new PlayerInputSystem(gamecam),
                         new WallCollisionSystem(), new BulletSystem(), new HealthSystem(), new EnemyCollisionSystem(),
-                        new MoveToPlayerAISystem(),
+                        new MoveToPlayerAISystem(),new AnimationSystem(), new StateSystem(),
+                        new BlinkSystem(),
                         new RenderingSystem(game.batch, gamecam))
                 .build();
         world = new World(config);
 
         EntityFactory.createPlayer(world);
-        EntityFactory.createBlob(world, 300, 500);
-        EntityFactory.createBlob(world, 500, 500);
         EntityFactory.createBlob(world, 700, 500);
         EntityFactory.createBlob(world, 900, 500);
 

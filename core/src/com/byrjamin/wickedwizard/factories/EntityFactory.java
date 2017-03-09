@@ -2,8 +2,13 @@ package com.byrjamin.wickedwizard.factories;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.components.AnimationComponent;
+import com.byrjamin.wickedwizard.components.BlinkComponent;
 import com.byrjamin.wickedwizard.components.BulletComponent;
 import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.components.EnemyComponent;
@@ -12,13 +17,16 @@ import com.byrjamin.wickedwizard.components.GravityComponent;
 import com.byrjamin.wickedwizard.components.HealthComponent;
 import com.byrjamin.wickedwizard.components.PlayerComponent;
 import com.byrjamin.wickedwizard.components.PositionComponent;
+import com.byrjamin.wickedwizard.components.StateComponent;
 import com.byrjamin.wickedwizard.components.TargetPlayerComponent;
 import com.byrjamin.wickedwizard.components.TextureRegionComponent;
 import com.byrjamin.wickedwizard.components.VelocityComponent;
 import com.byrjamin.wickedwizard.components.WallComponent;
 import com.byrjamin.wickedwizard.components.WeaponComponent;
+import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.sun.glass.ui.EventLoop;
 
 /**
  * Created by Home on 04/03/2017.
@@ -44,8 +52,19 @@ public class EntityFactory {
         e.edit().add(new PlayerComponent());
         e.edit().add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         e.edit().add(new GravityComponent());
+
+        StateComponent sc = new StateComponent();
+        sc.setState(0);
+        e.edit().add(sc);
+
+        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
+        k.put(0, TextureStrings.SQU_WALK);
+        k.put(1, TextureStrings.SQU_FIRING);
+
+        e.edit().add(new AnimationComponent(k));
         e.edit().add(new WeaponComponent(0.3f));
         e.edit().add(new HealthComponent(10));
+        e.edit().add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
         e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6)));
         return e;
     }
@@ -59,7 +78,14 @@ public class EntityFactory {
         e.edit().add(new GravityComponent());
         e.edit().add(new EnemyComponent());
         e.edit().add(new TargetPlayerComponent());
-        e.edit().add(new HealthComponent(15));
+        e.edit().add(new HealthComponent(10));
+        e.edit().add(new BlinkComponent());
+        StateComponent sc = new StateComponent();
+        sc.setState(0);
+        e.edit().add(sc);
+        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
+        k.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+        e.edit().add(new AnimationComponent(k));
         e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
         return e;
     }

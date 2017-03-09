@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.byrjamin.wickedwizard.components.PositionComponent;
@@ -42,11 +43,18 @@ public class RenderingSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
         TextureRegionComponent trc = trm.get(e);
 
+        float originX = trc.width * 0.5f;
+        float originY = trc.height * 0.5f;
+
+
+        batch.setColor(trc.color);
         batch.draw(trc.region,
-                pc.position.x + trc.offsetX,
-                pc.position.y + trc.offsetY,
-                trc.width,
-                trc.height);
+                pc.getX() + trc.offsetX , pc.getY() + trc.offsetY,
+                originX, originY,
+                trc.width, trc.height,
+                trc.scaleX, trc.scaleY,
+                trc.rotation);
+        batch.setColor(Color.WHITE);
 
     }
 

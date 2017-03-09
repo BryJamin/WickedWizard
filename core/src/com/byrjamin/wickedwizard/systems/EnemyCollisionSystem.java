@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.byrjamin.wickedwizard.components.BlinkComponent;
 import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.components.EnemyComponent;
 import com.byrjamin.wickedwizard.components.HealthComponent;
@@ -21,6 +22,7 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
 
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<BlinkComponent> bm;
 
     @SuppressWarnings("unchecked")
     public EnemyCollisionSystem() {
@@ -37,7 +39,10 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
         for(int i = 0; i < entityIds.size(); i++) {
             if(cbm.has(entityIds.get(i))){
                 if(cbm.get(e).bound.overlaps(cbm.get(entityIds.get(i)).bound)){
-                    hm.get(e).health -= 1;
+                    if(!bm.get(e).isHit) {
+                        hm.get(e).health -= 1;
+                        bm.get(e).isHit = true;
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.components;
 
 import com.artemis.Component;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -18,6 +19,14 @@ public class TextureRegionComponent extends Component{
 
     public float height;
     public float width;
+
+    public float scaleX = 1;
+    public float scaleY = 1;
+
+    public float rotation = 0;
+
+    public Color color = new Color(1,1,1,1);
+    public Color DEFAULT = Color.WHITE;
 
     public TextureRegionComponent(TextureRegion region, float offsetX, float offsetY, float width, float height) {
         this.region = region;
@@ -37,6 +46,11 @@ public class TextureRegionComponent extends Component{
 
     public TextureRegionComponent(TextureRegion region, float width, float height){
         this(region, 0,0, width, height);
+    }
+
+
+    public void setColor(float r, float g, float b, float a){
+        color.set(r,g,b,a);
     }
 
 }

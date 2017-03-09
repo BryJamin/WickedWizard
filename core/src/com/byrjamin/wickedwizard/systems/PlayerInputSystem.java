@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.components.GravityComponent;
 import com.byrjamin.wickedwizard.components.PlayerComponent;
 import com.byrjamin.wickedwizard.components.PositionComponent;
+import com.byrjamin.wickedwizard.components.StateComponent;
 import com.byrjamin.wickedwizard.components.TextureRegionComponent;
 import com.byrjamin.wickedwizard.components.VelocityComponent;
 import com.byrjamin.wickedwizard.components.WeaponComponent;
@@ -31,6 +32,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WeaponComponent> wm;
+    ComponentMapper<StateComponent> sm;
+    ComponentMapper<TextureRegionComponent> trm;
 
 
     OrthographicCamera gamecam;
@@ -42,7 +45,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(OrthographicCamera gamecam) {
-        super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, StateComponent.class));
         this.gamecam = gamecam;
     }
 
@@ -58,6 +61,10 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         WeaponComponent wc = wm.get(e);
+        StateComponent sc = sm.get(e);
+        TextureRegionComponent trc = trm.get(e);
+
+
         wc.timer.update(world.getDelta());
 
         if(hasTarget) {
@@ -74,8 +81,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             }
         } else if(canFire){
             if(Gdx.input.isTouched()) {
-
                 if(wc.timer.isFinishedAndReset()) {
+                    sc.setState(1);
                     Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                     gamecam.unproject(input);
 
@@ -83,11 +90,21 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     float y = pc.getY() + (cbc.bound.getHeight() / 2);
 
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
+
+                    if(angleOfTravel >= 0) trc.scaleX = (angleOfTravel <= (Math.PI / 2)) ? 1 : -1;
+                    else trc.scaleX = (angleOfTravel >= -(Math.PI / 2)) ? 1 : -1;
+
                     System.out.println(Math.toDegrees(angleOfTravel));
                     EntityFactory.createBullet(world, x, y, angleOfTravel);
                 }
             }
 
+        }
+
+        if(!canFire){
+            if(sc.getState() != 0) {
+                sc.setState(0);
+            }
         }
 
 

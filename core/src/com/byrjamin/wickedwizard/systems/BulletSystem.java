@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.byrjamin.wickedwizard.components.BlinkComponent;
 import com.byrjamin.wickedwizard.components.BulletComponent;
 import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.components.EnemyComponent;
@@ -20,11 +21,12 @@ import com.byrjamin.wickedwizard.components.WallComponent;
  */
 public class BulletSystem extends EntityProcessingSystem {
 
-    ComponentMapper<BulletComponent> bm;
+
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
+    ComponentMapper<BlinkComponent> bm;
 
 
     @SuppressWarnings("unchecked")
@@ -49,7 +51,12 @@ public class BulletSystem extends EntityProcessingSystem {
                 if(cbm.get(entityIds.get(i)).bound.overlaps(vc.bound)){
                     HealthComponent hc = hm.get(entityIds.get(i));
                     hc.health = hc.health - 1;
-                    //System.out.println(hm.get(i).health);
+
+                    if(bm.has(entityIds.get(i))){
+                        BlinkComponent bc = bm.get(entityIds.get(i));
+                        bc.isHit = true;
+                    }
+
                     e.deleteFromWorld();
                 }
             }
