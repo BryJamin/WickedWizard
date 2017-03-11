@@ -7,6 +7,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.components.BlinkComponent;
+import com.byrjamin.wickedwizard.components.BulletComponent;
 import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.components.EnemyComponent;
 import com.byrjamin.wickedwizard.components.HealthComponent;
@@ -33,7 +34,7 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class));
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class).exclude(BulletComponent.class));
         IntBag entityIds = subscription.getEntities();
 
         for(int i = 0; i < entityIds.size(); i++) {

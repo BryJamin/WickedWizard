@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.systems;
 
 import com.artemis.Aspect;
+import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
@@ -43,6 +44,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     private boolean hasTarget;
     private boolean canFire;
 
+    private Integer movementInputPoll = null;
+    private Integer firingInputPoll = null;
+
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(OrthographicCamera gamecam) {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, StateComponent.class));
@@ -67,7 +71,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         wc.timer.update(world.getDelta());
 
-        if(hasTarget) {
+
+
+        if(movementInputPoll != null) {
             Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             gamecam.unproject(input);
 
@@ -79,7 +85,12 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             } else {
                 vc.velocity.x = Measure.units(115f);
             }
-        } else if(canFire){
+        }  else {
+            vc.velocity.x = 0;
+        }
+
+
+        if(firingInputPoll != null){
             if(Gdx.input.isTouched()) {
                 if(wc.timer.isFinishedAndReset()) {
                     sc.setState(1);
@@ -95,17 +106,25 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     else trc.scaleX = (angleOfTravel >= -(Math.PI / 2)) ? 1 : -1;
 
                     System.out.println(Math.toDegrees(angleOfTravel));
-                    EntityFactory.createBullet(world, x, y, angleOfTravel);
+
+                    Entity bullet =  EntityFactory.createBullet(world, x, y, angleOfTravel);
+
+                    for(Component c : wc.additionalComponenets) {
+                        bullet.edit().add(c);
+                    }
                 }
             }
-
-        }
-
-        if(!canFire){
+        } else {
             if(sc.getState() != 0) {
                 sc.setState(0);
             }
         }
+/*
+        if(!canFire){
+            if(sc.getState() != 0) {
+                sc.setState(0);
+            }
+        }*/
 
 
 
@@ -133,8 +152,10 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         unprojectedInput = gamecam.unproject(touchInput);
         if(unprojectedInput.y <= 290) {
             hasTarget = true;
+            movementInputPoll = pointer;
         } else {
             canFire = true;
+            firingInputPoll = pointer;
         }
         return false;
     }
@@ -142,6 +163,13 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+        if(movementInputPoll != null) {
+            movementInputPoll = (movementInputPoll == pointer) ? null : movementInputPoll;
+        }
+
+        if(firingInputPoll != null) {
+            firingInputPoll = (firingInputPoll == pointer) ? null : firingInputPoll;
+        }
         canFire = false;
         return false;
     }

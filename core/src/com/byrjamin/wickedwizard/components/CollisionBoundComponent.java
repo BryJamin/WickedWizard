@@ -19,5 +19,13 @@ public class CollisionBoundComponent extends Component{
         this(new Rectangle(0,0, Measure.units(5), Measure.units(5)));
     }
 
+    public float getCenterX() {
+        return bound.x + bound.width / 2;
+    }
+
+    public float getCenterY() {
+        return bound.y + bound.height / 2;
+    }
+
 
 }

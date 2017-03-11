@@ -1,6 +1,9 @@
 package com.byrjamin.wickedwizard.components;
 
 import com.artemis.Component;
+import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.entity.Entity;
+import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 
 /**
@@ -10,6 +13,16 @@ public class WeaponComponent extends Component{
 
     public float reloadTime;
     public float currentTime;
+
+    public enum PROJECTILETYPE {
+        STRAIGHT, ARC, GUIDED
+    }
+
+    public enum ONHITTYPE {
+        EXPLOSIVE,
+    }
+
+    public Array<Component> additionalComponenets = new Array<Component>();
 
     public StateTimer timer;
 

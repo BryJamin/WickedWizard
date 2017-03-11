@@ -1,32 +1,21 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.components.GravityComponent;
-import com.byrjamin.wickedwizard.components.PlayerComponent;
-import com.byrjamin.wickedwizard.components.PositionComponent;
-import com.byrjamin.wickedwizard.components.TextureRegionComponent;
-import com.byrjamin.wickedwizard.components.VelocityComponent;
-import com.byrjamin.wickedwizard.components.WallComponent;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -35,8 +24,11 @@ import com.byrjamin.wickedwizard.maps.Map;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.systems.AnimationSystem;
 import com.byrjamin.wickedwizard.systems.BlinkSystem;
+import com.byrjamin.wickedwizard.systems.BounceCollisionSystem;
 import com.byrjamin.wickedwizard.systems.BulletSystem;
 import com.byrjamin.wickedwizard.systems.EnemyCollisionSystem;
+import com.byrjamin.wickedwizard.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.systems.FiringAISystem;
 import com.byrjamin.wickedwizard.systems.GravitySystem;
 import com.byrjamin.wickedwizard.systems.HealthSystem;
 import com.byrjamin.wickedwizard.systems.MoveToPlayerAISystem;
@@ -44,8 +36,7 @@ import com.byrjamin.wickedwizard.systems.MovementSystem;
 import com.byrjamin.wickedwizard.systems.PlayerInputSystem;
 import com.byrjamin.wickedwizard.systems.RenderingSystem;
 import com.byrjamin.wickedwizard.systems.StateSystem;
-import com.byrjamin.wickedwizard.systems.WallCollisionSystem;
-import com.byrjamin.wickedwizard.systems.WallSystem;
+import com.byrjamin.wickedwizard.systems.GroundCollisionSystem;
 
 
 //TODO
@@ -125,17 +116,29 @@ public class PlayScreen extends AbstractScreen {
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(new MovementSystem(), new GravitySystem(),new PlayerInputSystem(gamecam),
-                        new WallCollisionSystem(), new BulletSystem(), new HealthSystem(), new EnemyCollisionSystem(),
-                        new MoveToPlayerAISystem(),new AnimationSystem(), new StateSystem(),
+                .with(new MovementSystem(),
+                        new GravitySystem(),
+                        new PlayerInputSystem(gamecam),
+                        new FindPlayerSystem(),
+                        new GroundCollisionSystem(),
+                        new BulletSystem(),
+                        new HealthSystem(),
+                        new EnemyCollisionSystem(),
+                        new MoveToPlayerAISystem(),
+                        new FiringAISystem(),
+                        new AnimationSystem(),
+                        new StateSystem(),
+                        new BounceCollisionSystem(),
                         new BlinkSystem(),
                         new RenderingSystem(game.batch, gamecam))
                 .build();
         world = new World(config);
 
         EntityFactory.createPlayer(world);
-        EntityFactory.createBlob(world, 700, 500);
-        EntityFactory.createBlob(world, 900, 500);
+        //EntityFactory.createBlob(world, 700, 500);
+        //EntityFactory.createBlob(world, 900, 500);
+
+        EntityFactory.createMovingTurret(world, 900, 900);
 
 
         for(RoomWall rw : map.getActiveRoom().getRoomWalls()){

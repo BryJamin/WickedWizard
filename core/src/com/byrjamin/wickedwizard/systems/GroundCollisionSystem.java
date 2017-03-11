@@ -7,6 +7,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
+import com.byrjamin.wickedwizard.components.BounceComponent;
 import com.byrjamin.wickedwizard.components.BulletComponent;
 import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.components.PositionComponent;
@@ -19,7 +20,7 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 /**
  * Created by Home on 04/03/2017.
  */
-public class WallCollisionSystem extends EntityProcessingSystem {
+public class GroundCollisionSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
@@ -28,8 +29,8 @@ public class WallCollisionSystem extends EntityProcessingSystem {
     ComponentMapper<BulletComponent> bm;
 
     @SuppressWarnings("unchecked")
-    public WallCollisionSystem() {
-        super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class));
+    public GroundCollisionSystem() {
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(BounceComponent.class));
     }
 
 
@@ -54,12 +55,6 @@ public class WallCollisionSystem extends EntityProcessingSystem {
         Rectangle futureRectangle = new Rectangle(cbc.bound);
         futureRectangle.x += vc.velocity.x * world.delta;
         futureRectangle.y += vc.velocity.y * world.delta;
-        //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);
-
-        //BoundsDrawer.drawBounds();
-
-        //System.out.println(cbc.bound.getX());
-
 
         for(int i = 0; i < entityIds.size(); i++) {
 
@@ -78,7 +73,7 @@ public class WallCollisionSystem extends EntityProcessingSystem {
                 }
 
             }
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, r);
+            //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, r);
         }
 
         //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);

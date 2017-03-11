@@ -41,7 +41,24 @@ public class BulletSystem extends EntityProcessingSystem {
         CollisionBoundComponent vc = cbm.get(e);
 
         if(em.has(e)){
+            Entity player = world.getSystem(FindPlayerSystem.class).getPlayer();
+            CollisionBoundComponent pcbc = cbm.get(player);
+            if(pcbc.bound.overlaps(vc.bound)){
 
+                BlinkComponent bc = bm.get(player);
+
+                if(!bc.isHit) {
+                    HealthComponent hc = hm.get(player);
+                    hc.health = hc.health - 1;
+                    bc.isHit = true;
+                    System.out.println(hc.health);
+                }
+
+                System.out.println(bc.isHit);
+
+                e.deleteFromWorld();
+
+            }
 
         } else if(fm.has(e)){
             EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class, CollisionBoundComponent.class, HealthComponent.class));

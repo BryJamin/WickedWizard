@@ -15,8 +15,8 @@ public class BlinkComponent extends Component {
 
     public BLINKTYPE blinktype = BLINKTYPE.CONSTANT;
 
-    public float blinkTimer = 0.2f;
-    public float resetTimer = 0.2f;
+    public float blinkTimer = 0.15f;
+    public float resetTimer = 0.15f;
     public float blinkFrames;
     public float resetFrames;
 

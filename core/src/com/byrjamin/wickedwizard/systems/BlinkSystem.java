@@ -45,7 +45,7 @@ public class BlinkSystem extends EntityProcessingSystem {
                         bc.isBlinking = !bc.isBlinking;
                     }
                     if(bc.isBlinking) {
-                        trc.color.a = 0.0f;
+                        trc.color.a = 0.1f;
                     } else {
                         trc.color.a = trc.DEFAULT.a;
                     }
@@ -55,6 +55,7 @@ public class BlinkSystem extends EntityProcessingSystem {
             } else {
                 bc.isHit = false;
                 bc.blinkFrames = bc.resetFrames;
+                bc.blinkTimer = bc.resetTimer;
                 trc.color.set(trc.DEFAULT);
             }
 

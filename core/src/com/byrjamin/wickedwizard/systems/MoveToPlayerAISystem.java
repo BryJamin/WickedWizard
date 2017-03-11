@@ -7,10 +7,9 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.components.EnemyComponent;
 import com.byrjamin.wickedwizard.components.PlayerComponent;
 import com.byrjamin.wickedwizard.components.PositionComponent;
-import com.byrjamin.wickedwizard.components.TargetPlayerComponent;
+import com.byrjamin.wickedwizard.components.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.components.VelocityComponent;
 import com.byrjamin.wickedwizard.helper.Measure;
 
@@ -25,7 +24,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public MoveToPlayerAISystem() {
-        super(Aspect.all(PositionComponent.class, VelocityComponent.class, TargetPlayerComponent.class, CollisionBoundComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, MoveToPlayerComponent.class, CollisionBoundComponent.class));
     }
 
     @Override
