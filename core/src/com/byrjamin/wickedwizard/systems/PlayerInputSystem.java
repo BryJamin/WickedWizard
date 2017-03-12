@@ -47,6 +47,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
 
+    private float moveTarget;
+
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(OrthographicCamera gamecam) {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, StateComponent.class));
@@ -74,27 +76,40 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
 
         if(movementInputPoll != null) {
-            Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gamecam.unproject(input);
 
-            if (input.x - 20 <= pc.getX() && pc.getX() < unprojectedInput.x + 20) {
-                hasTarget = false;
+            if(Gdx.input.isTouched(movementInputPoll)) {
+                Vector3 input = new Vector3(Gdx.input.getX(movementInputPoll), Gdx.input.getY(movementInputPoll), 0);
+                gamecam.unproject(input);
+
+                if(input.y < 290){
+                    moveTarget = input.x;
+                    hasTarget = true;
+                }
+
+            }
+
+        }  else {
+           // vc.velocity.x = 0;
+        }
+
+
+        if(hasTarget){
+            if (moveTarget - 20 <= pc.getX() && pc.getX() < moveTarget + 20) {
                 vc.velocity.x = 0;
-            } else if (pc.getX() >= unprojectedInput.x) {
+                hasTarget = false;
+            } else if (pc.getX() >= moveTarget) {
                 vc.velocity.x = -Measure.units(115f);
             } else {
                 vc.velocity.x = Measure.units(115f);
             }
-        }  else {
-            vc.velocity.x = 0;
         }
 
 
         if(firingInputPoll != null){
-            if(Gdx.input.isTouched()) {
+            if(Gdx.input.isTouched(firingInputPoll)) {
                 if(wc.timer.isFinishedAndReset()) {
                     sc.setState(1);
-                    Vector3 input = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                    Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
                     gamecam.unproject(input);
 
                     float x = pc.getX() + (cbc.bound.getWidth() / 2);
@@ -153,6 +168,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         if(unprojectedInput.y <= 290) {
             hasTarget = true;
             movementInputPoll = pointer;
+            moveTarget = unprojectedInput.x;
         } else {
             canFire = true;
             firingInputPoll = pointer;
