@@ -71,7 +71,10 @@ public class EntityFactory {
         e.edit().add(wc);
         e.edit().add(new HealthComponent(10));
         e.edit().add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
-        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6)));
+
+        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
+        trc.layer = 2;
+        e.edit().add(trc);
         return e;
     }
 

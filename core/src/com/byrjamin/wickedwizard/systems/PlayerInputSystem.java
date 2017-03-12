@@ -120,8 +120,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     if(angleOfTravel >= 0) trc.scaleX = (angleOfTravel <= (Math.PI / 2)) ? 1 : -1;
                     else trc.scaleX = (angleOfTravel >= -(Math.PI / 2)) ? 1 : -1;
 
-                    System.out.println(Math.toDegrees(angleOfTravel));
-
                     Entity bullet =  EntityFactory.createBullet(world, x, y, angleOfTravel);
 
                     for(Component c : wc.additionalComponenets) {

@@ -12,6 +12,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class TextureRegionComponent extends Component{
 
+    public int layer = 0;
+
     public TextureRegion region;
 
     public float offsetX;
