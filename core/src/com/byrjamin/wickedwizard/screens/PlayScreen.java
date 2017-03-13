@@ -222,7 +222,7 @@ public class PlayScreen extends AbstractScreen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        map.draw(game.batch);
+       // map.draw(game.batch);
 
 
         for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
