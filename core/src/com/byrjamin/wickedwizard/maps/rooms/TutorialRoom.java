@@ -1,15 +1,12 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Align;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.entity.enemies.Dummy;
-import com.byrjamin.wickedwizard.entity.enemies.Enemy;
+import com.byrjamin.wickedwizard.gameobject.enemies.Dummy;
+import com.byrjamin.wickedwizard.gameobject.enemies.Enemy;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;

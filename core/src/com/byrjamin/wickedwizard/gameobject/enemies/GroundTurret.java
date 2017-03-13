@@ -1,11 +1,10 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.entity.ActiveBullets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
@@ -20,7 +19,7 @@ public class GroundTurret extends GroundedEnemy {
 
     private StateTimer reloadTimer = new StateTimer(2.0f, 2.0f);
 
-    public static class GroundTurretBuilder extends GroundedEnemy.GBuilder {
+    public static class GroundTurretBuilder extends GBuilder {
         public GroundTurretBuilder(float posX, float posY) {
             super(posX, posY);
             health(7);

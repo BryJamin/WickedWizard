@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity;
+package com.byrjamin.wickedwizard.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -7,7 +7,7 @@ import com.byrjamin.wickedwizard.helper.collider.Collider;
 /**
  * Created by Home on 09/01/2017.
  */
-public abstract class Entity  {
+public abstract class GameObject {
 
     protected int health;
     public abstract void draw(SpriteBatch batch);

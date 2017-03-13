@@ -1,17 +1,14 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.entity.ActiveBullets;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
-import com.byrjamin.wickedwizard.spelltypes.Dispellable;
+import com.byrjamin.wickedwizard.gameobject.ActiveBullets;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.timer.Reloader;
@@ -99,7 +96,7 @@ public class Turret extends Enemy {
     }*/
 
 
-    public static class TurretBuilder extends GroundedEnemy.GBuilder {
+    public static class TurretBuilder extends com.byrjamin.wickedwizard.gameobject.enemies.GroundedEnemy.GBuilder {
 
         //Optional Parameters
         private float scale = 1;

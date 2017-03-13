@@ -1,24 +1,19 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.entity.ActiveBullets;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
-import com.byrjamin.wickedwizard.helper.GravMaster2000;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.spelltypes.Projectile;
 import com.byrjamin.wickedwizard.spelltypes.blastwaves.BlastWave;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 /**
  * Created by Home on 01/01/2017.
@@ -43,7 +38,7 @@ public class SilverHead extends GroundedEnemy {
 
     private ACTION action = ACTION.STANDING;
 
-    public static class SilverHeadBuilder extends GroundedEnemy.GBuilder {
+    public static class SilverHeadBuilder extends GBuilder {
         public SilverHeadBuilder(float posX, float posY) {
             super(posX, posY);
             health(7);

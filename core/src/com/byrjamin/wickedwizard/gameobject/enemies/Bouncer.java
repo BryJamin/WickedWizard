@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -13,14 +13,13 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 import java.util.Random;
 
 /**
  * Created by Home on 19/02/2017.
  */
-public class Bouncer extends Enemy{
+public class Bouncer extends Enemy {
 
     private float HEIGHT = Measure.units(5f);
     private float WIDTH = Measure.units(5f);
@@ -41,7 +40,7 @@ public class Bouncer extends Enemy{
 
     private ACTION action = ACTION.DEFAULT;
 
-    public static class BouncerBuilder extends GroundedEnemy.GBuilder {
+    public static class BouncerBuilder extends com.byrjamin.wickedwizard.gameobject.enemies.GroundedEnemy.GBuilder {
         public BouncerBuilder(float posX, float posY) {
             super(posX, posY);
             health(5);

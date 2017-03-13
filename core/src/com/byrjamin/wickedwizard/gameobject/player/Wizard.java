@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity.player;
+package com.byrjamin.wickedwizard.gameobject.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.entity.*;
+import com.byrjamin.wickedwizard.gameobject.*;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 import com.byrjamin.wickedwizard.item.ItemPresets;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
@@ -23,7 +23,7 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 /**
  * Created by Home on 23/10/2016.
  */
-public class Wizard extends Entity{
+public class Wizard extends GameObject {
 
     public float HEIGHT = Measure.units(5);
     public float WIDTH = Measure.units(5);
@@ -52,7 +52,7 @@ public class Wizard extends Entity{
 
     private Rectangle bounds;
 
-    private ActiveBullets activeBullets = new com.byrjamin.wickedwizard.entity.ActiveBullets();
+    private com.byrjamin.wickedwizard.gameobject.ActiveBullets activeBullets = new com.byrjamin.wickedwizard.gameobject.ActiveBullets();
 
     private StateTimer reloadTimer;
 
@@ -174,7 +174,7 @@ public class Wizard extends Entity{
             flyUpdate(dt);
         }
 
-        activeBullets.updateProjectile(dt, room, (Entity[]) room.getEnemies().toArray(Entity.class));
+        activeBullets.updateProjectile(dt, room, (GameObject[]) room.getEnemies().toArray(GameObject.class));
 
         if(!isFlying() && bulletHover) {
             velocity.add(gravity);
@@ -565,7 +565,7 @@ public class Wizard extends Entity{
         return currentState;
     }
 
-    public ActiveBullets getActiveBullets() {
+    public com.byrjamin.wickedwizard.gameobject.ActiveBullets getActiveBullets() {
         return activeBullets;
     }
 

@@ -2,8 +2,6 @@ package com.byrjamin.wickedwizard.helper.collider;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.entity.Entity;
-import com.byrjamin.wickedwizard.helper.Measure;
 
 /**
  * Created by Home on 22/01/2017.

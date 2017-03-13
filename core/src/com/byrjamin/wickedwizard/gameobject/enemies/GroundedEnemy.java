@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;

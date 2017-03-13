@@ -1,8 +1,11 @@
 package com.byrjamin.wickedwizard.screens;
 
+import com.artemis.Component;
+import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,11 +19,13 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
+import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.systems.AnimationSystem;
 import com.byrjamin.wickedwizard.systems.BlinkSystem;
@@ -134,7 +139,35 @@ public class PlayScreen extends AbstractScreen {
                 .build();
         world = new World(config);
 
-        EntityFactory.createPlayer(world);
+
+        Bag<Component> bag = EntityFactory.playerBag();
+        Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
+        bagOfBags.add(bag);
+        Arena a = new Arena(new MapCoords(0,0), bagOfBags);
+
+/*        for(Bag<Component> b : a.getBagOfEntities()){
+            Entity e = world.createEntity();
+            for(Component c : b){
+                e.edit().add(c);
+            }
+        }*/
+
+        Bag<Bag<Component>> bagOfBags2 = new Bag<Bag<Component>>();
+        bagOfBags2.add(EntityFactory.playerBag());
+        bagOfBags2.add(EntityFactory.blobBag(400, 800));
+        bagOfBags2.add(EntityFactory.doorBag(100, 300, new MapCoords(1,0), new MapCoords(0,0)));
+        Arena b = new Arena(new MapCoords(1,0), bagOfBags2);
+
+        for(Bag<Component> d : b.getBagOfEntities()){
+            Entity e = world.createEntity();
+            for(Component c : d){
+                e.edit().add(c);
+            }
+        }
+
+
+        //EntityFactory.createPlayer(world);
+
         //EntityFactory.createBlob(world, 700, 500);
         //EntityFactory.createBlob(world, 900, 500);
 

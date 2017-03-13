@@ -1,12 +1,12 @@
 package com.byrjamin.wickedwizard.maps.rooms.spawns;
 
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.entity.enemies.Bouncer;
-import com.byrjamin.wickedwizard.entity.enemies.Enemy;
-import com.byrjamin.wickedwizard.entity.enemies.EnemyPresets;
-import com.byrjamin.wickedwizard.entity.enemies.GroundTurret;
-import com.byrjamin.wickedwizard.entity.enemies.KugelDusche;
-import com.byrjamin.wickedwizard.entity.enemies.SilverHead;
+import com.byrjamin.wickedwizard.gameobject.enemies.Bouncer;
+import com.byrjamin.wickedwizard.gameobject.enemies.Enemy;
+import com.byrjamin.wickedwizard.gameobject.enemies.EnemyPresets;
+import com.byrjamin.wickedwizard.gameobject.enemies.GroundTurret;
+import com.byrjamin.wickedwizard.gameobject.enemies.KugelDusche;
+import com.byrjamin.wickedwizard.gameobject.enemies.SilverHead;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;

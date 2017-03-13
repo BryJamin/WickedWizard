@@ -20,9 +20,8 @@ import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.maps.rooms.layout.RoomLayout;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.RoomEnemyUpdater;
-import com.byrjamin.wickedwizard.maps.rooms.spawns.OmniBattleRooms;
-import com.byrjamin.wickedwizard.entity.player.Wizard;
-import com.byrjamin.wickedwizard.entity.enemies.Enemy;
+import com.byrjamin.wickedwizard.gameobject.player.Wizard;
+import com.byrjamin.wickedwizard.gameobject.enemies.Enemy;
 
 /**
  * Class is currently a stand-in for a future 'Room' Class

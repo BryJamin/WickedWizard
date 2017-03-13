@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -58,9 +58,9 @@ public class Blob extends GroundedEnemy {
     @Override
     public void update(float dt, Room r) {
         super.update(dt, r);
-        if(this.getState() == STATE.ALIVE){
+        if(this.getState() == Enemy.STATE.ALIVE){
             aliveUpdate(dt, r);
-        } else if(this.getState() == STATE.DYING){
+        } else if(this.getState() == Enemy.STATE.DYING){
             dyingUpdate(dt);
         }
         currentFrame = currentAnimation.getKeyFrame(time);
@@ -81,7 +81,7 @@ public class Blob extends GroundedEnemy {
         time+=dt;
         currentAnimation = this.getDyingAnimation();
         if(this.getDyingAnimation().isAnimationFinished(time)){
-            this.setState(STATE.DEAD);
+            this.setState(Enemy.STATE.DEAD);
         }
     }
 

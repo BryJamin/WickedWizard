@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.gameobject.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.maps.rooms.components.GrapplePoint;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;

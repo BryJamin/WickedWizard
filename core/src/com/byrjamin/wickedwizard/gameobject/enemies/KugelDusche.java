@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
@@ -31,7 +31,7 @@ public class KugelDusche extends Enemy{
     private TYPE type;
 
 
-    public static class KugelDuscheBuilder extends GroundedEnemy.GBuilder {
+    public static class KugelDuscheBuilder extends com.byrjamin.wickedwizard.gameobject.enemies.GroundedEnemy.GBuilder {
 
         private TYPE type = TYPE.FOUR_BULLETS;
 

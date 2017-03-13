@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.entity.enemies;
+package com.byrjamin.wickedwizard.gameobject.enemies;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,18 +7,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.entity.Entity;
+import com.byrjamin.wickedwizard.gameobject.GameObject;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
-import com.byrjamin.wickedwizard.entity.ActiveBullets;
+import com.byrjamin.wickedwizard.gameobject.ActiveBullets;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**
  * Abstract class for enemies within the game
  * Most enemies will draw from this class.
  */
-public class Enemy extends Entity{
+public class Enemy extends GameObject {
 
     public enum STATE {
         DEAD, DYING, ALIVE

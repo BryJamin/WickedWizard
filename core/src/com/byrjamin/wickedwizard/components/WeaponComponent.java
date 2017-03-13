@@ -2,8 +2,6 @@ package com.byrjamin.wickedwizard.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.entity.Entity;
-import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 
 /**

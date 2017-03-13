@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.gameobject.player.Wizard;
 
 /**
  * Created by Home on 14/12/2016.

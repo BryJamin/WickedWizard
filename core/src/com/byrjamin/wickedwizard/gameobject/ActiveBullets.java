@@ -1,8 +1,7 @@
-package com.byrjamin.wickedwizard.entity;
+package com.byrjamin.wickedwizard.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.entity.Entity;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
@@ -28,14 +27,14 @@ public class ActiveBullets {
      * it is no longer tracked by this class.
      * @param dt - delta time
      */
-    public void updateProjectile(float dt, Room r, Entity... targets){
+    public void updateProjectile(float dt, Room r, GameObject... targets){
 
         for(Projectile p : bullets) {
 
             p.update(dt);
 
             if(p.getState() == Projectile.STATE.ALIVE) {
-                for(Entity e : targets){
+                for(GameObject e : targets){
                     if(e.isHit(p.getBounds())){
                         e.reduceHealth(p.getDamage());
                         p.setState(Projectile.STATE.EXPLODING);

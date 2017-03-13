@@ -1,7 +1,9 @@
 package com.byrjamin.wickedwizard.factories;
 
+import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +15,7 @@ import com.byrjamin.wickedwizard.components.BlinkComponent;
 import com.byrjamin.wickedwizard.components.BounceComponent;
 import com.byrjamin.wickedwizard.components.BulletComponent;
 import com.byrjamin.wickedwizard.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.components.DoorComponent;
 import com.byrjamin.wickedwizard.components.EnemyComponent;
 import com.byrjamin.wickedwizard.components.FiringAIComponent;
 import com.byrjamin.wickedwizard.components.FriendlyComponent;
@@ -28,6 +31,7 @@ import com.byrjamin.wickedwizard.components.WallComponent;
 import com.byrjamin.wickedwizard.components.WeaponComponent;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.maps.MapCoords;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -79,6 +83,41 @@ public class EntityFactory {
     }
 
 
+    public static Bag<Component> playerBag(){
+
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(600,900));
+        bag.add(new PositionComponent(600,900));
+        bag.add(new VelocityComponent(0, 0));
+        bag.add(new PlayerComponent());
+        bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
+        bag.add(new GravityComponent());
+
+        StateComponent sc = new StateComponent();
+        sc.setState(0);
+        bag.add(sc);
+
+        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
+        k.put(0, TextureStrings.SQU_WALK);
+        k.put(1, TextureStrings.SQU_FIRING);
+
+        bag.add(new AnimationComponent(k));
+
+
+        WeaponComponent wc = new WeaponComponent(0.3f);
+        wc.additionalComponenets.add(new FriendlyComponent());
+        bag.add(wc);
+        bag.add(new HealthComponent(10));
+        bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
+
+        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
+        trc.layer = 2;
+        bag.add(trc);
+
+        return bag;
+    }
+
+
     public static Entity createBlob(World world, float x, float y){
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x,y));
@@ -97,6 +136,48 @@ public class EntityFactory {
         e.edit().add(new AnimationComponent(k));
         e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
         return e;
+    }
+
+
+    public static Bag<Component> blobBag(float x, float y){
+
+        Bag<Component> bag = new Bag<Component>();
+
+        bag.add(new PositionComponent(x,y));
+        bag.add(new VelocityComponent(0, 0));
+        bag.add(new CollisionBoundComponent(new Rectangle(0,0,Measure.units(9), Measure.units(9))));
+        bag.add(new GravityComponent());
+        bag.add(new EnemyComponent());
+        bag.add(new MoveToPlayerComponent());
+        bag.add(new HealthComponent(10));
+        bag.add(new BlinkComponent());
+        StateComponent sc = new StateComponent();
+        sc.setState(0);
+        bag.add(sc);
+        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
+        k.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(k));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
+        return bag;
+    }
+
+    public static Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords exit){
+
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(5), Measure.units(20))));
+        bag.add(new DoorComponent(current, exit));
+
+        StateComponent sc = new StateComponent();
+        sc.setState(0);
+        bag.add(sc);
+
+        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
+        k.put(0, AnimationPacker.genAnimation(1 / 35f, "door"));
+        k.put(1, AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
+        bag.add(new AnimationComponent(k));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
+        return bag;
     }
 
 

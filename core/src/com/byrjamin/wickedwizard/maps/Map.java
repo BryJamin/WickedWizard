@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.maps.rooms.BattleRoom;
 import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.gameobject.player.Wizard;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.maps.rooms.spawns.OmniBattleRooms;
@@ -100,6 +100,8 @@ public class Map {
 
             addAdjacentRoomsToVisitedRooms(currentRoom);
             //visitedRoomArray.add(currentRoom);
+
+
 
             System.out.println("VISITED ROOM SIZE IS :" + visitedRoomArray.size);
         }

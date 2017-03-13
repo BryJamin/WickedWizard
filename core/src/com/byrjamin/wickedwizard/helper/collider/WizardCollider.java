@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.helper.collider;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.entity.player.Wizard;
+import com.byrjamin.wickedwizard.gameobject.player.Wizard;
 
 public class WizardCollider {
 

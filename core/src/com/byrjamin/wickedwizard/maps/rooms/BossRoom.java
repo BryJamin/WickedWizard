@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.maps.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.byrjamin.wickedwizard.entity.bosses.BiggaBlobba;
+import com.byrjamin.wickedwizard.gameobject.bosses.BiggaBlobba;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 
 /**
