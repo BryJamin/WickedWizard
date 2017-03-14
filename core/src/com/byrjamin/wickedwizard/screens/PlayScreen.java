@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
@@ -121,30 +122,49 @@ public class PlayScreen extends AbstractScreen {
 
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
+        Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
+        bagOfBags.add(EntityFactory.playerBag());
+        bagOfBags.add(EntityFactory.blobBag(400, 800));
+        bagOfBags.add(EntityFactory.doorBag(700, 200, new MapCoords(0,0), new MapCoords(1,0)));
 
-        Bag<Bag<Component>> bagOfBags2 = new Bag<Bag<Component>>();
-        bagOfBags2.add(EntityFactory.playerBag());
-        bagOfBags2.add(EntityFactory.blobBag(400, 800));
-        bagOfBags2.add(EntityFactory.doorBag(100, 200, new MapCoords(1,0), new MapCoords(0,0)));
-        Arena b = new Arena(new MapCoords(1,0), bagOfBags2);
+        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
+            bagOfBags.add(EntityFactory.wallBag(rw.getBounds()));
+        }
 
-        for(Bag<Component> d : b.getBagOfEntities()){
+        Arena a = new Arena(new MapCoords(0,0), bagOfBags);
+
+/*        for(Bag<Component> b : a.getBagOfEntities()){
             Entity e = world.createEntity();
-            for(Component c : d){
+            for(Component c : b){
                 e.edit().add(c);
             }
+        }*/
+
+
+        Bag<Bag<Component>> bagOfBagsArenaB = new Bag<Bag<Component>>();
+        bagOfBagsArenaB.add(EntityFactory.playerBag());
+        bagOfBagsArenaB.add(EntityFactory.blobBag(400, 800));
+        bagOfBagsArenaB.add(EntityFactory.doorBag(100, 200, new MapCoords(1,0), new MapCoords(0,0)));
+
+        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
+            bagOfBagsArenaB.add(EntityFactory.wallBag(rw.getBounds()));
         }
+
+
+        Arena b = new Arena(new MapCoords(1,0), bagOfBagsArenaB);
+
+
+        Array<Arena> testArray = new Array<Arena>();
+        testArray.add(a);
+        testArray.add(b);
         //EntityFactory.createPlayer(world);
 
         //EntityFactory.createBlob(world, 700, 500);
         //EntityFactory.createBlob(world, 900, 500);
 
-        EntityFactory.createMovingTurret(world, 900, 900);
+        //EntityFactory.createMovingTurret(world, 900, 900);
 
 
-        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
-            EntityFactory.createWall(world, rw.getBounds());
-        }
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()
@@ -163,23 +183,18 @@ public class PlayScreen extends AbstractScreen {
                         new BounceCollisionSystem(),
                         new BlinkSystem(),
                         new DoorSystem(),
-                        new RoomTransitionSystem(),
+                        new RoomTransitionSystem(b , testArray),
                         new RenderingSystem(game.batch, gamecam))
                 .build();
         world = new World(config);
 
-
-        Bag<Component> bag = EntityFactory.playerBag();
-        Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
-        bagOfBags.add(bag);
-        Arena a = new Arena(new MapCoords(0,0), bagOfBags);
-
-/*        for(Bag<Component> b : a.getBagOfEntities()){
+        for(Bag<Component> d : b.getBagOfEntities()){
             Entity e = world.createEntity();
-            for(Component c : b){
+            for(Component c : d){
                 e.edit().add(c);
             }
-        }*/
+        }
+
     }
 
     public void handleInput(float dt){

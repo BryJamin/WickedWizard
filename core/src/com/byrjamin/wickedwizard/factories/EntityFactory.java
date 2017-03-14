@@ -50,6 +50,17 @@ public class EntityFactory {
         return createWall(world, r.x, r.y, r.width, r.height);
     }
 
+    public static Bag<Component> wallBag(float x, float y, float width, float height){
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+        return bag;
+    }
+
+    public static Bag<Component> wallBag(Rectangle r){
+        return wallBag(r.x, r.y, r.width, r.height);
+    }
+
 
     public static Entity createPlayer(World world){
         Entity e = world.createEntity();
@@ -161,12 +172,12 @@ public class EntityFactory {
         return bag;
     }
 
-    public static Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords exit){
+    public static Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords){
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(5), Measure.units(20))));
-        bag.add(new DoorComponent(current, exit));
+        bag.add(new DoorComponent(current, leaveCoords));
 
         StateComponent sc = new StateComponent();
         sc.setState(0);

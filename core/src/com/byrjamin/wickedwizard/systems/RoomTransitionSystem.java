@@ -46,10 +46,11 @@ public class RoomTransitionSystem extends EntitySystem {
                 e.getComponents(new Bag<Component>());
                 currentArena.getBagOfEntities().add(e.getComponents(b));
             }
+            e.deleteFromWorld();
         }
 
         currentArena = findRoom(destination);
-
+        System.out.println(destination);
         for(Bag<Component> b : currentArena.getBagOfEntities()){
             Entity e = world.createEntity();
             for(Component c : b){
@@ -60,8 +61,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
     public Arena findRoom(MapCoords destination){
+        System.out.println(roomArray.size);
         for(Arena a : roomArray) {
-            if(a.location == destination){
+            if(a.location.equals(destination)){
                 return a;
             }
         }

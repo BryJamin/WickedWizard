@@ -13,7 +13,6 @@ public class WallComponent extends Component {
 
     public WallComponent(Rectangle bound){
         this.bound = bound;
-        System.out.println("INSIDE");
     }
 
     public WallComponent(){

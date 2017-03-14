@@ -25,7 +25,7 @@ import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 public class DoorSystem extends EntityProcessingSystem {
 
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<HealthComponent> hm;
+    ComponentMapper<DoorComponent> dm;
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
     ComponentMapper<BlinkComponent> bm;
@@ -52,7 +52,9 @@ public class DoorSystem extends EntityProcessingSystem {
 
                 if(cbm.get(doorEntity).bound.overlaps(cbm.get(e).bound)) {
 
-                    world.getSystem(FindPlayerSystem.class).getPlayer();
+                    System.out.println("INSIDE THA DOOR");
+
+                    world.getSystem(RoomTransitionSystem.class).goTo(dm.get(doorEntity).leaveCoords);
 
                 }
             }
