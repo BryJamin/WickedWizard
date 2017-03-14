@@ -31,6 +31,7 @@ import com.byrjamin.wickedwizard.systems.AnimationSystem;
 import com.byrjamin.wickedwizard.systems.BlinkSystem;
 import com.byrjamin.wickedwizard.systems.BounceCollisionSystem;
 import com.byrjamin.wickedwizard.systems.BulletSystem;
+import com.byrjamin.wickedwizard.systems.DoorSystem;
 import com.byrjamin.wickedwizard.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.systems.FiringAISystem;
@@ -40,6 +41,7 @@ import com.byrjamin.wickedwizard.systems.MoveToPlayerAISystem;
 import com.byrjamin.wickedwizard.systems.MovementSystem;
 import com.byrjamin.wickedwizard.systems.PlayerInputSystem;
 import com.byrjamin.wickedwizard.systems.RenderingSystem;
+import com.byrjamin.wickedwizard.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.systems.StateSystem;
 import com.byrjamin.wickedwizard.systems.GroundCollisionSystem;
 
@@ -120,6 +122,31 @@ public class PlayScreen extends AbstractScreen {
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
 
+        Bag<Bag<Component>> bagOfBags2 = new Bag<Bag<Component>>();
+        bagOfBags2.add(EntityFactory.playerBag());
+        bagOfBags2.add(EntityFactory.blobBag(400, 800));
+        bagOfBags2.add(EntityFactory.doorBag(100, 200, new MapCoords(1,0), new MapCoords(0,0)));
+        Arena b = new Arena(new MapCoords(1,0), bagOfBags2);
+
+        for(Bag<Component> d : b.getBagOfEntities()){
+            Entity e = world.createEntity();
+            for(Component c : d){
+                e.edit().add(c);
+            }
+        }
+        //EntityFactory.createPlayer(world);
+
+        //EntityFactory.createBlob(world, 700, 500);
+        //EntityFactory.createBlob(world, 900, 500);
+
+        EntityFactory.createMovingTurret(world, 900, 900);
+
+
+        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
+            EntityFactory.createWall(world, rw.getBounds());
+        }
+
+
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(new MovementSystem(),
                         new GravitySystem(),
@@ -135,6 +162,8 @@ public class PlayScreen extends AbstractScreen {
                         new StateSystem(),
                         new BounceCollisionSystem(),
                         new BlinkSystem(),
+                        new DoorSystem(),
+                        new RoomTransitionSystem(),
                         new RenderingSystem(game.batch, gamecam))
                 .build();
         world = new World(config);
@@ -151,32 +180,6 @@ public class PlayScreen extends AbstractScreen {
                 e.edit().add(c);
             }
         }*/
-
-        Bag<Bag<Component>> bagOfBags2 = new Bag<Bag<Component>>();
-        bagOfBags2.add(EntityFactory.playerBag());
-        bagOfBags2.add(EntityFactory.blobBag(400, 800));
-        bagOfBags2.add(EntityFactory.doorBag(100, 300, new MapCoords(1,0), new MapCoords(0,0)));
-        Arena b = new Arena(new MapCoords(1,0), bagOfBags2);
-
-        for(Bag<Component> d : b.getBagOfEntities()){
-            Entity e = world.createEntity();
-            for(Component c : d){
-                e.edit().add(c);
-            }
-        }
-
-
-        //EntityFactory.createPlayer(world);
-
-        //EntityFactory.createBlob(world, 700, 500);
-        //EntityFactory.createBlob(world, 900, 500);
-
-        EntityFactory.createMovingTurret(world, 900, 900);
-
-
-        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
-            EntityFactory.createWall(world, rw.getBounds());
-        }
     }
 
     public void handleInput(float dt){

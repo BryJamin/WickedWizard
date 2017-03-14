@@ -176,7 +176,7 @@ public class EntityFactory {
         k.put(0, AnimationPacker.genAnimation(1 / 35f, "door"));
         k.put(1, AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(k));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20)));
         return bag;
     }
 

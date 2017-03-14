@@ -21,4 +21,12 @@ public class Arena {
     public Bag<Bag<Component>> getBagOfEntities() {
         return bagOfEntities;
     }
+
+    public MapCoords getLocation() {
+        return location;
+    }
+
+
+
+
 }
