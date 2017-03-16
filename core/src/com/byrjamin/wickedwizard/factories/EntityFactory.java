@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.components.PlayerComponent;
 import com.byrjamin.wickedwizard.components.PositionComponent;
 import com.byrjamin.wickedwizard.components.StateComponent;
 import com.byrjamin.wickedwizard.components.MoveToPlayerComponent;
+import com.byrjamin.wickedwizard.components.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.components.TextureRegionComponent;
 import com.byrjamin.wickedwizard.components.VelocityComponent;
 import com.byrjamin.wickedwizard.components.WallComponent;
@@ -54,6 +55,12 @@ public class EntityFactory {
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+
+        TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
+                PlayScreen.atlas.findRegions("brick"));
+        trbc.layer = -9;
+        bag.add(trbc);
+
         return bag;
     }
 

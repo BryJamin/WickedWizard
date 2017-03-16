@@ -55,11 +55,9 @@ public class RoomBackground {
 
         for(int i = 0; i < columns; i++){
             for(int j = 0; j < rows; j ++){
-
                 batch.draw(backgrounds.get(backgroundSelection[count]), x + (TILE_SIZE * i), y + (TILE_SIZE * j), TILE_SIZE, TILE_SIZE);
                 count++;
             }
-
         }
 
     }

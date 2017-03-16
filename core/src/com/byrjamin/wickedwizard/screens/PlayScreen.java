@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.factories.Arena;
+import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -125,7 +126,12 @@ public class PlayScreen extends AbstractScreen {
         Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
         bagOfBags.add(EntityFactory.playerBag());
         bagOfBags.add(EntityFactory.blobBag(400, 800));
-        bagOfBags.add(EntityFactory.doorBag(700, 200, new MapCoords(0,0), new MapCoords(1,0)));
+        bagOfBags.add(EntityFactory.doorBag(1200, 200, new MapCoords(0,0), new MapCoords(1,0)));
+        bagOfBags.add(BackgroundFactory.backgroundBags(0,0,
+                MainGame.GAME_WIDTH,
+                MainGame.GAME_HEIGHT,
+                Measure.units(15),
+                PlayScreen.atlas.findRegions("backgrounds/wall")));
 
         for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
             bagOfBags.add(EntityFactory.wallBag(rw.getBounds()));
@@ -145,6 +151,11 @@ public class PlayScreen extends AbstractScreen {
         bagOfBagsArenaB.add(EntityFactory.playerBag());
         bagOfBagsArenaB.add(EntityFactory.blobBag(400, 800));
         bagOfBagsArenaB.add(EntityFactory.doorBag(100, 200, new MapCoords(1,0), new MapCoords(0,0)));
+        bagOfBagsArenaB.add(BackgroundFactory.backgroundBags(0,0,
+                MainGame.GAME_WIDTH,
+                MainGame.GAME_HEIGHT,
+                Measure.units(15),
+                PlayScreen.atlas.findRegions("backgrounds/wall")));
 
         for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
             bagOfBagsArenaB.add(EntityFactory.wallBag(rw.getBounds()));
@@ -168,11 +179,11 @@ public class PlayScreen extends AbstractScreen {
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(new MovementSystem(),
+                .with(
+                        new MovementSystem(),
                         new GravitySystem(),
                         new PlayerInputSystem(gamecam),
                         new FindPlayerSystem(),
-                        new GroundCollisionSystem(),
                         new BulletSystem(),
                         new HealthSystem(),
                         new EnemyCollisionSystem(),
@@ -184,7 +195,8 @@ public class PlayScreen extends AbstractScreen {
                         new BlinkSystem(),
                         new DoorSystem(),
                         new RoomTransitionSystem(b , testArray),
-                        new RenderingSystem(game.batch, gamecam))
+                        new RenderingSystem(game.batch, gamecam),
+                        new GroundCollisionSystem())
                 .build();
         world = new World(config);
 
@@ -271,7 +283,9 @@ public class PlayScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(gamecam.combined);
-        game.batch.begin();
+
+
+/*        game.batch.begin();
 
        // map.draw(game.batch);
 
@@ -285,7 +299,7 @@ public class PlayScreen extends AbstractScreen {
             font.draw(game.batch, "You died :[\nTap to restart", 550, gamecam.viewportHeight - 500, Measure.units(40), Align.center, true);
         }
 
-        game.batch.end();
+        game.batch.end();*/
 
 
         if(delta < 0.20f) {
