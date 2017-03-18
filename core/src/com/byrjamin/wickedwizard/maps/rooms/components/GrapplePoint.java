@@ -44,7 +44,6 @@ public class GrapplePoint {
     public void draw(SpriteBatch batch){
 
         batch.draw(GRAPPLE_TEXTURE, x,y, width, height);
-
         BoundsDrawer.drawBounds(batch, bounds);
     }
 

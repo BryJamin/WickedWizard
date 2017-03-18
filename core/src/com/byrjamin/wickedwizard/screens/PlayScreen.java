@@ -37,6 +37,7 @@ import com.byrjamin.wickedwizard.systems.DoorSystem;
 import com.byrjamin.wickedwizard.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.systems.FiringAISystem;
+import com.byrjamin.wickedwizard.systems.GrappleSystem;
 import com.byrjamin.wickedwizard.systems.GravitySystem;
 import com.byrjamin.wickedwizard.systems.HealthSystem;
 import com.byrjamin.wickedwizard.systems.MoveToPlayerAISystem;
@@ -194,6 +195,7 @@ public class PlayScreen extends AbstractScreen {
                         new BounceCollisionSystem(),
                         new BlinkSystem(),
                         new DoorSystem(),
+                        new GrappleSystem(),
                         new RoomTransitionSystem(b , testArray),
                         new RenderingSystem(game.batch, gamecam),
                         new GroundCollisionSystem())

@@ -14,6 +14,7 @@ public class FindPlayerSystem extends EntitySystem {
     private Entity player;
     private boolean processingFlag = false;
 
+    @SuppressWarnings("unchecked")
     public FindPlayerSystem () {
         super(Aspect.all(PlayerComponent.class));
     }
