@@ -24,7 +24,9 @@ public class GravitySystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         VelocityComponent vc = vm.get(e);
         GravityComponent gc = gm.get(e);
-        vc.velocity.add(0, gc.gravity);
+        if(!gc.ignoreGravity) {
+            vc.velocity.add(0, gc.gravity);
+        }
     }
 
 }

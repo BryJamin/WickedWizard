@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.BounceComponent;
@@ -19,6 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
+import com.byrjamin.wickedwizard.ecs.components.GrappleableComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
@@ -179,12 +181,12 @@ public class EntityFactory {
         return bag;
     }
 
-    public static Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords){
+    public static Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, DoorComponent.DIRECTION exit){
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(5), Measure.units(20))));
-        bag.add(new DoorComponent(current, leaveCoords));
+        bag.add(new DoorComponent(current, leaveCoords, exit));
 
         StateComponent sc = new StateComponent();
         sc.setState(0);
@@ -195,6 +197,19 @@ public class EntityFactory {
         k.put(1, AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(k));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20)));
+        bag.add(new GrappleableComponent());
+        return bag;
+    }
+
+    public static Bag<Component> grateBag(float x, float y, MapCoords current, MapCoords leaveCoords, DoorComponent.DIRECTION exit){
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(10), Measure.units(10))));
+        bag.add(new DoorComponent(current, leaveCoords, exit));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), Measure.units(10), Measure.units(10)));
+        bag.add(new GrappleableComponent());
+        bag.add(new ActiveOnTouchComponent());
+
         return bag;
     }
 
@@ -278,6 +293,23 @@ public class EntityFactory {
         trc.color = Color.RED;
         e.edit().add(trc);
         return e;
+    }
+
+
+    public static Bag<Component> grapplePointBag(float x, float y){
+
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10), Measure.units(10))));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.GRAPPLE),
+                Measure.units(2.5f),
+                Measure.units(2.5f),
+                Measure.units(5),
+                Measure.units(5)));
+        bag.add(new GrappleableComponent());
+
+        return bag;
+
     }
 
 }

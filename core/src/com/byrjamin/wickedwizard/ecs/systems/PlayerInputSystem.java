@@ -8,8 +8,10 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.StateComponent;
@@ -24,11 +26,17 @@ import com.byrjamin.wickedwizard.helper.Measure;
  */
 public class PlayerInputSystem extends EntityProcessingSystem implements InputProcessor {
 
+    private float MAX_GRAPPLE_LAUNCH = Measure.units(60f);
+    private float MAX_GRAPPLE_MOVEMENT = Measure.units(50f);
+    private float GRAPPLE_MOVEMENT = Measure.units(15f);
+
+
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WeaponComponent> wm;
     ComponentMapper<StateComponent> sm;
+    ComponentMapper<GravityComponent> gm;
     ComponentMapper<TextureRegionComponent> trm;
 
 
@@ -36,13 +44,16 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     Vector3 touchInput;
     Vector3 unprojectedInput;
 
-    private boolean hasTarget;
+    public Vector2 grappleDestination;
+    Vector2 flyVelocity;
+
+    public boolean hasTarget;
     private boolean canFire;
 
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
 
-    private float moveTarget;
+    public float moveTarget;
 
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(OrthographicCamera gamecam) {
@@ -64,11 +75,39 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         WeaponComponent wc = wm.get(e);
         StateComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
+        GravityComponent gc = gm.get(e);
 
 
         wc.timer.update(world.getDelta());
 
 
+
+        if(grappleDestination != null){
+            if(Math.abs(vc.velocity.x) < MAX_GRAPPLE_MOVEMENT && Math.abs(vc.velocity.y) < MAX_GRAPPLE_MOVEMENT) {
+
+                float x = pc.getX() + (cbc.bound.getWidth() / 2);
+                float y = pc.getY() + (cbc.bound.getHeight() / 2);
+
+                vc.velocity.add(
+                        (float) Math.cos(Math.atan2(grappleDestination.y - y, grappleDestination.x - x)) * GRAPPLE_MOVEMENT,
+                        (float) Math.sin(Math.atan2(grappleDestination.y - y, grappleDestination.x - x)) * GRAPPLE_MOVEMENT);
+            }
+
+            if(cbc.bound.contains(grappleDestination.x, grappleDestination.y)){
+                vc.velocity.x = 0;
+                pc.position.x = grappleDestination.x - cbc.bound.width / 2;
+                pc.position.y = grappleDestination.y - cbc.bound.height / 2;
+                if(vc.velocity.y > MAX_GRAPPLE_LAUNCH) {
+                    vc.velocity.y = MAX_GRAPPLE_LAUNCH;
+                } else if(vc.velocity.y < 0){
+                    vc.velocity.y = 0;
+                }
+
+                grappleDestination = null;
+                gc.ignoreGravity = false;
+            }
+
+        }
 
         if(movementInputPoll != null) {
 
@@ -83,10 +122,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
             }
 
-        }  else {
-           // vc.velocity.x = 0;
+        }  else if(!hasTarget && grappleDestination == null) {
+            vc.velocity.x = 0;
         }
-
 
         if(hasTarget){
             if (moveTarget - 20 <= pc.getX() && pc.getX() < moveTarget + 20) {
@@ -109,7 +147,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
                     float x = pc.getX() + (cbc.bound.getWidth() / 2);
                     float y = pc.getY() + (cbc.bound.getHeight() / 2);
-
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
                     if(angleOfTravel >= 0) trc.scaleX = (angleOfTravel <= (Math.PI / 2)) ? 1 : -1;
@@ -138,7 +175,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     }
 
-
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -158,14 +194,25 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touchInput = new Vector3(screenX, screenY, 0);
         unprojectedInput = gamecam.unproject(touchInput);
-        if(unprojectedInput.y <= 290) {
-            hasTarget = true;
-            movementInputPoll = pointer;
-            moveTarget = unprojectedInput.x;
+
+        grappleDestination = world.getSystem(GrappleSystem.class).canGrappleTo(touchInput.x, touchInput.y);
+        if(grappleDestination == null) {
+            if (unprojectedInput.y <= 290) {
+                hasTarget = true;
+                movementInputPoll = pointer;
+                moveTarget = unprojectedInput.x;
+                gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
+            } else {
+                canFire = true;
+                firingInputPoll = pointer;
+            }
         } else {
-            canFire = true;
-            firingInputPoll = pointer;
+            gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
+            vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
         }
+
+        world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
+
         return false;
     }
 

@@ -19,9 +19,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
+import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.factories.RoomFactory;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
@@ -123,89 +126,59 @@ public class PlayScreen extends AbstractScreen {
 
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
-        Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
-        bagOfBags.add(EntityFactory.playerBag());
-        bagOfBags.add(EntityFactory.blobBag(400, 800));
-        bagOfBags.add(EntityFactory.doorBag(1200, 200, new MapCoords(0,0), new MapCoords(1,0)));
-        bagOfBags.add(BackgroundFactory.backgroundBags(0,0,
-                MainGame.GAME_WIDTH,
-                MainGame.GAME_HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
-
-        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
-            bagOfBags.add(EntityFactory.wallBag(rw.getBounds()));
-        }
-
-        Arena a = new Arena(new MapCoords(0,0), bagOfBags);
-
-/*        for(Bag<Component> b : a.getBagOfEntities()){
-            Entity e = world.createEntity();
-            for(Component c : b){
-                e.edit().add(c);
-            }
-        }*/
-
-
-        Bag<Bag<Component>> bagOfBagsArenaB = new Bag<Bag<Component>>();
-        bagOfBagsArenaB.add(EntityFactory.playerBag());
-        bagOfBagsArenaB.add(EntityFactory.blobBag(400, 800));
-        bagOfBagsArenaB.add(EntityFactory.doorBag(100, 200, new MapCoords(1,0), new MapCoords(0,0)));
-        bagOfBagsArenaB.add(BackgroundFactory.backgroundBags(0,0,
-                MainGame.GAME_WIDTH,
-                MainGame.GAME_HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
-
-        for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
-            bagOfBagsArenaB.add(EntityFactory.wallBag(rw.getBounds()));
-        }
-
-
-        Arena b = new Arena(new MapCoords(1,0), bagOfBagsArenaB);
-
+        Arena a = RoomFactory.createOmniArena(new MapCoords(0,0));
+        Arena b = RoomFactory.createOmniArena(new MapCoords(1,0));
+        Arena c = RoomFactory.createOmniArena(new MapCoords(2,0));
+        Arena d = RoomFactory.createOmniArena(new MapCoords(-1,0));
+        Arena e = RoomFactory.createOmniArena(new MapCoords(1,1));
 
         Array<Arena> testArray = new Array<Arena>();
         testArray.add(a);
         testArray.add(b);
-        //EntityFactory.createPlayer(world);
+        testArray.add(c);
+        testArray.add(d);
+        testArray.add(e);
 
-        //EntityFactory.createBlob(world, 700, 500);
-        //EntityFactory.createBlob(world, 900, 500);
-
-        //EntityFactory.createMovingTurret(world, 900, 900);
-
-
+        RoomFactory.cleanArenas(testArray);
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(
-                        new MovementSystem(),
-                        new GravitySystem(),
-                        new PlayerInputSystem(gamecam),
-                        new FindPlayerSystem(),
-                        new BulletSystem(),
-                        new HealthSystem(),
-                        new EnemyCollisionSystem(),
-                        new MoveToPlayerAISystem(),
-                        new FiringAISystem(),
+                        new ActiveOnTouchSystem(),
                         new AnimationSystem(),
-                        new StateSystem(),
-                        new BounceCollisionSystem(),
                         new BlinkSystem(),
+                        new BounceCollisionSystem(),
+                        new BulletSystem(),
                         new DoorSystem(),
+                        new EnemyCollisionSystem(),
+                        new FindPlayerSystem(),
+                        new FiringAISystem(),
                         new GrappleSystem(),
+                        new GravitySystem(),
+                        new GroundCollisionSystem(),
+                        new HealthSystem(),
+                        new MovementSystem(),
+                        new MoveToPlayerAISystem(),
+                        new PlayerInputSystem(gamecam),
                         new RoomTransitionSystem(b , testArray),
+                        new StateSystem(),
                         new RenderingSystem(game.batch, gamecam),
-                        new GroundCollisionSystem())
+                        new BoundsDrawingSystem())
                 .build();
         world = new World(config);
 
-        for(Bag<Component> d : b.getBagOfEntities()){
-            Entity e = world.createEntity();
-            for(Component c : d){
-                e.edit().add(c);
+        System.out.println(a.getBagOfEntities().size());
+
+        for(Bag<Component> bag : b.getBagOfEntities()){
+            Entity entity = world.createEntity();
+            for(Component comp : bag){
+                entity.edit().add(comp);
             }
+        }
+
+        Entity entity = world.createEntity();
+        for(Component comp : EntityFactory.playerBag()){
+            entity.edit().add(comp);
         }
 
     }

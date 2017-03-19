@@ -72,13 +72,7 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
                 }
 
             }
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, r);
         }
-
-        BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);
-
-        //pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
-
     }
 
 

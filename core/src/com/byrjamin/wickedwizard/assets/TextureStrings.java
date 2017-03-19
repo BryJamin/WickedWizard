@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.assets;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
  * Created by Home on 01/01/2017.
@@ -35,6 +36,7 @@ public class TextureStrings {
     //BIGGABLOBBA
     public static String BIGGABLOBBA_STANDING = "biggablobba";
 
+    public static String GRAPPLE = "grapple";
 
     //PLAYER
 

@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
@@ -21,6 +22,7 @@ import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 public class DoorSystem extends EntityProcessingSystem {
 
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<ActiveOnTouchComponent> aotm;
     ComponentMapper<DoorComponent> dm;
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
@@ -42,16 +44,22 @@ public class DoorSystem extends EntityProcessingSystem {
         for(int i = 0; i < entityIds.size(); i++){
             int doorEntity = entityIds.get(i);
 
+            if(aotm.has(doorEntity)) {
+                if(!aotm.get(doorEntity).isActive) {
+                    continue;
+                }
+            }
+
             if(cbm.has(doorEntity)) {
-
                 BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(doorEntity).bound);
-
                 if(cbm.get(doorEntity).bound.overlaps(cbm.get(e).bound)) {
-
                     System.out.println("INSIDE THA DOOR");
+                    if(world.getSystem(RoomTransitionSystem.class).goTo(dm.get(doorEntity).leaveCoords)){
 
-                    world.getSystem(RoomTransitionSystem.class).goTo(dm.get(doorEntity).leaveCoords);
 
+
+
+                    };
                 }
             }
 

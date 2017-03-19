@@ -8,6 +8,9 @@ import com.artemis.EntitySystem;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
+import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 
@@ -18,6 +21,8 @@ import com.byrjamin.wickedwizard.maps.MapCoords;
 public class RoomTransitionSystem extends EntitySystem {
 
     ComponentMapper<BulletComponent> bm;
+    ComponentMapper<PositionComponent> pm;
+    ComponentMapper<GravityComponent> gm;
 
     private Arena currentArena;
     private Array<Arena> roomArray;
@@ -28,7 +33,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public RoomTransitionSystem(Arena currentArena, Array<Arena> roomArray) {
-        super(Aspect.all());
+        super(Aspect.all().exclude(PlayerComponent.class));
         this.currentArena = currentArena;
         this.roomArray = roomArray;
     }
@@ -47,6 +52,11 @@ public class RoomTransitionSystem extends EntitySystem {
         }
 
         currentArena = findRoom(destination);
+
+        if(currentArena == null){
+            return;
+        }
+
         System.out.println(destination);
         for(Bag<Component> b : currentArena.getBagOfEntities()){
             Entity e = world.createEntity();
@@ -54,13 +64,19 @@ public class RoomTransitionSystem extends EntitySystem {
                 e.edit().add(c);
             }
         }
+
+        pm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).position.x = 100;
+        gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
+        world.getSystem(PlayerInputSystem.class).grappleDestination = null;
+        world.getSystem(PlayerInputSystem.class).hasTarget = false;
+
     }
 
 
     public Arena findRoom(MapCoords destination){
         System.out.println(roomArray.size);
         for(Arena a : roomArray) {
-            if(a.location.equals(destination)){
+            if(a.cotainingCoords.contains(destination, false)){
                 return a;
             }
         }
@@ -84,10 +100,16 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
 
-    public void goTo(MapCoords destination){
-        processingFlag = true;
-        this.destination = destination;
-        processSystem();
+    public boolean goTo(MapCoords destination){
+
+        Arena next = findRoom(destination);
+        if(next != null) {
+            processingFlag = true;
+            this.destination = destination;
+            processSystem();
+            return true;
+        }
+        return false;
     }
 
 }
