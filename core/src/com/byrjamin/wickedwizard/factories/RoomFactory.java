@@ -132,11 +132,10 @@ public class RoomFactory {
 
 
     public static void cleanArenas(Array<Arena> arenas){
-
-
         for(int i = 0; i < arenas.size; i++) {
             Arena a = arenas.get(i);
-                for (DoorComponent dc : a.getDoors()) {
+            for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
+                DoorComponent dc = a.getDoors().get(j);
                     if (!findDoorWithinFoundRoom(dc, arenas)) {
                         Bag<Component> bag = a.findBag(dc);
                         if (BagSearch.contains(ActiveOnTouchComponent.class, bag)) {
@@ -148,6 +147,10 @@ public class RoomFactory {
                                 a.addEntity(EntityFactory.wallBag(cbc.bound));
                             }
                         }
+                        System.out.println(a.adjacentCoords.size);
+                        a.adjacentCoords.removeValue(dc.leaveCoords, false);
+                        a.doors.removeValue(dc, true);
+                        System.out.println(a.adjacentCoords.size);
                     }
                 }
         }

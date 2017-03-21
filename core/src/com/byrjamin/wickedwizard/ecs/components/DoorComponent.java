@@ -29,5 +29,6 @@ public class DoorComponent extends Component {
     public DoorComponent(MapCoords currentCoords, MapCoords leaveCoords, DIRECTION exit) {
         this.currentCoords = currentCoords;
         this.leaveCoords = leaveCoords;
+        this.exit = exit;
     }
 }

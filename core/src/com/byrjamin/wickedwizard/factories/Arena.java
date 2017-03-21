@@ -19,6 +19,7 @@ public class Arena {
 
     //private Bag<Bag<Component>> doors = new Bag<Bag<Component>>();
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
+    private Bag<Bag<Component>> doorBags = new Bag<Bag<Component>>();
 
     public Arena(Array<MapCoords> cotainingCoords) {
         this.cotainingCoords = cotainingCoords;
@@ -44,6 +45,7 @@ public class Arena {
             if(c instanceof DoorComponent){
                 adjacentCoords.add(((DoorComponent) c).leaveCoords);
                 doors.add((DoorComponent) c);
+                doorBags.add(door);
                 bagOfEntities.add(door);
                 return;
             }

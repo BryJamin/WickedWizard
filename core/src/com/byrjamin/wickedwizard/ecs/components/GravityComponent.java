@@ -8,7 +8,7 @@ import com.byrjamin.wickedwizard.helper.Measure;
  */
 public class GravityComponent extends Component{
 
-    public float gravity = -Measure.units(1.5f);
+    public float gravity = -Measure.units(3f);
     public boolean ignoreGravity = false;
 
     public GravityComponent (float gravity){

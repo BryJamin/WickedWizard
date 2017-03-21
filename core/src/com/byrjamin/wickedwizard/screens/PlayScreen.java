@@ -22,6 +22,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.factories.Arena;
+import com.byrjamin.wickedwizard.factories.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.RoomFactory;
@@ -82,9 +83,13 @@ public class PlayScreen extends AbstractScreen {
 
     Map map;
 
+    private ArenaGUI arenaGUI;
+
     private RoomInputAdapter roomInputAdapter;
 
     private GestureDetector gameOvergestureDetector;
+
+    private Array<Arena> testArray;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -132,7 +137,7 @@ public class PlayScreen extends AbstractScreen {
         Arena d = RoomFactory.createOmniArena(new MapCoords(-1,0));
         Arena e = RoomFactory.createOmniArena(new MapCoords(1,1));
 
-        Array<Arena> testArray = new Array<Arena>();
+        testArray = new Array<Arena>();
         testArray.add(a);
         testArray.add(b);
         testArray.add(c);
@@ -180,6 +185,12 @@ public class PlayScreen extends AbstractScreen {
         for(Component comp : EntityFactory.playerBag()){
             entity.edit().add(comp);
         }
+
+
+
+        arenaGUI = new ArenaGUI(0,0,testArray, b);
+        arenaGUI.update(1, gamecam, testArray, b);
+
 
     }
 
@@ -281,6 +292,8 @@ public class PlayScreen extends AbstractScreen {
         }
 
         world.process();
+
+        arenaGUI.draw(game.batch);
 
     }
 

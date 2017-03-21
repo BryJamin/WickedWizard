@@ -54,7 +54,7 @@ public class DoorSystem extends EntityProcessingSystem {
                 BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(doorEntity).bound);
                 if(cbm.get(doorEntity).bound.overlaps(cbm.get(e).bound)) {
                     System.out.println("INSIDE THA DOOR");
-                    if(world.getSystem(RoomTransitionSystem.class).goTo(dm.get(doorEntity).leaveCoords)){
+                    if(world.getSystem(RoomTransitionSystem.class).goFromTo(dm.get(doorEntity).currentCoords, dm.get(doorEntity).leaveCoords)){
 
 
 

@@ -26,8 +26,8 @@ import com.byrjamin.wickedwizard.helper.Measure;
  */
 public class PlayerInputSystem extends EntityProcessingSystem implements InputProcessor {
 
-    private float MAX_GRAPPLE_LAUNCH = Measure.units(60f);
-    private float MAX_GRAPPLE_MOVEMENT = Measure.units(50f);
+    public float MAX_GRAPPLE_LAUNCH = Measure.units(60f);
+    private float MAX_GRAPPLE_MOVEMENT = Measure.units(150f);
     private float GRAPPLE_MOVEMENT = Measure.units(15f);
 
 
@@ -123,7 +123,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             }
 
         }  else if(!hasTarget && grappleDestination == null) {
-            vc.velocity.x = 0;
+            //vc.velocity.x = 0;
         }
 
         if(hasTarget){
