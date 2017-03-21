@@ -147,10 +147,8 @@ public class RoomFactory {
                                 a.addEntity(EntityFactory.wallBag(cbc.bound));
                             }
                         }
-                        System.out.println(a.adjacentCoords.size);
                         a.adjacentCoords.removeValue(dc.leaveCoords, false);
                         a.doors.removeValue(dc, true);
-                        System.out.println(a.adjacentCoords.size);
                     }
                 }
         }

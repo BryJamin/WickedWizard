@@ -154,7 +154,6 @@ public class PlayScreen extends AbstractScreen {
                         new BlinkSystem(),
                         new BounceCollisionSystem(),
                         new BulletSystem(),
-                        new DoorSystem(),
                         new EnemyCollisionSystem(),
                         new FindPlayerSystem(),
                         new FiringAISystem(),
@@ -165,10 +164,11 @@ public class PlayScreen extends AbstractScreen {
                         new MovementSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam),
-                        new RoomTransitionSystem(b , testArray),
                         new StateSystem(),
                         new RenderingSystem(game.batch, gamecam),
-                        new BoundsDrawingSystem())
+                        new BoundsDrawingSystem(),
+                        new RoomTransitionSystem(b , testArray),
+                        new DoorSystem())
                 .build();
         world = new World(config);
 
@@ -259,7 +259,7 @@ public class PlayScreen extends AbstractScreen {
     public void render(float delta) {
         //System.out.println(atlas.getRegions().toString());
         //Updates the positions of all elements on the screen before they are redrawn.
-        update(delta);
+        //update(delta);
 
 
 
