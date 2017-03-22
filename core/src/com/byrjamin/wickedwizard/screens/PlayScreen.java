@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.factories.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.factories.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.RoomFactory;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -50,6 +51,8 @@ import com.byrjamin.wickedwizard.ecs.systems.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
+
+import java.util.Random;
 
 
 //TODO
@@ -131,20 +134,18 @@ public class PlayScreen extends AbstractScreen {
 
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
-        Arena a = RoomFactory.createOmniArena(new MapCoords(0,0));
-        Arena b = RoomFactory.createOmniArena(new MapCoords(1,0));
-        Arena c = RoomFactory.createOmniArena(new MapCoords(2,0));
-        Arena d = RoomFactory.createOmniArena(new MapCoords(-1,0));
-        Arena e = RoomFactory.createOmniArena(new MapCoords(1,1));
+        Random random = new Random();
+        JigsawGenerator jg = new JigsawGenerator(10,random);
 
-        testArray = new Array<Arena>();
-        testArray.add(a);
-        testArray.add(b);
-        testArray.add(c);
-        testArray.add(d);
-        testArray.add(e);
-
+        testArray = jg.generateJigsaw();
+        Arena b = jg.getStartingRoom();
         RoomFactory.cleanArenas(testArray);
+
+        int i = 0;
+        for(Arena a : testArray){
+            System.out.println("Adajacent coords fors arena " + i + " " + a.adjacentCoords);
+                    i++;
+        }
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()
@@ -171,9 +172,6 @@ public class PlayScreen extends AbstractScreen {
                         new DoorSystem())
                 .build();
         world = new World(config);
-
-        System.out.println(a.getBagOfEntities().size());
-
         for(Bag<Component> bag : b.getBagOfEntities()){
             Entity entity = world.createEntity();
             for(Component comp : bag){

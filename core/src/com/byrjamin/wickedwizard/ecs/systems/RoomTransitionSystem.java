@@ -8,6 +8,7 @@ import com.artemis.EntitySystem;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
@@ -30,6 +31,7 @@ public class RoomTransitionSystem extends EntitySystem {
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<GravityComponent> gm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<ActiveOnTouchComponent> aotm;
 
     private Arena currentArena;
     private Array<Arena> roomArray;
@@ -71,6 +73,11 @@ public class RoomTransitionSystem extends EntitySystem {
             for(Component c : b){
                 e.edit().add(c);
             }
+
+            if(aotm.has(e)){
+                aotm.get(e).isActive = false;
+            }
+
         }
 
         for(DoorComponent doorComponent : currentArena.getDoors()){
