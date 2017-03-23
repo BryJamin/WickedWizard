@@ -50,6 +50,9 @@ public class JigsawGenerator {
         avaliableMapCoordsSet.addAll(startingArena.adjacentCoords);
         avaliableDoorsSet.addAll(startingArena.getDoors());
 
+        arenas.removeValue(startingArena, true);
+        placedArenas.add(startingArena);
+
 
         while(arenas.size > 0) {
             int i = rand.nextInt(arenas.size);

@@ -163,4 +163,11 @@ public class RoomTransitionSystem extends EntitySystem {
         return false;
     }
 
+    public Arena getCurrentArena() {
+        return currentArena;
+    }
+
+    public Array<Arena> getRoomArray() {
+        return roomArray;
+    }
 }

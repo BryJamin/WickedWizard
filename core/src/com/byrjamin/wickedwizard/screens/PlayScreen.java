@@ -33,6 +33,8 @@ import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
 import com.byrjamin.wickedwizard.maps.MapCoords;
+import com.byrjamin.wickedwizard.maps.MapJigsawGenerator;
+import com.byrjamin.wickedwizard.maps.rooms.Room;
 import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.ecs.systems.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BlinkSystem;
@@ -144,10 +146,19 @@ public class PlayScreen extends AbstractScreen {
 
         int i = 0;
         for(Arena a : testArray){
-            System.out.println("Adajacent coords fors arena " + i + " " + a.adjacentCoords);
+            System.out.println(" coords fors arena " + i + " " + a.cotainingCoords);
                     i++;
         }
 
+        MapJigsawGenerator mjg = new MapJigsawGenerator(10, random);
+
+        i = 0;
+        for(Room r : mjg.generateJigsaw()){
+            System.out.println("Room coords for room " + i + " " + r.getMapCoordsArray());
+            i++;
+        }
+
+        RoomTransitionSystem rts = new RoomTransitionSystem(b, testArray);
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(
@@ -170,7 +181,7 @@ public class PlayScreen extends AbstractScreen {
                         new StateSystem(),
                         new RenderingSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
-                        new RoomTransitionSystem(b , testArray),
+                        rts,
                         new DoorSystem())
                 .build();
         world = new World(config);
@@ -189,7 +200,6 @@ public class PlayScreen extends AbstractScreen {
 
 
         arenaGUI = new ArenaGUI(0,0,testArray, b);
-        arenaGUI.update(1, gamecam, testArray, b);
 
 
     }
@@ -292,6 +302,12 @@ public class PlayScreen extends AbstractScreen {
         }
 
         world.process();
+
+
+        arenaGUI.update(world.delta,
+                gamecam,
+                world.getSystem(RoomTransitionSystem.class).getRoomArray(),
+                world.getSystem(RoomTransitionSystem.class).getCurrentArena());
 
         arenaGUI.draw(game.batch);
 

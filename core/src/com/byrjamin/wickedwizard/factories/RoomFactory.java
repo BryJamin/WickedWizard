@@ -126,6 +126,9 @@ public class RoomFactory {
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
                 DoorComponent.DIRECTION.down));
 
+
+        System.out.println(arena.cotainingCoords);
+
         return arena;
     }
 
