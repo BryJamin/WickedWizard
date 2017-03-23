@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.GrappleableComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.StateComponent;
@@ -112,6 +113,7 @@ public class EntityFactory {
         bag.add(new PlayerComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         bag.add(new GravityComponent());
+        bag.add(new MoveToComponent(Measure.units(115f)));
 
         StateComponent sc = new StateComponent();
         sc.setState(0);

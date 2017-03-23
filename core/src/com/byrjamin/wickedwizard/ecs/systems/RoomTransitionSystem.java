@@ -32,6 +32,7 @@ public class RoomTransitionSystem extends EntitySystem {
     ComponentMapper<GravityComponent> gm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ActiveOnTouchComponent> aotm;
+    ComponentMapper<DoorComponent> dm;
 
     private Arena currentArena;
     private Array<Arena> roomArray;
@@ -78,32 +79,35 @@ public class RoomTransitionSystem extends EntitySystem {
                 aotm.get(e).isActive = false;
             }
 
-        }
+            if(dm.has(e)){
+                DoorComponent dc = dm.get(e);
+                CollisionBoundComponent cbc = cbm.get(e);
+                PositionComponent player =  pm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                CollisionBoundComponent pBound = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
-        for(DoorComponent doorComponent : currentArena.getDoors()){
-            System.out.println(doorComponent.currentCoords + " Current");
-            System.out.println(doorComponent.leaveCoords + "leave");
-
-            System.out.println(destination + " des");
-            System.out.println(previousDestination + "prev");
-            if(doorComponent.currentCoords.equals(destination) && doorComponent.leaveCoords.equals(previousDestination)){
-                switch (doorComponent.exit){
-                    case left: pm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).position.x = 100;
-                        break;
-                    case right: pm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).position.x = 1100;
-                        break;
-                    case up: pm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).position.y = 800;
-                        break;
-                    case down: pm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).position.y = 300;
-                        break;
+                if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
+                    switch (dc.exit){
+                        case left: player.position.x = cbc.bound.getX() + cbc.bound.getWidth() + pBound.bound.getWidth();
+                            break;
+                        case right: player.position.x = cbc.bound.getX() - pBound.bound.getWidth();
+                            break;
+                        case up:
+                            player.position.x = cbc.getCenterX();
+                            player.position.y = cbc.getCenterY();
+                            break;
+                        case down:
+                            player.position.x = cbc.getCenterX();
+                            player.position.y = cbc.getCenterY();
+                            break;
+                    }
                 }
-                System.out.println("HAUWHDAUIWDHNAUIWNDAWUID");
 
             }
+
         }
+
         gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
         Vector2 velocity  = vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity;
-
 
         if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
             velocity.x = velocity.x > 0 ? Measure.units(60f) / 2 : -Measure.units(60f) / 2;
@@ -112,8 +116,6 @@ public class RoomTransitionSystem extends EntitySystem {
         if(velocity.y > Measure.units(60f)) {
             velocity.y = Measure.units(60f);
         }
-
-
 
         world.getSystem(PlayerInputSystem.class).grappleDestination = null;
         world.getSystem(PlayerInputSystem.class).hasTarget = false;

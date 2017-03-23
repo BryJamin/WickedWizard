@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
 import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.factories.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
@@ -163,6 +164,7 @@ public class PlayScreen extends AbstractScreen {
                         new GroundCollisionSystem(),
                         new HealthSystem(),
                         new MovementSystem(),
+                        new MoveToSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam),
                         new StateSystem(),

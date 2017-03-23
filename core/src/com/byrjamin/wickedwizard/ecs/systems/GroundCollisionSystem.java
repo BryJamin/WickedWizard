@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WallComponent;
@@ -26,6 +27,7 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WallComponent> wm;
     ComponentMapper<BulletComponent> bm;
+    ComponentMapper<MoveToComponent> mtm;
 
     @SuppressWarnings("unchecked")
     public GroundCollisionSystem() {
@@ -62,6 +64,11 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
             if(c != Collider.Collision.NONE){
                 switch(c){
                     case TOP: vc.velocity.y = 0;
+                        if(mtm.has(e)){
+                            if(mtm.get(e).target_x == null){
+                                vc.velocity.x = 0;
+                            }
+                        }
                         //break;
                 }
                 pc.position.x = cbc.bound.getX();

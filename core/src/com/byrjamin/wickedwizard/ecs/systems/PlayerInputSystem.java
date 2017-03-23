@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.StateComponent;
@@ -33,6 +34,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WeaponComponent> wm;
     ComponentMapper<StateComponent> sm;
@@ -76,6 +78,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         StateComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
         GravityComponent gc = gm.get(e);
+        MoveToComponent mtc = mtm.get(e);
 
 
         wc.timer.update(world.getDelta());
@@ -116,8 +119,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 gamecam.unproject(input);
 
                 if(input.y < 290){
-                    moveTarget = input.x;
-                    hasTarget = true;
+                    mtc.target_x = input.x;
                 }
 
             }
@@ -125,18 +127,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         }  else if(!hasTarget && grappleDestination == null) {
             //vc.velocity.x = 0;
         }
-
-        if(hasTarget){
-            if (moveTarget - 20 <= pc.getX() && pc.getX() < moveTarget + 20) {
-                vc.velocity.x = 0;
-                hasTarget = false;
-            } else if (pc.getX() >= moveTarget) {
-                vc.velocity.x = -Measure.units(115f);
-            } else {
-                vc.velocity.x = Measure.units(115f);
-            }
-        }
-
 
         if(firingInputPoll != null){
             if(Gdx.input.isTouched(firingInputPoll)) {
@@ -207,8 +197,10 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 firingInputPoll = pointer;
             }
         } else {
+            mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).target_x = null;
             gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
             vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
+            vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
         }
 
         world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
