@@ -72,13 +72,17 @@ public class ArenaGUI {
 
     public void draw(SpriteBatch batch) {
 
-        batch.end();
+        if(batch.isDrawing()) {
+            batch.end();
+        }
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         drawMapSquares(batch);
         drawMapLines(batch);
         Gdx.gl.glDisable(GL20.GL_BLEND);
-        batch.begin();
+        if(!batch.isDrawing()) {
+            batch.begin();
+        }
 
     }
 

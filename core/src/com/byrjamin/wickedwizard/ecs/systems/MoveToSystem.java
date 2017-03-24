@@ -41,7 +41,6 @@ public class MoveToSystem extends EntityProcessingSystem {
             } else if (pc.getX() >= target) {
                 vc.velocity.x = -mtc.getSpeed();
             } else {
-                System.out.println("INSIDE");
                 vc.velocity.x = mtc.getSpeed();
             }
         }

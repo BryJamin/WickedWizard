@@ -36,7 +36,17 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
 
         for(int i = 0; i < noBattleRooms; i++){
-            arenas.add(RoomFactory.createOmniArena());
+
+
+            if(rand.nextBoolean()){
+                arenas.add(RoomFactory.createWidth2Arena());
+            } else {
+                arenas.add(RoomFactory.createOmniArena());
+            }
+            //if(i == 1) {
+
+            //}
+            //arenas.add(RoomFactory.createOmniArena());
         }
 
         startingArena = arenas.first();

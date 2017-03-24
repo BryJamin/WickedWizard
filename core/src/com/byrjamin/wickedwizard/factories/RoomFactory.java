@@ -91,6 +91,9 @@ public class RoomFactory {
         containingCorrds.add(defaultCoords);
         Arena arena = new Arena(containingCorrds);
 
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT);
+
         arena.addEntity(BackgroundFactory.backgroundBags(0,0,
                 SECTION_WIDTH,
                 SECTION_HEIGHT,
@@ -132,6 +135,65 @@ public class RoomFactory {
         return arena;
     }
 
+    public static Arena createWidth2Arena(){
+        return createWidth2Arena(new MapCoords(0,0));
+    }
+
+
+    public static Arena createWidth2Arena(MapCoords defaultCoords) {
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+
+        Arena arena = new Arena(containingCorrds);
+
+        arena.setWidth(SECTION_WIDTH * 2);
+        arena.setHeight(SECTION_HEIGHT);
+
+
+        arena.addEntity(BackgroundFactory.backgroundBags(0,0,
+                SECTION_WIDTH * 2,
+                SECTION_HEIGHT,
+                Measure.units(15),
+                PlayScreen.atlas.findRegions("backgrounds/wall")));
+
+        //LEFT WALL
+        arena.addEntity(EntityFactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
+        arena.addDoor(EntityFactory.doorBag(0, Measure.units(10),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
+                DoorComponent.DIRECTION.left));
+
+        //RIGHT WALL
+        arena.addEntity(EntityFactory.wallBag((SECTION_WIDTH * 2) - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
+        arena.addDoor(EntityFactory.doorBag((SECTION_WIDTH * 2) - WALLWIDTH, Measure.units(10),
+                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                DoorComponent.DIRECTION.right));
+
+        //CEILING
+        arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, (SECTION_WIDTH * 2), WALLWIDTH));
+/*        arena.addDoor(EntityFactory.grateBag(WIDTH / 2, 800,
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                DoorComponent.DIRECTION.up));*/
+
+
+        //GROUND
+        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, (SECTION_WIDTH * 2), WALLWIDTH * 3));
+/*        arena.addDoor(EntityFactory.grateBag(WIDTH / 2, 300,
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
+                DoorComponent.DIRECTION.down));*/
+
+
+        //System.out.println(arena.cotainingCoords);
+
+        return arena;
+    }
+
 
 
     public static void cleanArenas(Array<Arena> arenas){
@@ -161,6 +223,7 @@ public class RoomFactory {
     public static boolean findDoorWithinFoundRoom(DoorComponent dc, Array<Arena> arenas){
         Arena a = findRoom(dc.leaveCoords, arenas);
         if(a != null) {
+            //System.out.println("Find Door " + a.adjacentCoords.contains(dc.currentCoords, false));
             return a.adjacentCoords.contains(dc.currentCoords, false);
         }
         return false;
@@ -168,6 +231,7 @@ public class RoomFactory {
 
     public static Arena findRoom(MapCoords mc, Array<Arena> arenas){
         for(Arena a : arenas){
+            //System.out.println("Find room " + a.cotainingCoords.contains(mc, false));
             if(a.cotainingCoords.contains(mc, false)){
                 return a;
             }

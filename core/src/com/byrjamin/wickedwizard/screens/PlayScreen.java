@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
 import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.factories.ArenaGUI;
@@ -138,7 +139,6 @@ public class PlayScreen extends AbstractScreen {
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
         Random random = new Random();
-        JigsawGenerator jg = new JigsawGenerator(10,random);
 
         testArray = jg.generateJigsaw();
         Arena b = jg.getStartingRoom();
@@ -147,10 +147,11 @@ public class PlayScreen extends AbstractScreen {
         int i = 0;
         for(Arena a : testArray){
             System.out.println(" coords fors arena " + i + " " + a.cotainingCoords);
+            System.out.println(" AJcoords fors arena " + i + " " + a.adjacentCoords);
                     i++;
         }
 
-        MapJigsawGenerator mjg = new MapJigsawGenerator(10, random);
+        MapJigsawGenerator mjg = new MapJigsawGenerator(3, random);
 
         i = 0;
         for(Room r : mjg.generateJigsaw()){
@@ -161,7 +162,7 @@ public class PlayScreen extends AbstractScreen {
         RoomTransitionSystem rts = new RoomTransitionSystem(b, testArray);
 
         WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(
+                .with(0,
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
@@ -179,11 +180,15 @@ public class PlayScreen extends AbstractScreen {
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam),
                         new StateSystem(),
-                        new RenderingSystem(game.batch, gamecam),
-                        new BoundsDrawingSystem(),
                         rts,
+                        new CameraSystem(gamecam, gamePort),
+                        new BoundsDrawingSystem(),
+                        new RenderingSystem(game.batch, gamecam),
                         new DoorSystem())
                 .build();
+
+        WorldConfigurationBuilder wcb = new WorldConfigurationBuilder();
+
         world = new World(config);
         for(Bag<Component> bag : b.getBagOfEntities()){
             Entity entity = world.createEntity();

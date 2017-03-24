@@ -12,6 +12,9 @@ import com.byrjamin.wickedwizard.maps.MapCoords;
 
 public class Arena {
 
+    private float width;
+    private float height;
+
     public Array<MapCoords> cotainingCoords;
     public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
 
@@ -75,4 +78,20 @@ public class Arena {
         return null;
     }
 
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
 }
