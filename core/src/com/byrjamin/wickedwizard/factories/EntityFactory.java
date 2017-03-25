@@ -131,7 +131,7 @@ public class EntityFactory {
         WeaponComponent wc = new WeaponComponent(0.3f);
         wc.additionalComponenets.add(new FriendlyComponent());
         bag.add(wc);
-        bag.add(new HealthComponent(10));
+        bag.add(new HealthComponent(3));
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
@@ -169,7 +169,7 @@ public class EntityFactory {
 
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
-        bag.add(new CollisionBoundComponent(new Rectangle(0,0,Measure.units(9), Measure.units(9))));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(9), Measure.units(9))));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
         bag.add(new MoveToPlayerComponent());

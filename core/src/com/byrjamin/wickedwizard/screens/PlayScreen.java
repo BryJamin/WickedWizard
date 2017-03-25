@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
@@ -295,11 +296,6 @@ public class PlayScreen extends AbstractScreen {
        // map.draw(game.batch);
 
 
-        for(int i = 1; i <= map.getActiveRoom().getWizard().getHealth(); i++){
-            game.batch.draw(atlas.findRegion("sprite_health0"), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-        }
-
-
         if(gameOver){
             font.draw(game.batch, "You died :[\nTap to restart", 550, gamecam.viewportHeight - 500, Measure.units(40), Align.center, true);
         }
@@ -311,9 +307,15 @@ public class PlayScreen extends AbstractScreen {
             world.setDelta(delta);
         }
 
+
         world.process();
        // world.getSystem(LockSystem.class).lockDoors();
 
+
+
+        for(int i = 1; i <= world.getSystem(FindPlayerSystem.class).getPlayer().getComponent(HealthComponent.class).health; i++){
+            game.batch.draw(atlas.findRegion("sprite_health0"), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        }
 
         arenaGUI.update(world.delta,
                 gamecam,
