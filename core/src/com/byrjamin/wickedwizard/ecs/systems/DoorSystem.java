@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
+import com.byrjamin.wickedwizard.ecs.components.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 
@@ -24,6 +25,7 @@ public class DoorSystem extends EntityProcessingSystem {
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ActiveOnTouchComponent> aotm;
     ComponentMapper<DoorComponent> dm;
+    ComponentMapper<LockComponent> lm;
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
     ComponentMapper<BlinkComponent> bm;
@@ -53,13 +55,19 @@ public class DoorSystem extends EntityProcessingSystem {
             if(cbm.has(doorEntity)) {
                 BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(doorEntity).bound);
                 if(cbm.get(doorEntity).bound.overlaps(cbm.get(e).bound)) {
-                    System.out.println("INSIDE THA DOOR");
-                    if(world.getSystem(RoomTransitionSystem.class).goFromTo(dm.get(doorEntity).currentCoords, dm.get(doorEntity).leaveCoords)){
+                   // System.out.println("INSIDE THA DOOR");
+
+                    if(lm.has(doorEntity)) {
+
+                        System.out.println(lm.get(doorEntity).isLocked());
+                        if(!lm.get(doorEntity).isLocked()) {
 
 
-
-
-                    };
+                            if (world.getSystem(RoomTransitionSystem.class).goFromTo(dm.get(doorEntity).currentCoords, dm.get(doorEntity).leaveCoords)) {
+                            }
+                            ;
+                        }
+                    }
                 }
             }
 

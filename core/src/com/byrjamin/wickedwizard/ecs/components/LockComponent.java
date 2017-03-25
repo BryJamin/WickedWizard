@@ -8,15 +8,26 @@ import com.artemis.Component;
 
 public class LockComponent extends Component {
 
-    public boolean lock;
-
+    private boolean lock;
 
     public LockComponent(){
-        this(true);
+        this(false);
     }
 
     public LockComponent(boolean lock){
         this.lock = lock;
+    }
+
+    public void lock(){
+        lock = true;
+    }
+
+    public void unlock(){
+        lock = false;
+    }
+
+    public boolean isLocked(){
+        return lock;
     }
 
 

@@ -8,4 +8,5 @@ import com.artemis.Component;
 
 public class ActiveOnTouchComponent extends Component {
     public boolean isActive = false;
+    public boolean isEnabled = true;
 }

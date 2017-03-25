@@ -39,7 +39,9 @@ public class ActiveOnTouchSystem extends EntitySystem {
     public void activeOnTouchTrigger(float inputX, float inputY) {
         for(Entity e : this.getEntities()){
             System.out.println(aotm.get(e).isActive);
-            aotm.get(e).isActive = cbm.get(e).bound.contains(inputX, inputY);
+            if(aotm.get(e).isEnabled) {
+                aotm.get(e).isActive = cbm.get(e).bound.contains(inputX, inputY);
+            }
         }
     }
 

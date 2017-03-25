@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.helper.BagSearch;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.MapCoords;
@@ -129,6 +130,10 @@ public class RoomFactory {
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
                 DoorComponent.DIRECTION.down));
 
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
+        arena.addEntity(bag);
+
 
         System.out.println(arena.cotainingCoords);
 
@@ -190,6 +195,10 @@ public class RoomFactory {
 
 
         //System.out.println(arena.cotainingCoords);
+
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
+        arena.addEntity(bag);
 
         return arena;
     }

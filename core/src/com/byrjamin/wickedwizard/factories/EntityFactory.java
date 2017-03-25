@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.GrappleableComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
@@ -62,6 +63,7 @@ public class EntityFactory {
         TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
                 PlayScreen.atlas.findRegions("brick"));
         trbc.layer = -9;
+
         bag.add(trbc);
 
         return bag;
@@ -191,15 +193,17 @@ public class EntityFactory {
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
         StateComponent sc = new StateComponent();
-        sc.setState(0);
+        sc.setState(StateComponent.State.UNLOCKED.getState());
+        sc.stateTime = 100f;
         bag.add(sc);
 
-        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, AnimationPacker.genAnimation(1 / 35f, "door"));
-        k.put(1, AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
-        bag.add(new AnimationComponent(k));
+        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
+        aniMap.put(StateComponent.State.LOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "door"));
+        aniMap.put(StateComponent.State.UNLOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
+        bag.add(new AnimationComponent(aniMap));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20)));
         bag.add(new GrappleableComponent());
+        bag.add(new LockComponent());
         return bag;
     }
 
@@ -211,6 +215,7 @@ public class EntityFactory {
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), Measure.units(10), Measure.units(10)));
         bag.add(new GrappleableComponent());
         bag.add(new ActiveOnTouchComponent());
+        bag.add(new LockComponent());
 
         return bag;
     }

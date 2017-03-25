@@ -37,12 +37,17 @@ public class JigsawGenerator {
 
         for(int i = 0; i < noBattleRooms; i++){
 
+            Arena a;
 
             if(rand.nextBoolean()){
-                arenas.add(RoomFactory.createWidth2Arena());
+                a = RoomFactory.createWidth2Arena();
+                a.addEntity(EntityFactory.blobBag(a.getWidth() / 2, a.getHeight() / 2));
             } else {
-                arenas.add(RoomFactory.createOmniArena());
+                a = RoomFactory.createOmniArena();
+                a.addEntity(EntityFactory.blobBag(a.getWidth() / 2, a.getHeight() / 2));
             }
+
+            arenas.add(a);
             //if(i == 1) {
 
             //}

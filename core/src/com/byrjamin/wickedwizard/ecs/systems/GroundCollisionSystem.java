@@ -53,9 +53,16 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
 
         cbc.bound.x = pc.getX();
         cbc.bound.y = pc.getY();
+
         Rectangle futureRectangle = new Rectangle(cbc.bound);
-        futureRectangle.x += vc.velocity.x * world.delta;
-        futureRectangle.y += vc.velocity.y * world.delta;
+        //System.out.println(futureRectangle.getX());
+
+        if(!bm.has(e)) {
+            futureRectangle.x += (vc.velocity.x * world.delta);
+            //System.out.println(futureRectangle.getX());
+            futureRectangle.y += (vc.velocity.y * world.delta);
+        }
+        //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
         for(int i = 0; i < entityIds.size(); i++) {
 
@@ -69,10 +76,17 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
                                 vc.velocity.x = 0;
                             }
                         }
-                        //break;
+                        break;
+                    //TODO When grappling if you collide with something the target destination should be removed
+                    case LEFT:
+                    case RIGHT:
+                        vc.velocity.x = 0;
+                        break;
                 }
                 pc.position.x = cbc.bound.getX();
                 pc.position.y = cbc.bound.getY();
+
+                //System.out.println(c);
 
                 if(bm.has(e)){
                     e.deleteFromWorld();

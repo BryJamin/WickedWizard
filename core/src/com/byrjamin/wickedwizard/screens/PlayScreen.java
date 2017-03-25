@@ -22,7 +22,9 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.factories.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
@@ -160,10 +162,11 @@ public class PlayScreen extends AbstractScreen {
             i++;
         }
 
-        RoomTransitionSystem rts = new RoomTransitionSystem(b, testArray);
+        //RoomTransitionSystem rts = new RoomTransitionSystem(b, testArray);
 
         WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(0,
+                .with(WorldConfigurationBuilder.Priority.HIGH,
+                        new MovementSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
@@ -174,14 +177,16 @@ public class PlayScreen extends AbstractScreen {
                         new FiringAISystem(),
                         new GrappleSystem(),
                         new GravitySystem(),
+                        new LockSystem(),
                         new GroundCollisionSystem(),
                         new HealthSystem(),
-                        new MovementSystem(),
                         new MoveToSystem(),
+                        new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam),
-                        new StateSystem(),
-                        rts,
+                        new StateSystem())
+                .with(WorldConfigurationBuilder.Priority.LOW,
+                        new RoomTransitionSystem(b, testArray),
                         new CameraSystem(gamecam, gamePort),
                         new BoundsDrawingSystem(),
                         new RenderingSystem(game.batch, gamecam),
@@ -203,9 +208,8 @@ public class PlayScreen extends AbstractScreen {
             entity.edit().add(comp);
         }
 
-
-
         arenaGUI = new ArenaGUI(0,0,testArray, b);
+
 
 
     }
@@ -308,6 +312,7 @@ public class PlayScreen extends AbstractScreen {
         }
 
         world.process();
+       // world.getSystem(LockSystem.class).lockDoors();
 
 
         arenaGUI.update(world.delta,

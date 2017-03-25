@@ -7,6 +7,20 @@ import com.artemis.Component;
  */
 public class StateComponent extends Component {
 
+    public enum State {
+
+        LOCKED(1), UNLOCKED(2);
+
+        State(int state) {
+            this.state = state;
+        }
+
+        private int state;
+
+        public int getState() {
+            return state;
+        }
+    }
 
     private int state = 0;
     public float stateTime = 0.0f;
