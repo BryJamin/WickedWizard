@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.factories;
 
+import com.artemis.Component;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
@@ -39,12 +41,30 @@ public class JigsawGenerator {
 
             Arena a;
 
+            Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+
+            s.add(new SpawnerFactory.Spawner() {
+                @Override
+                public Bag<Component> spawnBag(float x, float y) {
+                    return BlobFactory.blobBag(x,y);
+                }
+            });
+
+
+            s.add(new SpawnerFactory.Spawner() {
+                @Override
+                public Bag<Component> spawnBag(float x, float y) {
+                    return BlobFactory.smallblobBag(x,y);
+                }
+            });
+
+
             if(rand.nextBoolean()){
                 a = RoomFactory.createWidth2Arena();
-                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2));
+                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2, s));
             } else {
                 a = RoomFactory.createOmniArena();
-                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2));
+                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2, s));
             }
 
             arenas.add(a);

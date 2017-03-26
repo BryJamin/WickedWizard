@@ -16,27 +16,38 @@ import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 public class SpawnerSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
-    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<SpawnerComponent> sm;
 
     @SuppressWarnings("unchecked")
     public SpawnerSystem() {
-        super(Aspect.all(SpawnerComponent.class));
+        super(Aspect.all(SpawnerComponent.class, PositionComponent.class));
     }
 
     @Override
     protected void process(Entity e) {
         SpawnerComponent sc = sm.get(e);
+        PositionComponent pc = pm.get(e);
         sc.time -= world.delta;
         //System.out.println(sc.time);
         if(sc.time <= 0){
-            if(!sc.getSpawnedEntity().isEmpty()) {
+            if(sc.getSpawner().size > 0) {
                 Entity spawnedEntity = world.createEntity();
-                for (Component c : sc.getSpawnedEntity()) {
+                for (Component c : sc.getSpawner().first().spawnBag(pc.getX() + sc.offsetX, pc.getY() + sc.offsetY)) {
                     spawnedEntity.edit().add(c);
                 }
+                sc.getSpawner().add(sc.getSpawner().first());
+                sc.getSpawner().removeIndex(0);
+
             }
-            e.deleteFromWorld();
+
+            sc.life--;
+
+            if(sc.life <= 0){
+                e.deleteFromWorld();
+            } else {
+                sc.time = sc.resetTime;
+            }
+            //e.deleteFromWorld();
         }
     }
 

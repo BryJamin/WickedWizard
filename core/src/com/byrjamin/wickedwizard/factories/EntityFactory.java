@@ -166,7 +166,6 @@ public class EntityFactory {
     public static Bag<Component> blobBag(float x, float y){
 
         Bag<Component> bag = new Bag<Component>();
-
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(9), Measure.units(9))));

@@ -106,7 +106,9 @@ public class OmniBattleRooms {
     }
 
     public static Waves[] spawnWave = new Waves[] {
-            new Waves() { public void spawnWave(Room room) { blob(room); } },
+            new Waves() { public void spawnWave(Room room) {
+                blob(room);
+            } },
             //new Waves() { public void spawnWave(Room room) { blob2(room); } },
             new Waves() { public void spawnWave(Room room) { threeblobs(room); } },
             new Waves() { public void spawnWave(Room room) { blob3(room); } },
