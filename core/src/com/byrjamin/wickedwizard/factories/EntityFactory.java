@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
-import com.byrjamin.wickedwizard.ecs.components.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
@@ -27,10 +27,10 @@ import com.byrjamin.wickedwizard.ecs.components.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.StateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToPlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.TextureRegionBatchComponent;
-import com.byrjamin.wickedwizard.ecs.components.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WallComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -82,7 +82,7 @@ public class EntityFactory {
         e.edit().add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         e.edit().add(new GravityComponent());
 
-        StateComponent sc = new StateComponent();
+        AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         e.edit().add(sc);
 
@@ -117,7 +117,7 @@ public class EntityFactory {
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent(Measure.units(115f)));
 
-        StateComponent sc = new StateComponent();
+        AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         bag.add(sc);
 
@@ -152,7 +152,7 @@ public class EntityFactory {
         e.edit().add(new MoveToPlayerComponent());
         e.edit().add(new HealthComponent(10));
         e.edit().add(new BlinkComponent());
-        StateComponent sc = new StateComponent();
+        AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         e.edit().add(sc);
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
@@ -175,7 +175,7 @@ public class EntityFactory {
         bag.add(new MoveToPlayerComponent());
         bag.add(new HealthComponent(10));
         bag.add(new BlinkComponent());
-        StateComponent sc = new StateComponent();
+        AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
@@ -192,16 +192,17 @@ public class EntityFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(5), Measure.units(20))));
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
-        StateComponent sc = new StateComponent();
-        sc.setState(StateComponent.State.UNLOCKED.getState());
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
         sc.stateTime = 100f;
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(StateComponent.State.LOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "door"));
-        aniMap.put(StateComponent.State.UNLOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
+        aniMap.put(AnimationStateComponent.State.LOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "door"));
+        aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(aniMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20)));
+        //TODO explains the giant blob
+        bag.add(new TextureRegionComponent(AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED).getKeyFrame(sc.stateTime),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20)));
         bag.add(new GrappleableComponent());
         bag.add(new LockComponent());
         return bag;
@@ -209,14 +210,20 @@ public class EntityFactory {
 
     public static Bag<Component> grateBag(float x, float y, MapCoords current, MapCoords leaveCoords, DoorComponent.DIRECTION exit){
         Bag<Component> bag = new Bag<Component>();
+
+        float width = Measure.units(10);
+        float height = Measure.units(10);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
         bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y,Measure.units(10), Measure.units(10))));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new DoorComponent(current, leaveCoords, exit));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), Measure.units(10), Measure.units(10)));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), width, height));
         bag.add(new GrappleableComponent());
         bag.add(new ActiveOnTouchComponent());
         bag.add(new LockComponent());
-
         return bag;
     }
 
@@ -238,7 +245,7 @@ public class EntityFactory {
 
         e.edit().add(new FiringAIComponent());
 
-        StateComponent sc = new StateComponent();
+        AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         e.edit().add(sc);
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
@@ -266,7 +273,7 @@ public class EntityFactory {
 
         e.edit().add(new FiringAIComponent());
 
-        StateComponent sc = new StateComponent();
+        AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         e.edit().add(sc);
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();

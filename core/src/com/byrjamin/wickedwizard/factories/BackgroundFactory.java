@@ -5,7 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.TextureRegionBatchComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 
 import java.util.Random;
 

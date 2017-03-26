@@ -74,7 +74,7 @@ public class RoomFactory {
 
         //GROUND
         bagOfBags.add(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
-        bagOfBags.add(EntityFactory.grateBag(WIDTH / 2, 300,
+        bagOfBags.add(EntityFactory.grateBag(WIDTH / 2, 400,
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
                 DoorComponent.DIRECTION.down));
@@ -117,7 +117,7 @@ public class RoomFactory {
 
         //CEILING
         arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
-        arena.addDoor(EntityFactory.grateBag(WIDTH / 2, 800,
+        arena.addDoor(EntityFactory.grateBag(WIDTH / 2, 900,
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                 DoorComponent.DIRECTION.up));
@@ -125,7 +125,7 @@ public class RoomFactory {
 
         //GROUND
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
-        arena.addDoor(EntityFactory.grateBag(WIDTH / 2, 300,
+        arena.addDoor(EntityFactory.grateBag(WIDTH / 2, 400,
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
                 DoorComponent.DIRECTION.down));

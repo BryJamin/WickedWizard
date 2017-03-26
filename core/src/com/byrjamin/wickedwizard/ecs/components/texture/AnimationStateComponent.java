@@ -1,11 +1,11 @@
-package com.byrjamin.wickedwizard.ecs.components;
+package com.byrjamin.wickedwizard.ecs.components.texture;
 
 import com.artemis.Component;
 
 /**
  * Created by Home on 07/03/2017.
  */
-public class StateComponent extends Component {
+public class AnimationStateComponent extends Component {
 
     public enum State {
 

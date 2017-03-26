@@ -41,10 +41,10 @@ public class JigsawGenerator {
 
             if(rand.nextBoolean()){
                 a = RoomFactory.createWidth2Arena();
-                a.addEntity(EntityFactory.blobBag(a.getWidth() / 2, a.getHeight() / 2));
+                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2));
             } else {
                 a = RoomFactory.createOmniArena();
-                a.addEntity(EntityFactory.blobBag(a.getWidth() / 2, a.getHeight() / 2));
+                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2));
             }
 
             arenas.add(a);

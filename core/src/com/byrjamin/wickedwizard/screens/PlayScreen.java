@@ -26,6 +26,7 @@ import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
+import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
 import com.byrjamin.wickedwizard.factories.Arena;
 import com.byrjamin.wickedwizard.factories.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
@@ -185,7 +186,8 @@ public class PlayScreen extends AbstractScreen {
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam),
-                        new StateSystem())
+                        new StateSystem(),
+                        new SpawnerSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RoomTransitionSystem(b, testArray),
                         new CameraSystem(gamecam, gamePort),
@@ -313,7 +315,11 @@ public class PlayScreen extends AbstractScreen {
 
 
 
+
         for(int i = 1; i <= world.getSystem(FindPlayerSystem.class).getPlayer().getComponent(HealthComponent.class).health; i++){
+            if(!game.batch.isDrawing()) {
+                game.batch.begin();
+            }
             game.batch.draw(atlas.findRegion("sprite_health0"), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 

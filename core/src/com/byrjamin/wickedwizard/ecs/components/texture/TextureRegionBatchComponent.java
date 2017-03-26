@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.components;
+package com.byrjamin.wickedwizard.ecs.components.texture;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;

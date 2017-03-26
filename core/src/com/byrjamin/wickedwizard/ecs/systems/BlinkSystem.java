@@ -6,7 +6,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 
 /**
  * Created by Home on 09/03/2017.

@@ -9,7 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.GrappleableComponent;
 import com.byrjamin.wickedwizard.ecs.components.LockComponent;
-import com.byrjamin.wickedwizard.ecs.components.StateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.WallComponent;
 
 /**
@@ -19,7 +19,7 @@ import com.byrjamin.wickedwizard.ecs.components.WallComponent;
 public class LockSystem extends EntitySystem {
 
     ComponentMapper<ActiveOnTouchComponent> aotm;
-    ComponentMapper<StateComponent> sm;
+    ComponentMapper<AnimationStateComponent> sm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<GrappleableComponent> gm;
     ComponentMapper<DoorComponent> dm;
@@ -59,7 +59,7 @@ public class LockSystem extends EntitySystem {
                 }
 
                 if(sm.has(e)){
-                    sm.get(e).setState(StateComponent.State.LOCKED.getState());
+                    sm.get(e).setState(AnimationStateComponent.State.LOCKED.getState());
                 }
 
             }
@@ -83,7 +83,7 @@ public class LockSystem extends EntitySystem {
                 }
 
                 if(sm.has(e)){
-                    sm.get(e).setState(StateComponent.State.UNLOCKED.getState());
+                    sm.get(e).setState(AnimationStateComponent.State.UNLOCKED.getState());
                 }
 
             }

@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.TextureRegionBatchComponent;
-import com.byrjamin.wickedwizard.ecs.components.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 
 import java.util.ArrayList;
 import java.util.Collections;

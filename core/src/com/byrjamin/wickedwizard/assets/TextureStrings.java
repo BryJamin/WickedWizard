@@ -29,7 +29,7 @@ public class TextureStrings {
 
 
 
-
+    public static String CIRCLE = "circle";
 
     //BOSSES
 

@@ -15,8 +15,8 @@ import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.StateComponent;
-import com.byrjamin.wickedwizard.ecs.components.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
@@ -37,7 +37,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WeaponComponent> wm;
-    ComponentMapper<StateComponent> sm;
+    ComponentMapper<AnimationStateComponent> sm;
     ComponentMapper<GravityComponent> gm;
     ComponentMapper<TextureRegionComponent> trm;
 
@@ -59,7 +59,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(OrthographicCamera gamecam) {
-        super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, StateComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
         this.gamecam = gamecam;
     }
 
@@ -75,7 +75,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         WeaponComponent wc = wm.get(e);
-        StateComponent sc = sm.get(e);
+        AnimationStateComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
         GravityComponent gc = gm.get(e);
         MoveToComponent mtc = mtm.get(e);
