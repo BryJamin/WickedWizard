@@ -119,18 +119,7 @@ public class PlayScreen extends AbstractScreen {
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
 
         map = new Map();
-        gamecam = new OrthographicCamera();
-
-/*       pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.drawCircle(15, 15, 10);
-
-
-        Pixmap pm = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, pm.getWidth() / 2, pm.getHeight() / 2));
-        pm.dispose();*/
-
-        //Starts in the middle of the screen, on the 1/4 thingie.
+        gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
@@ -185,7 +174,7 @@ public class PlayScreen extends AbstractScreen {
                         new MoveToSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
-                        new PlayerInputSystem(gamecam),
+                        new PlayerInputSystem(gamecam, gamePort),
                         new StateSystem(),
                         new SpawnerSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
@@ -213,7 +202,8 @@ public class PlayScreen extends AbstractScreen {
 
         arenaGUI = new ArenaGUI(0,0,testArray, b);
 
-
+        System.out.println(gamecam.viewportHeight);
+        System.out.println(gamecam.viewportHeight);
 
     }
 

@@ -19,13 +19,10 @@ public class OmniBattleRooms {
     public OmniBattleRooms(){
     }
 
-
     public static void blob(Room room){
         room.addSpawningEnemy((EnemyPresets.defaultBlob(room.WIDTH - 500, room.groundHeight())));
         room.addSpawningEnemy(new SilverHead.SilverHeadBuilder(room.WIDTH - room.WIDTH / 3, room.HEIGHT - room.HEIGHT / 4).build());
     }
-
-
 
     public static void blob2(Room room){
       //  e.clear();

@@ -10,6 +10,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
@@ -43,6 +44,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
 
     OrthographicCamera gamecam;
+    Viewport gameport;
+
     Vector3 touchInput;
     Vector3 unprojectedInput;
 
@@ -58,9 +61,10 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     public float moveTarget;
 
     @SuppressWarnings("unchecked")
-    public PlayerInputSystem(OrthographicCamera gamecam) {
+    public PlayerInputSystem(OrthographicCamera gamecam, Viewport gameport) {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
         this.gamecam = gamecam;
+        this.gameport = gameport;
     }
 
     @Override
@@ -116,9 +120,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
             if(Gdx.input.isTouched(movementInputPoll)) {
                 Vector3 input = new Vector3(Gdx.input.getX(movementInputPoll), Gdx.input.getY(movementInputPoll), 0);
-                gamecam.unproject(input);
+                gameport.unproject(input);
 
-                if(input.y < 290){
+                if(input.y < 195){
                     mtc.target_x = input.x;
                 }
 
@@ -133,7 +137,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 if(wc.timer.isFinishedAndReset()) {
                     sc.setState(1);
                     Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
-                    gamecam.unproject(input);
+                    gameport.unproject(input);
 
                     float x = pc.getX() + (cbc.bound.getWidth() / 2);
                     float y = pc.getY() + (cbc.bound.getHeight() / 2);
@@ -183,11 +187,14 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touchInput = new Vector3(screenX, screenY, 0);
-        unprojectedInput = gamecam.unproject(touchInput);
+        unprojectedInput = gameport.unproject(touchInput);
 
-        grappleDestination = world.getSystem(GrappleSystem.class).canGrappleTo(touchInput.x, touchInput.y);
+        grappleDestination = world.getSystem(GrappleSystem.class).canGrappleTo(unprojectedInput.x, unprojectedInput.y);
         if(grappleDestination == null) {
-            if (unprojectedInput.y <= 290) {
+
+            System.out.println("Y touch coords is " + touchInput.y);
+
+            if (touchInput.y <= 195) {
                 hasTarget = true;
                 movementInputPoll = pointer;
                 moveTarget = unprojectedInput.x;

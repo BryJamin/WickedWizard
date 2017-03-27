@@ -1,17 +1,10 @@
 package com.byrjamin.wickedwizard.factories;
 
-import com.artemis.Component;
-import com.artemis.utils.Bag;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
 import com.byrjamin.wickedwizard.maps.MapCoords;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
 
 import java.util.Random;
 
@@ -41,30 +34,11 @@ public class JigsawGenerator {
 
             Arena a;
 
-            Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
-
-            s.add(new SpawnerFactory.Spawner() {
-                @Override
-                public Bag<Component> spawnBag(float x, float y) {
-                    return BlobFactory.blobBag(x,y);
-                }
-            });
-
-
-            s.add(new SpawnerFactory.Spawner() {
-                @Override
-                public Bag<Component> spawnBag(float x, float y) {
-                    return BlobFactory.smallblobBag(x,y);
-                }
-            });
-
-
             if(rand.nextBoolean()){
                 a = RoomFactory.createWidth2Arena();
-                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2, s));
+                RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             } else {
                 a = RoomFactory.createOmniArena();
-                a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, a.getHeight() / 2, s));
             }
 
             arenas.add(a);

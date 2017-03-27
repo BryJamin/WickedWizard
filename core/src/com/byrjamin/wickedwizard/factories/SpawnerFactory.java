@@ -43,6 +43,8 @@ public class SpawnerFactory {
 
 
     public interface Spawner {
+
+
         Bag<Component> spawnBag(float x, float y);
     }
 
