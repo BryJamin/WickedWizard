@@ -39,6 +39,7 @@ public class JigsawGenerator {
                 RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             } else {
                 a = RoomFactory.createOmniArena();
+                RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             }
 
             arenas.add(a);

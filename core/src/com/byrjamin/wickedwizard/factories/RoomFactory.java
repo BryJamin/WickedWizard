@@ -36,53 +36,6 @@ public class RoomFactory {
 
     public static float WALLWIDTH = Measure.units(5);
 
-    public static Bag<Bag<Component>> omniRoomBag(MapCoords defaultCoords){
-
-        Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
-        bagOfBags.add(EntityFactory.blobBag(400, 800));
-        bagOfBags.add(BackgroundFactory.backgroundBags(0,0,
-                SECTION_WIDTH,
-                SECTION_HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
-
-        //for(RoomWall rw : map.getActiveRoom().getRoomWalls()){
-         //   bagOfBags.add(EntityFactory.wallBag(rw.getBounds()));
-        //}
-
-        //LEFT WALL
-        bagOfBags.add(EntityFactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        bagOfBags.add(EntityFactory.doorBag(0, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.left));
-
-
-        //RIGHT
-        bagOfBags.add(EntityFactory.wallBag(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        bagOfBags.add(EntityFactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.right));
-
-        //CEILING
-        bagOfBags.add(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
-        bagOfBags.add(EntityFactory.grateBag(WIDTH / 2, 800,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                DoorComponent.DIRECTION.up));
-
-        //GROUND
-        bagOfBags.add(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
-        bagOfBags.add(EntityFactory.grateBag(WIDTH / 2, 400,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
-                DoorComponent.DIRECTION.down));
-
-      return bagOfBags;
-
-    }
-
     public static Arena createOmniArena(){
         return createOmniArena(new MapCoords(0,0));
     }

@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.ecs.components.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.BagSearch;
 
@@ -34,7 +35,8 @@ public class SpawnerFactory {
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, a);
         bag.add(new AnimationComponent(animMap));
-        Bag<Component> enemyBag = EntityFactory.blobBag(x,y);
+        //TODO quite a big problem actually, how you measure the size of spawners?
+        Bag<Component> enemyBag = BlobFactory.blobBag(x,y);
         TextureRegionComponent trc = BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, enemyBag);
         bag.add(new TextureRegionComponent(a.getKeyFrame(sc.stateTime), trc.width, trc.height));
         bag.add(new SpawnerComponent(spawners, 1.0f));
