@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
@@ -22,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 
 /**
  * Created by Home on 04/03/2017.
@@ -35,6 +37,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<AccelerantComponent> am;
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WeaponComponent> wm;
@@ -58,8 +61,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
 
-    public float moveTarget;
-
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(OrthographicCamera gamecam, Viewport gameport) {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
@@ -77,6 +78,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
+        AccelerantComponent ac = am.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         WeaponComponent wc = wm.get(e);
         AnimationStateComponent sc = sm.get(e);
@@ -123,13 +125,17 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 gameport.unproject(input);
 
                 if(input.y < 195){
-                    mtc.target_x = input.x;
+                    MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
+                    //mtc.target_x = input.x;
                 }
 
             }
 
-        }  else if(!hasTarget && grappleDestination == null) {
-            //vc.velocity.x = 0;
+        }  else if(grappleDestination == null) {
+            if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
+                MoveToSystem.decelerate(ac, vc);
+                cbc.getRecentCollisions().clear();
+            }
         }
 
         if(firingInputPoll != null){
@@ -158,13 +164,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 sc.setState(0);
             }
         }
-/*
-        if(!canFire){
-            if(sc.getState() != 0) {
-                sc.setState(0);
-            }
-        }*/
-
 
 
     }
@@ -192,12 +191,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         grappleDestination = world.getSystem(GrappleSystem.class).canGrappleTo(unprojectedInput.x, unprojectedInput.y);
         if(grappleDestination == null) {
 
-            System.out.println("Y touch coords is " + touchInput.y);
-
             if (touchInput.y <= 195) {
                 hasTarget = true;
                 movementInputPoll = pointer;
-                moveTarget = unprojectedInput.x;
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
             } else {
                 canFire = true;
@@ -208,6 +204,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
             vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
             vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
+
+            System.out.println("INNSSDJIAWDJAWIDAWJJAWDOWJ");
         }
 
         world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);

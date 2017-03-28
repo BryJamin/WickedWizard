@@ -2,7 +2,9 @@ package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 
 /**
  * Created by Home on 04/03/2017.
@@ -10,6 +12,7 @@ import com.byrjamin.wickedwizard.helper.Measure;
 public class CollisionBoundComponent extends Component{
 
     public Rectangle bound;
+
 
     public CollisionBoundComponent(Rectangle bound){
         this.bound = bound;
@@ -27,5 +30,7 @@ public class CollisionBoundComponent extends Component{
         return bound.y + bound.height / 2;
     }
 
-
+    public Array<Collider.Collision> getRecentCollisions() {
+        return recentCollisions;
+    }
 }

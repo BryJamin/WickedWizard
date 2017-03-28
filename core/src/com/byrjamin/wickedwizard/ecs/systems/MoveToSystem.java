@@ -29,7 +29,6 @@ public class MoveToSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
         MoveToComponent mtc = mtm.get(e);
@@ -39,12 +38,12 @@ public class MoveToSystem extends EntityProcessingSystem {
 
         if(target != null){
 
-            float destination = (cbc.has(e)) ? cbc.get(e).getCenterX() : pc.getX();
+            float currentPosition = (cbc.has(e)) ? cbc.get(e).getCenterX() : pc.getX();
 
-            if (target - 20 <= destination && destination < target + 20) {
+            if (target - 20 <= currentPosition && currentPosition < target + 20) {
                 vc.velocity.x = 0;
                 mtc.target_x = null;
-            } else if (destination >= target) {
+            } else if (currentPosition >= target) {
                 vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
             } else {
                 vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
@@ -53,6 +52,28 @@ public class MoveToSystem extends EntityProcessingSystem {
 
 
     }
+
+
+    public static void moveTo(float target, float currentPosition, AccelerantComponent ac, VelocityComponent vc){
+        if (target - 20 <= currentPosition && currentPosition < target + 20) {
+            vc.velocity.x = 0;
+        } else if (currentPosition >= target) {
+            vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
+        } else {
+            vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
+        }
+    }
+
+    public static void decelerate(AccelerantComponent ac, VelocityComponent vc){
+        if (vc.velocity.x >= -50 && vc.velocity.x < 50) {
+            vc.velocity.x = 0;
+        }else if(vc.velocity.x >= 0) {
+            vc.velocity.x = (vc.velocity.x - ac.accelX <= 0) ? 0 : vc.velocity.x - ac.accelX;
+        } else if(vc.velocity.x <= 0){
+            vc.velocity.x = (vc.velocity.x + ac.accelX >= 0) ? 0 : vc.velocity.x + ac.accelX;
+        }
+    }
+
 
 }
 

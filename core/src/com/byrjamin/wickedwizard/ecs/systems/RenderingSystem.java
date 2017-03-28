@@ -64,7 +64,7 @@ public class RenderingSystem extends EntitySystem {
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
                     originX, originY,
-                    trc.width, trc.height,
+                    trc.width, trc.height, //This is to avoid pixel errors between repeated textures
                     trc.scaleX, trc.scaleY,
                     trc.rotation);
             batch.setColor(Color.WHITE);
@@ -75,7 +75,10 @@ public class RenderingSystem extends EntitySystem {
             int count = 0;
             for(int i = 0; i < trbc.columns; i++){
                 for(int j = 0; j < trbc.rows; j ++){
-                    batch.draw(trbc.regions.get(count), pc.getX() + (trbc.width * i), pc.getY() + (trbc.height * j), trbc.width, trbc.height);
+                    batch.draw(trbc.regions.get(count),
+                            pc.getX() + (trbc.width * i),
+                            pc.getY() + (trbc.height * j),
+                            trbc.width + 1, trbc.height + 1); //This is to avoid pixel errors between repeated textures
                     count++;
                 }
             }

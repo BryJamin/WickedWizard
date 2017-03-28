@@ -51,6 +51,8 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
+
+
         Rectangle futureRectangle = new Rectangle(cbc.bound);
         //System.out.println(futureRectangle.getX());
 
@@ -68,11 +70,6 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
             if(c != Collider.Collision.NONE){
                 switch(c){
                     case TOP: vc.velocity.y = 0;
-                        if(mtm.has(e)){
-                            if(mtm.get(e).target_x == null){
-                                vc.velocity.x = 0;
-                            }
-                        }
                         break;
                     //TODO When grappling if you collide with something the target destination should be removed
                     case LEFT:
@@ -83,6 +80,7 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
                 pc.position.x = cbc.bound.getX();
                 pc.position.y = cbc.bound.getY();
 
+                cbc.getRecentCollisions().add(c);
                 //System.out.println(c);
 
                 if(bm.has(e)){

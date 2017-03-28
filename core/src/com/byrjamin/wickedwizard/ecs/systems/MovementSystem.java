@@ -29,6 +29,8 @@ public class MovementSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
 
+
+
         pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
 
 
