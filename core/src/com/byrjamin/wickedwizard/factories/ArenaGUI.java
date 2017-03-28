@@ -50,10 +50,10 @@ public class ArenaGUI {
     }
 
 
-    public void update(float dt, OrthographicCamera gamecam, Array<Arena> visitedArenas, Arena currentRoom){
+    public void update(float dt, OrthographicCamera gamecam, Array<Arena> visitedArenas, Arena currentRoom, MapCoords currentCoords){
 
         this.currentRoom = currentRoom;
-        this.currentCoords = currentRoom.cotainingCoords.first();
+        this.currentCoords = currentCoords;
         this.arenas = visitedArenas;
 
         mapBlinker += dt;
@@ -62,11 +62,8 @@ public class ArenaGUI {
             blink = !blink;
             mapBlinker = 0;
         }
-
         mapy = gamecam.position.y + Measure.units(15);
         mapx = gamecam.position.x + Measure.units(40);
-
-
     }
 
 

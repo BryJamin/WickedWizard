@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
@@ -45,6 +46,7 @@ public class BlobFactory {
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
         bag.add(new MoveToPlayerComponent());
+        bag.add(new AccelerantComponent(Measure.units(15), 0));
         bag.add(new HealthComponent(10));
         bag.add(new BlinkComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
@@ -67,6 +69,7 @@ public class BlobFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width * scale, height * scale)));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
+        bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
         bag.add(new MoveToPlayerComponent());
         bag.add(new HealthComponent(2));
         bag.add(new BlinkComponent());

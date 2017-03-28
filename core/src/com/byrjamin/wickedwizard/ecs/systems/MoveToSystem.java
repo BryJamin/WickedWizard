@@ -4,6 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
@@ -17,10 +19,12 @@ public class MoveToSystem extends EntityProcessingSystem {
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<MoveToComponent> mtm;
+    ComponentMapper<AccelerantComponent> am;
+    ComponentMapper<CollisionBoundComponent> cbc;
 
     @SuppressWarnings("unchecked")
     public MoveToSystem() {
-        super(Aspect.all(PositionComponent.class, MoveToComponent.class, VelocityComponent.class));
+        super(Aspect.all(PositionComponent.class, MoveToComponent.class, VelocityComponent.class, AccelerantComponent.class));
     }
 
     @Override
@@ -29,19 +33,21 @@ public class MoveToSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
         MoveToComponent mtc = mtm.get(e);
-
-//        pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
+        AccelerantComponent ac = am.get(e);
 
         Float target = mtc.target_x;
 
         if(target != null){
-            if (target - 20 <= pc.getX() && pc.getX() < target + 20) {
+
+            float destination = (cbc.has(e)) ? cbc.get(e).getCenterX() : pc.getX();
+
+            if (target - 20 <= destination && destination < target + 20) {
                 vc.velocity.x = 0;
                 mtc.target_x = null;
-            } else if (pc.getX() >= target) {
-                vc.velocity.x = -mtc.getSpeed();
+            } else if (destination >= target) {
+                vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
             } else {
-                vc.velocity.x = mtc.getSpeed();
+                vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
             }
         }
 

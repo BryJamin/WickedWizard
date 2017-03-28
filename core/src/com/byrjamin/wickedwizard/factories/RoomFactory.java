@@ -41,9 +41,12 @@ public class RoomFactory {
     }
 
     public static Arena createOmniArena(MapCoords defaultCoords) {
+
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
+
         Arena arena = new Arena(containingCorrds);
+
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
@@ -103,7 +106,6 @@ public class RoomFactory {
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
         containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-
 
         Arena arena = new Arena(containingCorrds);
 

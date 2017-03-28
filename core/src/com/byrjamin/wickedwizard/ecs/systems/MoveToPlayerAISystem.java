@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
@@ -21,10 +22,15 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<AccelerantComponent> am;
 
     @SuppressWarnings("unchecked")
     public MoveToPlayerAISystem() {
-        super(Aspect.all(PositionComponent.class, VelocityComponent.class, MoveToPlayerComponent.class, CollisionBoundComponent.class));
+        super(Aspect.all(PositionComponent.class,
+                VelocityComponent.class,
+                MoveToPlayerComponent.class,
+                CollisionBoundComponent.class,
+                AccelerantComponent.class));
     }
 
     @Override
@@ -41,12 +47,13 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
             PositionComponent pc = pm.get(e);
             VelocityComponent vc = vm.get(e);
             CollisionBoundComponent cbc = cbm.get(e);
+            AccelerantComponent ac = am.get(e);
 
             if (!cbc.bound.contains(playerPC.getX(), pc.getY())) {
-                if (pc.getX() < playerPC.getX()) {
-                    vc.velocity.x = Measure.units(5);
+                if (pc.getX() > playerPC.getX()) {
+                    vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
                 } else {
-                    vc.velocity.x = -Measure.units(5);
+                    vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
                 }
             }
 

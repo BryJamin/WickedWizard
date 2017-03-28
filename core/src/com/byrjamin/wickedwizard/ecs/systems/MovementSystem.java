@@ -4,8 +4,10 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
+import com.byrjamin.wickedwizard.helper.collider.Collider;
 
 /**
  * Created by Home on 04/03/2017.
@@ -14,6 +16,7 @@ public class MovementSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<CollisionBoundComponent> cbm;
 
     @SuppressWarnings("unchecked")
     public MovementSystem() {
@@ -27,6 +30,14 @@ public class MovementSystem extends EntityProcessingSystem {
         VelocityComponent vc = vm.get(e);
 
         pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
+
+
+        if(cbm.has(e)) {
+            CollisionBoundComponent cbc = cbm.get(e);
+            cbc.bound.x = pc.getX();
+            cbc.bound.y = pc.getY();
+        }
+
 
     }
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
@@ -71,7 +72,8 @@ public class EntityFactory {
         bag.add(new PlayerComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         bag.add(new GravityComponent());
-        bag.add(new MoveToComponent(Measure.units(115f)));
+        bag.add(new MoveToComponent());
+        bag.add(new AccelerantComponent(Measure.units(15f), Measure.units(15f), Measure.units(115f), Measure.units(115f)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
@@ -132,7 +134,10 @@ public class EntityFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new DoorComponent(current, leaveCoords, exit));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), width, height));
+
+        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), width, height);
+        trc.layer = -8;
+        bag.add(trc);
         bag.add(new GrappleableComponent());
         bag.add(new ActiveOnTouchComponent());
         bag.add(new LockComponent());
@@ -175,7 +180,7 @@ public class EntityFactory {
         //e.edit().add(new PositionComponent(x,y));
         e.edit().add(new BulletComponent());
         e.edit().add(new VelocityComponent((float) (Measure.units(100) * Math.cos(angleOfTravel)), (float) (Measure.units(100) * Math.sin(angleOfTravel))));
-        e.edit().add(new CollisionBoundComponent(new Rectangle(0,0,Measure.units(2), Measure.units(2))));
+        e.edit().add(new CollisionBoundComponent(new Rectangle(x - Measure.units(1),y - Measure.units(1),Measure.units(2), Measure.units(2))));
         e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion("bullet"), Measure.units(2), Measure.units(2)));
         return e;
     }
@@ -185,7 +190,7 @@ public class EntityFactory {
         e.edit().add(new PositionComponent(x - Measure.units(2),y - Measure.units(2)));
         e.edit().add(new BulletComponent());
         e.edit().add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
-        e.edit().add(new CollisionBoundComponent(new Rectangle(0,0,Measure.units(4), Measure.units(4))));
+        e.edit().add(new CollisionBoundComponent(new Rectangle(x - Measure.units(2),y - Measure.units(2),Measure.units(4), Measure.units(4))));
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("bullet"), Measure.units(4), Measure.units(4));
         trc.DEFAULT = Color.RED;

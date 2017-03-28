@@ -17,6 +17,7 @@ import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.factories.Arena;
+import com.byrjamin.wickedwizard.factories.RoomFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 
@@ -40,6 +41,7 @@ public class RoomTransitionSystem extends EntitySystem {
     private boolean processingFlag = false;
     private MapCoords destination;
     private MapCoords previousDestination;
+    private MapCoords playerLocation = new MapCoords(0,0);
 
 
     @SuppressWarnings("unchecked")
@@ -165,6 +167,13 @@ public class RoomTransitionSystem extends EntitySystem {
 
     public Arena getCurrentArena() {
         return currentArena;
+    }
+
+    public MapCoords getCurrentPlayerLocation(){
+        CollisionBoundComponent pBound = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (pBound.getCenterX() / RoomFactory.SECTION_WIDTH));
+        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / RoomFactory.SECTION_HEIGHT));
+        return playerLocation;
     }
 
     public Array<Arena> getRoomArray() {

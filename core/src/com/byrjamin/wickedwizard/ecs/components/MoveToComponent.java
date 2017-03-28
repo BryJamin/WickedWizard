@@ -9,19 +9,6 @@ import com.byrjamin.wickedwizard.helper.Measure;
 
 public class MoveToComponent extends Component {
 
-    private float speed = Measure.units(50f);
     public Float target_x;
     public boolean isMoving;
-
-    public MoveToComponent(float speed) {
-        this.speed = speed;
-    }
-
-    public MoveToComponent(){
-
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
 }

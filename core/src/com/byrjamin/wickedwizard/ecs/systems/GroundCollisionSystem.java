@@ -51,9 +51,6 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
-        cbc.bound.x = pc.getX();
-        cbc.bound.y = pc.getY();
-
         Rectangle futureRectangle = new Rectangle(cbc.bound);
         //System.out.println(futureRectangle.getX());
 

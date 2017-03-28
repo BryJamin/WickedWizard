@@ -180,8 +180,8 @@ public class PlayScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RoomTransitionSystem(b, testArray),
                         new CameraSystem(gamecam, gamePort),
-                        new BoundsDrawingSystem(),
                         new RenderingSystem(game.batch, gamecam),
+                        new BoundsDrawingSystem(),
                         new DoorSystem())
                 .build();
 
@@ -209,7 +209,6 @@ public class PlayScreen extends AbstractScreen {
 
     public void handleInput(float dt){
 
-        //System.out.println("????");
         InputMultiplexer multiplexer = new InputMultiplexer();
 
         if(!gameOver) {
@@ -316,7 +315,8 @@ public class PlayScreen extends AbstractScreen {
         arenaGUI.update(world.delta,
                 gamecam,
                 world.getSystem(RoomTransitionSystem.class).getRoomArray(),
-                world.getSystem(RoomTransitionSystem.class).getCurrentArena());
+                world.getSystem(RoomTransitionSystem.class).getCurrentArena(),
+                world.getSystem(RoomTransitionSystem.class).getCurrentPlayerLocation());
 
         arenaGUI.draw(game.batch);
 

@@ -15,6 +15,7 @@ public class Arena {
     private float width;
     private float height;
 
+    private MapCoords startingCoords;
     public Array<MapCoords> cotainingCoords;
     public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
 
@@ -24,8 +25,13 @@ public class Arena {
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
     private Bag<Bag<Component>> doorBags = new Bag<Bag<Component>>();
 
-    public Arena(Array<MapCoords> cotainingCoords) {
-        this.cotainingCoords = cotainingCoords;
+    /**
+     * The first co-ordinate of mapcoords is taken to be the initial drawing co-orindate
+     * @param mapCoords
+     */
+    public Arena(Array<MapCoords> mapCoords) {
+        startingCoords = mapCoords.get(0);
+        this.cotainingCoords = mapCoords;
     }
 
     public Bag<Bag<Component>> getBagOfEntities() {
@@ -93,5 +99,9 @@ public class Arena {
 
     public void setHeight(float height) {
         this.height = height;
+    }
+
+    public MapCoords getStartingCoords() {
+        return startingCoords;
     }
 }
