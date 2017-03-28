@@ -13,6 +13,7 @@ public class CollisionBoundComponent extends Component{
 
     public Rectangle bound;
 
+    public Array<Collider.Collision> recentCollisions = new Array<Collider.Collision>();
 
     public CollisionBoundComponent(Rectangle bound){
         this.bound = bound;
