@@ -20,7 +20,7 @@ public class MoveToSystem extends EntityProcessingSystem {
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<AccelerantComponent> am;
-    ComponentMapper<CollisionBoundComponent> cbc;
+    ComponentMapper<CollisionBoundComponent> cbm;
 
     @SuppressWarnings("unchecked")
     public MoveToSystem() {
@@ -34,21 +34,47 @@ public class MoveToSystem extends EntityProcessingSystem {
         MoveToComponent mtc = mtm.get(e);
         AccelerantComponent ac = am.get(e);
 
-        Float target = mtc.target_x;
+        Float targetX = mtc.targetX;
 
-        if(target != null){
+        if(targetX != null){
 
-            float currentPosition = (cbc.has(e)) ? cbc.get(e).getCenterX() : pc.getX();
+            CollisionBoundComponent cbc = cbm.get(e);
 
-            if (target - 20 <= currentPosition && currentPosition < target + 20) {
-                vc.velocity.x = 0;
-                mtc.target_x = null;
-            } else if (currentPosition >= target) {
-                vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
+            float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterX() : pc.getX();
+
+            if (cbc.bound.contains(mtc.targetX, cbc.getCenterY())) {
+                //vc.velocity.x = 0; //For grappling
+                mtc.targetX = null;
+            } else if (currentPosition >= targetX) {
+                vc.velocity.x = mtc.speedX;
+                //vc.velocity.add(mtc.speedX, 0);//(vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
             } else {
-                vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
+                vc.velocity.x = mtc.speedX;
+                //vc.velocity.add(mtc.speedX, 0); //(vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
             }
         }
+
+        Float targetY = mtc.targetY;
+
+        if(targetY != null){
+
+            CollisionBoundComponent cbc = cbm.get(e);
+
+            float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterY() : pc.getY();
+
+            if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
+                //vc.velocity.y = 0; //For grappling
+                mtc.targetY = null;
+            } else if (currentPosition >= targetY) {
+                vc.velocity.y = mtc.speedY;
+                //vc.velocity.add(0, mtc.speedY); //(vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
+            } else {
+                vc.velocity.y = mtc.speedY;
+                //vc.velocity.add(0, mtc.speedY); //(vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
+            }
+        }
+
+
 
 
     }

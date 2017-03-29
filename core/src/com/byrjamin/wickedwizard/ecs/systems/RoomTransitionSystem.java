@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
@@ -34,6 +35,7 @@ public class RoomTransitionSystem extends EntitySystem {
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ActiveOnTouchComponent> aotm;
     ComponentMapper<DoorComponent> dm;
+    ComponentMapper<MoveToComponent> mtm;
 
     private Arena currentArena;
     private Array<Arena> roomArray;
@@ -106,9 +108,15 @@ public class RoomTransitionSystem extends EntitySystem {
 
             }
 
+
+
+
+
+
         }
 
         gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
+        mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).reset();
         Vector2 velocity  = vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity;
 
         if(Math.abs(velocity.x) > Measure.units(60f) / 2) {

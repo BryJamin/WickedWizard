@@ -8,6 +8,8 @@ import com.byrjamin.wickedwizard.maps.MapCoords;
 
 import java.util.Random;
 
+import static com.byrjamin.wickedwizard.factories.RoomFactory.createOmniArena;
+
 /**
  * Created by Home on 22/03/2017.
  */
@@ -34,22 +36,22 @@ public class JigsawGenerator {
 
             Arena a;
 
+
             if(i == 2 || i == 6){
                 a = RoomFactory.createWidth2Arena();
-              //  RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
+                RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             } else {
-                a = RoomFactory.createOmniArena();
-              //  RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
+                a = createOmniArena();
+                RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             }
-
-            arenas.add(a);
             //if(i == 1) {
-
+            arenas.add(a);
             //}
             //arenas.add(RoomFactory.createOmniArena());
         }
 
         startingArena = arenas.first();
+        startingArena = createOmniArena();
 
 
         OrderedSet<MapCoords> avaliableMapCoordsSet = new OrderedSet<MapCoords>();

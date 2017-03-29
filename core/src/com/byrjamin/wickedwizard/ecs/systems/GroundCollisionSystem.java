@@ -81,7 +81,6 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
                 pc.position.y = cbc.bound.getY();
 
                 cbc.getRecentCollisions().add(c);
-                //System.out.println(c);
 
                 if(bm.has(e)){
                     e.deleteFromWorld();

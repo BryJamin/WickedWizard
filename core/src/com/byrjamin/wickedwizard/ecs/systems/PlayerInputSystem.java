@@ -24,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
+import com.byrjamin.wickedwizard.helper.timer.StateTimer;
 
 /**
  * Created by Home on 04/03/2017.
@@ -58,6 +59,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     public boolean hasTarget;
     private boolean canFire;
 
+    private StateTimer jumpTimer = new StateTimer(0.25f);
+
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
 
@@ -88,7 +91,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
 
         wc.timer.update(world.getDelta());
-
+        jumpTimer.update(world.getDelta());
 
 
         if(grappleDestination != null){
@@ -100,6 +103,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 vc.velocity.add(
                         (float) Math.cos(Math.atan2(grappleDestination.y - y, grappleDestination.x - x)) * GRAPPLE_MOVEMENT,
                         (float) Math.sin(Math.atan2(grappleDestination.y - y, grappleDestination.x - x)) * GRAPPLE_MOVEMENT);
+
+
             }
 
             if(cbc.bound.contains(grappleDestination.x, grappleDestination.y)){
@@ -116,6 +121,10 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 gc.ignoreGravity = false;
             }
 
+        } else {
+            if(mtm.get(e).targetX == null && mtm.get(e).targetY == null){
+                gc.ignoreGravity = false;
+            }
         }
 
         if(movementInputPoll != null) {
@@ -140,6 +149,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         if(firingInputPoll != null){
             if(Gdx.input.isTouched(firingInputPoll)) {
+
                 if(wc.timer.isFinishedAndReset()) {
                     sc.setState(1);
                     Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
@@ -195,17 +205,18 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 hasTarget = true;
                 movementInputPoll = pointer;
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
-            } else {
+            } else if(firingInputPoll == null){
                 canFire = true;
                 firingInputPoll = pointer;
+                jumpTimer.reset();
+            } else {
+                jumpTimer.reset();
             }
         } else {
-            mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).target_x = null;
+            mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).targetX = null;
             gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
             vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
             vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
-
-            System.out.println("INNSSDJIAWDJAWIDAWJJAWDOWJ");
         }
 
         world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
@@ -215,6 +226,36 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+
+        if(grappleDestination == null) {
+
+            if(!jumpTimer.isFinished()) {
+                CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+
+                gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
+                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
+                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
+
+                Vector3 input = new Vector3(screenX, screenY, 0);
+                gameport.unproject(input);
+
+                float gradientX = (float) Math.cos(Math.atan2(input.y - cbc.getCenterY(), input.x - cbc.getCenterX()));
+                float gradientY = (float) Math.sin(Math.atan2(input.y - cbc.getCenterY(), input.x - cbc.getCenterX()));
+
+                mtc.targetX = cbc.getCenterX() + (gradientX * Measure.units(20f)); //input.x; //gradientX * GRAPPLE_MOVEMENT;
+                mtc.targetY = cbc.getCenterY() + (gradientY * Measure.units(20f)); //input.y; //gradientY * GRAPPLE_MOVEMENT;
+
+                System.out.println(mtc.targetX);
+                System.out.println(mtc.targetY);
+
+                mtc.speedX = gradientX * GRAPPLE_MOVEMENT * 3; //used to be 10
+                mtc.speedY = gradientY * GRAPPLE_MOVEMENT * 3; //used to be 10
+            }
+
+
+        }
 
         if(movementInputPoll != null) {
             movementInputPoll = (movementInputPoll == pointer) ? null : movementInputPoll;

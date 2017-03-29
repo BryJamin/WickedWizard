@@ -9,6 +9,17 @@ import com.byrjamin.wickedwizard.helper.Measure;
 
 public class MoveToComponent extends Component {
 
-    public Float target_x;
+    public Float targetX;
+    public Float targetY;
+
+    public float speedX;
+    public float speedY;
+
+
+    public void reset(){
+        targetX = null;
+        targetY = null;
+    }
+
     public boolean isMoving;
 }

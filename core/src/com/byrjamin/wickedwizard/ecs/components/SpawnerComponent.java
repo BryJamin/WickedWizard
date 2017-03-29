@@ -17,7 +17,7 @@ public class SpawnerComponent extends Component{
 
     public int ENDLESS = -1;
 
-    public int life = 2;
+    public int life = 1;
 
     public float time;
     public float resetTime;
