@@ -72,6 +72,8 @@ public class BulletSystem extends EntityProcessingSystem {
                     }
 
                     e.deleteFromWorld();
+
+                    break; //TODO Note this is so you cna't hit two enemies at once. Might get rid of it later
                 }
             }
         }

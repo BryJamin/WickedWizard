@@ -156,8 +156,12 @@ public class PlayScreen extends AbstractScreen {
         //RoomTransitionSystem rts = new RoomTransitionSystem(b, testArray);
 
         WorldConfiguration config = new WorldConfigurationBuilder()
+                .with(WorldConfigurationBuilder.Priority.HIGHEST,
+                        new MovementSystem()
+                        )
+
+
                 .with(WorldConfigurationBuilder.Priority.HIGH,
-                        new MovementSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
@@ -182,7 +186,8 @@ public class PlayScreen extends AbstractScreen {
                         new CameraSystem(gamecam, gamePort),
                         new RenderingSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
-                        new DoorSystem())
+                        new DoorSystem()
+                )
                 .build();
 
         WorldConfigurationBuilder wcb = new WorldConfigurationBuilder();

@@ -6,9 +6,11 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.GrappleableComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.ecs.components.WallComponent;
 
@@ -18,10 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.WallComponent;
 
 public class RoomTypeSystem extends EntitySystem {
 
-    private Array<Rectangle> grapples = new Array<Rectangle>();
-
     ComponentMapper<RoomTypeComponent> rtm;
-    ComponentMapper<GrappleableComponent> gm;
 
 
     @SuppressWarnings("unchecked")
@@ -36,7 +35,7 @@ public class RoomTypeSystem extends EntitySystem {
 
         switch(rtm.get(e).getType()){
             case BATTLE:
-                if(world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class)).getEntities().size() <= 0){
+                if(world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class).exclude(BulletComponent.class)).getEntities().size() <= 0){
                     world.getSystem(LockSystem.class).unlockDoors();
                 } else {
                     world.getSystem(LockSystem.class).lockDoors();

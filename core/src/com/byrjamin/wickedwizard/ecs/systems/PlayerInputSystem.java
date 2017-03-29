@@ -21,6 +21,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
@@ -162,7 +163,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     if(angleOfTravel >= 0) trc.scaleX = (angleOfTravel <= (Math.PI / 2)) ? 1 : -1;
                     else trc.scaleX = (angleOfTravel >= -(Math.PI / 2)) ? 1 : -1;
 
-                    Entity bullet =  EntityFactory.createBullet(world, x, y, angleOfTravel);
+                    Entity bullet =  BulletFactory.createBullet(world, x, y, angleOfTravel);
 
                     for(Component c : wc.additionalComponenets) {
                         bullet.edit().add(c);
@@ -235,8 +236,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
-                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
-                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
+               // vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
+               // vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
 
                 Vector3 input = new Vector3(screenX, screenY, 0);
                 gameport.unproject(input);
@@ -247,11 +248,11 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 mtc.targetX = cbc.getCenterX() + (gradientX * Measure.units(20f)); //input.x; //gradientX * GRAPPLE_MOVEMENT;
                 mtc.targetY = cbc.getCenterY() + (gradientY * Measure.units(20f)); //input.y; //gradientY * GRAPPLE_MOVEMENT;
 
-                System.out.println(mtc.targetX);
-                System.out.println(mtc.targetY);
+                mtc.speedX = gradientX * GRAPPLE_MOVEMENT * 10; //used to be 10
+                mtc.speedY = gradientY * GRAPPLE_MOVEMENT * 10;
 
-                mtc.speedX = gradientX * GRAPPLE_MOVEMENT * 3; //used to be 10
-                mtc.speedY = gradientY * GRAPPLE_MOVEMENT * 3; //used to be 10
+                mtc.endSpeedX = 0;
+                mtc.endSpeedY = 250;//used to be 10
             }
 
 

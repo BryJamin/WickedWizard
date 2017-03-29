@@ -43,7 +43,7 @@ public class MoveToSystem extends EntityProcessingSystem {
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterX() : pc.getX();
 
             if (cbc.bound.contains(mtc.targetX, cbc.getCenterY())) {
-                //vc.velocity.x = 0; //For grappling
+                vc.velocity.x = mtc.endSpeedX; //For grappling
                 mtc.targetX = null;
             } else if (currentPosition >= targetX) {
                 vc.velocity.x = mtc.speedX;
@@ -63,7 +63,7 @@ public class MoveToSystem extends EntityProcessingSystem {
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterY() : pc.getY();
 
             if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
-                //vc.velocity.y = 0; //For grappling
+                vc.velocity.y = mtc.endSpeedY; //For grappling
                 mtc.targetY = null;
             } else if (currentPosition >= targetY) {
                 vc.velocity.y = mtc.speedY;

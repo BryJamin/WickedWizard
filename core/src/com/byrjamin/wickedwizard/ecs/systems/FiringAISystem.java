@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.ecs.components.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 
 /**
@@ -46,7 +47,7 @@ public class FiringAISystem extends EntityProcessingSystem {
                     CollisionBoundComponent pcbc = cbm.get(player);
 
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
-                    Entity bullet = EntityFactory.createEnemyBullet(world, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
+                    Entity bullet = BulletFactory.createEnemyBullet(world, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
                     for(Component c : wc.additionalComponenets){
                         bullet.edit().add(c);
                     }
