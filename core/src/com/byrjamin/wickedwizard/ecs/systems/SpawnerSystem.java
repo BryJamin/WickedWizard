@@ -42,7 +42,7 @@ public class SpawnerSystem extends EntityProcessingSystem {
 
             sc.life--;
 
-            if(sc.life <= 0){
+            if(sc.life <= 0 && !sc.isEndless){
                 e.deleteFromWorld();
             } else {
                 sc.time = sc.resetTime;

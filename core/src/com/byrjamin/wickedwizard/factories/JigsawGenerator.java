@@ -36,12 +36,13 @@ public class JigsawGenerator {
 
             Arena a;
 
-
             if(i == 2 || i == 6){
                 a = RoomFactory.createWidth2Arena();
-                RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
+                RoomDecorationFactory.biggablobba(a);
+                //RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             } else {
                 a = createOmniArena();
+                //RoomDecorationFactory.biggablobba(a);
                 RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             }
             //if(i == 1) {

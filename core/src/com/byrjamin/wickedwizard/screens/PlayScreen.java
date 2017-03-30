@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
 import com.byrjamin.wickedwizard.factories.Arena;
@@ -175,6 +176,7 @@ public class PlayScreen extends AbstractScreen {
                         new LockSystem(),
                         new GroundCollisionSystem(),
                         new HealthSystem(),
+                        new PhaseSystem(),
                         new MoveToSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
@@ -189,8 +191,6 @@ public class PlayScreen extends AbstractScreen {
                         new DoorSystem()
                 )
                 .build();
-
-        WorldConfigurationBuilder wcb = new WorldConfigurationBuilder();
 
         world = new World(config);
         for(Bag<Component> bag : b.getBagOfEntities()){

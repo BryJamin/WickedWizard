@@ -15,7 +15,7 @@ public class SpawnerComponent extends Component{
         RANDOM, ORDERED
     }
 
-    public int ENDLESS = -1;
+    public boolean isEndless = false;
 
     public int life = 1;
 
@@ -29,7 +29,7 @@ public class SpawnerComponent extends Component{
 
     private Bag<Component> spawnedEntity;
 
-    private Array<SpawnerFactory.Spawner> spawner;
+    private Array<SpawnerFactory.Spawner> spawner = new Array<SpawnerFactory.Spawner>();
 
     public SpawnerComponent(){
 
@@ -47,6 +47,14 @@ public class SpawnerComponent extends Component{
         this.resetTime = time;
     }
 
+    public SpawnerComponent(float time, SpawnerFactory.Spawner... spawners){
+        for(SpawnerFactory.Spawner s : spawners){
+            spawner.add(s);
+        }
+        this.time = time;
+        this.resetTime = time;
+    }
+
     public Bag<Component> getSpawnedEntity() {
         return spawnedEntity;
     }
@@ -54,4 +62,5 @@ public class SpawnerComponent extends Component{
     public Array<SpawnerFactory.Spawner> getSpawner() {
         return spawner;
     }
+
 }

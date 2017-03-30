@@ -11,14 +11,20 @@ import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToPlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.factories.SpawnerFactory;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -85,6 +91,62 @@ public class BlobFactory {
                 textureWidth * scale,
                 textureHeight * scale));
         return bag;
+    }
+
+
+    public static Bag<Component> BiggaBlobbaBag(float x, float y){
+
+
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new VelocityComponent(0, 0));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, Measure.units(33), Measure.units(38))));
+        bag.add(new GravityComponent());
+        bag.add(new EnemyComponent());
+        bag.add(new HealthComponent(57));
+        bag.add(new BlinkComponent());
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setState(0);
+        bag.add(sc);
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, AnimationPacker.genAnimation(1f / 20f, TextureStrings.BIGGABLOBBA_STANDING, Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+                -Measure.units(6),
+                0,
+                Measure.units(45),
+                Measure.units(45)));
+
+
+        WeaponComponent wc = new WeaponComponent(1.5f);
+        wc.additionalComponenets.add(new EnemyComponent());
+
+        SpawnerFactory.Spawner s = new SpawnerFactory.Spawner() {
+            @Override
+            public Bag<Component> spawnBag(float x, float y) {
+                return smallblobBag(x,y);
+            }
+        };
+
+        SpawnerComponent sc2 = new SpawnerComponent(2.0f, s);
+        sc2.isEndless = true;
+
+        PhaseComponent pc = new PhaseComponent();
+        pc.addPhase(7.0f, new FiringAIComponent(), wc);
+        pc.addPhase(5.0f, sc2);
+        pc.addPhaseSequence(1,0);
+
+        bag.add(pc);
+
+
+        return bag;
+
+
+
+
+
+
+
     }
 
 

@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.factories;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 
@@ -86,6 +87,23 @@ public class RoomDecorationFactory {
 
     }
 
+
+    public static void biggablobba(Arena a){
+
+        a.addEntity(BlobFactory.BiggaBlobbaBag(a.getWidth() / 2, Measure.units(4)));
+
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return BlobFactory.BiggaBlobbaBag(x,y);
+            }
+        });
+        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, Measure.units(4), s));
+    }
+
+
+
+//    BiggaBlobbaBag
 
 
 
