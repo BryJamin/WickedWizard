@@ -63,10 +63,13 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         }
         //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
+        cbc.getRecentCollisions().clear();
+
         for(int i = 0; i < entityIds.size(); i++) {
 
             Rectangle r = wm.get(entityIds.get(i)).bound;
             Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, r);
+
             if(c != Collider.Collision.NONE){
                 switch(c){
                     case TOP: vc.velocity.y = 0;
@@ -80,14 +83,18 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
                 pc.position.x = cbc.bound.getX();
                 pc.position.y = cbc.bound.getY();
 
-                cbc.getRecentCollisions().add(c);
-
                 if(bm.has(e)){
                     e.deleteFromWorld();
                 }
 
             }
+
+            cbc.getRecentCollisions().add(c);
+
         }
+
+
+
     }
 
 

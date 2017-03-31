@@ -20,9 +20,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
@@ -82,6 +84,8 @@ public class PlayScreen extends AbstractScreen {
 
     private World world;
 
+    private JumpComponent jumpresource;
+
     GestureDetector gestureDetector;
     GestureDetector controlschemeDetector;
 
@@ -106,14 +110,11 @@ public class PlayScreen extends AbstractScreen {
 
     //TODO IF you ever click in the deck area don't cast any spells
 
-    public PlayScreen(MainGame game){
+    public PlayScreen(MainGame game) {
         super(game);
 
 
-
         gestureDetector = new GestureDetector(new gestures());
-        controlschemeDetector = new GestureDetector(new controlSchemeGesture());
-
 
         font.getData().setScale(5, 5);
 
@@ -125,41 +126,22 @@ public class PlayScreen extends AbstractScreen {
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
 
-       // gamePort = new FitViewport(map.getActiveRoom().WIDTH, map.getActiveRoom().HEIGHT, gamecam);
-
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
         Random random = new Random();
-        JigsawGenerator jg = new JigsawGenerator(13,random);
+        JigsawGenerator jg = new JigsawGenerator(13, random);
 
         testArray = jg.generateJigsaw();
         Arena b = jg.getStartingRoom();
         RoomFactory.cleanArenas(testArray);
 
-        int i = 0;
-        for(Arena a : testArray){
-            System.out.println(" coords fors arena " + i + " " + a.cotainingCoords);
-            System.out.println(" AJcoords fors arena " + i + " " + a.adjacentCoords);
-                    i++;
-        }
-
-        MapJigsawGenerator mjg = new MapJigsawGenerator(3, random);
-
-        i = 0;
-        for(Room r : mjg.generateJigsaw()){
-            System.out.println("Room coords for room " + i + " " + r.getMapCoordsArray());
-            i++;
-        }
-
-        //RoomTransitionSystem rts = new RoomTransitionSystem(b, testArray);
-
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem()
-                        )
+                )
 
 
                 .with(WorldConfigurationBuilder.Priority.HIGH,
@@ -178,6 +160,7 @@ public class PlayScreen extends AbstractScreen {
                         new HealthSystem(),
                         new PhaseSystem(),
                         new MoveToSystem(),
+                        new JumpSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam, gamePort),
@@ -193,30 +176,31 @@ public class PlayScreen extends AbstractScreen {
                 .build();
 
         world = new World(config);
-        for(Bag<Component> bag : b.getBagOfEntities()){
+        for (Bag<Component> bag : b.getBagOfEntities()) {
             Entity entity = world.createEntity();
-            for(Component comp : bag){
+            for (Component comp : bag) {
                 entity.edit().add(comp);
             }
         }
 
         Entity entity = world.createEntity();
-        for(Component comp : EntityFactory.playerBag()){
+        for (Component comp : EntityFactory.playerBag()) {
             entity.edit().add(comp);
         }
 
-        arenaGUI = new ArenaGUI(0,0,testArray, b);
+        jumpresource = entity.getComponent(JumpComponent.class);
+        arenaGUI = new ArenaGUI(0, 0, testArray, b);
 
         System.out.println(gamecam.viewportHeight);
         System.out.println(gamecam.viewportHeight);
 
     }
 
-    public void handleInput(float dt){
+    public void handleInput(float dt) {
 
         InputMultiplexer multiplexer = new InputMultiplexer();
 
-        if(!gameOver) {
+        if (!gameOver) {
             roomInputAdapter.update(map.getActiveRoom(), gamePort, gamecam);
             multiplexer.addProcessor(controlschemeDetector);
             multiplexer.addProcessor(roomInputAdapter);
@@ -229,30 +213,30 @@ public class PlayScreen extends AbstractScreen {
 
     }
 
-    public void update(float dt){
+    public void update(float dt) {
 
         //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
         //TODO touching the screen pause the game.
         //caps the delta time if the game is paused for some reason.
 
-        if(dt > 0.20) {
+        if (dt > 0.20) {
             System.out.println(" dt" + dt);
         }
 
-        if(dt < 0.20f) {
+        if (dt < 0.20f) {
 
-            gamecam.position.set((int) map.getActiveRoom().getWizard().getCenterX(),(int) map.getActiveRoom().getWizard().getCenterY(), 0);
+            gamecam.position.set((int) map.getActiveRoom().getWizard().getCenterX(), (int) map.getActiveRoom().getWizard().getCenterY(), 0);
 
-            if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
-                gamecam.position.set(gamePort.getWorldWidth() / 2,gamecam.position.y, 0);
-            } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH){
-                gamecam.position.set((int) (map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2),(int) gamecam.position.y, 0);
+            if (gamecam.position.x <= gamePort.getWorldWidth() / 2) {
+                gamecam.position.set(gamePort.getWorldWidth() / 2, gamecam.position.y, 0);
+            } else if (gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH) {
+                gamecam.position.set((int) (map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2), (int) gamecam.position.y, 0);
             }
 
-            if(gamecam.position.y <= gamePort.getWorldHeight() / 2){
+            if (gamecam.position.y <= gamePort.getWorldHeight() / 2) {
                 gamecam.position.set(gamecam.position.x, gamePort.getWorldHeight() / 2, 0);
-            } else if(gamecam.position.y + gamecam.viewportHeight / 2 >= map.getActiveRoom().HEIGHT){
-                gamecam.position.set((int) gamecam.position.x,(int) (map.getActiveRoom().HEIGHT - gamecam.viewportHeight / 2), 0);
+            } else if (gamecam.position.y + gamecam.viewportHeight / 2 >= map.getActiveRoom().HEIGHT) {
+                gamecam.position.set((int) gamecam.position.x, (int) (map.getActiveRoom().HEIGHT - gamecam.viewportHeight / 2), 0);
             }
 
             gamecam.update();
@@ -279,42 +263,33 @@ public class PlayScreen extends AbstractScreen {
         //update(delta);
 
 
-
         //Sets the background color if nothing is on the screen.
         Gdx.gl.glClearColor(0, 0, 0, 0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(gamecam.combined);
 
-
-/*        game.batch.begin();
-
-       // map.draw(game.batch);
-
-
-        if(gameOver){
-            font.draw(game.batch, "You died :[\nTap to restart", 550, gamecam.viewportHeight - 500, Measure.units(40), Align.center, true);
-        }
-
-        game.batch.end();*/
-
-
-        if(delta < 0.20f) {
+        if (delta < 0.20f) {
             world.setDelta(delta);
         }
 
 
         world.process();
-       // world.getSystem(LockSystem.class).lockDoors();
+        // world.getSystem(LockSystem.class).lockDoors();
 
 
-
-
-        for(int i = 1; i <= world.getSystem(FindPlayerSystem.class).getPlayer().getComponent(HealthComponent.class).health; i++){
-            if(!game.batch.isDrawing()) {
+        for (int i = 1; i <= world.getSystem(FindPlayerSystem.class).getPlayer().getComponent(HealthComponent.class).health; i++) {
+            if (!game.batch.isDrawing()) {
                 game.batch.begin();
             }
-            game.batch.draw(atlas.findRegion("sprite_health0"), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220,MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            game.batch.draw(atlas.findRegion("sprite_health0"), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220, MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        }
+
+        for (int i = 1; i <= jumpresource.jumps; i++) {
+            if (!game.batch.isDrawing()) {
+                game.batch.begin();
+            }
+            game.batch.draw(atlas.findRegion("bullet_blue"), gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 280, MainGame.GAME_UNITS * 2.5f, MainGame.GAME_UNITS * 2.5f);
         }
 
         arenaGUI.update(world.delta,
@@ -356,17 +331,10 @@ public class PlayScreen extends AbstractScreen {
 
     public class gestures extends AbstractGestureDectector {
 
-
-        @Override
-        public boolean touchDown(float x, float y, int pointer, int button) {
-
-            return false;
-        }
-
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
-            if(gameOver){
+            if (gameOver) {
                 map = new Map();
                 gameOver = false;
             }
@@ -374,38 +342,7 @@ public class PlayScreen extends AbstractScreen {
             return true;
         }
 
-        @Override
-        public boolean longPress(float x, float y) {
-
-            return true;
-        }
-
     }
-
-    public class controlSchemeGesture extends AbstractGestureDectector {
-
-        @Override
-        public boolean longPress(float x, float y) {
-       //     System.out.println("longpress");
-//            map.getActiveRoom().getWizard().switchControlScheme();
-            return true;
-        }
-
-        public boolean fling(float velocityX, float velocityY, int button) {
-/*
-
-
-            if(Math.abs(velocityX) > 5000) {
-                map.getActiveRoom().getWizard().switchControlScheme();
-                System.out.println("fling x velocity :" +velocityX);
-            }
-*/
-
-            return false;
-        }
-
-    }
-
 
 }
 

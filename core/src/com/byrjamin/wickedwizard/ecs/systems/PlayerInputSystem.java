@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
@@ -46,6 +47,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     ComponentMapper<AnimationStateComponent> sm;
     ComponentMapper<GravityComponent> gm;
     ComponentMapper<TextureRegionComponent> trm;
+    ComponentMapper<JumpComponent> jm;
+
 
 
     OrthographicCamera gamecam;
@@ -90,8 +93,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         GravityComponent gc = gm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
-
-        wc.timer.update(world.getDelta());
         jumpTimer.update(world.getDelta());
 
 
@@ -144,11 +145,13 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         }  else if(grappleDestination == null) {
             if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
                 MoveToSystem.decelerate(ac, vc);
-                cbc.getRecentCollisions().clear();
             }
         }
 
         if(firingInputPoll != null){
+
+            wc.timer.update(world.getDelta());
+
             if(Gdx.input.isTouched(firingInputPoll)) {
 
                 if(wc.timer.isFinishedAndReset()) {
@@ -169,6 +172,21 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                         bullet.edit().add(c);
                     }
                 }
+
+
+                if(!cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)
+                        && movementInputPoll == null && grappleDestination == null
+                        && mtc.targetX == null
+                        && jm.get(e).jumps > 0) {
+                    if(vc.velocity.y < gc.gravity) {
+                        vc.velocity.y = gc.gravity;
+                    }
+                    vc.velocity.x = 0;
+                }
+
+
+
+
             }
         } else {
             if(sc.getState() != 0) {
@@ -231,11 +249,12 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         if(grappleDestination == null) {
 
-            if(!jumpTimer.isFinished()) {
+            if(!jumpTimer.isFinished() && jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0) {
                 CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
                 MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
+                jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps--;
                // vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
                // vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
 
@@ -264,6 +283,11 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         if(firingInputPoll != null) {
             firingInputPoll = (firingInputPoll == pointer) ? null : firingInputPoll;
+
+            if(firingInputPoll == null){
+                wm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).timer.reset();
+            }
+
         }
         canFire = false;
         return false;

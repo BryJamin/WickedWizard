@@ -103,7 +103,7 @@ public class BlobFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, Measure.units(33), Measure.units(38))));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
-        bag.add(new HealthComponent(57));
+        bag.add(new HealthComponent(65));
         bag.add(new BlinkComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);

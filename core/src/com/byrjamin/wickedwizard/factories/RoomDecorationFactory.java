@@ -92,13 +92,13 @@ public class RoomDecorationFactory {
 
         a.addEntity(BlobFactory.BiggaBlobbaBag(a.getWidth() / 2, Measure.units(4)));
 
-        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+/*        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return BlobFactory.BiggaBlobbaBag(x,y);
             }
         });
-        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, Measure.units(4), s));
+        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, Measure.units(4), s));*/
     }
 
 

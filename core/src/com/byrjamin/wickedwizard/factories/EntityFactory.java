@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.BounceComponent;
@@ -73,7 +74,8 @@ public class EntityFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
-        bag.add(new AccelerantComponent(Measure.units(15f), Measure.units(15f), Measure.units(115f), Measure.units(115f)));
+        bag.add(new JumpComponent());
+        bag.add(new AccelerantComponent(Measure.units(15f), Measure.units(15f), Measure.units(80f), Measure.units(80f)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
@@ -89,7 +91,7 @@ public class EntityFactory {
         WeaponComponent wc = new WeaponComponent(0.3f);
         wc.additionalComponenets.add(new FriendlyComponent());
         bag.add(wc);
-        bag.add(new HealthComponent(3));
+        bag.add(new HealthComponent(6));
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
