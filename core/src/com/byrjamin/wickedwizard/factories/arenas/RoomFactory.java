@@ -1,26 +1,19 @@
-package com.byrjamin.wickedwizard.factories;
+package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
-import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
+import com.byrjamin.wickedwizard.factories.BackgroundFactory;
+import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.BagSearch;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.MapCoords;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomDoor;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomExit;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomGrate;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-
-import java.util.Arrays;
 
 /**
  * Created by Home on 18/03/2017.
@@ -37,10 +30,10 @@ public class RoomFactory {
     public static float WALLWIDTH = Measure.units(5);
 
     public static Arena createOmniArena(){
-        return createOmniArena(new MapCoords(0,0));
+        return createOmniArena(new MapCoords(0,0), new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
     }
 
-    public static Arena createOmniArena(MapCoords defaultCoords) {
+    public static Arena createOmniArena(MapCoords defaultCoords, RoomTypeComponent rtc) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -87,7 +80,7 @@ public class RoomFactory {
                 DoorComponent.DIRECTION.down));
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
+        bag.add(rtc);
         arena.addEntity(bag);
 
 

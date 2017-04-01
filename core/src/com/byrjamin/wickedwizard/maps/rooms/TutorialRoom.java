@@ -112,7 +112,6 @@ public class TutorialRoom extends Room {
         super(mapCoords);
         font = new BitmapFont();
         getPlatforms().clear();
-        font.getData().setScale(5, 5);
         currentString = hello;
         dialogue = DIALOGUETREE.WELCOME;
 
@@ -307,6 +306,8 @@ public class TutorialRoom extends Room {
 
         //TODO figure out the bug where this apparnetly is a null pointer if you remove the shaperenderer.
         shapeRenderer = new ShapeRenderer();
+
+
 
         switch(tutorial_state){
             case GROUND:

@@ -17,8 +17,8 @@ import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
-import com.byrjamin.wickedwizard.factories.Arena;
-import com.byrjamin.wickedwizard.factories.RoomFactory;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 

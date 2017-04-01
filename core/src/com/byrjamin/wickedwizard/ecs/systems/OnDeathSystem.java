@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.systems;
 
 import com.artemis.Aspect;
+import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -17,21 +18,15 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
  * Created by Home on 01/04/2017.
  */
 
-public class OnDeathSystem  extends EntityProcessingSystem {
+public class OnDeathSystem  extends BaseSystem {
 
     ComponentMapper<OnDeathComponent> odm;
     ComponentMapper<PositionComponent> pm;
 
-    @SuppressWarnings("unchecked")
-    public OnDeathSystem() {
-        super(Aspect.all(OnDeathComponent.class));
-    }
-
     @Override
-    protected void process(Entity e) {
+    protected void processSystem() {
 
     }
-
 
     @Override
     protected boolean checkProcessing() {
@@ -55,17 +50,9 @@ public class OnDeathSystem  extends EntityProcessingSystem {
                     }
 
                     e.edit().add(c);
-
-
-
                 }
-
-
-
             }
-
         }
-
         deadEntity.deleteFromWorld();
     }
 

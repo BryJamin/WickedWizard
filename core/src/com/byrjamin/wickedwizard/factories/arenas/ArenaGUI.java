@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories;
+package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -23,9 +23,9 @@ public class ArenaGUI {
 
     private float SIZE = Measure.units(3f);
 
-    private Array<Arena> arenas;
+    private Array<com.byrjamin.wickedwizard.factories.arenas.Arena> arenas;
 
-    private Arena currentRoom;
+    private com.byrjamin.wickedwizard.factories.arenas.Arena currentRoom;
     private MapCoords currentCoords;
 
     private Color currentRoomColor = new Color(1, 1, 1, 0.8f);
@@ -42,7 +42,7 @@ public class ArenaGUI {
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
 
-    public ArenaGUI(float x, float y, Array<Arena> arenas, Arena currentRoom) {
+    public ArenaGUI(float x, float y, Array<com.byrjamin.wickedwizard.factories.arenas.Arena> arenas, com.byrjamin.wickedwizard.factories.arenas.Arena currentRoom) {
         this.mapx = x;
         this.mapy = y;
         this.arenas = arenas;
@@ -50,7 +50,7 @@ public class ArenaGUI {
     }
 
 
-    public void update(float dt, OrthographicCamera gamecam, Array<Arena> visitedArenas, Arena currentRoom, MapCoords currentCoords){
+    public void update(float dt, OrthographicCamera gamecam, Array<com.byrjamin.wickedwizard.factories.arenas.Arena> visitedArenas, com.byrjamin.wickedwizard.factories.arenas.Arena currentRoom, MapCoords currentCoords){
 
         this.currentRoom = currentRoom;
         this.currentCoords = currentCoords;
@@ -88,7 +88,7 @@ public class ArenaGUI {
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        for(Arena arena : arenas){
+        for(com.byrjamin.wickedwizard.factories.arenas.Arena arena : arenas){
             for(MapCoords m : arena.cotainingCoords) {
                 if(arena == currentRoom) {
                     mapRenderer.setColor(currentRoomColor);
@@ -125,7 +125,7 @@ public class ArenaGUI {
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
 
 
-        for(Arena arena : arenas){
+        for(com.byrjamin.wickedwizard.factories.arenas.Arena arena : arenas){
 
             for(MapCoords m : arena.cotainingCoords) {
                 mapRenderer.setColor(borderColor);

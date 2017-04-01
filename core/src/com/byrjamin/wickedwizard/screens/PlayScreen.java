@@ -24,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
@@ -31,20 +32,15 @@ import com.byrjamin.wickedwizard.ecs.systems.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
-import com.byrjamin.wickedwizard.factories.Arena;
-import com.byrjamin.wickedwizard.factories.ArenaGUI;
-import com.byrjamin.wickedwizard.factories.BackgroundFactory;
+import com.byrjamin.wickedwizard.ecs.systems.TutorialSystem;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.RoomFactory;
+import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.helper.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.maps.Map;
-import com.byrjamin.wickedwizard.maps.MapCoords;
-import com.byrjamin.wickedwizard.maps.MapJigsawGenerator;
-import com.byrjamin.wickedwizard.maps.rooms.Room;
-import com.byrjamin.wickedwizard.maps.rooms.components.RoomWall;
 import com.byrjamin.wickedwizard.ecs.systems.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BlinkSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BounceCollisionSystem;
@@ -160,6 +156,8 @@ public class PlayScreen extends AbstractScreen {
                         new GroundCollisionSystem(),
                         new HealthSystem(),
                         new OnDeathSystem(),
+                        new FadeSystem(),
+                        new TutorialSystem(),
                         new PhaseSystem(),
                         new MoveToSystem(),
                         new JumpSystem(),

@@ -9,7 +9,7 @@ import com.artemis.Component;
 public class RoomTypeComponent extends Component{
 
     public enum Type {
-        BATTLE, ITEM, SHOP
+        BATTLE, ITEM, SHOP, TUTORIAL
     }
 
     private Type type;

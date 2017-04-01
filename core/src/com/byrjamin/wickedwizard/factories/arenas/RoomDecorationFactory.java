@@ -1,8 +1,9 @@
-package com.byrjamin.wickedwizard.factories;
+package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.helper.Measure;

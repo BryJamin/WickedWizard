@@ -4,10 +4,17 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 
@@ -23,17 +30,26 @@ public class RenderingSystem extends EntitySystem {
     private ComponentMapper<PositionComponent> pm;
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<TextureRegionBatchComponent> trbm;
+    private ComponentMapper<TextureFontComponent> trfm;
+    private ComponentMapper<ShapeComponent> sm;
 
     private ArrayList<Entity> orderedEntities;
 
     public SpriteBatch batch;
+    public ShapeRenderer shapeRenderer;
     public OrthographicCamera gamecam;
 
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, OrthographicCamera gamecam) {
-        super(Aspect.all(PositionComponent.class).one(TextureRegionComponent.class, TextureRegionBatchComponent.class));
+        super(Aspect.all(PositionComponent.class).one(
+                TextureRegionComponent.class,
+                TextureRegionBatchComponent.class,
+                TextureFontComponent.class,
+                ShapeComponent.class
+        ));
         this.batch = batch;
         this.gamecam = gamecam;
+        shapeRenderer = new ShapeRenderer();
         orderedEntities = new ArrayList<Entity>();
     }
 
@@ -58,6 +74,7 @@ public class RenderingSystem extends EntitySystem {
 
         if(trm.has(e)) {
             TextureRegionComponent trc = trm.get(e);
+
             float originX = trc.width * 0.5f;
             float originY = trc.height * 0.5f;
             batch.setColor(trc.color);
@@ -85,6 +102,29 @@ public class RenderingSystem extends EntitySystem {
 
         }
 
+        if(trfm.has(e)) {
+            TextureFontComponent trfc = trfm.get(e);
+            trfc.font.setColor(trfc.color);
+            trfc.font.draw(batch, trfc.text,
+                    pc.getX() + trfc.offsetX, pc.getY() + trfc.offsetY
+            ,gamecam.viewportWidth, Align.center, true);
+            trfc.font.setColor(Color.WHITE);
+        }
+
+        if(sm.has(e)) {
+
+            batch.end();
+
+            ShapeComponent sc = sm.get(e);
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            shapeRenderer.setProjectionMatrix(gamecam.combined);
+            shapeRenderer.begin(sc.shapeType);
+            shapeRenderer.setColor(sc.color);
+            shapeRenderer.rect(pc.getX(),pc.getY(), sc.width, sc.height);
+            shapeRenderer.end();
+            batch.begin();
+        }
+
 
 
     }
@@ -109,12 +149,20 @@ public class RenderingSystem extends EntitySystem {
                     layer1 = trm.get(e1).layer;
                 } else if(trbm.has(e1)){
                     layer1 = trbm.get(e1).layer;
+                } else if(trfm.has(e1)){
+                    layer1 = trfm.get(e1).layer;
+                } else if(sm.has(e1)){
+                    layer1 = sm.get(e1).layer;
                 }
 
                 if(trm.has(e2)) {
                     layer2 = trm.get(e2).layer;
                 } else if(trbm.has(e2)){
                     layer2 = trbm.get(e2).layer;
+                } else if(trfm.has(e1)){
+                    layer2 = trfm.get(e1).layer;
+                } else if(sm.has(e1)){
+                    layer2 = sm.get(e1).layer;
                 }
 
                 return ((Integer)layer1).compareTo(layer2);

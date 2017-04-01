@@ -24,8 +24,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
-import com.byrjamin.wickedwizard.factories.EntityFactory;
-import com.byrjamin.wickedwizard.factories.SpawnerFactory;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;

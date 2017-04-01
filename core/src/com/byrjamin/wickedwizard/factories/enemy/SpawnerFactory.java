@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories;
+package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;

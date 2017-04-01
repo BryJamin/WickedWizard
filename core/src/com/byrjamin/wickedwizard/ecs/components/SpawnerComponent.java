@@ -3,7 +3,7 @@ package com.byrjamin.wickedwizard.ecs.components;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.factories.SpawnerFactory;
+import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 
 /**
  * Created by Home on 25/03/2017.

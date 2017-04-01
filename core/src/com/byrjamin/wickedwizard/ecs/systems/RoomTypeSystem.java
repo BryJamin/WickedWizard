@@ -41,6 +41,9 @@ public class RoomTypeSystem extends EntitySystem {
                     world.getSystem(LockSystem.class).lockDoors();
                 }
                 break;
+            case TUTORIAL:
+                world.getSystem(TutorialSystem.class).startTutorial();;
+                break;
         }
 
     }

@@ -10,7 +10,7 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
-import com.byrjamin.wickedwizard.factories.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
 
 /**
  * Created by Home on 23/03/2017.
