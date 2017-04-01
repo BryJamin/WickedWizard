@@ -130,18 +130,14 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         }
 
         if(movementInputPoll != null) {
-
             if(Gdx.input.isTouched(movementInputPoll)) {
                 Vector3 input = new Vector3(Gdx.input.getX(movementInputPoll), Gdx.input.getY(movementInputPoll), 0);
                 gameport.unproject(input);
 
                 if(input.y < 195){
                     MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
-                    //mtc.target_x = input.x;
                 }
-
             }
-
         }  else if(grappleDestination == null) {
             if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
                 MoveToSystem.decelerate(ac, vc);
@@ -255,23 +251,15 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
                 jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps--;
-               // vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
-               // vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
 
                 Vector3 input = new Vector3(screenX, screenY, 0);
                 gameport.unproject(input);
 
-                float gradientX = (float) Math.cos(Math.atan2(input.y - cbc.getCenterY(), input.x - cbc.getCenterX()));
-                float gradientY = (float) Math.sin(Math.atan2(input.y - cbc.getCenterY(), input.x - cbc.getCenterX()));
-
-                mtc.targetX = cbc.getCenterX() + (gradientX * Measure.units(20f)); //input.x; //gradientX * GRAPPLE_MOVEMENT;
-                mtc.targetY = cbc.getCenterY() + (gradientY * Measure.units(20f)); //input.y; //gradientY * GRAPPLE_MOVEMENT;
-
-                mtc.speedX = gradientX * GRAPPLE_MOVEMENT * 10; //used to be 10
-                mtc.speedY = gradientY * GRAPPLE_MOVEMENT * 10;
-
-                mtc.endSpeedX = 0;
-                mtc.endSpeedY = 250;//used to be 10
+                world.getSystem(MoveToSystem.class).flyTo(Math.atan2(input.y - cbc.getCenterY(), input.x - cbc.getCenterX()) ,
+                        Measure.units(20f),
+                        GRAPPLE_MOVEMENT * 10,
+                        mtc,
+                        cbc);
             }
 
 

@@ -62,7 +62,7 @@ public class ArenaGUI {
             blink = !blink;
             mapBlinker = 0;
         }
-        mapy = gamecam.position.y + Measure.units(15);
+        mapy = gamecam.position.y + Measure.units(18);
         mapx = gamecam.position.x + Measure.units(40);
     }
 
