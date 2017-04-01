@@ -27,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
@@ -158,6 +159,7 @@ public class PlayScreen extends AbstractScreen {
                         new LockSystem(),
                         new GroundCollisionSystem(),
                         new HealthSystem(),
+                        new OnDeathSystem(),
                         new PhaseSystem(),
                         new MoveToSystem(),
                         new JumpSystem(),

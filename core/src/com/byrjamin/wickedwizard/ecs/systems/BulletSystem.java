@@ -71,7 +71,7 @@ public class BulletSystem extends EntityProcessingSystem {
                         bc.isHit = true;
                     }
 
-                    e.deleteFromWorld();
+                    world.getSystem(OnDeathSystem.class).kill(e);
 
                     break; //TODO Note this is so you cna't hit two enemies at once. Might get rid of it later
                 }

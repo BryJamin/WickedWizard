@@ -66,6 +66,8 @@ public class BulletFactory {
         bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height)));
 
+        bag.add(DeathFactory.basicOnDeathExplosion(width, height));
+
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion,-width / 2,-height / 2,  width * 2, height * 2);
         trc.DEFAULT = color;
         trc.color = color;

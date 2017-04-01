@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
@@ -40,6 +41,7 @@ public class TurretFactory {
         wc.additionalComponenets.add(new EnemyComponent());
         bag.add(wc);
         bag.add(new FiringAIComponent());
+        bag.add(DeathFactory.basicOnDeathExplosion(Measure.units(9), Measure.units(9)));
         return bag;
     }
 
@@ -65,6 +67,9 @@ public class TurretFactory {
         bag.add(wc);
         bag.add(new FiringAIComponent());
         bag.add(new BounceComponent());
+
+        bag.add(DeathFactory.basicOnDeathExplosion(Measure.units(9), Measure.units(9)));
+
         return bag;
     }
 

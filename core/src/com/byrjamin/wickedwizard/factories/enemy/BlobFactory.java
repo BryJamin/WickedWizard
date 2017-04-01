@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.SpawnerFactory;
 import com.byrjamin.wickedwizard.helper.AnimationPacker;
@@ -63,6 +64,9 @@ public class BlobFactory {
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight));
+
+        bag.add(DeathFactory.basicOnDeathExplosion(width, height, 0,0));
+
         return bag;
     }
 

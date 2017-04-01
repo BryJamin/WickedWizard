@@ -9,7 +9,7 @@ public class AnimationStateComponent extends Component {
 
     public enum State {
 
-        LOCKED(1), UNLOCKED(2);
+        LOCKED(1), UNLOCKED(2), DEFAULT(0);
 
         State(int state) {
             this.state = state;
@@ -25,6 +25,10 @@ public class AnimationStateComponent extends Component {
     private int state = 0;
     public float stateTime = 0.0f;
 
+
+    public AnimationStateComponent(){
+        state = State.DEFAULT.getState();
+    }
 
     public int getState() {
         return state;

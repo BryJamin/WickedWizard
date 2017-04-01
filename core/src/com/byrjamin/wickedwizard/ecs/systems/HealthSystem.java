@@ -24,7 +24,7 @@ public class HealthSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         HealthComponent hc = hm.get(e);
         if(hc.health <= 0){
-            e.deleteFromWorld();
+            world.getSystem(OnDeathSystem.class).kill(e);
         }
     }
 
