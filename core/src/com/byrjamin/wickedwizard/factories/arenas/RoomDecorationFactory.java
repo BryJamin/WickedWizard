@@ -20,9 +20,9 @@ public class RoomDecorationFactory {
 
     public static RoomDecoration[] setUpArena = new RoomDecoration[] {
             new RoomDecoration() { public void setUpArena(Arena a) {blobRoom(a);}},
-          //  new RoomDecoration() { public void setUpArena(Arena a) {turretRoom(a);}},
+            new RoomDecoration() { public void setUpArena(Arena a) {turretRoom(a);}},
            // new RoomDecoration() { public void setUpArena(Arena a) {movingTurretRoom(a);}},
-           // new RoomDecoration() { public void setUpArena(Arena a) {movingTurretRoomRight(a);}},
+            new RoomDecoration() { public void setUpArena(Arena a) {movingTurretRoomRight(a);}},
             new RoomDecoration() { public void setUpArena(Arena a) {movingDoubleTurretRoom(a);}},
             //new RoomDecoration() { public void setUpArena(Arena a) {blobRoom(a);}},
             //new RoomDecoration() { public void setUpArena(Arena a) {blobRoom(a);}},

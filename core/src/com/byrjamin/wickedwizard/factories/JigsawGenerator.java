@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.TutorialFactory;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 
@@ -56,6 +57,9 @@ public class JigsawGenerator {
         startingArena = arenas.first();
         //startingArena = TutorialFactory.jumpTutorial(new MapCoords(0,0));
         startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+
+        Arena b = TutorialFactory.jumpTutorial(new MapCoords(1, 0));
+        placedArenas.add(b);
         //startingArena.get
 
 
@@ -64,8 +68,9 @@ public class JigsawGenerator {
         ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
 
         unavaliableMapCoords.addAll(startingArena.getCotainingCoords());
-        avaliableMapCoordsSet.addAll(startingArena.adjacentCoords);
-        avaliableDoorsSet.addAll(startingArena.getDoors());
+        unavaliableMapCoords.addAll(b.getCotainingCoords());
+        avaliableMapCoordsSet.addAll(b.adjacentCoords);
+        avaliableDoorsSet.addAll(b.getDoors());
 
         arenas.removeValue(startingArena, true);
         placedArenas.add(startingArena);

@@ -112,9 +112,9 @@ public class TutorialFactory extends RoomFactory{
         //GROUND
 
         //BEFORE GAP
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH / 3, WALLWIDTH * 3));
+        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3));
         //AFTER GAP
-        arena.addEntity(EntityFactory.wallBag(WIDTH - WIDTH / 3,  -WALLWIDTH, WIDTH / 3, WALLWIDTH * 3));
+        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH * 6,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3));
         //HIDDEN SAFETY NET
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3));
 
@@ -122,9 +122,35 @@ public class TutorialFactory extends RoomFactory{
         bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
         arena.addEntity(bag);
 
+        bag = new Bag<Component>();
+        bag.add(new PositionComponent(0, 800));
+        bag.add(new TextureFontComponent("Tap within the flashing area to dash! \n \n Use that to cross the 'dangerous' pit"));
+        arena.addEntity(bag);
 
 
+        bag = new Bag<Component>();
+        bag.add(new PositionComponent(0, WALLWIDTH * 2));
+        bag.add(new ShapeComponent(WALLWIDTH / 2, HEIGHT));
+        bag.add(new FadeComponent());
+        arena.addEntity(bag);
 
+        bag = new Bag<Component>();
+        bag.add(new PositionComponent(0, WALLWIDTH * 2));
+        bag.add(new ShapeComponent(WIDTH, WALLWIDTH / 2));
+        bag.add(new FadeComponent());
+        arena.addEntity(bag);
+
+        bag = new Bag<Component>();
+        bag.add(new PositionComponent(WIDTH - WALLWIDTH / 2, WALLWIDTH * 2));
+        bag.add(new ShapeComponent(WALLWIDTH / 2, HEIGHT));
+        bag.add(new FadeComponent());
+        arena.addEntity(bag);
+
+        bag = new Bag<Component>();
+        bag.add(new PositionComponent(0, HEIGHT - WALLWIDTH / 2));
+        bag.add(new ShapeComponent(WIDTH, WALLWIDTH / 2));
+        bag.add(new FadeComponent());
+        arena.addEntity(bag);
 
         return arena;
 
