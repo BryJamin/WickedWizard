@@ -55,11 +55,16 @@ public class JigsawGenerator {
         }
 
         startingArena = arenas.first();
-        //startingArena = TutorialFactory.jumpTutorial(new MapCoords(0,0));
         startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
         Arena b = TutorialFactory.jumpTutorial(new MapCoords(1, 0));
         placedArenas.add(b);
+        Arena c = TutorialFactory.enemyTurtorial(new MapCoords(2,1));
+        placedArenas.add(c);
+        Arena d = TutorialFactory.grappleTutorial(new MapCoords(2,-2));
+        placedArenas.add(d);
+        Arena e = TutorialFactory.endTutorial(new MapCoords(3,1));
+        placedArenas.add(e);
         //startingArena.get
 
 
@@ -69,8 +74,11 @@ public class JigsawGenerator {
 
         unavaliableMapCoords.addAll(startingArena.getCotainingCoords());
         unavaliableMapCoords.addAll(b.getCotainingCoords());
-        avaliableMapCoordsSet.addAll(b.adjacentCoords);
-        avaliableDoorsSet.addAll(b.getDoors());
+        unavaliableMapCoords.addAll(c.getCotainingCoords());
+        unavaliableMapCoords.addAll(d.getCotainingCoords());
+        unavaliableMapCoords.addAll(e.getCotainingCoords());
+        avaliableMapCoordsSet.addAll(e.adjacentCoords);
+        avaliableDoorsSet.addAll(e.getDoors());
 
         arenas.removeValue(startingArena, true);
         placedArenas.add(startingArena);

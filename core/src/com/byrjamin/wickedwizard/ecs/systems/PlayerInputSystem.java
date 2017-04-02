@@ -245,6 +245,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         if(grappleDestination == null) {
 
+            //TODO Find player get player should be player position or something if player can't be found
             if(!jumpTimer.isFinished() && jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0) {
                 CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
                 MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());

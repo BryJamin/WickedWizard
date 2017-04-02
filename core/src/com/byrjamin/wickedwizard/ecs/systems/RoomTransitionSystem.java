@@ -64,6 +64,7 @@ public class RoomTransitionSystem extends EntitySystem {
                 currentArena.getBagOfEntities().add(e.getComponents(b));
             }
             e.deleteFromWorld();
+            //System.out.println("Deletion");
         }
 
         currentArena = findRoom(destination);
@@ -92,8 +93,10 @@ public class RoomTransitionSystem extends EntitySystem {
                 if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
                     switch (dc.exit){
                         case left: player.position.x = cbc.bound.getX() + cbc.bound.getWidth() + pBound.bound.getWidth();
+                            player.position.y = cbc.getCenterY();
                             break;
                         case right: player.position.x = cbc.bound.getX() - pBound.bound.getWidth();
+                            player.position.y = cbc.getCenterY();
                             break;
                         case up:
                             player.position.x = cbc.getCenterX();
@@ -134,7 +137,6 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
     public Arena findRoom(MapCoords destination){
-        System.out.println(roomArray.size);
         for(Arena a : roomArray) {
             if(a.cotainingCoords.contains(destination, false)){
                 return a;

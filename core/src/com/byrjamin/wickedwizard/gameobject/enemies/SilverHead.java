@@ -169,8 +169,6 @@ public class SilverHead extends GroundedEnemy {
             batch.draw(currentFrame, position.x, position.y, WIDTH, HEIGHT);
         }
 
-        System.out.println(bullets.getBullets().size);
-
         BoundsDrawer.drawBounds(batch, bounds);
     }
 

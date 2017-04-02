@@ -118,7 +118,10 @@ public class EntityFactory {
         aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(aniMap));
         //TODO explains the giant blob
-        bag.add(new TextureRegionComponent(AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED).getKeyFrame(sc.stateTime),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20)));
+
+        TextureRegionComponent trc = new TextureRegionComponent(AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED).getKeyFrame(sc.stateTime),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20));
+        trc.layer = -5;
+        bag.add(trc);
         bag.add(new GrappleableComponent());
         bag.add(new LockComponent());
         return bag;
@@ -204,9 +207,12 @@ public class EntityFactory {
 
     public static Bag<Component> grapplePointBag(float x, float y){
 
+        float width = Measure.units(10);
+        float height = Measure.units(10);
+
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10), Measure.units(10))));
+        bag.add(new PositionComponent(x - width /  2,y - height /2 ));
+        bag.add(new CollisionBoundComponent(new Rectangle(x - width / 2,y - height / 2, width, height)));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.GRAPPLE),
                 Measure.units(2.5f),
                 Measure.units(2.5f),

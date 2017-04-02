@@ -54,8 +54,6 @@ public class FadeSystem extends EntityProcessingSystem {
             }
         }
 
-        System.out.println(fc.alpha);
-
         if(trm.has(e)) trm.get(e).color.a = fc.alpha;
         if(trbm.has(e)) trbm.get(e).color.a = fc.alpha;
         if(tfm.has(e)) tfm.get(e).color.a = fc.alpha;

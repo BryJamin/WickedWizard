@@ -59,9 +59,10 @@ public class DoorSystem extends EntityProcessingSystem {
 
                     if(lm.has(doorEntity)) {
 
-                        System.out.println(lm.get(doorEntity).isLocked());
+                        System.out.println(lm.get(doorEntity).isLocked() + "Running");
                         if(!lm.get(doorEntity).isLocked()) {
 
+                            System.out.println("Changing rooms");
 
                             if (world.getSystem(RoomTransitionSystem.class).goFromTo(dm.get(doorEntity).currentCoords, dm.get(doorEntity).leaveCoords)) {
                             }

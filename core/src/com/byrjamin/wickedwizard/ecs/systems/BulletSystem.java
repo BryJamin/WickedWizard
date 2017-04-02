@@ -51,8 +51,6 @@ public class BulletSystem extends EntityProcessingSystem {
                     System.out.println(hc.health);
                 }
 
-                System.out.println(bc.isHit);
-
                 e.deleteFromWorld();
 
             }
