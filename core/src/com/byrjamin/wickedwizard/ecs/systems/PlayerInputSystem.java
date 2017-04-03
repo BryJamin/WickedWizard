@@ -58,10 +58,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     Vector3 unprojectedInput;
 
     public Vector2 grappleDestination;
-    Vector2 flyVelocity;
 
     public boolean hasTarget;
-    private boolean canFire;
 
     private StateTimer jumpTimer = new StateTimer(0.25f);
 
@@ -96,37 +94,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         jumpTimer.update(world.getDelta());
 
 
-        if(grappleDestination != null){
-            if(Math.abs(vc.velocity.x) < MAX_GRAPPLE_MOVEMENT && Math.abs(vc.velocity.y) < MAX_GRAPPLE_MOVEMENT) {
-
-                float x = pc.getX() + (cbc.bound.getWidth() / 2);
-                float y = pc.getY() + (cbc.bound.getHeight() / 2);
-
-                vc.velocity.add(
-                        (float) Math.cos(Math.atan2(grappleDestination.y - y, grappleDestination.x - x)) * GRAPPLE_MOVEMENT,
-                        (float) Math.sin(Math.atan2(grappleDestination.y - y, grappleDestination.x - x)) * GRAPPLE_MOVEMENT);
-
-
-            }
-
-            if(cbc.bound.contains(grappleDestination.x, grappleDestination.y)){
-                vc.velocity.x = 0;
-                pc.position.x = grappleDestination.x - cbc.bound.width / 2;
-                pc.position.y = grappleDestination.y - cbc.bound.height / 2;
-                if(vc.velocity.y > MAX_GRAPPLE_LAUNCH) {
-                    vc.velocity.y = MAX_GRAPPLE_LAUNCH;
-                } else if(vc.velocity.y < 0){
-                    vc.velocity.y = 0;
-                }
-
-                grappleDestination = null;
-                gc.ignoreGravity = false;
-            }
-
-        } else {
-            if(mtm.get(e).targetX == null && mtm.get(e).targetY == null){
-                gc.ignoreGravity = false;
-            }
+        if(mtm.get(e).targetX == null && mtm.get(e).targetY == null){
+            grappleDestination = null;
+            gc.ignoreGravity = false;
         }
 
         if(movementInputPoll != null) {
@@ -135,6 +105,10 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 gameport.unproject(input);
 
                 if(input.y < 195){
+
+                    ac.accelX = Measure.units(15f);
+                    ac.maxX = Measure.units(80f);
+
                     MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
                 }
             }
@@ -181,8 +155,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 }
 
 
-
-
             }
         } else {
             if(sc.getState() != 0) {
@@ -221,17 +193,29 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 movementInputPoll = pointer;
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
             } else if(firingInputPoll == null){
-                canFire = true;
                 firingInputPoll = pointer;
                 jumpTimer.reset();
             } else {
                 jumpTimer.reset();
             }
         } else {
-            mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).targetX = null;
+
+            MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+            CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+            AccelerantComponent ac = am.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+
+            world.getSystem(MoveToSystem.class).flyToNoPathCheck(Math.atan2(unprojectedInput.y - cbc.getCenterY(), unprojectedInput.x - cbc.getCenterX()) ,
+                    unprojectedInput.x,
+                    unprojectedInput.y,
+                    GRAPPLE_MOVEMENT * 10,
+                    mtc,
+                    ac,
+                    cbc);
+
+            mtc.endSpeedX = 0;
+            mtc.maxEndSpeedY = MAX_GRAPPLE_MOVEMENT / 2;
+            // mtc.endSpeedY = GRAPPLE_MOVEMENT * 5;
             gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
-            vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
-            vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
         }
 
         world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
@@ -252,6 +236,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
                 jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps--;
+                AccelerantComponent ac = am.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
                 Vector3 input = new Vector3(screenX, screenY, 0);
                 gameport.unproject(input);
@@ -260,6 +245,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                         Measure.units(20f),
                         GRAPPLE_MOVEMENT * 10,
                         mtc,
+                        ac,
                         cbc);
             }
 
@@ -278,7 +264,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             }
 
         }
-        canFire = false;
         return false;
     }
 

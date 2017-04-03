@@ -345,14 +345,6 @@ public class TutorialFactory extends RoomFactory{
         bag.add(new TextureFontComponent("Yea you seem about ready \n \n Now go and adventure!"));
         arena.addEntity(bag);
 
-        bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 0));
-        ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2);
-        sc.layer = 5;
-        bag.add(sc);
-        bag.add(new FadeComponent());
-        arena.addEntity(bag);
-
         return arena;
 
     }

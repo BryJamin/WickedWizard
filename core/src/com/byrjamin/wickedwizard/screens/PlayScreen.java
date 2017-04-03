@@ -271,6 +271,8 @@ public class PlayScreen extends AbstractScreen {
 
         if (delta < 0.20f) {
             world.setDelta(delta);
+        } else {
+            world.delta = 0.20f;
         }
 
 
@@ -299,6 +301,8 @@ public class PlayScreen extends AbstractScreen {
                 world.getSystem(RoomTransitionSystem.class).getCurrentPlayerLocation());
 
         arenaGUI.draw(game.batch);
+
+       // System.out.println(Gdx.graphics.getFramesPerSecond());
 
     }
 
