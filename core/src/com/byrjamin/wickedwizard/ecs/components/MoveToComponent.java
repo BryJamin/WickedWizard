@@ -18,6 +18,8 @@ public class MoveToComponent extends Component {
     public float endSpeedX;
     public float endSpeedY;
 
+    public Float maxEndSpeedX;
+    public Float maxEndSpeedY;
 
     public void reset(){
         targetX = null;
