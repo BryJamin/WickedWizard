@@ -1,7 +1,6 @@
-package com.byrjamin.wickedwizard.ecs.components;
+package com.byrjamin.wickedwizard.ecs.components.movement;
 
 import com.artemis.Component;
-import com.byrjamin.wickedwizard.helper.Measure;
 
 /**
  * Created by Home on 28/03/2017.

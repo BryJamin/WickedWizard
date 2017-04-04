@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.components;
+package com.byrjamin.wickedwizard.ecs.components.movement;
 
 import com.artemis.Component;
 import com.byrjamin.wickedwizard.helper.Measure;

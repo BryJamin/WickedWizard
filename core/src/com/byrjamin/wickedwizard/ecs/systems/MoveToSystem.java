@@ -4,19 +4,17 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySubscription;
-import com.artemis.World;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
-import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WallComponent;
-import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 
 /**
@@ -43,19 +41,16 @@ public class MoveToSystem extends EntityProcessingSystem {
         VelocityComponent vc = vm.get(e);
         MoveToComponent mtc = mtm.get(e);
         AccelerantComponent ac = am.get(e);
+        CollisionBoundComponent cbc = cbm.get(e);
 
         Float targetX = mtc.targetX;
 
         if(targetX != null){
 
-            CollisionBoundComponent cbc = cbm.get(e);
-
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterX() : pc.getX();
 
             if (cbc.bound.contains(mtc.targetX, cbc.getCenterY())) {
-                vc.velocity.x = 0;
-                //mtc.endSpeedX; //For grappling
-                mtc.targetX = null;
+               // endTravel(vc, mtc);
             } else if (currentPosition >= targetX) {
                 //vc.velocity.x = mtc.speedX;
                 //vc.velocity.add(mtc.speedX, 0);
@@ -75,42 +70,63 @@ public class MoveToSystem extends EntityProcessingSystem {
 
         if(targetY != null){
 
-            CollisionBoundComponent cbc = cbm.get(e);
-
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterY() : pc.getY();
 
             if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
-
-                if(mtc.maxEndSpeedY != null) {
-                    if (vc.velocity.y > mtc.maxEndSpeedY) {
-                        vc.velocity.y = mtc.maxEndSpeedY;
-                    }
-
-                    mtc.maxEndSpeedY = null;
-                } else {
-                    vc.velocity.y = 0;
-                }
-
-
-
-                mtc.targetY = null;
+               // endTravel(vc, mtc);
             } else if (currentPosition >= targetY) {
                 //vc.velocity.y = mtc.speedY;
                 //vc.velocity.add(0, mtc.speedY);
-                vc.velocity.y = -ac.maxY;
-                vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
+       /*         vc.velocity.y = -ac.maxY;
+                vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;*/
+
+                vc.velocity.y = (vc.velocity.y <= -ac.maxX) ? -ac.maxY : vc.velocity.y - ac.accelY;
+
+                System.out.println("inside the negative velo");
                         //(vc.velocity.y <= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
             } else {
                 //vc.velocity.y = mtc.speedY;
                 //vc.velocity.add(0, mtc.speedY);
-                vc.velocity.y = ac.maxY;
+                //vc.velocity.y = ac.maxY;
+                vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
 
                        // (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
             }
         }
 
+        System.out.println(vc.velocity.y);
+
+    if(mtc.targetX != null && mtc.targetY != null) {
+        if (cbc.bound.contains(targetX, targetY)) {
+            endTravel(vc, mtc);
+        }
+    }
+
+        System.out.println("Velocity after the moveto system " + vc.velocity.y);
 
 
+
+
+    }
+
+
+    public void endTravel(VelocityComponent vc, MoveToComponent mtc){
+
+
+        if(mtc.maxEndSpeedY != null) {
+            if (vc.velocity.y > mtc.maxEndSpeedY) {
+                vc.velocity.y = mtc.maxEndSpeedY;
+            }
+
+            mtc.maxEndSpeedY = null;
+        } else {
+            vc.velocity.y = 0;
+        }
+
+        vc.velocity.x = 0;
+
+        mtc.targetY = null;
+        mtc.targetX = null;
 
     }
 
@@ -136,6 +152,8 @@ public class MoveToSystem extends EntityProcessingSystem {
       //  mtc.speedY = sine * speedOfTravel;
 
         mtc.endSpeedX = 0;
+
+        mtc.maxEndSpeedY = null;
 
 
 

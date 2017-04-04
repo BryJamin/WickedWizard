@@ -11,19 +11,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.byrjamin.wickedwizard.ecs.components.AccelerantComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.GravityComponent;
-import com.byrjamin.wickedwizard.ecs.components.JumpComponent;
-import com.byrjamin.wickedwizard.ecs.components.MoveToComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
-import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
@@ -46,6 +46,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     ComponentMapper<WeaponComponent> wm;
     ComponentMapper<AnimationStateComponent> sm;
     ComponentMapper<GravityComponent> gm;
+    ComponentMapper<GlideComponent> glm;
     ComponentMapper<TextureRegionComponent> trm;
     ComponentMapper<JumpComponent> jm;
 
@@ -89,14 +90,19 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         AnimationStateComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
         GravityComponent gc = gm.get(e);
+        GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
         jumpTimer.update(world.getDelta());
 
 
+        System.out.println("Can I turn on grav? " + (mtm.get(e).targetX == null && mtm.get(e).targetY == null));
+
         if(mtm.get(e).targetX == null && mtm.get(e).targetY == null){
             grappleDestination = null;
             gc.ignoreGravity = false;
+
+            System.out.println("INSIDE");
         }
 
         if(movementInputPoll != null) {
@@ -116,6 +122,12 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
                 MoveToSystem.decelerate(ac, vc);
             }
+
+
+            if(movementInputPoll == null && glc.active && glc.gliding && mtc.targetX == null && mtc.targetY == null){
+                MoveToSystem.decelerate(ac, vc);
+            }
+
         }
 
         if(firingInputPoll != null){
@@ -143,16 +155,15 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     }
                 }
 
-
                 if(!cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)
                         && movementInputPoll == null && grappleDestination == null
                         && mtc.targetX == null
                         && jm.get(e).jumps > 0) {
-                    if(vc.velocity.y < gc.gravity) {
-                        vc.velocity.y = gc.gravity;
-                    }
-                    vc.velocity.x = 0;
+                    glc.active = true;
+                } else {
+                    glc.active = false;
                 }
+
 
 
             }
@@ -161,6 +172,16 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 sc.setState(0);
             }
         }
+
+        glc.active = movementInputPoll == null;
+
+        if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false) || jm.get(e).jumps <= 0){
+            glc.gliding = false;
+            glc.active = false;
+        }
+
+        System.out.println(gc.ignoreGravity);
+        System.out.println("Velocity after the input system " + vc.velocity.y);
 
 
     }
@@ -216,6 +237,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             mtc.maxEndSpeedY = MAX_GRAPPLE_MOVEMENT / 2;
             // mtc.endSpeedY = GRAPPLE_MOVEMENT * 5;
             gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
+            glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = false;
+            glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = false;
         }
 
         world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
@@ -235,6 +258,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
+                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;
+                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = true;
                 jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps--;
                 AccelerantComponent ac = am.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 

@@ -3,7 +3,7 @@ package com.byrjamin.wickedwizard.ecs.systems;
 import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
-import com.byrjamin.wickedwizard.ecs.components.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
 /**
  * Created by Home on 01/04/2017.
