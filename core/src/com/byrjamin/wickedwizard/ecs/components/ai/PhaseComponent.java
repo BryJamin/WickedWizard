@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.components;
+package com.byrjamin.wickedwizard.ecs.components.ai;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;

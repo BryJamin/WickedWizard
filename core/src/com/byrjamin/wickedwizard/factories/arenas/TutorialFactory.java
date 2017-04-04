@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -26,6 +26,17 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
  */
 
 public class TutorialFactory extends RoomFactory{
+
+    private final static String moveTutorialString =
+            "Touch the flashing area to move! \n \n Exit through the right door";
+    private final static String jumpTutorialString =
+            "Tap within this area to dash and start gliding! \n \n Use that to cross the 'dangerous' pit";
+    private final static String enemyTutorialString =
+            "Hark! A Worthy Foe! \n \n Touch within this area to start shooting";
+    private final static String grappleTutorialString =
+            "Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it";
+    private final static String endString =
+            "Yea you seem about ready \n \n Now go and adventure!";
 
     public static Arena groundMovementTutorial(MapCoords defaultCoords){
 
@@ -65,7 +76,7 @@ public class TutorialFactory extends RoomFactory{
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
-        bag.add(new TextureFontComponent("Touch the flashing area to move! \n \n Exit through the right door"));
+        bag.add(new TextureFontComponent(moveTutorialString));
         arena.addEntity(bag);
 
         bag = new Bag<Component>();
@@ -129,7 +140,7 @@ public class TutorialFactory extends RoomFactory{
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
-        bag.add(new TextureFontComponent("Tap within the flashing area to dash! \n \n Use that to cross the 'dangerous' pit"));
+        bag.add(new TextureFontComponent(jumpTutorialString));
         arena.addEntity(bag);
 
 
@@ -193,7 +204,7 @@ public class TutorialFactory extends RoomFactory{
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
-        bag.add(new TextureFontComponent("Hark! A Worthy Foe! \n \n Touch within this area to start shooting"));
+        bag.add(new TextureFontComponent(enemyTutorialString));
         arena.addEntity(bag);
 
         arena.addEntity(createTutorialHighlight(0, WALLWIDTH * 2, WALLWIDTH / 2, HEIGHT));
@@ -272,7 +283,7 @@ public class TutorialFactory extends RoomFactory{
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
-        bag.add(new TextureFontComponent("Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it"));
+        bag.add(new TextureFontComponent(grappleTutorialString));
         arena.addEntity(bag);
 
 
@@ -341,7 +352,7 @@ public class TutorialFactory extends RoomFactory{
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
-        bag.add(new TextureFontComponent("Yea you seem about ready \n \n Now go and adventure!"));
+        bag.add(new TextureFontComponent(endString));
         arena.addEntity(bag);
 
         return arena;

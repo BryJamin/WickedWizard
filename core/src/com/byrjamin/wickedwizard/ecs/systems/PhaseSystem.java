@@ -6,8 +6,8 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.PhaseComponent;
-import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
 /**
  * Created by Home on 30/03/2017.

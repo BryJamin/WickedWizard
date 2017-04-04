@@ -9,10 +9,10 @@ import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
-import com.byrjamin.wickedwizard.ecs.components.LockComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.helper.BoundsDrawer;
 

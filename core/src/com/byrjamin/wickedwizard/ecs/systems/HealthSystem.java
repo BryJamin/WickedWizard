@@ -5,7 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
 /**
  * Created by Home on 05/03/2017.

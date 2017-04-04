@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.components;
+package com.byrjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
 import com.badlogic.gdx.graphics.g2d.Animation;

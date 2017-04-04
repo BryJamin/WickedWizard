@@ -6,11 +6,11 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.DoorComponent;
-import com.byrjamin.wickedwizard.ecs.components.GrappleableComponent;
-import com.byrjamin.wickedwizard.ecs.components.LockComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
-import com.byrjamin.wickedwizard.ecs.components.WallComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 
 /**
  * Created by Home on 24/03/2017.

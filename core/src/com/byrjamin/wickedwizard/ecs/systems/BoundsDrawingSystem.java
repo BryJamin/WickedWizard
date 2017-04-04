@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySubscription;
+import com.artemis.EntitySystem;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
@@ -18,7 +19,7 @@ import com.byrjamin.wickedwizard.helper.BoundsDrawer;
  * Created by Home on 18/03/2017.
  */
 
-public class BoundsDrawingSystem extends EntityProcessingSystem {
+public class BoundsDrawingSystem extends EntitySystem {
 
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<CollisionBoundComponent> cbm;
@@ -29,11 +30,17 @@ public class BoundsDrawingSystem extends EntityProcessingSystem {
         super(Aspect.all(CollisionBoundComponent.class));
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    protected void process(Entity e) {
-        BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(e).bound);
-    }
 
+    @Override
+    protected void processSystem() {
+        for(Entity e : this.getEntities()){
+            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(e).bound);
+        }
+
+
+        BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
+                world.getSystem(PlayerInputSystem.class).movementArea);
+
+    }
 
 }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.GrappleableComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 
 /**
  * Created by Home on 18/03/2017.

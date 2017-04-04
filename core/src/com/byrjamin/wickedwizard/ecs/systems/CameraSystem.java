@@ -66,6 +66,10 @@ public class CameraSystem extends EntitySystem {
 
         gamecam.update();
 
+
+        world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
+                gamecam.position.y - gamePort.getWorldHeight() / 2);
+
     }
 
     public void setPlayerPosition(PositionComponent playerPosition) {

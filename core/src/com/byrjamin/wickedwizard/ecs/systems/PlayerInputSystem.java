@@ -8,9 +8,11 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
@@ -21,7 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.components.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
@@ -67,11 +69,17 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
 
+    public Rectangle movementArea;
+
+
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(OrthographicCamera gamecam, Viewport gameport) {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
         this.gamecam = gamecam;
         this.gameport = gameport;
+        movementArea = new Rectangle(gamecam.position.x - gameport.getWorldWidth() / 2,
+                gamecam.position.y - gameport.getWorldHeight() / 2,
+                MainGame.GAME_WIDTH, Measure.units(9.5f));
     }
 
     @Override
@@ -110,7 +118,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 Vector3 input = new Vector3(Gdx.input.getX(movementInputPoll), Gdx.input.getY(movementInputPoll), 0);
                 gameport.unproject(input);
 
-                if(input.y < 195){
+                if(movementArea.contains(input.x, input.y)){
 
                     ac.accelX = Measure.units(15f);
                     ac.maxX = Measure.units(80f);
@@ -184,6 +192,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         System.out.println("Velocity after the input system " + vc.velocity.y);
 
 
+
     }
 
     @Override
@@ -209,7 +218,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         grappleDestination = world.getSystem(GrappleSystem.class).canGrappleTo(unprojectedInput.x, unprojectedInput.y);
         if(grappleDestination == null) {
 
-            if (touchInput.y <= 195) {
+            if (movementArea.contains(touchInput.x, touchInput.y)) {
                 hasTarget = true;
                 movementInputPoll = pointer;
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
