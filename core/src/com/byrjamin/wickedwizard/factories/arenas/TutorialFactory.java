@@ -30,9 +30,9 @@ public class TutorialFactory extends RoomFactory{
     private final static String moveTutorialString =
             "Touch the flashing area to move! \n \n Exit through the right door";
     private final static String jumpTutorialString =
-            "Tap within this area to dash and start gliding! \n \n Use that to cross the 'dangerous' pit";
+            "Tap above your character to jump and start gliding! \n \n Tap below your character to cancel your glide";
     private final static String enemyTutorialString =
-            "Hark! A Worthy Foe! \n \n Touch within this area to start shooting";
+            "Hark! A Worthy Foe! \n \n Hold down within this area to shoot \n \n Drag to change aim";
     private final static String grappleTutorialString =
             "Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it";
     private final static String endString =
@@ -203,7 +203,7 @@ public class TutorialFactory extends RoomFactory{
         arena.addEntity(bag);
 
         bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 800));
+        bag.add(new PositionComponent(0, 1000));
         bag.add(new TextureFontComponent(enemyTutorialString));
         arena.addEntity(bag);
 

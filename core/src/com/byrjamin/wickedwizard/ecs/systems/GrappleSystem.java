@@ -60,4 +60,23 @@ public class GrappleSystem extends EntitySystem {
     }
 
 
+    public Rectangle returnTouchedGrapple(float inputX, float inputY){
+        for(Rectangle r : grapples){
+            if(r.contains(inputX, inputY)){
+                return r ;
+            }
+        }
+        return null;
+    }
+
+    public boolean touchedGrapple(float inputX, float inputY){
+        for(Rectangle r : grapples){
+            if(r.contains(inputX, inputY)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

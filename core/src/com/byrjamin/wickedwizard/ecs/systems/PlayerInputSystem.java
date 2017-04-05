@@ -52,22 +52,14 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     ComponentMapper<TextureRegionComponent> trm;
     ComponentMapper<JumpComponent> jm;
 
-
-
     OrthographicCamera gamecam;
     Viewport gameport;
-
-    Vector3 touchInput;
-    Vector3 unprojectedInput;
-
-    public Vector2 grappleDestination;
-
-    public boolean hasTarget;
 
     private StateTimer jumpTimer = new StateTimer(0.25f);
 
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
+    public boolean activeGrapple;
 
     public Rectangle movementArea;
 
@@ -79,7 +71,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         this.gameport = gameport;
         movementArea = new Rectangle(gamecam.position.x - gameport.getWorldWidth() / 2,
                 gamecam.position.y - gameport.getWorldHeight() / 2,
-                MainGame.GAME_WIDTH, Measure.units(9.5f));
+                MainGame.GAME_WIDTH, Measure.units(10f));
     }
 
     @Override
@@ -103,30 +95,24 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         jumpTimer.update(world.getDelta());
 
-
         System.out.println("Can I turn on grav? " + (mtm.get(e).targetX == null && mtm.get(e).targetY == null));
 
         if(mtm.get(e).targetX == null && mtm.get(e).targetY == null){
-            grappleDestination = null;
+            activeGrapple = false;
             gc.ignoreGravity = false;
-
-            System.out.println("INSIDE");
         }
 
         if(movementInputPoll != null) {
             if(Gdx.input.isTouched(movementInputPoll)) {
                 Vector3 input = new Vector3(Gdx.input.getX(movementInputPoll), Gdx.input.getY(movementInputPoll), 0);
                 gameport.unproject(input);
-
                 if(movementArea.contains(input.x, input.y)){
-
                     ac.accelX = Measure.units(15f);
                     ac.maxX = Measure.units(80f);
-
                     MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
                 }
             }
-        }  else if(grappleDestination == null) {
+        }  else if(!activeGrapple) {
             if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
                 MoveToSystem.decelerate(ac, vc);
             }
@@ -143,7 +129,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             wc.timer.update(world.getDelta());
 
             if(Gdx.input.isTouched(firingInputPoll)) {
-
                 if(wc.timer.isFinishedAndReset()) {
                     sc.setState(1);
                     Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
@@ -162,18 +147,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                         bullet.edit().add(c);
                     }
                 }
-
-                if(!cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)
-                        && movementInputPoll == null && grappleDestination == null
-                        && mtc.targetX == null
-                        && jm.get(e).jumps > 0) {
-                    glc.active = true;
-                } else {
-                    glc.active = false;
-                }
-
-
-
             }
         } else {
             if(sc.getState() != 0) {
@@ -181,18 +154,10 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             }
         }
 
-        glc.active = movementInputPoll == null;
-
-        if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false) || jm.get(e).jumps <= 0){
+        if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
             glc.gliding = false;
             glc.active = false;
         }
-
-        System.out.println(gc.ignoreGravity);
-        System.out.println("Velocity after the input system " + vc.velocity.y);
-
-
-
     }
 
     @Override
@@ -212,16 +177,16 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        touchInput = new Vector3(screenX, screenY, 0);
-        unprojectedInput = gameport.unproject(touchInput);
+        Vector3 touchInput = new Vector3(screenX, screenY, 0);
+        gameport.unproject(touchInput);
 
-        grappleDestination = world.getSystem(GrappleSystem.class).canGrappleTo(unprojectedInput.x, unprojectedInput.y);
-        if(grappleDestination == null) {
+        activeGrapple = world.getSystem(GrappleSystem.class).touchedGrapple(touchInput.x, touchInput.y);
+        if(!activeGrapple) {
 
             if (movementArea.contains(touchInput.x, touchInput.y)) {
-                hasTarget = true;
                 movementInputPoll = pointer;
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
+                //jumpTimer.reset(); //TODO figure out if touching the ground should disable the glide
             } else if(firingInputPoll == null){
                 firingInputPoll = pointer;
                 jumpTimer.reset();
@@ -230,24 +195,37 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             }
         } else {
 
-            MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-            CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-            AccelerantComponent ac = am.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+            //TODO a tad unsafe
+            Rectangle r = world.getSystem(GrappleSystem.class).returnTouchedGrapple(touchInput.x, touchInput.y);;
 
-            world.getSystem(MoveToSystem.class).flyToNoPathCheck(Math.atan2(unprojectedInput.y - cbc.getCenterY(), unprojectedInput.x - cbc.getCenterX()) ,
-                    unprojectedInput.x,
-                    unprojectedInput.y,
-                    GRAPPLE_MOVEMENT * 10,
-                    mtc,
-                    ac,
-                    cbc);
+            if(r != null) {
+                MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                AccelerantComponent ac = am.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
-            mtc.endSpeedX = 0;
-            mtc.maxEndSpeedY = MAX_GRAPPLE_MOVEMENT / 2;
-            // mtc.endSpeedY = GRAPPLE_MOVEMENT * 5;
-            gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
-            glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = false;
-            glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = false;
+                float x = r.x + r.getWidth() / 2;
+                float y = r.y + r.getHeight() / 2;
+
+                world.getSystem(MoveToSystem.class).flyToNoPathCheck(
+                        Math.atan2(y - cbc.getCenterY(), x - cbc.getCenterX()),
+                        x,
+                        y,
+                        GRAPPLE_MOVEMENT * 10,
+                        mtc,
+                        ac,
+                        cbc);
+
+                mtc.endSpeedX = 0;
+                mtc.maxEndSpeedY = MAX_GRAPPLE_MOVEMENT / 2;
+                // mtc.endSpeedY = GRAPPLE_MOVEMENT * 5;
+                gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
+                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = false;
+                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = false;
+
+                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
+                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
+
+            }
         }
 
         world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
@@ -259,11 +237,38 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
 
-        if(grappleDestination == null) {
+        if(!activeGrapple) {
 
             //TODO Find player get player should be player position or something if player can't be found
-            if(!jumpTimer.isFinished() && jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0) {
+            if(!jumpTimer.isFinished() /*&& jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0*/) {
+
+
+                Vector3 input = new Vector3(screenX, screenY, 0);
+                gameport.unproject(input);
+
+
                 CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                VelocityComponent vc = vm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                JumpComponent jc = jm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+
+                if(input.y > cbc.getCenterY()) {
+                    if (jc.jumps >= 0) {
+                        vc.velocity.y = Measure.units(80f);
+                        glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;
+                        glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = true;
+                        jc.jumps--;
+                    }
+
+                } else {
+                    //vc.velocity.y = -Measure.units(80f);
+                    glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = false;
+                    glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = false;
+                }
+
+                //glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;
+                //glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = true;
+
+/*                CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
                 MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
@@ -280,7 +285,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                         GRAPPLE_MOVEMENT * 10,
                         mtc,
                         ac,
-                        cbc);
+                        cbc);*/
+
+                jumpTimer.reset();
             }
 
 

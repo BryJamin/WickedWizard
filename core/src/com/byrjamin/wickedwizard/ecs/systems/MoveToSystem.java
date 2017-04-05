@@ -123,7 +123,7 @@ public class MoveToSystem extends EntityProcessingSystem {
             vc.velocity.y = 0;
         }
 
-        vc.velocity.x = 0;
+        vc.velocity.x = vc.velocity.x / 4;
 
         mtc.targetY = null;
         mtc.targetX = null;
@@ -151,7 +151,7 @@ public class MoveToSystem extends EntityProcessingSystem {
       //  mtc.speedX = cosine * speedOfTravel;
       //  mtc.speedY = sine * speedOfTravel;
 
-        mtc.endSpeedX = 0;
+        //mtc.endSpeedX = 0;
 
         mtc.maxEndSpeedY = null;
 
@@ -259,6 +259,9 @@ public class MoveToSystem extends EntityProcessingSystem {
     }
 
     public static void decelerate(AccelerantComponent ac, VelocityComponent vc){
+
+        System.out.println("INSIDE DECELERATE");
+
         if (vc.velocity.x >= -50 && vc.velocity.x < 50) {
             vc.velocity.x = 0;
         }else if(vc.velocity.x >= 0) {

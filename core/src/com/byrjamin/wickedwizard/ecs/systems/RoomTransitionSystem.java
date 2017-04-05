@@ -64,7 +64,6 @@ public class RoomTransitionSystem extends EntitySystem {
                 currentArena.getBagOfEntities().add(e.getComponents(b));
             }
             e.deleteFromWorld();
-            //System.out.println("Deletion");
         }
 
         currentArena = findRoom(destination);
@@ -73,7 +72,6 @@ public class RoomTransitionSystem extends EntitySystem {
             return;
         }
 
-        System.out.println(destination);
         for(Bag<Component> b : currentArena.getBagOfEntities()){
             Entity e = world.createEntity();
             for(Component c : b){
@@ -130,8 +128,7 @@ public class RoomTransitionSystem extends EntitySystem {
             velocity.y = Measure.units(60f);
         }
 
-        world.getSystem(PlayerInputSystem.class).grappleDestination = null;
-        world.getSystem(PlayerInputSystem.class).hasTarget = false;
+        world.getSystem(PlayerInputSystem.class).activeGrapple = false;
 
     }
 
