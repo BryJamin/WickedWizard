@@ -95,62 +95,64 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
         jumpTimer.update(world.getDelta());
 
-        System.out.println("Can I turn on grav? " + (mtm.get(e).targetX == null && mtm.get(e).targetY == null));
-
         if(mtm.get(e).targetX == null && mtm.get(e).targetY == null){
             activeGrapple = false;
             gc.ignoreGravity = false;
         }
 
-        if(movementInputPoll != null) {
-            if(Gdx.input.isTouched(movementInputPoll)) {
-                Vector3 input = new Vector3(Gdx.input.getX(movementInputPoll), Gdx.input.getY(movementInputPoll), 0);
-                gameport.unproject(input);
-                if(movementArea.contains(input.x, input.y)){
-                    ac.accelX = Measure.units(15f);
-                    ac.maxX = Measure.units(80f);
-                    MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
-                }
-            }
-        }  else if(!activeGrapple) {
-            if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
-                MoveToSystem.decelerate(ac, vc);
-            }
+        if(!activeGrapple) {
 
-
-            if(movementInputPoll == null && glc.active && glc.gliding && mtc.targetX == null && mtc.targetY == null){
-                MoveToSystem.decelerate(ac, vc);
-            }
-
-        }
-
-        if(firingInputPoll != null){
-
-            wc.timer.update(world.getDelta());
-
-            if(Gdx.input.isTouched(firingInputPoll)) {
-                if(wc.timer.isFinishedAndReset()) {
-                    sc.setState(1);
-                    Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
+            if (movementInputPoll != null) {
+                if (Gdx.input.isTouched(movementInputPoll)) {
+                    Vector3 input = new Vector3(Gdx.input.getX(movementInputPoll), Gdx.input.getY(movementInputPoll), 0);
                     gameport.unproject(input);
-
-                    float x = pc.getX() + (cbc.bound.getWidth() / 2);
-                    float y = pc.getY() + (cbc.bound.getHeight() / 2);
-                    double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
-
-                    if(angleOfTravel >= 0) trc.scaleX = (angleOfTravel <= (Math.PI / 2)) ? 1 : -1;
-                    else trc.scaleX = (angleOfTravel >= -(Math.PI / 2)) ? 1 : -1;
-
-                    Entity bullet =  BulletFactory.createBullet(world, x, y, angleOfTravel);
-
-                    for(Component c : wc.additionalComponenets) {
-                        bullet.edit().add(c);
+                    if (input.y <= movementArea.y + movementArea.getHeight()) {
+                        ac.accelX = Measure.units(15f);
+                        ac.maxX = Measure.units(80f);
+                        MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
                     }
                 }
+            } else if (!activeGrapple) {
+                if (cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)) {
+                    MoveToSystem.decelerate(ac, vc);
+                }
+
+
+                if (movementInputPoll == null && glc.active && glc.gliding && mtc.targetX == null && mtc.targetY == null) {
+                    MoveToSystem.decelerate(ac, vc);
+                }
+
             }
-        } else {
-            if(sc.getState() != 0) {
-                sc.setState(0);
+
+            if (firingInputPoll != null) {
+
+                wc.timer.update(world.getDelta());
+
+                if (Gdx.input.isTouched(firingInputPoll)) {
+                    if (wc.timer.isFinishedAndReset()) {
+                        sc.setState(1);
+                        Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
+                        gameport.unproject(input);
+
+                        float x = pc.getX() + (cbc.bound.getWidth() / 2);
+                        float y = pc.getY() + (cbc.bound.getHeight() / 2);
+                        double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
+
+                        if (angleOfTravel >= 0)
+                            trc.scaleX = (angleOfTravel <= (Math.PI / 2)) ? 1 : -1;
+                        else trc.scaleX = (angleOfTravel >= -(Math.PI / 2)) ? 1 : -1;
+
+                        Entity bullet = BulletFactory.createBullet(world, x, y, angleOfTravel);
+
+                        for (Component c : wc.additionalComponenets) {
+                            bullet.edit().add(c);
+                        }
+                    }
+                }
+            } else {
+                if (sc.getState() != 0) {
+                    sc.setState(0);
+                }
             }
         }
 
@@ -180,10 +182,12 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         Vector3 touchInput = new Vector3(screenX, screenY, 0);
         gameport.unproject(touchInput);
 
-        activeGrapple = world.getSystem(GrappleSystem.class).touchedGrapple(touchInput.x, touchInput.y);
+        if(!activeGrapple) {
+            activeGrapple = world.getSystem(GrappleSystem.class).touchedGrapple(touchInput.x, touchInput.y);
+        }
         if(!activeGrapple) {
 
-            if (movementArea.contains(touchInput.x, touchInput.y)) {
+            if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
                 movementInputPoll = pointer;
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
                 //jumpTimer.reset(); //TODO figure out if touching the ground should disable the glide
@@ -251,7 +255,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 VelocityComponent vc = vm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
                 JumpComponent jc = jm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
-                if(input.y > cbc.getCenterY()) {
+                if(input.y > cbc.bound.y + cbc.bound.getHeight()) {
                     if (jc.jumps >= 0) {
                         vc.velocity.y = Measure.units(80f);
                         glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;
