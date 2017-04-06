@@ -14,7 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
-import com.byrjamin.wickedwizard.helper.BoundsDrawer;
+import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 
 /**
  * Created by Home on 13/03/2017.

@@ -2,7 +2,6 @@ package com.byrjamin.wickedwizard.utils;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
-import com.byrjamin.wickedwizard.helper.BagSearch;
 
 /**
  * Created by Home on 30/03/2017.

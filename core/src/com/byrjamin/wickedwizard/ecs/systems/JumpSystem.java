@@ -6,7 +6,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
-import com.byrjamin.wickedwizard.helper.collider.Collider;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
  * Created by Home on 30/03/2017.

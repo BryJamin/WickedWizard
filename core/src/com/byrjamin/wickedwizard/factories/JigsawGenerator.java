@@ -8,12 +8,11 @@ import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.factories.arenas.TutorialFactory;
-import com.byrjamin.wickedwizard.maps.MapCoords;
+import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 
 import java.util.Random;
 
 import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.createOmniArena;
-import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.findRoom;
 
 /**
  * Created by Home on 22/03/2017.

@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 
 /**
  * Created by Home on 20/03/2017.

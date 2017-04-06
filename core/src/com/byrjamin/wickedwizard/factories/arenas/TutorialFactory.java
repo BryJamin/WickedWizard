@@ -15,9 +15,9 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
-import com.byrjamin.wickedwizard.helper.BagSearch;
-import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 

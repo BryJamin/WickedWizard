@@ -2,7 +2,7 @@ package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.helper.timer.StateTimer;
+import com.byrjamin.wickedwizard.utils.timer.StateTimer;
 
 /**
  * Created by Home on 05/03/2017.

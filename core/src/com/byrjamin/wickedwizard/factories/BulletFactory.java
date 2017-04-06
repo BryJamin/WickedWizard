@@ -12,7 +12,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**

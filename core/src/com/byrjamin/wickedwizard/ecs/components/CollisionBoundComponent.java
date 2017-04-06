@@ -3,8 +3,8 @@ package com.byrjamin.wickedwizard.ecs.components;
 import com.artemis.Component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.helper.collider.Collider;
+import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
  * Created by Home on 04/03/2017.

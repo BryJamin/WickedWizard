@@ -1,10 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.components.texture;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 01/04/2017.

@@ -4,7 +4,7 @@ import com.artemis.Component;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**

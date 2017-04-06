@@ -14,7 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
-import com.byrjamin.wickedwizard.helper.collider.Collider;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
  * Created by Home on 04/03/2017.

@@ -2,7 +2,7 @@ package com.byrjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 04/03/2017.

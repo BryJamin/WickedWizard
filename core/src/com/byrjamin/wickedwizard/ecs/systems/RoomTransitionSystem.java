@@ -21,8 +21,8 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
-import com.byrjamin.wickedwizard.helper.Measure;
-import com.byrjamin.wickedwizard.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 
 /**
  * Created by Home on 13/03/2017.

@@ -13,8 +13,8 @@ import com.byrjamin.wickedwizard.ecs.components.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.helper.AnimationPacker;
-import com.byrjamin.wickedwizard.helper.BagSearch;
+import com.byrjamin.wickedwizard.utils.AnimationPacker;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 
 /**
  * Created by Home on 25/03/2017.

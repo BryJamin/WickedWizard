@@ -2,8 +2,7 @@ package com.byrjamin.wickedwizard.assets;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.byrjamin.wickedwizard.helper.AnimationPacker;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.AnimationPacker;
 
 /**
  * Created by Home on 01/01/2017.

@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
-import com.byrjamin.wickedwizard.helper.Measure;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 26/03/2017.
