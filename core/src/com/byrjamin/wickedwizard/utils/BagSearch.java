@@ -2,10 +2,10 @@ package com.byrjamin.wickedwizard.utils;
 
 import com.artemis.utils.Bag;
 
-/**
- * Created by Home on 19/03/2017.
- */
 
+/**
+ * Class used to search through bags for different componenets
+ */
 public class BagSearch {
 
     public static <T, B> boolean contains(Class<T> cls, Bag<B> bag){

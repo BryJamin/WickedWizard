@@ -247,7 +247,6 @@ public class PlayScreen extends AbstractScreen {
                 gameOver = true;
             }
         }
-        //handleInput(dt);
     }
 
     @Override
@@ -257,10 +256,6 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        //System.out.println(atlas.getRegions().toString());
-        //Updates the positions of all elements on the screen before they are redrawn.
-        //update(delta);
-
 
         //Sets the background color if nothing is on the screen.
         Gdx.gl.glClearColor(0, 0, 0, 0.5f);
@@ -268,16 +263,28 @@ public class PlayScreen extends AbstractScreen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
 
+        //TODO this doesn't fit the slowdown fly everywhere problem when using artemis
         if (delta < 0.20f) {
             world.setDelta(delta);
         } else {
-            world.delta = 0.20f;
+            world.setDelta(0.20f);
         }
 
-
         world.process();
-        // world.getSystem(LockSystem.class).lockDoors();
 
+        drawHUD(world, gamecam);
+
+        arenaGUI.update(world.delta,
+                gamecam,
+                world.getSystem(RoomTransitionSystem.class).getRoomArray(),
+                world.getSystem(RoomTransitionSystem.class).getCurrentArena(),
+                world.getSystem(RoomTransitionSystem.class).getCurrentPlayerLocation());
+        arenaGUI.draw(game.batch);
+
+       // System.out.println(Gdx.graphics.getFramesPerSecond());
+    }
+
+    public void drawHUD(World world, OrthographicCamera gamecam){
 
         for (int i = 1; i <= world.getSystem(FindPlayerSystem.class).getPlayer().getComponent(HealthComponent.class).health; i++) {
             if (!game.batch.isDrawing()) {
@@ -292,16 +299,6 @@ public class PlayScreen extends AbstractScreen {
             }
             game.batch.draw(atlas.findRegion("bullet_blue"), gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 280, MainGame.GAME_UNITS * 2.5f, MainGame.GAME_UNITS * 2.5f);
         }
-
-        arenaGUI.update(world.delta,
-                gamecam,
-                world.getSystem(RoomTransitionSystem.class).getRoomArray(),
-                world.getSystem(RoomTransitionSystem.class).getCurrentArena(),
-                world.getSystem(RoomTransitionSystem.class).getCurrentPlayerLocation());
-
-        arenaGUI.draw(game.batch);
-
-       // System.out.println(Gdx.graphics.getFramesPerSecond());
 
     }
 

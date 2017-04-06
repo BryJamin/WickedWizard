@@ -1,7 +1,8 @@
-package com.byrjamin.wickedwizard.archive.maps;
+package com.byrjamin.wickedwizard;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.archive.maps.MapJigsawGenerator;
 import com.byrjamin.wickedwizard.archive.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
@@ -43,7 +44,7 @@ public class MapJigsawGeneratorTest extends GameTest{
                 }
             }
 
-            Assert.assertTrue(bossRoom);
+            assertTrue(bossRoom);
 
 
             boolean itemRoom = false;
@@ -55,7 +56,7 @@ public class MapJigsawGeneratorTest extends GameTest{
                 }
             }
 
-            Assert.assertTrue(itemRoom);
+            assertTrue(itemRoom);
 
             System.out.println(i);
 

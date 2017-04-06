@@ -5,31 +5,35 @@ package com.byrjamin.wickedwizard.utils.timer;
  */
 public class StateTimer {
 
-    private float defaultTime;
-    private float countDown;
+    private float resetTime;
+    private float timeRemaining;
 
     public StateTimer(float timer){
-        this.defaultTime = timer;
-        this.countDown = timer;
+        this.resetTime = timer;
+        this.timeRemaining = timer;
     }
 
-    public StateTimer(float defaultTime, float countDown){
-        this.defaultTime = defaultTime;
-        this.countDown = countDown;
+    public StateTimer(float resetTime, float timeRemaining){
+        this.resetTime = resetTime;
+        this.timeRemaining = timeRemaining;
     }
 
 
 
     public void update(float dt){
-        if(countDown > 0) {
-            countDown -= dt;
+        if(timeRemaining > 0) {
+            timeRemaining -= dt;
         }
     }
 
     public boolean isFinished(){
-        return countDown <= 0;
+        return timeRemaining <= 0;
     }
 
+    /**
+     * Checks if the timer is finished and resets the timer if it is
+     * @return - Returns if the timer has finished or not
+     */
     public boolean isFinishedAndReset(){
         if(isFinished()){
             reset();
@@ -38,23 +42,26 @@ public class StateTimer {
         return false;
     }
 
+    /**
+     * Resets the timer back to the defaultTime
+     */
     public void reset(){
-        countDown = defaultTime;
+        timeRemaining = resetTime;
     }
 
-    public void setDefaultTime(float defaultTime) {
-        this.defaultTime = defaultTime;
+    public void setResetTime(float resetTime) {
+        this.resetTime = resetTime;
     }
 
-    public float getDefaultTime() {
-        return defaultTime;
+    public float getResetTime() {
+        return resetTime;
     }
 
-    public float getCountDown() {
-        return countDown;
+    public float getTimeRemaining() {
+        return timeRemaining;
     }
 
-    public void setCountDown(float countDown) {
-        this.countDown = countDown;
+    public void setTimeRemaining(float timeRemaining) {
+        this.timeRemaining = timeRemaining;
     }
 }

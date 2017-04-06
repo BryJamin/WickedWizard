@@ -7,14 +7,10 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
- * Since I will end up repeating the same code a lot in order to create an Animation
- * It requiring first getting an atlasregion, grabbing the texture and then putting it in
- * the animation class. This class does it all, so in my other classes making an animation is just
- * a single line of code.
+ * Takes a string and then packs it into an animation.
+ * Currently uses the PlayScreen atlas
  *
- * I may expand it in future to take a string instead of an array of atlasregions and then class the
- * atlasregion here. In fact I'll do that now and then convert it back after if it turn out
- * to be a bad idea.
+ * //TODO expand to have an atlas set to the Animationpacker so it isn't only reliant on the PlayScreen
  *
  */
 public class AnimationPacker {

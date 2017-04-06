@@ -18,7 +18,7 @@ public class BoundsDrawer {
     private static ShapeRenderer shapeRenderer = new ShapeRenderer();;
 
     /**
-     * Draws the boundarys of an Array of Rectangles
+     * Draws the boundaries of an Array of Rectangles
      * @param batch - The SpriteBatch
      * @param bounds - Rectangle Array
      */
@@ -41,6 +41,11 @@ public class BoundsDrawer {
         }
     }
 
+    /**
+     * Draws the boundaries of an Array of Rectangles
+     * @param batch - The SpriteBatch
+     * @param bounds - Rectangle Array
+     */
     public static void drawBounds(SpriteBatch batch, Rectangle... bounds){
 
         if(batch.isDrawing()) {
@@ -60,6 +65,11 @@ public class BoundsDrawer {
         }
     }
 
+    /**
+     * Draws the boundaries of an Array of Circles
+     * @param batch - The SpriteBatch
+     * @param bounds - Rectangle Array
+     */
     public static void drawBounds(SpriteBatch batch, Circle... bounds){
 
         batch.end();

@@ -8,7 +8,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
-import com.byrjamin.wickedwizard.utils.collider.WizardCollider;
+import com.byrjamin.wickedwizard.archive.WizardCollider;
 import com.byrjamin.wickedwizard.archive.item.Item;
 import com.byrjamin.wickedwizard.archive.maps.rooms.components.GrapplePoint;
 import com.byrjamin.wickedwizard.archive.maps.rooms.components.RoomBackground;

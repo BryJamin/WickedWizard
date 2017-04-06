@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.archive.maps;
+package com.byrjamin.wickedwizard;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;

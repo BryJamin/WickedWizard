@@ -21,20 +21,25 @@ public class BackgroundFactory {
     public static Bag<Component>backgroundBags(float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE, Array<? extends TextureRegion> selection){
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x, y));
-        TextureRegionBatchComponent trbc = generateTRBCPlus1(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, TILE_SIZE, selection);
+        TextureRegionBatchComponent trbc = generateTRBC(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, TILE_SIZE, selection,1,1);
         trbc.layer = -10;
         bag.add(trbc);
         return bag;
     }
 
 
-    public static TextureRegionBatchComponent generateTRBCPlus1 (float width, float height, float tile_size, Array<? extends TextureRegion> selection){
+    public static TextureRegionBatchComponent generateTRBC (float width,
+                                                            float height,
+                                                            float tile_size,
+                                                            Array<? extends TextureRegion> selection,
+                                                            int additionalrows,
+                                                            int additionalColumns){
 
         Random random = new Random();
 
         Array<TextureRegion> backgrounds = new Array<TextureRegion>();
-        int columns = ((int) width / (int) tile_size) + 1;
-        int rows = ((int) height / (int) tile_size) + 1;
+        int columns = ((int) width / (int) tile_size) + additionalrows;
+        int rows = ((int) height / (int) tile_size) + additionalColumns;
 
         int count = rows * columns;
 
@@ -47,21 +52,7 @@ public class BackgroundFactory {
     }
 
     public static TextureRegionBatchComponent generateTRBC (float width, float height, float tile_size, Array<? extends TextureRegion> selection){
-
-        Random random = new Random();
-
-        Array<TextureRegion> backgrounds = new Array<TextureRegion>();
-        int columns = ((int) width / (int) tile_size);
-        int rows = ((int) height / (int) tile_size);
-
-        int count = rows * columns;
-
-        for(int i = 0; i < count; i++){
-            backgrounds.add(selection.get(random.nextInt(selection.size)));
-        }
-
-        return new TextureRegionBatchComponent(rows, columns, tile_size, tile_size, backgrounds);
-
+        return generateTRBC(width,height,tile_size,selection,0,0);
     }
 
 

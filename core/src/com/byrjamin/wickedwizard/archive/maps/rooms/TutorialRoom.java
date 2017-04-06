@@ -250,8 +250,8 @@ public class TutorialRoom extends Room {
                     currentString = movefire1;
                     dialogue = DIALOGUETREE.GRAPPLING;
                     arrayPosition = 0;
-                    timer.setCountDown(3.0f);
-                    timer.setDefaultTime(3.0f);
+                    timer.setTimeRemaining(3.0f);
+                    timer.setResetTime(3.0f);
                     //timer.reset();
                 }
             }

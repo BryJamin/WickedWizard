@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.factories.arenas.TutorialFactory;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
@@ -24,30 +25,30 @@ public class JigsawGenerator {
 
     private Random rand;
 
-    private com.byrjamin.wickedwizard.factories.arenas.Arena startingArena;
+    private Arena startingArena;
 
     public JigsawGenerator(int noBattleRooms, Random rand){
         this.noBattleRooms = noBattleRooms;
         this.rand = rand;
     }
 
-    public Array<com.byrjamin.wickedwizard.factories.arenas.Arena> generateJigsaw(){
+    public Array<Arena> generateJigsaw(){
 
-        Array<com.byrjamin.wickedwizard.factories.arenas.Arena> arenas = new Array<com.byrjamin.wickedwizard.factories.arenas.Arena>();
-        Array<com.byrjamin.wickedwizard.factories.arenas.Arena> placedArenas = new Array<com.byrjamin.wickedwizard.factories.arenas.Arena>();
+        Array<Arena> arenas = new Array<com.byrjamin.wickedwizard.factories.arenas.Arena>();
+        Array<Arena> placedArenas = new Array<com.byrjamin.wickedwizard.factories.arenas.Arena>();
 
         for(int i = 0; i < noBattleRooms; i++){
 
             com.byrjamin.wickedwizard.factories.arenas.Arena a;
 
             if(i == 2 || i == 6){
-                a = com.byrjamin.wickedwizard.factories.arenas.RoomFactory.createWidth2Arena();
-                com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory.biggablobba(a);
+                a = RoomFactory.createWidth2Arena();
+                RoomDecorationFactory.biggablobba(a);
                 //RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             } else {
                 a = createOmniArena();
                 //RoomDecorationFactory.biggablobba(a);
-                com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory.setUpArena[rand.nextInt(com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory.setUpArena.length)].setUpArena(a);
+                RoomDecorationFactory.setUpArena[rand.nextInt(com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory.setUpArena.length)].setUpArena(a);
             }
             //if(i == 1) {
             arenas.add(a);
@@ -109,7 +110,7 @@ public class JigsawGenerator {
     }
 
 
-    public boolean placeRoomUsingDoors(com.byrjamin.wickedwizard.factories.arenas.Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+    public boolean placeRoomUsingDoors(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
 
 
         Array<DoorComponent> avaliableDoorsArray = new Array<DoorComponent>();
@@ -191,19 +192,29 @@ public class JigsawGenerator {
     }
 
 
+    /**
+     * Generates the co-ordinates that will be used to mock the moving of a room into a different position
+     * and if the mock is successfull these co-ordinates will be used to move the room in the free position
+     * @param newPosition - The Co-ordinate position of a potential spot for the room to placed.
+     * @param oldPosition - The current positition of the room
+     * @return - Returns A MapCoord object containing the x and y value needed to move the room
+     */
     public MapCoords generateShiftCoords(MapCoords newPosition, MapCoords oldPosition) {
         int diffX = newPosition.getX() - oldPosition.getX();
         int diffY = newPosition.getY() - oldPosition.getY();
-
-        System.out.println(diffX);
-        System.out.println(diffY);
-
         return new MapCoords(diffX, diffY);
     }
 
 
-
-    public Array<MapCoords> mockShiftCoordinatePosition(com.byrjamin.wickedwizard.factories.arenas.Arena a, MapCoords shiftCoords){
+    /**
+     * Takes in an arena and uses the shift co-ordinates to 'mock' moving the arena into that position
+     * by moving it's map co-ordinates
+     * @param a - The arena that will have new position mocked up.
+     * @param shiftCoords - The co-ordinates that will be used to move the arena
+     * @return - An array of new co-ordinates that the arena potentially can move to assuming no other arena is
+     * taking up that spot
+     */
+    public Array<MapCoords> mockShiftCoordinatePosition(Arena a, MapCoords shiftCoords){
 
         int diffX = shiftCoords.getX();
         int diffY = shiftCoords.getY();
@@ -222,13 +233,10 @@ public class JigsawGenerator {
         return mockCoords;
     }
 
-    public void shiftCoordinatePosition(com.byrjamin.wickedwizard.factories.arenas.Arena a, MapCoords shiftCoords){
+    public void shiftCoordinatePosition(Arena a, MapCoords shiftCoords){
 
         int diffX = shiftCoords.getX();
         int diffY = shiftCoords.getY();
-
-        System.out.println(diffX);
-
 
         for(MapCoords m : a.getCotainingCoords()) {
             m.addX(diffX);
@@ -249,7 +257,7 @@ public class JigsawGenerator {
     }
 
 
-    public com.byrjamin.wickedwizard.factories.arenas.Arena getStartingRoom() {
+    public Arena getStartingRoom() {
         return startingArena;
     }
 

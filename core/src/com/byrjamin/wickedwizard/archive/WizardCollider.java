@@ -1,7 +1,8 @@
-package com.byrjamin.wickedwizard.utils.collider;
+package com.byrjamin.wickedwizard.archive;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.archive.gameobject.player.Wizard;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 public class WizardCollider {
 
