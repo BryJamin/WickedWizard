@@ -67,7 +67,7 @@ public class JigsawGenerator {
         placedArenas.add(d);
         Arena e = TutorialFactory.endTutorial(new MapCoords(3,1));
         placedArenas.add(e);
-        Arena f = RoomFactory.createOmniArena(new MapCoords(3,1), new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
+        Arena f = RoomFactory.createOmniArena(new MapCoords(4,1), new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
         placedArenas.add(f);
         //startingArena.get
 

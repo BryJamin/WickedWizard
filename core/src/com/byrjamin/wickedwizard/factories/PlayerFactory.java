@@ -61,7 +61,7 @@ public class PlayerFactory {
         bag.add(new AnimationComponent(k));
 
 
-        WeaponComponent wc = new WeaponComponent(0.3f);
+        WeaponComponent wc = new WeaponComponent(0.3f, 0.3f);
         wc.additionalComponenets.add(new FriendlyComponent());
         bag.add(wc);
         bag.add(new HealthComponent(6));
