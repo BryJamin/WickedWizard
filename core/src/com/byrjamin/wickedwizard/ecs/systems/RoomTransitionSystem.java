@@ -66,12 +66,12 @@ public class RoomTransitionSystem extends EntitySystem {
         for(Entity e : this.getEntities()){
             if(!bm.has(e)) {
 
-/*                if(cm.has(e)){
+                if(cm.has(e)){
                     if(parm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).
                             children.contains(cm.get(e), true)){
                         continue;
                     }
-                }*/
+                }
 
                 Bag<Component> b = new Bag<Component>();
                 e.getComponents(new Bag<Component>());
@@ -107,10 +107,10 @@ public class RoomTransitionSystem extends EntitySystem {
                 if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
                     switch (dc.exit){
                         case left: player.position.x = cbc.bound.getX() + cbc.bound.getWidth() + pBound.bound.getWidth();
-                            player.position.y = cbc.getCenterY();
+                            player.position.y = cbc.bound.y + Measure.units(1);
                             break;
                         case right: player.position.x = cbc.bound.getX() - pBound.bound.getWidth();
-                            player.position.y = cbc.getCenterY();
+                            player.position.y = cbc.bound.y + Measure.units(1);
                             break;
                         case up:
                             player.position.x = cbc.getCenterX();

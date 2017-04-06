@@ -158,10 +158,10 @@ public class RenderingSystem extends EntitySystem {
                     layer2 = trm.get(e2).layer;
                 } else if(trbm.has(e2)){
                     layer2 = trbm.get(e2).layer;
-                } else if(trfm.has(e1)){
-                    layer2 = trfm.get(e1).layer;
-                } else if(sm.has(e1)){
-                    layer2 = sm.get(e1).layer;
+                } else if(trfm.has(e2)){
+                    layer2 = trfm.get(e2).layer;
+                } else if(sm.has(e2)){
+                    layer2 = sm.get(e2).layer;
                 }
 
                 return ((Integer)layer1).compareTo(layer2);

@@ -3,14 +3,17 @@ package com.byrjamin.wickedwizard.factories;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.factories.arenas.TutorialFactory;
 import com.byrjamin.wickedwizard.maps.MapCoords;
 
 import java.util.Random;
 
 import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.createOmniArena;
+import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.findRoom;
 
 /**
  * Created by Home on 22/03/2017.
@@ -64,6 +67,8 @@ public class JigsawGenerator {
         placedArenas.add(d);
         Arena e = TutorialFactory.endTutorial(new MapCoords(3,1));
         placedArenas.add(e);
+        Arena f = RoomFactory.createOmniArena(new MapCoords(3,1), new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
+        placedArenas.add(f);
         //startingArena.get
 
 
@@ -76,8 +81,9 @@ public class JigsawGenerator {
         unavaliableMapCoords.addAll(c.getCotainingCoords());
         unavaliableMapCoords.addAll(d.getCotainingCoords());
         unavaliableMapCoords.addAll(e.getCotainingCoords());
-        avaliableMapCoordsSet.addAll(e.adjacentCoords);
-        avaliableDoorsSet.addAll(e.getDoors());
+        unavaliableMapCoords.addAll(f.getCotainingCoords());
+        avaliableMapCoordsSet.addAll(f.adjacentCoords);
+        avaliableDoorsSet.addAll(f.getDoors());
 
         arenas.removeValue(startingArena, true);
         placedArenas.add(startingArena);

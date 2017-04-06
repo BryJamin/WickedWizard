@@ -27,8 +27,10 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 public class TutorialFactory extends RoomFactory{
 
-    private final static String moveTutorialString =
-            "Touch the flashing area to move! \n \n Exit through the right door";
+    private final static String moveTutorialString1 = "Exit through the right door";
+    private final static String moveTutorialString2 = "Touch in this area to move!";
+
+
     private final static String jumpTutorialString =
             "Tap above your character to jump and start gliding! \n \n Tap below your character to cancel your glide";
     private final static String enemyTutorialString =
@@ -76,13 +78,22 @@ public class TutorialFactory extends RoomFactory{
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
-        bag.add(new TextureFontComponent(moveTutorialString));
+        TextureFontComponent tfc = new TextureFontComponent(moveTutorialString1);
+        bag.add(tfc);
+        arena.addEntity(bag);
+
+        bag = new Bag<Component>();
+        bag.add(new PositionComponent(0, 150));
+        tfc = new TextureFontComponent(moveTutorialString2);
+        tfc.layer = 6;
+        tfc.setColor(0,0,0,1);
+        bag.add(tfc);
         arena.addEntity(bag);
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 0));
         ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2);
-        sc.layer = 5;
+        sc.layer = 4;
         bag.add(sc);
         bag.add(new FadeComponent());
         arena.addEntity(bag);
