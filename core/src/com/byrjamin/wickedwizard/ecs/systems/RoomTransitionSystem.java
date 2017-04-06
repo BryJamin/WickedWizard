@@ -10,7 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
+import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -36,6 +38,10 @@ public class RoomTransitionSystem extends EntitySystem {
     ComponentMapper<ActiveOnTouchComponent> aotm;
     ComponentMapper<DoorComponent> dm;
     ComponentMapper<MoveToComponent> mtm;
+    ComponentMapper<ParentComponent> parm;
+    ComponentMapper<ChildComponent> cm;
+
+
 
     private Arena currentArena;
     private Array<Arena> roomArray;
@@ -59,12 +65,22 @@ public class RoomTransitionSystem extends EntitySystem {
         //Pack
         for(Entity e : this.getEntities()){
             if(!bm.has(e)) {
+
+/*                if(cm.has(e)){
+                    if(parm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).
+                            children.contains(cm.get(e), true)){
+                        continue;
+                    }
+                }*/
+
                 Bag<Component> b = new Bag<Component>();
                 e.getComponents(new Bag<Component>());
                 currentArena.getBagOfEntities().add(e.getComponents(b));
             }
+
             e.deleteFromWorld();
         }
+
 
         currentArena = findRoom(destination);
 

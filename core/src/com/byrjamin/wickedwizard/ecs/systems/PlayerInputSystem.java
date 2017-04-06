@@ -4,15 +4,20 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
+import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
@@ -21,11 +26,13 @@ import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
+import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.helper.Measure;
 import com.byrjamin.wickedwizard.helper.collider.Collider;
 import com.byrjamin.wickedwizard.helper.timer.StateTimer;
@@ -41,6 +48,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
 
     ComponentMapper<PositionComponent> pm;
+    ComponentMapper<ParentComponent> parm;
+    ComponentMapper<ChildComponent> cm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<AccelerantComponent> am;
     ComponentMapper<MoveToComponent> mtm;
@@ -60,6 +69,8 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
     public boolean activeGrapple;
+
+    private Array<ChildComponent> wingChildren = new Array<ChildComponent>();
 
     public Rectangle movementArea;
 
@@ -157,9 +168,51 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         }
 
         if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
-            glc.gliding = false;
-            glc.active = false;
+            ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+            turnOffGlide(glc, parc);
         }
+    }
+
+
+    public void turnOnGlide(GlideComponent glc, ParentComponent parc, PositionComponent pc){
+
+        wingChildren.clear();
+
+        Entity e = world.createEntity();
+        for(Component c : PlayerFactory.rightWings(parc, pc)) {
+            e.edit().add(c);
+        }
+
+        wingChildren.add(e.getComponent(ChildComponent.class));
+
+        e = world.createEntity();
+        for(Component c : PlayerFactory.leftWings(parc, pc)) {
+            e.edit().add(c);
+        }
+
+        wingChildren.add(e.getComponent(ChildComponent.class));
+
+        glc.gliding = true;
+        glc.active = true;
+
+    }
+
+    public void turnOffGlide(GlideComponent glc, ParentComponent parc){
+
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(ChildComponent.class));
+        IntBag entityIds = subscription.getEntities();
+
+
+        for(int i = 0; i < entityIds.size(); i++){
+            ChildComponent c = cm.get(entityIds.get(i));
+            if(parc.children.contains(c, true)){
+                parc.children.removeValue(c, true);
+                world.delete(entityIds.get(i));
+            }
+        }
+
+        glc.gliding = false;
+        glc.active = false;
     }
 
     @Override
@@ -223,8 +276,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 mtc.maxEndSpeedY = MAX_GRAPPLE_MOVEMENT / 2;
                 // mtc.endSpeedY = GRAPPLE_MOVEMENT * 5;
                 gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
-                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = false;
-                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = false;
+                GlideComponent glc = glm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                turnOffGlide(glc, parc);
 
                 vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
                 vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
@@ -258,15 +312,18 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 if(input.y > cbc.bound.y + cbc.bound.getHeight()) {
                     if (jc.jumps >= 0) {
                         vc.velocity.y = Measure.units(80f);
-                        glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;
-                        glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = true;
                         jc.jumps--;
+                        PositionComponent pc = pm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                        ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                        GlideComponent glc = glm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                        turnOffGlide(glc, parc);
+                        turnOnGlide(glc, parc, pc);
                     }
 
                 } else {
-                    //vc.velocity.y = -Measure.units(80f);
-                    glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = false;
-                    glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = false;
+                    GlideComponent glc = glm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                    ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                    turnOffGlide(glc, parc);
                 }
 
                 //glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;

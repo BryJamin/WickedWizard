@@ -13,6 +13,8 @@ public class TextureStrings {
     //PLAYER
     public static Animation<TextureRegion> SQU_WALK = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
     public static Animation<TextureRegion> SQU_FIRING = AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
+    public static Animation<TextureRegion> WINGS = AnimationPacker.genAnimation(0.7f / 10, "wings", Animation.PlayMode.LOOP);
+
 
     //ENEMIES
     public static String EXPLOSION = "explosion";

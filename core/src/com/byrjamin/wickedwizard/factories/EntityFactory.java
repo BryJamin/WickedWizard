@@ -64,42 +64,6 @@ public class EntityFactory {
         return wallBag(r.x, r.y, r.width, r.height);
     }
 
-    public static Bag<Component> playerBag(){
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(600,900));
-        bag.add(new VelocityComponent(0, 0));
-        bag.add(new PlayerComponent());
-        bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
-        bag.add(new GravityComponent());
-        bag.add(new MoveToComponent());
-        bag.add(new JumpComponent());
-        bag.add(new GlideComponent());
-        bag.add(new AccelerantComponent(Measure.units(15f), Measure.units(15f), Measure.units(80f), Measure.units(80f)));
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
-        bag.add(sc);
-
-        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, TextureStrings.SQU_WALK);
-        k.put(1, TextureStrings.SQU_FIRING);
-
-        bag.add(new AnimationComponent(k));
-
-
-        WeaponComponent wc = new WeaponComponent(0.3f);
-        wc.additionalComponenets.add(new FriendlyComponent());
-        bag.add(wc);
-        bag.add(new HealthComponent(6));
-        bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
-
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
-        trc.layer = 2;
-        bag.add(trc);
-
-        return bag;
-    }
 
     public static Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, DoorComponent.DIRECTION exit){
 

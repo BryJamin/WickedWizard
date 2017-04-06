@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FadeSystem;
+import com.byrjamin.wickedwizard.ecs.systems.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
@@ -33,6 +34,7 @@ import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.TutorialSystem;
+import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
@@ -142,6 +144,7 @@ public class PlayScreen extends AbstractScreen {
 
 
                 .with(WorldConfigurationBuilder.Priority.HIGH,
+                        new FollowPositionSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
@@ -184,15 +187,12 @@ public class PlayScreen extends AbstractScreen {
         }
 
         Entity entity = world.createEntity();
-        for (Component comp : EntityFactory.playerBag()) {
+        for (Component comp : PlayerFactory.playerBag()) {
             entity.edit().add(comp);
         }
 
         jumpresource = entity.getComponent(JumpComponent.class);
         arenaGUI = new ArenaGUI(0, 0, testArray, b);
-
-        System.out.println(gamecam.viewportHeight);
-        System.out.println(gamecam.viewportHeight);
 
     }
 

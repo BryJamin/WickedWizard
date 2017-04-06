@@ -5,39 +5,29 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
 /**
- * Created by Home on 04/03/2017.
+ * Created by Home on 06/04/2017.
  */
-public class MovementSystem extends EntityProcessingSystem {
+
+public class FollowPositionSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
-    ComponentMapper<VelocityComponent> vm;
-    ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<FollowPositionComponent> fm;
 
     @SuppressWarnings("unchecked")
-    public MovementSystem() {
-        super(Aspect.all(PositionComponent.class, VelocityComponent.class));
+    public FollowPositionSystem() {
+        super(Aspect.all(FollowPositionComponent.class, PositionComponent.class));
     }
 
     @Override
     protected void process(Entity e) {
-
         PositionComponent pc = pm.get(e);
-        VelocityComponent vc = vm.get(e);
-
-        pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
-
-
-        if(cbm.has(e)) {
-            CollisionBoundComponent cbc = cbm.get(e);
-            cbc.bound.x = pc.getX();
-            cbc.bound.y = pc.getY();
-        }
-
-
+        FollowPositionComponent fc = fm.get(e);
+        pc.position.set(fc.trackedPosition.x + fc.offsetX, fc.trackedPosition.y + fc.offsetY);
     }
 
 }
