@@ -141,8 +141,6 @@ public class PlayScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem()
                 )
-
-
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new FollowPositionSystem(),
                         new ActiveOnTouchSystem(),
@@ -275,12 +273,7 @@ public class PlayScreen extends AbstractScreen {
         world.process();
 
         drawHUD(world, gamecam);
-
-        arenaGUI.update(world.delta,
-                gamecam,
-                world.getSystem(RoomTransitionSystem.class).getRoomArray(),
-                world.getSystem(RoomTransitionSystem.class).getCurrentArena(),
-                world.getSystem(RoomTransitionSystem.class).getCurrentPlayerLocation());
+        world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
         arenaGUI.draw(game.batch);
 
        // System.out.println(Gdx.graphics.getFramesPerSecond());

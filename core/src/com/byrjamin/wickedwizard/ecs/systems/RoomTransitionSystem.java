@@ -6,8 +6,10 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
@@ -20,6 +22,7 @@ import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
@@ -45,6 +48,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
     private Arena currentArena;
     private Array<Arena> roomArray;
+    private OrderedSet<Arena> visitedArenas = new OrderedSet<Arena>();
 
     private boolean processingFlag = false;
     private MapCoords destination;
@@ -56,6 +60,7 @@ public class RoomTransitionSystem extends EntitySystem {
     public RoomTransitionSystem(Arena currentArena, Array<Arena> roomArray) {
         super(Aspect.all().exclude(PlayerComponent.class));
         this.currentArena = currentArena;
+        visitedArenas.add(currentArena);
         this.roomArray = roomArray;
     }
 
@@ -83,7 +88,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
         currentArena = findRoom(destination);
-
+        visitedArenas.add(currentArena);
         if(currentArena == null){
             return;
         }
@@ -127,9 +132,6 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
 
-
-
-
         }
 
         gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
@@ -145,6 +147,7 @@ public class RoomTransitionSystem extends EntitySystem {
         }
 
         world.getSystem(PlayerInputSystem.class).activeGrapple = false;
+        System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
     }
 
@@ -173,6 +176,13 @@ public class RoomTransitionSystem extends EntitySystem {
         return false;
     }
 
+
+    public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
+        aGUI.update(world.delta, gamecam, visitedArenas,
+                getCurrentArena(),
+                getCurrentPlayerLocation()
+                );
+    }
 
 
     public boolean goFromTo(MapCoords previousDestination, MapCoords destination){

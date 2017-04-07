@@ -22,15 +22,10 @@ public class DirectionalComponent extends Component {
 
 
     public void setDirection(Direction direction, PRIORITY priority) {
-
-        System.out.println(direction);
-        System.out.println(this.priority.compareTo(priority));
-
         if(this.priority.compareTo(priority) >= 0) {
             this.priority = priority;
             this.direction = direction;
 
-            System.out.println(direction);
         }
     }
 

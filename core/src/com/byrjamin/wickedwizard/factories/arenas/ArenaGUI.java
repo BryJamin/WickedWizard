@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
@@ -23,9 +24,9 @@ public class ArenaGUI {
 
     private float SIZE = Measure.units(3f);
 
-    private Array<com.byrjamin.wickedwizard.factories.arenas.Arena> arenas;
+    private Array<Arena> arenas;
 
-    private com.byrjamin.wickedwizard.factories.arenas.Arena currentRoom;
+    private Arena currentRoom;
     private MapCoords currentCoords;
 
     private Color currentRoomColor = new Color(1, 1, 1, 0.8f);
@@ -39,6 +40,8 @@ public class ArenaGUI {
     private float mapBlinker;
     private boolean blink;
 
+    private int range = 3;
+
     ShapeRenderer mapRenderer = new ShapeRenderer();
 
 
@@ -50,11 +53,11 @@ public class ArenaGUI {
     }
 
 
-    public void update(float dt, OrthographicCamera gamecam, Array<com.byrjamin.wickedwizard.factories.arenas.Arena> visitedArenas, com.byrjamin.wickedwizard.factories.arenas.Arena currentRoom, MapCoords currentCoords){
+    public void update(float dt, OrthographicCamera gamecam, OrderedSet<Arena> visitedArenas, com.byrjamin.wickedwizard.factories.arenas.Arena currentRoom, MapCoords currentCoords){
 
         this.currentRoom = currentRoom;
         this.currentCoords = currentCoords;
-        this.arenas = visitedArenas;
+        this.arenas = visitedArenas.orderedItems();
 
         mapBlinker += dt;
 
@@ -88,7 +91,7 @@ public class ArenaGUI {
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        for(com.byrjamin.wickedwizard.factories.arenas.Arena arena : arenas){
+        for(Arena arena : arenas){
             for(MapCoords m : arena.cotainingCoords) {
                 if(arena == currentRoom) {
                     mapRenderer.setColor(currentRoomColor);
@@ -97,7 +100,10 @@ public class ArenaGUI {
                 }
                 int diffX = m.getX() - currentCoords.getX();
                 int diffY = m.getY() - currentCoords.getY();
-                mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+
+                if((diffX < range && diffX > -range) &&  (diffY < range && diffY > -range)) {
+                    mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+                }
 /*                if (r instanceof BossRoom) {
                     mapRenderer.setColor(bossRoomColor);
                     mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
@@ -131,27 +137,30 @@ public class ArenaGUI {
                 mapRenderer.setColor(borderColor);
                 int diffX = m.getX() - currentCoords.getX();
                 int diffY = m.getY() - currentCoords.getY();
+                if((diffX < range && diffX > -range) &&  (diffY < range && diffY > -range)) {
 
-                float x = mapx + (SIZE * diffX);
-                float y = mapy + (SIZE * diffY);
+                    float x = mapx + (SIZE * diffX);
+                    float y = mapy + (SIZE * diffY);
 
-                //Left Line
-                if(!arena.cotainingCoords.contains(new MapCoords(m.getX() - 1,m.getY()), false)) {
-                    mapRenderer.line(x, y, x, y + SIZE);
-                }
-                //Right Line
-                if(!arena.cotainingCoords.contains(new MapCoords(m.getX() + 1,m.getY()), false)) {
-                    mapRenderer.line(x + SIZE, y, x + SIZE, y + SIZE);
-                }
+                    //Left Line
+                    if (!arena.cotainingCoords.contains(new MapCoords(m.getX() - 1, m.getY()), false)) {
+                        mapRenderer.line(x, y, x, y + SIZE);
+                    }
+                    //Right Line
+                    if (!arena.cotainingCoords.contains(new MapCoords(m.getX() + 1, m.getY()), false)) {
+                        mapRenderer.line(x + SIZE, y, x + SIZE, y + SIZE);
+                    }
 
-                //Top Line
-                if(!arena.cotainingCoords.contains(new MapCoords(m.getX(),m.getY() + 1), false)) {
-                    mapRenderer.line(x, y + SIZE, x + SIZE, y + SIZE);
-                }
+                    //Top Line
+                    if (!arena.cotainingCoords.contains(new MapCoords(m.getX(), m.getY() + 1), false)) {
+                        mapRenderer.line(x, y + SIZE, x + SIZE, y + SIZE);
+                    }
 
-                //Bottom Line
-                if(!arena.cotainingCoords.contains(new MapCoords(m.getX(),m.getY() - 1), false)) {
-                    mapRenderer.line(x, y, x + SIZE, y);
+                    //Bottom Line
+                    if (!arena.cotainingCoords.contains(new MapCoords(m.getX(), m.getY() - 1), false)) {
+                        mapRenderer.line(x, y, x + SIZE, y);
+                    }
+
                 }
             }
 
@@ -162,29 +171,32 @@ public class ArenaGUI {
                 int diffX = dc.currentCoords.getX() - currentCoords.getX();
                 int diffY = dc.currentCoords.getY() - currentCoords.getY();
 
-                float x = mapx + (SIZE * diffX);
-                float y = mapy + (SIZE * diffY);
+                if((diffX < range && diffX > -range) &&  (diffY < range && diffY > -range)) {
 
-                float MINI_SIZE = SIZE / 4;
+                    float x = mapx + (SIZE * diffX);
+                    float y = mapy + (SIZE * diffY);
 
-                //Left Line
-                if(dc.exit == DoorComponent.DIRECTION.left) {
-                    mapRenderer.line(x, y + MINI_SIZE, x, y + SIZE - MINI_SIZE);
-                }
+                    float MINI_SIZE = SIZE / 4;
 
-                //Right Line
-                if(dc.exit == DoorComponent.DIRECTION.right) {
-                    mapRenderer.line(x + SIZE, y + MINI_SIZE, x + SIZE, y + SIZE - MINI_SIZE);
-                }
+                    //Left Line
+                    if (dc.exit == DoorComponent.DIRECTION.left) {
+                        mapRenderer.line(x, y + MINI_SIZE, x, y + SIZE - MINI_SIZE);
+                    }
 
-                //Top Line
-                if(dc.exit == DoorComponent.DIRECTION.up) {
-                    mapRenderer.line(x + MINI_SIZE, y + SIZE, x + SIZE - MINI_SIZE, y + SIZE);
-                }
+                    //Right Line
+                    if (dc.exit == DoorComponent.DIRECTION.right) {
+                        mapRenderer.line(x + SIZE, y + MINI_SIZE, x + SIZE, y + SIZE - MINI_SIZE);
+                    }
 
-                //Bottom Line
-                if(dc.exit == DoorComponent.DIRECTION.down) {
-                    mapRenderer.line(x + MINI_SIZE, y, x + SIZE - MINI_SIZE, y);
+                    //Top Line
+                    if (dc.exit == DoorComponent.DIRECTION.up) {
+                        mapRenderer.line(x + MINI_SIZE, y + SIZE, x + SIZE - MINI_SIZE, y + SIZE);
+                    }
+
+                    //Bottom Line
+                    if (dc.exit == DoorComponent.DIRECTION.down) {
+                        mapRenderer.line(x + MINI_SIZE, y, x + SIZE - MINI_SIZE, y);
+                    }
                 }
             }
 
