@@ -147,17 +147,20 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     float y = pc.getY() + (cbc.bound.getHeight() / 2);
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
-                    if (angleOfTravel >= 0) {
-                        if(angleOfTravel <= (Math.PI / 2)) {
-                            DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+
+                    if(jumpTimer.isFinished()) {
+                        if (angleOfTravel >= 0) {
+                            if (angleOfTravel <= (Math.PI / 2)) {
+                                DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+                            } else {
+                                DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                            }
                         } else {
-                            DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
-                        }
-                    } else {
-                        if(angleOfTravel >= -(Math.PI / 2)) {
-                            DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
-                        } else {
-                            DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                            if (angleOfTravel >= -(Math.PI / 2)) {
+                                DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+                            } else {
+                                DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                            }
                         }
                     }
 
