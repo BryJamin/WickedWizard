@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
@@ -33,6 +34,7 @@ import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 import com.byrjamin.wickedwizard.utils.timer.StateTimer;
 
 /**
@@ -135,21 +137,32 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
             if (firingInputPoll != null) {
 
-                wc.timer.update(world.getDelta());
-
                 if (Gdx.input.isTouched(firingInputPoll)) {
+
+                    wc.timer.update(world.getDelta());
+
+                    Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
+                    gameport.unproject(input);
+                    float x = pc.getX() + (cbc.bound.getWidth() / 2);
+                    float y = pc.getY() + (cbc.bound.getHeight() / 2);
+                    double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
+
+                    if (angleOfTravel >= 0) {
+                        if(angleOfTravel <= (Math.PI / 2)) {
+                            DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+                        } else {
+                            DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                        }
+                    } else {
+                        if(angleOfTravel >= -(Math.PI / 2)) {
+                            DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+                        } else {
+                            DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                        }
+                    }
+
                     if (wc.timer.isFinishedAndReset()) {
                         sc.setState(1);
-                        Vector3 input = new Vector3(Gdx.input.getX(firingInputPoll), Gdx.input.getY(firingInputPoll), 0);
-                        gameport.unproject(input);
-
-                        float x = pc.getX() + (cbc.bound.getWidth() / 2);
-                        float y = pc.getY() + (cbc.bound.getHeight() / 2);
-                        double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
-
-                        if (angleOfTravel >= 0)
-                            trc.scaleX = (angleOfTravel <= (Math.PI / 2)) ? 1 : -1;
-                        else trc.scaleX = (angleOfTravel >= -(Math.PI / 2)) ? 1 : -1;
 
                         Entity bullet = BulletFactory.createBullet(world, x, y, angleOfTravel);
 

@@ -11,11 +11,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
+import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,8 +82,8 @@ public class RenderingSystem extends EntitySystem {
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
                     originX, originY,
-                    trc.width, trc.height, //This is to avoid pixel errors between repeated textures
-                    trc.scaleX, trc.scaleY,
+                    trc.width, trc.height,
+                    trc.scaleX * rendDirection(e), trc.scaleY,
                     trc.rotation);
             batch.setColor(Color.WHITE);
         }
@@ -125,6 +127,19 @@ public class RenderingSystem extends EntitySystem {
         }
 
 
+
+    }
+
+
+    public float rendDirection(Entity e){
+
+        if(world.getMapper(DirectionalComponent.class).has(e)) {
+            if(world.getMapper(DirectionalComponent.class).get(e).getDirection() == Direction.LEFT){
+                return -1;
+            };
+        }
+
+        return 1;
 
     }
 

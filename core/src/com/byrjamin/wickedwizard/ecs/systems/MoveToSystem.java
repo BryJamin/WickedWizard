@@ -82,7 +82,6 @@ public class MoveToSystem extends EntityProcessingSystem {
 
                 vc.velocity.y = (vc.velocity.y <= -ac.maxX) ? -ac.maxY : vc.velocity.y - ac.accelY;
 
-                System.out.println("inside the negative velo");
                         //(vc.velocity.y <= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
             } else {
                 //vc.velocity.y = mtc.speedY;
@@ -94,15 +93,12 @@ public class MoveToSystem extends EntityProcessingSystem {
             }
         }
 
-        System.out.println(vc.velocity.y);
-
     if(mtc.targetX != null && mtc.targetY != null) {
         if (cbc.bound.contains(targetX, targetY)) {
             endTravel(vc, mtc);
         }
     }
 
-        System.out.println("Velocity after the moveto system " + vc.velocity.y);
 
 
 
@@ -259,8 +255,6 @@ public class MoveToSystem extends EntityProcessingSystem {
     }
 
     public static void decelerate(AccelerantComponent ac, VelocityComponent vc){
-
-        System.out.println("INSIDE DECELERATE");
 
         if (vc.velocity.x >= -50 && vc.velocity.x < 50) {
             vc.velocity.x = 0;

@@ -24,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.DirectionalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
@@ -170,6 +171,7 @@ public class PlayScreen extends AbstractScreen {
                         new SpawnerSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RoomTransitionSystem(b, testArray),
+                        new DirectionalSystem(),
                         new CameraSystem(gamecam, gamePort),
                         new RenderingSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
