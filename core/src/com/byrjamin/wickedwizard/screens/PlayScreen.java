@@ -184,7 +184,8 @@ public class PlayScreen extends AbstractScreen {
         fc.fadeIn = true;
 
         Entity e = deathWorld.createEntity();
-        e.edit().add(new PositionComponent(0, 800));
+        e.edit().add(new PositionComponent(gamecam.position.x - gamePort.getWorldWidth() / 2
+                ,gamecam.position.y - gamePort.getWorldHeight() / 2 + 800));
         TextureFontComponent tfc = new TextureFontComponent("Oh dear, you seem to have died \n\n Tap to restart");
         e.edit().add(tfc);
         e.edit().add(fc);

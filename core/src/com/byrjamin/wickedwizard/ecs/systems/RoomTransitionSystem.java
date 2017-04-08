@@ -49,6 +49,7 @@ public class RoomTransitionSystem extends EntitySystem {
     private Arena currentArena;
     private Array<Arena> roomArray;
     private OrderedSet<Arena> visitedArenas = new OrderedSet<Arena>();
+    private OrderedSet<Arena> unvisitedButAdjacentArenas = new OrderedSet<Arena>();
 
     private boolean processingFlag = false;
     private MapCoords destination;
@@ -61,9 +62,10 @@ public class RoomTransitionSystem extends EntitySystem {
     public RoomTransitionSystem(Arena currentArena, Array<Arena> roomArray) {
         super(Aspect.all().exclude(PlayerComponent.class));
         this.currentArena = currentArena;
-        //visitedArenas.add(currentArena);
-        visitedArenas.addAll(roomArray);
+        //visitedArenas.addAll(roomArray);
         this.roomArray = roomArray;
+        visitedArenas.add(currentArena);
+        unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
     }
 
     @Override
@@ -90,9 +92,18 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
         currentArena = findRoom(destination);
-        visitedArenas.add(currentArena);
         if(currentArena == null){
             return;
+        }
+        visitedArenas.add(currentArena);
+        if(unvisitedButAdjacentArenas.contains(currentArena)){
+            unvisitedButAdjacentArenas.remove(currentArena);
+        }
+
+        for(Arena a : getAdjacentArenas(currentArena)){
+            if(!visitedArenas.contains(a)){
+                unvisitedButAdjacentArenas.add(a);
+            }
         }
 
         for(Bag<Component> b : currentArena.getBagOfEntities()){
@@ -166,6 +177,17 @@ public class RoomTransitionSystem extends EntitySystem {
         return null;
     }
 
+    public Array<Arena> getAdjacentArenas(Arena a){
+        Array<Arena> arenas = new Array<Arena>();
+        for(DoorComponent dc : a.getDoors()){
+            Arena arena = findRoom(dc.leaveCoords);
+            if(arena != null){
+                arenas.add(arena);
+            }
+        }
+        return arenas;
+    }
+
     //public Arena findRoom(MapCoords destination){
 
     //}
@@ -182,7 +204,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
     public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
-        aGUI.update(world.delta, gamecam, visitedArenas,
+        aGUI.update(world.delta, gamecam, visitedArenas, unvisitedButAdjacentArenas,
                 getCurrentArena(),
                 getCurrentPlayerLocation()
                 );
@@ -217,4 +239,6 @@ public class RoomTransitionSystem extends EntitySystem {
     public Array<Arena> getRoomArray() {
         return roomArray;
     }
+
+
 }
