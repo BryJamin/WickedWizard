@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -84,6 +85,7 @@ public class PlayScreen extends AbstractScreen {
     private World world;
 
     private JumpComponent jumpresource;
+    private HealthComponent healthResource;
 
     GestureDetector gestureDetector;
     GestureDetector controlschemeDetector;
@@ -191,6 +193,7 @@ public class PlayScreen extends AbstractScreen {
         }
 
         jumpresource = entity.getComponent(JumpComponent.class);
+        healthResource = entity.getComponent(HealthComponent.class);
         arenaGUI = new ArenaGUI(0, 0, testArray, b);
 
     }
@@ -276,22 +279,54 @@ public class PlayScreen extends AbstractScreen {
         world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
         arenaGUI.draw(game.batch);
 
+
+
        // System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     public void drawHUD(World world, OrthographicCamera gamecam){
 
-        for (int i = 1; i <= world.getSystem(FindPlayerSystem.class).getPlayer().getComponent(HealthComponent.class).health; i++) {
-            if (!game.batch.isDrawing()) {
-                game.batch.begin();
+        if (!game.batch.isDrawing()) {
+            game.batch.begin();
+        }
+
+        Array<TextureRegion> healthRegions = new Array<TextureRegion>();
+
+        for(int i = 1; i <= healthResource.health; i++){
+            if(i <= healthResource.health && i % 2 == 0) {
+                healthRegions.add(atlas.findRegion("heart", 0));
+            } else if(healthResource.health % 2 != 0 && i == healthResource.health){
+                healthRegions.add(atlas.findRegion("heart", 1));
             }
-            game.batch.draw(atlas.findRegion("sprite_health0"), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220, MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        }
+
+        int emptyHealth = (int) healthResource.maxHealth - (int) healthResource.health;
+        emptyHealth = (emptyHealth % 2 == 0) ? emptyHealth : emptyHealth - 1;
+
+        for(int i = 1; i <= emptyHealth; i++) {
+            if(i <= emptyHealth && i % 2 == 0) {
+                healthRegions.add(atlas.findRegion("heart", 2));
+            }
+        }
+/*
+
+        for (int i = 1; i <= healthResource.maxHealth; i++) {
+
+            if(i <= healthResource.health && i % 2 == 0) {
+                healthRegions.add(atlas.findRegion("heart", 0));
+            } else if(healthResource.health % 2 != 0 && i == healthResource.health){
+                healthRegions.add(atlas.findRegion("heart", 1));
+            } else if(i <= healthResource.maxHealth && i % 2 == 0 && healthResource.health < healthResource.maxHealth){
+                healthRegions.add(atlas.findRegion("heart", 2));
+            }
+
+        }*/
+
+        for(int i = 1; i <= healthRegions.size; i++) {
+            game.batch.draw(healthRegions.get(i - 1), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220, MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
         for (int i = 1; i <= jumpresource.jumps; i++) {
-            if (!game.batch.isDrawing()) {
-                game.batch.begin();
-            }
             game.batch.draw(atlas.findRegion("bullet_blue"), gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 280, MainGame.GAME_UNITS * 2.5f, MainGame.GAME_UNITS * 2.5f);
         }
 

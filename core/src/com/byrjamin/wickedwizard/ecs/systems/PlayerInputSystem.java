@@ -324,7 +324,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 JumpComponent jc = jm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
 
                 if(input.y > cbc.bound.y + cbc.bound.getHeight()) {
-                    if (jc.jumps >= 0) {
+                    if (jc.jumps > 0) {
                         vc.velocity.y = Measure.units(80f);
                         jc.jumps--;
                         PositionComponent pc = pm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
