@@ -6,6 +6,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -42,9 +43,7 @@ public class FiringAISystem extends EntityProcessingSystem {
         switch(fc.ai){
             case TARGETED:
                 if(wc.timer.isFinishedAndReset()){
-                    Entity player = world.getSystem(FindPlayerSystem.class).getPlayer();
-                    CollisionBoundComponent pcbc = cbm.get(player);
-
+                    CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
                     Entity bullet = BulletFactory.createEnemyBullet(world, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
                     for(Component c : wc.additionalComponenets){

@@ -85,9 +85,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 MainGame.GAME_WIDTH, Measure.units(10f));
     }
 
-    @Override
-    protected void initialize() {
-        Gdx.input.setInputProcessor(this);
+
+    public InputProcessor getInputProcessor(){
+        return this;
     }
 
     @Override
@@ -182,7 +182,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         }
 
         if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
-            ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+            ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
             turnOffGlide(glc, parc);
         }
     }
@@ -256,7 +256,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
             if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
                 movementInputPoll = pointer;
-                gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
+                world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
                 //jumpTimer.reset(); //TODO figure out if touching the ground should disable the glide
             } else if(firingInputPoll == null){
                 firingInputPoll = pointer;
@@ -270,9 +270,9 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             Rectangle r = world.getSystem(GrappleSystem.class).returnTouchedGrapple(touchInput.x, touchInput.y);;
 
             if(r != null) {
-                MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                AccelerantComponent ac = am.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                AccelerantComponent ac = world.getSystem(FindPlayerSystem.class).getPC(AccelerantComponent.class);
 
                 float x = r.x + r.getWidth() / 2;
                 float y = r.y + r.getHeight() / 2;
@@ -289,13 +289,13 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 mtc.endSpeedX = 0;
                 mtc.maxEndSpeedY = MAX_GRAPPLE_MOVEMENT / 2;
                 // mtc.endSpeedY = GRAPPLE_MOVEMENT * 5;
-                gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
-                GlideComponent glc = glm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = true;
+                GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
+                ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
                 turnOffGlide(glc, parc);
 
-                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.y = 0;
-                vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity.x = 0;
+                world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity.y = 0;
+                world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity.x = 0;
 
             }
         }
@@ -319,48 +319,26 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 gameport.unproject(input);
 
 
-                CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                VelocityComponent vc = vm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                JumpComponent jc = jm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
 
                 if(input.y > cbc.bound.y + cbc.bound.getHeight()) {
                     if (jc.jumps > 0) {
                         vc.velocity.y = Measure.units(80f);
                         jc.jumps--;
-                        PositionComponent pc = pm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                        ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                        GlideComponent glc = glm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
+                        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
                         turnOffGlide(glc, parc);
                         turnOnGlide(glc, parc, pc);
                     }
 
                 } else {
-                    GlideComponent glc = glm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                    ParentComponent parc = parm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                    GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
+                    ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
                     turnOffGlide(glc, parc);
                 }
-
-                //glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;
-                //glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = true;
-
-/*                CollisionBoundComponent cbc = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                MoveToComponent mtc = mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-
-                gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = true;
-                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).gliding = true;
-                glm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).active = true;
-                jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps--;
-                AccelerantComponent ac = am.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-
-                Vector3 input = new Vector3(screenX, screenY, 0);
-                gameport.unproject(input);
-
-                world.getSystem(MoveToSystem.class).flyTo(Math.atan2(input.y - cbc.getCenterY(), input.x - cbc.getCenterX()) ,
-                        Measure.units(20f),
-                        GRAPPLE_MOVEMENT * 10,
-                        mtc,
-                        ac,
-                        cbc);*/
 
                 jumpTimer.reset();
             }
@@ -376,7 +354,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             firingInputPoll = (firingInputPoll == pointer) ? null : firingInputPoll;
 
             if(firingInputPoll == null){
-                wm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).timer.reset();
+                world.getSystem(FindPlayerSystem.class).getPC(WeaponComponent.class).timer.reset();
             }
 
         }

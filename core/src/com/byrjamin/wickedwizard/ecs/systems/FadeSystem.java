@@ -34,15 +34,16 @@ public class FadeSystem extends EntityProcessingSystem {
         FadeComponent fc = fm.get(e);
 
         fc.alphaTimer = fc.fadeIn ? fc.alphaTimer + world.delta : fc.alphaTimer - world.delta;
+
         fc.alpha = fc.alphaTimer / fc.alphaTimeLimit;
-        if(fc.alpha < fc.minAlpha){
+        if(fc.alpha <= fc.minAlpha){
             if(fc.isEndless) {
                 fc.fadeIn = true;
                 fc.alpha = fc.minAlpha;
             } else {
                 fc.alpha = fc.minAlpha;
             }
-        } else if (fc.alpha > fc.maxAlpha) {
+        } else if (fc.alpha >= fc.maxAlpha) {
             if(fc.isEndless) {
                 fc.fadeIn = false;
                 fc.alpha = fc.maxAlpha;

@@ -45,8 +45,7 @@ public class CameraSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        Entity player1 = this.getEntities().get(0);
-        CollisionBoundComponent cbc = cbm.get(player1);
+        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
 
         gamecam.position.set((int) cbc.getCenterX(),(int) cbc.getCenterY(), 0);
 

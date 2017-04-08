@@ -54,6 +54,7 @@ public class RoomTransitionSystem extends EntitySystem {
     private MapCoords destination;
     private MapCoords previousDestination;
     private MapCoords playerLocation = new MapCoords(0,0);
+    private float doorEntryPercentage;
 
 
     @SuppressWarnings("unchecked")
@@ -72,7 +73,7 @@ public class RoomTransitionSystem extends EntitySystem {
             if(!bm.has(e)) {
 
                 if(cm.has(e)){
-                    if(parm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).
+                    if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
                             children.contains(cm.get(e), true)){
                         continue;
                     }
@@ -106,16 +107,18 @@ public class RoomTransitionSystem extends EntitySystem {
             if(dm.has(e)){
                 DoorComponent dc = dm.get(e);
                 CollisionBoundComponent cbc = cbm.get(e);
-                PositionComponent player =  pm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
-                CollisionBoundComponent pBound = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+                PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+
+                float doorEntryY = cbc.bound.y + (cbc.bound.getHeight() * doorEntryPercentage);
 
                 if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
                     switch (dc.exit){
                         case left: player.position.x = cbc.bound.getX() + cbc.bound.getWidth() + pBound.bound.getWidth();
-                            player.position.y = cbc.bound.y + Measure.units(1);
+                            player.position.y = doorEntryY;
                             break;
                         case right: player.position.x = cbc.bound.getX() - pBound.bound.getWidth();
-                            player.position.y = cbc.bound.y + Measure.units(1);
+                            player.position.y = doorEntryY;
                             break;
                         case up:
                             player.position.x = cbc.getCenterX();
@@ -134,9 +137,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
         }
 
-        gm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).ignoreGravity = false;
-        mtm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).reset();
-        Vector2 velocity  = vm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).velocity;
+        world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
+        world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class).reset();
+        Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity;
 
         if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
             velocity.x = velocity.x > 0 ? Measure.units(60f) / 2 : -Measure.units(60f) / 2;
@@ -185,13 +188,14 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
-    public boolean goFromTo(MapCoords previousDestination, MapCoords destination){
+    public boolean goFromTo(MapCoords previousDestination, MapCoords destination, float doorEntryPercentage){
 
         Arena next = findRoom(destination);
         if(next != null) {
             processingFlag = true;
             this.previousDestination = previousDestination;
             this.destination = destination;
+            this.doorEntryPercentage = doorEntryPercentage;
             processSystem();
             return true;
         }
@@ -203,7 +207,7 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
     public MapCoords getCurrentPlayerLocation(){
-        CollisionBoundComponent pBound = cbm.get(world.getSystem(FindPlayerSystem.class).getPlayer());
+        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
         playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (pBound.getCenterX() / RoomFactory.SECTION_WIDTH));
         playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / RoomFactory.SECTION_HEIGHT));
         return playerLocation;

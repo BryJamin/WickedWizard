@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.screens;
 
+import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
@@ -8,6 +9,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -22,6 +24,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
@@ -62,8 +68,12 @@ import com.byrjamin.wickedwizard.ecs.systems.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 import java.util.Random;
+
+import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.WALLWIDTH;
+import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.WIDTH;
 
 
 //TODO
@@ -83,6 +93,7 @@ public class PlayScreen extends AbstractScreen {
     private Pixmap pixmap;
 
     private World world;
+    private World deathWorld;
 
     private JumpComponent jumpresource;
     private HealthComponent healthResource;
@@ -132,12 +143,76 @@ public class PlayScreen extends AbstractScreen {
 
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
 
+        createWorld();
+
+    }
+
+    public void handleInput(float dt) {
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+
+        if (!gameOver) {
+            multiplexer.addProcessor(world.getSystem(PlayerInputSystem.class).getInputProcessor());
+        } else {
+            multiplexer.addProcessor(gestureDetector);
+        }
+
+        Gdx.input.setInputProcessor(multiplexer);
+    }
+
+
+    public void createDeathScreenWorld(){
+        WorldConfiguration config = new WorldConfigurationBuilder()
+                .with(WorldConfigurationBuilder.Priority.HIGHEST,
+                        new MovementSystem()
+                )
+                .with(WorldConfigurationBuilder.Priority.HIGH,
+                        new AnimationSystem(),
+                        //new FindPlayerSystem(player),
+                        new FadeSystem())
+                .with(WorldConfigurationBuilder.Priority.LOW,
+                        new RenderingSystem(game.batch, gamecam),
+                        new BoundsDrawingSystem()
+                )
+                .build();
+
+        deathWorld = new World(config);
+
+        FadeComponent fc = new FadeComponent(2.0f, false);
+        fc.fadeIn = true;
+
+        Entity e = deathWorld.createEntity();
+        e.edit().add(new PositionComponent(0, 800));
+        TextureFontComponent tfc = new TextureFontComponent("Oh dear, you seem to have died \n\n Tap to restart");
+        e.edit().add(tfc);
+        e.edit().add(fc);
+
+
+        e = deathWorld.createEntity();
+        e.edit().add(new PositionComponent(gamecam.position.x - gamePort.getWorldWidth() / 2,
+                gamecam.position.y - gamePort.getWorldHeight() / 2));
+        ShapeComponent sc = new ShapeComponent(gamecam.viewportWidth, gamecam.viewportHeight);
+        sc.color = Color.BLACK;
+        sc.color.a = 0.5f;
+        sc.layer = -1;
+
+        e.edit().add(sc);
+        e.edit().add(fc);
+
+
+    }
+
+
+    public void createWorld(){
+
         Random random = new Random();
         JigsawGenerator jg = new JigsawGenerator(13, random);
 
         testArray = jg.generateJigsaw();
         Arena b = jg.getStartingRoom();
         RoomFactory.cleanArenas(testArray);
+
+        ComponentBag player = PlayerFactory.playerBag();
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -151,7 +226,7 @@ public class PlayScreen extends AbstractScreen {
                         new BounceCollisionSystem(),
                         new BulletSystem(),
                         new EnemyCollisionSystem(),
-                        new FindPlayerSystem(),
+                        new FindPlayerSystem(player),
                         new FiringAISystem(),
                         new GrappleSystem(),
                         new GravitySystem(),
@@ -180,6 +255,7 @@ public class PlayScreen extends AbstractScreen {
                 .build();
 
         world = new World(config);
+
         for (Bag<Component> bag : b.getBagOfEntities()) {
             Entity entity = world.createEntity();
             for (Component comp : bag) {
@@ -188,29 +264,13 @@ public class PlayScreen extends AbstractScreen {
         }
 
         Entity entity = world.createEntity();
-        for (Component comp : PlayerFactory.playerBag()) {
+        for (Component comp : player) {
             entity.edit().add(comp);
         }
 
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
         arenaGUI = new ArenaGUI(0, 0, testArray, b);
-
-    }
-
-    public void handleInput(float dt) {
-
-        InputMultiplexer multiplexer = new InputMultiplexer();
-
-        if (!gameOver) {
-            roomInputAdapter.update(map.getActiveRoom(), gamePort, gamecam);
-            multiplexer.addProcessor(controlschemeDetector);
-            multiplexer.addProcessor(roomInputAdapter);
-        } else {
-            multiplexer.addProcessor(gestureDetector);
-        }
-
-        //Gdx.input.setInputProcessor(multiplexer);
 
 
     }
@@ -243,7 +303,6 @@ public class PlayScreen extends AbstractScreen {
 
             gamecam.update();
 
-
             handleInput(dt);
             map.update(dt, gamecam);
             if (map.getActiveRoom().getWizard().isDead()) {
@@ -273,15 +332,50 @@ public class PlayScreen extends AbstractScreen {
             world.setDelta(0.20f);
         }
 
+        if(gameOver){
+            pauseWorld(world);
+        }
+
+        handleInput(world.delta);
         world.process();
 
+        if(world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health <= 0 && !gameOver){
+            gameOver = true;
+            createDeathScreenWorld();
+        }
+
+        if(!gameOver) {
+            world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
+        }
+
         drawHUD(world, gamecam);
-        world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
         arenaGUI.draw(game.batch);
 
+        if(gameOver){
 
+            if (delta < 0.20f) {
+                deathWorld.setDelta(delta);
+            } else {
+                deathWorld.setDelta(0.20f);
+            }
+
+
+            deathWorld.process();
+        }
+
+        //pauseWorld(world);
 
        // System.out.println(Gdx.graphics.getFramesPerSecond());
+    }
+
+
+    public void pauseWorld(World world){
+        for(BaseSystem s: world.getSystems()){
+            if(!(s instanceof RenderingSystem)) {
+                s.setEnabled(false);
+            }
+        }
+
     }
 
     public void drawHUD(World world, OrthographicCamera gamecam){
@@ -308,19 +402,6 @@ public class PlayScreen extends AbstractScreen {
                 healthRegions.add(atlas.findRegion("heart", 2));
             }
         }
-/*
-
-        for (int i = 1; i <= healthResource.maxHealth; i++) {
-
-            if(i <= healthResource.health && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion("heart", 0));
-            } else if(healthResource.health % 2 != 0 && i == healthResource.health){
-                healthRegions.add(atlas.findRegion("heart", 1));
-            } else if(i <= healthResource.maxHealth && i % 2 == 0 && healthResource.health < healthResource.maxHealth){
-                healthRegions.add(atlas.findRegion("heart", 2));
-            }
-
-        }*/
 
         for(int i = 1; i <= healthRegions.size; i++) {
             game.batch.draw(healthRegions.get(i - 1), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220, MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
@@ -365,7 +446,7 @@ public class PlayScreen extends AbstractScreen {
         public boolean tap(float x, float y, int count, int button) {
 
             if (gameOver) {
-                map = new Map();
+                createWorld();
                 gameOver = false;
             }
 

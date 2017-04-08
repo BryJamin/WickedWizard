@@ -53,8 +53,10 @@ public class DoorSystem extends EntityProcessingSystem {
             }
 
             if(cbm.has(doorEntity)) {
-                BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(doorEntity).bound);
-                if(cbm.get(doorEntity).bound.overlaps(cbm.get(e).bound)) {
+
+                CollisionBoundComponent cbc = cbm.get(doorEntity);
+                BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);
+                if(cbc.bound.overlaps(cbm.get(e).bound)) {
                    // System.out.println("INSIDE THA DOOR");
 
                     if(lm.has(doorEntity)) {
@@ -62,11 +64,13 @@ public class DoorSystem extends EntityProcessingSystem {
                         System.out.println(lm.get(doorEntity).isLocked() + "Running");
                         if(!lm.get(doorEntity).isLocked()) {
 
-                            System.out.println("Changing rooms");
+                            float doorEntryPercentage = ((cbm.get(e).bound.y - cbc.bound.getY()) /
+                                    (cbc.bound.getHeight()));
 
-                            if (world.getSystem(RoomTransitionSystem.class).goFromTo(dm.get(doorEntity).currentCoords, dm.get(doorEntity).leaveCoords)) {
-                            }
-                            ;
+                            world.getSystem(RoomTransitionSystem.class).goFromTo(
+                                    dm.get(doorEntity).currentCoords,
+                                    dm.get(doorEntity).leaveCoords,
+                                    doorEntryPercentage);
                         }
                     }
                 }

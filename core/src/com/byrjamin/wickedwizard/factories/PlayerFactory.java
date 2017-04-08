@@ -38,9 +38,9 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 public class PlayerFactory {
 
 
-    public static Bag<Component> playerBag(){
+    public static ComponentBag playerBag(){
 
-        Bag<Component> bag = new Bag<Component>();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(600,900));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());

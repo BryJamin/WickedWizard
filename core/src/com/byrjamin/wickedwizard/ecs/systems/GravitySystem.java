@@ -34,12 +34,10 @@ public class GravitySystem extends EntityProcessingSystem {
                     if (vc.velocity.y < gc.gravity) {
                         vc.velocity.y = gc.gravity;
 
-                        System.out.println("the gravity is being affected");
                     }
                 }
             }
         } else {
-            System.out.println("the gravity is not being affected");
         }
     }
 
