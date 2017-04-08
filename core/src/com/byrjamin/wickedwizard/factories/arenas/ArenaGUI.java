@@ -104,11 +104,11 @@ public class ArenaGUI {
                 if((diffX < range && diffX > -range) &&  (diffY < range && diffY > -range)) {
                     mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
-/*                if (r instanceof BossRoom) {
+                if (arena.roomType == Arena.RoomType.BOSS) {
                     mapRenderer.setColor(bossRoomColor);
                     mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
                 }
-
+/*
                 if (r instanceof ItemRoom) {
                     mapRenderer.setColor(itemRoomColor);
                     mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);

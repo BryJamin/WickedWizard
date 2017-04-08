@@ -8,7 +8,6 @@ import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
@@ -73,10 +72,6 @@ public class TutorialFactory extends RoomFactory{
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
-        arena.addEntity(bag);
-
-        bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
         TextureFontComponent tfc = new TextureFontComponent(moveTutorialString1);
         bag.add(tfc);
@@ -146,10 +141,6 @@ public class TutorialFactory extends RoomFactory{
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3));
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
-        arena.addEntity(bag);
-
-        bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
         bag.add(new TextureFontComponent(jumpTutorialString));
         arena.addEntity(bag);
@@ -204,10 +195,6 @@ public class TutorialFactory extends RoomFactory{
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
-        arena.addEntity(bag);
-
-        bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 1000));
         bag.add(new TextureFontComponent(enemyTutorialString));
         arena.addEntity(bag);
@@ -282,9 +269,6 @@ public class TutorialFactory extends RoomFactory{
 
         //GROUND
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
-        bag = new Bag<Component>();
-        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
-        arena.addEntity(bag);
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
@@ -352,10 +336,6 @@ public class TutorialFactory extends RoomFactory{
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
-        arena.addEntity(bag);
-
-        bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
         bag.add(new TextureFontComponent(endString));
         arena.addEntity(bag);

@@ -7,7 +7,6 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
@@ -30,10 +29,10 @@ public class RoomFactory {
     public static float WALLWIDTH = Measure.units(5);
 
     public static Arena createOmniArena(){
-        return createOmniArena(new MapCoords(0,0), new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
+        return createOmniArena(new MapCoords(0,0));
     }
 
-    public static Arena createOmniArena(MapCoords defaultCoords, RoomTypeComponent rtc) {
+    public static Arena createOmniArena(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -78,13 +77,6 @@ public class RoomFactory {
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
                 DoorComponent.DIRECTION.down));
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(rtc);
-        arena.addEntity(bag);
-
-
-        System.out.println(arena.cotainingCoords);
 
         return arena;
     }
@@ -140,13 +132,6 @@ public class RoomFactory {
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
                 DoorComponent.DIRECTION.down));*/
-
-
-        //System.out.println(arena.cotainingCoords);
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
-        arena.addEntity(bag);
 
         return arena;
     }

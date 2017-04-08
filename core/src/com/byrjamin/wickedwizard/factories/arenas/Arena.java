@@ -15,6 +15,12 @@ public class Arena {
     private float width;
     private float height;
 
+    public enum RoomType {
+        BATTLE, BOSS, ITEM
+    }
+
+    public RoomType roomType;
+
     private MapCoords startingCoords;
     public Array<MapCoords> cotainingCoords;
     public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
@@ -32,6 +38,7 @@ public class Arena {
     public Arena(Array<MapCoords> mapCoords) {
         startingCoords = mapCoords.get(0);
         this.cotainingCoords = mapCoords;
+        roomType = RoomType.BATTLE;
     }
 
     public Bag<Bag<Component>> getBagOfEntities() {

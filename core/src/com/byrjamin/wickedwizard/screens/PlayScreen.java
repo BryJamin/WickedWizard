@@ -46,7 +46,6 @@ import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.archive.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.archive.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.archive.maps.Map;
@@ -68,12 +67,10 @@ import com.byrjamin.wickedwizard.ecs.systems.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 import java.util.Random;
-
-import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.WALLWIDTH;
-import static com.byrjamin.wickedwizard.factories.arenas.RoomFactory.WIDTH;
 
 
 //TODO
@@ -112,12 +109,14 @@ public class PlayScreen extends AbstractScreen {
     Map map;
 
     private ArenaGUI arenaGUI;
+    private Random random;
+    private JigsawGenerator jg;
 
     private RoomInputAdapter roomInputAdapter;
 
     private GestureDetector gameOvergestureDetector;
 
-    private Array<Arena> testArray;
+    private Array<Arena> arenaArray;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -142,6 +141,9 @@ public class PlayScreen extends AbstractScreen {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
+
+        random = new Random();
+        jg = new JigsawGenerator(13, random);
 
         createWorld();
 
@@ -205,12 +207,9 @@ public class PlayScreen extends AbstractScreen {
 
     public void createWorld(){
 
-        Random random = new Random();
-        JigsawGenerator jg = new JigsawGenerator(13, random);
-
-        testArray = jg.generateJigsaw();
-        Arena b = jg.getStartingRoom();
-        RoomFactory.cleanArenas(testArray);
+        arenaArray = jg.generate();
+        Arena startingArena = jg.getStartingRoom();
+        RoomFactory.cleanArenas(arenaArray);
 
         ComponentBag player = PlayerFactory.playerBag();
 
@@ -245,7 +244,7 @@ public class PlayScreen extends AbstractScreen {
                         new StateSystem(),
                         new SpawnerSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RoomTransitionSystem(b, testArray),
+                        new RoomTransitionSystem(startingArena, arenaArray),
                         new DirectionalSystem(),
                         new CameraSystem(gamecam, gamePort),
                         new RenderingSystem(game.batch, gamecam),
@@ -256,7 +255,7 @@ public class PlayScreen extends AbstractScreen {
 
         world = new World(config);
 
-        for (Bag<Component> bag : b.getBagOfEntities()) {
+        for (Bag<Component> bag : startingArena.getBagOfEntities()) {
             Entity entity = world.createEntity();
             for (Component comp : bag) {
                 entity.edit().add(comp);
@@ -270,7 +269,7 @@ public class PlayScreen extends AbstractScreen {
 
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
-        arenaGUI = new ArenaGUI(0, 0, testArray, b);
+        arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena);
 
 
     }
@@ -341,6 +340,7 @@ public class PlayScreen extends AbstractScreen {
 
         if(world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health <= 0 && !gameOver){
             gameOver = true;
+            jg.generateTutorial = false;
             createDeathScreenWorld();
         }
 

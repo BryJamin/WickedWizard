@@ -61,7 +61,8 @@ public class RoomTransitionSystem extends EntitySystem {
     public RoomTransitionSystem(Arena currentArena, Array<Arena> roomArray) {
         super(Aspect.all().exclude(PlayerComponent.class));
         this.currentArena = currentArena;
-        visitedArenas.add(currentArena);
+        //visitedArenas.add(currentArena);
+        visitedArenas.addAll(roomArray);
         this.roomArray = roomArray;
     }
 

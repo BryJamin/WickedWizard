@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.factories;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
-import com.byrjamin.wickedwizard.ecs.components.RoomTypeComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory;
@@ -27,67 +26,33 @@ public class JigsawGenerator {
 
     private Arena startingArena;
 
+    public boolean generateTutorial = true;
+
     public JigsawGenerator(int noBattleRooms, Random rand){
         this.noBattleRooms = noBattleRooms;
         this.rand = rand;
     }
 
-    public Array<Arena> generateJigsaw(){
 
-        Array<Arena> arenas = new Array<com.byrjamin.wickedwizard.factories.arenas.Arena>();
-        Array<Arena> placedArenas = new Array<com.byrjamin.wickedwizard.factories.arenas.Arena>();
-
-        for(int i = 0; i < noBattleRooms; i++){
-
-            com.byrjamin.wickedwizard.factories.arenas.Arena a;
-
-            if(i == 2 || i == 6){
-                a = RoomFactory.createWidth2Arena();
-                RoomDecorationFactory.biggablobba(a);
-                //RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
-            } else {
-                a = createOmniArena();
-                //RoomDecorationFactory.biggablobba(a);
-                RoomDecorationFactory.setUpArena[rand.nextInt(com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory.setUpArena.length)].setUpArena(a);
-            }
-            //if(i == 1) {
-            arenas.add(a);
-            //}
-            //arenas.add(RoomFactory.createOmniArena());
+    public ObjectSet<MapCoords> createUnavaliableMapCoords(Array<Arena> arenas){
+        ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
+        for(Arena a : arenas){
+            unavaliableMapCoords.addAll(a.getCotainingCoords());
         }
+        return unavaliableMapCoords;
+    }
 
-        startingArena = arenas.first();
-        startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+    public Array<Arena> generateMapAroundPresetPoints(Array<Arena> presetRooms, Array<Arena> arenas,
+                                                      OrderedSet<DoorComponent> avaliableDoorsSet){
 
-        Arena b = TutorialFactory.jumpTutorial(new MapCoords(1, 0));
-        placedArenas.add(b);
-        Arena c = TutorialFactory.enemyTurtorial(new MapCoords(2,1));
-        placedArenas.add(c);
-        Arena d = TutorialFactory.grappleTutorial(new MapCoords(2,-2));
-        placedArenas.add(d);
-        Arena e = TutorialFactory.endTutorial(new MapCoords(3,1));
-        placedArenas.add(e);
-        Arena f = RoomFactory.createOmniArena(new MapCoords(4,1), new RoomTypeComponent(RoomTypeComponent.Type.BATTLE));
-        placedArenas.add(f);
-        //startingArena.get
+        Array<Arena> placedArenas = new Array<Arena>();
 
-
-        OrderedSet<MapCoords> avaliableMapCoordsSet = new OrderedSet<MapCoords>();
-        OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
         ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
 
-        unavaliableMapCoords.addAll(startingArena.getCotainingCoords());
-        unavaliableMapCoords.addAll(b.getCotainingCoords());
-        unavaliableMapCoords.addAll(c.getCotainingCoords());
-        unavaliableMapCoords.addAll(d.getCotainingCoords());
-        unavaliableMapCoords.addAll(e.getCotainingCoords());
-        unavaliableMapCoords.addAll(f.getCotainingCoords());
-        avaliableMapCoordsSet.addAll(f.adjacentCoords);
-        avaliableDoorsSet.addAll(f.getDoors());
-
-        arenas.removeValue(startingArena, true);
-        placedArenas.add(startingArena);
-
+        for(Arena a : presetRooms){
+            placedArenas.add(a);
+            unavaliableMapCoords.addAll(a.getCotainingCoords());
+        }
 
         while(arenas.size > 0) {
             int i = rand.nextInt(arenas.size);
@@ -106,6 +71,100 @@ public class JigsawGenerator {
 
 
         return placedArenas;
+
+    }
+
+
+    public Array<Arena> generate(){
+
+        if(generateTutorial){
+            return generateTutorialJigsaw();
+        } else {
+            return generateJigsaw();
+        }
+
+
+    }
+
+    public Array<Arena> generateTutorialJigsaw(){
+
+        Array<Arena> placedArenas = new Array<Arena>();
+
+        startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+        placedArenas.add(startingArena);
+        placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));
+        placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,1)));
+        placedArenas.add(TutorialFactory.grappleTutorial(new MapCoords(2,-2)));
+        placedArenas.add(TutorialFactory.endTutorial(new MapCoords(3,1)));
+
+        Arena f = RoomFactory.createOmniArena(new MapCoords(4,1));
+        placedArenas.add(f);
+
+        OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
+        avaliableDoorsSet.addAll(f.getDoors());
+
+
+        placedArenas = generateMapAroundPresetPoints(placedArenas, generateArenas(), avaliableDoorsSet);
+
+        //RoomFactory.cleanArenas(placedArenas);
+        Arena bossRoom = RoomFactory.createWidth2Arena();
+        bossRoom.roomType = Arena.RoomType.BOSS;
+        RoomDecorationFactory.biggablobba(bossRoom);
+
+        int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
+        if (placeRoomAtRangeWithDoors(bossRoom,
+                avaliableDoorsSet,createUnavaliableMapCoords(placedArenas), rand, range)) {
+            placedArenas.add(bossRoom);
+        }
+
+        return placedArenas;
+
+    }
+
+    public Array<Arena> generateJigsaw() {
+        Array<Arena> placedArenas = new Array<Arena>();
+        startingArena = createOmniArena();
+        placedArenas.add(startingArena);
+
+        OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
+        avaliableDoorsSet.addAll(startingArena.getDoors());
+        placedArenas = generateMapAroundPresetPoints(placedArenas, generateArenas(), avaliableDoorsSet);
+
+
+        Arena bossRoom = RoomFactory.createWidth2Arena();
+        bossRoom.roomType = Arena.RoomType.BOSS;
+        RoomDecorationFactory.biggablobba(bossRoom);
+
+        int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
+        if (placeRoomAtRangeWithDoors(bossRoom,
+                avaliableDoorsSet,createUnavaliableMapCoords(placedArenas), rand, range)) {
+            placedArenas.add(bossRoom);
+        }
+
+        return placedArenas;
+    }
+
+
+    public Array<Arena> generateArenas(){
+
+        Array<Arena> arenas = new Array<Arena>();
+
+        for(int i = 0; i < noBattleRooms; i++){
+
+            Arena a;
+            if(i == 2 || i == 6){
+                a = RoomFactory.createWidth2Arena();
+                //RoomDecorationFactory.biggablobba(a);
+                RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
+            } else {
+                a = createOmniArena();
+                //RoomDecorationFactory.biggablobba(a);
+                RoomDecorationFactory.setUpArena[rand.nextInt(com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory.setUpArena.length)].setUpArena(a);
+            }
+            arenas.add(a);
+        }
+
+        return arenas;
 
     }
 
@@ -149,8 +208,6 @@ public class JigsawGenerator {
                 }
             }
 
-            System.out.println(linkableDoorsArray.size + " Door arrasy size");
-
             while(!roomPlaced && linkableDoorsArray.size > 0) {
                 if(linkableDoorsArray.size <= 0){
                     break;
@@ -190,6 +247,62 @@ public class JigsawGenerator {
         return roomPlaced;
 
     }
+
+
+    public boolean placeRoomAtRangeWithDoors(Arena arena, OrderedSet<DoorComponent> avaliableDoorsSet,
+                                             ObjectSet<MapCoords> unavaliableMapCoords,
+                                             Random rand, int minRange){
+
+        Array<DoorComponent> avaliableDoorsArray = new Array<DoorComponent>();
+        avaliableDoorsArray.addAll(avaliableDoorsSet.orderedItems());
+
+        OrderedSet<DoorComponent> newavaliableDoorsSet = new OrderedSet<DoorComponent>();
+
+        for(int i = avaliableDoorsArray.size - 1; i >= 0; i--) {
+            DoorComponent dc = avaliableDoorsArray.get(i);
+            if(dc.leaveCoords.getX() <= minRange && dc.leaveCoords.getY() <= minRange &&
+                    dc.leaveCoords.getX() >= -minRange && dc.leaveCoords.getY() >= -minRange ) {
+                avaliableDoorsArray.removeValue(dc, false);
+            }
+        }
+
+
+        newavaliableDoorsSet.addAll(avaliableDoorsArray);
+
+        if(newavaliableDoorsSet.size != 0) {
+            return placeRoomUsingDoors(arena, newavaliableDoorsSet, unavaliableMapCoords, rand);
+        }
+
+        return false;
+
+    }
+
+
+/*    public boolean placeRoomAtRange(Room room, OrderedSet<RoomExit> avaliableExitsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand, int minRange){
+        Array<RoomExit> avaliableMapCoordsArray = new Array<RoomExit>();
+        avaliableMapCoordsArray.addAll(avaliableExitsSet.orderedItems());
+
+        OrderedSet<RoomExit> newavaliableMapCoordsSet = new OrderedSet<RoomExit>();
+
+        //TODO should be minRange from starting room's position inside of just guessing the room's position is 0;
+        for(int i = avaliableMapCoordsArray.size - 1; i >= 0; i--) {
+            RoomExit re = avaliableMapCoordsArray.get(i);
+            if(re.getLeaveCoords().getX() <= minRange && re.getLeaveCoords().getY() <= minRange &&
+                    re.getLeaveCoords().getX() >= -minRange && re.getLeaveCoords().getY() >= -minRange ) {
+                avaliableMapCoordsArray.removeValue(re, false);
+            }
+        }
+
+        newavaliableMapCoordsSet.addAll(avaliableMapCoordsArray);
+
+        if(newavaliableMapCoordsSet.size != 0) {
+            return placeRoomUsingDoors(room, newavaliableMapCoordsSet, unavaliableMapCoords, rand);
+        }
+
+        return false;
+
+    }*/
+
 
 
     /**
@@ -275,7 +388,7 @@ public class JigsawGenerator {
 
 public class MapJigsawGenerator {
 
-    public Array<Room> generateJigsaw(){
+    public Array<Room> generateTutorialJigsaw(){
 
 
         while(roomPieces.size > 0) {
