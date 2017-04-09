@@ -33,7 +33,9 @@ public class TurretFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9))));
         bag.add(new EnemyComponent());
         bag.add(new HealthComponent(10));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+                -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
+                ));
         bag.add(new BlinkComponent());
 
         WeaponComponent wc = new WeaponComponent(2f);
@@ -58,7 +60,9 @@ public class TurretFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9))));
         bag.add(new EnemyComponent());
         bag.add(new HealthComponent(10));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+                -Measure.units(1f), 0, Measure.units(12), Measure.units(12),
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
         bag.add(new BlinkComponent());
 
         WeaponComponent wc = new WeaponComponent(2f);

@@ -40,7 +40,8 @@ public class DeathFactory {
                 textureOffsetX,
                 textureOffsetY,
                 width,
-                height));
+                height,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         OnDeathComponent odc = new OnDeathComponent();
         odc.getComponentBags().add(bag);

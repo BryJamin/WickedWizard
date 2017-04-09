@@ -45,8 +45,7 @@ public class EntityFactory {
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
         TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
-                PlayScreen.atlas.findRegions("brick"));
-        trbc.layer = -9;
+                PlayScreen.atlas.findRegions("brick"), TextureRegionComponent.FOREGROUND_LAYER_FAR);
 
         bag.add(trbc);
 
@@ -76,8 +75,9 @@ public class EntityFactory {
         bag.add(new AnimationComponent(aniMap));
         //TODO explains the giant blob
 
-        TextureRegionComponent trc = new TextureRegionComponent(AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED).getKeyFrame(sc.stateTime),-Measure.units(8.5f), 0, Measure.units(22), Measure.units(20));
-        trc.layer = -5;
+        TextureRegionComponent trc = new TextureRegionComponent(AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED).getKeyFrame(sc.stateTime),
+                -Measure.units(8.5f), 0, Measure.units(22), Measure.units(20),
+                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
         bag.add(trc);
         bag.add(new GrappleableComponent());
         bag.add(new LockComponent());
@@ -97,8 +97,8 @@ public class EntityFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), width, height);
-        trc.layer = -8;
+        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), width, height,
+                TextureRegionComponent.BACKGROUND_LAYER_NEAR);
         bag.add(trc);
         bag.add(new GrappleableComponent());
         bag.add(new ActiveOnTouchComponent());
@@ -130,7 +130,9 @@ public class EntityFactory {
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
         k.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
         e.edit().add(new AnimationComponent(k));
-        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),-Measure.units(1f), 0, Measure.units(12), Measure.units(12)));
+        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+                -Measure.units(1f), 0, Measure.units(12), Measure.units(12),
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
         return e;
     }
 
@@ -143,7 +145,7 @@ public class EntityFactory {
         e.edit().add(new BulletComponent());
         e.edit().add(new VelocityComponent((float) (Measure.units(100) * Math.cos(angleOfTravel)), (float) (Measure.units(100) * Math.sin(angleOfTravel))));
         e.edit().add(new CollisionBoundComponent(new Rectangle(x - Measure.units(1),y - Measure.units(1),Measure.units(2), Measure.units(2))));
-        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion("bullet"), Measure.units(2), Measure.units(2)));
+        e.edit().add(new TextureRegionComponent(PlayScreen.atlas.findRegion("bullet"), Measure.units(2), Measure.units(2), TextureRegionComponent.PLAYER_LAYER_FAR));
         return e;
     }
 
@@ -154,7 +156,7 @@ public class EntityFactory {
         e.edit().add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
         e.edit().add(new CollisionBoundComponent(new Rectangle(x - Measure.units(2),y - Measure.units(2),Measure.units(4), Measure.units(4))));
 
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("bullet"), Measure.units(4), Measure.units(4));
+        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("bullet"), Measure.units(4), Measure.units(4), TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = Color.RED;
         trc.color = Color.RED;
         e.edit().add(trc);
@@ -174,7 +176,8 @@ public class EntityFactory {
                 Measure.units(2.5f),
                 Measure.units(2.5f),
                 Measure.units(5),
-                Measure.units(5)));
+                Measure.units(5),
+                TextureRegionComponent.BACKGROUND_LAYER_NEAR));
         bag.add(new GrappleableComponent());
 
         return bag;

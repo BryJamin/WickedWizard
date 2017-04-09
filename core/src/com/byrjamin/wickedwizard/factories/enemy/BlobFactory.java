@@ -61,7 +61,8 @@ public class BlobFactory {
         animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
-                textureOffsetX, textureOffsetY, textureWidth, textureHeight));
+                textureOffsetX, textureOffsetY, textureWidth, textureHeight,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         bag.add(DeathFactory.basicOnDeathExplosion(width, height, 0,0));
 
@@ -91,7 +92,8 @@ public class BlobFactory {
                 textureOffsetX * scale,
                 textureOffsetY * scale,
                 textureWidth * scale,
-                textureHeight * scale));
+                textureHeight * scale,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
         return bag;
     }
 
@@ -117,7 +119,8 @@ public class BlobFactory {
                 -Measure.units(6),
                 0,
                 Measure.units(45),
-                Measure.units(45)));
+                Measure.units(45),
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
         WeaponComponent wc = new WeaponComponent(1.5f);

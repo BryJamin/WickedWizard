@@ -37,7 +37,8 @@ public class SpawnerFactory {
         //TODO quite a big problem actually, how you measure the size of spawners?
         Bag<Component> enemyBag = BlobFactory.blobBag(x,y);
         TextureRegionComponent trc = BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, enemyBag);
-        bag.add(new TextureRegionComponent(a.getKeyFrame(sc.stateTime), trc.width, trc.height));
+        bag.add(new TextureRegionComponent(a.getKeyFrame(sc.stateTime), trc.width, trc.height,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
         bag.add(new SpawnerComponent(spawners, 1.0f));
         return bag;
     }

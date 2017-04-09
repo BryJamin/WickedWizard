@@ -69,8 +69,8 @@ public class PlayerFactory {
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
-        trc.layer = 2;
+        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0,
+                Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         bag.add(trc);
 
         bag.add(new DirectionalComponent());
@@ -93,8 +93,7 @@ public class PlayerFactory {
         bag.add(ac);
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("wings"),
-                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
-        trc.layer = 1;
+                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
         bag.add(trc);
 
 
@@ -119,8 +118,8 @@ public class PlayerFactory {
         bag.add(ac);
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("wings"),
-                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
-        trc.layer = 1;
+                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6),
+                TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.scaleX = -1;
         bag.add(trc);
 

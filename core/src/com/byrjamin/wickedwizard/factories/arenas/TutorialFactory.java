@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
@@ -87,8 +88,7 @@ public class TutorialFactory extends RoomFactory{
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 0));
-        ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2);
-        sc.layer = 4;
+        ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
         bag.add(sc);
         bag.add(new FadeComponent());
         arena.addEntity(bag);
@@ -351,8 +351,7 @@ public class TutorialFactory extends RoomFactory{
     public static ComponentBag createTutorialHighlight(float x, float y, float width, float height) {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
-        ShapeComponent sc = new ShapeComponent(width, height);
-        sc.layer = -1;
+        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
         bag.add(sc);
         bag.add(new FadeComponent());
         return bag;

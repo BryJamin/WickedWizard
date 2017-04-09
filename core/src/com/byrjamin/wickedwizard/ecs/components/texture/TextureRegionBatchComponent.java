@@ -18,12 +18,13 @@ public class TextureRegionBatchComponent extends TextureRegionComponent {
         
     }
 
-    public TextureRegionBatchComponent(int rows, int columns, float width, float height, Array<TextureRegion> regions){
+    public TextureRegionBatchComponent(int rows, int columns, float width, float height, Array<TextureRegion> regions, int layer){
         this.rows = rows;
         this.columns = columns;
         this.width = width;
         this.height = height;
         this.regions = regions;
+        this.layer = layer;
     }
 
 
