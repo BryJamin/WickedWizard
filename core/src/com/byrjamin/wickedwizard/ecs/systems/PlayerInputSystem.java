@@ -64,7 +64,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
     OrthographicCamera gamecam;
     Viewport gameport;
 
-    private StateTimer jumpTimer = new StateTimer(0.25f);
+    private StateTimer tapInputTimer = new StateTimer(0.25f);
 
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
@@ -104,7 +104,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
-        jumpTimer.update(world.getDelta());
+        tapInputTimer.update(world.getDelta());
 
         if(mtm.get(e).targetX == null && mtm.get(e).targetY == null){
             activeGrapple = false;
@@ -148,7 +148,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
 
-                    if(jumpTimer.isFinished()) {
+                    if(tapInputTimer.isFinished()) {
                         if (angleOfTravel >= 0) {
                             if (angleOfTravel <= (Math.PI / 2)) {
                                 com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
@@ -253,17 +253,14 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             activeGrapple = world.getSystem(GrapplePointSystem.class).touchedGrapple(touchInput.x, touchInput.y);
         }
         if(!activeGrapple) {
-
             if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
                 movementInputPoll = pointer;
                 world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
-                //jumpTimer.reset(); //TODO figure out if touching the ground should disable the glide
             } else if(firingInputPoll == null){
                 firingInputPoll = pointer;
-                jumpTimer.reset();
-            } else {
-                jumpTimer.reset();
             }
+
+            tapInputTimer.reset();
         } else {
 
             //TODO a tad unsafe
@@ -311,7 +308,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         if(!activeGrapple) {
 
             //TODO Find player get player should be player position or something if player can't be found
-            if(!jumpTimer.isFinished() /*&& jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0*/) {
+            if(!tapInputTimer.isFinished() /*&& jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0*/) {
 
 
                 Vector3 input = new Vector3(screenX, screenY, 0);
@@ -322,7 +319,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
                 JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
 
-                if(input.y > cbc.bound.y + cbc.bound.getHeight()) {
+                if(input.y > cbc.getCenterY()) {
                     if (jc.jumps > 0) {
                         vc.velocity.y = Measure.units(80f);
                         jc.jumps--;
@@ -339,7 +336,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     turnOffGlide(glc, parc);
                 }
 
-                jumpTimer.reset();
+                tapInputTimer.reset();
             }
 
 
