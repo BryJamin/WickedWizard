@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -24,6 +25,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.items.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -64,7 +67,9 @@ public class BlobFactory {
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        bag.add(DeathFactory.basicOnDeathExplosion(width, height, 0,0));
+        OnDeathComponent odc = new OnDeathComponent();
+        odc.getComponentBags().addAll(ItemFactory.createItemBag(0,0, new HealthUp()));
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
 
         return bag;
     }

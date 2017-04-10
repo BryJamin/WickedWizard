@@ -17,12 +17,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.ItemComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -30,19 +33,20 @@ import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
-import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
-import com.byrjamin.wickedwizard.ecs.systems.DirectionalSystem;
-import com.byrjamin.wickedwizard.ecs.systems.FadeSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
 import com.byrjamin.wickedwizard.ecs.systems.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
+import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.TutorialSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.FrictionSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
@@ -50,26 +54,28 @@ import com.byrjamin.wickedwizard.factories.JigsawGenerator;
 import com.byrjamin.wickedwizard.archive.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.archive.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.archive.maps.Map;
-import com.byrjamin.wickedwizard.ecs.systems.AnimationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.BlinkSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BounceCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.byrjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.byrjamin.wickedwizard.ecs.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FiringAISystem;
-import com.byrjamin.wickedwizard.ecs.systems.GrappleSystem;
-import com.byrjamin.wickedwizard.ecs.systems.GravitySystem;
+import com.byrjamin.wickedwizard.ecs.systems.GrapplePointSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToPlayerAISystem;
-import com.byrjamin.wickedwizard.ecs.systems.MovementSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PlayerInputSystem;
-import com.byrjamin.wickedwizard.ecs.systems.RenderingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
+import com.byrjamin.wickedwizard.factories.items.HealthUp;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -229,22 +235,23 @@ public class PlayScreen extends AbstractScreen {
                         new EnemyCollisionSystem(),
                         new FindPlayerSystem(player),
                         new FiringAISystem(),
-                        new GrappleSystem(),
-                        new GravitySystem(),
+                        new GrapplePointSystem(),
                         new LockSystem(),
                         new GroundCollisionSystem(),
                         new HealthSystem(),
                         new OnDeathSystem(),
                         new FadeSystem(),
-                        new TutorialSystem(),
                         new PhaseSystem(),
                         new MoveToSystem(),
+                        new PickUpSystem(),
                         new JumpSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam, gamePort),
                         new StateSystem(),
-                        new SpawnerSystem())
+                        new SpawnerSystem(),
+                        new GravitySystem(),
+                        new FrictionSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RoomTransitionSystem(startingArena, arenaArray),
                         new DirectionalSystem(),
@@ -268,48 +275,9 @@ public class PlayScreen extends AbstractScreen {
         for (Component comp : player) {
             entity.edit().add(comp);
         }
-
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
         arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena);
-
-
-    }
-
-    public void update(float dt) {
-
-        //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
-        //TODO touching the screen pause the game.
-        //caps the delta time if the game is paused for some reason.
-
-        if (dt > 0.20) {
-            System.out.println(" dt" + dt);
-        }
-
-        if (dt < 0.20f) {
-
-            gamecam.position.set((int) map.getActiveRoom().getWizard().getCenterX(), (int) map.getActiveRoom().getWizard().getCenterY(), 0);
-
-            if (gamecam.position.x <= gamePort.getWorldWidth() / 2) {
-                gamecam.position.set(gamePort.getWorldWidth() / 2, gamecam.position.y, 0);
-            } else if (gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH) {
-                gamecam.position.set((int) (map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2), (int) gamecam.position.y, 0);
-            }
-
-            if (gamecam.position.y <= gamePort.getWorldHeight() / 2) {
-                gamecam.position.set(gamecam.position.x, gamePort.getWorldHeight() / 2, 0);
-            } else if (gamecam.position.y + gamecam.viewportHeight / 2 >= map.getActiveRoom().HEIGHT) {
-                gamecam.position.set((int) gamecam.position.x, (int) (map.getActiveRoom().HEIGHT - gamecam.viewportHeight / 2), 0);
-            }
-
-            gamecam.update();
-
-            handleInput(dt);
-            map.update(dt, gamecam);
-            if (map.getActiveRoom().getWizard().isDead()) {
-                gameOver = true;
-            }
-        }
     }
 
     @Override
@@ -327,6 +295,8 @@ public class PlayScreen extends AbstractScreen {
         game.batch.setProjectionMatrix(gamecam.combined);
 
         //TODO this doesn't fit the slowdown fly everywhere problem when using artemis
+        //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
+        //TODO touching the screen pause the game.
         if (delta < 0.20f) {
             world.setDelta(delta);
         } else {

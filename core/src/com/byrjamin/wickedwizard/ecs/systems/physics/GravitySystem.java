@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.systems;
+package com.byrjamin.wickedwizard.ecs.systems.physics;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;

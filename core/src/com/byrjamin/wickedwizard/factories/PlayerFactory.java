@@ -38,6 +38,8 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 public class PlayerFactory {
 
 
+    public static float pAccelX;
+
     public static ComponentBag playerBag(){
 
         ComponentBag bag = new ComponentBag();
@@ -49,7 +51,7 @@ public class PlayerFactory {
         bag.add(new MoveToComponent());
         bag.add(new JumpComponent());
         bag.add(new GlideComponent());
-        bag.add(new AccelerantComponent(Measure.units(15f), Measure.units(15f), Measure.units(80f), Measure.units(80f)));
+        bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);

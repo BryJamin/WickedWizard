@@ -5,6 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
@@ -15,6 +16,8 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.items.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
@@ -42,7 +45,11 @@ public class TurretFactory {
         wc.additionalComponenets.add(new EnemyComponent());
         bag.add(wc);
         bag.add(new FiringAIComponent());
-        bag.add(DeathFactory.basicOnDeathExplosion(Measure.units(9), Measure.units(9)));
+
+        OnDeathComponent odc = new OnDeathComponent();
+        odc.getComponentBags().addAll(ItemFactory.createItemBag(0,0, new HealthUp()));
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, Measure.units(9), Measure.units(9), 0,0));
+
         return bag;
     }
 
@@ -71,7 +78,9 @@ public class TurretFactory {
         bag.add(new FiringAIComponent());
         bag.add(new BounceComponent());
 
-        bag.add(DeathFactory.basicOnDeathExplosion(Measure.units(9), Measure.units(9)));
+        OnDeathComponent odc = new OnDeathComponent();
+        odc.getComponentBags().addAll(ItemFactory.createItemBag(0,0, new HealthUp()));
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, Measure.units(9), Measure.units(9), 0,0));
 
         return bag;
     }

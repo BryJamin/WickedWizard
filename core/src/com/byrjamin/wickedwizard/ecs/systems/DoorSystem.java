@@ -55,7 +55,7 @@ public class DoorSystem extends EntityProcessingSystem {
             if(cbm.has(doorEntity)) {
 
                 CollisionBoundComponent cbc = cbm.get(doorEntity);
-                BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);
+                BoundsDrawer.drawBounds(world.getSystem(com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem.class).batch, cbc.bound);
                 if(cbc.bound.overlaps(cbm.get(e).bound)) {
                    // System.out.println("INSIDE THA DOOR");
 

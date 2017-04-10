@@ -14,7 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
  * Created by Home on 18/03/2017.
  */
 
-public class GrappleSystem extends EntitySystem {
+public class GrapplePointSystem extends EntitySystem {
 
     private Array<Rectangle> grapples = new Array<Rectangle>();
 
@@ -23,7 +23,7 @@ public class GrappleSystem extends EntitySystem {
 
 
     @SuppressWarnings("unchecked")
-    public GrappleSystem() {
+    public GrapplePointSystem() {
         super(Aspect.all(GrappleableComponent.class, CollisionBoundComponent.class));
     }
 

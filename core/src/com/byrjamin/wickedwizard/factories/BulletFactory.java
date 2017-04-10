@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -66,7 +67,8 @@ public class BulletFactory {
         bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height)));
 
-        bag.add(DeathFactory.basicOnDeathExplosion(width, height));
+        OnDeathComponent odc = new OnDeathComponent();
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height));
 
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion,-width / 2,-height / 2,  width * 2, height * 2, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;

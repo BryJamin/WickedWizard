@@ -9,6 +9,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.items.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -21,12 +23,13 @@ public class DeathFactory {
 
 
 
-    public static OnDeathComponent basicOnDeathExplosion(float width, float height){
-        return basicOnDeathExplosion(width, height, 0 ,0);
+    public static OnDeathComponent basicOnDeathExplosion( OnDeathComponent fillOdc, float width, float height){
+        return basicOnDeathExplosion(fillOdc, width, height, 0 ,0);
     }
 
 
-    public static OnDeathComponent basicOnDeathExplosion(float width, float height, float textureOffsetX, float textureOffsetY){
+    public static OnDeathComponent basicOnDeathExplosion(OnDeathComponent fillodc, float width, float height,
+                                                         float textureOffsetX, float textureOffsetY){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent());
@@ -43,11 +46,11 @@ public class DeathFactory {
                 height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().add(bag);
+        fillodc.getComponentBags().add(bag);
 
-        return odc;
+        return fillodc;
     }
+
 
 
 }

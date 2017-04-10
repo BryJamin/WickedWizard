@@ -125,12 +125,12 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                 }
             } else if (!activeGrapple) {
                 if (cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)) {
-                    MoveToSystem.decelerate(ac, vc);
+                    //MoveToSystem.decelerate(ac, vc);
                 }
 
 
                 if (movementInputPoll == null && glc.active && glc.gliding && mtc.targetX == null && mtc.targetY == null) {
-                    MoveToSystem.decelerate(ac, vc);
+                    //MoveToSystem.decelerate(ac, vc);
                 }
 
             }
@@ -151,15 +151,15 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     if(jumpTimer.isFinished()) {
                         if (angleOfTravel >= 0) {
                             if (angleOfTravel <= (Math.PI / 2)) {
-                                DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
                             } else {
-                                DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
                             }
                         } else {
                             if (angleOfTravel >= -(Math.PI / 2)) {
-                                DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
                             } else {
-                                DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
                             }
                         }
                     }
@@ -250,7 +250,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         gameport.unproject(touchInput);
 
         if(!activeGrapple) {
-            activeGrapple = world.getSystem(GrappleSystem.class).touchedGrapple(touchInput.x, touchInput.y);
+            activeGrapple = world.getSystem(GrapplePointSystem.class).touchedGrapple(touchInput.x, touchInput.y);
         }
         if(!activeGrapple) {
 
@@ -267,7 +267,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         } else {
 
             //TODO a tad unsafe
-            Rectangle r = world.getSystem(GrappleSystem.class).returnTouchedGrapple(touchInput.x, touchInput.y);;
+            Rectangle r = world.getSystem(GrapplePointSystem.class).returnTouchedGrapple(touchInput.x, touchInput.y);;
 
             if(r != null) {
                 MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
@@ -283,7 +283,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                         y,
                         GRAPPLE_MOVEMENT * 10,
                         mtc,
-                        ac,
                         cbc);
 
                 mtc.endSpeedX = 0;
