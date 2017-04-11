@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ItemComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -27,6 +28,7 @@ public class FrictionSystem extends EntityProcessingSystem {
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ItemComponent> im;
+    ComponentMapper<GlideComponent> gm;
 
 
     @SuppressWarnings("unchecked")
@@ -65,6 +67,11 @@ public class FrictionSystem extends EntityProcessingSystem {
 
         if(im.has(e) && cbm.has(e)){
             return cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false);
+        }
+
+        if(gm.has(e) && cbm.has(e)){
+            return cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) ||
+                    gm.get(e).gliding;
         }
 
 

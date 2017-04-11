@@ -87,17 +87,18 @@ public class MoveToSystem extends EntityProcessingSystem {
     public void endTravel(VelocityComponent vc, MoveToComponent mtc){
 
 
-        if(mtc.maxEndSpeedY != null) {
+/*        if(mtc.maxEndSpeedY != null) {
             if (vc.velocity.y > mtc.maxEndSpeedY) {
                 vc.velocity.y = mtc.maxEndSpeedY;
             }
 
             mtc.maxEndSpeedY = null;
         } else {
-            vc.velocity.y = 0;
-        }
+            //vc.velocity.y = 0;
+        }*/
 
-        //vc.velocity.x = vc.velocity.x / 4;
+        vc.velocity.x = vc.velocity.x / 2;
+        vc.velocity.y = vc.velocity.y / 2;
 
         mtc.targetY = null;
         mtc.targetX = null;

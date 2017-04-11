@@ -156,10 +156,13 @@ public class RoomTransitionSystem extends EntitySystem {
 /*        if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
             velocity.x = velocity.x > 0 ? Measure.units(60f) / 2 : -Measure.units(60f) / 2;
         }*/
-
+/*
         if(velocity.y > Measure.units(60f)) {
             velocity.y = Measure.units(60f);
-        }
+        }*/
+
+        velocity.y = velocity.y / 2;
+        velocity.x = velocity.x / 2;
 
         world.getSystem(PlayerInputSystem.class).activeGrapple = false;
         System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
