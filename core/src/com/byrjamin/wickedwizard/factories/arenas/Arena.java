@@ -41,6 +41,12 @@ public class Arena {
         roomType = RoomType.BATTLE;
     }
 
+    public Arena(Array<MapCoords> mapCoords, RoomType roomType) {
+        startingCoords = mapCoords.get(0);
+        this.cotainingCoords = mapCoords;
+        this.roomType = roomType;
+    }
+
     public Bag<Bag<Component>> getBagOfEntities() {
         return bagOfEntities;
     }

@@ -5,10 +5,13 @@ import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ItemRoomFactory;
 import com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.factories.arenas.TutorialFactory;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.factories.items.ItemFactory;
+import com.byrjamin.wickedwizard.factories.items.PlusOne;
 
 import java.util.Random;
 
@@ -106,6 +109,17 @@ public class JigsawGenerator {
 
         placedArenas = generateMapAroundPresetPoints(placedArenas, generateArenas(), avaliableDoorsSet);
 
+
+
+        Arena itemRoom = ItemRoomFactory.createItemRoom();
+        if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
+            placedArenas.add(itemRoom);
+        }
+
+        if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
+            placedArenas.add(itemRoom);
+        }
+
         //RoomFactory.cleanArenas(placedArenas);
         Arena bossRoom = RoomFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
@@ -131,6 +145,11 @@ public class JigsawGenerator {
         placedArenas = generateMapAroundPresetPoints(placedArenas, generateArenas(), avaliableDoorsSet);
 
 
+        Arena itemRoom = ItemRoomFactory.createItemRoom();
+        if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
+            placedArenas.add(itemRoom);
+        }
+
         Arena bossRoom = RoomFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
         RoomDecorationFactory.biggablobba(bossRoom);
@@ -152,7 +171,7 @@ public class JigsawGenerator {
         for(int i = 0; i < noBattleRooms; i++){
 
             Arena a;
-            if(i == 2 || i == 6){
+            if(i == 2 || i == 9){
                 a = RoomFactory.createWidth2Arena();
                 //RoomDecorationFactory.biggablobba(a);
                 RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);

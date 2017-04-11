@@ -130,30 +130,19 @@ public class PlayScreen extends AbstractScreen {
 
     public PlayScreen(MainGame game) {
         super(game);
-
-
         gestureDetector = new GestureDetector(new gestures());
-
         font.getData().setScale(5, 5);
-
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
-
         map = new Map();
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
-
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
-
         random = new Random();
-        jg = new JigsawGenerator(13, random);
-
+        jg =new JigsawGenerator(7, random);
         createWorld();
-
     }
 
     public void handleInput(float dt) {
@@ -375,12 +364,18 @@ public class PlayScreen extends AbstractScreen {
             }
         }
 
-        for(int i = 1; i <= healthRegions.size; i++) {
-            game.batch.draw(healthRegions.get(i - 1), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220, MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        for(int i = 0; i < healthRegions.size; i++) {
+            game.batch.draw(healthRegions.get(i),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (100 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(8f),
+                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
-        for (int i = 1; i <= jumpresource.jumps; i++) {
-            game.batch.draw(atlas.findRegion("bullet_blue"), gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 280, MainGame.GAME_UNITS * 2.5f, MainGame.GAME_UNITS * 2.5f);
+        for (int i = 0; i < jumpresource.jumps; i++) {
+            game.batch.draw(atlas.findRegion("bullet_blue"),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
+                    MainGame.GAME_UNITS * 2.5f, MainGame.GAME_UNITS * 2.5f);
         }
 
     }

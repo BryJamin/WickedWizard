@@ -22,8 +22,6 @@ public class ItemFactory {
 
     public static ComponentBag createItemBag(float x, float y, Item item){
 
-
-
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
@@ -36,6 +34,17 @@ public class ItemFactory {
         bag.add(new TextureRegionComponent(item.getRegion(), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
 
+        return bag;
+    }
+
+
+    public static ComponentBag createFloatingItemBag(float x, float y, Item item){
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new ItemComponent(item));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(8), Measure.units(8))));
+        bag.add(new TextureRegionComponent(item.getRegion(), Measure.units(8), Measure.units(8),
+                TextureRegionComponent.PLAYER_LAYER_FAR));
         return bag;
     }
 

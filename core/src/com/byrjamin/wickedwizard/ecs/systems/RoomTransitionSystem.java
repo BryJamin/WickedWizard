@@ -153,9 +153,9 @@ public class RoomTransitionSystem extends EntitySystem {
         world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class).reset();
         Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity;
 
-        if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
+/*        if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
             velocity.x = velocity.x > 0 ? Measure.units(60f) / 2 : -Measure.units(60f) / 2;
-        }
+        }*/
 
         if(velocity.y > Measure.units(60f)) {
             velocity.y = Measure.units(60f);
