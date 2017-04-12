@@ -12,29 +12,16 @@ public class PhaseComponent extends Component {
 
     public float currentPhaseTime = 0;
     public int currentPhase;
-
-    private Array<Bag<Component>> phases = new Array<Bag<Component>>();
     private Array<Float> phaseTimers = new Array<Float>();
 
+    private Array<Phase> phaseArray = new Array<Phase>();
+
     public Array<Integer> phaseSequence = new Array<Integer>();
-
-    /**
-     * Adds a phase to the PhaseComponent
-     * @param bag - Bag of Componenets for the new Phase
-     * @param time - The amount of time the phase lasts
-     */
-    public void addPhase(Bag<Component> bag, Float time){
-        phases.add(bag);
-        phaseTimers.add(time);
-    }
+    public Array<Integer> stateSequence = new Array<Integer>();
 
 
-    public void addPhase(Float time, Component... components){
-        Bag<Component> bag = new Bag<Component>();
-        for(Component c : components){
-            bag.add(c);
-        }
-        phases.add(bag);
+    public void addPhase(Float time, Phase phase){
+        phaseArray.add(phase);
         phaseTimers.add(time);
     }
 
@@ -51,8 +38,14 @@ public class PhaseComponent extends Component {
         }
     }
 
-    public Bag<Component> getCurrentPhaseComponents(int phaseNo){
-        return phases.get(phaseNo);
+    public void addStateSequence(int... sequence){
+        for(int i : sequence){
+            stateSequence.add(i);
+        }
+    }
+
+    public Phase getCurrentPhase(int phaseNo){
+        return phaseArray.get(phaseNo);
     }
 
     public float getCurrentPhaseTimer(int phaseNo){

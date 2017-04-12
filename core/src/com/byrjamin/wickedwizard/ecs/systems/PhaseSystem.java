@@ -6,6 +6,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
@@ -32,10 +33,7 @@ public class PhaseSystem extends EntityProcessingSystem {
         pc.currentPhaseTime -= world.delta;
 
         if(pc.currentPhaseTime < 0){
-
-            for(Component c : pc.getCurrentPhaseComponents(pc.currentPhase)){
-                e.edit().remove(c.getClass());
-            }
+            pc.getCurrentPhase(pc.currentPhase).cleanUp(e);
 
             pc.getPhaseSequence().add(pc.getPhaseSequence().first());
             pc.getPhaseSequence().removeIndex(0);
@@ -43,9 +41,8 @@ public class PhaseSystem extends EntityProcessingSystem {
             pc.currentPhase = pc.getPhaseSequence().first();
             pc.currentPhaseTime = pc.getCurrentPhaseTimer(pc.currentPhase);
 
-            for(Component c : pc.getCurrentPhaseComponents(pc.currentPhase)){
-                e.edit().add(c);
-            }
+
+            pc.getCurrentPhase(pc.currentPhase).changePhase(e);
 
         }
 

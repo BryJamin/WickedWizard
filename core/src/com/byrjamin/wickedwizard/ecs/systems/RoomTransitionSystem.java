@@ -162,7 +162,7 @@ public class RoomTransitionSystem extends EntitySystem {
         }*/
 
         velocity.y = velocity.y / 2;
-        velocity.x = velocity.x / 2;
+        velocity.x = velocity.x / 2 ;
 
         world.getSystem(PlayerInputSystem.class).activeGrapple = false;
         System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);

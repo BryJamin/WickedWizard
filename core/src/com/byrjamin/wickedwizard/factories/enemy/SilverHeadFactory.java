@@ -1,0 +1,95 @@
+package com.byrjamin.wickedwizard.factories.enemy;
+
+import com.artemis.Component;
+import com.artemis.Entity;
+import com.artemis.utils.Bag;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
+import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.utils.AnimationPacker;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.byrjamin.wickedwizard.utils.Measure;
+
+/**
+ * Created by Home on 11/04/2017.
+ */
+
+public class SilverHeadFactory {
+
+
+    private static int STANDING = 0;
+    private static int CLOSING = 1;
+    private static int OPENING = 2;
+    private static int CHARING = 3;
+
+    private static float width = Measure.units(5f);
+    private static float height = Measure.units(5f);
+
+    public static ComponentBag silverHead(float x, float y){
+
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new VelocityComponent(0, 0));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new GravityComponent());
+        bag.add(new EnemyComponent());
+        bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
+        bag.add(new MoveToPlayerComponent());
+        bag.add(new HealthComponent(5));
+        bag.add(new BlinkComponent());
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setState(STANDING);
+        bag.add(sc);
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(STANDING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP));
+        animMap.put(CLOSING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_HIDING));
+        animMap.put(OPENING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED));
+        animMap.put(CHARING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_CHARGING));
+        bag.add(new AnimationComponent(animMap));
+
+        bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+
+        PhaseComponent pc = new PhaseComponent();
+
+
+        Phase p = new Phase(){
+
+            @Override
+            public void changePhase(Entity e) {
+                e.getComponent(AnimationStateComponent.class).setState(CLOSING);
+            }
+
+            @Override
+            public void cleanUp(Entity e) {
+
+            }
+        };
+
+
+        return bag;
+
+    }
+
+
+
+
+
+}

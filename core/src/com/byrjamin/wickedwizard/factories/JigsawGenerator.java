@@ -116,9 +116,9 @@ public class JigsawGenerator {
             placedArenas.add(itemRoom);
         }
 
-        if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
+/*        if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(itemRoom);
-        }
+        }*/
 
         //RoomFactory.cleanArenas(placedArenas);
         Arena bossRoom = RoomFactory.createWidth2Arena();
@@ -127,7 +127,7 @@ public class JigsawGenerator {
 
         int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
         if (placeRoomAtRangeWithDoors(bossRoom,
-                avaliableDoorsSet,createUnavaliableMapCoords(placedArenas), rand, range)) {
+                avaliableDoorsSet,createUnavaliableMapCoords(placedArenas), rand, 0)) {
             placedArenas.add(bossRoom);
         }
 

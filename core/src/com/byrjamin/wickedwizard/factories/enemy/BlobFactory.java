@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.artemis.Component;
+import com.artemis.Entity;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,11 +9,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
@@ -62,6 +65,8 @@ public class BlobFactory {
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+
+
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
@@ -130,6 +135,7 @@ public class BlobFactory {
 
         WeaponComponent wc = new WeaponComponent(1.5f);
         wc.additionalComponenets.add(new EnemyComponent());
+        bag.add(wc);
 
         SpawnerFactory.Spawner s = new SpawnerFactory.Spawner() {
             @Override
@@ -138,21 +144,48 @@ public class BlobFactory {
             }
         };
 
-        SpawnerComponent sc2 = new SpawnerComponent(2.0f, s);
+        final SpawnerComponent sc2 = new SpawnerComponent(2.0f, s);
         sc2.isEndless = true;
 
         PhaseComponent pc = new PhaseComponent();
-        pc.addPhase(7.0f, new FiringAIComponent(), wc);
-        pc.addPhase(5.0f, sc2);
+
+
+        Phase phase1 = new Phase(){
+            FiringAIComponent f = new FiringAIComponent();
+            @Override
+            public void changePhase(Entity e) {
+                e.edit().add(f);
+            }
+            @Override
+            public void cleanUp(Entity e) {
+                e.edit().remove(FiringAIComponent.class);
+            }
+        };
+
+        Phase phase2 = new Phase(){
+            @Override
+            public void changePhase(Entity e) {
+                e.edit().add(sc2);
+                e.edit().add(new BounceComponent());
+                e.getComponent(VelocityComponent.class).velocity.y = Measure.units(40f);
+            }
+            @Override
+            public void cleanUp(Entity e) {
+                e.edit().remove(sc2);
+                e.edit().remove(BounceComponent.class);
+            }
+        };
+
+
+
+        pc.addPhase(7.0f, phase1);
+        pc.addPhase(5.0f, phase2);
         pc.addPhaseSequence(1,0);
 
         bag.add(pc);
 
 
         return bag;
-
-
-
 
 
 
