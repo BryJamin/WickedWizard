@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.utils.collider.Collider;
 public class CollisionBoundComponent extends Component{
 
     public Rectangle bound;
+    public Array<Rectangle> hitBoxes; //Make a hitbox class with an offsetx and offset y?
 
     public Array<Collider.Collision> recentCollisions = new Array<Collider.Collision>();
 

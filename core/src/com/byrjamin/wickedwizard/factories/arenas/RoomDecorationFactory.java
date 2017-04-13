@@ -3,6 +3,8 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.archive.gameobject.enemies.KugelDusche;
+import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
@@ -67,6 +69,18 @@ public class RoomDecorationFactory {
         });
         a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() - Measure.units(20), Measure.units(40), s));
     }
+
+
+    public static void kugelDusche(Arena a){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return KugelDuscheFactory.kugelDusche(x,y);
+            }
+        });
+        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
+    }
+
 
 
     public static void movingDoubleTurretRoom(Arena a){
