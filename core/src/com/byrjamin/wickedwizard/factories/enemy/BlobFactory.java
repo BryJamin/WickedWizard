@@ -28,6 +28,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.items.HealthUp;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
@@ -133,7 +134,7 @@ public class BlobFactory {
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
-        WeaponComponent wc = new WeaponComponent(1.5f);
+        WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(),  1.5f);
         wc.additionalComponenets.add(new EnemyComponent());
         bag.add(wc);
 

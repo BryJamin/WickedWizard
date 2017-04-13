@@ -17,15 +17,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.ItemComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -33,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ExpireSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
@@ -50,7 +48,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.FrictionSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
-import com.byrjamin.wickedwizard.factories.JigsawGenerator;
+import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.archive.helper.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.archive.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.archive.maps.Map;
@@ -73,7 +71,6 @@ import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
-import com.byrjamin.wickedwizard.factories.items.HealthUp;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -141,7 +138,7 @@ public class PlayScreen extends AbstractScreen {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
         random = new Random();
-        jg =new JigsawGenerator(5, random);
+        jg =new JigsawGenerator(8, random);
         createWorld();
     }
 
@@ -216,6 +213,7 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new FollowPositionSystem(),
+                        new ExpireSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
@@ -286,10 +284,11 @@ public class PlayScreen extends AbstractScreen {
         //TODO this doesn't fit the slowdown fly everywhere problem when using artemis
         //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
         //TODO touching the screen pause the game.
-        if (delta < 0.20f) {
+
+        if (delta < 0.03f) {
             world.setDelta(delta);
         } else {
-            world.setDelta(0.20f);
+            world.setDelta(0.02f);
         }
 
         if(gameOver){

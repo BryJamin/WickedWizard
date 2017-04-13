@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
+import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
@@ -46,6 +47,8 @@ public class TutorialFactory extends RoomFactory{
         containingCorrds.add(defaultCoords);
 
         Arena arena = new Arena(containingCorrds);
+
+        arena.addEntity(SilverHeadFactory.silverHead(1000, 600));
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);

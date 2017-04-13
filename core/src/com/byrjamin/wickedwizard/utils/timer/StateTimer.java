@@ -49,6 +49,10 @@ public class StateTimer {
         timeRemaining = resetTime;
     }
 
+    public void skip(){
+        timeRemaining = 0;
+    }
+
     public void setResetTime(float resetTime) {
         this.resetTime = resetTime;
     }

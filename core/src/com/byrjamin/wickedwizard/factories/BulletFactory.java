@@ -52,6 +52,10 @@ public class BulletFactory {
         return basicBulletBag(x ,y ,scale ,textureRegion , Color.WHITE);
     }
 
+    public static Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
+        return basicBulletBag(x ,y ,scale ,PlayScreen.atlas.findRegion("bullet") , Color.RED);
+    }
+
 
     public static Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
         Bag<Component> bag = new Bag<Component>();

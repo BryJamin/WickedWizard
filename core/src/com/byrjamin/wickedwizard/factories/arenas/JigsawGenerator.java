@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories;
+package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
@@ -59,7 +59,7 @@ public class JigsawGenerator {
 
         while(arenas.size > 0) {
             int i = rand.nextInt(arenas.size);
-            com.byrjamin.wickedwizard.factories.arenas.Arena nextRoomToBePlaced = arenas.get(i);
+            Arena nextRoomToBePlaced = arenas.get(i);
             arenas.removeIndex(i);
             if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, rand)){
                 placedArenas.add(nextRoomToBePlaced);
@@ -69,6 +69,41 @@ public class JigsawGenerator {
                 if(!unavaliableMapCoords.contains(dc.leaveCoords)) {
                     avaliableDoorsSet.add(dc);
                 }
+            }
+        }
+
+
+        return placedArenas;
+
+    }
+
+    public Array<Arena> generateMapAroundPresetPoints(Array<Arena> presetRooms, Array<ArenaGen> arenaGenArray,
+                                                      OrderedSet<DoorComponent> avaliableDoorsSet, int noOfRoomsPlaced){
+
+        Array<Arena> placedArenas = new Array<Arena>();
+
+        ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
+
+        for(Arena a : presetRooms){
+            placedArenas.add(a);
+            unavaliableMapCoords.addAll(a.getCotainingCoords());
+        }
+
+
+        int placedRooms = 0;
+
+        while(placedRooms < noOfRoomsPlaced) {
+            int i = rand.nextInt(arenaGenArray.size);
+            Arena nextRoomToBePlaced = arenaGenArray.get(i).createArena();
+            if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, rand)){
+                placedArenas.add(nextRoomToBePlaced);
+                unavaliableMapCoords.addAll(nextRoomToBePlaced.getCotainingCoords());
+                for (DoorComponent dc : nextRoomToBePlaced.getDoors()) {
+                    if(!unavaliableMapCoords.contains(dc.leaveCoords)) {
+                        avaliableDoorsSet.add(dc);
+                    }
+                }
+                placedRooms++;
             }
         }
 
@@ -107,27 +142,21 @@ public class JigsawGenerator {
         avaliableDoorsSet.addAll(f.getDoors());
 
 
-        placedArenas = generateMapAroundPresetPoints(placedArenas, generateArenas(), avaliableDoorsSet);
-
-
+        placedArenas = generateMapAroundPresetPoints(placedArenas,Level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, 5);
 
         Arena itemRoom = ItemRoomFactory.createItemRoom();
         if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(itemRoom);
         }
 
-/*        if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
-            placedArenas.add(itemRoom);
-        }*/
-
         //RoomFactory.cleanArenas(placedArenas);
         Arena bossRoom = RoomFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
         RoomDecorationFactory.biggablobba(bossRoom);
 
-        int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
+        int range = (int) ((Math.sqrt(placedArenas.size) - 7 /*tutorial rooms */) / 2);
         if (placeRoomAtRangeWithDoors(bossRoom,
-                avaliableDoorsSet,createUnavaliableMapCoords(placedArenas), rand, 0)) {
+                avaliableDoorsSet,createUnavaliableMapCoords(placedArenas), rand, range)) {
             placedArenas.add(bossRoom);
         }
 
@@ -142,7 +171,8 @@ public class JigsawGenerator {
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
         avaliableDoorsSet.addAll(startingArena.getDoors());
-        placedArenas = generateMapAroundPresetPoints(placedArenas, generateArenas(), avaliableDoorsSet);
+
+        placedArenas = generateMapAroundPresetPoints(placedArenas,Level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, noBattleRooms);
 
 
         Arena itemRoom = ItemRoomFactory.createItemRoom();

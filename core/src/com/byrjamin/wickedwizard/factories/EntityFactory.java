@@ -118,7 +118,7 @@ public class EntityFactory {
         e.edit().add(new HealthComponent(10));
         e.edit().add(new BlinkComponent());
 
-        WeaponComponent wc = new WeaponComponent(2f);
+        WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(), 2f);
         wc.additionalComponenets.add(new EnemyComponent());
         e.edit().add(wc);
 

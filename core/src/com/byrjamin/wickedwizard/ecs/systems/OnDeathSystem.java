@@ -1,12 +1,16 @@
 package com.byrjamin.wickedwizard.ecs.systems;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.EntitySubscription;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 /**
@@ -49,6 +53,11 @@ public class OnDeathSystem  extends BaseSystem {
             }
         }
         deadEntity.deleteFromWorld();
+
+
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all());
+        IntBag entityIds = subscription.getEntities();
+        System.out.println(entityIds.size());
     }
 
 

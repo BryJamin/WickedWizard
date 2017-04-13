@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
@@ -21,7 +22,7 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 public class DeathFactory {
 
-
+    private final static int aniNumber = 1;
 
     public static OnDeathComponent basicOnDeathExplosion( OnDeathComponent fillOdc, float width, float height){
         return basicOnDeathExplosion(fillOdc, width, height, 0 ,0);
@@ -34,17 +35,19 @@ public class DeathFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent());
         AnimationStateComponent asc = new AnimationStateComponent();
+        asc.setState(aniNumber);
         bag.add(asc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(AnimationStateComponent.State.DEFAULT.getState(),
+        animMap.put(aniNumber,
                 AnimationPacker.genAnimation(0.02f, TextureStrings.EXPLOSION));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+        bag.add(new TextureRegionComponent(animMap.get(aniNumber).getKeyFrame(0),
                 textureOffsetX,
                 textureOffsetY,
                 width,
                 height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        bag.add(new ExpireComponent(animMap.get(aniNumber).getAnimationDuration()));
 
         fillodc.getComponentBags().add(bag);
 

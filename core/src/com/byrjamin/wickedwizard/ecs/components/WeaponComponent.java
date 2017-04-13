@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.WeaponFactory;
 import com.byrjamin.wickedwizard.utils.timer.StateTimer;
 
 /**
@@ -20,23 +21,26 @@ public class WeaponComponent extends Component{
         EXPLOSIVE,
     }
 
+    public Weapon weapon;
+
     public Array<Component> additionalComponenets = new Array<Component>();
 
     public StateTimer timer;
 
-    public WeaponComponent(float reloadTime, float currentTime){
+    public WeaponComponent(Weapon weapon, float reloadTime, float currentTime){
         this.reloadTime = reloadTime;
         this.currentTime = currentTime;
         timer = new StateTimer(reloadTime, currentTime);
+        this.weapon = weapon;
     }
 
-    public WeaponComponent(float reloadTime){
-        this(reloadTime, 0);
+    public WeaponComponent(Weapon weapon, float reloadTime){
+        this(weapon, reloadTime, 0);
     }
 
 
     public WeaponComponent(){
-        this(2.0f, 0);
+        this(WeaponFactory.EnemyWeapon(), 2.0f, 0);
     }
 
 

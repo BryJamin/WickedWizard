@@ -12,6 +12,8 @@ import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
@@ -22,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.WeaponFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -38,8 +41,14 @@ public class SilverHeadFactory {
     private static int OPENING = 2;
     private static int CHARING = 3;
 
-    private static float width = Measure.units(5f);
-    private static float height = Measure.units(5f);
+    private static float width = Measure.units(9);
+    private static float height = Measure.units(9f);
+
+    private static final float textureWidth = Measure.units(12);
+    private static final float textureHeight = Measure.units(12);
+
+    private static final float textureOffsetX = -Measure.units(1.5f);
+    private static final float textureOffsetY = 0;
 
     public static ComponentBag silverHead(float x, float y){
 
@@ -51,26 +60,26 @@ public class SilverHeadFactory {
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
         bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
-        bag.add(new MoveToPlayerComponent());
         bag.add(new HealthComponent(5));
         bag.add(new BlinkComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(STANDING);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(STANDING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP));
-        animMap.put(CLOSING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_HIDING));
-        animMap.put(OPENING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED));
-        animMap.put(CHARING, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.SILVERHEAD_CHARGING));
+        animMap.put(STANDING, AnimationPacker.genAnimation(0.15f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP));
+        animMap.put(CLOSING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING));
+        animMap.put(OPENING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED));
+        animMap.put(CHARING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0),
+                textureOffsetX,
+                textureOffsetY,
+                textureWidth,
+                textureHeight,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-
-        PhaseComponent pc = new PhaseComponent();
-
-
-        Phase p = new Phase(){
+        Phase phase1 = new Phase(){
 
             @Override
             public void changePhase(Entity e) {
@@ -83,6 +92,61 @@ public class SilverHeadFactory {
             }
         };
 
+        Phase phase2 = new Phase(){
+
+            @Override
+            public void changePhase(Entity e) {
+                e.getComponent(AnimationStateComponent.class).setState(CHARING);
+            }
+
+            @Override
+            public void cleanUp(Entity e) {
+
+            }
+        };
+
+        Phase phase3 = new Phase(){
+
+            WeaponComponent wc = new WeaponComponent(WeaponFactory.SilverHeadWeapon(), 5f, 2.0f);
+            FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
+
+            @Override
+            public void changePhase(Entity e) {
+                e.getComponent(AnimationStateComponent.class).setState(OPENING);
+                wc.timer.skip();
+                e.edit().add(wc);
+                e.edit().add(fc);
+            }
+
+
+            @Override
+            public void cleanUp(Entity e) {
+                e.edit().remove(wc);
+                e.edit().remove(fc);
+            }
+        };
+
+        Phase phase4 = new Phase(){
+            @Override
+            public void changePhase(Entity e) {
+                e.getComponent(AnimationStateComponent.class).setState(STANDING);
+            }
+
+            @Override
+            public void cleanUp(Entity e) {
+            }
+        };
+
+        PhaseComponent pc = new PhaseComponent();
+
+        pc.addPhase(animMap.get(CLOSING).getAnimationDuration(), phase1);
+        pc.addPhase(animMap.get(CHARING).getAnimationDuration(), phase2);
+        pc.addPhase(animMap.get(OPENING).getAnimationDuration(), phase3);
+        pc.addPhase(2.0f, phase4);
+        pc.addPhaseSequence(2,3,0,1);
+
+
+        bag.add(pc);
 
         return bag;
 
