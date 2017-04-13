@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -33,6 +35,7 @@ public class BulletFactory {
         for(Component c : basicBulletBag(x,y,1,PlayScreen.atlas.findRegion("bullet"))){
             e.edit().add(c);
         }
+        e.edit().add(new FriendlyComponent());
         e.edit().add(new VelocityComponent((float) (Measure.units(90) * Math.cos(angleOfTravel)), (float) (Measure.units(90) * Math.sin(angleOfTravel))));
 
         return e;
@@ -40,7 +43,7 @@ public class BulletFactory {
 
     public static Entity createEnemyBullet(World world, float x, float y, double angleOfTravel){
         Entity e = world.createEntity();
-        for(Component c : basicBulletBag(x,y,2,PlayScreen.atlas.findRegion("bullet"), Color.RED)){
+        for(Component c : basicEnemyBulletBag(x,y,2)){
             e.edit().add(c);
         }
         e.edit().add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
@@ -48,12 +51,20 @@ public class BulletFactory {
     }
 
 
+
+
+
+
+
     public static Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion) {
         return basicBulletBag(x ,y ,scale ,textureRegion , Color.WHITE);
     }
 
     public static Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
-        return basicBulletBag(x ,y ,scale ,PlayScreen.atlas.findRegion("bullet") , Color.RED);
+
+        Bag<Component> bag = basicBulletBag(x ,y ,scale ,PlayScreen.atlas.findRegion("bullet") , Color.RED);
+        bag.add(new EnemyComponent());
+        return bag;
     }
 
 

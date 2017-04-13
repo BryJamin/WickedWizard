@@ -43,12 +43,8 @@ public class FiringAISystem extends EntityProcessingSystem {
         switch(fc.ai){
             case TARGETED:
                 if(wc.timer.isFinishedAndReset()){
-
-
                     CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
-                    Entity bullet = BulletFactory.createEnemyBullet(world, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
-
                     wc.weapon.fire(world, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
                 }
                 break;

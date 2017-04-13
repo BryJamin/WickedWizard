@@ -44,6 +44,8 @@ public class SilverHeadFactory {
     private static float width = Measure.units(9);
     private static float height = Measure.units(9f);
 
+    private static float health = 11f;
+
     private static final float textureWidth = Measure.units(12);
     private static final float textureHeight = Measure.units(12);
 
@@ -60,7 +62,7 @@ public class SilverHeadFactory {
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
         bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
-        bag.add(new HealthComponent(5));
+        bag.add(new HealthComponent(health));
         bag.add(new BlinkComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(STANDING);

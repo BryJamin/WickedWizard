@@ -13,17 +13,7 @@ public class WeaponComponent extends Component{
     public float reloadTime;
     public float currentTime;
 
-    public enum PROJECTILETYPE {
-        STRAIGHT, ARC, GUIDED
-    }
-
-    public enum ONHITTYPE {
-        EXPLOSIVE,
-    }
-
     public Weapon weapon;
-
-    public Array<Component> additionalComponenets = new Array<Component>();
 
     public StateTimer timer;
 

@@ -50,7 +50,6 @@ public class WeaponFactory {
                     double angleOfTravel = angle + Math.toRadians(i);
                     Bag<Component> bag = BulletFactory.basicEnemyBulletBag(x, y, 1.7f);
                     bag.add(new VelocityComponent((float) (Measure.units(75) * Math.cos(angleOfTravel)), (float) (Measure.units(75) * Math.sin(angleOfTravel))));
-                    bag.add(new EnemyComponent());
                     bag.add(new GravityComponent());
 
                     Entity e = world.createEntity();

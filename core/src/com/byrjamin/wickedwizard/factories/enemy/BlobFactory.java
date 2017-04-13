@@ -135,7 +135,6 @@ public class BlobFactory {
 
 
         WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(),  1.5f);
-        wc.additionalComponenets.add(new EnemyComponent());
         bag.add(wc);
 
         SpawnerFactory.Spawner s = new SpawnerFactory.Spawner() {

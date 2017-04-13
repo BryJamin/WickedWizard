@@ -43,7 +43,6 @@ public class TurretFactory {
         bag.add(new BlinkComponent());
 
         WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(), 2f);
-        wc.additionalComponenets.add(new EnemyComponent());
         bag.add(wc);
         bag.add(new FiringAIComponent());
 
@@ -74,7 +73,6 @@ public class TurretFactory {
         bag.add(new BlinkComponent());
 
         WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(), 2f);
-        wc.additionalComponenets.add(new EnemyComponent());
         bag.add(wc);
         bag.add(new FiringAIComponent());
         bag.add(new BounceComponent());

@@ -119,7 +119,6 @@ public class EntityFactory {
         e.edit().add(new BlinkComponent());
 
         WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(), 2f);
-        wc.additionalComponenets.add(new EnemyComponent());
         e.edit().add(wc);
 
         e.edit().add(new FiringAIComponent());

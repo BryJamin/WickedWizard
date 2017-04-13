@@ -65,7 +65,6 @@ public class PlayerFactory {
 
 
         WeaponComponent wc = new WeaponComponent(WeaponFactory.PlayerWeapon(), 0.3f, 0.3f);
-        wc.additionalComponenets.add(new FriendlyComponent());
         bag.add(wc);
         bag.add(new HealthComponent(6));
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));

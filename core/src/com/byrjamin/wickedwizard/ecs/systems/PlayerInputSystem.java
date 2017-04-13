@@ -166,12 +166,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
                     if (wc.timer.isFinishedAndReset()) {
                         sc.setState(1);
-
-                        Entity bullet = BulletFactory.createBullet(world, x, y, angleOfTravel);
-
-                        for (Component c : wc.additionalComponenets) {
-                            bullet.edit().add(c);
-                        }
+                        wc.weapon.fire(world, x,y, angleOfTravel);
                     }
                 }
             } else {
