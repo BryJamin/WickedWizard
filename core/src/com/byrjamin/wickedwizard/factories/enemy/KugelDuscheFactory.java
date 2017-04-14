@@ -6,6 +6,8 @@ import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Rectangle;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -17,8 +19,11 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -54,7 +59,13 @@ public class KugelDuscheFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
-        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
+        bag.add(new BlinkComponent());
+
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("sprite_health2"),
+                width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
+        ));
+
         bag.add(new HealthComponent(25));
         bag.add(new FiringAIComponent(Math.toRadians(45)));
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
@@ -102,6 +113,8 @@ public class KugelDuscheFactory {
                     double angleOfTravel = angle + Math.toRadians(i);
                     Bag<Component> bag = BulletFactory.basicEnemyBulletBag(x, y, 1.7f);
                     bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
+                    BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;
+
                     Entity e = world.createEntity();
                     for(Component c : bag){
                         e.edit().add(c);

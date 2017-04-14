@@ -1,34 +1,22 @@
 package com.byrjamin.wickedwizard.ecs.systems.input;
 
-import com.artemis.Aspect;
-import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.World;
-import com.artemis.utils.IntBag;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
-import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GrapplePointSystem;
-import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
-import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.timer.StateTimer;
 
 /**
  * Created by Home on 14/04/2017.
@@ -48,7 +36,20 @@ public class PlayerInput extends InputAdapter{
     public Integer tapInputPoll;
     public boolean activeGrapple;
 
-    public StateTimer tapInputTimer = new StateTimer(0.25f);
+
+
+    private int tapCount = 0;
+    private int lastTapPointer = -1;
+
+    private float lastTapX, lastTapY;
+    private float tapSquareCenterX, tapSquareCenterY;
+
+    private float tapSquareSize = 40;
+
+
+    public long tapInterval = (long)(0.4f * 1000000000L);
+    public long tapStartTime;
+    public long lastTapTime;
 
 
     private boolean inTapSquare;
@@ -75,20 +76,28 @@ public class PlayerInput extends InputAdapter{
 
         if(pointer > 1) return false;
 
+
         Vector3 touchInput = new Vector3(screenX, screenY, 0);
         gameport.unproject(touchInput);
+        TimeUtils.nanoTime();
 
         if(!activeGrapple) {
             activeGrapple = world.getSystem(GrapplePointSystem.class).touchedGrapple(touchInput.x, touchInput.y);
         }
+
         if(!activeGrapple) {
+
+            tapStartTime = Gdx.input.getCurrentEventTime();
+            tapSquareCenterX = screenX;
+            tapSquareCenterY = screenY;
+            inTapSquare = true;
+
             if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
                 movementInputPoll = pointer;
                 world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
             } else if(firingInputPoll == null){
                 firingInputPoll = pointer;
             }
-            tapInputTimer.reset();
         } else {
             world.getSystem(PlayerInputSystem.class).grappleTo(touchInput.x, touchInput.y);
         }
@@ -106,29 +115,54 @@ public class PlayerInput extends InputAdapter{
         if(!activeGrapple) {
 
             //TODO Find player get player should be player position or something if player can't be found
-            if(!tapInputTimer.isFinished()/*&& jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0*/) {
+            //if(!tapInputTimer.isFinished()/*&& jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0*/) {
 
 
-                Vector3 input = new Vector3(screenX, screenY, 0);
-                gameport.unproject(input);
+            if (inTapSquare && !isWithinTapSquare(screenX, screenY, tapSquareCenterX, tapSquareCenterY)) inTapSquare = false;
 
-                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
+            if(inTapSquare && isWithinTapInterval()){
+                boolean test = TimeUtils.nanoTime() - lastTapTime > tapInterval;
+                if(lastTapPointer != pointer ||
+                        !isWithinTapSquare(screenX,screenY,lastTapX,lastTapY) ||
+                        test) { tapCount = 0;}
 
-                if(input.y > cbc.getCenterY()) {
-                    if (jc.jumps > 0) {
-                        vc.velocity.y = Measure.units(80f);
-                        jc.jumps--;
+                tapCount++;
+                lastTapTime = TimeUtils.nanoTime();
+                lastTapX = screenX;
+                lastTapY = screenY;
+                lastTapPointer = pointer;
+
+
+                System.out.println(Gdx.input.getCurrentEventTime() - tapStartTime / (double) 1000000000 < 0.4);
+
+                long number = Gdx.input.getCurrentEventTime() - tapStartTime;
+                System.out.println("Number" + number);
+
+
+               //if(number < tapInterval) {
+                    Vector3 input = new Vector3(screenX, screenY, 0);
+                    gameport.unproject(input);
+
+                    CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                    VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                    JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
+
+                    if (input.y > cbc.getCenterY()) {
+                        if (jc.jumps > 0) {
+                            vc.velocity.y = Measure.units(80f);
+                            jc.jumps--;
+                            world.getSystem(PlayerInputSystem.class).turnOffGlide();
+                            world.getSystem(PlayerInputSystem.class).turnOnGlide();
+                        }
+
+                    } else if (tapCount == 2) {
                         world.getSystem(PlayerInputSystem.class).turnOffGlide();
-                        world.getSystem(PlayerInputSystem.class).turnOnGlide();
                     }
+                //}
 
-                } else {
-                    world.getSystem(PlayerInputSystem.class).turnOffGlide();
-                }
-                tapInputTimer.reset();
             }
+
+            //}
 
 
         }
@@ -146,6 +180,15 @@ public class PlayerInput extends InputAdapter{
 
         }
         return false;
+    }
+
+
+    private boolean isWithinTapSquare (float x, float y, float centerX, float centerY) {
+        return Math.abs(x - centerX) < tapSquareSize && Math.abs(y - centerY) < tapSquareSize;
+    }
+
+    public boolean isWithinTapInterval(){
+        return Gdx.input.getCurrentEventTime() - tapStartTime < tapInterval;
     }
 
 

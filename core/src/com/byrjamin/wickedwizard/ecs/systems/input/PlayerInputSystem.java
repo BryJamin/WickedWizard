@@ -37,7 +37,6 @@ import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
-import com.byrjamin.wickedwizard.utils.timer.StateTimer;
 
 /**
  * Created by Home on 04/03/2017.
@@ -111,8 +110,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
-        playerInput.tapInputTimer.update(world.getDelta());
-
         if (mtm.get(e).targetX == null && mtm.get(e).targetY == null) {
             playerInput.activeGrapple = false;
             gc.ignoreGravity = false;
@@ -145,7 +142,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
 
-                    if (playerInput.tapInputTimer.isFinished()) {
+                    if (playerInput.isWithinTapInterval()) {
                         if (angleOfTravel >= 0) {
                             if (angleOfTravel <= (Math.PI / 2)) {
                                 com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
