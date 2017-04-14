@@ -244,24 +244,18 @@ public class TutorialFactory extends RoomFactory{
                 PlayScreen.atlas.findRegions("backgrounds/wall")));
 
         //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, 0, WALLWIDTH, SECTION_HEIGHT * 2 + WALLWIDTH * 2));
+        arena.addEntity(EntityFactory.wallBag(0, Measure.units(30), WALLWIDTH, SECTION_HEIGHT * 2));
         arena.addEntity(EntityFactory.wallBag(0, SECTION_HEIGHT * 2 + WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT * 2 + WALLWIDTH * 2));
 
-        bag = EntityFactory.doorBag(0, Measure.units(10) + SECTION_HEIGHT * 2,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
-                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY() + 2),
+        bag = EntityFactory.doorBag(0, Measure.units(10),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
                 DoorComponent.DIRECTION.left);
         arena.addDoor(bag);
-        arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
+        //arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
 
         //RIGHT WALL
         arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, 0, WALLWIDTH, HEIGHT));
-        //arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, 0, WALLWIDTH, SECTION_HEIGHT * 2 + WALLWIDTH * 2));
-/*        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, SECTION_HEIGHT * 2 + WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT * 2 + WALLWIDTH * 2));
-        arena.addDoor(EntityFactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10) + SECTION_HEIGHT * 2,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 2),
-                DoorComponent.DIRECTION.right));*/
 
         //CEILING
         arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));

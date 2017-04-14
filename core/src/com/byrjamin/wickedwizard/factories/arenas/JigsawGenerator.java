@@ -131,11 +131,11 @@ public class JigsawGenerator {
         startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
         placedArenas.add(startingArena);
         placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));
-        placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,1)));
-        placedArenas.add(TutorialFactory.grappleTutorial(new MapCoords(2,-2)));
-        placedArenas.add(TutorialFactory.endTutorial(new MapCoords(3,1)));
+        placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,3)));
+        placedArenas.add(TutorialFactory.grappleTutorial(new MapCoords(2,0)));
+        placedArenas.add(TutorialFactory.endTutorial(new MapCoords(3,3)));
 
-        Arena f = RoomFactory.createOmniArena(new MapCoords(4,1));
+        Arena f = RoomFactory.createOmniArena(new MapCoords(4,3));
         placedArenas.add(f);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();

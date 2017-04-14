@@ -54,7 +54,7 @@ public class LockSystem extends EntitySystem {
                     e.edit().remove(GrappleableComponent.class);
                 } else {
                     //System.out.println("aw man");
-                    e.edit().remove(GrappleableComponent.class);
+                    //e.edit().remove(GrappleableComponent.class);
                     e.edit().add(new WallComponent(cbm.get(e).bound));
                 }
 
@@ -78,7 +78,7 @@ public class LockSystem extends EntitySystem {
                     aotm.get(e).isEnabled = true;
                     e.edit().add(new GrappleableComponent());
                 } else {
-                    e.edit().add(new GrappleableComponent());
+                    //e.edit().add(new GrappleableComponent());
                     e.edit().remove(WallComponent.class);
                 }
 

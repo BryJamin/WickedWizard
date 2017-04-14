@@ -79,7 +79,7 @@ public class EntityFactory {
                 -Measure.units(8.5f), 0, Measure.units(22), Measure.units(20),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
         bag.add(trc);
-        bag.add(new GrappleableComponent());
+        //bag.add(new GrappleableComponent());
         bag.add(new LockComponent());
         return bag;
     }
