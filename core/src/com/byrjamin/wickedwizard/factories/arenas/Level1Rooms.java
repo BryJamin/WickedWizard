@@ -12,10 +12,11 @@ public class Level1Rooms {
 
     public static Array<ArenaGen> getLevel1RoomArray(){
         Array<ArenaGen> ag = new Array<ArenaGen>();
-        ag.add(room1());
-        ag.add(room2());
-        ag.add(room3());
+       //ag.add(room1());
+       // ag.add(room2());
+       // ag.add(room3());
         ag.add(room4());
+        ag.add(room5());
         return ag;
     }
 
@@ -58,6 +59,17 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = RoomFactory.createOmniArena();
                 RoomDecorationFactory.kugelDusche(a);
+                return a;
+            }
+        };
+    }
+
+    public static ArenaGen room5(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = RoomFactory.createOmniArena();
+                RoomDecorationFactory.silverHead(a);
                 return a;
             }
         };

@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.artemis.Component;
 import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -51,6 +52,11 @@ public class BlobFactory {
     private static final float textureOffsetY = 0;
 
     public static Bag<Component> blobBag(float x, float y){
+
+
+        x = x - width / 2;
+        y = y - height / 2;
+
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
@@ -83,6 +89,11 @@ public class BlobFactory {
     public static Bag<Component> smallblobBag(float x, float y){
 
         float scale = 0.5f;
+
+        x = x - width* scale / 2;
+        y = y - height * scale / 2;
+
+
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
@@ -111,6 +122,9 @@ public class BlobFactory {
 
     public static Bag<Component> BiggaBlobbaBag(float x, float y){
 
+
+        x = x - width / 2;
+        y = y - height / 2;
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
@@ -153,24 +167,24 @@ public class BlobFactory {
         Phase phase1 = new Phase(){
             FiringAIComponent f = new FiringAIComponent();
             @Override
-            public void changePhase(Entity e) {
+            public void changePhase(World w, Entity e) {
                 e.edit().add(f);
             }
             @Override
-            public void cleanUp(Entity e) {
+            public void cleanUp(World w, Entity e) {
                 e.edit().remove(FiringAIComponent.class);
             }
         };
 
         Phase phase2 = new Phase(){
             @Override
-            public void changePhase(Entity e) {
+            public void changePhase(World w, Entity e) {
                 e.edit().add(sc2);
                 e.edit().add(new BounceComponent());
                 e.getComponent(VelocityComponent.class).velocity.y = Measure.units(40f);
             }
             @Override
-            public void cleanUp(Entity e) {
+            public void cleanUp(World w, Entity e) {
                 e.edit().remove(sc2);
                 e.edit().remove(BounceComponent.class);
             }

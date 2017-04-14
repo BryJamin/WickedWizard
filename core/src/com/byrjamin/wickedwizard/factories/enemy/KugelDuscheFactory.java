@@ -4,10 +4,12 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
@@ -16,8 +18,11 @@ import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
+import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+
+import java.util.Random;
 
 /**
  * Created by Home on 13/04/2017.
@@ -52,17 +57,19 @@ public class KugelDuscheFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
         bag.add(new HealthComponent(25));
         bag.add(new FiringAIComponent(Math.toRadians(45)));
-        bag.add(new WeaponComponent(kugelWeapon(), 0.1f, 0.5f));
-
+        bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
 
         Phase p = new Phase() {
+
+            private float angle = (new Random().nextBoolean()) ? 5 : -5;
+
             @Override
-            public void changePhase(Entity e) {
-                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians(5);
+            public void changePhase(World w, Entity e) {
+                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians(angle);
             }
 
             @Override
-            public void cleanUp(Entity e) {
+            public void cleanUp(World w, Entity e) {
 
             }
         };
@@ -72,6 +79,7 @@ public class KugelDuscheFactory {
         pc.addPhaseSequence(0,0);
 
         bag.add(pc);
+        bag.add(DeathFactory.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 
 
 
@@ -93,7 +101,7 @@ public class KugelDuscheFactory {
                 for(int i : angles){
                     double angleOfTravel = angle + Math.toRadians(i);
                     Bag<Component> bag = BulletFactory.basicEnemyBulletBag(x, y, 1.7f);
-                    bag.add(new VelocityComponent((float) (Measure.units(75) * Math.cos(angleOfTravel)), (float) (Measure.units(75) * Math.sin(angleOfTravel))));
+                    bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
                     Entity e = world.createEntity();
                     for(Component c : bag){
                         e.edit().add(c);

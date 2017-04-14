@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.artemis.Component;
 import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -54,6 +55,8 @@ public class SilverHeadFactory {
 
     public static ComponentBag silverHead(float x, float y){
 
+        x = x - width / 2;
+        y = y - height / 2;
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -61,9 +64,10 @@ public class SilverHeadFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
-        bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
+        bag.add(new AccelerantComponent(Measure.units(10f), 0, Measure.units(30), 0));
         bag.add(new HealthComponent(health));
         bag.add(new BlinkComponent());
+        //bag.add(new MoveToPlayerComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(STANDING);
         bag.add(sc);
@@ -84,12 +88,12 @@ public class SilverHeadFactory {
         Phase phase1 = new Phase(){
 
             @Override
-            public void changePhase(Entity e) {
+            public void changePhase(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(CLOSING);
             }
 
             @Override
-            public void cleanUp(Entity e) {
+            public void cleanUp(World w, Entity e) {
 
             }
         };
@@ -97,12 +101,12 @@ public class SilverHeadFactory {
         Phase phase2 = new Phase(){
 
             @Override
-            public void changePhase(Entity e) {
+            public void changePhase(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(CHARING);
             }
 
             @Override
-            public void cleanUp(Entity e) {
+            public void cleanUp(World w, Entity e) {
 
             }
         };
@@ -113,7 +117,7 @@ public class SilverHeadFactory {
             FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
 
             @Override
-            public void changePhase(Entity e) {
+            public void changePhase(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(OPENING);
                 wc.timer.skip();
                 e.edit().add(wc);
@@ -122,20 +126,26 @@ public class SilverHeadFactory {
 
 
             @Override
-            public void cleanUp(Entity e) {
+            public void cleanUp(World w, Entity e) {
                 e.edit().remove(wc);
                 e.edit().remove(fc);
             }
         };
 
         Phase phase4 = new Phase(){
+
+            MoveToPlayerComponent mtpc = new MoveToPlayerComponent();
+
             @Override
-            public void changePhase(Entity e) {
+            public void changePhase(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(STANDING);
+                e.edit().add(mtpc);
             }
 
             @Override
-            public void cleanUp(Entity e) {
+            public void cleanUp(World w, Entity e) {
+                e.edit().remove(mtpc);
+                e.getComponent(VelocityComponent.class).velocity.x = 0;
             }
         };
 

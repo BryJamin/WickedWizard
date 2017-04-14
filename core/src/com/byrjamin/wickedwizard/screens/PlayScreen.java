@@ -285,7 +285,7 @@ public class PlayScreen extends AbstractScreen {
         //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
         //TODO touching the screen pause the game.
 
-        if (delta < 0.03f) {
+        if (delta < 0.04f) {
             world.setDelta(delta);
         } else {
             world.setDelta(0.02f);
