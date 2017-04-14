@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -38,6 +39,12 @@ public class MovementSystem extends EntityProcessingSystem {
             CollisionBoundComponent cbc = cbm.get(e);
             cbc.bound.x = pc.getX();
             cbc.bound.y = pc.getY();
+
+            for(HitBox hb : cbc.hitBoxes){
+                hb.hitbox.x = pc.getX() + hb.offsetX;
+                hb.hitbox.y = pc.getY() + hb.offsetY;
+            }
+
         }
 
         if(vc.velocity.x < 0)

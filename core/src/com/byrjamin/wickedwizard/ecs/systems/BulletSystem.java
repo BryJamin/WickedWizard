@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 05/03/2017.
@@ -35,11 +36,11 @@ public class BulletSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        CollisionBoundComponent vc = cbm.get(e);
+        CollisionBoundComponent cbc = cbm.get(e);
 
         if(em.has(e)){
             CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-            if(pcbc.bound.overlaps(vc.bound)){
+            if(pcbc.bound.overlaps(cbc.bound)){
 
                 BlinkComponent bc = world.getSystem(FindPlayerSystem.class).getPC(BlinkComponent.class);
 
@@ -59,19 +60,22 @@ public class BulletSystem extends EntityProcessingSystem {
             IntBag entityIds = subscription.getEntities();
 
             for(int i = 0; i < entityIds.size(); i++){
-                if(cbm.get(entityIds.get(i)).bound.overlaps(vc.bound)){
-                    HealthComponent hc = hm.get(entityIds.get(i));
-                    hc.health = hc.health - 1;
 
-                    if(bm.has(entityIds.get(i))){
-                        BlinkComponent bc = bm.get(entityIds.get(i));
-                        bc.isHit = true;
+                for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes){
+                    if(hb.hitbox.overlaps(cbc.bound)){
+                        HealthComponent hc = hm.get(entityIds.get(i));
+                        hc.health = hc.health - 1;
+
+                        if(bm.has(entityIds.get(i))){
+                            BlinkComponent bc = bm.get(entityIds.get(i));
+                            bc.isHit = true;
+                        }
+
+                        world.getSystem(OnDeathSystem.class).kill(e);
+                        break;
                     }
-
-                    world.getSystem(OnDeathSystem.class).kill(e);
-
-                    break; //TODO Note this is so you cna't hit two enemies at once. Might get rid of it later
                 }
+
             }
         }
 

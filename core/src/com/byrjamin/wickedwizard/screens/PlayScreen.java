@@ -139,6 +139,7 @@ public class PlayScreen extends AbstractScreen {
         roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
         random = new Random();
         jg =new JigsawGenerator(8, random);
+        jg.generateTutorial = false;
         createWorld();
     }
 

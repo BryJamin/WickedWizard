@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 05/03/2017.
@@ -36,10 +37,13 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
 
         for(int i = 0; i < entityIds.size(); i++) {
             if(cbm.has(entityIds.get(i))){
-                if(cbm.get(e).bound.overlaps(cbm.get(entityIds.get(i)).bound)){
+
+                for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
+                if(cbm.get(e).bound.overlaps(hb.hitbox)){
                     if(!bm.get(e).isHit) {
                         hm.get(e).health -= 1;
                         bm.get(e).isHit = true;
+                        break;
                     }
                 }
             }

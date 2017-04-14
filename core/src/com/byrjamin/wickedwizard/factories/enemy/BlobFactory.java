@@ -35,6 +35,8 @@ import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 26/03/2017.
@@ -60,7 +62,7 @@ public class BlobFactory {
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
         bag.add(new MoveToPlayerComponent());
@@ -97,7 +99,7 @@ public class BlobFactory {
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width * scale, height * scale)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width * scale, height * scale), true));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
         bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
@@ -129,8 +131,24 @@ public class BlobFactory {
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
-        bag.add(new CollisionBoundComponent(new Rectangle(x, y, Measure.units(33), Measure.units(38))));
+
+        Rectangle collision = new Rectangle(x, y, Measure.units(33), Measure.units(38));
+
+        CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x, y, Measure.units(33), Measure.units(38)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(33), Measure.units(17))));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(29), Measure.units(5)),
+                Measure.units(2), Measure.units(17)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(26), Measure.units(5)),
+                Measure.units(4), Measure.units(22)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(17), Measure.units(3)),
+                Measure.units(8), Measure.units(27)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(9), Measure.units(9)),
+                Measure.units(12), Measure.units(30)));
+
+        bag.add(cbc);
         bag.add(new GravityComponent());
+       // bag.add(new AccelerantComponent(Measure.units(10), Measure.units(20f)));
+       // bag.add(new MoveToPlayerComponent());
         bag.add(new EnemyComponent());
         bag.add(new HealthComponent(65));
         bag.add(new BlinkComponent());

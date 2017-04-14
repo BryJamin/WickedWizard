@@ -34,7 +34,7 @@ public class TurretFactory {
     public static Bag<Component> fixedTurret(float x, float y){
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9))));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9)), true));
         bag.add(new EnemyComponent());
         bag.add(new HealthComponent(10));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
@@ -64,7 +64,7 @@ public class TurretFactory {
         } else {
             bag.add(new VelocityComponent(-300, 0));
         }
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9))));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9)), true));
         bag.add(new EnemyComponent());
         bag.add(new HealthComponent(10));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),

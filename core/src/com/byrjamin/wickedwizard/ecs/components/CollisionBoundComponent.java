@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 04/03/2017.
@@ -12,12 +13,19 @@ import com.byrjamin.wickedwizard.utils.collider.Collider;
 public class CollisionBoundComponent extends Component{
 
     public Rectangle bound;
-    public Array<Rectangle> hitBoxes; //Make a hitbox class with an offsetx and offset y?
+    public Array<HitBox> hitBoxes = new Array<HitBox>(); //Make a hitbox class with an offsetx and offset y?
 
     public Array<Collider.Collision> recentCollisions = new Array<Collider.Collision>();
 
     public CollisionBoundComponent(Rectangle bound){
         this.bound = bound;
+    }
+
+    public CollisionBoundComponent(Rectangle bound, boolean useBoundAsHitbox){
+        this.bound = bound;
+        if(useBoundAsHitbox) {
+            hitBoxes.add(new HitBox(bound));
+        }
     }
 
     public CollisionBoundComponent(){

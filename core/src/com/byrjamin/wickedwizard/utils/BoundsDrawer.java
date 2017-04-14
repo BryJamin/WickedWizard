@@ -66,6 +66,31 @@ public class BoundsDrawer {
     }
 
     /**
+     * Draws the boundaries of an Array of Rectangles
+     * @param batch - The SpriteBatch
+     * @param bounds - Rectangle Array
+     */
+    public static void drawBounds(SpriteBatch batch, Color c, Rectangle... bounds){
+
+        if(batch.isDrawing()) {
+            batch.end();
+        }
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(c);
+        for(Rectangle r : bounds) {
+            shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        }
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.end();
+
+        if(!batch.isDrawing()) {
+            batch.begin();
+        }
+    }
+
+    /**
      * Draws the boundaries of an Array of Circles
      * @param batch - The SpriteBatch
      * @param bounds - Rectangle Array
