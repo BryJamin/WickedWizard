@@ -29,7 +29,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ExpireSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
@@ -65,7 +65,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToPlayerAISystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.byrjamin.wickedwizard.ecs.systems.PlayerInputSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
@@ -250,6 +250,7 @@ public class PlayScreen extends AbstractScreen {
                 .build();
 
         world = new World(config);
+        world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
 
         for (Bag<Component> bag : startingArena.getBagOfEntities()) {
             Entity entity = world.createEntity();

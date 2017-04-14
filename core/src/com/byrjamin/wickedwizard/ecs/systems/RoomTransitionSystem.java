@@ -24,7 +24,6 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
-import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 
 /**
@@ -164,7 +163,7 @@ public class RoomTransitionSystem extends EntitySystem {
         velocity.y = velocity.y / 2;
         velocity.x = velocity.x / 2 ;
 
-        world.getSystem(PlayerInputSystem.class).activeGrapple = false;
+        world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).getPlayerInput().activeGrapple = false;
         System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
     }

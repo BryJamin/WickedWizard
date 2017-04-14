@@ -7,7 +7,7 @@ import com.artemis.EntitySystem;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.systems.PlayerInputSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 
 /**

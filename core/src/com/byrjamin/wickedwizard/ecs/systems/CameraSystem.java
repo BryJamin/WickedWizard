@@ -2,7 +2,6 @@ package com.byrjamin.wickedwizard.ecs.systems;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
-import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -66,7 +65,7 @@ public class CameraSystem extends EntitySystem {
         gamecam.update();
 
 
-        world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
+        world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
                 gamecam.position.y - gamePort.getWorldHeight() / 2);
 
     }
