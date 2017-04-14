@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -40,9 +41,9 @@ public class MovementSystem extends EntityProcessingSystem {
         }
 
         if(vc.velocity.x < 0)
-            com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.LOW);
+            DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.LOW);
         else if(vc.velocity.x > 0)
-            com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.LOW);
+            DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.LOW);
 
 
 

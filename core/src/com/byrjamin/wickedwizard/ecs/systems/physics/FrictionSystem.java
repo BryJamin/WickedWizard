@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ItemComponent;
+import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -23,7 +24,7 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 public class FrictionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<PositionComponent> pm;
+    ComponentMapper<PlayerComponent> pm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
@@ -41,17 +42,24 @@ public class FrictionSystem extends EntityProcessingSystem {
 
         //PositionComponent pc = pm.get(e);
 
-        if(canApplyFriction(e)) {
+        if(canApplyFriction(e) || pm.has(e)) {
             VelocityComponent vc = vm.get(e);
 
-            float friction = Measure.units(7.5f);
 
-            if (vc.velocity.x >= -50 && vc.velocity.x < 50) {
-                vc.velocity.x = 0;
-            } else if (vc.velocity.x >= 0) {
-                vc.velocity.x = (vc.velocity.x - friction <= 0) ? 0 : vc.velocity.x - friction;
-            } else if (vc.velocity.x <= 0) {
-                vc.velocity.x = (vc.velocity.x + friction >= 0) ? 0 : vc.velocity.x + friction;
+            float friction = Measure.units(7.5f);
+            float minSpeed = Measure.units(0f);
+
+            if(pm.has(e)) {
+                if(!cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) && !gm.get(e).gliding){
+                    System.out.println("INSIDe");
+                    minSpeed = Measure.units(20f);
+                }
+            }
+
+             if (vc.velocity.x >= minSpeed) {
+                vc.velocity.x = (vc.velocity.x - friction <= minSpeed) ? minSpeed : vc.velocity.x - friction;
+            } else if (vc.velocity.x <= -minSpeed) {
+                vc.velocity.x = (vc.velocity.x + friction >= -minSpeed) ? -minSpeed : vc.velocity.x + friction;
             }
         }
 

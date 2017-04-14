@@ -68,6 +68,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
 
     private Integer movementInputPoll = null;
     private Integer firingInputPoll = null;
+    private Integer tapInputPoll = null;
     public boolean activeGrapple;
 
     private Array<ChildComponent> wingChildren = new Array<ChildComponent>();
@@ -254,7 +255,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
             } else if(firingInputPoll == null){
                 firingInputPoll = pointer;
             }
-
             tapInputTimer.reset();
         } else {
 
@@ -303,7 +303,7 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
         if(!activeGrapple) {
 
             //TODO Find player get player should be player position or something if player can't be found
-            if(!tapInputTimer.isFinished() /*&& jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0*/) {
+            if(!tapInputTimer.isFinished()/*&& jm.get(world.getSystem(FindPlayerSystem.class).getPlayer()).jumps > 0*/) {
 
 
                 Vector3 input = new Vector3(screenX, screenY, 0);
@@ -330,7 +330,6 @@ public class PlayerInputSystem extends EntityProcessingSystem implements InputPr
                     ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
                     turnOffGlide(glc, parc);
                 }
-
                 tapInputTimer.reset();
             }
 

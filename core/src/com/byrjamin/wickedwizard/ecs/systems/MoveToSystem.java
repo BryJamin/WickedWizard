@@ -48,7 +48,9 @@ public class MoveToSystem extends EntityProcessingSystem {
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterX() : pc.getX();
 
             if (cbc.bound.contains(mtc.targetX, cbc.getCenterY())) {
-               // endTravel(vc, mtc);
+                mtc.targetX = null;
+                vc.velocity.x = vc.velocity.x / 2;
+                //vc.velocity.x = mtc.endSpeedX;
             } else if (currentPosition >= targetX) {
                 vc.velocity.x = (vc.velocity.x <= -mtc.maxX) ? -mtc.maxX : vc.velocity.x - mtc.accelX;
             } else {
@@ -63,7 +65,8 @@ public class MoveToSystem extends EntityProcessingSystem {
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterY() : pc.getY();
 
             if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
-               // endTravel(vc, mtc);
+                mtc.targetY = null;
+                vc.velocity.y = vc.velocity.y / 2;
             } else if (currentPosition >= targetY) {
                 vc.velocity.y = (vc.velocity.y <= -mtc.maxX) ? -mtc.maxY : vc.velocity.y - mtc.accelY;
             } else {
@@ -71,11 +74,13 @@ public class MoveToSystem extends EntityProcessingSystem {
             }
         }
 
+/*
     if(mtc.targetX != null && mtc.targetY != null) {
         if (cbc.bound.contains(targetX, targetY)) {
             endTravel(vc, mtc);
         }
     }
+*/
 
 
 
@@ -96,12 +101,12 @@ public class MoveToSystem extends EntityProcessingSystem {
         } else {
             //vc.velocity.y = 0;
         }*/
-
+/*
         vc.velocity.x = vc.velocity.x / 2;
         vc.velocity.y = vc.velocity.y / 2;
 
         mtc.targetY = null;
-        mtc.targetX = null;
+        mtc.targetX = null;*/
 
     }
 
@@ -153,6 +158,8 @@ public class MoveToSystem extends EntityProcessingSystem {
 
         mtc.maxX = Math.abs(cosine * speedOfTravel);
         mtc.maxY = Math.abs(sine * speedOfTravel);
+
+        //mtc.endSpeedY =
 
     }
 
