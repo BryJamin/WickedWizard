@@ -72,6 +72,9 @@ public class PlayerInput extends InputAdapter{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        if(pointer > 1) return false;
+
         Vector3 touchInput = new Vector3(screenX, screenY, 0);
         gameport.unproject(touchInput);
 
@@ -98,6 +101,7 @@ public class PlayerInput extends InputAdapter{
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+        if(pointer > 1) return false;
 
         if(!activeGrapple) {
 

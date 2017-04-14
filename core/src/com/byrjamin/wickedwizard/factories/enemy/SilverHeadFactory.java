@@ -64,7 +64,7 @@ public class SilverHeadFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
-        bag.add(new AccelerantComponent(Measure.units(10f), 0, Measure.units(30), 0));
+        bag.add(new AccelerantComponent(Measure.units(5f), 0, Measure.units(20f), 0));
         bag.add(new HealthComponent(health));
         bag.add(new BlinkComponent());
         //bag.add(new MoveToPlayerComponent());
