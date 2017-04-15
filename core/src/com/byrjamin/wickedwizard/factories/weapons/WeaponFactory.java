@@ -1,13 +1,15 @@
-package com.byrjamin.wickedwizard.factories;
+package com.byrjamin.wickedwizard.factories.weapons;
 
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -23,6 +25,16 @@ public class WeaponFactory {
             public void fire(World world, float x, float y, double angle) {
                 BulletFactory.createEnemyBullet(world, x, y, angle);
             }
+
+            @Override
+            public float getBaseFireRate() {
+                return 2f;
+            }
+
+            @Override
+            public float getBaseDamage() {
+                return 1f;
+            }
         };
     }
 
@@ -30,7 +42,24 @@ public class WeaponFactory {
         return new Weapon() {
             @Override
             public void fire(World world, float x, float y, double angle) {
-                BulletFactory.createBullet(world, x, y, angle);
+
+
+/*
+                public static Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion) {
+                    return basicBulletBag(x ,y ,scale ,textureRegion , Color.WHITE);
+                }
+
+                BulletFactory.createBullet(world, x, y, angle);*/
+            }
+
+            @Override
+            public float getBaseFireRate() {
+                return 1;
+            }
+
+            @Override
+            public float getBaseDamage() {
+                return 0;
             }
         };
     }
@@ -60,6 +89,16 @@ public class WeaponFactory {
 
                 }
 
+            }
+
+            @Override
+            public float getBaseFireRate() {
+                return 1;
+            }
+
+            @Override
+            public float getBaseDamage() {
+                return 1;
             }
         };
     }

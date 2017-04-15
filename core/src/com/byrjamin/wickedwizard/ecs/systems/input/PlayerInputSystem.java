@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
@@ -56,7 +57,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WeaponComponent> wm;
-    ComponentMapper<AnimationStateComponent> sm;
+    ComponentMapper<AnimationStateComponent> asm;
+    ComponentMapper<StatComponent> sm;
     ComponentMapper<GravityComponent> gm;
     ComponentMapper<GlideComponent> glm;
     ComponentMapper<TextureRegionComponent> trm;
@@ -64,9 +66,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     OrthographicCamera gamecam;
     Viewport gameport;
-
-
-    private Integer tapInputPoll = null;
 
     private PlayerInput playerInput;
 
@@ -104,7 +103,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         AccelerantComponent ac = am.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         WeaponComponent wc = wm.get(e);
-        AnimationStateComponent sc = sm.get(e);
+        AnimationStateComponent asc = asm.get(e);
+        StatComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
         GravityComponent gc = gm.get(e);
         GlideComponent glc = glm.get(e);
@@ -122,8 +122,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
                     if (input.y <= movementArea.y + movementArea.getHeight()) {
-                        ac.accelX = Measure.units(15f);
-                        ac.maxX = Measure.units(80f);
+                        ac.accelX = Measure.units(15f) * sc.speed;
+                        ac.maxX = Measure.units(80f) * sc.speed;
                         MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
                     }
                 }
@@ -156,14 +156,16 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                         }
                     }
 
-                    if (wc.timer.isFinishedAndReset()) {
-                        sc.setState(1);
+                    StatComponent statComponent = world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class);
+
+                    if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate() * statComponent.fireRate)) {
+                        asc.setState(1);
                         wc.weapon.fire(world, x, y, angleOfTravel);
                     }
                 }
             } else {
-                if (sc.getState() != 0) {
-                    sc.setState(0);
+                if (asc.getState() != 0) {
+                    asc.setState(0);
                 }
             }
         }

@@ -1,8 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
-import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.factories.WeaponFactory;
+import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.utils.timer.StateTimer;
 
 /**
@@ -10,27 +9,17 @@ import com.byrjamin.wickedwizard.utils.timer.StateTimer;
  */
 public class WeaponComponent extends Component{
 
-    public float reloadTime;
-    public float currentTime;
-
     public Weapon weapon;
-
     public StateTimer timer;
 
-    public WeaponComponent(Weapon weapon, float reloadTime, float currentTime){
-        this.reloadTime = reloadTime;
-        this.currentTime = currentTime;
-        timer = new StateTimer(reloadTime, currentTime);
+    public WeaponComponent(Weapon weapon, float delayTime){
+        //this.reloadTime = reloadTime;
+        timer = new StateTimer(weapon.getBaseFireRate(), delayTime);
         this.weapon = weapon;
     }
 
-    public WeaponComponent(Weapon weapon, float reloadTime){
-        this(weapon, reloadTime, 0);
-    }
-
-
     public WeaponComponent(){
-        this(WeaponFactory.EnemyWeapon(), 2.0f, 0);
+        this(WeaponFactory.EnemyWeapon(), 0);
     }
 
 

@@ -1,9 +1,7 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,7 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.WeaponFactory;
+import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -113,7 +111,7 @@ public class SilverHeadFactory {
 
         Phase phase3 = new Phase(){
 
-            WeaponComponent wc = new WeaponComponent(WeaponFactory.SilverHeadWeapon(), 5f, 2.0f);
+            WeaponComponent wc = new WeaponComponent(WeaponFactory.SilverHeadWeapon(), 2.0f);
             FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
 
             @Override

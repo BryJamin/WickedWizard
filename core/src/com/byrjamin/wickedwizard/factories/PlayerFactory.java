@@ -1,7 +1,5 @@
 package com.byrjamin.wickedwizard.factories;
 
-import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,10 +9,10 @@ import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.FollowPositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
@@ -27,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.weapons.Pistol;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -64,7 +63,13 @@ public class PlayerFactory {
         bag.add(new AnimationComponent(k));
 
 
-        WeaponComponent wc = new WeaponComponent(WeaponFactory.PlayerWeapon(), 0.3f, 0.3f);
+        StatComponent statComponent = new StatComponent();
+        statComponent.fireRate = 1f;
+        statComponent.damage = 1f;
+        statComponent.speed = 1f;
+
+        bag.add(statComponent);
+        WeaponComponent wc = new WeaponComponent(new Pistol(), 0.3f);
         bag.add(wc);
         bag.add(new HealthComponent(6));
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));

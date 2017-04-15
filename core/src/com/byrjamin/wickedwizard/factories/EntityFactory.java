@@ -118,7 +118,7 @@ public class EntityFactory {
         e.edit().add(new HealthComponent(10));
         e.edit().add(new BlinkComponent());
 
-        WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(), 2f);
+        WeaponComponent wc = new WeaponComponent(com.byrjamin.wickedwizard.factories.weapons.WeaponFactory.EnemyWeapon(), 2f);
         e.edit().add(wc);
 
         e.edit().add(new FiringAIComponent());

@@ -121,6 +121,16 @@ public class KugelDuscheFactory {
                     }
                 }
             }
+
+            @Override
+            public float getBaseFireRate() {
+                return 0.2f;
+            }
+
+            @Override
+            public float getBaseDamage() {
+                return 0;
+            }
         };
 
     }
