@@ -107,7 +107,7 @@ public class KugelDuscheFactory {
             int[] angles = new int[] {0,180};
 
             @Override
-            public void fire(World world, float x, float y, double angle) {
+            public void fire(World world,Entity e, float x, float y, double angle) {
                 //Math.toRadians()
                 for(int i : angles){
                     double angleOfTravel = angle + Math.toRadians(i);
@@ -115,9 +115,9 @@ public class KugelDuscheFactory {
                     bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
                     BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;
 
-                    Entity e = world.createEntity();
+                    Entity bullet = world.createEntity();
                     for(Component c : bag){
-                        e.edit().add(c);
+                        bullet.edit().add(c);
                     }
                 }
             }

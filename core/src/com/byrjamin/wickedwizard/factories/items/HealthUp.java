@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.factories.items;
 
+import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -13,8 +14,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class HealthUp implements Item {
 
     @Override
-    public boolean applyEffect(World world) {
-        HealthComponent hc = world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class);
+    public boolean applyEffect(World world, Entity e) {
+        HealthComponent hc = e.getComponent(HealthComponent.class);
         if(hc.health == hc.maxHealth) return false;
         hc.health = (hc.health + 1 >= hc.maxHealth) ? hc.maxHealth : hc.health + 1;
         return true;

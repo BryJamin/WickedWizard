@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.factories.items;
 
+import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,9 +16,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class ChangeColor implements Item {
 
     @Override
-    public boolean applyEffect(World world) {
-        TextureRegionComponent trc = world.getSystem(FindPlayerSystem.class).getPC(TextureRegionComponent.class);
-        trc.color = Color.BLACK;
+    public boolean applyEffect(World world, Entity e) {
+        e.getComponent(TextureRegionComponent.class).color = Color.BLACK;
         return true;
     }
 

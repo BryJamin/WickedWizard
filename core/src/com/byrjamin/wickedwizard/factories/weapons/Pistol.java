@@ -3,7 +3,9 @@ package com.byrjamin.wickedwizard.factories.weapons;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -21,19 +23,20 @@ public class Pistol implements Weapon{
     private float baseDamage = 1;
     private float baseFireRate = 1;
 
-
     @Override
-    public void fire(World world, float x, float y, double angle) {
+    public void fire(World world, Entity e, float x, float y, double angle) {
 
-        Entity e = world.createEntity();
+        Entity bullet = world.createEntity();
         for(Component c : basicBulletBag(x,y,1, PlayScreen.atlas.findRegion("bullet"))){
-            e.edit().add(c);
+            bullet.edit().add(c);
         }
-        e.edit().add(new FriendlyComponent());
-        e.edit().add(new VelocityComponent((float) (Measure.units(90) * Math.cos(angle)), (float) (Measure.units(90) * Math.sin(angle))));
+        bullet.edit().add(new FriendlyComponent());
+        bullet.edit().add(new VelocityComponent((float) (Measure.units(90) * Math.cos(angle)), (float) (Measure.units(90) * Math.sin(angle))));
 
+        if(world.getMapper(StatComponent.class).has(e)) {
+            bullet.getComponent(BulletComponent.class).damage = baseDamage * e.getComponent(StatComponent.class).damage;
+        }
         //world.getSystem(FindPlayerSystem.class)
-
     }
 
     @Override

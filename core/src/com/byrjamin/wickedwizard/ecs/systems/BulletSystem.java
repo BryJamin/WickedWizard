@@ -12,6 +12,8 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
@@ -25,6 +27,7 @@ public class BulletSystem extends EntityProcessingSystem {
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
     ComponentMapper<BlinkComponent> bm;
+    ComponentMapper<BulletComponent> bulm;
 
 
     @SuppressWarnings("unchecked")
@@ -64,13 +67,13 @@ public class BulletSystem extends EntityProcessingSystem {
                 for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes){
                     if(hb.hitbox.overlaps(cbc.bound)){
                         HealthComponent hc = hm.get(entityIds.get(i));
-                        hc.health = hc.health - 1;
 
+                        System.out.println("Damage is " + bulm.get(e).damage);
+                        hc.applyDamage(bulm.get(e).damage);
                         if(bm.has(entityIds.get(i))){
                             BlinkComponent bc = bm.get(entityIds.get(i));
                             bc.isHit = true;
                         }
-
                         world.getSystem(OnDeathSystem.class).kill(e);
                         break;
                     }

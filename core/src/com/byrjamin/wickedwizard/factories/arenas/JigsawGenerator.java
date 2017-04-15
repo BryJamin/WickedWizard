@@ -166,7 +166,7 @@ public class JigsawGenerator {
 
     public Array<Arena> generateJigsaw() {
         Array<Arena> placedArenas = new Array<Arena>();
-        startingArena = createOmniArena();
+        startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         placedArenas.add(startingArena);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();

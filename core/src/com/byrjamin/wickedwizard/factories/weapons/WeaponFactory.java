@@ -22,7 +22,7 @@ public class WeaponFactory {
     public static Weapon EnemyWeapon(){
         return new Weapon() {
             @Override
-            public void fire(World world, float x, float y, double angle) {
+            public void fire(World world, Entity e, float x, float y, double angle) {
                 BulletFactory.createEnemyBullet(world, x, y, angle);
             }
 
@@ -38,40 +38,11 @@ public class WeaponFactory {
         };
     }
 
-    public static Weapon PlayerWeapon(){
-        return new Weapon() {
-            @Override
-            public void fire(World world, float x, float y, double angle) {
-
-
-/*
-                public static Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion) {
-                    return basicBulletBag(x ,y ,scale ,textureRegion , Color.WHITE);
-                }
-
-                BulletFactory.createBullet(world, x, y, angle);*/
-            }
-
-            @Override
-            public float getBaseFireRate() {
-                return 1;
-            }
-
-            @Override
-            public float getBaseDamage() {
-                return 0;
-            }
-        };
-    }
-
-
-
-
 
     public static Weapon SilverHeadWeapon(){
         return new Weapon() {
             @Override
-            public void fire(World world, float x, float y, double angle) {
+            public void fire(World world, Entity e, float x, float y, double angle) {
 
                 int[] angles = new int[] {0,30,60,80,100,120,150,180};
                 //Math.toRadians()
@@ -81,10 +52,10 @@ public class WeaponFactory {
                     bag.add(new VelocityComponent((float) (Measure.units(75) * Math.cos(angleOfTravel)), (float) (Measure.units(75) * Math.sin(angleOfTravel))));
                     bag.add(new GravityComponent());
 
-                    Entity e = world.createEntity();
+                    Entity bullet = world.createEntity();
 
                     for(Component c : bag){
-                        e.edit().add(c);
+                        bullet.edit().add(c);
                     }
 
                 }

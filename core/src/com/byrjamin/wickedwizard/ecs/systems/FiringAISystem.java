@@ -42,12 +42,12 @@ public class FiringAISystem extends EntityProcessingSystem {
                 if(wc.timer.isFinishedAndReset()){
                     CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
-                    wc.weapon.fire(world, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
+                    wc.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
                 }
                 break;
             case UNTARGETED:
                 if(wc.timer.isFinishedAndReset()){
-                    wc.weapon.fire(world, cbc.getCenterX(), cbc.getCenterY(), fc.firingAngleInRadians);
+                    wc.weapon.fire(world,e, cbc.getCenterX(), cbc.getCenterY(), fc.firingAngleInRadians);
                 }
                 break;
         }

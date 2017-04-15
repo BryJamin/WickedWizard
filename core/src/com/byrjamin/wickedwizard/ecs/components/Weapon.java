@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.components;
 
+import com.artemis.Entity;
 import com.artemis.World;
 
 /**
@@ -11,7 +12,7 @@ public interface Weapon {
     public float baseDamage = 1;
     public float baseFireRate = 1;
 
-    void fire(World world, float x, float y, double angle);
+    void fire(World world, Entity e, float x, float y, double angle);
 
     float getBaseFireRate();
 
