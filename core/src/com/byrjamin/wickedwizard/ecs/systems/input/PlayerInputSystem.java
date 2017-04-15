@@ -142,19 +142,17 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
 
-                    if (playerInput.isWithinTapInterval()) {
-                        if (angleOfTravel >= 0) {
-                            if (angleOfTravel <= (Math.PI / 2)) {
-                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
-                            } else {
-                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
-                            }
+                    if (angleOfTravel >= 0) {
+                        if (angleOfTravel <= (Math.PI / 2)) {
+                            com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
                         } else {
-                            if (angleOfTravel >= -(Math.PI / 2)) {
-                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
-                            } else {
-                                com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
-                            }
+                            com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                        }
+                    } else {
+                        if (angleOfTravel >= -(Math.PI / 2)) {
+                            com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.HIGH);
+                        } else {
+                            com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
                         }
                     }
 
