@@ -6,6 +6,7 @@ import com.byrjamin.wickedwizard.ecs.components.ItemComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -49,6 +50,7 @@ public class ItemFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new ItemComponent(item));
+        bag.add(new HighlightComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new TextureRegionComponent(item.getRegion(), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR));

@@ -2,7 +2,7 @@
 sprite.png
 size: 2048,256
 format: RGBA8888
-filter: MipMapLinearLinear,MipMapLinearNearest
+filter: Nearest,Nearest
 repeat: none
 arrow
   rotate: false
@@ -899,14 +899,14 @@ squ_walk
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
+  index: 4
 squ_walk
   rotate: false
   xy: 980, 32
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 0
 squ_firing
   rotate: false
   xy: 1014, 32

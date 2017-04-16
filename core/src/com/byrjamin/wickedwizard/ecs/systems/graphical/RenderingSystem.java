@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
@@ -33,6 +34,7 @@ public class RenderingSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm;
     private ComponentMapper<BlinkComponent> bm;
+    private ComponentMapper<HighlightComponent> hm;
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<TextureRegionBatchComponent> trbm;
     private ComponentMapper<TextureFontComponent> trfm;
@@ -44,7 +46,7 @@ public class RenderingSystem extends EntitySystem {
     public ShapeRenderer shapeRenderer;
     public OrthographicCamera gamecam;
 
-    public ShaderProgram shaderProgram;
+    public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, OrthographicCamera gamecam) {
@@ -64,9 +66,9 @@ public class RenderingSystem extends EntitySystem {
     }
 
     public void loadShader() {
-        shaderProgram = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
+        whiteShaderProgram = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
                 Gdx.files.internal("shader/WhiteFragmentShader.glsl"));
-        if (!shaderProgram.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shaderProgram.getLog());
+        if (!whiteShaderProgram.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + whiteShaderProgram.getLog());
     }
 
     @Override
@@ -95,16 +97,42 @@ public class RenderingSystem extends EntitySystem {
             boolean shaderOn = false;
 
             if(bm.has(e)){
-                if(bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT){
-                    batch.end();
-                    batch.setShader(shaderProgram);
-                    batch.begin();
-                    shaderOn = true;
-                }
+                shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT;
+            }
+
+            if(shaderOn){
+                batch.end();
+                batch.setShader(whiteShaderProgram);
+                batch.begin();
             }
 
             float originX = trc.width * 0.5f;
             float originY = trc.height * 0.5f;
+
+
+            if(hm.has(e)){
+
+                batch.end();
+                batch.setShader(whiteShaderProgram);
+                batch.begin();
+
+
+
+                batch.draw(trc.region,
+                        pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
+                        originX, originY,
+                        trc.width, trc.height,
+                        trc.scaleX * rendDirection(e) * 1.1f, trc.scaleY * 1.1f,
+                        trc.rotation);
+
+                batch.end();
+                batch.setShader(null);
+                batch.begin();
+
+
+            }
+
+
             batch.setColor(trc.color);
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,

@@ -53,6 +53,12 @@ public class SilverHeadFactory {
     private static final float textureOffsetX = -Measure.units(1.5f);
     private static final float textureOffsetY = 0;
 
+    private static final float accelX = Measure.units(5f);
+    private static final float maxX = Measure.units(20f);
+
+    private static final float chargeAccelX = Measure.units(5f);
+    private static final float chargeMaxX = Measure.units(5f);
+
     public static ComponentBag silverHead(float x, float y){
 
         x = x - width / 2;
@@ -64,7 +70,8 @@ public class SilverHeadFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
-        bag.add(new AccelerantComponent(Measure.units(5f), 0, Measure.units(20f), 0));
+        bag.add(new AccelerantComponent(accelX, 0, maxX, 0));
+        bag.add(new MoveToPlayerComponent());
         bag.add(new HealthComponent(health));
         bag.add(new BlinkComponent());
         //bag.add(new MoveToPlayerComponent());
@@ -136,18 +143,19 @@ public class SilverHeadFactory {
 
         Phase phase4 = new Phase(){
 
-            MoveToPlayerComponent mtpc = new MoveToPlayerComponent();
-
             @Override
             public void changePhase(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(STANDING);
-                e.edit().add(mtpc);
+                AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
+                ac.accelX = accelX;
+                ac.maxX = maxX;
             }
 
             @Override
             public void cleanUp(World w, Entity e) {
-                e.edit().remove(mtpc);
-                e.getComponent(VelocityComponent.class).velocity.x = 0;
+                AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
+                ac.accelX = chargeAccelX;
+                ac.maxX = chargeMaxX;
             }
         };
 

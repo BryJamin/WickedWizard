@@ -20,6 +20,6 @@ public class DamageUp implements Item {
 
     @Override
     public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("fire");
+        return PlayScreen.atlas.findRegion("bullet_blue");
     }
 }

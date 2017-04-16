@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -138,7 +139,7 @@ public class PlayScreen extends AbstractScreen {
 
     public void loadShader() {
         shaderOutline = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
-                Gdx.files.internal("shader/GreyScaleFragmentShader.glsl"));
+                Gdx.files.internal("shader/WhiteFragmentShader.glsl"));
         if (!shaderOutline.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shaderOutline.getLog());
     }
 
@@ -296,6 +297,7 @@ public class PlayScreen extends AbstractScreen {
             pauseWorld(world);
         }
 
+
         handleInput(world.delta);
         world.process();
 
@@ -309,9 +311,9 @@ public class PlayScreen extends AbstractScreen {
             world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
         }
 
-        //game.batch.setShader(shaderOutline);
+
         drawHUD(world, gamecam);
-        //game.batch.setShader(null);
+        //s.draw(game.batch);
         arenaGUI.draw(game.batch);
 
         if(gameOver){
@@ -326,9 +328,11 @@ public class PlayScreen extends AbstractScreen {
             deathWorld.process();
         }
 
+
+
         //pauseWorld(world);
 
-       // System.out.println(Gdx.graphics.getFramesPerSecond());
+        System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
 
@@ -375,65 +379,14 @@ public class PlayScreen extends AbstractScreen {
 
         for (int i = 0; i < jumpresource.jumps; i++) {
 
-            float width = MainGame.GAME_UNITS * 15f;
-            float height = MainGame.GAME_UNITS * 15f;
+            float width = MainGame.GAME_UNITS * 2.5f;
+            float height = MainGame.GAME_UNITS * 2.5f;
 
-/*
+
             game.batch.draw(atlas.findRegion("bullet_blue"),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
                     width, height);
-*/
-
-            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-/*          shaderOutline.begin();
-            shaderOutline.setUniformf("u_viewportInverse", new Vector2(1f / 99, 1f / 94));
-            shaderOutline.setUniformf("u_offset", 2);
-            shaderOutline.setUniformf("u_step", Math.min(1f, 99 / 70f));
-            shaderOutline.setUniformf("u_color", new Vector3(123/255, 1, 71/255));
-            shaderOutline.end();*/
-/*
-
-            if (game.batch.isDrawing()) {
-                game.batch.end();
-            }
-            game.batch.setShader(shaderOutline);
-
-            game.batch.begin();
-            Sprite s = new Sprite(atlas.findRegion("bullet_blue"));
-
-            game.batch.draw(s, 500, 500, 1000,1000);
-            game.batch.end();
-            game.batch.setShader(null);
-*/
-
-/*            game.batch.begin();
-            game.batch.draw(atlas.findRegion("bullet_blue"), 240, 400);
-            game.batch.end();*/
-
-
-/*            game.batch.end();
-            shaderOutline.begin();
-            shaderOutline.setUniformf("u_viewportInverse", new Vector2(1f / width, 1f / height));
-            shaderOutline.setUniformf("u_offset", 3f);
-            shaderOutline.setUniformf("u_step", Math.min(1f, width / 70f));
-            shaderOutline.setUniformf("u_color", new Vector3(1f, 1f, 1f));
-            shaderOutline.end();
-            game.batch.setShader(shaderOutline);
-            game.batch.begin();
-            game.batch.draw(atlas.findRegion("bullet_blue"),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
-                    width, width);
-            game.batch.end();
-            game.batch.setShader(null);
-            game.batch.begin();
-
-            game.batch.draw(atlas.findRegion("bullet_blue"),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
-                    width, height);*/
         }
 
     }
