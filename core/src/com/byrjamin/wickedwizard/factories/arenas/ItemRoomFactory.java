@@ -9,11 +9,15 @@ import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.items.DamageUp;
+import com.byrjamin.wickedwizard.factories.items.FireRateUp;
+import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.PlusOne;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
+
+import java.util.Random;
 
 /**
  * Created by Home on 11/04/2017.
@@ -64,8 +68,12 @@ public class ItemRoomFactory extends RoomFactory {
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
 
 
+        Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
+
+        Random random = new Random();
+
         arena.addEntity(ItemFactory.createFloatingItemBag(arena.getWidth() / 2,
-                arena.getHeight() / 2, new PlusOne()));
+                arena.getHeight() / 2, items[random.nextInt(items.length)]));
 
         return arena;
     }

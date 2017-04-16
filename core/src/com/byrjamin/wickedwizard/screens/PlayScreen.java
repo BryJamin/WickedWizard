@@ -131,8 +131,8 @@ public class PlayScreen extends AbstractScreen {
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
-        jg =new JigsawGenerator(8, random);
-        jg.generateTutorial = false;
+        jg =new JigsawGenerator(10, random);
+        jg.generateTutorial = true;
         loadShader();
         createWorld();
     }
@@ -332,7 +332,7 @@ public class PlayScreen extends AbstractScreen {
 
         //pauseWorld(world);
 
-        System.out.println(Gdx.graphics.getFramesPerSecond());
+        //System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
 
