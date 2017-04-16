@@ -61,7 +61,18 @@ public class TutorialFactory extends RoomFactory{
                 Measure.units(15),
                 PlayScreen.atlas.findRegions("backgrounds/wall")));
 
-        //LEFT WALL
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.DOOR,
+                        true,
+                        true))
+/*                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        true,
+                        true))*/.build();
+/*        //LEFT WALL
         arena.addEntity(EntityFactory.wallBag(0, 0, WALLWIDTH, HEIGHT));
 
         //RIGHT WALL
@@ -75,7 +86,7 @@ public class TutorialFactory extends RoomFactory{
         arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
 
         //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
+        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));*/
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
