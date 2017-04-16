@@ -9,8 +9,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
@@ -29,6 +32,7 @@ import java.util.Comparator;
 public class RenderingSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm;
+    private ComponentMapper<BlinkComponent> bm;
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<TextureRegionBatchComponent> trbm;
     private ComponentMapper<TextureFontComponent> trfm;
@@ -39,6 +43,8 @@ public class RenderingSystem extends EntitySystem {
     public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
     public OrthographicCamera gamecam;
+
+    public ShaderProgram shaderProgram;
 
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, OrthographicCamera gamecam) {
@@ -52,6 +58,15 @@ public class RenderingSystem extends EntitySystem {
         this.gamecam = gamecam;
         shapeRenderer = new ShapeRenderer();
         orderedEntities = new ArrayList<Entity>();
+
+        loadShader();
+
+    }
+
+    public void loadShader() {
+        shaderProgram = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
+                Gdx.files.internal("shader/WhiteFragmentShader.glsl"));
+        if (!shaderProgram.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shaderProgram.getLog());
     }
 
     @Override
@@ -76,6 +91,18 @@ public class RenderingSystem extends EntitySystem {
         if(trm.has(e)) {
             TextureRegionComponent trc = trm.get(e);
 
+
+            boolean shaderOn = false;
+
+            if(bm.has(e)){
+                if(bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT){
+                    batch.end();
+                    batch.setShader(shaderProgram);
+                    batch.begin();
+                    shaderOn = true;
+                }
+            }
+
             float originX = trc.width * 0.5f;
             float originY = trc.height * 0.5f;
             batch.setColor(trc.color);
@@ -86,6 +113,13 @@ public class RenderingSystem extends EntitySystem {
                     trc.scaleX * rendDirection(e), trc.scaleY,
                     trc.rotation);
             batch.setColor(Color.WHITE);
+
+            if(shaderOn){
+                    batch.end();
+                    batch.setShader(null);
+                    batch.begin();
+            }
+
         }
 
         if(trbm.has(e)){

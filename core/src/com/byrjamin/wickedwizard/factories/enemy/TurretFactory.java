@@ -30,8 +30,15 @@ import java.util.Random;
 
 public class TurretFactory {
 
+    static float width = Measure.units(9f);
+    static float height = Measure.units(9f);
 
     public static Bag<Component> fixedTurret(float x, float y){
+
+        x = x - width / 2;
+        y = y - width / 2;
+
+
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9)), true));
@@ -55,6 +62,10 @@ public class TurretFactory {
 
 
     public static Bag<Component> movingTurret(float x, float y){
+
+        x = x - width / 2;
+        y = y - width / 2;
+
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
 

@@ -35,7 +35,7 @@ public class BlinkSystem extends EntityProcessingSystem {
             if(bc.blinkFrames > 0){
 
                 if(bc.blinktype == BlinkComponent.BLINKTYPE.CONSTANT){
-                    trc.setColor(0.0f,0.0f,0.0f,0.95f);
+                    //trc.setColor(0.0f,0.0f,0.0f,0.95f);
                 } else {
                     bc.blinkTimer -= world.delta;;
                     if (bc.blinkTimer < 0) {

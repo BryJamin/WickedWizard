@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
@@ -23,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -75,6 +77,8 @@ public class SilverHeadFactory {
         animMap.put(OPENING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED));
         animMap.put(CHARING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING));
         bag.add(new AnimationComponent(animMap));
+
+        bag.add(DeathFactory.basicOnDeathExplosion(new OnDeathComponent(), width, height));
 
         bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0),
                 textureOffsetX,

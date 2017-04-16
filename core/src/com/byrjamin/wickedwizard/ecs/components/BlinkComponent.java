@@ -25,8 +25,8 @@ public class BlinkComponent extends Component {
 
 
     public BlinkComponent(){
-        blinkFrames = 0.1f;
-        resetFrames = 0.1f;
+        blinkFrames = 0.04f;
+        resetFrames = 0.04f;
     }
 
     public BlinkComponent(float blinkFrames, BLINKTYPE blinktype){
