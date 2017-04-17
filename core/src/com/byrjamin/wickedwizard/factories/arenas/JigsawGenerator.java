@@ -130,7 +130,7 @@ public class JigsawGenerator {
 
         startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
+        //startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         placedArenas.add(startingArena);
         placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,3)));

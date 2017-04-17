@@ -62,9 +62,6 @@ public class TutorialFactory extends RoomFactory{
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).build();
 
-
-        arena.addEntity(EntityFactory.wallBag(new Rectangle(500, Measure.units(10), 400, 400)));
-
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
         TextureFontComponent tfc = new TextureFontComponent(moveTutorialString1);

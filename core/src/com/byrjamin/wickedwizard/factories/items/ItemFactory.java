@@ -104,7 +104,7 @@ public class ItemFactory {
         bag.add(new VelocityComponent());
         bag.add(new GravityComponent());
 
-        Rectangle bound = new Rectangle(new Rectangle(x,y, width, height));
+        Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
 
         bag.add(new CollisionBoundComponent(bound));
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("altar"), width, height,

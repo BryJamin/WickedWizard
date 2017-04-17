@@ -75,7 +75,7 @@ public class ItemRoomFactory extends RoomFactory {
 
 
         for(ComponentBag b : ItemFactory.createItemAltarBag(arena.getWidth() / 2,
-                arena.getHeight() / 2, items[random.nextInt(items.length)])) {
+                Measure.units(12), items[random.nextInt(items.length)])) {
             arena.addEntity(b);
         }
         return arena;
