@@ -17,6 +17,7 @@ public class Level1Rooms {
         ag.add(room3());
         ag.add(room4());
         ag.add(room5());
+        ag.add(room6());
         return ag;
     }
 
@@ -70,6 +71,17 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = RoomFactory.createOmniArena();
                 RoomDecorationFactory.silverHead(a);
+                return a;
+            }
+        };
+    }
+
+    public static ArenaGen room6(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = RoomFactory.createWidth2Arena();
+                RoomDecorationFactory.movingDoubleTurretRoom(a);
                 return a;
             }
         };

@@ -51,7 +51,6 @@ public class FrictionSystem extends EntityProcessingSystem {
 
             if(pm.has(e)) {
                 if(!cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) && !gm.get(e).gliding){
-                    System.out.println("INSIDe");
                     minSpeed = Measure.units(20f);
                 }
             }

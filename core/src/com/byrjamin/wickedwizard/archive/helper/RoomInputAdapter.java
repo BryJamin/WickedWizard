@@ -106,7 +106,6 @@ public class RoomInputAdapter extends InputAdapter{
             if(r.getBounds().contains(input.x, input.y) ){
                 if(w.getY() > r.getBounds().getY() + r.getBounds().getHeight()) {
                     room.getWizard().flyTo(input.x, r.getBounds().getY() + r.getBounds().getHeight());
-                    System.out.println("INSIDE");
                     movementPoll = pointer;
                     fire = false;
                     break;
@@ -160,7 +159,6 @@ public class RoomInputAdapter extends InputAdapter{
 
         if(movementPoll == pointer && input.y > 300 && room.isWizardonGround()) {
             room.getWizard().jump();
-            System.out.println("INSIDE");
         }
 
         if(movementPoll == pointer){

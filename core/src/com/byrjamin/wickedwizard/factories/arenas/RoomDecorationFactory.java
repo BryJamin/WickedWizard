@@ -116,7 +116,7 @@ public class RoomDecorationFactory {
 
     public static void biggablobba(Arena a){
 
-        a.addEntity(BlobFactory.BiggaBlobbaBag(a.getWidth() / 2, Measure.units(4)));
+        a.addEntity(BlobFactory.BiggaBlobbaBag(a.getWidth() / 2, Measure.units(20)));
 
 /*        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {

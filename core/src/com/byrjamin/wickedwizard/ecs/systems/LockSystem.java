@@ -72,7 +72,6 @@ public class LockSystem extends EntitySystem {
         for(Entity e : this.getEntities()){
             LockComponent lc = lm.get(e);
             if(lc.isLocked()) {
-                System.out.println("INSIDE");
                 lm.get(e).unlock();
                 if (aotm.has(e)) {
                     aotm.get(e).isEnabled = true;

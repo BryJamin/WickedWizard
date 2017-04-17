@@ -29,19 +29,28 @@ public class Collider {
         //If the wall is taller than it is wide, then the priority collisions are LEFT and RIGHT
        // if(wall.getHeight() > wall.getWidth()) {
 
-            if (wall.overlaps(futureBound) && ((currentBound.getY() + currentBound.getHeight() > wall.getY() + 20) && currentBound.getY() < wall.y + wall.getHeight() - 20)) {
-                if (futureBound.getX() < wall.x) {//Hit was on left
+        boolean isBetween = currentBound.getX() > wall.getX() && currentBound.getX() + currentBound.getWidth() < wall.getX() + wall.getWidth();
+
+
+        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() - 50
+                && currentBound.getY() < wall.getY() + wall.getHeight();
+
+        System.out.println(isBetweenY);
+        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + 15 && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
+
+            if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
+                if (futureBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
                     currentBound.setX(wall.x - currentBound.width);
                     return Collision.LEFT;
-                } else if (futureBound.getX() > wall.x) {//Hit was on right
+                } else if (futureBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
                     currentBound.setX(wall.x + wall.getWidth());
                     return Collision.RIGHT;
                 }
             } else if (wall.overlaps(futureBound)) { //Hit was on top
-                if (futureBound.getY() > wall.y) {
+                if (futureBound.getY() > wall.y + wall.getHeight() / 2) {
                     currentBound.setY(wall.y + wall.getHeight());
                     return Collision.TOP;
-                } else if (futureBound.getY() < wall.y) { //Hit was on bottom
+                } else if (futureBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
                     currentBound.setY(wall.y - currentBound.height);
                     return Collision.BOTTOM;
                 }

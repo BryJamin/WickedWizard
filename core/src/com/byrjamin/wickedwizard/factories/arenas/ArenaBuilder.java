@@ -71,42 +71,58 @@ public class ArenaBuilder {
             System.out.println("MultX is " + multX);
             int multY = s.coords.getY() - defaultCoords.getY();
 
+            int coordX = defaultCoords.getX() + multX;
+            int coordY = defaultCoords.getY() + multY;
+
             float posX = multX * SECTION_WIDTH;
             float posY = multY * SECTION_HEIGHT;
 
             //Left
             if(s.left == wall.FULL) {
                 arena.addEntity(EntityFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
-            } else if(s.right == wall.DOOR){
-                arena.addEntity(EntityFactory.wallBag(0, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
+            } else if(s.left == wall.DOOR){
+                arena.addEntity(EntityFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
                 arena.addDoor(EntityFactory.doorBag(0 + posX, Measure.units(10) + posY,
-                        new MapCoords(defaultCoords.getX() + multX, defaultCoords.getY() + multY),
-                        new MapCoords(defaultCoords.getX() - 1 + multX, defaultCoords.getY() + multY),
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX - 1, coordY),
                         DoorComponent.DIRECTION.left));
             }
             //Right
             if(s.right == wall.FULL) {
                 arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
             } else if(s.right == wall.DOOR){
-                arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
+                arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
                 arena.addDoor(EntityFactory.doorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
-                        new MapCoords(defaultCoords.getX() + multX, defaultCoords.getY() + multY),
-                        new MapCoords(defaultCoords.getX() + 1 + multX, defaultCoords.getY() + multY),
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX + 1, coordY),
                         DoorComponent.DIRECTION.right));
             }
 
             //Ceiling
-            if(s.ceiling){
+            if(s.ceiling != wall.NONE){
                 arena.addEntity(EntityFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH));
+                if(s.ceiling == wall.DOOR) {
+                    arena.addDoor(EntityFactory.grateBag(SECTION_WIDTH / 2 + posX, 900 + posY,
+                            new MapCoords(coordX, coordY),
+                            new MapCoords(coordX, coordY + 1),
+                            DoorComponent.DIRECTION.up));
+                }
             }
 
             //Floor
-            if(s.floor){
+            if(s.floor != wall.NONE){
                 arena.addEntity(EntityFactory.wallBag(0 + posX,  -WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH * 3));
+
+                if(s.floor == wall.DOOR) {
+                    arena.addDoor(EntityFactory.grateBag(SECTION_WIDTH / 2 + posX, 400 + posY,
+                            new MapCoords(coordX, coordY),
+                            new MapCoords(coordX, coordY -1),
+                            DoorComponent.DIRECTION.down));
+                }
             }
 
             //Background
-            arena.addEntity(BackgroundFactory.backgroundBags(0,0,
+            arena.addEntity(BackgroundFactory.backgroundBags(0 + posX,0 + posY,
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
                     Measure.units(15),
@@ -128,11 +144,11 @@ public class ArenaBuilder {
         public MapCoords coords;
         public wall left;
         public wall right;
-        public boolean ceiling;
-        public boolean floor;
+        public wall ceiling;
+        public wall floor;
 
 
-        public Section(MapCoords coords, wall left, wall right, boolean ceiling, boolean floor){
+        public Section(MapCoords coords, wall left, wall right, wall ceiling, wall floor){
             this.coords = coords;
             this.left = left;
             this.right = right;

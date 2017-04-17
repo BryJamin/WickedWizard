@@ -59,8 +59,11 @@ public class TutorialFactory extends RoomFactory{
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
-                        true,
-                        true)).build();
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL)).build();
+
+
+        arena.addEntity(EntityFactory.wallBag(new Rectangle(500, Measure.units(10), 400, 400)));
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
@@ -98,30 +101,12 @@ public class TutorialFactory extends RoomFactory{
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        arena.addEntity(BackgroundFactory.backgroundBags(0,0,
-                SECTION_WIDTH,
-                SECTION_HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
-
-        //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(0, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.left));
-
-        //RIGHT WALL
-        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.right));
-
-        //CEILING
-        arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
-
-        //GROUND
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE)).build();
 
         //BEFORE GAP
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3));
@@ -153,36 +138,12 @@ public class TutorialFactory extends RoomFactory{
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        arena.addEntity(BackgroundFactory.backgroundBags(0,0,
-                SECTION_WIDTH,
-                SECTION_HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
-
-        //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, 0, WALLWIDTH, HEIGHT));
-/*        arena.addDoor(EntityFactory.doorBag(0, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.left));*/
-
-        //RIGHT WALL
-        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.right));
-
-        //CEILING
-        arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
-        arena.addDoor(EntityFactory.grateBag(WIDTH / 2, 400,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() -1),
-                DoorComponent.DIRECTION.down));
-
-
-        //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
+       new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.DOOR)).build();
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 1000));
@@ -194,7 +155,7 @@ public class TutorialFactory extends RoomFactory{
         arena.addEntity(createTutorialHighlight(WIDTH - WALLWIDTH / 2, WALLWIDTH * 2, WALLWIDTH / 2, HEIGHT));
         arena.addEntity(createTutorialHighlight(0, HEIGHT - WALLWIDTH / 2, WIDTH, WALLWIDTH / 2));
 
-        bag = BlobFactory.blobBag(arena.getWidth() - Measure.units(9), WALLWIDTH * 2);
+        bag = BlobFactory.blobBag(arena.getWidth() - Measure.units(12), WALLWIDTH * 4);
         BagSearch.getObjectOfTypeClass(AccelerantComponent.class, bag).maxX = Measure.units(1);
         arena.addEntity(bag);
 
@@ -213,8 +174,6 @@ public class TutorialFactory extends RoomFactory{
         containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2));
 
         Arena arena = new Arena(containingCorrds);
-        Bag<Component> bag = new Bag<Component>();
-
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT * 3);
@@ -222,37 +181,34 @@ public class TutorialFactory extends RoomFactory{
         float HEIGHT = SECTION_HEIGHT * 3;
         float WIDTH = SECTION_WIDTH;
 
-        arena.addEntity(BackgroundFactory.backgroundBags(0,0,
-                WIDTH,
-                HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE))
+                        .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2),
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE)).build();
 
-        //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, Measure.units(30), WALLWIDTH, SECTION_HEIGHT * 2));
-        arena.addEntity(EntityFactory.wallBag(0, SECTION_HEIGHT * 2 + WALLWIDTH * 6, WALLWIDTH, SECTION_HEIGHT * 2 + WALLWIDTH * 2));
-
-        bag = EntityFactory.doorBag(0, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.left);
-        arena.addDoor(bag);
-        //arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
-
-        //RIGHT WALL
-        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, 0, WALLWIDTH, HEIGHT));
-
-        //CEILING
-        arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
+        //TODO find less lazy way to add the highlight to the arena
+        Bag<Component> bag;
         bag = EntityFactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 3),
                 DoorComponent.DIRECTION.up);
-        arena.addDoor(bag);
+        //arena.addDoor(bag);
         arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
-
+/*
         //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
+        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));*/
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
@@ -265,18 +221,6 @@ public class TutorialFactory extends RoomFactory{
             arena.addEntity(bag);
             arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
         }
-
-/*        arena.addEntity(EntityFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(80)));
-        arena.addEntity(EntityFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(110)));
-        arena.addEntity(EntityFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(140)));*/
-
-/*        bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 0));
-        ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2);
-        sc.layer = 5;
-        bag.add(sc);
-        bag.add(new FadeComponent());
-        arena.addEntity(bag);*/
 
         return arena;
 
@@ -293,33 +237,15 @@ public class TutorialFactory extends RoomFactory{
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        arena.addEntity(BackgroundFactory.backgroundBags(0,0,
-                SECTION_WIDTH,
-                SECTION_HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
-
-        //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(0, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.left));
-
-        //RIGHT WALL
-        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.right));
-
-        //CEILING
-        arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
-
-        //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL)).build();
 
         Bag<Component> bag = new Bag<Component>();
+
         bag.add(new PositionComponent(0, 800));
         bag.add(new TextureFontComponent(endString));
         arena.addEntity(bag);
