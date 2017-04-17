@@ -32,8 +32,8 @@ public class Collider {
         boolean isBetween = currentBound.getX() > wall.getX() && currentBound.getX() + currentBound.getWidth() < wall.getX() + wall.getWidth();
 
 
-        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() - 50
-                && currentBound.getY() < wall.getY() + wall.getHeight();
+        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() + 15
+                && currentBound.getY() < wall.getY() + wall.getHeight() - 15;
 
         System.out.println(isBetweenY);
         boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + 15 && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
