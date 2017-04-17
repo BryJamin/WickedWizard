@@ -21,22 +21,12 @@ public class Collider {
      * @return - Returns if the collision occurs on the top,bottom,left,right or if there isn't one at all
      */
     public static Collision collision(Rectangle currentBound, Rectangle futureBound, Rectangle wall) {
-        //Checks if there is a left or right collision
 
-        //TODO figure out a way not to cheese this class using width and height
-
-
-        //If the wall is taller than it is wide, then the priority collisions are LEFT and RIGHT
-       // if(wall.getHeight() > wall.getWidth()) {
-
-        boolean isBetween = currentBound.getX() > wall.getX() && currentBound.getX() + currentBound.getWidth() < wall.getX() + wall.getWidth();
-
-
+        //TODO With the variance being +15 or -15 the possiblility of breaking through walls might be possible
         boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() + 15
                 && currentBound.getY() < wall.getY() + wall.getHeight() - 15;
-
-        System.out.println(isBetweenY);
-        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + 15 && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
+        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + 15
+                && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
 
             if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
                 if (futureBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
@@ -55,27 +45,6 @@ public class Collider {
                     return Collision.BOTTOM;
                 }
             }
-
-       /* } else {
-            if (wall.overlaps(futureBound) && ((currentBound.getX() >= wall.getX() && currentBound.getX() + currentBound.getWidth() <= wall.getX() + wall.getWidth()))) {
-                if (futureBound.getY() > wall.y) {
-                    currentBound.setY(wall.y + wall.getHeight());
-                    return Collision.TOP;
-                } else if (futureBound.getY() < wall.y) { //Hit was on bottom
-                    currentBound.setY(wall.y - currentBound.height);
-                    return Collision.BOTTOM;
-                }
-            } else if (wall.overlaps(futureBound)) { //Hit was on top
-                if (futureBound.getX() < wall.x) {//Hit was on left
-                    currentBound.setX(wall.x - currentBound.width);
-                    return Collision.LEFT;
-                } else if (futureBound.getX() > wall.x) {//Hit was on right
-                    currentBound.setX(wall.x + wall.getWidth());
-                    return Collision.RIGHT;
-                }
-            }
-
-        }*/
 
         return Collision.NONE;
 
