@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -207,27 +207,27 @@ public class BlobFactory {
         PhaseComponent pc = new PhaseComponent();
 
 
-        Phase phase1 = new Phase(){
+        Action action1 = new Action(){
             FiringAIComponent f = new FiringAIComponent();
             @Override
-            public void changePhase(World w, Entity e) {
+            public void performAction(World w, Entity e) {
                 e.edit().add(f);
             }
             @Override
-            public void cleanUp(World w, Entity e) {
+            public void cleanUpAction(World w, Entity e) {
                 e.edit().remove(FiringAIComponent.class);
             }
         };
 
-        Phase phase2 = new Phase(){
+        Action action2 = new Action(){
             @Override
-            public void changePhase(World w, Entity e) {
+            public void performAction(World w, Entity e) {
                 e.edit().add(sc2);
                 e.edit().add(new BounceComponent());
                 e.getComponent(VelocityComponent.class).velocity.y = Measure.units(40f);
             }
             @Override
-            public void cleanUp(World w, Entity e) {
+            public void cleanUpAction(World w, Entity e) {
                 e.edit().remove(sc2);
                 e.edit().remove(BounceComponent.class);
             }
@@ -235,8 +235,8 @@ public class BlobFactory {
 
 
 
-        pc.addPhase(7.0f, phase1);
-        pc.addPhase(5.0f, phase2);
+        pc.addPhase(7.0f, action1);
+        pc.addPhase(5.0f, action2);
         pc.addPhaseSequence(1,0);
 
         bag.add(pc);

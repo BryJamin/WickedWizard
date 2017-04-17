@@ -15,7 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -94,39 +94,39 @@ public class SilverHeadFactory {
                 textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        Phase phase1 = new Phase(){
+        Action action1 = new Action(){
 
             @Override
-            public void changePhase(World w, Entity e) {
+            public void performAction(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(CLOSING);
             }
 
             @Override
-            public void cleanUp(World w, Entity e) {
+            public void cleanUpAction(World w, Entity e) {
 
             }
         };
 
-        Phase phase2 = new Phase(){
+        Action action2 = new Action(){
 
             @Override
-            public void changePhase(World w, Entity e) {
+            public void performAction(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(CHARING);
             }
 
             @Override
-            public void cleanUp(World w, Entity e) {
+            public void cleanUpAction(World w, Entity e) {
 
             }
         };
 
-        Phase phase3 = new Phase(){
+        Action action3 = new Action(){
 
             WeaponComponent wc = new WeaponComponent(WeaponFactory.SilverHeadWeapon(), 2.0f);
             FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
 
             @Override
-            public void changePhase(World w, Entity e) {
+            public void performAction(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(OPENING);
                 wc.timer.skip();
                 e.edit().add(wc);
@@ -135,16 +135,16 @@ public class SilverHeadFactory {
 
 
             @Override
-            public void cleanUp(World w, Entity e) {
+            public void cleanUpAction(World w, Entity e) {
                 e.edit().remove(wc);
                 e.edit().remove(fc);
             }
         };
 
-        Phase phase4 = new Phase(){
+        Action action4 = new Action(){
 
             @Override
-            public void changePhase(World w, Entity e) {
+            public void performAction(World w, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(STANDING);
                 AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
                 ac.accelX = accelX;
@@ -152,7 +152,7 @@ public class SilverHeadFactory {
             }
 
             @Override
-            public void cleanUp(World w, Entity e) {
+            public void cleanUpAction(World w, Entity e) {
                 AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
                 ac.accelX = chargeAccelX;
                 ac.maxX = chargeMaxX;
@@ -161,10 +161,10 @@ public class SilverHeadFactory {
 
         PhaseComponent pc = new PhaseComponent();
 
-        pc.addPhase(animMap.get(CLOSING).getAnimationDuration(), phase1);
-        pc.addPhase(animMap.get(CHARING).getAnimationDuration(), phase2);
-        pc.addPhase(animMap.get(OPENING).getAnimationDuration(), phase3);
-        pc.addPhase(2.0f, phase4);
+        pc.addPhase(animMap.get(CLOSING).getAnimationDuration(), action1);
+        pc.addPhase(animMap.get(CHARING).getAnimationDuration(), action2);
+        pc.addPhase(animMap.get(OPENING).getAnimationDuration(), action3);
+        pc.addPhase(2.0f, action4);
         pc.addPhaseSequence(2,3,0,1);
 
 

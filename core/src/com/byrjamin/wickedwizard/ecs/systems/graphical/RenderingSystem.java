@@ -122,7 +122,7 @@ public class RenderingSystem extends EntitySystem {
                         pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
                         originX, originY,
                         trc.width, trc.height,
-                        trc.scaleX * rendDirection(e) * 1.1f, trc.scaleY * 1.1f,
+                        trc.scaleX * rendDirection(e) * 1.2f, trc.scaleY * 1.2f,
                         trc.rotation);
 
                 batch.end();

@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.PlusOne;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -72,9 +73,11 @@ public class ItemRoomFactory extends RoomFactory {
 
         Random random = new Random();
 
-        arena.addEntity(ItemFactory.createFloatingItemBag(arena.getWidth() / 2,
-                arena.getHeight() / 2, items[random.nextInt(items.length)]));
 
+        for(ComponentBag b : ItemFactory.createItemAltarBag(arena.getWidth() / 2,
+                arena.getHeight() / 2, items[random.nextInt(items.length)])) {
+            arena.addEntity(b);
+        }
         return arena;
     }
 
@@ -118,8 +121,15 @@ public class ItemRoomFactory extends RoomFactory {
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, arena.getWidth(), WALLWIDTH * 3));
 
 
-        arena.addEntity(ItemFactory.createFloatingItemBag(arena.getWidth() / 2,
-                arena.getHeight() / 2, new DamageUp()));
+
+        Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
+
+        Random random = new Random();
+
+        for(ComponentBag b : ItemFactory.createItemAltarBag(arena.getWidth() / 4,
+                arena.getHeight() / 2, items[random.nextInt(items.length)])) {
+            arena.addEntity(b);
+        }
 
 
         arena.addEntity(BlobFactory.dummyBlob(arena.getWidth() / 2, arena.getHeight() / 2));

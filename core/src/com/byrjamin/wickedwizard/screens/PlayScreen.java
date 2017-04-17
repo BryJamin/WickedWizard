@@ -34,6 +34,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ProximitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ExpireSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
@@ -132,6 +134,7 @@ public class PlayScreen extends AbstractScreen {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
         jg =new JigsawGenerator(10, random);
+
         jg.generateTutorial = true;
         loadShader();
         createWorld();
@@ -231,6 +234,8 @@ public class PlayScreen extends AbstractScreen {
                         new FadeSystem(),
                         new PhaseSystem(),
                         new MoveToSystem(),
+                        new ProximitySystem(),
+                        new FindChildSystem(),
                         new PickUpSystem(),
                         new JumpSystem(),
                         new RoomTypeSystem(),

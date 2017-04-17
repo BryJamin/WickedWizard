@@ -7,16 +7,13 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.ItemComponent;
+import com.byrjamin.wickedwizard.ecs.components.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 10/04/2017.
@@ -28,7 +25,7 @@ public class FrictionSystem extends EntityProcessingSystem {
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<ItemComponent> im;
+    ComponentMapper<PickUpComponent> im;
     ComponentMapper<GlideComponent> gm;
 
 

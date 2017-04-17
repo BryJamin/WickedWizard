@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.components.ai;
 
 import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -14,14 +13,14 @@ public class PhaseComponent extends Component {
     public int currentPhase;
     private Array<Float> phaseTimers = new Array<Float>();
 
-    private Array<Phase> phaseArray = new Array<Phase>();
+    private Array<Action> phaseArray = new Array<Action>();
 
     public Array<Integer> phaseSequence = new Array<Integer>();
     public Array<Integer> stateSequence = new Array<Integer>();
 
 
-    public void addPhase(Float time, Phase phase){
-        phaseArray.add(phase);
+    public void addPhase(Float time, Action action){
+        phaseArray.add(action);
         phaseTimers.add(time);
     }
 
@@ -44,7 +43,7 @@ public class PhaseComponent extends Component {
         }
     }
 
-    public Phase getCurrentPhase(int phaseNo){
+    public Action getCurrentPhase(int phaseNo){
         return phaseArray.get(phaseNo);
     }
 

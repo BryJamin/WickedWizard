@@ -7,9 +7,8 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ItemComponent;
+import com.byrjamin.wickedwizard.ecs.components.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 
 /**
  * Created by Home on 09/04/2017.
@@ -17,7 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 
 public class PickUpSystem extends EntityProcessingSystem {
 
-    ComponentMapper<ItemComponent> im;
+    ComponentMapper<PickUpComponent> im;
     ComponentMapper<CollisionBoundComponent> cbm;
 
     public PickUpSystem() {
@@ -28,7 +27,7 @@ public class PickUpSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().
-                get(Aspect.all(ItemComponent.class, CollisionBoundComponent.class));
+                get(Aspect.all(PickUpComponent.class, CollisionBoundComponent.class));
         IntBag itemsIds = subscription.getEntities();
 
 
@@ -42,7 +41,7 @@ public class PickUpSystem extends EntityProcessingSystem {
             item = cbm.get(itemEntity);
 
             if(player.bound.overlaps(item.bound)){
-                ItemComponent ic = im.get(itemEntity);
+                PickUpComponent ic = im.get(itemEntity);
                 if(ic.getItem().applyEffect(world, e)) {;
                     world.delete(itemEntity);
                 }

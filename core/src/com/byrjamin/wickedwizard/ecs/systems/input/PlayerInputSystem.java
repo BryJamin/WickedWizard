@@ -246,6 +246,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         IntBag entityIds = subscription.getEntities();
 
 
+
         for(int i = 0; i < entityIds.size(); i++){
             ChildComponent c = world.getMapper(ChildComponent.class).get(entityIds.get(i));
             if(parc.children.contains(c, true)){

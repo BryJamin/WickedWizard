@@ -1,12 +1,10 @@
 package com.byrjamin.wickedwizard.ecs.systems;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
@@ -33,7 +31,7 @@ public class PhaseSystem extends EntityProcessingSystem {
         pc.currentPhaseTime -= world.delta;
 
         if(pc.currentPhaseTime < 0){
-            pc.getCurrentPhase(pc.currentPhase).cleanUp(world, e);
+            pc.getCurrentPhase(pc.currentPhase).cleanUpAction(world, e);
 
             pc.getPhaseSequence().add(pc.getPhaseSequence().first());
             pc.getPhaseSequence().removeIndex(0);
@@ -42,7 +40,7 @@ public class PhaseSystem extends EntityProcessingSystem {
             pc.currentPhaseTime = pc.getCurrentPhaseTimer(pc.currentPhase);
 
 
-            pc.getCurrentPhase(pc.currentPhase).changePhase(world, e);
+            pc.getCurrentPhase(pc.currentPhase).performAction(world, e);
 
         }
 

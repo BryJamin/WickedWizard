@@ -15,11 +15,10 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.forceExit = true;
 
-
-/*
-	String projectPath = System.getProperty("user.dir");
+//TODO this allows you to pack textures without needing to open the texture packer just uncomment it
+/*	String projectPath = System.getProperty("user.dir");
 		String inputDir = projectPath + "/images/tobepacked";
-		String outputDir = projectPath + "/android/assets";
+		String outputDir = projectPath;
 		String packFileName = "sprite";
 
 		Settings settings = new Settings();
@@ -28,14 +27,7 @@ public class DesktopLauncher {
 		settings.filterMin = Texture.TextureFilter.MipMapLinearLinear;
 		settings.combineSubdirectories = true;
 
-		TexturePacker.process(settings, inputDir,outputDir,packFileName);
-*/
-
-/*		Settings settings = new Settings();
-		settings.maxWidth = 512;
-		settings.maxHeight = 512;
-		TexturePacker.process(settings, "../images", "../game-android/assets", "game");*/
-
+		TexturePacker.process(settings, inputDir,outputDir,packFileName);*/
 
 		new LwjglApplication(new MainGame(), config);
 	}

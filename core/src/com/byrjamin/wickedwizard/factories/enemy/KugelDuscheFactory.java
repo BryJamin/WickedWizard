@@ -4,9 +4,7 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
@@ -15,7 +13,7 @@ import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Phase;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -70,17 +68,17 @@ public class KugelDuscheFactory {
         bag.add(new FiringAIComponent(Math.toRadians(45)));
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
 
-        Phase p = new Phase() {
+        Action p = new Action() {
 
             private float angle = (new Random().nextBoolean()) ? 5 : -5;
 
             @Override
-            public void changePhase(World w, Entity e) {
+            public void performAction(World w, Entity e) {
                 e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians(angle);
             }
 
             @Override
-            public void cleanUp(World w, Entity e) {
+            public void cleanUpAction(World w, Entity e) {
 
             }
         };
