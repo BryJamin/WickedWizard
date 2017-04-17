@@ -32,7 +32,7 @@ public class ProximitySystem extends EntityProcessingSystem {
         if(!ptac.triggered && cbc.bound.overlaps(ptac.bound)){
             ptac.action.performAction(world, e);
             ptac.triggered = true;
-        } else if(!cbc.bound.overlaps(ptac.bound) && ptac.triggered){
+        } else if(cbc.bound.overlaps(ptac.bound) && ptac.triggered){
             ptac.triggered = false;
             ptac.action.cleanUpAction(world, e);
         }

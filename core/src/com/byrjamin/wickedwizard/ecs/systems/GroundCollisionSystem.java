@@ -72,8 +72,6 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
 
             if(c != Collider.Collision.NONE){
 
-                System.out.println(c);
-
                 switch(c){
                     case TOP: vc.velocity.y = 0;
                     case BOTTOM: vc.velocity.y = 0;

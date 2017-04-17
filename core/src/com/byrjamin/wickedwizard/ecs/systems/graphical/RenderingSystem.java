@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
@@ -112,22 +114,38 @@ public class RenderingSystem extends EntitySystem {
 
             if(hm.has(e)){
 
-                batch.end();
+/*                batch.end();
+                whiteShaderProgram.begin();
+                whiteShaderProgram.setUniformf("u_viewportInverse", new Vector2(1f / trc.width, 1f / trc.height));
+                whiteShaderProgram.setUniformf("u_offset", 1f);
+                whiteShaderProgram.setUniformf("u_step", trc.width / 1000f);
+                whiteShaderProgram.setUniformf("u_color", new Vector3(255, 255, 255));
+                whiteShaderProgram.end();
                 batch.setShader(whiteShaderProgram);
+                batch.begin();*/
+/*
+
+                batch.end();
+                batch.setShader(shaderOutline);
                 batch.begin();
+                batch.draw(textureRegion, x, y, width, height, width, height, 1f, 1f, angle);
+                batch.end();
+                batch.setShader(null);
+                batch.begin();
+*/
 
 
 
-                batch.draw(trc.region,
+/*                batch.draw(trc.region,
                         pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
-                        originX, originY,
                         trc.width, trc.height,
-                        trc.scaleX * rendDirection(e) * 1.2f, trc.scaleY * 1.2f,
+                        trc.width, trc.height,
+                        trc.scaleX * rendDirection(e), trc.scaleY,
                         trc.rotation);
 
                 batch.end();
                 batch.setShader(null);
-                batch.begin();
+                batch.begin();*/
 
 
             }

@@ -1,21 +1,27 @@
 package com.byrjamin.wickedwizard.factories.items;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
+import com.artemis.EntitySubscription;
 import com.artemis.World;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.PickUpComponent;
+import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
@@ -121,10 +127,40 @@ public class ItemFactory {
 
         return new Action() {
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.edit().add(new HighlightComponent());
 
-                Entity child = w.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
+
+                AltarComponent ac = e.getComponent(AltarComponent.class);
+
+                if(ac.hasItem) {
+                    EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlayerComponent.class));
+                    IntBag entityIds = subscription.getEntities();
+
+                    for (int i = 0; i < entityIds.size(); i++) {
+                        Entity player = world.getEntity(entityIds.get(i));
+                        ac.item.applyEffect(world, player);
+
+                        CollisionBoundComponent pBound = player.getComponent(CollisionBoundComponent.class);
+
+                        Entity itemHoverAffect = world.createEntity();
+                        itemHoverAffect.edit().add(new PositionComponent());
+                        itemHoverAffect.edit().add(new FollowPositionComponent(player.getComponent(PositionComponent.class).position,
+                                0, pBound.bound.getHeight() + pBound.bound.getHeight() / 4));
+                        itemHoverAffect.edit().add(new TextureRegionComponent(ac.item.getRegion(),
+                                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
+                        itemHoverAffect.edit().add(new ExpireComponent(0.9f));
+
+
+                    }
+
+                    ac.hasItem = false;
+                    world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first()).deleteFromWorld();
+
+                }
+
+
+                Entity child = world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
                 if(child != null){
                     child.edit().add(new HighlightComponent());
                 }

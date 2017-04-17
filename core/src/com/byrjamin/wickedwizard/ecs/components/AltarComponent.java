@@ -10,7 +10,8 @@ import com.byrjamin.wickedwizard.factories.items.Item;
 
 public class AltarComponent extends Component {
 
-    private Item item;
+    public Item item;
+    public boolean hasItem = true;
 
     public AltarComponent(){
         item = new HealthUp();
