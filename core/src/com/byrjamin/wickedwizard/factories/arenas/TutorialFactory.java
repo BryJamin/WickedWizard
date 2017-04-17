@@ -55,38 +55,12 @@ public class TutorialFactory extends RoomFactory{
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        arena.addEntity(BackgroundFactory.backgroundBags(0,0,
-                SECTION_WIDTH,
-                SECTION_HEIGHT,
-                Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
-
         new ArenaBuilder.Builder(defaultCoords, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
                         true,
-                        true))
-/*                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.NONE,
-                        true,
-                        true))*/.build();
-/*        //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, 0, WALLWIDTH, HEIGHT));
-
-        //RIGHT WALL
-        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                DoorComponent.DIRECTION.right));
-
-        //CEILING
-        arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
-
-        //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));*/
+                        true)).build();
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));

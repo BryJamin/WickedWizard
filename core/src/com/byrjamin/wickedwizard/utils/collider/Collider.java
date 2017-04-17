@@ -27,7 +27,7 @@ public class Collider {
 
 
         //If the wall is taller than it is wide, then the priority collisions are LEFT and RIGHT
-        if(wall.getHeight() > wall.getWidth()) {
+       // if(wall.getHeight() > wall.getWidth()) {
 
             if (wall.overlaps(futureBound) && ((currentBound.getY() + currentBound.getHeight() > wall.getY() + 20) && currentBound.getY() < wall.y + wall.getHeight() - 20)) {
                 if (futureBound.getX() < wall.x) {//Hit was on left
@@ -47,8 +47,8 @@ public class Collider {
                 }
             }
 
-        } else {
-            if (wall.overlaps(futureBound) && ((currentBound.getX() >= wall.getX() - currentBound.getWidth() / 2 && currentBound.getX() + currentBound.getWidth() <= wall.getX() + wall.getWidth() + currentBound.getWidth() / 2))) {
+       /* } else {
+            if (wall.overlaps(futureBound) && ((currentBound.getX() >= wall.getX() && currentBound.getX() + currentBound.getWidth() <= wall.getX() + wall.getWidth()))) {
                 if (futureBound.getY() > wall.y) {
                     currentBound.setY(wall.y + wall.getHeight());
                     return Collision.TOP;
@@ -66,7 +66,7 @@ public class Collider {
                 }
             }
 
-        }
+        }*/
 
         return Collision.NONE;
 

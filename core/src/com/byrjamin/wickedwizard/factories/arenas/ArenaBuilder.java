@@ -4,7 +4,9 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -102,6 +104,13 @@ public class ArenaBuilder {
             if(s.floor){
                 arena.addEntity(EntityFactory.wallBag(0 + posX,  -WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH * 3));
             }
+
+            //Background
+            arena.addEntity(BackgroundFactory.backgroundBags(0,0,
+                    SECTION_WIDTH,
+                    SECTION_HEIGHT,
+                    Measure.units(15),
+                    PlayScreen.atlas.findRegions("backgrounds/wall")));
 
 
         }
