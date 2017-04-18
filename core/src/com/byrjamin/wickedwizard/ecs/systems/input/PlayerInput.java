@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GrapplePointSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -79,7 +80,9 @@ public class PlayerInput extends InputAdapter{
 
         Vector3 touchInput = new Vector3(screenX, screenY, 0);
         gameport.unproject(touchInput);
-        TimeUtils.nanoTime();
+        //TimeUtils.nanoTime();
+
+        if(world.getSystem(ShoppingSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y)) return true;
 
         if(!activeGrapple) {
             activeGrapple = world.getSystem(GrapplePointSystem.class).touchedGrapple(touchInput.x, touchInput.y);

@@ -121,9 +121,12 @@ public class JigsawGenerator {
 
         Array<Arena> placedArenas = new Array<Arena>();
 
-//        startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+        startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
+        //startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
+
+//        startingArena =  ShopFactory.createShop(new MapCoords(0,0));
+
         placedArenas.add(startingArena);
         placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,3)));
@@ -142,6 +145,11 @@ public class JigsawGenerator {
         Arena itemRoom = ItemRoomFactory.createItemRoom();
         if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(itemRoom);
+        }
+
+        Arena shopRoom = ShopFactory.createShop();
+        if(placeRoomUsingDoors(shopRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
+            placedArenas.add(shopRoom);
         }
 
         //RoomFactory.cleanArenas(placedArenas);

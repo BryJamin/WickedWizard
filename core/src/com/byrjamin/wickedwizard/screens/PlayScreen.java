@@ -54,6 +54,7 @@ import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ShoppingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.FrictionSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -248,6 +249,7 @@ public class PlayScreen extends AbstractScreen {
                         new FindChildSystem(),
                         new PickUpSystem(),
                         new JumpSystem(),
+                        new ShoppingSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam, gamePort),

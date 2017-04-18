@@ -7,6 +7,8 @@ import com.artemis.World;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
@@ -143,6 +145,59 @@ public class ItemFactory {
     }
 
 
+    public static Array<ComponentBag> createShopItemBag(float x, float y, Item item){
+
+        float width = Measure.units(15);
+        float height = Measure.units(15);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        Array<ComponentBag> bags =  new Array<ComponentBag>();
+
+        PositionComponent positionComponent = new PositionComponent(x,y);
+
+        ComponentBag shopItemTexture = new ComponentBag();
+        shopItemTexture.add(new PositionComponent(x , y));
+        shopItemTexture.add(new TextureRegionComponent(item.getRegion(), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        shopItemTexture.add(new AltarComponent(item));
+        shopItemTexture.add(new ActionOnTouchComponent(activeAltar()));
+        shopItemTexture.add(new CurrencyComponent(5));
+        bags.add(shopItemTexture);
+
+/*        ChildComponent c = new ChildComponent();
+        shopItemTexture.add(c);*/
+
+/*
+        ComponentBag bag = new ComponentBag();
+        bag.add(new ParentComponent(c));
+        bag.add(positionComponent);
+        //bag.add(new PickUpComponent(item));
+        bag.add(new AltarComponent(item));
+        // bag.add(new HighlightComponent());
+        bag.add(new VelocityComponent());
+        bag.add(new GravityComponent());
+
+        Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
+
+        bag.add(new CollisionBoundComponent(bound));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("altar"), width, height,
+                TextureRegionComponent.PLAYER_LAYER_FAR));
+        bag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
+
+        bags.add(shopItemTexture);
+        bags.add(bag);
+*/
+
+
+
+
+
+        return bags;
+    }
+
+
 
     private static Action activeAltar (){
 
@@ -177,14 +232,20 @@ public class ItemFactory {
                     }
 
                     ac.hasItem = false;
-                    world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first()).deleteFromWorld();
-
+                    //TODO Previous the has ParenComponet was not here I re-used this for the shop I added it on
+                    //TODO I would advise removing this once you wake back up
+                    if(world.getMapper(ParentComponent.class).has(e))
+                    {
+                        world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first()).deleteFromWorld();
+                    }
                 }
 
-
-                Entity child = world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
-                if(child != null){
-                    child.edit().add(new HighlightComponent());
+                //TODO ditto
+                if(world.getMapper(ParentComponent.class).has(e)) {
+                    Entity child = world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
+                    if (child != null) {
+                        child.edit().add(new HighlightComponent());
+                    }
                 }
                // e.getComponent(ParentComponent.class).children.get(0)
             }

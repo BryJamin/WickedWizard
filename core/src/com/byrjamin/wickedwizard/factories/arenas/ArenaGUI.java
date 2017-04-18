@@ -38,6 +38,7 @@ public class ArenaGUI {
     private Color locationBlinkColor = new Color (0,0,1,0.5f);
     private Color bossRoomColor = new Color(0, 1, 1, 0.5f);
     private Color itemRoomColor = new Color (1, 0, 1, 0.5f);
+    private Color shopRoomColor = new Color (234f / 255f, 185f / 255f, 157f / 255f, 1);
 
     private float mapBlinker;
     private boolean blink;
@@ -143,6 +144,11 @@ public class ArenaGUI {
 
                 if (arena.roomType == Arena.RoomType.ITEM) {
                     mapRenderer.setColor(itemRoomColor);
+                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                }
+
+                if (arena.roomType == Arena.RoomType.SHOP) {
+                    mapRenderer.setColor(shopRoomColor);
                     mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
                 }
 

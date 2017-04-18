@@ -46,7 +46,7 @@ public class PlayerFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
-        bag.add(new CurrencyComponent());
+        bag.add(new CurrencyComponent(0));
         bag.add(new JumpComponent());
         bag.add(new GlideComponent());
         bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));

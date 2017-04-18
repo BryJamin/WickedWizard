@@ -16,7 +16,7 @@ public class Arena {
     private float height;
 
     public enum RoomType {
-        BATTLE, BOSS, ITEM
+        BATTLE, BOSS, ITEM, SHOP
     }
 
     public RoomType roomType;
