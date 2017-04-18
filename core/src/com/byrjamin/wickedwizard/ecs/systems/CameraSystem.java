@@ -43,7 +43,6 @@ public class CameraSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
-
         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
 
         gamecam.position.set((int) cbc.getCenterX(),(int) cbc.getCenterY(), 0);
@@ -68,6 +67,11 @@ public class CameraSystem extends EntitySystem {
         world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
                 gamecam.position.y - gamePort.getWorldHeight() / 2);
 
+    }
+
+
+    public OrthographicCamera getGamecam() {
+        return gamecam;
     }
 
     public void setPlayerPosition(PositionComponent playerPosition) {

@@ -8,6 +8,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
@@ -45,7 +46,7 @@ public class OnDeathSystem  extends BaseSystem {
 
 
                     if(c instanceof PositionComponent){
-                        ((PositionComponent) c).position = new Vector2(pc.position);
+                        ((PositionComponent) c).position = new Vector3(pc.position);
                     }
 
                     e.edit().add(c);
