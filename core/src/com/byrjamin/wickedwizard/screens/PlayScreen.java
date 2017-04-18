@@ -36,6 +36,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ProximitySystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ExpireSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
@@ -223,6 +224,7 @@ public class PlayScreen extends AbstractScreen {
                         new BounceCollisionSystem(),
                         new BulletSystem(),
                         new EnemyCollisionSystem(),
+                        new MessageBannerSystem(),
                         new FindPlayerSystem(player),
                         new FiringAISystem(),
                         new GrapplePointSystem(),

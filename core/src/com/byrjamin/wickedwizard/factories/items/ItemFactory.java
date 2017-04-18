@@ -33,6 +33,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -159,7 +160,9 @@ public class ItemFactory {
                                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
                         itemHoverAffect.edit().add(new ExpireComponent(0.9f));
 
-                        OrthographicCamera gamecam = world.getSystem(CameraSystem.class).getGamecam();
+                        world.getSystem(MessageBannerSystem.class).createBanner(ac.item.getName(), ac.item.getDescription());
+
+/*                        OrthographicCamera gamecam = world.getSystem(CameraSystem.class).getGamecam();
 
                         FadeComponent fc = new FadeComponent();
                         fc.alpha = 0f;
@@ -205,7 +208,7 @@ public class ItemFactory {
                         blackBackingBox.edit().add(sc);
                         blackBackingBox.edit().add(ec);
 
-                        blackBackingBox.edit().add(fc);
+                        blackBackingBox.edit().add(fc);*/
 
 
                     }
