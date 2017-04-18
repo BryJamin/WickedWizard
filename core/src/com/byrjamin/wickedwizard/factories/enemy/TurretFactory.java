@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
@@ -54,7 +55,7 @@ public class TurretFactory {
         bag.add(new FiringAIComponent());
 
         OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(ItemFactory.createPickUpBag(0,0, new HealthUp()));
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         bag.add(DeathFactory.basicOnDeathExplosion(odc, Measure.units(9), Measure.units(9), 0,0));
 
         return bag;
@@ -89,7 +90,7 @@ public class TurretFactory {
         bag.add(new BounceComponent());
 
         OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(ItemFactory.createPickUpBag(0,0, new HealthUp()));
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         bag.add(DeathFactory.basicOnDeathExplosion(odc, Measure.units(9), Measure.units(9), 0,0));
 
         return bag;

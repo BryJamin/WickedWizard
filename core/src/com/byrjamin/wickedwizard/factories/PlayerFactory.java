@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
@@ -36,9 +37,6 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 public class PlayerFactory {
 
-
-    public static float pAccelX;
-
     public static ComponentBag playerBag(){
 
         ComponentBag bag = new ComponentBag();
@@ -48,6 +46,7 @@ public class PlayerFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
+        bag.add(new CurrencyComponent());
         bag.add(new JumpComponent());
         bag.add(new GlideComponent());
         bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));

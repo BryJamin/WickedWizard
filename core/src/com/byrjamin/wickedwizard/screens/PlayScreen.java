@@ -22,11 +22,13 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -79,6 +81,7 @@ import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
+import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -102,10 +105,13 @@ public class PlayScreen extends AbstractScreen {
 
     private Pixmap pixmap;
 
+    private BitmapFont currencyFont;
+
     private World world;
     private World deathWorld;
 
     private JumpComponent jumpresource;
+    private CurrencyComponent currencyComponent;
     private HealthComponent healthResource;
 
     GestureDetector gestureDetector;
@@ -135,6 +141,9 @@ public class PlayScreen extends AbstractScreen {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
         jg =new JigsawGenerator(10, random);
+
+        currencyFont = new BitmapFont();
+        currencyFont.getData().setScale(4);
 
         jg.generateTutorial = true;
         loadShader();
@@ -274,6 +283,7 @@ public class PlayScreen extends AbstractScreen {
         }
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
+        currencyComponent = entity.getComponent(CurrencyComponent.class);
         arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena);
     }
 
@@ -390,12 +400,25 @@ public class PlayScreen extends AbstractScreen {
             float width = MainGame.GAME_UNITS * 2.5f;
             float height = MainGame.GAME_UNITS * 2.5f;
 
-
             game.batch.draw(atlas.findRegion("bullet_blue"),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
                     width, height);
         }
+
+
+
+        game.batch.draw(new MoneyPlus1().getRegion(),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(1.5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(16f),
+                Measure.units(5f), Measure.units(5f));
+
+
+
+        currencyFont.draw(game.batch, "" + currencyComponent.money,
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
+                Measure.units(5f), Align.center, true);
 
     }
 
