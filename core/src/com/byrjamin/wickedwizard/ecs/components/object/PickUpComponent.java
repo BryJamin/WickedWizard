@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.components;
+package com.byrjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;

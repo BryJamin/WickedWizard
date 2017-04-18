@@ -3,12 +3,9 @@ package com.byrjamin.wickedwizard.ecs.systems;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
-import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.PickUpComponent;
-import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 
 /**

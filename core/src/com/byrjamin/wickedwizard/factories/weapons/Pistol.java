@@ -3,12 +3,11 @@ package com.byrjamin.wickedwizard.factories.weapons;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
-import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
 

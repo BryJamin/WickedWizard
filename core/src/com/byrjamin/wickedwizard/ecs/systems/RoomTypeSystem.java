@@ -2,11 +2,8 @@ package com.byrjamin.wickedwizard.ecs.systems;
 
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
-import com.artemis.ComponentMapper;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
-import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
-import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 
 /**

@@ -6,7 +6,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.SpawnerComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
 
 /**
  * Created by Home on 25/03/2017.

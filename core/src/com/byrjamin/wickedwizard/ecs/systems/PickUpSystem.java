@@ -7,8 +7,8 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.PickUpComponent;
-import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 
 /**
  * Created by Home on 09/04/2017.

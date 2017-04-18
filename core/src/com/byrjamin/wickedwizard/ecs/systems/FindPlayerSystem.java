@@ -1,14 +1,9 @@
 package com.byrjamin.wickedwizard.ecs.systems;
 
-import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.EntitySystem;
 import com.artemis.utils.Bag;
-import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
 import com.byrjamin.wickedwizard.utils.BagSearch;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 /**
  * Created by Home on 11/03/2017.
