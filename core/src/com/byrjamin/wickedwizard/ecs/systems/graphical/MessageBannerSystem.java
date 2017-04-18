@@ -39,7 +39,7 @@ public class MessageBannerSystem extends BaseSystem {
         titleFC.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;;
 
 
-        messageFC = new TextureFontComponent("Default", 3);
+        messageFC = new TextureFontComponent("Default", 4);
         messageFC.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
     }
 
@@ -70,21 +70,19 @@ public class MessageBannerSystem extends BaseSystem {
         ExpireComponent ec = new ExpireComponent(8f);
 
         Entity itemText = world.createEntity();
-        itemText.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + Measure.units(13)));
-        itemText.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, Measure.units(13)));
+        itemText.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + Measure.units(14)));
+        itemText.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, Measure.units(14)));
         titleFC.color.a = 0;
         titleFC.text = title;
         itemText.edit().add(titleFC);
         itemText.edit().add(fc);
         itemText.edit().add(ec);
 
-        //TODO something about scaling the font causes slow down possible due to scaling the bitmap font twice?
-        //TODO not sure but for now I'm using a slash n
-
         Entity itemDescription = world.createEntity();
-        itemDescription.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + Measure.units(8)));
-        itemDescription.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, Measure.units(8)));
+        itemDescription.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + Measure.units(9)));
+        itemDescription.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, Measure.units(9)));
         messageFC.color.a = 0;
+        messageFC.text = message;
         itemDescription.edit().add(messageFC);
         itemDescription.edit().add(fc);
         itemDescription.edit().add(ec);
@@ -99,17 +97,9 @@ public class MessageBannerSystem extends BaseSystem {
         sc.shapeType = ShapeRenderer.ShapeType.Filled;
         blackBackingBox.edit().add(sc);
         blackBackingBox.edit().add(ec);
-
         blackBackingBox.edit().add(fc);
 
 
-    }
-
-    public static void changeDirection(World world, Entity e, Direction direction, DirectionalComponent.PRIORITY priority) {
-        if(dm.has(e)){
-            DirectionalComponent dc = dm.get(e);
-            dc.setDirection(direction, priority);
-        }
     }
 
 }
