@@ -4,14 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.factories.arenas.ItemRoomFactory;
-import com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory;
-import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
-import com.byrjamin.wickedwizard.factories.arenas.TutorialFactory;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
-import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.factories.items.PlusOne;
 
 import java.util.Random;
 

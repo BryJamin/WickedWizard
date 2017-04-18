@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories.items;
+package com.byrjamin.wickedwizard.factories.items.passives;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
@@ -24,5 +25,15 @@ public class ChangeColor implements Item {
     @Override
     public TextureRegion getRegion() {
         return PlayScreen.atlas.findRegion("heart");
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
     }
 }

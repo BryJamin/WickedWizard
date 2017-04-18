@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
-import com.byrjamin.wickedwizard.factories.items.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
 import com.byrjamin.wickedwizard.factories.items.Item;
 
 /**
@@ -14,7 +14,7 @@ public class AltarComponent extends Component {
     public boolean hasItem = true;
 
     public AltarComponent(){
-        item = new HealthUp();
+        item = new DamageUp();
     }
 
     public AltarComponent(Item item){

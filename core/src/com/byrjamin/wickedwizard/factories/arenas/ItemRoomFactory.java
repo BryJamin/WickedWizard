@@ -1,20 +1,17 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
-import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
-import com.byrjamin.wickedwizard.factories.items.DamageUp;
-import com.byrjamin.wickedwizard.factories.items.FireRateUp;
+import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
+import com.byrjamin.wickedwizard.factories.items.passives.FireRateUp;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.factories.items.PlusOne;
+import com.byrjamin.wickedwizard.factories.items.passives.PlusOne;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 

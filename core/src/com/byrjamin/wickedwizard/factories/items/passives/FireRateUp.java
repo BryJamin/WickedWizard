@@ -1,16 +1,17 @@
-package com.byrjamin.wickedwizard.factories.items;
+package com.byrjamin.wickedwizard.factories.items.passives;
 
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
  * Created by Home on 16/04/2017.
  */
 
-public class FireRateUp implements Item{
+public class FireRateUp implements Item {
 
 
     @Override
@@ -24,4 +25,13 @@ public class FireRateUp implements Item{
         return PlayScreen.atlas.findRegion("bullet_red");
     }
 
+    @Override
+    public String getName() {
+        return "Red Sphere";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Fire Rate Up!";
+    }
 }

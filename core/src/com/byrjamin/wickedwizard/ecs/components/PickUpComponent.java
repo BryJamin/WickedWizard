@@ -1,8 +1,8 @@
 package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
-import com.byrjamin.wickedwizard.factories.items.HealthUp;
-import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.PickUp;
 
 /**
  * Created by Home on 09/04/2017.
@@ -10,18 +10,18 @@ import com.byrjamin.wickedwizard.factories.items.Item;
 
 public class PickUpComponent extends Component{
 
-    private Item item;
+    private PickUp pickUp;
 
 
     public PickUpComponent(){
-        item = new HealthUp();
+        pickUp = new HealthUp();
     }
 
-    public PickUpComponent(Item item){
-        this.item = item;
+    public PickUpComponent(PickUp pickUp){
+        this.pickUp = pickUp;
     }
 
-    public Item getItem() {
-        return item;
+    public PickUp getPickUp() {
+        return pickUp;
     }
 }

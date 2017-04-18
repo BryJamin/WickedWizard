@@ -38,7 +38,7 @@ import java.util.Random;
 public class ItemFactory {
 
 
-    public static ComponentBag createItemBag(float x, float y, Item item){
+    public static ComponentBag createPickUpBag(float x, float y, PickUp pickUp){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -47,9 +47,9 @@ public class ItemFactory {
 
         bag.add(new VelocityComponent(random.nextInt((int) Measure.units(60f)) -Measure.units(30f), Measure.units(30f)));
         bag.add(new GravityComponent());
-        bag.add(new PickUpComponent(item));
+        bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
-        bag.add(new TextureRegionComponent(item.getRegion(), Measure.units(5), Measure.units(5),
+        bag.add(new TextureRegionComponent(pickUp.getRegion(), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
 
         return bag;
@@ -150,6 +150,13 @@ public class ItemFactory {
                         itemHoverAffect.edit().add(new TextureRegionComponent(ac.item.getRegion(),
                                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
                         itemHoverAffect.edit().add(new ExpireComponent(0.9f));
+
+
+                        Entity itemText = world.createEntity();
+
+
+
+                        Entity blackBackingBox = world.createEntity();
 
 
                     }

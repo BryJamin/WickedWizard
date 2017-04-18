@@ -42,7 +42,7 @@ public class PickUpSystem extends EntityProcessingSystem {
 
             if(player.bound.overlaps(item.bound)){
                 PickUpComponent ic = im.get(itemEntity);
-                if(ic.getItem().applyEffect(world, e)) {;
+                if(ic.getPickUp().applyEffect(world, e)) {;
                     world.delete(itemEntity);
                 }
             }

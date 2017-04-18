@@ -9,11 +9,9 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  * Created by Home on 09/04/2017.
  */
 
-public interface Item extends PickUp {
+public interface PickUp {
 
-
-    String getName();
-    String getDescription();
-
+    boolean applyEffect(World world, Entity e);
+    TextureRegion getRegion();
 
 }

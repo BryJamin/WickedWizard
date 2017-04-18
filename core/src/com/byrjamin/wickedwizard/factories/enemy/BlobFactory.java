@@ -30,7 +30,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
-import com.byrjamin.wickedwizard.factories.items.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -81,7 +81,7 @@ public class BlobFactory {
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(ItemFactory.createItemBag(0,0, new HealthUp()));
+        odc.getComponentBags().addAll(ItemFactory.createPickUpBag(0,0, new HealthUp()));
         bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
 
         return bag;
