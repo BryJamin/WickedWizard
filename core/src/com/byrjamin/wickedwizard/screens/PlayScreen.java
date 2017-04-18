@@ -216,7 +216,6 @@ public class PlayScreen extends AbstractScreen {
                         new MovementSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
-                        new FollowPositionSystem(),
                         new ExpireSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
@@ -244,11 +243,13 @@ public class PlayScreen extends AbstractScreen {
                         new StateSystem(),
                         new SpawnerSystem(),
                         new GravitySystem(),
-                        new FrictionSystem())
+                        new FrictionSystem()
+                        )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RoomTransitionSystem(startingArena, arenaArray),
                         new DirectionalSystem(),
                         new CameraSystem(gamecam, gamePort),
+                        new FollowPositionSystem(),
                         new RenderingSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem()
@@ -337,7 +338,7 @@ public class PlayScreen extends AbstractScreen {
 
         //pauseWorld(world);
 
-        //System.out.println(Gdx.graphics.getFramesPerSecond());
+        System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
 

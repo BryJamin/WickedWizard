@@ -121,9 +121,9 @@ public class JigsawGenerator {
 
         Array<Arena> placedArenas = new Array<Arena>();
 
-        startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+//        startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        //startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
+        startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         placedArenas.add(startingArena);
         placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,3)));
@@ -188,31 +188,6 @@ public class JigsawGenerator {
 
         return placedArenas;
     }
-
-
-    public Array<Arena> generateArenas(){
-
-        Array<Arena> arenas = new Array<Arena>();
-
-        for(int i = 0; i < noBattleRooms; i++){
-
-            Arena a;
-            if(i == 2 || i == 9){
-                a = RoomFactory.createWidth2Arena();
-                //RoomDecorationFactory.biggablobba(a);
-                RoomDecorationFactory.setUpArena[rand.nextInt(RoomDecorationFactory.setUpArena.length)].setUpArena(a);
-            } else {
-                a = createOmniArena();
-                //RoomDecorationFactory.biggablobba(a);
-                RoomDecorationFactory.setUpArena[rand.nextInt(com.byrjamin.wickedwizard.factories.arenas.RoomDecorationFactory.setUpArena.length)].setUpArena(a);
-            }
-            arenas.add(a);
-        }
-
-        return arenas;
-
-    }
-
 
     public boolean placeRoomUsingDoors(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
 

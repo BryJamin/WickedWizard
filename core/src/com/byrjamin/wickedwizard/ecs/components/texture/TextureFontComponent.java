@@ -23,6 +23,11 @@ public class TextureFontComponent extends TextureRegionComponent {
         font.getData().setScale(5, 5);
     }
 
+    public TextureFontComponent(String text, float scale){
+        this.text = text;
+        font.getData().setScale(scale, scale);
+    }
+
 
 
 

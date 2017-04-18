@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -41,6 +42,7 @@ public class RoomTransitionSystem extends EntitySystem {
     ComponentMapper<DoorComponent> dm;
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<ParentComponent> parm;
+    ComponentMapper<ExpireComponent> em;
     ComponentMapper<ChildComponent> cm;
 
 
@@ -72,7 +74,7 @@ public class RoomTransitionSystem extends EntitySystem {
         currentArena.getBagOfEntities().clear();
         //Pack
         for(Entity e : this.getEntities()){
-            if(!bm.has(e)) {
+            if(!bm.has(e) && !em.has(e)) {
 
                 if(cm.has(e)){
                     if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
