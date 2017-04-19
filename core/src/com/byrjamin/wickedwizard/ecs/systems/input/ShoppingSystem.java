@@ -8,7 +8,10 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 
 /**
@@ -21,6 +24,7 @@ public class ShoppingSystem extends EntitySystem {
     ComponentMapper<CurrencyComponent> cm;
     ComponentMapper<ActionOnTouchComponent> aotm;
 
+    ComponentMapper<ParentComponent> pm;
 
     @SuppressWarnings("unchecked")
     public ShoppingSystem() {
@@ -48,6 +52,14 @@ public class ShoppingSystem extends EntitySystem {
                     aotm.get(e).action.performAction(world, e);
 
                     //TODO only certain items should be deleted from the world when bought. E.G keys or something
+
+                    if(pm.has(e)) {
+                        for(ChildComponent c : pm.get(e).children) {
+                            world.getSystem(FindChildSystem.class).findChildEntity(c).deleteFromWorld();
+
+                            //TODO children seem to not exist?
+                        }
+                    }
 
                     e.deleteFromWorld();
                     return true;

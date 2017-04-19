@@ -18,22 +18,22 @@ public class ChangeColor implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity e) {
-        e.getComponent(TextureRegionComponent.class).color = Color.BLACK;
+        e.getComponent(TextureRegionComponent.class).color = Color.CYAN;
         return true;
     }
 
     @Override
     public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("heart");
+        return PlayScreen.atlas.findRegion("squ_dash", 0);
     }
 
     @Override
     public String getName() {
-        return null;
+        return "Color Change";
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return "Feeling Cyan";
     }
 }

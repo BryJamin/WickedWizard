@@ -26,9 +26,12 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -145,56 +148,61 @@ public class ItemFactory {
     }
 
 
-    public static Array<ComponentBag> createShopItemBag(float x, float y, Item item){
+    public static Array<ComponentBag> createShopItemBag(float x, float y, Item item, int money){
 
-        float width = Measure.units(15);
-        float height = Measure.units(15);
+        float width = Measure.units(8);
+        float height = Measure.units(8);
 
         x = x - width / 2;
         y = y - height / 2;
 
         Array<ComponentBag> bags =  new Array<ComponentBag>();
 
-        PositionComponent positionComponent = new PositionComponent(x,y);
+        ParentComponent pc = new ParentComponent();
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(item.getRegion(), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new TextureRegionComponent(item.getRegion(), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(item));
         shopItemTexture.add(new ActionOnTouchComponent(activeAltar()));
-        shopItemTexture.add(new CurrencyComponent(5));
+        shopItemTexture.add(new CurrencyComponent(money));
+        shopItemTexture.add(pc);
         bags.add(shopItemTexture);
 
-/*        ChildComponent c = new ChildComponent();
-        shopItemTexture.add(c);*/
 
-/*
-        ComponentBag bag = new ComponentBag();
-        bag.add(new ParentComponent(c));
-        bag.add(positionComponent);
-        //bag.add(new PickUpComponent(item));
-        bag.add(new AltarComponent(item));
-        // bag.add(new HighlightComponent());
-        bag.add(new VelocityComponent());
-        bag.add(new GravityComponent());
+        ComponentBag priceTag = new ComponentBag();
+        priceTag.add(new PositionComponent(x, y - Measure.units(5)));
+        priceTag.add(new TextureRegionComponent(new MoneyPlus1().getRegion(), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        TextureFontComponent trc = new TextureFontComponent(""+money, 3);
+        trc.width = width / 2;
+        trc.offsetX = -Measure.units(45f);
+        trc.offsetY =  Measure.units(2.8f);
+        priceTag.add(trc);
+        bags.add(priceTag);
+        ChildComponent c = new ChildComponent();
+        pc.children.add(c);
+        priceTag.add(c);
 
-        Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
-
-        bag.add(new CollisionBoundComponent(bound));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("altar"), width, height,
-                TextureRegionComponent.PLAYER_LAYER_FAR));
-        bag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
-
-        bags.add(shopItemTexture);
-        bags.add(bag);
-*/
-
-
-
-
+        bags.add(priceTag);
 
         return bags;
+    }
+
+
+    private static Action buyItem(){
+        return new Action() {
+            @Override
+            public void performAction(World w, Entity e) {
+                //TODO If pickup just apply Item
+                //TODO If Item do the raise above head thing that will be made into a static method
+            }
+
+            @Override
+            public void cleanUpAction(World w, Entity e) {
+
+            }
+        };
     }
 
 

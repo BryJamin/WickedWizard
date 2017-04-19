@@ -184,6 +184,9 @@ public class RenderingSystem extends EntitySystem {
         }
 
         if(trfm.has(e)) {
+
+            //TODO should really use the font width not this random ass camera shizz
+
             TextureFontComponent trfc = trfm.get(e);
             trfc.font.setColor(trfc.color);
             trfc.font.draw(batch, trfc.text,

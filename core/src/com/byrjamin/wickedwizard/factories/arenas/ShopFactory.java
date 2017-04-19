@@ -7,9 +7,11 @@ import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
+import com.byrjamin.wickedwizard.factories.items.passives.ChangeColor;
 import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
 import com.byrjamin.wickedwizard.factories.items.passives.FireRateUp;
 import com.byrjamin.wickedwizard.factories.items.passives.PlusOne;
@@ -50,9 +52,28 @@ public class ShopFactory extends  RoomFactory{
         Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
         PickUp[] pickUps = {new HealthUp()};
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(400,400, new PlusOne())) {
+        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new PlusOne(), 5)) {
             arena.addEntity(b);
         }
+
+        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 5)) {
+            arena.addEntity(b);
+        }
+
+        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(60),Measure.units(40), new FireRateUp(), 5)) {
+            arena.addEntity(b);
+        }
+
+        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(80),Measure.units(40), new ChangeColor(), 5)) {
+            arena.addEntity(b);
+        }
+
+
+
+        arena.addEntity(BlobFactory.shopKeeperBlob(arena.getWidth() / 2, arena.getHeight() / 4));
+
+
+
 /*        Random random = new Random();
 
 

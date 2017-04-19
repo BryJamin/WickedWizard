@@ -20,6 +20,8 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.items.ItemFactory;
+import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -67,6 +69,10 @@ public class KugelDuscheFactory {
         bag.add(new HealthComponent(25));
         bag.add(new FiringAIComponent(Math.toRadians(45)));
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
+
+        OnDeathComponent odc = new OnDeathComponent();
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
 
         Action p = new Action() {
 

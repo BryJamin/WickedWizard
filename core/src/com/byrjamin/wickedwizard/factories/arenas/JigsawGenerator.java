@@ -125,7 +125,7 @@ public class JigsawGenerator {
 
         //startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
 
-//        startingArena =  ShopFactory.createShop(new MapCoords(0,0));
+        //startingArena =  ShopFactory.createShop(new MapCoords(0,0));
 
         placedArenas.add(startingArena);
         placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));

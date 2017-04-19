@@ -114,6 +114,29 @@ public class BlobFactory {
         return bag;
     }
 
+    public static Bag<Component> shopKeeperBlob(float x, float y){
+
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new VelocityComponent(0, 0));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
+        bag.add(new GravityComponent());
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setState(0);
+        bag.add(sc);
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+                textureOffsetX, textureOffsetY, textureWidth, textureHeight,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        return bag;
+    }
+
     public static Bag<Component> smallblobBag(float x, float y){
 
         float scale = 0.5f;
@@ -190,6 +213,13 @@ public class BlobFactory {
                 Measure.units(45),
                 Measure.units(45),
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+        OnDeathComponent odc = new OnDeathComponent();
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
 
 
         WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(),  1.5f);

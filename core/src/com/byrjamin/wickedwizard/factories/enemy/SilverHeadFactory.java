@@ -25,6 +25,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.items.ItemFactory;
+import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -85,7 +87,9 @@ public class SilverHeadFactory {
         animMap.put(CHARING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(DeathFactory.basicOnDeathExplosion(new OnDeathComponent(), width, height));
+        OnDeathComponent odc = new OnDeathComponent();
+        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
 
         bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0),
                 textureOffsetX,
