@@ -334,10 +334,10 @@ public class PlayScreen extends AbstractScreen {
 
         if(gameOver){
 
-            if (delta < 0.20f) {
+            if (delta < 0.030f) {
                 deathWorld.setDelta(delta);
             } else {
-                deathWorld.setDelta(0.20f);
+                deathWorld.setDelta(0.030f);
             }
 
 
