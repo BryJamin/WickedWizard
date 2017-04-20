@@ -54,7 +54,7 @@ public class ShopFactory extends  RoomFactory{
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 1)) {
+        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 5)) {
             arena.addEntity(b);
         }
 

@@ -348,7 +348,7 @@ public class PlayScreen extends AbstractScreen {
 
         //pauseWorld(world);
 
-        System.out.println(Gdx.graphics.getFramesPerSecond());
+        //System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
 

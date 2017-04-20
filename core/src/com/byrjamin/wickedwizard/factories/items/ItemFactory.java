@@ -180,7 +180,6 @@ public class ItemFactory {
         trc.offsetX = -Measure.units(45f);
         trc.offsetY =  Measure.units(2.8f);
         priceTag.add(trc);
-        bags.add(priceTag);
         ChildComponent c = new ChildComponent();
         pc.children.add(c);
         priceTag.add(c);
@@ -225,13 +224,15 @@ public class ItemFactory {
 
                     //TODO only certain items should be deleted from the world when bought. E.G keys or something
 
-/*                    if (pm.has(e)) {
-                        for (ChildComponent c : pm.get(e).children) {
-                            world.getSystem(FindChildSystem.class).findChildEntity(c).deleteFromWorld();
+                    if (world.getMapper(ParentComponent.class).has(e)) {
+
+                        for (ChildComponent c : world.getMapper(ParentComponent.class).get(e).children) {
+                            Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
+                            child.deleteFromWorld();
 
                             //TODO children seem to not exist?
                         }
-                    }*/
+                    }
 
                     e.deleteFromWorld();
                 }
