@@ -19,6 +19,7 @@ public class ChangeColor implements Item {
     @Override
     public boolean applyEffect(World world, Entity e) {
         e.getComponent(TextureRegionComponent.class).color = Color.CYAN;
+        e.getComponent(TextureRegionComponent.class).DEFAULT = Color.CYAN;
         return true;
     }
 

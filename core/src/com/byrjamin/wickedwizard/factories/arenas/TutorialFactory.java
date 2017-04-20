@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
@@ -22,6 +23,9 @@ import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+
+import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_FAR;
+import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_NEAR;
 
 /**
  * Created by Home on 01/04/2017.
@@ -71,17 +75,20 @@ public class TutorialFactory extends RoomFactory{
         bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 150));
         tfc = new TextureFontComponent(moveTutorialString2);
-        tfc.layer = 6;
-        tfc.setColor(0,0,0,1);
+        tfc.layer = FOREGROUND_LAYER_NEAR;
+        tfc.setColor(1,1,1,1);
         bag.add(tfc);
         arena.addEntity(bag);
 
-        bag = new Bag<Component>();
+/*        bag = new Bag<Component>();
+        createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, Color.BLACK);
+
+
         bag.add(new PositionComponent(0, 0));
-        ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2, FOREGROUND_LAYER_NEAR);
         bag.add(sc);
-        bag.add(new FadeComponent());
-        arena.addEntity(bag);
+        bag.add(new FadeComponent());*/
+        arena.addEntity(createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, Color.BLACK));
 
         return arena;
 
@@ -258,7 +265,17 @@ public class TutorialFactory extends RoomFactory{
     public static ComponentBag createTutorialHighlight(float x, float y, float width, float height) {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
-        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR);
+        bag.add(sc);
+        bag.add(new FadeComponent());
+        return bag;
+    }
+
+    public static ComponentBag createTutorialHighlight(float x, float y, float width, float height, Color c) {
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x, y));
+        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR);
+        sc.color = c;
         bag.add(sc);
         bag.add(new FadeComponent());
         return bag;

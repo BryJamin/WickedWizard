@@ -29,9 +29,9 @@ public class ShoppingSystem extends EntitySystem {
     @SuppressWarnings("unchecked")
     public ShoppingSystem() {
         super(Aspect.all(ActionOnTouchComponent.class,
-                CollisionBoundComponent.class,
-                AltarComponent.class,
-                CurrencyComponent.class));
+                CollisionBoundComponent.class
+                /*AltarComponent.class,
+                CurrencyComponent.class*/));
     }
 
     @Override
@@ -47,9 +47,9 @@ public class ShoppingSystem extends EntitySystem {
     public boolean activeOnTouchTrigger(float inputX, float inputY) {
         for (Entity e : this.getEntities()) {
             if(cbm.get(e).bound.contains(inputX, inputY)){
-                if(world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class).money - cm.get(e).money >= 0) {
-                    world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class).money -= cm.get(e).money;
-                    aotm.get(e).action.performAction(world, e);
+               // if(world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class).money - cm.get(e).money >= 0) {
+                  //  world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class).money -= cm.get(e).money;
+        /*            aotm.get(e).action.performAction(world, e);
 
                     //TODO only certain items should be deleted from the world when bought. E.G keys or something
 
@@ -59,11 +59,13 @@ public class ShoppingSystem extends EntitySystem {
 
                             //TODO children seem to not exist?
                         }
-                    }
+                    }*/
 
-                    e.deleteFromWorld();
+            aotm.get(e).action.performAction(world, e);
+
+                    //e.deleteFromWorld();
                     return true;
-                }
+                //}
             }
         }
         return false;

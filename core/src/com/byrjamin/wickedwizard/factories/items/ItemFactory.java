@@ -29,6 +29,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
@@ -165,7 +166,7 @@ public class ItemFactory {
         shopItemTexture.add(new TextureRegionComponent(item.getRegion(), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(item));
-        shopItemTexture.add(new ActionOnTouchComponent(activeAltar()));
+        shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
         shopItemTexture.add(new CurrencyComponent(money));
         shopItemTexture.add(pc);
         bags.add(shopItemTexture);
@@ -193,7 +194,40 @@ public class ItemFactory {
     private static Action buyItem(){
         return new Action() {
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
+
+                CurrencyComponent playerMoney = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
+                CurrencyComponent itemPrice = e.getComponent(CurrencyComponent.class);
+
+
+                if(playerMoney.money - itemPrice.money >= 0) {
+                    playerMoney.money -= itemPrice.money;
+
+
+                    //TODO if item do this
+                    activeAltar().performAction(world, e);
+
+
+
+                    //TODO if pickup do this
+
+
+                    //TODO only certain items should be deleted from the world when bought. E.G keys or something
+
+/*                    if (pm.has(e)) {
+                        for (ChildComponent c : pm.get(e).children) {
+                            world.getSystem(FindChildSystem.class).findChildEntity(c).deleteFromWorld();
+
+                            //TODO children seem to not exist?
+                        }
+                    }*/
+
+                    e.deleteFromWorld();
+                }
+
+
+
+
                 //TODO If pickup just apply Item
                 //TODO If Item do the raise above head thing that will be made into a static method
             }

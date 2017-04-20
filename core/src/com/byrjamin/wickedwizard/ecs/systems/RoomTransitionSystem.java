@@ -25,8 +25,11 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+
+import java.util.Random;
 
 /**
  * Created by Home on 13/03/2017.
@@ -215,6 +218,64 @@ public class RoomTransitionSystem extends EntitySystem {
         }
 
     }
+
+
+    public void unpackRoom(Arena arena) {
+
+        for(Bag<Component> b : arena.getBagOfEntities()) {
+            Entity e = world.createEntity();
+            for (Component c : b) {
+                e.edit().add(c);
+            }
+
+            if (aotm.has(e)) {
+                aotm.get(e).isActive = false;
+            }
+
+        }
+
+    }
+
+
+    public void recreateWorld(){
+
+        packRoom(world, currentArena);
+
+
+
+        Random rand = new Random();
+
+        JigsawGenerator jg = new JigsawGenerator(13, rand);
+        jg.generateTutorial = false;
+
+        visitedArenas.clear();
+        unvisitedButAdjacentArenas.clear();
+
+
+        this.roomArray = jg.generate();
+        RoomFactory.cleanArenas(roomArray);
+
+        this.currentArena = jg.getStartingRoom();
+        unpackRoom(currentArena);
+
+        visitedArenas.add(currentArena);
+        unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
+
+
+        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+        player.position.x = currentArena.getWidth() / 2;
+        player.position.y = currentArena.getHeight() / 2;
+
+
+        //TODO this is some cheesy code, please fix later.
+        world.getSystem(RoomTypeSystem.class).nextLevelDoor = false;
+
+
+    }
+
+
+
+
 
 
     public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){

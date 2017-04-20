@@ -207,7 +207,7 @@ public class BlobFactory {
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, AnimationPacker.genAnimation(1f / 20f, TextureStrings.BIGGABLOBBA_STANDING, Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BIGGABLOBBA_STANDING),
                 -Measure.units(6),
                 0,
                 Measure.units(45),

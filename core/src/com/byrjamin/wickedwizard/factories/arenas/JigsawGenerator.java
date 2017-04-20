@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.factories.DeathFactory;
 
 import java.util.Random;
 
@@ -127,6 +128,8 @@ public class JigsawGenerator {
 
         //startingArena =  ShopFactory.createShop(new MapCoords(0,0));
 
+        //startingArena.addEntity(DeathFactory.worldPortal(600, 600));
+
         placedArenas.add(startingArena);
         placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,3)));
@@ -184,9 +187,16 @@ public class JigsawGenerator {
             placedArenas.add(itemRoom);
         }
 
+        Arena shopRoom = ShopFactory.createShop();
+        if(placeRoomUsingDoors(shopRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
+            placedArenas.add(shopRoom);
+        }
+
         Arena bossRoom = RoomFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
         RoomDecorationFactory.biggablobba(bossRoom);
+
+
 
         int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
         if (placeRoomAtRangeWithDoors(bossRoom,
