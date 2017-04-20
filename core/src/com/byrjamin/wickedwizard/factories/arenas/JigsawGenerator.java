@@ -4,8 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
-import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import java.util.Random;
 

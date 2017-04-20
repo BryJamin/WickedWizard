@@ -31,7 +31,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**

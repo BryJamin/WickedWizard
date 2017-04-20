@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assests;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -58,8 +59,6 @@ import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.archive.helper.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.archive.maps.Map;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BounceCollisionSystem;
@@ -117,7 +116,6 @@ public class PlayScreen extends AbstractScreen {
     private boolean gameOver = false;
 
     BitmapFont font = new BitmapFont();
-    Map map;
 
     private ArenaGUI arenaGUI;
     private Random random;
@@ -133,7 +131,6 @@ public class PlayScreen extends AbstractScreen {
         font.getData().setScale(5, 5);
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
         Assests.initialize(game.manager);
-        map = new Map();
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);

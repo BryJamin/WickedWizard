@@ -27,7 +27,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import java.util.Random;
 

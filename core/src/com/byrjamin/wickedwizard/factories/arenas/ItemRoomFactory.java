@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 
 /**
  * Created by Home on 20/03/2017.

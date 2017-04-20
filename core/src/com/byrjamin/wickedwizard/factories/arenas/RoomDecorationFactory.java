@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.archive.gameobject.enemies.KugelDusche;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;

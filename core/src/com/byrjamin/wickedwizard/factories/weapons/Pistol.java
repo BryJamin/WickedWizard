@@ -30,7 +30,7 @@ public class Pistol implements Weapon{
             bullet.edit().add(c);
         }
         bullet.edit().add(new FriendlyComponent());
-        bullet.edit().add(new VelocityComponent((float) (Measure.units(90) * Math.cos(angle)), (float) (Measure.units(90) * Math.sin(angle))));
+        bullet.edit().add(new VelocityComponent((float) (Measure.units(150) * Math.cos(angle)), (float) (Measure.units(150) * Math.sin(angle))));
 
         if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = baseDamage * e.getComponent(StatComponent.class).damage;
