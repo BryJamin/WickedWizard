@@ -200,7 +200,6 @@ public class ItemFactory {
 
 
                 if(playerMoney.money - itemPrice.money >= 0) {
-                    playerMoney.money -= itemPrice.money;
 
 
                     AltarComponent ac = e.getComponent(AltarComponent.class);
@@ -214,9 +213,11 @@ public class ItemFactory {
 
                         for (int i = 0; i < entityIds.size(); i++) {
                             Entity player = world.getEntity(entityIds.get(i));
-                            ac.pickUp.applyEffect(world, player);
+                            if(!ac.pickUp.applyEffect(world, player)) return;
                         }
                     }
+
+                    playerMoney.money -= itemPrice.money;
 
 
                     //TODO if pickup do this
