@@ -174,7 +174,7 @@ public class ItemFactory {
         ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x, y - Measure.units(5)));
         priceTag.add(new TextureRegionComponent(new MoneyPlus1().getRegion(), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
-        TextureFontComponent trc = new TextureFontComponent(""+money, 3);
+        TextureFontComponent trc = new TextureFontComponent(""+money);
         trc.width = width / 2;
         trc.offsetX = -Measure.units(45f);
         trc.offsetY =  Measure.units(2.8f);

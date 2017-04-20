@@ -45,7 +45,7 @@ public class EntityFactory {
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
         TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
-                PlayScreen.atlas.findRegions("brick"), TextureRegionComponent.FOREGROUND_LAYER_FAR);
+                PlayScreen.atlas.findRegions("brick"), TextureRegionComponent.PLAYER_LAYER_FAR);
 
         bag.add(trbc);
 
@@ -77,7 +77,7 @@ public class EntityFactory {
 
         TextureRegionComponent trc = new TextureRegionComponent(AnimationPacker.genAnimation(1 / 35f, "door", Animation.PlayMode.REVERSED).getKeyFrame(sc.stateTime),
                 -Measure.units(8.5f), 0, Measure.units(22), Measure.units(20),
-                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+                TextureRegionComponent.PLAYER_LAYER_FAR);
         bag.add(trc);
         //bag.add(new GrappleableComponent());
         bag.add(new LockComponent());

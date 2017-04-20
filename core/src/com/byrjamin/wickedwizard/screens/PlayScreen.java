@@ -9,25 +9,23 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.Assests;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
@@ -61,7 +59,6 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.archive.helper.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.archive.helper.RoomInputAdapter;
 import com.byrjamin.wickedwizard.archive.maps.Map;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
@@ -102,6 +99,7 @@ public class PlayScreen extends AbstractScreen {
     private Viewport gamePort;
 
     public static TextureAtlas atlas;
+    public static AssetManager manager;
     public ShaderProgram shaderOutline;
 
     private Pixmap pixmap;
@@ -134,6 +132,7 @@ public class PlayScreen extends AbstractScreen {
         gestureDetector = new GestureDetector(new gestures());
         font.getData().setScale(5, 5);
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
+        Assests.initialize(game.manager);
         map = new Map();
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
@@ -143,8 +142,8 @@ public class PlayScreen extends AbstractScreen {
         random = new Random();
         jg =new JigsawGenerator(10, random);
 
-        currencyFont = new BitmapFont();
-        currencyFont.getData().setScale(4);
+        currencyFont = game.manager.get(Assests.small, BitmapFont.class);// font size 12 pixels
+
 
         jg.generateTutorial = true;
         loadShader();

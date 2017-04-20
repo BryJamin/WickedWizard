@@ -34,7 +34,7 @@ public class TutorialFactory extends RoomFactory{
 
 
     private final static String jumpTutorialString =
-            "Tap above your character to jump and start gliding! \n \n DOUBLE Tap below your character to cancel your glide";
+            "Tap above your character to jump and start gliding! \n \n DOUBLE Tap below your character to cancel gliding";
     private final static String enemyTutorialString =
             "Hark! A Worthy Foe! \n \n Hold down within this area to shoot \n \n Drag to change aim";
     private final static String grappleTutorialString =

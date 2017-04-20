@@ -5,6 +5,7 @@ import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -71,25 +72,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
-        currentArena.getBagOfEntities().clear();
         //Pack
-        for(Entity e : this.getEntities()){
-            if(!bm.has(e) && !em.has(e)) {
 
-                if(cm.has(e)){
-                    if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
-                            children.contains(cm.get(e), true)){
-                        continue;
-                    }
-                }
-
-                Bag<Component> b = new Bag<Component>();
-                e.getComponents(new Bag<Component>());
-                currentArena.getBagOfEntities().add(e.getComponents(b));
-            }
-
-            e.deleteFromWorld();
-        }
+        packRoom(world, currentArena);
 
 
         currentArena = findRoom(destination);
@@ -207,6 +192,31 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
+    public void packRoom(World world, Arena arena){
+
+        arena.getBagOfEntities().clear();
+
+        for(Entity e : this.getEntities()){
+            if(!bm.has(e) && !em.has(e)) {
+
+                if(cm.has(e)){
+                    if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
+                            children.contains(cm.get(e), true)){
+                        continue;
+                    }
+                }
+
+                Bag<Component> b = new Bag<Component>();
+                e.getComponents(new Bag<Component>());
+                arena.getBagOfEntities().add(e.getComponents(b));
+            }
+
+            e.deleteFromWorld();
+        }
+
+    }
+
+
     public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
         aGUI.update(world.delta, gamecam, visitedArenas, unvisitedButAdjacentArenas,
                 getCurrentArena(),
@@ -239,6 +249,12 @@ public class RoomTransitionSystem extends EntitySystem {
         playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / RoomFactory.SECTION_HEIGHT));
         return playerLocation;
     }
+
+
+
+
+
+
 
     public Array<Arena> getRoomArray() {
         return roomArray;

@@ -30,11 +30,11 @@ public class MessageBannerSystem extends BaseSystem {
     TextureFontComponent messageFC;
 
     public MessageBannerSystem() {
-        titleFC = new TextureFontComponent("Default", 5);
+        titleFC = new TextureFontComponent("Default");
         titleFC.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;;
 
 
-        messageFC = new TextureFontComponent("Default", 4);
+        messageFC = new TextureFontComponent("Default");
         messageFC.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
     }
 

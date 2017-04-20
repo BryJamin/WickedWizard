@@ -1,16 +1,19 @@
 package com.byrjamin.wickedwizard;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.byrjamin.wickedwizard.assets.Assests;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 
 public class MainGame extends Game {
@@ -38,6 +41,23 @@ public class MainGame extends Game {
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(0, 0);
 		manager.load("sprite.atlas", TextureAtlas.class);
+
+		FileHandleResolver resolver = new InternalFileHandleResolver();
+		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+
+		FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size1Params.fontFileName = "fonts/Roboto-Black.ttf";
+		size1Params.fontParameters.size = (int) Measure.units(3f);
+		manager.load(Assests.small, BitmapFont.class, size1Params);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        size2Params.fontFileName = "fonts/Roboto-Black.ttf";
+        size2Params.fontParameters.size = (int) Measure.units(4f);
+        manager.load(Assests.medium, BitmapFont.class, size2Params);
+
+
 		setScreen(new LoadingScreen(this));
 	}
 
