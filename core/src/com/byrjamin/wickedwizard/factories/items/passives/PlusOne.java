@@ -15,8 +15,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class PlusOne implements Item {
 
     @Override
-    public boolean applyEffect(World world, Entity e) {
-        HealthComponent hc = e.getComponent(HealthComponent.class);
+    public boolean applyEffect(World world, Entity player) {
+        HealthComponent hc = player.getComponent(HealthComponent.class);
         hc.maxHealth = hc.maxHealth + 2;
         hc.health = (hc.health + 1 >= hc.maxHealth) ? hc.maxHealth : hc.health + 1;
         return true;

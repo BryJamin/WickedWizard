@@ -15,8 +15,8 @@ public class FireRateUp implements Item {
 
 
     @Override
-    public boolean applyEffect(World world, Entity e) {
-        e.getComponent(StatComponent.class).fireRate += 1f;
+    public boolean applyEffect(World world, Entity player) {
+        player.getComponent(StatComponent.class).fireRate += 1f;
         return true;
     }
 

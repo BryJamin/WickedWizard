@@ -17,9 +17,9 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class ChangeColor implements Item {
 
     @Override
-    public boolean applyEffect(World world, Entity e) {
-        e.getComponent(TextureRegionComponent.class).color = Color.CYAN;
-        e.getComponent(TextureRegionComponent.class).DEFAULT = Color.CYAN;
+    public boolean applyEffect(World world, Entity player) {
+        player.getComponent(TextureRegionComponent.class).color = Color.CYAN;
+        player.getComponent(TextureRegionComponent.class).DEFAULT = Color.CYAN;
         return true;
     }
 

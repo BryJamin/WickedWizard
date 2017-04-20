@@ -15,8 +15,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class HealthUp implements PickUp {
 
     @Override
-    public boolean applyEffect(World world, Entity e) {
-        HealthComponent hc = e.getComponent(HealthComponent.class);
+    public boolean applyEffect(World world, Entity player) {
+        HealthComponent hc = player.getComponent(HealthComponent.class);
         if(hc.health == hc.maxHealth) return false;
         hc.health = (hc.health + 1 >= hc.maxHealth) ? hc.maxHealth : hc.health + 1;
         return true;

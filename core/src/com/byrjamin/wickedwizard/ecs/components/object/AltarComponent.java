@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
+import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
 import com.byrjamin.wickedwizard.factories.items.Item;
 
@@ -10,15 +11,15 @@ import com.byrjamin.wickedwizard.factories.items.Item;
 
 public class AltarComponent extends Component {
 
-    public Item item;
+    public PickUp pickUp;
     public boolean hasItem = true;
 
     public AltarComponent(){
-        item = new DamageUp();
+        pickUp = new DamageUp();
     }
 
-    public AltarComponent(Item item){
-        this.item = item;
+    public AltarComponent(PickUp pickUp){
+        this.pickUp = pickUp;
     }
 
 }

@@ -15,8 +15,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class MoneyPlus1 implements PickUp {
 
     @Override
-    public boolean applyEffect(World world, Entity e) {
-        e.getComponent(CurrencyComponent.class).money += 1;
+    public boolean applyEffect(World world, Entity player) {
+        player.getComponent(CurrencyComponent.class).money += 1;
         return true;
     }
 

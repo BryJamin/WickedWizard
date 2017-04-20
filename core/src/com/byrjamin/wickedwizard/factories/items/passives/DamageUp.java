@@ -14,8 +14,8 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class DamageUp implements Item {
 
     @Override
-    public boolean applyEffect(World world, Entity e) {
-        e.getComponent(StatComponent.class).damage += 1f;
+    public boolean applyEffect(World world, Entity player) {
+        player.getComponent(StatComponent.class).damage += 1f;
         return true;
     }
 

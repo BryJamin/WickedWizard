@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 public interface PickUp {
 
-    boolean applyEffect(World world, Entity e);
+    boolean applyEffect(World world, Entity player);
     TextureRegion getRegion();
 
 }

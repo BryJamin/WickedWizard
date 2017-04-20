@@ -6,9 +6,15 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 09/04/2017.
@@ -48,6 +54,22 @@ public class PickUpSystem extends EntityProcessingSystem {
             }
 
         }
+
+
+    }
+
+
+    public void itemOverHead(Entity player, TextureRegion textureRegion){
+
+        CollisionBoundComponent pBound = player.getComponent(CollisionBoundComponent.class);
+
+        Entity itemHoverAffect = world.createEntity();
+        itemHoverAffect.edit().add(new PositionComponent());
+        itemHoverAffect.edit().add(new FollowPositionComponent(player.getComponent(PositionComponent.class).position,
+                0, pBound.bound.getHeight() + pBound.bound.getHeight() / 4));
+        itemHoverAffect.edit().add(new TextureRegionComponent(textureRegion,
+                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
+        itemHoverAffect.edit().add(new ExpireComponent(0.9f));
 
 
     }

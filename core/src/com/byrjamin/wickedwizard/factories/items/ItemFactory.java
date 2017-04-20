@@ -30,8 +30,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
-import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -149,10 +149,10 @@ public class ItemFactory {
     }
 
 
-    public static Array<ComponentBag> createShopItemBag(float x, float y, Item item, int money){
+    public static Array<ComponentBag> createShopItemBag(float x, float y, PickUp pickUp, int money){
 
-        float width = Measure.units(8);
-        float height = Measure.units(8);
+        float width = Measure.units(6);
+        float height = Measure.units(6);
 
         x = x - width / 2;
         y = y - height / 2;
@@ -163,9 +163,9 @@ public class ItemFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(item.getRegion(), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new TextureRegionComponent(pickUp.getRegion(), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        shopItemTexture.add(new AltarComponent(item));
+        shopItemTexture.add(new AltarComponent(pickUp));
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
         shopItemTexture.add(new CurrencyComponent(money));
         shopItemTexture.add(pc);
@@ -204,9 +204,20 @@ public class ItemFactory {
                     playerMoney.money -= itemPrice.money;
 
 
-                    //TODO if item do this
-                    activeAltar().performAction(world, e);
+                    AltarComponent ac = e.getComponent(AltarComponent.class);
 
+                    //TODO if item do this
+                    if(ac.pickUp instanceof Item) {
+                        activeAltar().performAction(world, e);
+                    } else {
+                        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlayerComponent.class));
+                        IntBag entityIds = subscription.getEntities();
+
+                        for (int i = 0; i < entityIds.size(); i++) {
+                            Entity player = world.getEntity(entityIds.get(i));
+                            ac.pickUp.applyEffect(world, player);
+                        }
+                    }
 
 
                     //TODO if pickup do this
@@ -246,40 +257,38 @@ public class ItemFactory {
         return new Action() {
             @Override
             public void performAction(World world, Entity e) {
+
+
                 e.edit().add(new HighlightComponent());
 
 
                 AltarComponent ac = e.getComponent(AltarComponent.class);
 
-                if(ac.hasItem) {
-                    EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlayerComponent.class));
-                    IntBag entityIds = subscription.getEntities();
+                if(ac.pickUp instanceof Item) {
 
-                    for (int i = 0; i < entityIds.size(); i++) {
-                        Entity player = world.getEntity(entityIds.get(i));
-                        ac.item.applyEffect(world, player);
+                    Item item = (Item) ac.pickUp;
 
-                        CollisionBoundComponent pBound = player.getComponent(CollisionBoundComponent.class);
+                    if (ac.hasItem) {
+                        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlayerComponent.class));
+                        IntBag entityIds = subscription.getEntities();
 
-                        Entity itemHoverAffect = world.createEntity();
-                        itemHoverAffect.edit().add(new PositionComponent());
-                        itemHoverAffect.edit().add(new FollowPositionComponent(player.getComponent(PositionComponent.class).position,
-                                0, pBound.bound.getHeight() + pBound.bound.getHeight() / 4));
-                        itemHoverAffect.edit().add(new TextureRegionComponent(ac.item.getRegion(),
-                                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
-                        itemHoverAffect.edit().add(new ExpireComponent(0.9f));
+                        for (int i = 0; i < entityIds.size(); i++) {
+                            Entity player = world.getEntity(entityIds.get(i));
+                            ac.pickUp.applyEffect(world, player);
 
-                        world.getSystem(MessageBannerSystem.class).createBanner(ac.item.getName(), ac.item.getDescription());
+                            world.getSystem(PickUpSystem.class).itemOverHead(player, item.getRegion());
+                            world.getSystem(MessageBannerSystem.class).createBanner(item.getName(), item.getDescription());
 
+                        }
+
+                        ac.hasItem = false;
+                        //TODO Previous the has ParenComponet was not here I re-used this for the shop I added it on
+                        //TODO I would advise removing this once you wake back up
+                        if (world.getMapper(ParentComponent.class).has(e)) {
+                            world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first()).deleteFromWorld();
+                        }
                     }
 
-                    ac.hasItem = false;
-                    //TODO Previous the has ParenComponet was not here I re-used this for the shop I added it on
-                    //TODO I would advise removing this once you wake back up
-                    if(world.getMapper(ParentComponent.class).has(e))
-                    {
-                        world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first()).deleteFromWorld();
-                    }
                 }
 
                 //TODO ditto

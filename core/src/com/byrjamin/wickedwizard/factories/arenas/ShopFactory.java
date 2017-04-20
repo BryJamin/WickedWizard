@@ -45,11 +45,16 @@ public class ShopFactory extends  RoomFactory{
         Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
         PickUp[] pickUps = {new HealthUp()};
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new PlusOne(), 5)) {
+/*        MapCoords[] locations = new MapCoords[]{ new MapCoords((int) Measure.units(20), (int) Measure.units(40)),
+                new MapCoords((int) Measure.units(40), (int) Measure.units(40)),
+                new MapCoords((int) Measure.units(60), (int) Measure.units(40)),
+                new MapCoords((int) Measure.units(80), (int) Measure.units(40))};*/
+
+        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new HealthUp(), 1)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 5)) {
+        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 1)) {
             arena.addEntity(b);
         }
 
@@ -76,6 +81,14 @@ public class ShopFactory extends  RoomFactory{
         }*/
         return arena;
     }
+
+
+    private void createCheapItem(Arena arena, MapCoords arenaCoords){
+        for(Bag<Component> b : ItemFactory.createShopItemBag(arenaCoords.getX(),arenaCoords.getY(), new HealthUp(), 2)) {
+            arena.addEntity(b);
+        }
+    }
+
 
 
 
