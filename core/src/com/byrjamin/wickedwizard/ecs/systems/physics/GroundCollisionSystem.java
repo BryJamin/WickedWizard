@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.systems;
+package com.byrjamin.wickedwizard.ecs.systems.physics;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.byrjamin.wickedwizard.ecs.systems.OnDeathSystem;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**

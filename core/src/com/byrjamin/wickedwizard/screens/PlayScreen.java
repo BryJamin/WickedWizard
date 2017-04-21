@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assests;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -41,7 +42,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ExpireSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FollowPositionSystem;
@@ -61,13 +62,13 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
-import com.byrjamin.wickedwizard.ecs.systems.BounceCollisionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.BounceCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.byrjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.byrjamin.wickedwizard.ecs.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FiringAISystem;
-import com.byrjamin.wickedwizard.ecs.systems.GrapplePointSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToPlayerAISystem;
@@ -75,8 +76,8 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
-import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -411,11 +412,20 @@ public class PlayScreen extends AbstractScreen {
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(16f),
                 Measure.units(5f), Measure.units(5f));
 
-
-
         currencyFont.draw(game.batch, "" + currencyComponent.money,
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
+                Measure.units(5f), Align.center, true);
+
+
+        game.batch.draw(new KeyUp().getRegion(),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(18f),
+                Measure.units(2.5f), Measure.units(2.5f));
+
+        currencyFont.draw(game.batch, "" + currencyComponent.keys,
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15.3f),
                 Measure.units(5f), Align.center, true);
 
     }

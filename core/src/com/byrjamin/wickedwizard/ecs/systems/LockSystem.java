@@ -26,6 +26,8 @@ public class LockSystem extends EntitySystem {
     ComponentMapper<LockComponent> lm;
 
 
+    //TODO maybe put this into the DoorSystem?
+
 
     @SuppressWarnings("unchecked")
     public LockSystem() {
@@ -36,6 +38,8 @@ public class LockSystem extends EntitySystem {
     protected void processSystem() {
 
     }
+
+
 
     @Override
     protected boolean checkProcessing() {
