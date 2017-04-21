@@ -13,6 +13,9 @@ import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.sun.xml.internal.ws.dump.LoggingDumpTube;
+
+import javafx.geometry.Pos;
 
 /**
  * Created by Home on 01/04/2017.
@@ -43,14 +46,9 @@ public class OnDeathSystem  extends BaseSystem {
             for (ComponentBag bag : odm.get(deadEntity).getComponentBags()) {
                 Entity e = world.createEntity();
                 for (Component c : bag) {
-
-
-                    if(c instanceof PositionComponent){
-                        ((PositionComponent) c).position = new Vector3(pc.position);
-                    }
-
                     e.edit().add(c);
                 }
+                e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
             }
         }
         deadEntity.deleteFromWorld();
