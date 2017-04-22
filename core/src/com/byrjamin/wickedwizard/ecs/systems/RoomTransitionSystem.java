@@ -23,10 +23,11 @@ import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import java.util.Random;
@@ -130,7 +131,12 @@ public class RoomTransitionSystem extends EntitySystem {
                             player.position.y = cbc.getCenterY();
                             break;
                     }
+
+                    pBound.bound.x = player.position.x;
+                    pBound.bound.y = player.position.y;
+
                 }
+
 
             }
 
@@ -253,7 +259,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
         this.roomArray = jg.generate();
-        RoomFactory.cleanArenas(roomArray);
+        ArenaShellFactory.cleanArenas(roomArray);
 
         this.currentArena = jg.getStartingRoom();
         unpackRoom(currentArena);
@@ -306,10 +312,17 @@ public class RoomTransitionSystem extends EntitySystem {
 
     public MapCoords getCurrentPlayerLocation(){
         CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (pBound.getCenterX() / RoomFactory.SECTION_WIDTH));
-        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / RoomFactory.SECTION_HEIGHT));
+        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (pBound.getCenterX() / ArenaShellFactory.SECTION_WIDTH));
+        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / ArenaShellFactory.SECTION_HEIGHT));
         return playerLocation;
     }
+
+/*    public MapCoords getCurrentPlayerLocation(){
+        PositionComponent position = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (position.getX() / ArenaShellFactory.SECTION_WIDTH));
+        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (position.getY() / ArenaShellFactory.SECTION_HEIGHT));
+        return playerLocation;
+    }*/
 
 
 

@@ -21,7 +21,7 @@ import java.util.Random;
  * Created by Home on 11/04/2017.
  */
 
-public class ItemRoomFactory extends RoomFactory {
+public class ItemArenaShellFactory extends ArenaShellFactory {
 
 
     public static Arena createItemRoom(){

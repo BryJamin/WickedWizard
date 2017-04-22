@@ -60,6 +60,9 @@ public class ArenaGUI {
 
         this.currentRoom = currentRoom;
         this.currentCoords = currentCoords;
+
+        System.out.println(currentCoords);
+
         this.arenas = visitedArenas.orderedItems();
         this.undiscoveredArenas = undiscoveredArenas.orderedItems();
 

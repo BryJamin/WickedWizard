@@ -17,7 +17,7 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
  * Created by Home on 18/03/2017.
  */
 
-public class RoomFactory {
+public class ArenaShellFactory {
 
     public static float SECTION_WIDTH = MainGame.GAME_WIDTH;
     public static float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
@@ -45,7 +45,7 @@ public class RoomFactory {
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR)).build();
         return arena;
     }

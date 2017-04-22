@@ -19,7 +19,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 18/04/2017.
  */
 
-public class ShopFactory extends  RoomFactory{
+public class ShopFactory extends ArenaShellFactory {
 
     public static Arena createShop(){
         return createShop(new MapCoords(0,0));

@@ -26,7 +26,7 @@ import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComp
  * Created by Home on 01/04/2017.
  */
 
-public class TutorialFactory extends RoomFactory{
+public class TutorialFactory extends ArenaShellFactory {
 
     private final static String moveTutorialString1 = "Exit through the right door";
     private final static String moveTutorialString2 = "Touch in this area to move!";

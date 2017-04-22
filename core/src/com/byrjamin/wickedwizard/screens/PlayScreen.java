@@ -79,7 +79,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
-import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -217,7 +217,7 @@ public class PlayScreen extends AbstractScreen {
 
         arenaArray = jg.generate();
         Arena startingArena = jg.getStartingRoom();
-        RoomFactory.cleanArenas(arenaArray);
+        ArenaShellFactory.cleanArenas(arenaArray);
 
         ComponentBag player = PlayerFactory.playerBag();
 

@@ -30,7 +30,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createOmniArena();
+                Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.blobRoom(a);
                 return a;
             }
@@ -41,7 +41,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createOmniArena();
+                Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.movingTurretRoomRight(a);
                 return a;
             }
@@ -52,7 +52,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createOmniArena();
+                Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.movingDoubleTurretRoom(a);
                 return a;
             }
@@ -63,7 +63,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createOmniArena();
+                Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.kugelDusche(a);
                 return a;
             }
@@ -74,7 +74,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createOmniArena();
+                Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.silverHead(a);
                 return a;
             }
@@ -85,7 +85,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createWidth2Arena();
+                Arena a = ArenaShellFactory.createWidth2Arena();
                 RoomDecorationFactory.movingDoubleTurretRoom(a);
                 return a;
             }
@@ -96,7 +96,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createLetterIArena(new MapCoords(0,0));
+                Arena a = ArenaShellFactory.createLetterIArena(new MapCoords(0,0));
                // RoomDecorationFactory.movingDoubleTurretRoom(a);
                 a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(30f)));
                 a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(60f)));
@@ -112,7 +112,7 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = RoomFactory.createOmniArena(new MapCoords(0,0));
+                Arena a = ArenaShellFactory.createOmniArena(new MapCoords(0,0));
                 return a;
             }
         };
