@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assests;
@@ -245,6 +246,7 @@ public class PlayScreen extends AbstractScreen {
                         new ProximitySystem(),
                         new FindChildSystem(),
                         new PickUpSystem(),
+                        new LuckSystem(),
                         new JumpSystem(),
                         new ShoppingSystem(),
                         new RoomTypeSystem(),

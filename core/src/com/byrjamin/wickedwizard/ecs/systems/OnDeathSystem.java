@@ -9,11 +9,12 @@ import com.artemis.EntitySubscription;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
-import com.sun.xml.internal.ws.dump.LoggingDumpTube;
 
 import javafx.geometry.Pos;
 
@@ -24,6 +25,8 @@ import javafx.geometry.Pos;
 public class OnDeathSystem  extends BaseSystem {
 
     ComponentMapper<OnDeathComponent> odm;
+    ComponentMapper<LootComponent> lm;
+    ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<PositionComponent> pm;
 
     @Override
@@ -51,6 +54,12 @@ public class OnDeathSystem  extends BaseSystem {
                 e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
             }
         }
+
+        if(lm.has(deadEntity) && cbm.has(deadEntity)) {
+            CollisionBoundComponent cbc = cbm.get(deadEntity);
+            world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());
+        }
+
         deadEntity.deleteFromWorld();
 
 

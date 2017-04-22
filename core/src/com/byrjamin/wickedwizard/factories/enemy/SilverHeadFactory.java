@@ -66,30 +66,19 @@ public class SilverHeadFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
+        ComponentBag bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width, height, health);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
-        bag.add(new EnemyComponent());
         bag.add(new AccelerantComponent(accelX, 0, maxX, 0));
         bag.add(new MoveToPlayerComponent());
-        bag.add(new HealthComponent(health));
-        bag.add(new BlinkComponent());
-        //bag.add(new MoveToPlayerComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(STANDING);
-        bag.add(sc);
+        bag.add(new AnimationStateComponent(STANDING));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(STANDING, AnimationPacker.genAnimation(0.15f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP));
         animMap.put(CLOSING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING));
         animMap.put(OPENING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED));
         animMap.put(CHARING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING));
         bag.add(new AnimationComponent(animMap));
-
-        OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
 
         bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0),
                 textureOffsetX,

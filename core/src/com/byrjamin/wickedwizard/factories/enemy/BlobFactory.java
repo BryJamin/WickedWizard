@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -34,6 +35,7 @@ import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -59,19 +61,14 @@ public class BlobFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
+        Bag<Component> bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
-        bag.add(new EnemyComponent());
         bag.add(new MoveToPlayerComponent());
         bag.add(new AccelerantComponent(Measure.units(15), 0));
-        bag.add(new HealthComponent(10));
-        bag.add(new BlinkComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
-        bag.add(sc);
+
+        bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
 
@@ -80,11 +77,6 @@ public class BlobFactory {
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-
-        OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
-
         return bag;
     }
 
@@ -125,9 +117,7 @@ public class BlobFactory {
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
-        bag.add(sc);
+        bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
@@ -144,20 +134,14 @@ public class BlobFactory {
         x = x - width* scale / 2;
         y = y - height * scale / 2;
 
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
+        Bag<Component> bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width * scale, height * scale, 2);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width * scale, height * scale), true));
         bag.add(new GravityComponent());
-        bag.add(new EnemyComponent());
         bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
         bag.add(new MoveToPlayerComponent());
-        bag.add(new HealthComponent(2));
-        bag.add(new BlinkComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
-        bag.add(sc);
+
+        bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
@@ -176,6 +160,8 @@ public class BlobFactory {
 
         x = x - width / 2;
         y = y - height / 2;
+
+
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
@@ -196,14 +182,13 @@ public class BlobFactory {
 
         bag.add(cbc);
         bag.add(new GravityComponent());
+        bag.add(new LootComponent(5));
        // bag.add(new AccelerantComponent(Measure.units(10), Measure.units(20f)));
        // bag.add(new MoveToPlayerComponent());
         bag.add(new EnemyComponent());
         bag.add(new HealthComponent(65));
         bag.add(new BlinkComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
-        bag.add(sc);
+        bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, AnimationPacker.genAnimation(1f / 20f, TextureStrings.BIGGABLOBBA_STANDING, Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));

@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -56,23 +57,14 @@ public class KugelDuscheFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new EnemyComponent());
+        ComponentBag bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width, height, 25);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
-        bag.add(new BlinkComponent());
 
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("sprite_health2"),
                 width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
-
-        bag.add(new HealthComponent(25));
-        bag.add(new FiringAIComponent(Math.toRadians(45)));
+        bag.add(new FiringAIComponent(Math.toRadians(0)));
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
-
-        OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
 
         Action p = new Action() {
 
