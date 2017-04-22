@@ -246,7 +246,7 @@ public class ItemFactory {
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
 
             }
         };
@@ -304,10 +304,10 @@ public class ItemFactory {
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(HighlightComponent.class);
 
-                Entity child = w.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
+                Entity child = world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
                 if(child != null){
                     child.edit().remove(HighlightComponent.class);
                 }

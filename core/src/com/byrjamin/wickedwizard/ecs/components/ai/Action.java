@@ -8,6 +8,6 @@ import com.artemis.World;
  */
 
 public interface Action {
-    void performAction(World w, Entity e);
-    void cleanUpAction(World w, Entity e);
+    void performAction(World world, Entity e);
+    void cleanUpAction(World world, Entity e);
 }

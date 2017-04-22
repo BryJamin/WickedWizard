@@ -84,6 +84,7 @@ import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
+
 import java.util.Random;
 
 
@@ -144,7 +145,7 @@ public class PlayScreen extends AbstractScreen {
         currencyFont = game.manager.get(Assests.small, BitmapFont.class);// font size 12 pixels
 
 
-        jg.generateTutorial = true;
+        jg.generateTutorial = false;
         loadShader();
         createWorld();
     }
@@ -351,7 +352,9 @@ public class PlayScreen extends AbstractScreen {
 
         //pauseWorld(world);
 
-        //System.out.println(Gdx.graphics.getFramesPerSecond());
+        System.out.println(Gdx.graphics.getFramesPerSecond());
+
+
     }
 
 

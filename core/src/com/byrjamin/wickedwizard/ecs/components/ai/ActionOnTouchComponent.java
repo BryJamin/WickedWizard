@@ -15,12 +15,12 @@ public class ActionOnTouchComponent extends Component {
     public ActionOnTouchComponent() {
         action = new Action() {
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
 
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
 
             }
         };

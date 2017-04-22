@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import java.util.Random;
@@ -125,6 +126,12 @@ public class JigsawGenerator {
 
         //startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
 
+        startingArena.addEntity(ChestFactory.chestBag(500, 700));
+        startingArena.addEntity(ChestFactory.chestBag(800, 700));
+        startingArena.addEntity(ChestFactory.chestBag(900, 700));
+        startingArena.addEntity(ChestFactory.chestBag(1200, 700));
+        startingArena.addEntity(ChestFactory.chestBag(1400, 700));
+        startingArena.addEntity(ChestFactory.chestBag(1700, 700));
         //startingArena =  ShopFactory.createShop(new MapCoords(0,0));
 
         //startingArena.addEntity(DeathFactory.worldPortal(600, 600));

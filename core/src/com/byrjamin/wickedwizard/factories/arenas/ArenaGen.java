@@ -5,6 +5,5 @@ package com.byrjamin.wickedwizard.factories.arenas;
  */
 
 public interface ArenaGen {
-    float weight = 20f;
     Arena createArena();
 }

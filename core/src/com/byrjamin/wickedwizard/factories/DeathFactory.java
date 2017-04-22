@@ -96,12 +96,12 @@ public class DeathFactory {
         bag.add(new PositionComponent(x, y));
         bag.add(new ActionOnTouchComponent(new Action() {
             @Override
-            public void performAction(World w, Entity e) {
-                w.getSystem(RoomTransitionSystem.class).recreateWorld();
+            public void performAction(World world, Entity e) {
+                world.getSystem(RoomTransitionSystem.class).recreateWorld();
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
 
             }
         }));

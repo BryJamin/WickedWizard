@@ -226,24 +226,24 @@ public class BlobFactory {
         Action action1 = new Action(){
             FiringAIComponent f = new FiringAIComponent();
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.edit().add(f);
             }
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(FiringAIComponent.class);
             }
         };
 
         Action action2 = new Action(){
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.edit().add(sc2);
                 e.edit().add(new BounceComponent());
                 e.getComponent(VelocityComponent.class).velocity.y = Measure.units(40f);
             }
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(sc2);
                 e.edit().remove(BounceComponent.class);
             }

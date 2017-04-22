@@ -48,6 +48,7 @@ public class ArenaBuilder {
 
         public Builder section (Section section){
             sections.add(section);
+         //   arena.cotainingCoords.add(section.coords);
             return this;
         }
 
@@ -65,6 +66,9 @@ public class ArenaBuilder {
 
         for(Section s : sections) {
 
+
+            //arena.cotainingCoords.add(s.coords);
+
             System.out.println(sections.size);
 
             int multX = s.coords.getX() - defaultCoords.getX();
@@ -76,6 +80,11 @@ public class ArenaBuilder {
 
             float posX = multX * SECTION_WIDTH;
             float posY = multY * SECTION_HEIGHT;
+
+
+
+            //float
+
 
             //Left
             if(s.left == wall.FULL) {
@@ -129,8 +138,19 @@ public class ArenaBuilder {
                     PlayScreen.atlas.findRegions("backgrounds/wall")));
 
 
+
         }
 
+    }
+
+
+    public Section findSection(MapCoords mapCoords) {
+        for(Section s : sections) {
+            if(s.coords.equals(mapCoords)) {
+                return s;
+            }
+        }
+        return null;
     }
 
 

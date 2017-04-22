@@ -1,6 +1,9 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 13/04/2017.
@@ -12,12 +15,14 @@ public class Level1Rooms {
 
     public static Array<ArenaGen> getLevel1RoomArray(){
         Array<ArenaGen> ag = new Array<ArenaGen>();
-        ag.add(room1());
-        ag.add(room2());
-        ag.add(room3());
-        ag.add(room4());
-        ag.add(room5());
-        ag.add(room6());
+        //ag.add(room1());
+        //ag.add(room2());
+        //ag.add(room3());
+        //ag.add(room4());
+        //ag.add(room5());
+        //ag.add(room6());
+        ag.add(room7());
+        //ag.add(room8());
         return ag;
     }
 
@@ -87,6 +92,31 @@ public class Level1Rooms {
         };
     }
 
+    public static ArenaGen room7(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = RoomFactory.createLetterIArena(new MapCoords(0,0));
+               // RoomDecorationFactory.movingDoubleTurretRoom(a);
+                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(30f)));
+                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(60f)));
+                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(90f)));
+                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(120f)));
+                return a;
+            }
+        };
+    }
+
+
+    public static ArenaGen room8(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = RoomFactory.createOmniArena(new MapCoords(0,0));
+                return a;
+            }
+        };
+    }
 
 
 

@@ -71,12 +71,12 @@ public class KugelDuscheFactory {
             private float angle = (new Random().nextBoolean()) ? 5 : -5;
 
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians(angle);
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
 
             }
         };

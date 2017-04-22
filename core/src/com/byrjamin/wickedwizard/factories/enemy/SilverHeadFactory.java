@@ -90,12 +90,12 @@ public class SilverHeadFactory {
         Action action1 = new Action(){
 
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(CLOSING);
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
 
             }
         };
@@ -103,12 +103,12 @@ public class SilverHeadFactory {
         Action action2 = new Action(){
 
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(CHARING);
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
 
             }
         };
@@ -119,7 +119,7 @@ public class SilverHeadFactory {
             FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
 
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(OPENING);
                 wc.timer.skip();
                 e.edit().add(wc);
@@ -128,7 +128,7 @@ public class SilverHeadFactory {
 
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(wc);
                 e.edit().remove(fc);
             }
@@ -137,7 +137,7 @@ public class SilverHeadFactory {
         Action action4 = new Action(){
 
             @Override
-            public void performAction(World w, Entity e) {
+            public void performAction(World world, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(STANDING);
                 AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
                 ac.accelX = accelX;
@@ -145,7 +145,7 @@ public class SilverHeadFactory {
             }
 
             @Override
-            public void cleanUpAction(World w, Entity e) {
+            public void cleanUpAction(World world, Entity e) {
                 AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
                 ac.accelX = chargeAccelX;
                 ac.maxX = chargeMaxX;

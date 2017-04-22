@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
@@ -44,7 +45,7 @@ public class RoomFactory {
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR)).build();
         return arena;
     }
@@ -76,6 +77,76 @@ public class RoomFactory {
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR)).build();
+
+        return arena;
+    }
+
+
+    public static Arena createLetterIArena(MapCoords defaultCoords) {
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()));
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
+        containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2));
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 2));
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 2));
+
+        Arena arena = new Arena(containingCorrds);
+
+        arena.setWidth(SECTION_WIDTH * 3);
+        arena.setHeight(SECTION_HEIGHT * 3);
+
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL ))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 1),
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 2),
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 2),
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL)).build();
+
+        arena.addEntity(EntityFactory.wallBag(new Rectangle(0, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
+        arena.addEntity(EntityFactory.wallBag(new Rectangle(SECTION_WIDTH * 2, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
 
         return arena;
     }
