@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 
 /**
  * Created by Home on 12/03/2017.

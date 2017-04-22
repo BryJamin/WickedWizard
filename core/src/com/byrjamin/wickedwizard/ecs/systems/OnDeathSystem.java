@@ -1,13 +1,22 @@
 package com.byrjamin.wickedwizard.ecs.systems;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.EntitySubscription;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+
+import javafx.geometry.Pos;
 
 /**
  * Created by Home on 01/04/2017.
@@ -16,6 +25,8 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 public class OnDeathSystem  extends BaseSystem {
 
     ComponentMapper<OnDeathComponent> odm;
+    ComponentMapper<LootComponent> lm;
+    ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<PositionComponent> pm;
 
     @Override
@@ -38,17 +49,23 @@ public class OnDeathSystem  extends BaseSystem {
             for (ComponentBag bag : odm.get(deadEntity).getComponentBags()) {
                 Entity e = world.createEntity();
                 for (Component c : bag) {
-
-
-                    if(c instanceof PositionComponent){
-                        ((PositionComponent) c).position = new Vector2(pc.position);
-                    }
-
                     e.edit().add(c);
                 }
+                e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
             }
         }
+
+        if(lm.has(deadEntity) && cbm.has(deadEntity)) {
+            CollisionBoundComponent cbc = cbm.get(deadEntity);
+            world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());
+        }
+
         deadEntity.deleteFromWorld();
+
+
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all());
+        IntBag entityIds = subscription.getEntities();
+        System.out.println(entityIds.size());
     }
 
 

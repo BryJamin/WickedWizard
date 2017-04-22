@@ -4,10 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
-import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.FollowPositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
 /**
  * Created by Home on 06/04/2017.
@@ -27,7 +25,7 @@ public class FollowPositionSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         PositionComponent pc = pm.get(e);
         FollowPositionComponent fc = fm.get(e);
-        pc.position.set(fc.trackedPosition.x + fc.offsetX, fc.trackedPosition.y + fc.offsetY);
+        pc.position.set(fc.trackedPosition.x + fc.offsetX, fc.trackedPosition.y + fc.offsetY, 0);
     }
 
 }

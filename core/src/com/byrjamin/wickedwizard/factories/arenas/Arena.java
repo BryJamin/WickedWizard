@@ -4,7 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 
 /**
  * Created by Home on 13/03/2017.
@@ -16,7 +16,7 @@ public class Arena {
     private float height;
 
     public enum RoomType {
-        BATTLE, BOSS, ITEM
+        BATTLE, BOSS, ITEM, SHOP
     }
 
     public RoomType roomType;
@@ -39,6 +39,12 @@ public class Arena {
         startingCoords = mapCoords.get(0);
         this.cotainingCoords = mapCoords;
         roomType = RoomType.BATTLE;
+    }
+
+    public Arena(Array<MapCoords> mapCoords, RoomType roomType) {
+        startingCoords = mapCoords.get(0);
+        this.cotainingCoords = mapCoords;
+        this.roomType = roomType;
     }
 
     public Bag<Bag<Component>> getBagOfEntities() {

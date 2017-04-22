@@ -26,7 +26,6 @@ public class MoveToSystem extends EntityProcessingSystem {
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<MoveToComponent> mtm;
-    ComponentMapper<AccelerantComponent> am;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WallComponent> wm;
 
@@ -40,7 +39,6 @@ public class MoveToSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
         MoveToComponent mtc = mtm.get(e);
-        AccelerantComponent ac = am.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
         Float targetX = mtc.targetX;
@@ -50,19 +48,13 @@ public class MoveToSystem extends EntityProcessingSystem {
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterX() : pc.getX();
 
             if (cbc.bound.contains(mtc.targetX, cbc.getCenterY())) {
-               // endTravel(vc, mtc);
+                mtc.targetX = null;
+                vc.velocity.x = vc.velocity.x / 2;
+                //vc.velocity.x = mtc.endSpeedX;
             } else if (currentPosition >= targetX) {
-                //vc.velocity.x = mtc.speedX;
-                //vc.velocity.add(mtc.speedX, 0);
-                //vc.velocity.x = -ac.maxX;
-                vc.velocity.x = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
-                        //(vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
+                vc.velocity.x = (vc.velocity.x <= -mtc.maxX) ? -mtc.maxX : vc.velocity.x - mtc.accelX;
             } else {
-                //vc.velocity.x = mtc.speedX;
-                //vc.velocity.add(mtc.speedX, 0); //
-                //vc.velocity.x  = ac.maxX;
-                vc.velocity.x = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
-                        //(vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
+                vc.velocity.x = (vc.velocity.x >= mtc.maxX) ? mtc.maxX : vc.velocity.x + mtc.accelX;
             }
         }
 
@@ -73,31 +65,22 @@ public class MoveToSystem extends EntityProcessingSystem {
             float currentPosition = (cbm.has(e)) ? cbm.get(e).getCenterY() : pc.getY();
 
             if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
-               // endTravel(vc, mtc);
+                mtc.targetY = null;
+                vc.velocity.y = vc.velocity.y / 2;
             } else if (currentPosition >= targetY) {
-                //vc.velocity.y = mtc.speedY;
-                //vc.velocity.add(0, mtc.speedY);
-       /*         vc.velocity.y = -ac.maxY;
-                vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;*/
-
-                vc.velocity.y = (vc.velocity.y <= -ac.maxX) ? -ac.maxY : vc.velocity.y - ac.accelY;
-
-                        //(vc.velocity.y <= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
+                vc.velocity.y = (vc.velocity.y <= -mtc.maxX) ? -mtc.maxY : vc.velocity.y - mtc.accelY;
             } else {
-                //vc.velocity.y = mtc.speedY;
-                //vc.velocity.add(0, mtc.speedY);
-                //vc.velocity.y = ac.maxY;
-                vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
-
-                       // (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
+                vc.velocity.y = (vc.velocity.y >= mtc.maxY) ? mtc.maxY : vc.velocity.y + mtc.accelY;
             }
         }
 
+/*
     if(mtc.targetX != null && mtc.targetY != null) {
         if (cbc.bound.contains(targetX, targetY)) {
             endTravel(vc, mtc);
         }
     }
+*/
 
 
 
@@ -109,25 +92,26 @@ public class MoveToSystem extends EntityProcessingSystem {
     public void endTravel(VelocityComponent vc, MoveToComponent mtc){
 
 
-        if(mtc.maxEndSpeedY != null) {
+/*        if(mtc.maxEndSpeedY != null) {
             if (vc.velocity.y > mtc.maxEndSpeedY) {
                 vc.velocity.y = mtc.maxEndSpeedY;
             }
 
             mtc.maxEndSpeedY = null;
         } else {
-            vc.velocity.y = 0;
-        }
-
-        vc.velocity.x = vc.velocity.x / 4;
+            //vc.velocity.y = 0;
+        }*/
+/*
+        vc.velocity.x = vc.velocity.x / 2;
+        vc.velocity.y = vc.velocity.y / 2;
 
         mtc.targetY = null;
-        mtc.targetX = null;
+        mtc.targetX = null;*/
 
     }
 
 
-    public void flyTo(double angleOfTravel, float distanceOfTravel, float speedOfTravel, MoveToComponent mtc, AccelerantComponent ac, CollisionBoundComponent cbc){
+    public void flyTo(double angleOfTravel, float distanceOfTravel, float speedOfTravel, MoveToComponent mtc, CollisionBoundComponent cbc){
 
         float cosine = (float) Math.cos(angleOfTravel);
         float sine = (float) Math.sin(angleOfTravel);
@@ -138,11 +122,11 @@ public class MoveToSystem extends EntityProcessingSystem {
         mtc.targetY = flyPath.y;
 
 
-        ac.accelX = Math.abs(cosine * speedOfTravel);
-        ac.accelY = Math.abs(sine * speedOfTravel);
+        mtc.accelX = Math.abs(cosine * speedOfTravel);
+        mtc.accelY = Math.abs(sine * speedOfTravel);
 
-        ac.maxX = Math.abs(cosine * speedOfTravel);
-        ac.maxY = Math.abs(sine * speedOfTravel);
+        mtc.maxX = Math.abs(cosine * speedOfTravel);
+        mtc.maxY = Math.abs(sine * speedOfTravel);
 
       //  mtc.speedX = cosine * speedOfTravel;
       //  mtc.speedY = sine * speedOfTravel;
@@ -156,7 +140,7 @@ public class MoveToSystem extends EntityProcessingSystem {
 
     }
 
-    public void flyToNoPathCheck(double angleOfTravel, float x, float y, float speedOfTravel, MoveToComponent mtc, AccelerantComponent ac, CollisionBoundComponent cbc){
+    public void flyToNoPathCheck(double angleOfTravel, float x, float y, float speedOfTravel, MoveToComponent mtc, CollisionBoundComponent cbc){
 
         float cosine = (float) Math.cos(angleOfTravel);
         float sine = (float) Math.sin(angleOfTravel);
@@ -169,11 +153,13 @@ public class MoveToSystem extends EntityProcessingSystem {
         //mtc.speedX = cosine * speedOfTravel;
         //mtc.speedY = sine * speedOfTravel;
 
-        ac.accelX = Math.abs(cosine * speedOfTravel);
-        ac.accelY = Math.abs(sine * speedOfTravel);
+        mtc.accelX = Math.abs(cosine * speedOfTravel);
+        mtc.accelY = Math.abs(sine * speedOfTravel);
 
-        ac.maxX = Math.abs(cosine * speedOfTravel);
-        ac.maxY = Math.abs(sine * speedOfTravel);
+        mtc.maxX = Math.abs(cosine * speedOfTravel);
+        mtc.maxY = Math.abs(sine * speedOfTravel);
+
+        //mtc.endSpeedY =
 
     }
 

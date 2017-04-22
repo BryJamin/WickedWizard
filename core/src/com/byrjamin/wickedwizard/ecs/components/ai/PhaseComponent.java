@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.components.ai;
 
 import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -12,29 +11,16 @@ public class PhaseComponent extends Component {
 
     public float currentPhaseTime = 0;
     public int currentPhase;
-
-    private Array<Bag<Component>> phases = new Array<Bag<Component>>();
     private Array<Float> phaseTimers = new Array<Float>();
 
+    private Array<Action> phaseArray = new Array<Action>();
+
     public Array<Integer> phaseSequence = new Array<Integer>();
-
-    /**
-     * Adds a phase to the PhaseComponent
-     * @param bag - Bag of Componenets for the new Phase
-     * @param time - The amount of time the phase lasts
-     */
-    public void addPhase(Bag<Component> bag, Float time){
-        phases.add(bag);
-        phaseTimers.add(time);
-    }
+    public Array<Integer> stateSequence = new Array<Integer>();
 
 
-    public void addPhase(Float time, Component... components){
-        Bag<Component> bag = new Bag<Component>();
-        for(Component c : components){
-            bag.add(c);
-        }
-        phases.add(bag);
+    public void addPhase(Float time, Action action){
+        phaseArray.add(action);
         phaseTimers.add(time);
     }
 
@@ -51,8 +37,14 @@ public class PhaseComponent extends Component {
         }
     }
 
-    public Bag<Component> getCurrentPhaseComponents(int phaseNo){
-        return phases.get(phaseNo);
+    public void addStateSequence(int... sequence){
+        for(int i : sequence){
+            stateSequence.add(i);
+        }
+    }
+
+    public Action getCurrentPhase(int phaseNo){
+        return phaseArray.get(phaseNo);
     }
 
     public float getCurrentPhaseTimer(int phaseNo){

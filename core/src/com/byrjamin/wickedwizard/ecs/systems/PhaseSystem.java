@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.systems;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
@@ -32,10 +31,7 @@ public class PhaseSystem extends EntityProcessingSystem {
         pc.currentPhaseTime -= world.delta;
 
         if(pc.currentPhaseTime < 0){
-
-            for(Component c : pc.getCurrentPhaseComponents(pc.currentPhase)){
-                e.edit().remove(c.getClass());
-            }
+            pc.getCurrentPhase(pc.currentPhase).cleanUpAction(world, e);
 
             pc.getPhaseSequence().add(pc.getPhaseSequence().first());
             pc.getPhaseSequence().removeIndex(0);
@@ -43,9 +39,8 @@ public class PhaseSystem extends EntityProcessingSystem {
             pc.currentPhase = pc.getPhaseSequence().first();
             pc.currentPhaseTime = pc.getCurrentPhaseTimer(pc.currentPhase);
 
-            for(Component c : pc.getCurrentPhaseComponents(pc.currentPhase)){
-                e.edit().add(c);
-            }
+
+            pc.getCurrentPhase(pc.currentPhase).performAction(world, e);
 
         }
 

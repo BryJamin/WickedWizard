@@ -42,11 +42,24 @@ public class StateTimer {
         return false;
     }
 
+    public boolean isFinishedAndReset(float resetTime){
+        if(isFinished()){
+            this.resetTime = resetTime;
+            reset();
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Resets the timer back to the defaultTime
      */
     public void reset(){
         timeRemaining = resetTime;
+    }
+
+    public void skip(){
+        timeRemaining = 0;
     }
 
     public void setResetTime(float resetTime) {

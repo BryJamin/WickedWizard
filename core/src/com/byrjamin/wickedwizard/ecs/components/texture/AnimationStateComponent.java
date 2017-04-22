@@ -30,6 +30,10 @@ public class AnimationStateComponent extends Component {
         state = State.DEFAULT.getState();
     }
 
+    public AnimationStateComponent(int startState){
+        state = startState;
+    }
+
     public int getState() {
         return state;
     }

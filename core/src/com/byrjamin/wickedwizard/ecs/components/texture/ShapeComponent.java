@@ -11,19 +11,20 @@ public class ShapeComponent extends TextureRegionComponent{
 
     public ShapeRenderer.ShapeType shapeType = ShapeRenderer.ShapeType.Filled;
 
-    public ShapeComponent(float offsetX, float offsetY, float width, float height) {
+    public ShapeComponent(float offsetX, float offsetY, float width, float height, int layer) {
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.width = width;
         this.height = height;
+        this.layer = layer;
     }
 
     public ShapeComponent(){
-        this(0,0, Measure.units(5), Measure.units(5));
+        this(0,0, Measure.units(5), Measure.units(5), FOREGROUND_LAYER_FAR);
     }
 
-    public ShapeComponent(float width, float height){
-        this(0,0, width, height);
+    public ShapeComponent(float width, float height, int layer){
+        this(0,0, width, height, layer);
     }
 
 }

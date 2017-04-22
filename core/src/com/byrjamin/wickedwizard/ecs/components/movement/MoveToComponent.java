@@ -11,8 +11,11 @@ public class MoveToComponent extends Component {
     public Float targetX;
     public Float targetY;
 
-    public float speedX;
-    public float speedY;
+    public float accelX;
+    public float accelY;
+
+    public float maxX;
+    public float maxY;
 
     public float endSpeedX;
     public float endSpeedY;
@@ -23,6 +26,10 @@ public class MoveToComponent extends Component {
     public void reset(){
         targetX = null;
         targetY = null;
+    }
+
+    public boolean hasTarget(){
+        return targetX != null && targetY != null;
     }
 
     public boolean isMoving;

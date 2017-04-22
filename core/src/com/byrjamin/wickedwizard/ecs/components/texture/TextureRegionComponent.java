@@ -12,7 +12,25 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  */
 public class TextureRegionComponent extends Component{
 
-    public int layer = 0;
+
+    public final static int BACKGROUND_LAYER_FAR = -12;
+    public final static int BACKGROUND_LAYER_MIDDLE = -10;
+    public final static int BACKGROUND_LAYER_NEAR = -8;
+
+    public final static int ENEMY_LAYER_FAR = -6;
+    public final static int ENEMY_LAYER_MIDDLE = -4;
+    public final static int ENEMY_LAYER_NEAR = -2;
+
+    public final static int PLAYER_LAYER_FAR = 0;
+    public final static int PLAYER_LAYER_MIDDLE = 2;
+    public final static int PLAYER_LAYER_NEAR = 4;
+
+    public final static int FOREGROUND_LAYER_FAR = 6;
+    public final static int FOREGROUND_LAYER_MIDDLE = 8;
+    public final static int FOREGROUND_LAYER_NEAR = 10;
+
+
+    public int layer = PLAYER_LAYER_MIDDLE;
 
     public TextureRegion region;
 
@@ -30,24 +48,21 @@ public class TextureRegionComponent extends Component{
     public Color color = new Color(1,1,1,1);
     public Color DEFAULT = Color.WHITE;
 
-    public TextureRegionComponent(TextureRegion region, float offsetX, float offsetY, float width, float height) {
+    public TextureRegionComponent(TextureRegion region, float offsetX, float offsetY, float width, float height, int layer) {
         this.region = region;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.width = width;
         this.height = height;
+        this.layer = layer;
     }
 
     public TextureRegionComponent(){
-        this(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING), 0,0, Measure.units(5), Measure.units(5));
+        this(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING), 0,0, Measure.units(5), Measure.units(5), PLAYER_LAYER_MIDDLE);
     }
 
-    public TextureRegionComponent(TextureRegion region){
-        this(region, 0,0, Measure.units(5), Measure.units(5));
-    }
-
-    public TextureRegionComponent(TextureRegion region, float width, float height){
-        this(region, 0,0, width, height);
+    public TextureRegionComponent(TextureRegion region, float width, float height, int layer){
+        this(region, 0,0, width, height, layer);
     }
 
 

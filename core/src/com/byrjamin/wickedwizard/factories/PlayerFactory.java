@@ -1,20 +1,19 @@
 package com.byrjamin.wickedwizard.factories;
 
-import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
-import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.FollowPositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
-import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
@@ -27,6 +26,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.weapons.Pistol;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -37,7 +37,6 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 public class PlayerFactory {
 
-
     public static ComponentBag playerBag(){
 
         ComponentBag bag = new ComponentBag();
@@ -47,9 +46,10 @@ public class PlayerFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
+        bag.add(new CurrencyComponent(50));
         bag.add(new JumpComponent());
         bag.add(new GlideComponent());
-        bag.add(new AccelerantComponent(Measure.units(15f), Measure.units(15f), Measure.units(80f), Measure.units(80f)));
+        bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
@@ -62,15 +62,20 @@ public class PlayerFactory {
         bag.add(new AnimationComponent(k));
 
 
-        WeaponComponent wc = new WeaponComponent(0.3f, 0.3f);
-        wc.additionalComponenets.add(new FriendlyComponent());
+        StatComponent statComponent = new StatComponent();
+        statComponent.fireRate = 1f;
+        statComponent.damage = 1f;
+        statComponent.speed = 1f;
+
+        bag.add(statComponent);
+        WeaponComponent wc = new WeaponComponent(new Pistol(), 0.3f);
         bag.add(wc);
         bag.add(new HealthComponent(6));
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
-        trc.layer = 2;
+        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0,
+                Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         bag.add(trc);
 
         bag.add(new DirectionalComponent());
@@ -93,8 +98,7 @@ public class PlayerFactory {
         bag.add(ac);
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("wings"),
-                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
-        trc.layer = 1;
+                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
         bag.add(trc);
 
 
@@ -119,8 +123,8 @@ public class PlayerFactory {
         bag.add(ac);
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("wings"),
-                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6));
-        trc.layer = 1;
+                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6),
+                TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.scaleX = -1;
         bag.add(trc);
 

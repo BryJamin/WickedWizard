@@ -23,6 +23,9 @@ public class HealthSystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
         HealthComponent hc = hm.get(e);
+
+        hc.health = hc.health - hc.getAccumulatedDamage();
+        hc.clearDamage();
         if(hc.health <= 0){
             world.getSystem(OnDeathSystem.class).kill(e);
         }

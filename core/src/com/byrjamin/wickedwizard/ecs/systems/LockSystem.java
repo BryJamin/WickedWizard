@@ -26,6 +26,8 @@ public class LockSystem extends EntitySystem {
     ComponentMapper<LockComponent> lm;
 
 
+    //TODO maybe put this into the DoorSystem?
+
 
     @SuppressWarnings("unchecked")
     public LockSystem() {
@@ -36,6 +38,8 @@ public class LockSystem extends EntitySystem {
     protected void processSystem() {
 
     }
+
+
 
     @Override
     protected boolean checkProcessing() {
@@ -54,7 +58,7 @@ public class LockSystem extends EntitySystem {
                     e.edit().remove(GrappleableComponent.class);
                 } else {
                     //System.out.println("aw man");
-                    e.edit().remove(GrappleableComponent.class);
+                    //e.edit().remove(GrappleableComponent.class);
                     e.edit().add(new WallComponent(cbm.get(e).bound));
                 }
 
@@ -72,13 +76,12 @@ public class LockSystem extends EntitySystem {
         for(Entity e : this.getEntities()){
             LockComponent lc = lm.get(e);
             if(lc.isLocked()) {
-                System.out.println("INSIDE");
                 lm.get(e).unlock();
                 if (aotm.has(e)) {
                     aotm.get(e).isEnabled = true;
                     e.edit().add(new GrappleableComponent());
                 } else {
-                    e.edit().add(new GrappleableComponent());
+                    //e.edit().add(new GrappleableComponent());
                     e.edit().remove(WallComponent.class);
                 }
 

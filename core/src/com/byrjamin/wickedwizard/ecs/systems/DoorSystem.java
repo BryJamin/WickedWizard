@@ -10,10 +10,10 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.ecs.components.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.FriendlyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
-import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 
 /**
@@ -55,7 +55,7 @@ public class DoorSystem extends EntityProcessingSystem {
             if(cbm.has(doorEntity)) {
 
                 CollisionBoundComponent cbc = cbm.get(doorEntity);
-                BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbc.bound);
+                BoundsDrawer.drawBounds(world.getSystem(com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem.class).batch, cbc.bound);
                 if(cbc.bound.overlaps(cbm.get(e).bound)) {
                    // System.out.println("INSIDE THA DOOR");
 

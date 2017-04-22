@@ -9,6 +9,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,59 +17,73 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
+import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
+import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
+import com.byrjamin.wickedwizard.assets.Assests;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
-import com.byrjamin.wickedwizard.ecs.systems.ActiveOnTouchSystem;
-import com.byrjamin.wickedwizard.ecs.systems.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.CameraSystem;
-import com.byrjamin.wickedwizard.ecs.systems.DirectionalSystem;
-import com.byrjamin.wickedwizard.ecs.systems.FadeSystem;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ProximitySystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ExpireSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
 import com.byrjamin.wickedwizard.ecs.systems.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
+import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.TutorialSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ShoppingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.FrictionSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
-import com.byrjamin.wickedwizard.factories.JigsawGenerator;
-import com.byrjamin.wickedwizard.archive.helper.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.archive.helper.RoomInputAdapter;
-import com.byrjamin.wickedwizard.archive.maps.Map;
-import com.byrjamin.wickedwizard.ecs.systems.AnimationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.BlinkSystem;
-import com.byrjamin.wickedwizard.ecs.systems.BounceCollisionSystem;
+import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.BounceCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.byrjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.byrjamin.wickedwizard.ecs.systems.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FiringAISystem;
-import com.byrjamin.wickedwizard.ecs.systems.GrappleSystem;
-import com.byrjamin.wickedwizard.ecs.systems.GravitySystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToPlayerAISystem;
-import com.byrjamin.wickedwizard.ecs.systems.MovementSystem;
-import com.byrjamin.wickedwizard.ecs.systems.PlayerInputSystem;
-import com.byrjamin.wickedwizard.ecs.systems.RenderingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.StateSystem;
-import com.byrjamin.wickedwizard.ecs.systems.GroundCollisionSystem;
-import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.byrjamin.wickedwizard.utils.Measure;
+
 
 import java.util.Random;
 
@@ -86,36 +101,28 @@ public class PlayScreen extends AbstractScreen {
     private Viewport gamePort;
 
     public static TextureAtlas atlas;
+    public static AssetManager manager;
+    public ShaderProgram shaderOutline;
 
     private Pixmap pixmap;
+
+    private BitmapFont currencyFont;
 
     private World world;
     private World deathWorld;
 
     private JumpComponent jumpresource;
+    private CurrencyComponent currencyComponent;
     private HealthComponent healthResource;
 
     GestureDetector gestureDetector;
-    GestureDetector controlschemeDetector;
-
-    Vector3 input = new Vector3();
-    Vector3 touchDownInput = new Vector3();
-    Vector3 touchUpInput = new Vector3();
-
     private boolean gameOver = false;
 
     BitmapFont font = new BitmapFont();
 
-    Map map;
-
     private ArenaGUI arenaGUI;
     private Random random;
     private JigsawGenerator jg;
-
-    private RoomInputAdapter roomInputAdapter;
-
-    private GestureDetector gameOvergestureDetector;
-
     private Array<Arena> arenaArray;
 
 
@@ -123,30 +130,30 @@ public class PlayScreen extends AbstractScreen {
 
     public PlayScreen(MainGame game) {
         super(game);
-
-
         gestureDetector = new GestureDetector(new gestures());
-
         font.getData().setScale(5, 5);
-
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
-
-        map = new Map();
+        Assests.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
-
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
-        roomInputAdapter = new RoomInputAdapter(map.getActiveRoom(), gamePort);
-
         random = new Random();
-        jg = new JigsawGenerator(13, random);
+        jg =new JigsawGenerator(10, random);
 
+        currencyFont = game.manager.get(Assests.small, BitmapFont.class);// font size 12 pixels
+
+
+        jg.generateTutorial = false;
+        loadShader();
         createWorld();
+    }
 
+    public void loadShader() {
+        shaderOutline = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
+                Gdx.files.internal("shader/WhiteFragmentShader.glsl"));
+        if (!shaderOutline.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shaderOutline.getLog());
     }
 
     public void handleInput(float dt) {
@@ -194,7 +201,7 @@ public class PlayScreen extends AbstractScreen {
         e = deathWorld.createEntity();
         e.edit().add(new PositionComponent(gamecam.position.x - gamePort.getWorldWidth() / 2,
                 gamecam.position.y - gamePort.getWorldHeight() / 2));
-        ShapeComponent sc = new ShapeComponent(gamecam.viewportWidth, gamecam.viewportHeight);
+        ShapeComponent sc = new ShapeComponent(gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
         sc.color = Color.BLACK;
         sc.color.a = 0.5f;
         sc.layer = -1;
@@ -210,7 +217,7 @@ public class PlayScreen extends AbstractScreen {
 
         arenaArray = jg.generate();
         Arena startingArena = jg.getStartingRoom();
-        RoomFactory.cleanArenas(arenaArray);
+        ArenaShellFactory.cleanArenas(arenaArray);
 
         ComponentBag player = PlayerFactory.playerBag();
 
@@ -219,35 +226,43 @@ public class PlayScreen extends AbstractScreen {
                         new MovementSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
-                        new FollowPositionSystem(),
+                        new ExpireSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
                         new BounceCollisionSystem(),
                         new BulletSystem(),
                         new EnemyCollisionSystem(),
+                        new MessageBannerSystem(),
                         new FindPlayerSystem(player),
                         new FiringAISystem(),
-                        new GrappleSystem(),
-                        new GravitySystem(),
+                        new GrapplePointSystem(),
                         new LockSystem(),
                         new GroundCollisionSystem(),
                         new HealthSystem(),
                         new OnDeathSystem(),
                         new FadeSystem(),
-                        new TutorialSystem(),
                         new PhaseSystem(),
                         new MoveToSystem(),
+                        new ProximitySystem(),
+                        new FindChildSystem(),
+                        new PickUpSystem(),
+                        new LuckSystem(),
                         new JumpSystem(),
+                        new ShoppingSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
                         new PlayerInputSystem(gamecam, gamePort),
                         new StateSystem(),
-                        new SpawnerSystem())
+                        new SpawnerSystem(),
+                        new GravitySystem(),
+                        new FrictionSystem()
+                        )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RoomTransitionSystem(startingArena, arenaArray),
                         new DirectionalSystem(),
                         new CameraSystem(gamecam, gamePort),
+                        new FollowPositionSystem(),
                         new RenderingSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem()
@@ -255,6 +270,7 @@ public class PlayScreen extends AbstractScreen {
                 .build();
 
         world = new World(config);
+        world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
 
         for (Bag<Component> bag : startingArena.getBagOfEntities()) {
             Entity entity = world.createEntity();
@@ -267,48 +283,10 @@ public class PlayScreen extends AbstractScreen {
         for (Component comp : player) {
             entity.edit().add(comp);
         }
-
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
+        currencyComponent = entity.getComponent(CurrencyComponent.class);
         arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena);
-
-
-    }
-
-    public void update(float dt) {
-
-        //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
-        //TODO touching the screen pause the game.
-        //caps the delta time if the game is paused for some reason.
-
-        if (dt > 0.20) {
-            System.out.println(" dt" + dt);
-        }
-
-        if (dt < 0.20f) {
-
-            gamecam.position.set((int) map.getActiveRoom().getWizard().getCenterX(), (int) map.getActiveRoom().getWizard().getCenterY(), 0);
-
-            if (gamecam.position.x <= gamePort.getWorldWidth() / 2) {
-                gamecam.position.set(gamePort.getWorldWidth() / 2, gamecam.position.y, 0);
-            } else if (gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH) {
-                gamecam.position.set((int) (map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2), (int) gamecam.position.y, 0);
-            }
-
-            if (gamecam.position.y <= gamePort.getWorldHeight() / 2) {
-                gamecam.position.set(gamecam.position.x, gamePort.getWorldHeight() / 2, 0);
-            } else if (gamecam.position.y + gamecam.viewportHeight / 2 >= map.getActiveRoom().HEIGHT) {
-                gamecam.position.set((int) gamecam.position.x, (int) (map.getActiveRoom().HEIGHT - gamecam.viewportHeight / 2), 0);
-            }
-
-            gamecam.update();
-
-            handleInput(dt);
-            map.update(dt, gamecam);
-            if (map.getActiveRoom().getWizard().isDead()) {
-                gameOver = true;
-            }
-        }
     }
 
     @Override
@@ -326,15 +304,19 @@ public class PlayScreen extends AbstractScreen {
         game.batch.setProjectionMatrix(gamecam.combined);
 
         //TODO this doesn't fit the slowdown fly everywhere problem when using artemis
-        if (delta < 0.20f) {
+        //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
+        //TODO touching the screen pause the game.
+
+        if (delta < 0.04f) {
             world.setDelta(delta);
         } else {
-            world.setDelta(0.20f);
+            world.setDelta(0.02f);
         }
 
         if(gameOver){
             pauseWorld(world);
         }
+
 
         handleInput(world.delta);
         world.process();
@@ -349,24 +331,30 @@ public class PlayScreen extends AbstractScreen {
             world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
         }
 
+
         drawHUD(world, gamecam);
+        //s.draw(game.batch);
         arenaGUI.draw(game.batch);
 
         if(gameOver){
 
-            if (delta < 0.20f) {
+            if (delta < 0.030f) {
                 deathWorld.setDelta(delta);
             } else {
-                deathWorld.setDelta(0.20f);
+                deathWorld.setDelta(0.030f);
             }
 
 
             deathWorld.process();
         }
 
+
+
         //pauseWorld(world);
 
-       // System.out.println(Gdx.graphics.getFramesPerSecond());
+        System.out.println(Gdx.graphics.getFramesPerSecond());
+
+
     }
 
 
@@ -404,13 +392,46 @@ public class PlayScreen extends AbstractScreen {
             }
         }
 
-        for(int i = 1; i <= healthRegions.size; i++) {
-            game.batch.draw(healthRegions.get(i - 1), gamecam.position.x - (gamecam.viewportWidth / 2) + (100 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 220, MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+        for(int i = 0; i < healthRegions.size; i++) {
+            game.batch.draw(healthRegions.get(i),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (100 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(8f),
+                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
-        for (int i = 1; i <= jumpresource.jumps; i++) {
-            game.batch.draw(atlas.findRegion("bullet_blue"), gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i), gamecam.position.y + (gamecam.viewportHeight / 2) - 280, MainGame.GAME_UNITS * 2.5f, MainGame.GAME_UNITS * 2.5f);
+        for (int i = 0; i < jumpresource.jumps; i++) {
+
+            float width = MainGame.GAME_UNITS * 2.5f;
+            float height = MainGame.GAME_UNITS * 2.5f;
+
+            game.batch.draw(atlas.findRegion("bullet_blue"),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
+                    width, height);
         }
+
+
+
+        game.batch.draw(new MoneyPlus1().getRegion(),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(1.5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(16f),
+                Measure.units(5f), Measure.units(5f));
+
+        currencyFont.draw(game.batch, "" + currencyComponent.money,
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
+                Measure.units(5f), Align.center, true);
+
+
+        game.batch.draw(new KeyUp().getRegion(),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(18f),
+                Measure.units(2.5f), Measure.units(2.5f));
+
+        currencyFont.draw(game.batch, "" + currencyComponent.keys,
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15.3f),
+                Measure.units(5f), Align.center, true);
 
     }
 

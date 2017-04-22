@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 
 /**
  * Created by Home on 20/03/2017.
@@ -38,6 +38,7 @@ public class ArenaGUI {
     private Color locationBlinkColor = new Color (0,0,1,0.5f);
     private Color bossRoomColor = new Color(0, 1, 1, 0.5f);
     private Color itemRoomColor = new Color (1, 0, 1, 0.5f);
+    private Color shopRoomColor = new Color (234f / 255f, 185f / 255f, 157f / 255f, 1);
 
     private float mapBlinker;
     private boolean blink;
@@ -59,6 +60,9 @@ public class ArenaGUI {
 
         this.currentRoom = currentRoom;
         this.currentCoords = currentCoords;
+
+        System.out.println(currentCoords);
+
         this.arenas = visitedArenas.orderedItems();
         this.undiscoveredArenas = undiscoveredArenas.orderedItems();
 
@@ -68,7 +72,7 @@ public class ArenaGUI {
             blink = !blink;
             mapBlinker = 0;
         }
-        mapy = gamecam.position.y + Measure.units(18);
+        mapy = gamecam.position.y + Measure.units(20);
         mapx = gamecam.position.x + Measure.units(40);
     }
 
@@ -80,12 +84,27 @@ public class ArenaGUI {
         }
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        drawMapContainer(batch);
         drawMapSquares(batch);
         drawMapLines(batch);
         Gdx.gl.glDisable(GL20.GL_BLEND);
         if(!batch.isDrawing()) {
             batch.begin();
         }
+
+    }
+
+    public void drawMapContainer(SpriteBatch batch){
+
+        mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        mapRenderer.setColor(undiscoveredRoomColor);
+        mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5);
+        mapRenderer.end();
+        mapRenderer.begin(ShapeRenderer.ShapeType.Line);
+        mapRenderer.setColor(Color.WHITE);
+        mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5);
+        mapRenderer.end();
 
     }
 
@@ -120,10 +139,22 @@ public class ArenaGUI {
 
             if((diffX < range && diffX > -range) &&  (diffY < range && diffY > -range)) {
                 mapRenderer.rect(mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
-            }
-            if (arena.roomType == Arena.RoomType.BOSS) {
-                mapRenderer.setColor(bossRoomColor);
-                mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+
+                if (arena.roomType == Arena.RoomType.BOSS) {
+                    mapRenderer.setColor(bossRoomColor);
+                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                }
+
+                if (arena.roomType == Arena.RoomType.ITEM) {
+                    mapRenderer.setColor(itemRoomColor);
+                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                }
+
+                if (arena.roomType == Arena.RoomType.SHOP) {
+                    mapRenderer.setColor(shopRoomColor);
+                    mapRenderer.rect(mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                }
+
             }
 /*
                 if (r instanceof ItemRoom) {

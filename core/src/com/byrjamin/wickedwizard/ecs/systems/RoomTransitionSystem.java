@@ -5,27 +5,32 @@ import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
-import com.byrjamin.wickedwizard.ecs.components.BulletComponent;
-import com.byrjamin.wickedwizard.ecs.components.ChildComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ParentComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
-import com.byrjamin.wickedwizard.ecs.components.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
-import com.byrjamin.wickedwizard.factories.arenas.RoomFactory;
-import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.archive.maps.MapCoords;
+import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
+import com.byrjamin.wickedwizard.utils.MapCoords;
+
+import java.util.Random;
 
 /**
  * Created by Home on 13/03/2017.
@@ -42,6 +47,7 @@ public class RoomTransitionSystem extends EntitySystem {
     ComponentMapper<DoorComponent> dm;
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<ParentComponent> parm;
+    ComponentMapper<ExpireComponent> em;
     ComponentMapper<ChildComponent> cm;
 
 
@@ -70,25 +76,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
-        currentArena.getBagOfEntities().clear();
         //Pack
-        for(Entity e : this.getEntities()){
-            if(!bm.has(e)) {
 
-                if(cm.has(e)){
-                    if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
-                            children.contains(cm.get(e), true)){
-                        continue;
-                    }
-                }
-
-                Bag<Component> b = new Bag<Component>();
-                e.getComponents(new Bag<Component>());
-                currentArena.getBagOfEntities().add(e.getComponents(b));
-            }
-
-            e.deleteFromWorld();
-        }
+        packRoom(world, currentArena);
 
 
         currentArena = findRoom(destination);
@@ -141,7 +131,12 @@ public class RoomTransitionSystem extends EntitySystem {
                             player.position.y = cbc.getCenterY();
                             break;
                     }
+
+                    pBound.bound.x = player.position.x;
+                    pBound.bound.y = player.position.y;
+
                 }
+
 
             }
 
@@ -153,15 +148,18 @@ public class RoomTransitionSystem extends EntitySystem {
         world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class).reset();
         Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity;
 
-        if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
+/*        if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
             velocity.x = velocity.x > 0 ? Measure.units(60f) / 2 : -Measure.units(60f) / 2;
-        }
-
+        }*/
+/*
         if(velocity.y > Measure.units(60f)) {
             velocity.y = Measure.units(60f);
-        }
+        }*/
 
-        world.getSystem(PlayerInputSystem.class).activeGrapple = false;
+        velocity.y = velocity.y / 2;
+        velocity.x = velocity.x / 2 ;
+
+        world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).getPlayerInput().activeGrapple = false;
         System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
     }
@@ -203,6 +201,89 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
+    public void packRoom(World world, Arena arena){
+
+        arena.getBagOfEntities().clear();
+
+        for(Entity e : this.getEntities()){
+            if(!bm.has(e) && !em.has(e)) {
+
+                if(cm.has(e)){
+                    if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
+                            children.contains(cm.get(e), true)){
+                        continue;
+                    }
+                }
+
+                Bag<Component> b = new Bag<Component>();
+                e.getComponents(new Bag<Component>());
+                arena.getBagOfEntities().add(e.getComponents(b));
+            }
+
+            e.deleteFromWorld();
+        }
+
+    }
+
+
+    public void unpackRoom(Arena arena) {
+
+        for(Bag<Component> b : arena.getBagOfEntities()) {
+            Entity e = world.createEntity();
+            for (Component c : b) {
+                e.edit().add(c);
+            }
+
+            if (aotm.has(e)) {
+                aotm.get(e).isActive = false;
+            }
+
+        }
+
+    }
+
+
+    public void recreateWorld(){
+
+        packRoom(world, currentArena);
+
+
+
+        Random rand = new Random();
+
+        JigsawGenerator jg = new JigsawGenerator(13, rand);
+        jg.generateTutorial = false;
+
+        visitedArenas.clear();
+        unvisitedButAdjacentArenas.clear();
+
+
+        this.roomArray = jg.generate();
+        ArenaShellFactory.cleanArenas(roomArray);
+
+        this.currentArena = jg.getStartingRoom();
+        unpackRoom(currentArena);
+
+        visitedArenas.add(currentArena);
+        unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
+
+
+        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+        player.position.x = currentArena.getWidth() / 2;
+        player.position.y = currentArena.getHeight() / 2;
+
+
+        //TODO this is some cheesy code, please fix later.
+        world.getSystem(RoomTypeSystem.class).nextLevelDoor = false;
+
+
+    }
+
+
+
+
+
+
     public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
         aGUI.update(world.delta, gamecam, visitedArenas, unvisitedButAdjacentArenas,
                 getCurrentArena(),
@@ -231,10 +312,23 @@ public class RoomTransitionSystem extends EntitySystem {
 
     public MapCoords getCurrentPlayerLocation(){
         CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (pBound.getCenterX() / RoomFactory.SECTION_WIDTH));
-        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / RoomFactory.SECTION_HEIGHT));
+        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (pBound.getCenterX() / ArenaShellFactory.SECTION_WIDTH));
+        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / ArenaShellFactory.SECTION_HEIGHT));
         return playerLocation;
     }
+
+/*    public MapCoords getCurrentPlayerLocation(){
+        PositionComponent position = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (position.getX() / ArenaShellFactory.SECTION_WIDTH));
+        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (position.getY() / ArenaShellFactory.SECTION_HEIGHT));
+        return playerLocation;
+    }*/
+
+
+
+
+
+
 
     public Array<Arena> getRoomArray() {
         return roomArray;

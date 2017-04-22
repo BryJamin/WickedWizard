@@ -13,14 +13,15 @@ public class FiringAIComponent extends Component{
 
     public AI ai = AI.TARGETED;
 
-    public float[] firingAngles;
+    //uses radians
+    public double firingAngleInRadians;
 
     public FiringAIComponent(){
         ai = AI.TARGETED;
     }
 
-    public FiringAIComponent(float[] firingAngles) {
+    public FiringAIComponent(double firingAngleInRadians) {
         this.ai = AI.UNTARGETED;
-        this.firingAngles = firingAngles;
+        this.firingAngleInRadians = firingAngleInRadians;
     }
 }

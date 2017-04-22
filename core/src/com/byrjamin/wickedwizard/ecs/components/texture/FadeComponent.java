@@ -24,6 +24,11 @@ public class FadeComponent extends Component {
         alphaTimeLimit = 1;
     }
 
+    public FadeComponent(float alphaTimeLimit, boolean fadeIn, boolean isEndless){
+        isEndless = true;
+        alphaTimeLimit = 1;
+    }
+
     public FadeComponent(float alphaTimeLimit, boolean isEndless) {
         this.alphaTimeLimit = alphaTimeLimit;
         this.isEndless = isEndless;

@@ -1,17 +1,14 @@
 package com.byrjamin.wickedwizard.ecs.systems;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.factories.BulletFactory;
 
 /**
  * Created by Home on 11/03/2017.
@@ -45,13 +42,13 @@ public class FiringAISystem extends EntityProcessingSystem {
                 if(wc.timer.isFinishedAndReset()){
                     CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
-                    Entity bullet = BulletFactory.createEnemyBullet(world, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
-                    for(Component c : wc.additionalComponenets){
-                        bullet.edit().add(c);
-                    }
+                    wc.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
                 }
                 break;
             case UNTARGETED:
+                if(wc.timer.isFinishedAndReset()){
+                    wc.weapon.fire(world,e, cbc.getCenterX(), cbc.getCenterY(), fc.firingAngleInRadians);
+                }
                 break;
         }
 
