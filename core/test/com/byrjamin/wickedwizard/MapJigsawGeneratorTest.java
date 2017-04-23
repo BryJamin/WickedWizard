@@ -58,7 +58,7 @@ public class MapJigsawGeneratorTest extends GameTest{
 
             assertTrue(itemRoom);
 
-            System.out.println(i);
+            //System.out.println(i);
 
         }
 

@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
@@ -49,7 +50,7 @@ public class MoveToSystem extends EntityProcessingSystem {
 
             if (cbc.bound.contains(mtc.targetX, cbc.getCenterY())) {
                 mtc.targetX = null;
-                vc.velocity.x = vc.velocity.x / 2;
+                vc.velocity.x = vc.velocity.x / 3;
                 //vc.velocity.x = mtc.endSpeedX;
             } else if (currentPosition >= targetX) {
                 vc.velocity.x = (vc.velocity.x <= -mtc.maxX) ? -mtc.maxX : vc.velocity.x - mtc.accelX;
@@ -66,7 +67,7 @@ public class MoveToSystem extends EntityProcessingSystem {
 
             if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
                 mtc.targetY = null;
-                vc.velocity.y = vc.velocity.y / 2;
+                vc.velocity.y = (vc.velocity.y > Measure.units(2f)) ? vc.velocity.y / 2 : 400;
             } else if (currentPosition >= targetY) {
                 vc.velocity.y = (vc.velocity.y <= -mtc.maxX) ? -mtc.maxY : vc.velocity.y - mtc.accelY;
             } else {

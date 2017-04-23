@@ -12,9 +12,9 @@ public class WeaponComponent extends Component{
     public Weapon weapon;
     public StateTimer timer;
 
-    public WeaponComponent(Weapon weapon, float delayTime){
+    public WeaponComponent(Weapon weapon, float chargeTime){
         //this.reloadTime = reloadTime;
-        timer = new StateTimer(weapon.getBaseFireRate(), delayTime);
+        timer = new StateTimer(weapon.getBaseFireRate(), chargeTime);
         this.weapon = weapon;
     }
 

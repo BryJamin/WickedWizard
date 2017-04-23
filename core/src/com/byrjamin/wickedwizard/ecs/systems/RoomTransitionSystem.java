@@ -300,7 +300,7 @@ public class RoomTransitionSystem extends EntitySystem {
             this.previousDestination = previousDestination;
             this.destination = destination;
             this.doorEntryPercentage = doorEntryPercentage;
-            processSystem();
+            //processSystem();
             return true;
         }
         return false;

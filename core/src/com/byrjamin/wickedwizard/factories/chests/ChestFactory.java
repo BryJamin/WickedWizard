@@ -48,7 +48,7 @@ public class ChestFactory {
 
 
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("chest", 0), width, height,
-                TextureRegionComponent.BACKGROUND_LAYER_FAR));
+                TextureRegionComponent.ENEMY_LAYER_NEAR));
 
 
 

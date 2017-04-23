@@ -47,7 +47,7 @@ public class RoomDecorationFactory {
     }
 
     public static void turretRoom(Arena a){
-        a.addEntity(TurretFactory.fixedTurret(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(25)));
+        a.addEntity(TurretFactory.fixedLockOnTurret(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(25)));
     }
 
     public static void movingTurretRoom(Arena a){

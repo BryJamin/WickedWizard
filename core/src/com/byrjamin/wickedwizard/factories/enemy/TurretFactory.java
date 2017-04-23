@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -35,7 +36,7 @@ public class TurretFactory {
     static float width = Measure.units(9f);
     static float height = Measure.units(9f);
 
-    public static Bag<Component> fixedTurret(float x, float y){
+    public static Bag<Component> fixedLockOnTurret(float x, float y){
 
         x = x - width / 2;
         y = y - width / 2;
@@ -49,6 +50,25 @@ public class TurretFactory {
         WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(), 2f);
         bag.add(wc);
         bag.add(new FiringAIComponent());
+
+        return bag;
+    }
+
+
+    public static Bag<Component> fixedTurret(float x, float y, float angleInDegrees, float fireRate, float fireDelay){
+
+        x = x - width / 2;
+        y = y - width / 2;
+
+        Bag<Component> bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
+/*        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+                -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
+        ));*/
+
+        WeaponComponent wc = new WeaponComponent(new Pistol(fireRate), fireDelay);
+        bag.add(wc);
+        bag.add(new FiringAIComponent(angleInDegrees));
 
         return bag;
     }

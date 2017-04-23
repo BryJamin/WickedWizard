@@ -63,7 +63,7 @@ public class KugelDuscheFactory {
         bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("sprite_health2"),
                 width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
-        bag.add(new FiringAIComponent(Math.toRadians(0)));
+        bag.add(new FiringAIComponent(0));
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
 
         Action p = new Action() {

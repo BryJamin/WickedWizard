@@ -259,13 +259,13 @@ public class PlayScreen extends AbstractScreen {
                         new FrictionSystem()
                         )
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RoomTransitionSystem(startingArena, arenaArray),
                         new DirectionalSystem(),
                         new CameraSystem(gamecam, gamePort),
                         new FollowPositionSystem(),
                         new RenderingSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
-                        new DoorSystem()
+                        new DoorSystem(),
+                        new RoomTransitionSystem(startingArena, arenaArray)
                 )
                 .build();
 
@@ -352,7 +352,7 @@ public class PlayScreen extends AbstractScreen {
 
         //pauseWorld(world);
 
-        System.out.println(Gdx.graphics.getFramesPerSecond());
+        //System.out.println(Gdx.graphics.getFramesPerSecond());
 
 
     }

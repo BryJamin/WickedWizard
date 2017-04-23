@@ -86,7 +86,7 @@ public class JigsawGenerator {
 
         int placedRooms = 0;
 
-        while(placedRooms < noOfRoomsPlaced) {
+        while(placedRooms < noOfRoomsPlaced && arenaGenArray.size > 0) {
             int i = rand.nextInt(arenaGenArray.size);
             Arena nextRoomToBePlaced = arenaGenArray.get(i).createArena();
             if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, rand)){
@@ -98,6 +98,10 @@ public class JigsawGenerator {
                     }
                 }
                 placedRooms++;
+            } else {
+                //TODO expand this to retry and replace the same set of rooms. Or just use a subset of omni rooms to hit
+                //TODO the room count as omni rooms can fir in most areas.
+                arenaGenArray.removeValue(arenaGenArray.get(i), false);
             }
         }
 

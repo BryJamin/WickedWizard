@@ -82,6 +82,88 @@ public class ArenaShellFactory {
     }
 
 
+    public static Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+        Arena arena = new Arena(containingCorrds);
+
+        arena.setWidth(SECTION_WIDTH * 2);
+        arena.setHeight(SECTION_HEIGHT);
+
+        ArenaBuilder.Section left;
+        ArenaBuilder.Section right;
+
+        if(deadEndOnLeft) {
+            left = new ArenaBuilder.Section(defaultCoords,
+                    ArenaBuilder.wall.FULL,
+                    ArenaBuilder.wall.NONE,
+                    ArenaBuilder.wall.FULL,
+                    ArenaBuilder.wall.FULL);
+
+            right = new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                    ArenaBuilder.wall.NONE,
+                    ArenaBuilder.wall.DOOR,
+                    ArenaBuilder.wall.DOOR,
+                    ArenaBuilder.wall.DOOR);
+        } else {
+            left = new ArenaBuilder.Section(defaultCoords,
+                    ArenaBuilder.wall.DOOR,
+                    ArenaBuilder.wall.NONE,
+                    ArenaBuilder.wall.DOOR,
+                    ArenaBuilder.wall.DOOR);
+
+            right = new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                    ArenaBuilder.wall.NONE,
+                    ArenaBuilder.wall.FULL,
+                    ArenaBuilder.wall.FULL,
+                    ArenaBuilder.wall.FULL);
+        }
+
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(left)
+                .section(right).build();
+
+        return arena;
+    }
+
+
+    public static Arena createDeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+
+        Arena arena = new Arena(containingCorrds);
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT);
+
+
+        ArenaBuilder.wall left;
+        ArenaBuilder.wall right;
+
+
+        if(deadEndOnLeft) {
+            left = ArenaBuilder.wall.FULL;
+            right = ArenaBuilder.wall.DOOR;
+        } else {
+            left = ArenaBuilder.wall.DOOR;
+            right = ArenaBuilder.wall.FULL;
+        }
+
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        left,
+                        right,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL)).build();
+
+        return arena;
+    }
+
+
+
     public static Arena createLetterIArena(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
@@ -195,33 +277,6 @@ public class ArenaShellFactory {
         }
         return null;
     }
-
-    /*public void cleanLeafs(Array<Room> rooms){
-        for(int j = rooms.size - 1; j >= 0; j--){
-            for(int i = rooms.get(j).getRoomExits().size - 1; i >=0; i--) {
-                RoomExit re = rooms.get(j).getRoomExits().get(i);
-                if(!findDoor(re.getRoomCoords(), re.getLeaveCoords(), rooms)) {
-                    if(re instanceof RoomDoor) {
-                        rooms.get(j).replaceDoorwithWall((RoomDoor) re);
-                        rooms.get(j).getRoomDoors().removeValue((RoomDoor) re, false);
-                    } else if(re instanceof RoomGrate){
-                        rooms.get(j).getRoomGrates().removeValue((RoomGrate) re, false);
-                    }
-                    rooms.get(j).getRoomExits().removeValue(re, false);
-                }
-            }
-        }
-    }
-
-    public boolean findDoor(MapCoords EnterFrom, MapCoords LeaveTo, Array<Room> rooms){
-        for(Room r : rooms) {
-            if(r.containsExitWithCoords(EnterFrom, LeaveTo)){
-                return true;
-            }
-        }
-        return false;
-    } */
-
 
 
 
