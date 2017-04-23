@@ -111,6 +111,7 @@ public class RoomTransitionSystem extends EntitySystem {
                 CollisionBoundComponent cbc = cbm.get(e);
                 PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
                 CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
 
                 float doorEntryY = cbc.bound.y + (cbc.bound.getHeight() * doorEntryPercentage);
 
@@ -125,10 +126,12 @@ public class RoomTransitionSystem extends EntitySystem {
                         case up:
                             player.position.x = cbc.getCenterX();
                             player.position.y = cbc.getCenterY();
+                            vc.velocity.y /= 2;
                             break;
                         case down:
                             player.position.x = cbc.getCenterX();
                             player.position.y = cbc.getCenterY();
+                            vc.velocity.y = 0;
                             break;
                     }
 

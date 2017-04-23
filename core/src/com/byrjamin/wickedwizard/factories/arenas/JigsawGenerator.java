@@ -108,7 +108,10 @@ public class JigsawGenerator {
                         avaliableDoorsSet.add(dc);
                     }
                 }
-                weightedObject.setWeight(weightedObject.getWeight() / 2);
+
+                System.out.println("Weight " + weightedObject.getWeight());
+
+                weightedObject.setWeight(weightedObject.getWeight() / 5);
                 placedRooms++;
             } else {
                 loops++;
@@ -143,12 +146,12 @@ public class JigsawGenerator {
 
         //startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
 
-        startingArena.addEntity(ChestFactory.chestBag(500, 700));
+/*        startingArena.addEntity(ChestFactory.chestBag(500, 700));
         startingArena.addEntity(ChestFactory.chestBag(800, 700));
         startingArena.addEntity(ChestFactory.chestBag(900, 700));
         startingArena.addEntity(ChestFactory.chestBag(1200, 700));
         startingArena.addEntity(ChestFactory.chestBag(1400, 700));
-        startingArena.addEntity(ChestFactory.chestBag(1700, 700));
+        startingArena.addEntity(ChestFactory.chestBag(1700, 700));*/
         //startingArena =  ShopFactory.createShop(new MapCoords(0,0));
 
         //startingArena.addEntity(DeathFactory.worldPortal(600, 600));

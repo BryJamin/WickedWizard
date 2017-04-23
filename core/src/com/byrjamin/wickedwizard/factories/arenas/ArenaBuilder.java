@@ -69,7 +69,7 @@ public class ArenaBuilder {
 
             //arena.cotainingCoords.add(s.coords);
 
-            System.out.println(sections.size);
+            //System.out.println(sections.size);
 
             int multX = s.coords.getX() - defaultCoords.getX();
             int multY = s.coords.getY() - defaultCoords.getY();
