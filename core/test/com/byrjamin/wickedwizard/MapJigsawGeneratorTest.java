@@ -2,8 +2,6 @@ package com.byrjamin.wickedwizard;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.archive.maps.MapJigsawGenerator;
-import com.byrjamin.wickedwizard.archive.maps.rooms.BossRoom;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 import org.junit.Assert;
@@ -16,8 +14,9 @@ import static org.junit.Assert.*;
 /**
  * Created by Home on 14/02/2017.
  */
-public class MapJigsawGeneratorTest extends GameTest{
+public class MapJigsawGeneratorTest extends GameTest {
 
+/*
     @Test
     public void testGenerateJigsaw() throws Exception {
 
@@ -64,4 +63,5 @@ public class MapJigsawGeneratorTest extends GameTest{
 
 
     }
+*/
 }

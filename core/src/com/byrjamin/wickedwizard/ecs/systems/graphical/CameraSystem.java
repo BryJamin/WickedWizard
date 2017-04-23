@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
@@ -16,7 +17,9 @@ import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
@@ -59,6 +62,7 @@ public class CameraSystem extends EntitySystem {
 
 
 
+
     @SuppressWarnings("unchecked")
     public CameraSystem(OrthographicCamera gamecam, Viewport gamePort) {
         super(Aspect.all(PlayerComponent.class));
@@ -80,6 +84,8 @@ public class CameraSystem extends EntitySystem {
             int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
             gamecam.position.set(cbc.getCenterX(), offsetY * gamecam.viewportHeight + Measure.units(30f), 0);
 
+          //  MathUtils.clamp(gamecam.position.x, 0, a.getWidth());
+
         }
 
 
@@ -99,13 +105,13 @@ public class CameraSystem extends EntitySystem {
 
 
         bottom.x = cbc.bound.x;
-        bottom.y = cbc.bound.y - gamecam.viewportHeight / 2;
-        bottom.height = gamecam.viewportHeight / 2;;
+        bottom.y = cbc.bound.y - gamecam.viewportHeight / 3;
+        bottom.height = gamecam.viewportHeight / 3;;
         bottom.width = cbc.bound.width;
 
         top.x = cbc.bound.x;
         top.y = cbc.bound.y + cbc.bound.height;
-        top.height = gamecam.viewportHeight / 2;;
+        top.height = gamecam.viewportHeight / 3;;
         top.width = cbc.bound.width;
 
 
@@ -117,11 +123,18 @@ public class CameraSystem extends EntitySystem {
 
             WallComponent wallBound = wm.get(entity);
 
-            Collider.Collision topCollision = Collider.collision(top, top, wallBound.bound);
-            Collider.Collision bottomCollision = Collider.collision(bottom, bottom, wallBound.bound);
+            Collider.Collision topCollision = Collider.cleanCollision(top, top, wallBound.bound);
+            Collider.Collision bottomCollision = Collider.cleanCollision(bottom, bottom, wallBound.bound);
 
 
-            if(topCollision == BOTTOM  || topCollision == TOP  || bottomCollision == TOP || bottomCollision == BOTTOM ) {
+/*            if(topCollision == BOTTOM  || topCollision == TOP  || bottomCollision == TOP || bottomCollision == BOTTOM ) {
+                int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
+                targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
+                break;
+            }*/
+
+            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT > currentArena.getHeight()
+                || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT < -Measure.units(30f)) {
                 int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
                 targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
                 break;
@@ -155,7 +168,7 @@ public class CameraSystem extends EntitySystem {
         gamecam.update();
 
 
-        world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
+        world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
                 gamecam.position.y - gamePort.getWorldHeight() / 2);
 
     }

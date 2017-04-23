@@ -50,6 +50,32 @@ public class Collider {
 
     }
 
+    public static Collision cleanCollision(Rectangle currentBound, Rectangle futureBound, Rectangle wall) {
+
+        //TODO With the variance being +15 or -15 the possiblility of breaking through walls might be possible
+        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() + 15
+                && currentBound.getY() < wall.getY() + wall.getHeight() - 15;
+        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + 15
+                && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
+
+        if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
+            if (futureBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
+                return Collision.LEFT;
+            } else if (futureBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
+                return Collision.RIGHT;
+            }
+        } else if (wall.overlaps(futureBound)) { //Hit was on top
+            if (futureBound.getY() > wall.y + wall.getHeight() / 2) {
+                return Collision.TOP;
+            } else if (futureBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
+                return Collision.BOTTOM;
+            }
+        }
+
+        return Collision.NONE;
+
+    }
+
 
     /**
      * Checks if a body is ontop of another static body

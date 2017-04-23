@@ -1,13 +1,9 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
-import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
-import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -29,9 +25,10 @@ public class Level1Rooms {
         ag.add(room4());
         ag.add(room5());
         ag.add(room6());
-        ag.add(room7());
+        ag.add(room7LetterI());
         //ag.add(room8());
         ag.add(room9());
+        ag.add(room10());
         return ag;
     }
 
@@ -101,7 +98,7 @@ public class Level1Rooms {
         };
     }
 
-    public static ArenaGen room7(){
+    public static ArenaGen room7LetterI(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
@@ -184,6 +181,33 @@ public class Level1Rooms {
                 return a;
             }
         };
+
+
+    }
+
+
+    public static ArenaGen room10(){
+
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = ArenaShellFactory.createHeight2Arena(new MapCoords(0,0));
+
+                a.addEntity(EntityFactory.wallBag(a.getWidth() - Measure.units(60f), Measure.units(35f),
+                        Measure.units(60f), Measure.units(5)));
+
+                a.addEntity(EntityFactory.wallBag(0, Measure.units(65f),
+                        Measure.units(60f), Measure.units(5)));
+
+                // RoomDecorationFactory.movingDoubleTurretRoom(a);
+                return a;
+            }
+        };
+
+
+
+
 
 
     }

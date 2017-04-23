@@ -74,9 +74,12 @@ public class ArenaBuilder {
             int multX = s.coords.getX() - defaultCoords.getX();
             System.out.println("MultX is " + multX);
             int multY = s.coords.getY() - defaultCoords.getY();
+            System.out.println("MultY is " + multY);
 
             int coordX = defaultCoords.getX() + multX;
             int coordY = defaultCoords.getY() + multY;
+
+            System.out.println("CoordY  is " + coordY);
 
             float posX = multX * SECTION_WIDTH;
             float posY = multY * SECTION_HEIGHT;
@@ -90,7 +93,7 @@ public class ArenaBuilder {
             if(s.left == wall.FULL) {
                 arena.addEntity(EntityFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
             } else if(s.left == wall.DOOR){
-                arena.addEntity(EntityFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
+                arena.addEntity(EntityFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4));
                 arena.addDoor(EntityFactory.doorBag(0 + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX - 1, coordY),
@@ -100,7 +103,7 @@ public class ArenaBuilder {
             if(s.right == wall.FULL) {
                 arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
             } else if(s.right == wall.DOOR){
-                arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
+                arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT -  WALLWIDTH * 4));
                 arena.addDoor(EntityFactory.doorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX + 1, coordY),

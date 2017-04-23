@@ -56,7 +56,6 @@ public class ArenaShellFactory {
 
 
     public static Arena createWidth2Arena(MapCoords defaultCoords) {
-
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
         containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
@@ -80,6 +79,34 @@ public class ArenaShellFactory {
 
         return arena;
     }
+
+
+    public static Arena createHeight2Arena(MapCoords defaultCoords) {
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+        containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
+
+        Arena arena = new Arena(containingCorrds);
+
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT * 2);
+
+        new ArenaBuilder.Builder(defaultCoords, arena)
+                .section(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL))
+                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE)).build();
+
+        return arena;
+    }
+
+
 
 
     public static Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {

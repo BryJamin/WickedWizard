@@ -45,18 +45,24 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
             CollisionBoundComponent cbc = cbm.get(e);
             AccelerantComponent ac = am.get(e);
 
+            //TODO new if statements do not account for enemies with slow accelerations (they no longer slide)
+
             if (!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY())) {
                 if (cbc.getCenterX() > pBound.getCenterX()) {
                     vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
+                    if(cbc.getCenterX() - vc.velocity.x * world.delta < pBound.getCenterX()) vc.velocity.x /= 2;
                 } else {
                     vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
+                    if(cbc.getCenterX() + vc.velocity.x * world.delta > pBound.getCenterX()) vc.velocity.x /= 2;
                 }
 
                 if(!gm.has(e)) { //TODO For now if an entity has gravity it can't really follow a player's Y so I just skip this application
                     if (cbc.getCenterY() > pBound.getCenterY()) {
                         vc.velocity.y = (vc.velocity.y <= -ac.maxY) ? -ac.maxY : vc.velocity.y - ac.accelY;
+                        if(cbc.getCenterY() - vc.velocity.y * world.delta < pBound.getCenterY()) vc.velocity.y = 0;
                     } else {
                         vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
+                        if(cbc.getCenterY() + vc.velocity.y * world.delta > pBound.getCenterY()) vc.velocity.y = 0;
                     }
                 }
             }

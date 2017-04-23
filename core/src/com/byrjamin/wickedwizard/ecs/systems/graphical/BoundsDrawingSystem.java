@@ -45,7 +45,7 @@ public class BoundsDrawingSystem extends EntitySystem {
         }
 
 
-        if(world.getSystem(CameraSystem.class) != null){
+/*        if(world.getSystem(CameraSystem.class) != null){
 
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
                     world.getSystem(CameraSystem.class).getLeft());
@@ -58,7 +58,7 @@ public class BoundsDrawingSystem extends EntitySystem {
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
                     world.getSystem(CameraSystem.class).getTop());
 
-        }
+        }*/
 
 
 

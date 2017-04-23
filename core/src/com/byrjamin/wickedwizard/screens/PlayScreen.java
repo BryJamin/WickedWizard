@@ -413,14 +413,14 @@ public class PlayScreen extends AbstractScreen {
 
 
         game.batch.draw(new MoneyPlus1().getRegion(),
-                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(1.5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(16f),
-                Measure.units(5f), Measure.units(5f));
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(14f),
+                Measure.units(2f), Measure.units(2f));
 
         currencyFont.draw(game.batch, "" + currencyComponent.money,
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
-                Measure.units(5f), Align.center, true);
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12f),
+                Measure.units(7f), Align.left, true);
 
 
         game.batch.draw(new KeyUp().getRegion(),

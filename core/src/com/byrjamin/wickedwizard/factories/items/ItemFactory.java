@@ -71,12 +71,15 @@ public class ItemFactory {
         Random random = new Random();
 
         bag.add(new VelocityComponent(random.nextInt((int) Measure.units(60f)) -Measure.units(30f), Measure.units(30f)));
+
+        //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
+
         bag.add(new MoveToPlayerComponent());
         bag.add(new AccelerantComponent(Measure.units(5f),Measure.units(5f), Measure.units(50), Measure.units(50f)));
         bag.add(new IntangibleComponent());
         bag.add(new PickUpComponent(pickUp));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
-        bag.add(new TextureRegionComponent(pickUp.getRegion(), Measure.units(5), Measure.units(5),
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
+        bag.add(new TextureRegionComponent(pickUp.getRegion(), Measure.units(2), Measure.units(2),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
         return bag;
