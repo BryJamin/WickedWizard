@@ -72,14 +72,10 @@ public class ArenaBuilder {
             System.out.println(sections.size);
 
             int multX = s.coords.getX() - defaultCoords.getX();
-            System.out.println("MultX is " + multX);
             int multY = s.coords.getY() - defaultCoords.getY();
-            System.out.println("MultY is " + multY);
 
             int coordX = defaultCoords.getX() + multX;
             int coordY = defaultCoords.getY() + multY;
-
-            System.out.println("CoordY  is " + coordY);
 
             float posX = multX * SECTION_WIDTH;
             float posY = multY * SECTION_HEIGHT;

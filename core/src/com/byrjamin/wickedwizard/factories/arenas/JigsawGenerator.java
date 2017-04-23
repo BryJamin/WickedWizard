@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.WeightedObject;
+import com.byrjamin.wickedwizard.utils.WeightedRoll;
 
 import java.util.Random;
 
@@ -83,12 +85,21 @@ public class JigsawGenerator {
             unavaliableMapCoords.addAll(a.getCotainingCoords());
         }
 
+        WeightedRoll<ArenaGen> roll = new WeightedRoll<ArenaGen>(rand);
+
+        for(ArenaGen ag : arenaGenArray) {
+            roll.addWeightedObject(new WeightedObject<ArenaGen>(ag, 20));
+        }
+
 
         int placedRooms = 0;
+        int loops = 0;
 
-        while(placedRooms < noOfRoomsPlaced && arenaGenArray.size > 0) {
+        while(placedRooms < noOfRoomsPlaced && loops < noOfRoomsPlaced * 3) {
             int i = rand.nextInt(arenaGenArray.size);
-            Arena nextRoomToBePlaced = arenaGenArray.get(i).createArena();
+
+            WeightedObject<ArenaGen> weightedObject = roll.rollForWeight();
+            Arena nextRoomToBePlaced = weightedObject.obj().createArena();
             if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, rand)){
                 placedArenas.add(nextRoomToBePlaced);
                 unavaliableMapCoords.addAll(nextRoomToBePlaced.getCotainingCoords());
@@ -97,11 +108,13 @@ public class JigsawGenerator {
                         avaliableDoorsSet.add(dc);
                     }
                 }
+                weightedObject.setWeight(weightedObject.getWeight() / 2);
                 placedRooms++;
             } else {
+                loops++;
                 //TODO expand this to retry and replace the same set of rooms. Or just use a subset of omni rooms to hit
                 //TODO the room count as omni rooms can fir in most areas.
-                arenaGenArray.removeValue(arenaGenArray.get(i), false);
+                //arenaGenArray.removeValue(arenaGenArray.get(i), false);
             }
         }
 

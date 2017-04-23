@@ -75,7 +75,7 @@ public class ItemFactory {
         //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
 
         bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(5f),Measure.units(5f), Measure.units(50), Measure.units(50f)));
+        bag.add(new AccelerantComponent(Measure.units(5f),Measure.units(5f), Measure.units(100), Measure.units(100f)));
         bag.add(new IntangibleComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
