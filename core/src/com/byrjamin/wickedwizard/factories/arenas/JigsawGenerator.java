@@ -111,7 +111,7 @@ public class JigsawGenerator {
 
                 System.out.println("Weight " + weightedObject.getWeight());
 
-                weightedObject.setWeight(weightedObject.getWeight() / 5);
+                weightedObject.setWeight((weightedObject.getWeight() / 5 > 0) ? weightedObject.getWeight() / 5: 1);
                 placedRooms++;
             } else {
                 loops++;

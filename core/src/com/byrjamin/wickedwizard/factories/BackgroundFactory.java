@@ -36,6 +36,7 @@ public class BackgroundFactory {
                                                             int additionalrows,
                                                             int additionalColumns){
 
+
         Random random = new Random();
 
         Array<TextureRegion> backgrounds = new Array<TextureRegion>();

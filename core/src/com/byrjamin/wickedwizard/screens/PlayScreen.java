@@ -133,6 +133,7 @@ public class PlayScreen extends AbstractScreen {
         gestureDetector = new GestureDetector(new gestures());
         font.getData().setScale(5, 5);
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
+
         Assests.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
