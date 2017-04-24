@@ -18,6 +18,7 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
 public class MovementSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
+    ComponentMapper<DirectionalComponent> dm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
 
@@ -47,11 +48,12 @@ public class MovementSystem extends EntityProcessingSystem {
 
         }
 
-        if(vc.velocity.x < 0)
-            DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.LOW);
-        else if(vc.velocity.x > 0)
-            DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.LOW);
-
+        if(dm.has(e)) {
+            if (vc.velocity.x < 0)
+                DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.LOW);
+            else if (vc.velocity.x > 0)
+                DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.LOW);
+        }
 
 
     }
