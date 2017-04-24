@@ -44,7 +44,8 @@ public class CameraSystem extends EntitySystem {
     private Arena currentArena;
 
 
-    private float cameraVelocity = Measure.units(150f);
+    //TODO add acceleration?
+    private float cameraVelocity = Measure.units(200f);
 
     private Rectangle left = new Rectangle();
     private Rectangle right = new Rectangle();
@@ -133,8 +134,8 @@ public class CameraSystem extends EntitySystem {
                 break;
             }*/
 
-            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT > currentArena.getHeight()
-                || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT < -Measure.units(30f)) {
+            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
+                || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
                 int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
                 targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
                 break;
