@@ -38,6 +38,7 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.blobRoom(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
@@ -49,6 +50,7 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.movingTurretRoomRight(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
@@ -60,6 +62,7 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.movingDoubleTurretRoom(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
@@ -71,6 +74,7 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.kugelDusche(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
@@ -82,6 +86,7 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = ArenaShellFactory.createOmniArena();
                 RoomDecorationFactory.silverHead(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
@@ -93,6 +98,7 @@ public class Level1Rooms {
             public Arena createArena() {
                 Arena a = ArenaShellFactory.createWidth2Arena();
                 RoomDecorationFactory.movingDoubleTurretRoom(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };

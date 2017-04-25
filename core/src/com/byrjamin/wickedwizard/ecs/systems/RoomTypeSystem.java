@@ -8,7 +8,6 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 /**
  * Created by Home on 25/03/2017.
@@ -26,7 +25,7 @@ public class RoomTypeSystem extends BaseSystem {
 
 
         switch(current.roomType){
-            case BATTLE:
+            case TRAP:
             case BOSS:
                 if(world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class).exclude(BulletComponent.class)).getEntities().size() <= 0){
                     world.getSystem(LockSystem.class).unlockDoors();

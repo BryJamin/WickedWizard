@@ -16,7 +16,7 @@ public class Arena {
     private float height;
 
     public enum RoomType {
-        BATTLE, BOSS, ITEM, SHOP
+        TRAP, BOSS, ITEM, SHOP, NORMAL
     }
 
     public RoomType roomType;
@@ -38,7 +38,7 @@ public class Arena {
     public Arena(Array<MapCoords> mapCoords) {
         startingCoords = mapCoords.get(0);
         this.cotainingCoords = mapCoords;
-        roomType = RoomType.BATTLE;
+        roomType = RoomType.NORMAL;
     }
 
     public Arena(Array<MapCoords> mapCoords, RoomType roomType) {
