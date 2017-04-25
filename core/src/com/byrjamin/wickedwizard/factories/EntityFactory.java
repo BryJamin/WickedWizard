@@ -99,6 +99,20 @@ public class EntityFactory {
 
         TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("grate"), width, height,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR);
+
+
+
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.stateTime = 100f;
+        bag.add(sc);
+
+        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
+        aniMap.put(AnimationStateComponent.State.LOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "grate", Animation.PlayMode.REVERSED));
+        aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(), AnimationPacker.genAnimation(1 / 35f, "grate"));
+        bag.add(new AnimationComponent(aniMap));
+
+
         bag.add(trc);
         bag.add(new GrappleableComponent());
         bag.add(new ActiveOnTouchComponent());
