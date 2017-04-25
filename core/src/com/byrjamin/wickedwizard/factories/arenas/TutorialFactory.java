@@ -132,7 +132,8 @@ public class TutorialFactory extends ArenaShellFactory {
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
 
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(containingCorrds, Arena.RoomType.TRAP);
+
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);

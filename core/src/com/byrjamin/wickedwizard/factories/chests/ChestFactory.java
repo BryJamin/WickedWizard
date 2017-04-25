@@ -90,7 +90,7 @@ public class ChestFactory {
 
                 if(world.getMapper(LockComponent.class).has(e)) {
                     CurrencyComponent cc =  world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
-                    if(cc.keys - 1 <= 0 ) return;
+                    if(cc.keys - 1 < 0 ) return;
                     else cc.keys -= 1;
 
                     IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

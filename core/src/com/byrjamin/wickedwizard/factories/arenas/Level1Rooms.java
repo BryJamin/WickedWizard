@@ -125,8 +125,15 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                a.addEntity(ChestFactory.lockedChestBag(a.getWidth() / 4, a.getHeight() / 4));
+
+                Random random = new Random();
+                boolean mirror = random.nextBoolean();
+
+                Arena a = ArenaShellFactory.createDeadEndArena(new MapCoords(0,0), mirror);
+
+                float chestPosX = mirror ? a.getWidth() / 4 : a.getWidth() - a.getWidth() / 4;
+
+                a.addEntity(ChestFactory.lockedChestBag(chestPosX, a.getHeight() / 4));
                 //RoomDecorationFactory.blobRoom(a);
                 return a;
             }
