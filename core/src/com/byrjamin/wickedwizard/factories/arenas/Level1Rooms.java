@@ -26,7 +26,7 @@ public class Level1Rooms {
         ag.add(room5());
         ag.add(room6());
         ag.add(room7LetterI());
-        //ag.add(room8());
+        ag.add(room8());
         ag.add(room9());
         ag.add(room10());
         return ag;
@@ -119,30 +119,9 @@ public class Level1Rooms {
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createDeadEndArena(new MapCoords(0,0), true);
-                a.addEntity(ChestFactory.chestBag(Measure.units(30f), Measure.units(15f)));
-
-
-                Random random = new Random();
-
-                boolean mirror = true;
-
-
-                float posX = mirror ? Measure.units(10) : a.getWidth() - Measure.units(10f);
-                float chestPosX = mirror ? Measure.units(30f) : a.getWidth() - Measure.units(30f);
-                float blockerPosX = mirror ? a.getWidth() - Measure.units(80f) : Measure.units(80f);
-
-/*
-                FiringAIComponent delay = mirror ? 0 : 180, 3.0f);
-                FiringAIComponent normal = mirror ? 0 : 180);*/
-
-                float angle =  mirror ? 0 : 180;
-
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(50f),  angle, 3.0f, 1.5f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 0f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 0f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 0f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 1.5f));
+                Arena a = ArenaShellFactory.createOmniArena();
+                a.addEntity(ChestFactory.lockedChestBag(a.getWidth() / 4, a.getHeight() / 4));
+                //RoomDecorationFactory.blobRoom(a);
                 return a;
             }
         };
