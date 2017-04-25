@@ -31,8 +31,9 @@ public class ArenaGUI {
     private MapCoords currentCoords;
 
     private Color currentRoomColor = new Color(1, 1, 1, 0.8f);
-    private Color roomColor = new Color(0.5f, 0.5f, 0.5f, 0.8f);
-    private Color undiscoveredRoomColor = new Color(0.1f, 0.1f, 0.1f, 0.8f);
+    private Color roomColor = new Color(0.5f, 0.5f, 0.5f, 0.6f);
+    private Color undiscoveredRoomColor = new Color(0.1f, 0.1f, 0.1f, 0.6f);
+    private Color mapBackGroundColor = new Color(0.1f, 0.1f, 0.1f, 0.2f);
     private Color borderColor = new Color(0, 1, 1, 1);
     private Color doorColor = new Color(1f, 0f, 0f, 1f);
     private Color locationBlinkColor = new Color (0,0,1,0.5f);
@@ -95,10 +96,9 @@ public class ArenaGUI {
     }
 
     public void drawMapContainer(SpriteBatch batch){
-
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        mapRenderer.setColor(undiscoveredRoomColor);
+        mapRenderer.setColor(mapBackGroundColor);
         mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5);
         mapRenderer.end();
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
