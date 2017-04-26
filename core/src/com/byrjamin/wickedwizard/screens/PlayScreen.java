@@ -146,7 +146,7 @@ public class PlayScreen extends AbstractScreen {
         currencyFont = game.manager.get(Assests.small, BitmapFont.class);// font size 12 pixels
 
 
-        jg.generateTutorial = true;
+        jg.generateTutorial = false;
         loadShader();
         createWorld();
     }

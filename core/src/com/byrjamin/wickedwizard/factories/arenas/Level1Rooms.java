@@ -27,7 +27,7 @@ public class Level1Rooms {
         ag.add(room6());
         ag.add(room7LetterI());
         ag.add(room8());
-        ag.add(room9());
+        ag.add(deadEndW2());
         ag.add(room10());
         return ag;
     }
@@ -141,7 +141,7 @@ public class Level1Rooms {
     }
 
 
-    public static ArenaGen room9(){
+    public static ArenaGen deadEndW2(){
 
         return new ArenaGen() {
             @Override

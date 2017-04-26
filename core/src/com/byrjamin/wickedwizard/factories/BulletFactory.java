@@ -7,6 +7,8 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -101,6 +103,45 @@ public class BulletFactory {
         trc.color = color;
         bag.add(trc);
         return bag;
+    }
+
+
+
+    public static Bag<Component> basicBulletBlockBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
+        Bag<Component> bag = new Bag<Component>();
+
+        float width = BulletFactory.width * scale;
+        float height = BulletFactory.height * scale;
+
+        float cX = x - width / 2;
+        float cY = y - height / 2;
+
+        bag.add(new PositionComponent(cX, cY));
+        bag.add(new BulletComponent());
+        bag.add(new ExpireComponent(10f));//TODO Probably doesn't have to be this long (or delete bullets if they leave the room bounds)
+        bag.add(new HealthComponent(3));
+        bag.add(new BlinkComponent());
+        bag.add(new CollisionBoundComponent(new Rectangle
+                (cX,cY, width, height), true));
+
+        OnDeathComponent odc = new OnDeathComponent();
+        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height));
+
+        TextureRegionComponent trc = new TextureRegionComponent(textureRegion, 0, 0,  width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
+        trc.DEFAULT = color;
+        trc.color = color;
+        bag.add(trc);
+        return bag;
+    }
+
+
+    public static ComponentBag enemyBlockBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
+        for(Component c : basicBulletBlockBag(x,y,4, PlayScreen.atlas.findRegion("block") , Color.BLACK)){
+            fill.add(c);
+        }
+        fill.add(new VelocityComponent((float) (Measure.units(20) * Math.cos(angleOfTravel)), (float) (Measure.units(20) * Math.sin(angleOfTravel))));
+        fill.add(new EnemyComponent());
+        return fill;
     }
 
 

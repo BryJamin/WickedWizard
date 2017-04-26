@@ -57,7 +57,8 @@ public class BulletSystem extends EntityProcessingSystem {
             }
 
         } else if(fm.has(e)){
-            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class, CollisionBoundComponent.class, HealthComponent.class));
+            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
+                    EnemyComponent.class, CollisionBoundComponent.class, HealthComponent.class));
             IntBag entityIds = subscription.getEntities();
 
             for(int i = 0; i < entityIds.size(); i++){

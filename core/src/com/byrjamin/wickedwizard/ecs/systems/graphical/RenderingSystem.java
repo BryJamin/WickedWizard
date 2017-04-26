@@ -99,10 +99,14 @@ public class RenderingSystem extends EntitySystem {
             boolean shaderOn = false;
 
             if(bm.has(e)){
+
                 shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT;
             }
 
             if(shaderOn){
+
+                System.out.println("inside");
+
                 batch.end();
                 batch.setShader(whiteShaderProgram);
                 batch.begin();
