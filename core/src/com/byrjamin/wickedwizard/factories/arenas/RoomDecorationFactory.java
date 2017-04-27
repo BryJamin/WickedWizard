@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
@@ -89,6 +90,27 @@ public class RoomDecorationFactory {
             }
         });
         a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
+    }
+
+
+    public static void spawnBouncer(Arena a, float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return BouncerFactory.smallBouncer(x,y);
+            }
+        });
+        a.addEntity(SpawnerFactory.spawnerBag(x, y, s));
+    }
+
+    public static void spawnLargeBouncer(Arena a, float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return BouncerFactory.largeBouncer(x,y);
+            }
+        });
+        a.addEntity(SpawnerFactory.spawnerBag(x, y, s));
     }
 
 

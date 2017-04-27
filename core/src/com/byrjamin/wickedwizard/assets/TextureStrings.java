@@ -28,6 +28,8 @@ public class TextureStrings {
     public static String SILVERHEAD_HIDING = "silverhead_hiding";
     public static String SILVERHEAD_CHARGING = "silverhead_charging";
 
+    //BOUNCER
+
 
 
     public static String CIRCLE = "circle";
