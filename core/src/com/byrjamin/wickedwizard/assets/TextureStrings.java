@@ -29,6 +29,7 @@ public class TextureStrings {
     public static String SILVERHEAD_CHARGING = "silverhead_charging";
 
     //BOUNCER
+    public static String BOUNCER_DEFAULT = "bouncer";
 
 
 
