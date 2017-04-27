@@ -166,11 +166,11 @@ public class Level1Rooms {
                 a.addEntity(EntityFactory.wallBag(blockerPosX, Measure.units(45f), Measure.units(10f), Measure.units(10f)));
                 a.addEntity(EntityFactory.wallBag(blockerPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f)));
 
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(50f),  angle, 3.0f, 1.5f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 0));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 0));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 0));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 1.5f));
+                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(50f),  angle, 3.0f, 0f));
+                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 1.5f));
+                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 1.5f));
+                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 1.5f));
+                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 0f));
 
 
                 return a;
