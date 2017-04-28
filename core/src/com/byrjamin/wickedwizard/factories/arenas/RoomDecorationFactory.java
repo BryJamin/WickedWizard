@@ -27,6 +27,8 @@ public class RoomDecorationFactory extends AbstractFactory {
     SpawnerFactory spawnerFactory;
     TurretFactory turretFactory;
 
+    //TODO convert this into a class where you spawn enemies.
+
     public RoomDecorationFactory(AssetManager assetManager) {
         super(assetManager);
         this.blobFactory = new BlobFactory(assetManager);
