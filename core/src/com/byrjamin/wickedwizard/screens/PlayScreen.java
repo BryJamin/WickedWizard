@@ -26,6 +26,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
+import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -142,7 +144,7 @@ public class PlayScreen extends AbstractScreen {
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
-        jg =new JigsawGenerator(game.manager,10, random);
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas),10, random);
 
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
@@ -186,7 +188,7 @@ public class PlayScreen extends AbstractScreen {
                         //new FindPlayerSystem(player),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, manager, gamecam),
+                        new RenderingSystem(game.batch, manager,new SolitarySkin(atlas), gamecam),
                         new BoundsDrawingSystem()
                 )
                 .build();
@@ -223,7 +225,7 @@ public class PlayScreen extends AbstractScreen {
 
         arenaArray = jg.generate();
         Arena startingArena = jg.getStartingRoom();
-        new ArenaShellFactory(game.manager).cleanArenas(arenaArray);
+        new ArenaShellFactory(game.manager, new FoundarySkin(atlas)).cleanArenas(arenaArray);
 
         ComponentBag player = new PlayerFactory(game.manager).playerBag();
 
@@ -268,7 +270,7 @@ public class PlayScreen extends AbstractScreen {
                         new DirectionalSystem(),
                         new CameraSystem(gamecam, gamePort),
                         new FollowPositionSystem(),
-                        new RenderingSystem(game.batch, manager, gamecam),
+                        new RenderingSystem(game.batch, manager, new SolitarySkin(atlas), gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         new RoomTransitionSystem(startingArena, arenaArray)
@@ -282,6 +284,7 @@ public class PlayScreen extends AbstractScreen {
             Entity entity = world.createEntity();
             for (Component comp : bag) {
                 entity.edit().add(comp);
+
             }
         }
 

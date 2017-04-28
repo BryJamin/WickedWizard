@@ -3,14 +3,13 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
-import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -21,11 +20,13 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
 
 public class ArenaShellFactory extends AbstractFactory {
 
-    protected EntityFactory entityfactory;
+    protected DecorFactory decorFactory;
+    protected ArenaSkin arenaSkin;
 
-    public ArenaShellFactory(AssetManager assetManager) {
+    public ArenaShellFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
-        this.entityfactory = new EntityFactory(assetManager);
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+        this.arenaSkin = arenaSkin;
     }
 
     //TODO move this constant somewhere else
@@ -51,12 +52,19 @@ public class ArenaShellFactory extends AbstractFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
+        arena = new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR))
+                .buildArena(arena);
+/*        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR)).build();
+                        ArenaBuilder.wall.DOOR)).build();*/
         return arena;
     }
 
@@ -75,17 +83,17 @@ public class ArenaShellFactory extends AbstractFactory {
         arena.setWidth(SECTION_WIDTH * 2);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.DOOR)).build();
+                        ArenaBuilder.wall.DOOR)).buildArena(arena);
 
         return arena;
     }
@@ -101,17 +109,17 @@ public class ArenaShellFactory extends AbstractFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT * 2);
 
-        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.NONE)).build();
+                        ArenaBuilder.wall.NONE)).buildArena(arena);
 
         return arena;
     }
@@ -159,9 +167,9 @@ public class ArenaShellFactory extends AbstractFactory {
                     ArenaBuilder.wall.FULL);
         }
 
-        new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
-                .section(left)
-                .section(right).build();
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(left)
+                .addSection(right).buildArena(arena);
 
         return arena;
     }
@@ -189,12 +197,12 @@ public class ArenaShellFactory extends AbstractFactory {
             right = ArenaBuilder.wall.FULL;
         }
 
-        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         left,
                         right,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).build();
+                        ArenaBuilder.wall.FULL)).buildArena(arena);
 
         return arena;
     }
@@ -217,55 +225,55 @@ public class ArenaShellFactory extends AbstractFactory {
         arena.setWidth(SECTION_WIDTH * 3);
         arena.setHeight(SECTION_HEIGHT * 3);
 
-        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL ))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 1),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 1),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 2),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 2),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 2),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 2),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).build();
+                        ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        arena.addEntity(entityfactory.wallBag(new Rectangle(0, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
-        arena.addEntity(entityfactory.wallBag(new Rectangle(SECTION_WIDTH * 2, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
+        arena.addEntity(decorFactory.wallBag(0, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT, arenaSkin));
+        arena.addEntity(decorFactory.wallBag(SECTION_WIDTH * 2, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT, arenaSkin));
 
         return arena;
     }
@@ -285,7 +293,7 @@ public class ArenaShellFactory extends AbstractFactory {
                             CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
                             if(cbc != null) {
                                 a.getBagOfEntities().remove(bag);
-                                a.addEntity(entityfactory.wallBag(cbc.bound));
+                                a.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), arenaSkin));
                             }
                         }
                         a.adjacentCoords.removeValue(dc.leaveCoords, false);

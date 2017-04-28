@@ -26,6 +26,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.ArrayList;
@@ -51,12 +52,13 @@ public class RenderingSystem extends EntitySystem {
     public ShapeRenderer shapeRenderer;
     public OrthographicCamera gamecam;
     public AssetManager assetManager;
+    public ArenaSkin arenaSkin;
     public TextureAtlas atlas;
 
     public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, OrthographicCamera gamecam) {
+    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, ArenaSkin arenaSkin, OrthographicCamera gamecam) {
         super(Aspect.all(PositionComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
@@ -66,6 +68,7 @@ public class RenderingSystem extends EntitySystem {
         this.batch = batch;
         this.gamecam = gamecam;
         this.assetManager = assetManager;
+        this.arenaSkin = arenaSkin;
         this.atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
 
         shapeRenderer = new ShapeRenderer();

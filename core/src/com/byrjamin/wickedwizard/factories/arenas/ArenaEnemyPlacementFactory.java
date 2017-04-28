@@ -17,7 +17,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 26/03/2017.
  */
 
-public class RoomDecorationFactory extends AbstractFactory {
+public class ArenaEnemyPlacementFactory extends AbstractFactory {
 
 
     BlobFactory blobFactory;
@@ -29,7 +29,7 @@ public class RoomDecorationFactory extends AbstractFactory {
 
     //TODO convert this into a class where you spawn enemies.
 
-    public RoomDecorationFactory(AssetManager assetManager) {
+    public ArenaEnemyPlacementFactory(AssetManager assetManager) {
         super(assetManager);
         this.blobFactory = new BlobFactory(assetManager);
         this.bouncerFactory = new BouncerFactory(assetManager);

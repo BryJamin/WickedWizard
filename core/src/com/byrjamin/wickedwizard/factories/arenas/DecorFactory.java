@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories;
+package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.Entity;
@@ -30,6 +30,9 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.BackgroundFactory;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -38,12 +41,31 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 /**
  * Created by Home on 04/03/2017.
  */
-public class EntityFactory extends AbstractFactory {
+public class DecorFactory extends AbstractFactory {
 
-    public EntityFactory(AssetManager assetManager) {
+   // private ArenaSkin arenaSkin;
+
+    public DecorFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
+       // this.arenaSkin = arenaSkin;
     }
 
+
+    public Bag<Component> wallBag(float x, float y, float width, float height, ArenaSkin arenaSkin){
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+
+        TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
+                arenaSkin.getWallTexture(),
+                TextureRegionComponent.PLAYER_LAYER_FAR);
+        trbc.color = arenaSkin.getWallTint();
+        bag.add(trbc);
+
+        return bag;
+    }
+
+/*
     public Bag<Component> wallBag(float x, float y, float width, float height){
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
@@ -56,10 +78,13 @@ public class EntityFactory extends AbstractFactory {
 
         return bag;
     }
+*/
 
+/*
     public Bag<Component> wallBag(Rectangle r){
         return wallBag(r.x, r.y, r.width, r.height);
     }
+*/
 
 
     public Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, DoorComponent.DIRECTION exit){
@@ -85,7 +110,7 @@ public class EntityFactory extends AbstractFactory {
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
                 -Measure.units(8.5f), 0, Measure.units(22), Measure.units(20),
                 TextureRegionComponent.PLAYER_LAYER_FAR);
-        trc.setColor(0.7f, 0, 0f, 1);
+        //trc.setColor(0.7f, 0, 0f, 1);
         bag.add(trc);
         //bag.add(new GrappleableComponent());
         bag.add(new LockComponent());
@@ -107,7 +132,7 @@ public class EntityFactory extends AbstractFactory {
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("grate"), width, height,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR);
-        trc.setColor(0.7f, 0, 0f, 1);
+        //trc.setColor(0.7f, 0, 0f, 1);
 
 
 

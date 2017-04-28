@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.skins;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,12 +8,12 @@ import com.badlogic.gdx.utils.Array;
  * Created by Home on 28/04/2017.
  */
 
-public interface ArenaBuildScheme {
+public interface ArenaSkin {
 
-    Array<TextureRegion> getBackgroundTextures();
+    Array<? extends TextureRegion> getBackgroundTextures();
     Color getBackgroundTint();
 
-    TextureRegion getWallTexture();
+    Array<? extends  TextureRegion> getWallTexture();
     Color getWallTint();
 
 

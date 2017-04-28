@@ -4,11 +4,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
-import com.byrjamin.wickedwizard.factories.EntityFactory;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -32,42 +31,25 @@ public class ArenaBuilder {
     private MapCoords defaultCoords;
     private Array<Section> sections = new Array<Section>();
 
-    public static class Builder {
+    private AssetManager assetManager;
+    private ArenaSkin arenaSkin;
 
-        //Required Parameters
-        private final MapCoords startingCoords;
-        private Arena arena;
-        private AssetManager assetManager;
-        //private final float posX;
-        //private final float posY;
+    public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin){
+        this.assetManager = assetManager;
+        this.arenaSkin = arenaSkin;
+    }
 
-        //optional Paramters
-        private Array<Section> sections = new Array<Section>();
-
-        public Builder(MapCoords startingCoords,AssetManager assetManager, Arena arena) {
-            this.startingCoords = startingCoords;
-            this.assetManager = assetManager;
-            this.arena = arena;
-        }
-
-        public Builder section (Section section){
-            sections.add(section);
-         //   arena.cotainingCoords.add(section.coords);
-            return this;
-        }
-
-        public ArenaBuilder build() {
-            return new ArenaBuilder(this, assetManager, arena);
-        }
-
+    public ArenaBuilder addSection(Section s){
+        sections.add(s);
+        return this;
     }
 
 
-    public ArenaBuilder(Builder builder,AssetManager assetManager,  Arena arena){
-        defaultCoords = builder.startingCoords;
-        sections = builder.sections;
+    public Arena buildArena(Arena arena){
 
-        EntityFactory entityFactory = new EntityFactory(assetManager);
+        defaultCoords = arena.getStartingCoords();
+
+        DecorFactory decorFactory = new DecorFactory(assetManager, arenaSkin);
 
         for(Section s : sections) {
 
@@ -92,20 +74,20 @@ public class ArenaBuilder {
 
             //Left
             if(s.left == wall.FULL) {
-                arena.addEntity(entityFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
+                arena.addEntity(decorFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT, arenaSkin));
             } else if(s.left == wall.DOOR){
-                arena.addEntity(entityFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4));
-                arena.addDoor(entityFactory.doorBag(0 + posX, Measure.units(10) + posY,
+                arena.addEntity(decorFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, arenaSkin));
+                arena.addDoor(decorFactory.doorBag(0 + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX - 1, coordY),
                         DoorComponent.DIRECTION.left));
             }
             //Right
             if(s.right == wall.FULL) {
-                arena.addEntity(entityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
+                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT, arenaSkin));
             } else if(s.right == wall.DOOR){
-                arena.addEntity(entityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT -  WALLWIDTH * 4));
-                arena.addDoor(entityFactory.doorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
+                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT -  WALLWIDTH * 4, arenaSkin));
+                arena.addDoor(decorFactory.doorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX + 1, coordY),
                         DoorComponent.DIRECTION.right));
@@ -113,9 +95,9 @@ public class ArenaBuilder {
 
             //Ceiling
             if(s.ceiling != wall.NONE){
-                arena.addEntity(entityFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH));
+                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH, arenaSkin));
                 if(s.ceiling == wall.DOOR) {
-                    arena.addDoor(entityFactory.grateBag(SECTION_WIDTH / 2 + posX, 900 + posY,
+                    arena.addDoor(decorFactory.grateBag(SECTION_WIDTH / 2 + posX, 900 + posY,
                             new MapCoords(coordX, coordY),
                             new MapCoords(coordX, coordY + 1),
                             DoorComponent.DIRECTION.up));
@@ -124,10 +106,10 @@ public class ArenaBuilder {
 
             //Floor
             if(s.floor != wall.NONE){
-                arena.addEntity(entityFactory.wallBag(0 + posX,  -WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH * 3));
+                arena.addEntity(decorFactory.wallBag(0 + posX,  -WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH * 3, arenaSkin));
 
                 if(s.floor == wall.DOOR) {
-                    arena.addDoor(entityFactory.grateBag(SECTION_WIDTH / 2 + posX, 400 + posY,
+                    arena.addDoor(decorFactory.grateBag(SECTION_WIDTH / 2 + posX, 400 + posY,
                             new MapCoords(coordX, coordY),
                             new MapCoords(coordX, coordY -1),
                             DoorComponent.DIRECTION.down));
@@ -145,7 +127,16 @@ public class ArenaBuilder {
 
         }
 
+
+
+        return arena;
+
+
+
+
     }
+
+
 
 
     public Section findSection(MapCoords mapCoords) {

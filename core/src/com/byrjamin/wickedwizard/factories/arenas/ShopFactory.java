@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.items.Item;
@@ -24,8 +25,13 @@ public class ShopFactory extends ArenaShellFactory {
 
     private ItemFactory itemFactory;
 
-    public ShopFactory(AssetManager assetManager) {
+/*    public ShopFactory(AssetManager assetManager) {
         super(assetManager);
+        itemFactory = new ItemFactory(assetManager);
+    }*/
+
+    public ShopFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
+        super(assetManager, arenaSkin);
         itemFactory = new ItemFactory(assetManager);
     }
 
@@ -43,12 +49,12 @@ public class ShopFactory extends ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).build();
+                        ArenaBuilder.wall.FULL)).buildArena(arena);
 
         Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
         PickUp[] pickUps = {new HealthUp()};

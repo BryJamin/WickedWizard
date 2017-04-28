@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -28,10 +29,6 @@ import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComp
 
 public class TutorialFactory extends ArenaShellFactory {
 
-    public TutorialFactory(AssetManager assetManager) {
-        super(assetManager);
-    }
-
     private final String moveTutorialString1 = "Exit through the right door";
     private final String moveTutorialString2 = "Touch in this area to move!";
 
@@ -44,6 +41,10 @@ public class TutorialFactory extends ArenaShellFactory {
             "Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it";
     private final String endString =
             "Yea you seem about ready \n \n Now go and adventure!";
+
+    public TutorialFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
+        super(assetManager, arenaSkin);
+    }
 
     public Arena groundMovementTutorial(MapCoords defaultCoords){
 
@@ -58,12 +59,12 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).build();
+                        ArenaBuilder.wall.FULL)).buildArena(arena);
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
@@ -104,19 +105,19 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena = new ArenaBuilder(assetManager, arenaSkin).addSection(
+                new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.NONE)).build();
+                        ArenaBuilder.wall.NONE)).buildArena(arena);
 
         //BEFORE GAP
-        arena.addEntity(entityfactory.wallBag(0,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3));
+        arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3, arenaSkin));
         //AFTER GAP
-        arena.addEntity(entityfactory.wallBag(WIDTH - WALLWIDTH * 6,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3));
+        arena.addEntity(decorFactory.wallBag(WIDTH - WALLWIDTH * 6,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3, arenaSkin));
         //HIDDEN SAFETY NET
-        arena.addEntity(entityfactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3));
+        arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3, arenaSkin));
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
@@ -142,12 +143,12 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-       new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin).addSection(
+                new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.DOOR)).build();
+                        ArenaBuilder.wall.DOOR)).buildArena(arena);
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 1000));
@@ -185,26 +186,26 @@ public class TutorialFactory extends ArenaShellFactory {
         float HEIGHT = SECTION_HEIGHT * 3;
         float WIDTH = SECTION_WIDTH;
 
-        new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL))
-                .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE))
-                        .section(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.NONE)).build();
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE)).buildArena(arena);
 
         //TODO find less lazy way to add the highlight to the arena
         Bag<Component> bag;
-        bag = entityfactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
+        bag = decorFactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 3),
                 DoorComponent.DIRECTION.up);
@@ -221,7 +222,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
 
         for(int i = 0; i < 4; i ++) {
-            bag = entityfactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50 + (i * 30)));
+            bag = decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50 + (i * 30)));
             arena.addEntity(bag);
             arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
         }
@@ -241,12 +242,12 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).build();
+                        ArenaBuilder.wall.FULL)).buildArena(arena);
 
         Bag<Component> bag = new Bag<Component>();
 

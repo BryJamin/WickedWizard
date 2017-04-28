@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
@@ -31,13 +32,13 @@ public class JigsawGenerator {
 
     public boolean generateTutorial = true;
 
-    public JigsawGenerator(AssetManager assetManager, int noBattleRooms, Random rand){
+    public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, Random rand){
         this.assetManager = assetManager;
-        this.level1Rooms = new Level1Rooms(assetManager);
-        this.tutorialFactory = new TutorialFactory(assetManager);
-        this.arenaShellFactory = new ArenaShellFactory(assetManager);
-        this.itemArenaFactory = new ItemArenaFactory(assetManager);
-        this.shopFactory = new ShopFactory(assetManager);
+        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin);
+        this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
+        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
+        this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
+        this.shopFactory = new ShopFactory(assetManager, arenaSkin);
         this.noBattleRooms = noBattleRooms;
         this.rand = rand;
     }
@@ -195,7 +196,7 @@ public class JigsawGenerator {
         //RoomFactory.cleanArenas(placedArenas);
         Arena bossRoom = arenaShellFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
-        new RoomDecorationFactory(assetManager).biggablobba(bossRoom);
+        new ArenaEnemyPlacementFactory(assetManager).biggablobba(bossRoom);
 
         int range = (int) ((Math.sqrt(placedArenas.size) - 7 /*tutorial rooms */) / 2);
         if (placeRoomAtRangeWithDoors(bossRoom,
@@ -231,7 +232,7 @@ public class JigsawGenerator {
 
         Arena bossRoom = arenaShellFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
-        new RoomDecorationFactory(assetManager).biggablobba(bossRoom);
+        new ArenaEnemyPlacementFactory(assetManager).biggablobba(bossRoom);
 
 
 
