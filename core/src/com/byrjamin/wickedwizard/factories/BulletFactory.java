@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -26,26 +27,19 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
  * Created by Home on 29/03/2017.
  */
 
-public class BulletFactory {
-
-
-    private static float width = Measure.units(1);
-    private static float height = Measure.units(1);
+public class BulletFactory extends AbstractFactory {
 
 
 
-    public static Entity createBullet(World world, float x, float y, double angleOfTravel){
-        Entity e = world.createEntity();
-        for(Component c : basicBulletBag(x,y,1,PlayScreen.atlas.findRegion("bullet"))){
-            e.edit().add(c);
-        }
-        e.edit().add(new FriendlyComponent());
-        e.edit().add(new VelocityComponent((float) (Measure.units(90) * Math.cos(angleOfTravel)), (float) (Measure.units(90) * Math.sin(angleOfTravel))));
+    public BulletFactory(AssetManager assetManager) {
+        super(assetManager);
 
-        return e;
     }
 
-    public static Entity createEnemyBullet(World world, float x, float y, double angleOfTravel){
+    private float width = Measure.units(1);
+    private float height = Measure.units(1);
+
+    public Entity createEnemyBullet(World world, float x, float y, double angleOfTravel){
         Entity e = world.createEntity();
         for(Component c : basicEnemyBulletBag(x,y,2)){
             e.edit().add(c);
@@ -54,7 +48,7 @@ public class BulletFactory {
         return e;
     }
 
-    public static ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
+    public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
         for(Component c : basicEnemyBulletBag(x,y,2)){
             fill.add(c);
         }
@@ -68,23 +62,23 @@ public class BulletFactory {
 
 
 
-    public static Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion) {
-        return basicBulletBag(x ,y ,scale ,textureRegion , Color.WHITE);
+    public Bag<Component> basicBulletBag(float x, float y, float scale) {
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion("bullet"), Color.WHITE);
     }
 
-    public static Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
+    public Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
 
-        Bag<Component> bag = basicBulletBag(x ,y ,scale ,PlayScreen.atlas.findRegion("bullet") , Color.RED);
+        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("bullet") , Color.RED);
         bag.add(new EnemyComponent());
         return bag;
     }
 
 
-    public static Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
+    public Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
         Bag<Component> bag = new Bag<Component>();
 
-        float width = BulletFactory.width * scale;
-        float height = BulletFactory.height * scale;
+        float width = this.width * scale;
+        float height = this.height * scale;
 
         float cX = x - width / 2;
         float cY = y - height / 2;
@@ -96,7 +90,7 @@ public class BulletFactory {
                 (cX,cY, width, height)));
 
         OnDeathComponent odc = new OnDeathComponent();
-        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height));
+        bag.add(new DeathFactory(assetManager).basicOnDeathExplosion(odc, width, height));
 
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion,-width / 2,-height / 2,  width * 2, height * 2, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
@@ -107,11 +101,11 @@ public class BulletFactory {
 
 
 
-    public static Bag<Component> basicBulletBlockBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
+    public Bag<Component> basicBulletBlockBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
         Bag<Component> bag = new Bag<Component>();
 
-        float width = BulletFactory.width * scale;
-        float height = BulletFactory.height * scale;
+        float width = this.width * scale;
+        float height = this.height * scale;
 
         float cX = x - width / 2;
         float cY = y - height / 2;
@@ -125,7 +119,7 @@ public class BulletFactory {
                 (cX,cY, width, height), true));
 
         OnDeathComponent odc = new OnDeathComponent();
-        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height));
+        bag.add(new DeathFactory(assetManager).basicOnDeathExplosion(odc, width, height));
 
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion, 0, 0,  width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
@@ -135,8 +129,8 @@ public class BulletFactory {
     }
 
 
-    public static ComponentBag enemyBlockBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        for(Component c : basicBulletBlockBag(x,y,4, PlayScreen.atlas.findRegion("block") , Color.BLACK)){
+    public ComponentBag enemyBlockBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
+        for(Component c : basicBulletBlockBag(x,y,4, atlas.findRegion("block") , Color.BLACK)){
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(20) * Math.cos(angleOfTravel)), (float) (Measure.units(20) * Math.sin(angleOfTravel))));

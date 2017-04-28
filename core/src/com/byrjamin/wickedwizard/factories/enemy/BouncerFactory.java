@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,8 +25,11 @@ import java.util.Random;
  * Created by Home on 29/03/2017.
  */
 
-public class BouncerFactory {
+public class BouncerFactory extends EnemyFactory {
 
+    public BouncerFactory(AssetManager assetManager) {
+        super(assetManager);
+    }
 
     private static final float width = Measure.units(5);
     private static final float height = Measure.units(5);
@@ -34,7 +38,7 @@ public class BouncerFactory {
 
     private static final float speed = Measure.units(35f);
 
-    public static ComponentBag smallBouncer(float x, float y){
+    public ComponentBag smallBouncer(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
@@ -43,7 +47,7 @@ public class BouncerFactory {
         return bag;
     }
 
-    public static ComponentBag smallBouncerTargeted(float x, float y, boolean startsLeft){
+    public ComponentBag smallBouncerTargeted(float x, float y, boolean startsLeft){
 
         x = x - width / 2;
         y = y - height / 2;
@@ -52,7 +56,7 @@ public class BouncerFactory {
         return bag;
     }
 
-    public static ComponentBag largeBouncer(float x, float y){
+    public ComponentBag largeBouncer(float x, float y){
 
         x = x - width * 2 / 2;
         y = y - height * 2 / 2;
@@ -65,18 +69,20 @@ public class BouncerFactory {
         return bag;
     }
 
-    private static ComponentBag basicBouncer(float x, float y, float width, float height, float speed, boolean startsLeft) {
+    private ComponentBag basicBouncer(float x, float y, float width, float height, float speed, boolean startsLeft) {
 
         ComponentBag bag = new ComponentBag();
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
-        EnemyFactory.defaultEnemyBag(bag, x, y, width, height, 3);
+
+        this.defaultEnemyBag(bag, x, y, width, height, 3);
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BOUNCER_DEFAULT, Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f,
+                atlas.findRegions(TextureStrings.BOUNCER_DEFAULT), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BOUNCER_DEFAULT),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOUNCER_DEFAULT),
                 0, 0, width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 

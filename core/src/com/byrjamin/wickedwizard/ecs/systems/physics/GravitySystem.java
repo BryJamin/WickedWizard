@@ -7,6 +7,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 04/03/2017.
@@ -16,6 +17,8 @@ public class GravitySystem extends EntityProcessingSystem {
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<GravityComponent> gm;
     ComponentMapper<GlideComponent> glm;
+
+    private static final float MAXGRAVITY = -Measure.units(150f);
 
     @SuppressWarnings("unchecked")
     public GravitySystem() {
@@ -28,17 +31,22 @@ public class GravitySystem extends EntityProcessingSystem {
         GravityComponent gc = gm.get(e);
 
         if(!gc.ignoreGravity) {
-            vc.velocity.add(0, gc.gravity);
             if(glm.has(e)) {
-                if (glm.get(e).gliding && glm.get(e).active) {
-                    if (vc.velocity.y < gc.gravity) {
-                        vc.velocity.y = gc.gravity;
-
+                if (glm.get(e).gliding && glm.get(e).active && vc.velocity.y <= 0) {
+                    vc.velocity.add(0, gc.gravity);
+                    if (vc.velocity.y < gc.gravity * 2.5f) {
+                        vc.velocity.y = gc.gravity * 2.5f;
                     }
+                } else {
+                    vc.velocity.add(0, gc.gravity);
+                    vc.velocity.y = vc.velocity.y > MAXGRAVITY ? vc.velocity.y : MAXGRAVITY;
                 }
+            } else {
+                vc.velocity.add(0, gc.gravity);
+                vc.velocity.y = vc.velocity.y > MAXGRAVITY ? vc.velocity.y : MAXGRAVITY;
             }
-        } else {
         }
+
     }
 
 }

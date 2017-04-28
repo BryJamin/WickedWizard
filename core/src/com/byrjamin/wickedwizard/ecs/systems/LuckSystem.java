@@ -4,6 +4,7 @@ import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
@@ -44,10 +45,13 @@ public class LuckSystem extends BaseSystem {
         if(chosen != null) {
 
             Entity e = world.createEntity();
+
+            ItemFactory itemFactory = new ItemFactory(world.getSystem(RenderingSystem.class).getAssetManager());
+
             if(chosen instanceof MoneyPlus1) {
-                for(Component c : ItemFactory.createIntangibleFollowingPickUpBag(x, y, chosen)) e.edit().add(c);
+                for(Component c : itemFactory.createIntangibleFollowingPickUpBag(x, y, chosen)) e.edit().add(c);
             } else {
-                for (Component c : ItemFactory.createPickUpBag(x, y, chosen)) e.edit().add(c);
+                for (Component c : itemFactory.createPickUpBag(x, y, chosen)) e.edit().add(c);
             }
 
         }

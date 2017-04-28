@@ -19,7 +19,7 @@ public class KeyUp implements PickUp {
     }
 
     @Override
-    public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("key", 2);
+    public String getRegionName() {
+        return "key";
     }
 }

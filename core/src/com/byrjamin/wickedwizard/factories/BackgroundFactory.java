@@ -23,6 +23,7 @@ public class BackgroundFactory {
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x, y));
         TextureRegionBatchComponent trbc = generateTRBC(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, TILE_SIZE, selection, TextureRegionComponent.BACKGROUND_LAYER_FAR,1,1);
+        trbc.setColor(0.7f, 0, 0f, 1);
         bag.add(trbc);
         return bag;
     }

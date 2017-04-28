@@ -2,7 +2,9 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
@@ -15,145 +17,132 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 26/03/2017.
  */
 
-public class RoomDecorationFactory {
+public class RoomDecorationFactory extends AbstractFactory {
 
-    public interface RoomDecoration {
-        void setUpArena(Arena a);
+
+    BlobFactory blobFactory;
+    BouncerFactory bouncerFactory;
+    KugelDuscheFactory kugelDuscheFactory;
+    SilverHeadFactory silverHeadFactory;
+    SpawnerFactory spawnerFactory;
+    TurretFactory turretFactory;
+
+    public RoomDecorationFactory(AssetManager assetManager) {
+        super(assetManager);
+        this.blobFactory = new BlobFactory(assetManager);
+        this.bouncerFactory = new BouncerFactory(assetManager);
+        this.kugelDuscheFactory = new KugelDuscheFactory(assetManager);
+        this.silverHeadFactory = new SilverHeadFactory(assetManager);
+        this.spawnerFactory = new SpawnerFactory(assetManager);
+        this.turretFactory = new TurretFactory(assetManager);
     }
 
-    public static RoomDecoration[] setUpArena = new RoomDecoration[] {
-            new RoomDecoration() { public void setUpArena(Arena a) {blobRoom(a);}},
-            new RoomDecoration() { public void setUpArena(Arena a) {turretRoom(a);}},
-           // new RoomDecoration() { public void setUpArena(Arena a) {movingTurretRoom(a);}},
-            new RoomDecoration() { public void setUpArena(Arena a) {movingTurretRoomRight(a);}},
-            new RoomDecoration() { public void setUpArena(Arena a) {movingDoubleTurretRoom(a);}},
-            //new RoomDecoration() { public void setUpArena(Arena a) {blobRoom(a);}},
-            //new RoomDecoration() { public void setUpArena(Arena a) {blobRoom(a);}},
-    };
-
-    public static void blobRoom(Arena a){
+    public void blobRoom(Arena a){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return com.byrjamin.wickedwizard.factories.enemy.BlobFactory.blobBag(x,y);
+                return blobFactory.blobBag(x,y);
             }
         });
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return com.byrjamin.wickedwizard.factories.enemy.BlobFactory.smallblobBag(x,y);
+                return blobFactory.smallblobBag(x,y);
             }
         });
         //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
-        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s));
+        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s));
     }
 
-    public static void turretRoom(Arena a){
-        a.addEntity(TurretFactory.fixedLockOnTurret(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(25)));
+    public void turretRoom(Arena a){
+        a.addEntity(turretFactory.fixedLockOnTurret(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(25)));
     }
 
-    public static void movingTurretRoom(Arena a){
+    public void movingTurretRoom(Arena a){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return TurretFactory.movingTurret(x,y);
+                return turretFactory.movingTurret(x,y);
             }
         });
-        a.addEntity(SpawnerFactory.spawnerBag(Measure.units(20), Measure.units(50), s));
+        a.addEntity(spawnerFactory.spawnerBag(Measure.units(20), Measure.units(50), s));
     }
 
-    public static void movingTurretRoomRight(Arena a){
+    public void movingTurretRoomRight(Arena a){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return TurretFactory.movingTurret(x,y);
+                return turretFactory.movingTurret(x,y);
             }
         });
-        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15), s));
+        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15), s));
     }
 
 
-    public static void kugelDusche(Arena a){
+    public void kugelDusche(Arena a){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return KugelDuscheFactory.kugelDusche(x,y);
+                return kugelDuscheFactory.kugelDusche(x,y);
             }
         });
-        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
+        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
     }
 
-    public static void silverHead(Arena a){
+    public void silverHead(Arena a){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return SilverHeadFactory.silverHead(x,y);
+                return silverHeadFactory.silverHead(x,y);
             }
         });
-        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
-    }
-
-
-    public static void spawnBouncer(Arena a, float x, float y){
-        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return BouncerFactory.smallBouncer(x,y);
-            }
-        });
-        a.addEntity(SpawnerFactory.spawnerBag(x, y, s));
-    }
-
-    public static void spawnLargeBouncer(Arena a, float x, float y){
-        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return BouncerFactory.largeBouncer(x,y);
-            }
-        });
-        a.addEntity(SpawnerFactory.spawnerBag(x, y, s));
+        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
     }
 
 
-
-    public static void movingDoubleTurretRoom(Arena a){
+    public void spawnBouncer(Arena a, float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return TurretFactory.movingTurret(x,y);
+                return bouncerFactory.smallBouncer(x,y);
             }
         });
-        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15), s));
+        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
+    }
+
+    public void spawnLargeBouncer(Arena a, float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return bouncerFactory.largeBouncer(x,y);
+            }
+        });
+        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
+    }
+
+
+
+    public void movingDoubleTurretRoom(Arena a){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.movingTurret(x,y);
+            }
+        });
+        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15), s));
 
         s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return TurretFactory.movingTurret(x,y);
+                return turretFactory.movingTurret(x,y);
             }
         });
-        a.addEntity(SpawnerFactory.spawnerBag(Measure.units(20), a.getHeight() - Measure.units(15), s));
+        a.addEntity(spawnerFactory.spawnerBag(Measure.units(20), a.getHeight() - Measure.units(15), s));
 
     }
 
 
-    public static void biggablobba(Arena a){
-
-        a.addEntity(BlobFactory.BiggaBlobbaBag(a.getWidth() / 2, Measure.units(20)));
-
-/*        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return BlobFactory.BiggaBlobbaBag(x,y);
-            }
-        });
-        a.addEntity(SpawnerFactory.spawnerBag(a.getWidth() / 2, Measure.units(4), s));*/
+    public void biggablobba(Arena a){
+        a.addEntity(blobFactory.BiggaBlobbaBag(a.getWidth() / 2, Measure.units(20)));
     }
-
-
-
-//    BiggaBlobbaBag
-
-
-
-
 
 }

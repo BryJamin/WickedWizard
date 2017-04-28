@@ -21,7 +21,7 @@ public class MoneyPlus1 implements PickUp {
     }
 
     @Override
-    public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("money", 0);
+    public String getRegionName() {
+        return "money";
     }
 }

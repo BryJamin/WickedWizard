@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.chests;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -21,6 +22,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -30,12 +32,16 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 22/04/2017.
  */
 
-public class ChestFactory {
+public class ChestFactory extends AbstractFactory {
 
-    public static float width = Measure.units(10f);
-    public static float height = Measure.units(10f);
+    public ChestFactory(AssetManager assetManager) {
+        super(assetManager);
+    }
 
-    public static ComponentBag chestBag(float x, float y) {
+    public final float width = Measure.units(10f);
+    public final float height = Measure.units(10f);
+
+    public ComponentBag chestBag(float x, float y) {
 
         ComponentBag bag = new ComponentBag();
 
@@ -50,14 +56,14 @@ public class ChestFactory {
         bag.add(new ActionOnTouchComponent(generateLoot()));
 
 
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("chest", 0), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
 
         return bag;
     }
 
 
-    public static ComponentBag lockedChestBag(float x, float y) {
+    public ComponentBag lockedChestBag(float x, float y) {
 
         ComponentBag bag = new ComponentBag();
 
@@ -73,7 +79,7 @@ public class ChestFactory {
         bag.add(new ActionOnTouchComponent(generateLoot()));
 
 
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("locked_chest", 0), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion("locked_chest", 0), width, height,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
 
         return bag;
@@ -82,7 +88,7 @@ public class ChestFactory {
 
 
 
-    public static Action generateLoot() {
+    public Action generateLoot() {
 
         return new Action() {
             @Override
@@ -94,14 +100,14 @@ public class ChestFactory {
                     else cc.keys -= 1;
 
                     IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-                    animMap.put(0, AnimationPacker.genAnimation(0.05f / 1f, "locked_chest"));
+                    animMap.put(0, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions("locked_chest")));
                     e.edit().add(new AnimationComponent(animMap));
 
 
                 } else {
 
                     IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-                    animMap.put(0, AnimationPacker.genAnimation(0.05f / 1f, "chest"));
+                    animMap.put(0, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions("chest")));
                     e.edit().add(new AnimationComponent(animMap));
 
 

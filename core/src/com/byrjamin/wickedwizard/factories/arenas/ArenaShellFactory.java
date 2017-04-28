@@ -2,12 +2,14 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -17,21 +19,29 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
  * Created by Home on 18/03/2017.
  */
 
-public class ArenaShellFactory {
+public class ArenaShellFactory extends AbstractFactory {
 
-    public static float SECTION_WIDTH = MainGame.GAME_WIDTH;
-    public static float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
+    protected EntityFactory entityfactory;
 
-    public static float WIDTH = MainGame.GAME_WIDTH;
-    public static float HEIGHT = MainGame.GAME_HEIGHT;
+    public ArenaShellFactory(AssetManager assetManager) {
+        super(assetManager);
+        this.entityfactory = new EntityFactory(assetManager);
+    }
 
-    public static float WALLWIDTH = Measure.units(5);
+    //TODO move this constant somewhere else
+    public static final float SECTION_WIDTH = MainGame.GAME_WIDTH;
+    public static final float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
 
-    public static Arena createOmniArena(){
+    public final float WIDTH = MainGame.GAME_WIDTH;
+    public final float HEIGHT = MainGame.GAME_HEIGHT;
+
+    public final float WALLWIDTH = Measure.units(5);
+
+    public final Arena createOmniArena(){
         return createOmniArena(new MapCoords(0,0));
     }
 
-    public static Arena createOmniArena(MapCoords defaultCoords) {
+    public final Arena createOmniArena(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -41,7 +51,7 @@ public class ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords, arena)
+        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -50,12 +60,12 @@ public class ArenaShellFactory {
         return arena;
     }
 
-    public static Arena createWidth2Arena(){
+    public Arena createWidth2Arena(){
         return createWidth2Arena(new MapCoords(0,0));
     }
 
 
-    public static Arena createWidth2Arena(MapCoords defaultCoords) {
+    public Arena createWidth2Arena(MapCoords defaultCoords) {
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
         containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
@@ -65,7 +75,7 @@ public class ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH * 2);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords, arena)
+        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -81,7 +91,7 @@ public class ArenaShellFactory {
     }
 
 
-    public static Arena createHeight2Arena(MapCoords defaultCoords) {
+    public Arena createHeight2Arena(MapCoords defaultCoords) {
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
         containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
@@ -91,7 +101,7 @@ public class ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT * 2);
 
-        new ArenaBuilder.Builder(defaultCoords, arena)
+        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -109,7 +119,7 @@ public class ArenaShellFactory {
 
 
 
-    public static Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
+    public Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -149,7 +159,7 @@ public class ArenaShellFactory {
                     ArenaBuilder.wall.FULL);
         }
 
-        new ArenaBuilder.Builder(defaultCoords, arena)
+        new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
                 .section(left)
                 .section(right).build();
 
@@ -157,7 +167,7 @@ public class ArenaShellFactory {
     }
 
 
-    public static Arena createDeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
+    public Arena createDeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -179,7 +189,7 @@ public class ArenaShellFactory {
             right = ArenaBuilder.wall.FULL;
         }
 
-        new ArenaBuilder.Builder(defaultCoords, arena)
+        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         left,
                         right,
@@ -191,7 +201,7 @@ public class ArenaShellFactory {
 
 
 
-    public static Arena createLetterIArena(MapCoords defaultCoords) {
+    public Arena createLetterIArena(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -207,7 +217,7 @@ public class ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH * 3);
         arena.setHeight(SECTION_HEIGHT * 3);
 
-        new ArenaBuilder.Builder(defaultCoords, arena)
+        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -254,15 +264,15 @@ public class ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).build();
 
-        arena.addEntity(EntityFactory.wallBag(new Rectangle(0, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
-        arena.addEntity(EntityFactory.wallBag(new Rectangle(SECTION_WIDTH * 2, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
+        arena.addEntity(entityfactory.wallBag(new Rectangle(0, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
+        arena.addEntity(entityfactory.wallBag(new Rectangle(SECTION_WIDTH * 2, SECTION_HEIGHT, SECTION_WIDTH, SECTION_HEIGHT)));
 
         return arena;
     }
 
 
 
-    public static void cleanArenas(Array<Arena> arenas){
+    public void cleanArenas(Array<Arena> arenas){
         for(int i = 0; i < arenas.size; i++) {
             Arena a = arenas.get(i);
             for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
@@ -275,7 +285,7 @@ public class ArenaShellFactory {
                             CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
                             if(cbc != null) {
                                 a.getBagOfEntities().remove(bag);
-                                a.addEntity(EntityFactory.wallBag(cbc.bound));
+                                a.addEntity(entityfactory.wallBag(cbc.bound));
                             }
                         }
                         a.adjacentCoords.removeValue(dc.leaveCoords, false);
@@ -286,7 +296,7 @@ public class ArenaShellFactory {
     }
 
     @SuppressWarnings("SimplifiableIfStatement")
-    public static boolean findDoorWithinFoundRoom(DoorComponent dc, Array<Arena> arenas){
+    public boolean findDoorWithinFoundRoom(DoorComponent dc, Array<Arena> arenas){
         Arena a = findRoom(dc.leaveCoords, arenas);
         if(a != null) {
             //System.out.println("Find Door " + a.adjacentCoords.contains(dc.currentCoords, false));

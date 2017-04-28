@@ -1,6 +1,8 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.EntityFactory;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
@@ -13,118 +15,133 @@ import java.util.Random;
  * Created by Home on 13/04/2017.
  */
 
-public class Level1Rooms {
+public class Level1Rooms extends AbstractFactory {
 
-    public static ArenaGen[] agArray = {room1(), room2(), room3()};
+    ArenaShellFactory arenaShellFactory;
+    ChestFactory chestFactory;
+    EntityFactory entityFactory;
+    RoomDecorationFactory roomDecorationFactory;
+    TurretFactory turretFactory;
 
-    public static Array<ArenaGen> getLevel1RoomArray(){
+    public Level1Rooms(AssetManager assetManager) {
+        super(assetManager);
+        this.arenaShellFactory = new ArenaShellFactory(assetManager);
+        this.chestFactory = new ChestFactory(assetManager);
+        this.roomDecorationFactory = new RoomDecorationFactory(assetManager);
+        this.entityFactory = new EntityFactory(assetManager);
+        this.turretFactory = new TurretFactory(assetManager);
+    }
+
+    public ArenaGen[] agArray = {room1(), room2(), room3()};
+
+    public Array<ArenaGen> getLevel1RoomArray(){
         Array<ArenaGen> ag = new Array<ArenaGen>();
-        ag.add(room1());
-        ag.add(room2());
-        ag.add(room3());
+        //ag.add(room1());
+        //ag.add(room2());
+        //ag.add(room3());
         ag.add(room4());
-        ag.add(room5());
-        ag.add(room6());
+        //ag.add(room5());
+        //ag.add(room6());
         ag.add(room7LetterI());
-        ag.add(room8());
-        ag.add(deadEndW2());
-        ag.add(room10());
-        ag.add(room11());
-        ag.add(room12());
-        ag.add(room13());
+        //ag.add(room8());
+        //ag.add(deadEndW2());
+        //ag.add(room10());
+        //ag.add(room11());
+        //ag.add(room12());
+        //ag.add(room13());
         return ag;
     }
 
-    public static ArenaGen room1(){
+    public ArenaGen room1(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.blobRoom(a);
+                Arena a = arenaShellFactory.createOmniArena();
+                roomDecorationFactory.blobRoom(a);
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room2(){
+    public ArenaGen room2(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.movingTurretRoomRight(a);
+                Arena a = arenaShellFactory.createOmniArena();
+                roomDecorationFactory.movingTurretRoomRight(a);
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room3(){
+    public ArenaGen room3(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.movingDoubleTurretRoom(a);
+                Arena a = arenaShellFactory.createOmniArena();
+                roomDecorationFactory.movingDoubleTurretRoom(a);
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room4(){
+    public ArenaGen room4(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.kugelDusche(a);
+                Arena a = arenaShellFactory.createOmniArena();
+                roomDecorationFactory.kugelDusche(a);
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room5(){
+    public ArenaGen room5(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.silverHead(a);
+                Arena a = arenaShellFactory.createOmniArena();
+                roomDecorationFactory.silverHead(a);
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room6(){
+    public ArenaGen room6(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createWidth2Arena();
-                RoomDecorationFactory.movingDoubleTurretRoom(a);
+                Arena a = arenaShellFactory.createWidth2Arena();
+                roomDecorationFactory.movingDoubleTurretRoom(a);
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room7LetterI(){
+    public ArenaGen room7LetterI(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createLetterIArena(new MapCoords(0,0));
+                Arena a = arenaShellFactory.createLetterIArena(new MapCoords(0,0));
                // RoomDecorationFactory.movingDoubleTurretRoom(a);
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(40f)));
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(70f)));
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(100f)));
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(130f)));
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(160f)));
+                a.addEntity(entityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(40f)));
+                a.addEntity(entityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(70f)));
+                a.addEntity(entityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(100f)));
+                a.addEntity(entityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(130f)));
+                a.addEntity(entityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(160f)));
                 return a;
             }
         };
     }
 
 
-    public static ArenaGen room8(){
+    public ArenaGen room8(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
@@ -132,11 +149,11 @@ public class Level1Rooms {
                 Random random = new Random();
                 boolean mirror = random.nextBoolean();
 
-                Arena a = ArenaShellFactory.createDeadEndArena(new MapCoords(0,0), mirror);
+                Arena a = arenaShellFactory.createDeadEndArena(new MapCoords(0,0), mirror);
 
                 float chestPosX = mirror ? a.getWidth() / 4 : a.getWidth() - a.getWidth() / 4;
 
-                a.addEntity(ChestFactory.lockedChestBag(chestPosX, a.getHeight() / 4));
+                a.addEntity(chestFactory.lockedChestBag(chestPosX, a.getHeight() / 4));
                 //RoomDecorationFactory.blobRoom(a);
                 return a;
             }
@@ -144,7 +161,7 @@ public class Level1Rooms {
     }
 
 
-    public static ArenaGen deadEndW2(){
+    public ArenaGen deadEndW2(){
 
         return new ArenaGen() {
             @Override
@@ -153,7 +170,7 @@ public class Level1Rooms {
                 Random random = new Random();
                 boolean mirror = random.nextBoolean();
 
-                Arena a = ArenaShellFactory.createWidth2DeadEndArena(new MapCoords(0, 0), mirror);
+                Arena a = arenaShellFactory.createWidth2DeadEndArena(new MapCoords(0, 0), mirror);
 
                 float posX = mirror ? Measure.units(10) : a.getWidth() - Measure.units(10f);
                 float chestPosX = mirror ? Measure.units(30f) : a.getWidth() - Measure.units(30f);
@@ -161,16 +178,16 @@ public class Level1Rooms {
 
                 float angle =  mirror ? 0 : 180;
 
-                a.addEntity(ChestFactory.chestBag(chestPosX, Measure.units(15f)));
+                a.addEntity(chestFactory.chestBag(chestPosX, Measure.units(15f)));
 
-                a.addEntity(EntityFactory.wallBag(blockerPosX, Measure.units(45f), Measure.units(10f), Measure.units(10f)));
-                a.addEntity(EntityFactory.wallBag(blockerPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f)));
+                a.addEntity(entityFactory.wallBag(blockerPosX, Measure.units(45f), Measure.units(10f), Measure.units(10f)));
+                a.addEntity(entityFactory.wallBag(blockerPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f)));
 
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(50f),  angle, 3.0f, 0f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 1.5f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 1.5f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 1.5f));
-                a.addEntity(TurretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 0f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(50f),  angle, 3.0f, 0f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 1.5f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 1.5f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 1.5f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 0f));
 
 
                 return a;
@@ -181,17 +198,17 @@ public class Level1Rooms {
     }
 
 
-    public static ArenaGen room10(){
+    public ArenaGen room10(){
 
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createHeight2Arena(new MapCoords(0,0));
+                Arena a = arenaShellFactory.createHeight2Arena(new MapCoords(0,0));
 
-                a.addEntity(EntityFactory.wallBag(a.getWidth() - Measure.units(60f), Measure.units(35f),
+                a.addEntity(entityFactory.wallBag(a.getWidth() - Measure.units(60f), Measure.units(35f),
                         Measure.units(60f), Measure.units(5)));
 
-                a.addEntity(EntityFactory.wallBag(0, Measure.units(65f),
+                a.addEntity(entityFactory.wallBag(0, Measure.units(65f),
                         Measure.units(60f), Measure.units(5)));
                 return a;
             }
@@ -199,14 +216,14 @@ public class Level1Rooms {
     }
 
 
-    public static ArenaGen room11(){
+    public ArenaGen room11(){
 
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena(new MapCoords(0,0));
-                RoomDecorationFactory.spawnBouncer(a, a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
-                RoomDecorationFactory.spawnBouncer(a, a.getWidth() - a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+                Arena a = arenaShellFactory.createOmniArena(new MapCoords(0,0));
+                roomDecorationFactory.spawnBouncer(a, a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+                roomDecorationFactory.spawnBouncer(a, a.getWidth() - a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
                 a.roomType = Arena.RoomType.TRAP;
 
                 return a;
@@ -216,21 +233,21 @@ public class Level1Rooms {
 
 
 
-    public static ArenaGen room12(){
+    public ArenaGen room12(){
 
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena(new MapCoords(0,0));
-                RoomDecorationFactory.spawnBouncer(a, a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
-                RoomDecorationFactory.spawnBouncer(a, a.getWidth() - a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+                Arena a = arenaShellFactory.createOmniArena(new MapCoords(0,0));
+                roomDecorationFactory.spawnBouncer(a, a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+                roomDecorationFactory.spawnBouncer(a, a.getWidth() - a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
 
                 a.roomType = Arena.RoomType.TRAP;
 
-                a.addEntity(EntityFactory.wallBag(a.getWidth() - Measure.units(25f), Measure.units(35f),
+                a.addEntity(entityFactory.wallBag(a.getWidth() - Measure.units(25f), Measure.units(35f),
                         Measure.units(5f), Measure.units(5)));
 
-                a.addEntity(EntityFactory.wallBag(Measure.units(20f), Measure.units(35f),
+                a.addEntity(entityFactory.wallBag(Measure.units(20f), Measure.units(35f),
                         Measure.units(5f), Measure.units(5)));
 
 
@@ -240,13 +257,13 @@ public class Level1Rooms {
     }
 
 
-    public static ArenaGen room13(){
+    public ArenaGen room13(){
 
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena(new MapCoords(0,0));
-                RoomDecorationFactory.spawnLargeBouncer(a, a.getWidth() / 2,(a.getHeight() - a.getHeight() / 2));
+                Arena a = arenaShellFactory.createOmniArena(new MapCoords(0,0));
+                roomDecorationFactory.spawnLargeBouncer(a, a.getWidth() / 2,(a.getHeight() - a.getHeight() / 2));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }

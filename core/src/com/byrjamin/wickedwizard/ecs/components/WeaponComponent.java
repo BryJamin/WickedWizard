@@ -18,9 +18,6 @@ public class WeaponComponent extends Component{
         this.weapon = weapon;
     }
 
-    public WeaponComponent(){
-        this(WeaponFactory.EnemyWeapon(), 0);
-    }
-
+    public WeaponComponent(){}
 
 }

@@ -23,7 +23,7 @@ public class HealthUp implements PickUp {
     }
 
     @Override
-    public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("heart", 1);
+    public String getRegionName() {
+        return "heart";
     }
 }

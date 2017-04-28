@@ -5,10 +5,13 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -47,11 +50,13 @@ public class RenderingSystem extends EntitySystem {
     public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
     public OrthographicCamera gamecam;
+    public AssetManager assetManager;
+    public TextureAtlas atlas;
 
     public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch, OrthographicCamera gamecam) {
+    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, OrthographicCamera gamecam) {
         super(Aspect.all(PositionComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
@@ -60,6 +65,9 @@ public class RenderingSystem extends EntitySystem {
         ));
         this.batch = batch;
         this.gamecam = gamecam;
+        this.assetManager = assetManager;
+        this.atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
+
         shapeRenderer = new ShapeRenderer();
         orderedEntities = new ArrayList<Entity>();
 
@@ -175,6 +183,8 @@ public class RenderingSystem extends EntitySystem {
         if(trbm.has(e)){
             TextureRegionBatchComponent trbc = trbm.get(e);
             int count = 0;
+            batch.setColor(trbc.color);
+
             for(int i = 0; i < trbc.columns; i++){
                 for(int j = 0; j < trbc.rows; j ++){
                     batch.draw(trbc.regions.get(count),
@@ -184,6 +194,7 @@ public class RenderingSystem extends EntitySystem {
                     count++;
                 }
             }
+            batch.setColor(Color.WHITE);
 
         }
 
@@ -192,11 +203,12 @@ public class RenderingSystem extends EntitySystem {
             //TODO should really use the font width not this random ass camera shizz
 
             TextureFontComponent trfc = trfm.get(e);
-            trfc.font.setColor(trfc.color);
-            trfc.font.draw(batch, trfc.text,
+            BitmapFont bmf = assetManager.get(trfc.font, BitmapFont.class);
+            bmf.setColor(trfc.color);
+            bmf.draw(batch, trfc.text,
                     pc.getX() + trfc.offsetX, pc.getY() + trfc.offsetY
             ,gamecam.viewportWidth, Align.center, true);
-            trfc.font.setColor(Color.WHITE);
+            bmf.setColor(Color.WHITE);
         }
 
         if(sm.has(e)) {
@@ -275,5 +287,12 @@ public class RenderingSystem extends EntitySystem {
     public void removed(Entity e) {
         orderedEntities.remove(e);
     }
-    
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
 }

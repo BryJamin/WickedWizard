@@ -24,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
@@ -256,7 +257,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
         Random rand = new Random();
 
-        JigsawGenerator jg = new JigsawGenerator(13, rand);
+        JigsawGenerator jg = new JigsawGenerator(world.getSystem(RenderingSystem.class).getAssetManager(),13, rand);
         jg.generateTutorial = false;
 
         visitedArenas.clear();
@@ -264,7 +265,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
         this.roomArray = jg.generate();
-        ArenaShellFactory.cleanArenas(roomArray);
+        new ArenaShellFactory(world.getSystem(RenderingSystem.class).getAssetManager()).cleanArenas(roomArray);
 
         this.currentArena = jg.getStartingRoom();
         unpackRoom(currentArena);

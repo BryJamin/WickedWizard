@@ -1,17 +1,15 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
 
 import java.util.Random;
-
-import static com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory.createOmniArena;
 
 /**
  * Created by Home on 22/03/2017.
@@ -24,10 +22,22 @@ public class JigsawGenerator {
     private Random rand;
 
     private Arena startingArena;
+    private AssetManager assetManager;
+    private Level1Rooms level1Rooms;
+    private TutorialFactory tutorialFactory;
+    private ArenaShellFactory arenaShellFactory;
+    private ItemArenaFactory itemArenaFactory;
+    private ShopFactory shopFactory;
 
     public boolean generateTutorial = true;
 
-    public JigsawGenerator(int noBattleRooms, Random rand){
+    public JigsawGenerator(AssetManager assetManager, int noBattleRooms, Random rand){
+        this.assetManager = assetManager;
+        this.level1Rooms = new Level1Rooms(assetManager);
+        this.tutorialFactory = new TutorialFactory(assetManager);
+        this.arenaShellFactory = new ArenaShellFactory(assetManager);
+        this.itemArenaFactory = new ItemArenaFactory(assetManager);
+        this.shopFactory = new ShopFactory(assetManager);
         this.noBattleRooms = noBattleRooms;
         this.rand = rand;
     }
@@ -142,7 +152,8 @@ public class JigsawGenerator {
 
         Array<Arena> placedArenas = new Array<Arena>();
 
-        startingArena = TutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+        startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+
 
         //startingArena =  ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
 
@@ -157,34 +168,34 @@ public class JigsawGenerator {
         //startingArena.addEntity(DeathFactory.worldPortal(600, 600));
 
         placedArenas.add(startingArena);
-        placedArenas.add(TutorialFactory.jumpTutorial(new MapCoords(1, 0)));
-        placedArenas.add(TutorialFactory.enemyTurtorial(new MapCoords(2,3)));
-        placedArenas.add(TutorialFactory.grappleTutorial(new MapCoords(2,0)));
-        placedArenas.add(TutorialFactory.endTutorial(new MapCoords(3,3)));
+        placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
+        placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(2,3)));
+        placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(2,0)));
+        placedArenas.add(tutorialFactory.endTutorial(new MapCoords(3,3)));
 
-        Arena f = ArenaShellFactory.createOmniArena(new MapCoords(4,3));
+        Arena f = arenaShellFactory.createOmniArena(new MapCoords(4,3));
         placedArenas.add(f);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
         avaliableDoorsSet.addAll(f.getDoors());
 
 
-        placedArenas = generateMapAroundPresetPoints(placedArenas,Level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, 5);
+        placedArenas = generateMapAroundPresetPoints(placedArenas,level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, 5);
 
-        Arena itemRoom = ItemArenaShellFactory.createItemRoom();
+        Arena itemRoom = itemArenaFactory.createItemRoom();
         if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(itemRoom);
         }
 
-        Arena shopRoom = ShopFactory.createShop();
+        Arena shopRoom = shopFactory.createShop();
         if(placeRoomUsingDoors(shopRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(shopRoom);
         }
 
         //RoomFactory.cleanArenas(placedArenas);
-        Arena bossRoom = ArenaShellFactory.createWidth2Arena();
+        Arena bossRoom = arenaShellFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
-        RoomDecorationFactory.biggablobba(bossRoom);
+        new RoomDecorationFactory(assetManager).biggablobba(bossRoom);
 
         int range = (int) ((Math.sqrt(placedArenas.size) - 7 /*tutorial rooms */) / 2);
         if (placeRoomAtRangeWithDoors(bossRoom,
@@ -199,28 +210,28 @@ public class JigsawGenerator {
     public Array<Arena> generateJigsaw() {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
-        startingArena = ArenaShellFactory.createOmniArena();
+        startingArena = arenaShellFactory.createOmniArena();
         placedArenas.add(startingArena);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
         avaliableDoorsSet.addAll(startingArena.getDoors());
 
-        placedArenas = generateMapAroundPresetPoints(placedArenas,Level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, noBattleRooms);
+        placedArenas = generateMapAroundPresetPoints(placedArenas,level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, noBattleRooms);
 
 
-        Arena itemRoom = ItemArenaShellFactory.createItemRoom();
+        Arena itemRoom = itemArenaFactory.createItemRoom();
         if(placeRoomUsingDoors(itemRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(itemRoom);
         }
 
-        Arena shopRoom = ShopFactory.createShop();
+        Arena shopRoom = shopFactory.createShop();
         if(placeRoomUsingDoors(shopRoom, avaliableDoorsSet, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(shopRoom);
         }
 
-        Arena bossRoom = ArenaShellFactory.createWidth2Arena();
+        Arena bossRoom = arenaShellFactory.createWidth2Arena();
         bossRoom.roomType = Arena.RoomType.BOSS;
-        RoomDecorationFactory.biggablobba(bossRoom);
+        new RoomDecorationFactory(assetManager).biggablobba(bossRoom);
 
 
 
@@ -437,6 +448,7 @@ public class JigsawGenerator {
     public Arena getStartingRoom() {
         return startingArena;
     }
+
 
 
 

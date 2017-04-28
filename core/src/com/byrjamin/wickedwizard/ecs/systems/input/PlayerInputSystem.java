@@ -9,6 +9,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -33,6 +34,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
@@ -211,6 +213,9 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public void turnOnGlide(){
 
+        AssetManager am = world.getSystem(RenderingSystem.class).assetManager;
+        PlayerFactory pf = new PlayerFactory(am);
+
         PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
         ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
@@ -218,14 +223,14 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         wingChildren.clear();
 
         Entity e = world.createEntity();
-        for(Component c : PlayerFactory.rightWings(parc, pc)) {
+        for(Component c : pf.rightWings(parc, pc)) {
             e.edit().add(c);
         }
 
         wingChildren.add(e.getComponent(ChildComponent.class));
 
         e = world.createEntity();
-        for(Component c : PlayerFactory.leftWings(parc, pc)) {
+        for(Component c : pf.leftWings(parc, pc)) {
             e.edit().add(c);
         }
 

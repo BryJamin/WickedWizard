@@ -24,8 +24,8 @@ public class ChangeColor implements Item {
     }
 
     @Override
-    public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("squ_dash", 0);
+    public String getRegionName() {
+        return "squ_dash";
     }
 
     @Override

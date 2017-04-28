@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -16,15 +17,17 @@ public class Pistol implements Weapon {
 
 
     private float fireRate;
+    private BulletFactory bf;
 
-    public Pistol(float fireRate){
+    public Pistol(AssetManager assetManager, float fireRate){
         this.fireRate = fireRate;
+        bf = new BulletFactory(assetManager);
     }
 
     @Override
     public void fire(World world, Entity e, float x, float y, double angle) {
         Entity bullet = world.createEntity();
-        for(Component c : BulletFactory.enemyBulletBag(new ComponentBag(), x, y, angle)) bullet.edit().add(c);
+        for(Component c : bf.enemyBulletBag(new ComponentBag(), x, y, angle)) bullet.edit().add(c);
     }
 
     @Override

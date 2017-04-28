@@ -10,37 +10,37 @@ import com.byrjamin.wickedwizard.utils.AnimationPacker;
 public class TextureStrings {
 
     //PLAYER
-    public static Animation<TextureRegion> SQU_WALK = AnimationPacker.genAnimation(1 / 10f, "squ_walk", Animation.PlayMode.LOOP);
-    public static Animation<TextureRegion> SQU_FIRING = AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
-    public static Animation<TextureRegion> WINGS = AnimationPacker.genAnimation(0.7f / 10, "wings", Animation.PlayMode.LOOP);
+    public static final  String SQU_WALK = "squ_walk";
+    public static final String SQU_FIRING = "squ_firing";//AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
+    public static final String WINGS = "wings";
 
 
     //ENEMIES
-    public static String EXPLOSION = "explosion";
+    public static final String EXPLOSION = "explosion";
 
     //BLOB
-    public static String BLOB_STANDING = "blob";
-    public static String BLOB_ATTACKING = "blob_attack";
-    public static String BLOB_DYING = "blob_dying";
+    public static final String BLOB_STANDING = "blob";
+    public static final String BLOB_ATTACKING = "blob_attack";
+    public static final String BLOB_DYING = "blob_dying";
 
     //SILVERHEAD
-    public static String SILVERHEAD_ST = "silverhead_standing";
-    public static String SILVERHEAD_HIDING = "silverhead_hiding";
-    public static String SILVERHEAD_CHARGING = "silverhead_charging";
+    public static final String SILVERHEAD_ST = "silverhead_standing";
+    public static final String SILVERHEAD_HIDING = "silverhead_hiding";
+    public static final String SILVERHEAD_CHARGING = "silverhead_charging";
 
     //BOUNCER
-    public static String BOUNCER_DEFAULT = "bouncer";
+    public static final String BOUNCER_DEFAULT = "bouncer";
 
 
 
-    public static String CIRCLE = "circle";
+    public static final String CIRCLE = "circle";
 
     //BOSSES
 
     //BIGGABLOBBA
-    public static String BIGGABLOBBA_STANDING = "biggablobba";
+    public static final String BIGGABLOBBA_STANDING = "biggablobba";
 
-    public static String GRAPPLE = "grapple";
+    public static final String GRAPPLE = "grapple";
 
     //PLAYER
 

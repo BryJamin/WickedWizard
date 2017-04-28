@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
@@ -36,37 +38,43 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 11/04/2017.
  */
 
-public class SilverHeadFactory {
+public class SilverHeadFactory extends EnemyFactory {
 
+    private final int STANDING = 0;
+    private final int CLOSING = 1;
+    private final int OPENING = 2;
+    private final int CHARING = 3;
 
-    private static int STANDING = 0;
-    private static int CLOSING = 1;
-    private static int OPENING = 2;
-    private static int CHARING = 3;
+    private final float width = Measure.units(9);
+    private final float height = Measure.units(9f);
 
-    private static float width = Measure.units(9);
-    private static float height = Measure.units(9f);
+    private final float health = 11f;
 
-    private static float health = 11f;
+    private final float textureWidth = Measure.units(12);
+    private final float textureHeight = Measure.units(12);
 
-    private static final float textureWidth = Measure.units(12);
-    private static final float textureHeight = Measure.units(12);
+    private final float textureOffsetX = -Measure.units(1.5f);
+    private final float textureOffsetY = 0;
 
-    private static final float textureOffsetX = -Measure.units(1.5f);
-    private static final float textureOffsetY = 0;
+    private final float accelX = Measure.units(5f);
+    private final float maxX = Measure.units(20f);
 
-    private static final float accelX = Measure.units(5f);
-    private static final float maxX = Measure.units(20f);
+    private final float chargeAccelX = Measure.units(5f);
+    private final float chargeMaxX = Measure.units(5f);
 
-    private static final float chargeAccelX = Measure.units(5f);
-    private static final float chargeMaxX = Measure.units(5f);
+    private WeaponFactory wf;
 
-    public static ComponentBag silverHead(float x, float y){
+    public SilverHeadFactory(AssetManager assetManager) {
+        super(assetManager);
+        wf = new WeaponFactory(assetManager);
+    }
+
+    public ComponentBag silverHead(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width, height, health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, health);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
@@ -74,10 +82,10 @@ public class SilverHeadFactory {
         bag.add(new MoveToPlayerComponent());
         bag.add(new AnimationStateComponent(STANDING));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(STANDING, AnimationPacker.genAnimation(0.15f, TextureStrings.SILVERHEAD_ST, Animation.PlayMode.LOOP));
-        animMap.put(CLOSING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING));
-        animMap.put(OPENING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_HIDING, Animation.PlayMode.REVERSED));
-        animMap.put(CHARING, AnimationPacker.genAnimation(0.1f, TextureStrings.SILVERHEAD_CHARGING));
+        animMap.put(STANDING, new Animation<TextureRegion>(0.15f, atlas.findRegions(TextureStrings.SILVERHEAD_ST), Animation.PlayMode.LOOP));
+        animMap.put(CLOSING, new Animation<TextureRegion>(0.1f, atlas.findRegions(TextureStrings.SILVERHEAD_HIDING)));
+        animMap.put(OPENING, new Animation<TextureRegion>(0.1f,  atlas.findRegions(TextureStrings.SILVERHEAD_HIDING), Animation.PlayMode.REVERSED));
+        animMap.put(CHARING, new Animation<TextureRegion>(0.1f,  atlas.findRegions(TextureStrings.SILVERHEAD_CHARGING)));
         bag.add(new AnimationComponent(animMap));
 
         bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0),
@@ -115,7 +123,7 @@ public class SilverHeadFactory {
 
         Action action3 = new Action(){
 
-            WeaponComponent wc = new WeaponComponent(WeaponFactory.SilverHeadWeapon(), 2.0f);
+            WeaponComponent wc = new WeaponComponent(wf.SilverHeadWeapon(), 2.0f);
             FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
 
             @Override

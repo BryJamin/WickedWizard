@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.byrjamin.wickedwizard.assets.Assests;
+import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -50,12 +50,12 @@ public class MainGame extends Game {
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size1Params.fontFileName = "fonts/Roboto-Black.ttf";
 		size1Params.fontParameters.size = (int) Measure.units(3f);
-		manager.load(Assests.small, BitmapFont.class, size1Params);
+		manager.load(Assets.small, BitmapFont.class, size1Params);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size2Params.fontFileName = "fonts/Roboto-Black.ttf";
         size2Params.fontParameters.size = (int) Measure.units(4f);
-        manager.load(Assests.medium, BitmapFont.class, size2Params);
+        manager.load(Assets.medium, BitmapFont.class, size2Params);
 
 
 		setScreen(new LoadingScreen(this));

@@ -28,7 +28,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.assets.Assests;
+import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
@@ -100,8 +100,8 @@ public class PlayScreen extends AbstractScreen {
 
     private Viewport gamePort;
 
-    public static TextureAtlas atlas;
-    public static AssetManager manager;
+    public final TextureAtlas atlas;
+    public AssetManager manager;
     public ShaderProgram shaderOutline;
 
     private Pixmap pixmap;
@@ -132,23 +132,28 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         gestureDetector = new GestureDetector(new gestures());
         font.getData().setScale(5, 5);
+        manager = game.manager;
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
 
-        Assests.initialize(game.manager);
+        Assets.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
-        jg =new JigsawGenerator(10, random);
+        jg =new JigsawGenerator(game.manager,10, random);
 
-        currencyFont = game.manager.get(Assests.small, BitmapFont.class);// font size 12 pixels
+        currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
 
         jg.generateTutorial = false;
         loadShader();
         createWorld();
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
     }
 
     public void loadShader() {
@@ -181,7 +186,7 @@ public class PlayScreen extends AbstractScreen {
                         //new FindPlayerSystem(player),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, gamecam),
+                        new RenderingSystem(game.batch, manager, gamecam),
                         new BoundsDrawingSystem()
                 )
                 .build();
@@ -218,9 +223,9 @@ public class PlayScreen extends AbstractScreen {
 
         arenaArray = jg.generate();
         Arena startingArena = jg.getStartingRoom();
-        ArenaShellFactory.cleanArenas(arenaArray);
+        new ArenaShellFactory(game.manager).cleanArenas(arenaArray);
 
-        ComponentBag player = PlayerFactory.playerBag();
+        ComponentBag player = new PlayerFactory(game.manager).playerBag();
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -263,7 +268,7 @@ public class PlayScreen extends AbstractScreen {
                         new DirectionalSystem(),
                         new CameraSystem(gamecam, gamePort),
                         new FollowPositionSystem(),
-                        new RenderingSystem(game.batch, gamecam),
+                        new RenderingSystem(game.batch, manager, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         new RoomTransitionSystem(startingArena, arenaArray)
@@ -413,7 +418,7 @@ public class PlayScreen extends AbstractScreen {
 
 
 
-        game.batch.draw(new MoneyPlus1().getRegion(),
+        game.batch.draw(atlas.findRegion(new MoneyPlus1().getRegionName()),
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(14f),
                 Measure.units(2f), Measure.units(2f));
@@ -424,7 +429,7 @@ public class PlayScreen extends AbstractScreen {
                 Measure.units(7f), Align.left, true);
 
 
-        game.batch.draw(new KeyUp().getRegion(),
+        game.batch.draw(atlas.findRegion(new KeyUp().getRegionName()),
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(18f),
                 Measure.units(2.5f), Measure.units(2.5f));

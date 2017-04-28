@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
@@ -21,11 +22,18 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class ShopFactory extends ArenaShellFactory {
 
-    public static Arena createShop(){
+    private ItemFactory itemFactory;
+
+    public ShopFactory(AssetManager assetManager) {
+        super(assetManager);
+        itemFactory = new ItemFactory(assetManager);
+    }
+
+    public Arena createShop(){
         return createShop(new MapCoords(0,0));
     };
 
-    public static Arena createShop(MapCoords defaultCoords) {
+    public Arena createShop(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -35,7 +43,7 @@ public class ShopFactory extends ArenaShellFactory {
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        new ArenaBuilder.Builder(defaultCoords, arena)
+        new ArenaBuilder.Builder(defaultCoords,assetManager, arena)
                 .section(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -50,25 +58,25 @@ public class ShopFactory extends ArenaShellFactory {
                 new MapCoords((int) Measure.units(60), (int) Measure.units(40)),
                 new MapCoords((int) Measure.units(80), (int) Measure.units(40))};*/
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new HealthUp(), 1)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new HealthUp(), 1)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(60),Measure.units(40), new FireRateUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(40), new FireRateUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : ItemFactory.createShopItemBag(Measure.units(80),Measure.units(40), new ChangeColor(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(40), new ChangeColor(), 5)) {
             arena.addEntity(b);
         }
 
 
 
-        arena.addEntity(BlobFactory.shopKeeperBlob(arena.getWidth() / 2, arena.getHeight() / 4));
+        arena.addEntity(new BlobFactory(assetManager).shopKeeperBlob(arena.getWidth() / 2, arena.getHeight() / 4));
 
 
 
@@ -84,7 +92,7 @@ public class ShopFactory extends ArenaShellFactory {
 
 
     private void createCheapItem(Arena arena, MapCoords arenaCoords){
-        for(Bag<Component> b : ItemFactory.createShopItemBag(arenaCoords.getX(),arenaCoords.getY(), new HealthUp(), 2)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(arenaCoords.getX(),arenaCoords.getY(), new HealthUp(), 2)) {
             arena.addEntity(b);
         }
     }

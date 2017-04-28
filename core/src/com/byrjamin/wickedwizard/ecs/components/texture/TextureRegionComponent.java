@@ -58,7 +58,6 @@ public class TextureRegionComponent extends Component{
     }
 
     public TextureRegionComponent(){
-        this(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING), 0,0, Measure.units(5), Measure.units(5), PLAYER_LAYER_MIDDLE);
     }
 
     public TextureRegionComponent(TextureRegion region, float width, float height, int layer){

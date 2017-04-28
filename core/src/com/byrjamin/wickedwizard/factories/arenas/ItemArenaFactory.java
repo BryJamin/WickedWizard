@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
@@ -17,18 +18,20 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
-/**
- * Created by Home on 11/04/2017.
- */
+public class ItemArenaFactory extends ArenaShellFactory {
 
-public class ItemArenaShellFactory extends ArenaShellFactory {
+    ItemFactory itemFactory;
 
+    public ItemArenaFactory(AssetManager assetManager) {
+        super(assetManager);
+        this.itemFactory = new ItemFactory(assetManager);
+    }
 
-    public static Arena createItemRoom(){
+    public Arena createItemRoom(){
         return createItemRoom(new MapCoords(0,0));
     }
 
-    public static Arena createItemRoom(MapCoords defaultCoords) {
+    public Arena createItemRoom(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -43,27 +46,27 @@ public class ItemArenaShellFactory extends ArenaShellFactory {
                 SECTION_WIDTH,
                 SECTION_HEIGHT,
                 Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
+                atlas.findRegions("backgrounds/wall")));
 
         //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(0, Measure.units(10),
+        arena.addEntity(entityfactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
+        arena.addDoor(entityfactory.doorBag(0, Measure.units(10),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
                 DoorComponent.DIRECTION.left));
 
         //RIGHT WALL
-        arena.addEntity(EntityFactory.wallBag(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10),
+        arena.addEntity(entityfactory.wallBag(WIDTH - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
+        arena.addDoor(entityfactory.doorBag(WIDTH - WALLWIDTH, Measure.units(10),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                 DoorComponent.DIRECTION.right));
 
         //CEILING
-        arena.addEntity(EntityFactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
+        arena.addEntity(entityfactory.wallBag(0,  HEIGHT - WALLWIDTH, WIDTH, WALLWIDTH));
 
         //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
+        arena.addEntity(entityfactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));
 
 
         Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
@@ -71,7 +74,7 @@ public class ItemArenaShellFactory extends ArenaShellFactory {
         Random random = new Random();
 
 
-        for(ComponentBag b : ItemFactory.createItemAltarBag(arena.getWidth() / 2,
+        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(arena.getWidth() / 2,
                 Measure.units(12), items[random.nextInt(items.length)])) {
             arena.addEntity(b);
         }
@@ -79,7 +82,7 @@ public class ItemArenaShellFactory extends ArenaShellFactory {
     }
 
 
-    public static Arena createItemTestRoom(MapCoords defaultCoords) {
+    public Arena createItemTestRoom(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -95,27 +98,27 @@ public class ItemArenaShellFactory extends ArenaShellFactory {
                 SECTION_WIDTH * 2,
                 SECTION_HEIGHT,
                 Measure.units(15),
-                PlayScreen.atlas.findRegions("backgrounds/wall")));
+                atlas.findRegions("backgrounds/wall")));
 
         //LEFT WALL
-        arena.addEntity(EntityFactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
-        arena.addDoor(EntityFactory.doorBag(0, Measure.units(10),
+        arena.addEntity(entityfactory.wallBag(0, WALLWIDTH * 6, WALLWIDTH, HEIGHT));
+        arena.addDoor(entityfactory.doorBag(0, Measure.units(10),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
                 DoorComponent.DIRECTION.left));
 
         //RIGHT WALL
-        arena.addEntity(EntityFactory.wallBag(arena.getWidth() - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, arena.getHeight()));
-        arena.addDoor(EntityFactory.doorBag(arena.getWidth() - WALLWIDTH, Measure.units(10),
+        arena.addEntity(entityfactory.wallBag(arena.getWidth() - WALLWIDTH, WALLWIDTH * 6, WALLWIDTH, arena.getHeight()));
+        arena.addDoor(entityfactory.doorBag(arena.getWidth() - WALLWIDTH, Measure.units(10),
                 new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                 DoorComponent.DIRECTION.right));
 
         //CEILING
-        arena.addEntity(EntityFactory.wallBag(0, arena.getHeight() - WALLWIDTH, arena.getWidth(), WALLWIDTH));
+        arena.addEntity(entityfactory.wallBag(0, arena.getHeight() - WALLWIDTH, arena.getWidth(), WALLWIDTH));
 
         //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, arena.getWidth(), WALLWIDTH * 3));
+        arena.addEntity(entityfactory.wallBag(0,  -WALLWIDTH, arena.getWidth(), WALLWIDTH * 3));
 
 
 
@@ -123,13 +126,13 @@ public class ItemArenaShellFactory extends ArenaShellFactory {
 
         Random random = new Random();
 
-        for(ComponentBag b : ItemFactory.createItemAltarBag(arena.getWidth() / 4,
+        for(ComponentBag b : itemFactory.createItemAltarBag(arena.getWidth() / 4,
                 arena.getHeight() / 2, items[random.nextInt(items.length)])) {
             arena.addEntity(b);
         }
 
 
-        arena.addEntity(BlobFactory.dummyBlob(arena.getWidth() / 2, arena.getHeight() / 2));
+        arena.addEntity(new BlobFactory(assetManager).dummyBlob(arena.getWidth() / 2, arena.getHeight() / 2));
 
 
 

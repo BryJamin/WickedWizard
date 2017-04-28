@@ -23,8 +23,8 @@ public class PlusOne implements Item {
     }
 
     @Override
-    public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("heart", 2);
+    public String getRegionName() {
+        return "heart";
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.factories;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -35,9 +36,13 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
  * Created by Home on 06/04/2017.
  */
 
-public class PlayerFactory {
+public class PlayerFactory extends AbstractFactory {
 
-    public static ComponentBag playerBag(){
+    public PlayerFactory(AssetManager assetManager) {
+        super(assetManager);
+    }
+
+    public ComponentBag playerBag(){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(600,900));
@@ -56,9 +61,8 @@ public class PlayerFactory {
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, TextureStrings.SQU_WALK);
-        k.put(1, TextureStrings.SQU_FIRING);
-
+        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions("squ_walk"), Animation.PlayMode.LOOP));
+        k.put(1, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions("squ_firing")));
         bag.add(new AnimationComponent(k));
 
 
@@ -68,13 +72,13 @@ public class PlayerFactory {
         statComponent.speed = 1f;
 
         bag.add(statComponent);
-        WeaponComponent wc = new WeaponComponent(new Pistol(), 0.3f);
+        WeaponComponent wc = new WeaponComponent(new Pistol(assetManager), 0.3f);
         bag.add(wc);
         bag.add(new HealthComponent(6));
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0,
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0,
                 Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         bag.add(trc);
 
@@ -84,7 +88,7 @@ public class PlayerFactory {
     }
 
 
-    public static ComponentBag rightWings(ParentComponent parc, PositionComponent pc){
+    public ComponentBag rightWings(ParentComponent parc, PositionComponent pc){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(pc.getX(), pc.getY()));
@@ -93,11 +97,11 @@ public class PlayerFactory {
         sc.setState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(0, TextureStrings.WINGS);
+        aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions("wings"), Animation.PlayMode.LOOP));
         AnimationComponent ac = new AnimationComponent(aniMap);
         bag.add(ac);
 
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("wings"),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wings"),
                 -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
         bag.add(trc);
 
@@ -109,7 +113,7 @@ public class PlayerFactory {
         return bag;
     }
 
-    public static ComponentBag leftWings(ParentComponent parc, PositionComponent pc){
+    public ComponentBag leftWings(ParentComponent parc, PositionComponent pc){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(pc.getX(), pc.getY()));
@@ -118,11 +122,11 @@ public class PlayerFactory {
         sc.setState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(0, TextureStrings.WINGS);
+        aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions("wings"), Animation.PlayMode.LOOP));
         AnimationComponent ac = new AnimationComponent(aniMap);
         bag.add(ac);
 
-        TextureRegionComponent trc = new TextureRegionComponent(PlayScreen.atlas.findRegion("wings"),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wings"),
                 -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6),
                 TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.scaleX = -1;

@@ -21,8 +21,8 @@ public class FireRateUp implements Item {
     }
 
     @Override
-    public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("bullet_red");
+    public String getRegionName() {
+        return "bullet_red";
     }
 
     @Override
