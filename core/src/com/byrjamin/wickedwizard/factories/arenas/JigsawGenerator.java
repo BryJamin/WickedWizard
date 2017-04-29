@@ -43,6 +43,21 @@ public class JigsawGenerator {
         this.rand = rand;
     }
 
+    public void setSkin(ArenaSkin arenaSkin) {
+        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin);
+        this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
+        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
+        this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
+        this.shopFactory = new ShopFactory(assetManager, arenaSkin);
+    }
+
+    public void setNoBattleRooms(int noBattleRooms){
+        this.noBattleRooms = noBattleRooms;
+    }
+
+    public ArenaShellFactory getArenaShellFactory() {
+        return arenaShellFactory;
+    }
 
     public ObjectSet<MapCoords> createUnavaliableMapCoords(Array<Arena> arenas){
         ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
@@ -52,37 +67,6 @@ public class JigsawGenerator {
         return unavaliableMapCoords;
     }
 
-    public Array<Arena> generateMapAroundPresetPoints(Array<Arena> presetRooms, Array<Arena> arenas,
-                                                      OrderedSet<DoorComponent> avaliableDoorsSet){
-
-        Array<Arena> placedArenas = new Array<Arena>();
-
-        ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
-
-        for(Arena a : presetRooms){
-            placedArenas.add(a);
-            unavaliableMapCoords.addAll(a.getCotainingCoords());
-        }
-
-        while(arenas.size > 0) {
-            int i = rand.nextInt(arenas.size);
-            Arena nextRoomToBePlaced = arenas.get(i);
-            arenas.removeIndex(i);
-            if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, rand)){
-                placedArenas.add(nextRoomToBePlaced);
-            }
-            unavaliableMapCoords.addAll(nextRoomToBePlaced.getCotainingCoords());
-            for (DoorComponent dc : nextRoomToBePlaced.getDoors()) {
-                if(!unavaliableMapCoords.contains(dc.leaveCoords)) {
-                    avaliableDoorsSet.add(dc);
-                }
-            }
-        }
-
-
-        return placedArenas;
-
-    }
 
     public Array<Arena> generateMapAroundPresetPoints(Array<Arena> presetRooms, Array<ArenaGen> arenaGenArray,
                                                       OrderedSet<DoorComponent> avaliableDoorsSet, int noOfRoomsPlaced){

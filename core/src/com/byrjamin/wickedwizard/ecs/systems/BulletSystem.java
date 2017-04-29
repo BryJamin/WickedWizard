@@ -73,7 +73,7 @@ public class BulletSystem extends EntityProcessingSystem {
                             BlinkComponent bc = bm.get(entityIds.get(i));
                             bc.isHit = true;
                         }
-                        world.getSystem(OnDeathSystem.class).kill(e);
+                        world.getSystem(com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
                         break;
                     }
                 }

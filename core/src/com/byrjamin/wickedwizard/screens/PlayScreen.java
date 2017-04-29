@@ -25,8 +25,8 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
-import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
@@ -40,23 +40,23 @@ import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ProximitySystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.ProximitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ExpireSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.ExpireSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.FollowPositionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.JumpSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
-import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
-import com.byrjamin.wickedwizard.ecs.systems.OnDeathSystem;
-import com.byrjamin.wickedwizard.ecs.systems.PhaseSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
-import com.byrjamin.wickedwizard.ecs.systems.RoomTypeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.SpawnerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTypeSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ShoppingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.FrictionSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
@@ -68,17 +68,17 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.BounceCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.byrjamin.wickedwizard.ecs.systems.DoorSystem;
-import com.byrjamin.wickedwizard.ecs.systems.EnemyCollisionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.FiringAISystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.FiringAISystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
-import com.byrjamin.wickedwizard.ecs.systems.MoveToPlayerAISystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.MoveToPlayerAISystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.RoomTransitionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
@@ -120,8 +120,6 @@ public class PlayScreen extends AbstractScreen {
     GestureDetector gestureDetector;
     private boolean gameOver = false;
 
-    BitmapFont font = new BitmapFont();
-
     private ArenaGUI arenaGUI;
     private Random random;
     private JigsawGenerator jg;
@@ -133,10 +131,8 @@ public class PlayScreen extends AbstractScreen {
     public PlayScreen(MainGame game) {
         super(game);
         gestureDetector = new GestureDetector(new gestures());
-        font.getData().setScale(5, 5);
         manager = game.manager;
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
-
         Assets.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
@@ -144,7 +140,7 @@ public class PlayScreen extends AbstractScreen {
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas),10, random);
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas),3, random);
 
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
@@ -225,7 +221,7 @@ public class PlayScreen extends AbstractScreen {
 
         arenaArray = jg.generate();
         Arena startingArena = jg.getStartingRoom();
-        new ArenaShellFactory(game.manager, new FoundarySkin(atlas)).cleanArenas(arenaArray);
+        new ArenaShellFactory(game.manager, new SolitarySkin(atlas)).cleanArenas(arenaArray);
 
         ComponentBag player = new PlayerFactory(game.manager).playerBag();
 
@@ -273,6 +269,7 @@ public class PlayScreen extends AbstractScreen {
                         new RenderingSystem(game.batch, manager, new SolitarySkin(atlas), gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
+                        new ChangeLevelSystem(jg, atlas),
                         new RoomTransitionSystem(startingArena, arenaArray)
                 )
                 .build();

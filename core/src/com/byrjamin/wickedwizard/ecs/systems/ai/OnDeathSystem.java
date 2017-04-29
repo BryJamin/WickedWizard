@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.systems;
+package com.byrjamin.wickedwizard.ecs.systems.ai;
 
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 import javafx.geometry.Pos;

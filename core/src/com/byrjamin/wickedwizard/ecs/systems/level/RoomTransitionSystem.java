@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.systems;
+package com.byrjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.Aspect;
 import com.artemis.Component;
@@ -23,7 +23,8 @@ import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
@@ -254,23 +255,16 @@ public class RoomTransitionSystem extends EntitySystem {
 
         packRoom(world, currentArena);
 
-
-
-        Random rand = new Random();
-
-        JigsawGenerator jg = new JigsawGenerator(world.getSystem(RenderingSystem.class).getAssetManager(),
-                new FoundarySkin(world.getSystem(RenderingSystem.class).atlas),13, rand);
+        JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).incrementLevel();
         jg.generateTutorial = false;
 
         visitedArenas.clear();
         unvisitedButAdjacentArenas.clear();
 
-
         this.roomArray = jg.generate();
-        new ArenaShellFactory(world.getSystem(RenderingSystem.class).getAssetManager(),
-                world.getSystem(RenderingSystem.class).arenaSkin).cleanArenas(roomArray);
-
+        jg.getArenaShellFactory().cleanArenas(roomArray);
         this.currentArena = jg.getStartingRoom();
+
         unpackRoom(currentArena);
 
         visitedArenas.add(currentArena);

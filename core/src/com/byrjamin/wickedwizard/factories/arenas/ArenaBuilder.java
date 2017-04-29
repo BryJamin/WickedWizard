@@ -121,7 +121,8 @@ public class ArenaBuilder {
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
                     Measure.units(15),
-                    assetManager.get("sprite.atlas", TextureAtlas.class).findRegions("backgrounds/wall")));
+                    arenaSkin.getBackgroundTextures(),
+                    arenaSkin));
 
 
 

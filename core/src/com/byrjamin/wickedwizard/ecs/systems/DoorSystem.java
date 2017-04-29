@@ -14,7 +14,6 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
-import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 
 /**
  * Created by Home on 13/03/2017.
@@ -55,7 +54,6 @@ public class DoorSystem extends EntityProcessingSystem {
             if(cbm.has(doorEntity)) {
 
                 CollisionBoundComponent cbc = cbm.get(doorEntity);
-                BoundsDrawer.drawBounds(world.getSystem(com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem.class).batch, cbc.bound);
                 if(cbc.bound.overlaps(cbm.get(e).bound)) {
                    // System.out.println("INSIDE THA DOOR");
 
@@ -67,7 +65,7 @@ public class DoorSystem extends EntityProcessingSystem {
                             float doorEntryPercentage = ((cbm.get(e).bound.y - cbc.bound.getY()) /
                                     (cbc.bound.getHeight()));
 
-                            world.getSystem(RoomTransitionSystem.class).goFromTo(
+                            world.getSystem(com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).goFromTo(
                                     dm.get(doorEntity).currentCoords,
                                     dm.get(doorEntity).leaveCoords,
                                     doorEntryPercentage);

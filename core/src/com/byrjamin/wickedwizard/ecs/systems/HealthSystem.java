@@ -27,7 +27,7 @@ public class HealthSystem extends EntityProcessingSystem {
         hc.health = hc.health - hc.getAccumulatedDamage();
         hc.clearDamage();
         if(hc.health <= 0){
-            world.getSystem(OnDeathSystem.class).kill(e);
+            world.getSystem(com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
         }
     }
 

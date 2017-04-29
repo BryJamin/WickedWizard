@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.systems;
+package com.byrjamin.wickedwizard.ecs.systems.ai;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -7,6 +7,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 
 /**
  * Created by Home on 17/04/2017.

@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.ecs.systems;
+package com.byrjamin.wickedwizard.ecs.systems.ai;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 
 /**
  * Created by Home on 11/03/2017.
