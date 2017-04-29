@@ -5,10 +5,15 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.CBlockSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.FreedomSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.PrisonSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 
+import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.CBLOCK;
 import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.FOUNDARY;
+import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.FREEDOMRUN;
 import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.PRISON;
 import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.SOLITARY;
 
@@ -40,16 +45,14 @@ public class ChangeLevelSystem extends BaseSystem {
     private Level level;
 
 
-    private FoundarySkin foundarySkin;
-    private SolitarySkin solitarySkin;
     private JigsawGenerator jigsawGenerator;
 
     public ChangeLevelSystem(JigsawGenerator jigsawGenerator, TextureAtlas atlas){
-        this.foundarySkin = new FoundarySkin(atlas);
-        this.solitarySkin = new SolitarySkin(atlas);
-
-        SOLITARY.setArenaSkin(solitarySkin);
-        FOUNDARY.setArenaSkin(foundarySkin);
+        SOLITARY.setArenaSkin(new SolitarySkin(atlas));
+        FOUNDARY.setArenaSkin(new FoundarySkin(atlas));
+        PRISON.setArenaSkin(new PrisonSkin(atlas));
+        CBLOCK.setArenaSkin(new CBlockSkin(atlas));
+        FREEDOMRUN.setArenaSkin(new FreedomSkin(atlas));
         this.jigsawGenerator = jigsawGenerator;
 
         level = SOLITARY;
@@ -61,26 +64,35 @@ public class ChangeLevelSystem extends BaseSystem {
 
     public JigsawGenerator incrementLevel(){
 
-        System.out.println(level);
+        //Current level sequence. SOLITARY -> PRISON -> FOUNDARY -> CBLOCK -> FREEDOM
 
         switch (level) {
-            case SOLITARY: level = FOUNDARY;
+            case SOLITARY: level = PRISON;
                 jigsawGenerator.setNoBattleRooms(13);
-                jigsawGenerator.setSkin(foundarySkin);
                 break;
-            case FOUNDARY: level = PRISON;
+            case PRISON: level = FOUNDARY;
                 jigsawGenerator.setNoBattleRooms(15);
-                jigsawGenerator.setSkin(solitarySkin);
+                break;
+            case FOUNDARY: level = CBLOCK;
+                jigsawGenerator.setNoBattleRooms(15);
+                break;
+            case CBLOCK: level = FREEDOMRUN;
+                jigsawGenerator.setNoBattleRooms(18);
+                break;
+            case FREEDOMRUN:
+                //TODO world.endGame
                 break;
         }
+
+        jigsawGenerator.setSkin(level.getArenaSkin());
 
         System.out.println(level);
 
         return jigsawGenerator;
     }
 
-    public int getCurrentLevel() {
-        return currentLevel;
+    public Level getLevel() {
+        return level;
     }
 
     public ArenaSkin getCurrentLevelSkin(){
