@@ -35,7 +35,9 @@ public class WeightedRoll<T> {
         this.weightedObjects.add(weightedObject);
     }
 
-
+    public Array<WeightedObject<T>> getWeightedObjects() {
+        return weightedObjects;
+    }
 
     public T roll(){
 

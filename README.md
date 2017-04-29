@@ -7,12 +7,15 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
-- Platforms
+- Create a tutorial section for platforms 
 - Due to the change in item a class may need to be created for Item. This way you can get the index,
 of the texture region it uses when calling to the axis. 
 - Vertical wall bug. You can land on the side of top of wall vertically stacking with one another,
 due to the way the future bound is used. 
 -Chest need a loot table and so do stores and Item Rooms (but for that I may need more items
+-Create TextureLoader Parameter. 
+
+-Black Room Transition to avoid jarring room transition
 
 
 
@@ -45,5 +48,7 @@ due to the way the future bound is used.
   
 
 ### Completed
+
+-Platforms I have created the functionality and design of platform as a first place. You need to double tap to go below them.
 
 

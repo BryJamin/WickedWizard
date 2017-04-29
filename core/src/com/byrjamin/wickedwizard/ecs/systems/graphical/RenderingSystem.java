@@ -118,9 +118,6 @@ public class RenderingSystem extends EntitySystem {
             }
 
             if(shaderOn){
-
-                System.out.println("inside");
-
                 batch.end();
                 batch.setShader(whiteShaderProgram);
                 batch.begin();
@@ -170,10 +167,6 @@ public class RenderingSystem extends EntitySystem {
 
 
             batch.setColor(trc.color);
-
-            if(world.getMapper(AltarComponent.class).has(e)){
-                System.out.println(e.getComponent(AltarComponent.class).pickUp.getRegionName().getLeft());
-            }
 
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,

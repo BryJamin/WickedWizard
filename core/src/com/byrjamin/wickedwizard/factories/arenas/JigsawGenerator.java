@@ -90,6 +90,10 @@ public class JigsawGenerator {
             roll.addWeightedObject(new WeightedObject<ArenaGen>(ag, 20));
         }
 
+        for(WeightedObject w : roll.getWeightedObjects()){
+            System.out.println(w.getWeight());
+        }
+
 
         int placedRooms = 0;
         int loops = 0;
@@ -201,7 +205,6 @@ public class JigsawGenerator {
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArena();
         startingArena.addEntity(decorFactory.platform(500,500,1000));
-        startingArena.addEntity(decorFactory.platform(500,470,1000));
         placedArenas.add(startingArena);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();

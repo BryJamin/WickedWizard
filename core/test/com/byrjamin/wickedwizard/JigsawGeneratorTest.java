@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 import org.junit.Assert;
@@ -28,7 +30,6 @@ public class JigsawGeneratorTest extends GameTest {
     @Test
     public void testGenerateJigsaw() throws Exception {
 
-        PlayScreen.atlas = new TextureAtlas();
 
         System.out.println(Gdx.files.absolute("C:\\Users\\Home\\Documents\\University\\WickedWizard\\android\\assets\\sprite.atlas").exists());
 
@@ -40,10 +41,10 @@ public class JigsawGeneratorTest extends GameTest {
 
         TextureAtlasLoader textureAtlasLoader = new TextureAtlasLoader(new LocalFileHandleResolver());
 
-        assetManager.setLoader(TextureAtlas.class, textureAtlasLoader);
-        assetManager.load("/assets/sprite.atlas", TextureAtlas.class);
+        assetManager.setLoader(TextureAtlas.class, "/as",textureAtlasLoader);
+        assetManager.load("sprite.atlas", TextureAtlas.class);
         assetManager.finishLoading();
-        PlayScreen.atlas = assetManager.get("/assets/sprite.atlas", TextureAtlas.class);
+        TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
 
 
 
@@ -58,7 +59,7 @@ public class JigsawGeneratorTest extends GameTest {
 
             int numberOfRooms = random.nextInt(100);
 
-            JigsawGenerator jg = new JigsawGenerator(numberOfRooms, random);
+            JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms, random);
             jg.generateTutorial = false;
 
             Array<Arena> arenas = jg.generate();

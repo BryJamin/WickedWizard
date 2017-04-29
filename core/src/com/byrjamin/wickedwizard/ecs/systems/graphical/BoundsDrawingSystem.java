@@ -30,13 +30,13 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
-        for(Entity e : this.getEntities()){
+/*        for(Entity e : this.getEntities()){
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(e).bound);
 
             for(HitBox hb : cbm.get(e).hitBoxes) {
                 BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.CYAN, hb.hitbox);
             }
-        }
+        }*/
 
 
         if(world.getSystem(PlayerInputSystem.class) != null) {
