@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.ecs.systems.physics;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.EntitySystem;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -23,7 +24,7 @@ import javafx.geometry.Pos;
  * Created by Home on 29/04/2017.
  */
 
-public class PlatformSystem extends EntityProcessingSystem {
+public class PlatformSystem extends EntitySystem {
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<PlatformComponent> platm;
@@ -37,63 +38,91 @@ public class PlatformSystem extends EntityProcessingSystem {
     }
 
     @Override
-    protected void process(Entity e) {
-
+    protected void processSystem() {
 
         CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
         VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-        CollisionBoundComponent cbc = cbm.get(e);
-        PlatformComponent platform = platm.get(e);
 
-        System.out.println(platform.canPassThrough);
+        for(Entity e : this.getEntities()) {
 
-        if(platform.canPassThrough){
+            CollisionBoundComponent cbc = cbm.get(e);
+            PlatformComponent platform = platm.get(e);
 
-            if(playerBound.bound.getY() > cbc.bound.getY() + cbc.bound.getHeight() && !playerBound.bound.overlaps(cbc.bound)) {
-                platform.canPassThrough = false;
+            if(platform.canPassThrough){
+
+                if(playerBound.bound.getY() > cbc.bound.getY() + cbc.bound.getHeight() && !playerBound.bound.overlaps(cbc.bound)) {
+                    platform.canPassThrough = false;
+                }
+
+            } else {
+
+                if(playerBound.bound.getY() < cbc.bound.getY() + cbc.bound.getHeight() - Measure.units(1)) {
+                    platform.canPassThrough = true;
+                }
+
             }
 
-        } else {
 
-            if(playerBound.bound.getY() < cbc.bound.getY() + cbc.bound.getHeight() - Measure.units(1)) {
-                platform.canPassThrough = true;
+            if(!platform.canPassThrough) {
+
+                Rectangle futureRectangle = new Rectangle(playerBound.bound);
+                futureRectangle.x += (playerVelocity.velocity.x * world.delta);
+                futureRectangle.y += (playerVelocity.velocity.y * world.delta);
+
+                Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
+
+                if(c == Collider.Collision.TOP) {
+                    playerBound.getRecentCollisions().add(c);
+                    playerVelocity.velocity.y = 0;
+                    playerBound.bound.y = cbc.bound.y + cbc.bound.getHeight();
+
+                    PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                    pc.position.x = playerBound.bound.getX();
+                    pc.position.y = playerBound.bound.getY();
+
+                }
+
             }
+        }
+    }
 
 
+    public boolean fallThoughPlatform() {
+
+        CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+        VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+
+        for(Entity e : this.getEntities()) {
+
+            CollisionBoundComponent cbc = cbm.get(e);
+            PlatformComponent platform = platm.get(e);
 
 
+            if(!platform.canPassThrough) {
+
+                Rectangle futureRectangle = new Rectangle(playerBound.bound);
+                futureRectangle.x += (playerVelocity.velocity.x * world.delta);
+                futureRectangle.y += (playerVelocity.velocity.y * world.delta);
+
+                Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
+
+                if(c == Collider.Collision.TOP) {
+                    platform.canPassThrough = true;
+                    return true;
+                    //PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                }
+
+            }
         }
 
-/*        if(playerBound.bound.getY() < cbc.bound.getY() + cbc.bound.getHeight() - Measure.units(1) &&
-                playerBound.bound.overlaps(cbc.bound)) {
-            platform.canPassThrough = true;
-        } else {
-            platform.canPassThrough = false;
-        }*/
+
+        return false;
 
 
-        if(!platform.canPassThrough) {
 
 
-            Rectangle futureRectangle = new Rectangle(playerBound.bound);
-            futureRectangle.x += (playerVelocity.velocity.x * world.delta);
-            futureRectangle.y += (playerVelocity.velocity.y * world.delta);
-
-            Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
-
-            if(c == Collider.Collision.TOP) {
-                playerBound.getRecentCollisions().add(c);
-                playerVelocity.velocity.y = 0;
-                playerBound.bound.y = cbc.bound.y + cbc.bound.getHeight();
-
-                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
-                pc.position.x = playerBound.bound.getX();
-                pc.position.y = playerBound.bound.getY();
-
-            }
-
-        }
 
     }
+
 
 }

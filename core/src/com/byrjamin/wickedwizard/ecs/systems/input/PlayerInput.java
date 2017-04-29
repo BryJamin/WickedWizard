@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -157,6 +158,7 @@ public class PlayerInput extends InputAdapter{
                         }
 
                     } else if (tapCount == 2) {
+                        if(world.getSystem(PlatformSystem.class).fallThoughPlatform()) return true;
                         world.getSystem(PlayerInputSystem.class).turnOffGlide();
                     }
                 //}
