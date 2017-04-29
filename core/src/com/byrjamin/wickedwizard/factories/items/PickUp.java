@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 09/04/2017.
@@ -12,6 +13,6 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public interface PickUp {
 
     boolean applyEffect(World world, Entity player);
-    String getRegionName();
+    Pair<String, Integer> getRegionName();
 
 }

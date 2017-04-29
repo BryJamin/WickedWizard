@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 16/04/2017.
@@ -21,8 +22,8 @@ public class FireRateUp implements Item {
     }
 
     @Override
-    public String getRegionName() {
-        return "bullet_red";
+    public Pair<String, Integer> getRegionName() {
+        return new Pair<String, Integer>("bullet_red", 0);
     }
 
     @Override

@@ -28,6 +28,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -417,8 +418,9 @@ public class PlayScreen extends AbstractScreen {
         }
 
 
+        PickUp p = new MoneyPlus1();
 
-        game.batch.draw(atlas.findRegion(new MoneyPlus1().getRegionName()),
+        game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(14f),
                 Measure.units(2f), Measure.units(2f));
@@ -428,8 +430,9 @@ public class PlayScreen extends AbstractScreen {
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12f),
                 Measure.units(7f), Align.left, true);
 
+        p = new KeyUp();
 
-        game.batch.draw(atlas.findRegion(new KeyUp().getRegionName()),
+        game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(18f),
                 Measure.units(2.5f), Measure.units(2.5f));

@@ -74,8 +74,8 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
             if(c != Collider.Collision.NONE){
 
                 switch(c){
-                    case TOP: vc.velocity.y = 0;
-                    case BOTTOM: vc.velocity.y = 0;
+                    case TOP: //vc.velocity.y = 0;
+                    case BOTTOM: //vc.velocity.y = 0;
                         break;
                     //TODO When grappling if you collide with something the target destination should be removed
                     case LEFT:
@@ -93,6 +93,15 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
             }
 
             cbc.getRecentCollisions().add(c);
+
+        }
+
+        if((cbc.getRecentCollisions().contains(Collider.Collision.TOP, true ) ||
+                cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true)) &&
+                !( cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) ||
+                        cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true))){
+
+            vc.velocity.y = 0;
 
         }
 

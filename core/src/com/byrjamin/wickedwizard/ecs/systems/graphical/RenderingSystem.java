@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
@@ -28,6 +29,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchCompon
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
+import com.sun.media.sound.AlawCodec;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -167,6 +170,11 @@ public class RenderingSystem extends EntitySystem {
 
 
             batch.setColor(trc.color);
+
+            if(world.getMapper(AltarComponent.class).has(e)){
+                System.out.println(e.getComponent(AltarComponent.class).pickUp.getRegionName().getLeft());
+            }
+
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
                     originX, originY,

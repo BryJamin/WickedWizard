@@ -7,6 +7,7 @@ import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 18/04/2017.
@@ -21,7 +22,7 @@ public class MoneyPlus1 implements PickUp {
     }
 
     @Override
-    public String getRegionName() {
-        return "money";
+    public Pair<String, Integer> getRegionName() {
+        return new Pair<String, Integer>("money", 0);
     }
 }

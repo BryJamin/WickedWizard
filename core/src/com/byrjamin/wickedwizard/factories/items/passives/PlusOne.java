@@ -7,6 +7,7 @@ import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 10/04/2017.
@@ -23,8 +24,8 @@ public class PlusOne implements Item {
     }
 
     @Override
-    public String getRegionName() {
-        return "heart";
+    public Pair<String, Integer> getRegionName() {
+        return new Pair<String, Integer>("heart", 2);
     }
 
     @Override

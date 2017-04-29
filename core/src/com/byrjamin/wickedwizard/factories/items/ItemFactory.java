@@ -60,7 +60,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new GravityComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName()), Measure.units(5), Measure.units(5),
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
 
         return bag;
@@ -78,11 +78,11 @@ public class ItemFactory extends AbstractFactory {
         //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
 
         bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(5f),Measure.units(5f), Measure.units(100), Measure.units(100f)));
+        bag.add(new AccelerantComponent(Measure.units(20f),Measure.units(20f), Measure.units(150f), Measure.units(150f)));
         bag.add(new IntangibleComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName()), Measure.units(2), Measure.units(2),
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(2), Measure.units(2),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
         return bag;
@@ -102,7 +102,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new PickUpComponent(item));
         bag.add(new HighlightComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName()), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR));
         return bag;
     }
@@ -122,7 +122,7 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag altarItemTexture = new ComponentBag();
         altarItemTexture.add(new PositionComponent());
-        altarItemTexture.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        altarItemTexture.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
         altarItemTexture.add(new FollowPositionComponent(positionComponent.position, width / 2 - Measure.units(2.5f), Measure.units(5)));
 
         ChildComponent c = new ChildComponent();
@@ -169,7 +169,7 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName()), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(pickUp));
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
@@ -180,7 +180,7 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x, y - Measure.units(5)));
-        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName()), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         TextureFontComponent trc = new TextureFontComponent(""+money);
         trc.width = width / 2;
         trc.offsetX = -Measure.units(45f);

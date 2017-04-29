@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 15/04/2017.
@@ -20,8 +21,8 @@ public class DamageUp implements Item {
     }
 
     @Override
-    public String getRegionName() {
-        return "bullet_blue";
+    public Pair<String, Integer> getRegionName() {
+        return new Pair<String, Integer>("bullet_blue", 0);
     }
 
     @Override

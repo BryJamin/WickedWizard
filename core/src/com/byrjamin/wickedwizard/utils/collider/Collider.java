@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.utils.collider;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * A class used for checking collision between dynamic and static bodies and returning the type
@@ -23,10 +24,10 @@ public class Collider {
     public static Collision collision(Rectangle currentBound, Rectangle futureBound, Rectangle wall) {
 
         //TODO With the variance being +15 or -15 the possiblility of breaking through walls might be possible
-        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() + 15
-                && currentBound.getY() < wall.getY() + wall.getHeight() - 15;
-        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + 15
-                && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
+        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() + Measure.units(1)
+                && currentBound.getY() < wall.getY() + wall.getHeight() - Measure.units(1);
+        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + Measure.units(1)
+                && currentBound.getX() < wall.getX() + wall.getWidth() - Measure.units(1);
 
             if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
                 if (futureBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
@@ -39,6 +40,7 @@ public class Collider {
             } else if (wall.overlaps(futureBound)) { //Hit was on top
                 if (futureBound.getY() > wall.y + wall.getHeight() / 2) {
                     currentBound.setY(wall.y + wall.getHeight());
+
                     return Collision.TOP;
                 } else if (futureBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
                     currentBound.setY(wall.y - currentBound.height);
