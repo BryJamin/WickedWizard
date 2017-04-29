@@ -27,6 +27,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
@@ -253,10 +255,11 @@ public class PlayScreen extends AbstractScreen {
                         new FindChildSystem(),
                         new PickUpSystem(),
                         new LuckSystem(),
-                        new JumpSystem(),
                         new ShoppingSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
+                        new PlatformSystem(),
+                        new JumpSystem(),
                         new PlayerInputSystem(gamecam, gamePort),
                         new StateSystem(),
                         new SpawnerSystem(),
@@ -265,6 +268,7 @@ public class PlayScreen extends AbstractScreen {
                         )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
+                        new ClearCollisionsSystem(),
                         new CameraSystem(gamecam, gamePort),
                         new FollowPositionSystem(),
                         new RenderingSystem(game.batch, manager, new SolitarySkin(atlas), gamecam),

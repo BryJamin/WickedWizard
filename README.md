@@ -12,6 +12,7 @@ Let's see how far I get in 8 months using an hour per day
 of the texture region it uses when calling to the axis. 
 - Vertical wall bug. You can land on the side of top of wall vertically stacking with one another,
 due to the way the future bound is used. 
+-Chest need a loot table and so do stores and Item Rooms (but for that I may need more items
 
 
 

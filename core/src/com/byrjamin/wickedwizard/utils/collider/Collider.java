@@ -30,19 +30,19 @@ public class Collider {
                 && currentBound.getX() < wall.getX() + wall.getWidth() - Measure.units(1);
 
             if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
-                if (futureBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
+                if (currentBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
                     currentBound.setX(wall.x - currentBound.width);
                     return Collision.LEFT;
-                } else if (futureBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
+                } else if (currentBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
                     currentBound.setX(wall.x + wall.getWidth());
                     return Collision.RIGHT;
                 }
             } else if (wall.overlaps(futureBound)) { //Hit was on top
-                if (futureBound.getY() > wall.y + wall.getHeight() / 2) {
+                if (currentBound.getY() > wall.y + wall.getHeight() / 2) {
                     currentBound.setY(wall.y + wall.getHeight());
 
                     return Collision.TOP;
-                } else if (futureBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
+                } else if (currentBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
                     currentBound.setY(wall.y - currentBound.height);
                     return Collision.BOTTOM;
                 }
@@ -61,15 +61,15 @@ public class Collider {
                 && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
 
         if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
-            if (futureBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
+            if (currentBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
                 return Collision.LEFT;
-            } else if (futureBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
+            } else if (currentBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
                 return Collision.RIGHT;
             }
         } else if (wall.overlaps(futureBound)) { //Hit was on top
-            if (futureBound.getY() > wall.y + wall.getHeight() / 2) {
+            if (currentBound.getY() > wall.y + wall.getHeight() / 2) {
                 return Collision.TOP;
-            } else if (futureBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
+            } else if (currentBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
                 return Collision.BOTTOM;
             }
         }

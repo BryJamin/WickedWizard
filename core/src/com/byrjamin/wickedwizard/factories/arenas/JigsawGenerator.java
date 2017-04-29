@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
@@ -30,6 +31,8 @@ public class JigsawGenerator {
     private ItemArenaFactory itemArenaFactory;
     private ShopFactory shopFactory;
 
+    private DecorFactory decorFactory;
+
     public boolean generateTutorial = true;
 
     public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, Random rand){
@@ -39,6 +42,7 @@ public class JigsawGenerator {
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
         this.shopFactory = new ShopFactory(assetManager, arenaSkin);
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
         this.noBattleRooms = noBattleRooms;
         this.rand = rand;
     }
@@ -196,6 +200,7 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArena();
+        startingArena.addEntity(decorFactory.platform(500,500,1000));
         placedArenas.add(startingArena);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();

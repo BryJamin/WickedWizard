@@ -25,6 +25,6 @@ public class HealthUp implements PickUp {
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("heart", 0);
+        return new Pair<String, Integer>("heart", 1);
     }
 }

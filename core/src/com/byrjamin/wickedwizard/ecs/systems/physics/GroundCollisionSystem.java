@@ -64,8 +64,6 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         }
         //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
-        cbc.getRecentCollisions().clear();
-
         for(int i = 0; i < entityIds.size(); i++) {
 
             Rectangle r = wm.get(entityIds.get(i)).bound;

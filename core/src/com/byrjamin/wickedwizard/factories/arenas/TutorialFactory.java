@@ -29,7 +29,7 @@ import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComp
 
 public class TutorialFactory extends ArenaShellFactory {
 
-    private final String moveTutorialString1 = "Exit through the right door";
+    private final String moveTutorialString1 = "Exit this room on the right";
     private final String moveTutorialString2 = "Touch in this area to move!";
 
 

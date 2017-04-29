@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
@@ -61,6 +62,23 @@ public class DecorFactory extends AbstractFactory {
                 TextureRegionComponent.PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
         bag.add(trbc);
+
+        return bag;
+    }
+
+
+    public Bag<Component> platform(float x, float y, float width){
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,Measure.units(2.5f))));
+        bag.add(new PlatformComponent());
+        //bag.add(new WallComponent(new Rectangle(x,y, width, Measure.units(5f))));
+/*
+        TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, Measure.units(5f), Measure.units(5),
+                atlas,
+                TextureRegionComponent.PLAYER_LAYER_FAR);
+        trbc.color = new Color(1,1,1, 0.2f);*/
+        //bag.add(trbc);
 
         return bag;
     }
