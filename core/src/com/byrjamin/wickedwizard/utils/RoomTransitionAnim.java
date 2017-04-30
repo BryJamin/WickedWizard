@@ -84,6 +84,10 @@ public class RoomTransitionAnim {
     }
 
 
+    public void updatePositions(){
+
+    }
+
 
     public void update(float dt){
 
@@ -124,7 +128,10 @@ public class RoomTransitionAnim {
 
 
     public void draw(SpriteBatch batch){
-        batch.end();
+
+        if(batch.isDrawing()) {
+            batch.end();
+        }
 
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -132,7 +139,9 @@ public class RoomTransitionAnim {
         shapeRenderer.rect(position.x, position.y, WIDTH, HEIGHT);
         shapeRenderer.end();
 
-        batch.begin();
+        if(!batch.isDrawing()) {
+            batch.begin();
+        }
     }
 
     public boolean isFinished() {

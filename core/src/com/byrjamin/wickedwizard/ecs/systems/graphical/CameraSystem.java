@@ -68,6 +68,10 @@ public class CameraSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
+        updateGamecam();
+    }
+
+    public void updateGamecam() {
         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
 
 
@@ -79,7 +83,7 @@ public class CameraSystem extends EntitySystem {
             int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
             gamecam.position.set(cbc.getCenterX(), offsetY * gamecam.viewportHeight + Measure.units(30f), 0);
 
-          //  MathUtils.clamp(gamecam.position.x, 0, a.getWidth());
+            //  MathUtils.clamp(gamecam.position.x, 0, a.getWidth());
 
         }
 
@@ -111,7 +115,7 @@ public class CameraSystem extends EntitySystem {
 
 
         IntBag entities = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class)
-        .exclude(ActiveOnTouchComponent.class)).getEntities();
+                .exclude(ActiveOnTouchComponent.class)).getEntities();
 
         for(int i = 0; i < entities.size(); i++) {
             int entity = entities.get(i);
@@ -129,7 +133,7 @@ public class CameraSystem extends EntitySystem {
             }*/
 
             if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
-                || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
+                    || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
                 int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
                 targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
                 break;
@@ -142,14 +146,6 @@ public class CameraSystem extends EntitySystem {
         } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= a.getWidth()){
             gamecam.position.x = a.getWidth() - gamecam.viewportWidth / 2;
         }
-
-/*
-        if(gamecam.position.y <= gamePort.getWorldHeight() / 2){
-            gamecam.position.set(gamecam.position.x, gamePort.getWorldHeight() / 2, 0);
-        } else if(gamecam.position.y + gamecam.viewportHeight / 2 >= a.getHeight()){
-            gamecam.position.set((int) gamecam.position.x,(int) (a.getHeight() - gamecam.viewportHeight / 2), 0);
-        }
-*/
 
         if(gamecam.position.y >= targetY) {
             gamecam.position.y = (gamecam.position.y - cameraVelocity * world.delta < targetY)
@@ -165,7 +161,6 @@ public class CameraSystem extends EntitySystem {
 
         world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
                 gamecam.position.y - gamePort.getWorldHeight() / 2);
-
     }
 
 

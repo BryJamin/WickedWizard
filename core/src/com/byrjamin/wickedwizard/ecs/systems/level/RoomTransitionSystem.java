@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.Aspect;
+import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -26,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
@@ -115,7 +117,7 @@ public class RoomTransitionSystem extends EntitySystem {
                 System.out.println("dhawmhduawhduawhduawmdawudaw");
                 canNowExitTransition = false;
                 exitTransition = null;
-                world.getSystem(PlayerInputSystem.class).setEnabled(true);
+                //world.getSystem(PlayerInputSystem.class).setEnabled(true);
                 processingFlag = false;
             }
 
@@ -126,7 +128,14 @@ public class RoomTransitionSystem extends EntitySystem {
 
         if(entryTransition == null) {
             System.out.println("inside");
-            world.getSystem(PlayerInputSystem.class).setEnabled(false);
+            //world.getSystem(PlayerInputSystem.class).setEnabled(false);
+
+            for(BaseSystem s: world.getSystems()){
+                if(!(s instanceof RenderingSystem) && !(s instanceof RoomTransitionSystem)) {
+                    s.setEnabled(false);
+                }
+            }
+
             blackScreen(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
         }
 
@@ -224,6 +233,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
         System.out.println(currentArena.cotainingCoords);
 
+        for(BaseSystem s: world.getSystems()){
+            s.setEnabled(true);
+        }
 
         canNowExitTransition = true;
 
