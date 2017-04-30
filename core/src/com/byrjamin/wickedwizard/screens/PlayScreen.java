@@ -150,7 +150,6 @@ public class PlayScreen extends AbstractScreen {
 
 
         jg.generateTutorial = false;
-        loadShader();
         createWorld();
     }
 
@@ -158,11 +157,6 @@ public class PlayScreen extends AbstractScreen {
         return atlas;
     }
 
-    public void loadShader() {
-        shaderOutline = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
-                Gdx.files.internal("shader/WhiteFragmentShader.glsl"));
-        if (!shaderOutline.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + shaderOutline.getLog());
-    }
 
     public void handleInput(float dt) {
 
@@ -217,7 +211,6 @@ public class PlayScreen extends AbstractScreen {
         e.edit().add(sc);
         e.edit().add(fc);
 
-
     }
 
 
@@ -225,7 +218,6 @@ public class PlayScreen extends AbstractScreen {
 
         arenaArray = jg.generate();
         Arena startingArena = jg.getStartingRoom();
-        new ArenaShellFactory(game.manager, new SolitarySkin(atlas)).cleanArenas(arenaArray);
 
         ComponentBag player = new PlayerFactory(game.manager).playerBag();
 

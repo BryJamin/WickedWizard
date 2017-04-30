@@ -322,7 +322,6 @@ public class RoomTransitionSystem extends EntitySystem {
         unvisitedButAdjacentArenas.clear();
 
         this.roomArray = jg.generate();
-        jg.getArenaShellFactory().cleanArenas(roomArray);
         this.currentArena = jg.getStartingRoom();
 
         unpackRoom(currentArena);

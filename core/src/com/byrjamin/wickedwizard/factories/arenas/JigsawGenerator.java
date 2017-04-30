@@ -1,12 +1,17 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
+import com.artemis.Component;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
@@ -31,6 +36,7 @@ public class JigsawGenerator {
     private ArenaShellFactory arenaShellFactory;
     private ItemArenaFactory itemArenaFactory;
     private ShopFactory shopFactory;
+    private ArenaSkin arenaSkin;
 
     private DecorFactory decorFactory;
 
@@ -45,6 +51,7 @@ public class JigsawGenerator {
         this.shopFactory = new ShopFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
         this.noBattleRooms = noBattleRooms;
+        this.arenaSkin = arenaSkin;
         this.rand = rand;
     }
 
@@ -133,11 +140,17 @@ public class JigsawGenerator {
 
     public Array<Arena> generate(){
 
+        Array<Arena> arenas;
+
         if(generateTutorial){
-            return generateTutorialJigsaw();
+            arenas = generateTutorialJigsaw();
         } else {
-            return generateJigsaw();
+            arenas = generateJigsaw();
         }
+
+        this.cleanArenas(arenas);
+
+        return arenas;
 
 
     }
@@ -347,34 +360,6 @@ public class JigsawGenerator {
 
     }
 
-
-/*    public boolean placeRoomAtRange(Room room, OrderedSet<RoomExit> avaliableExitsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand, int minRange){
-        Array<RoomExit> avaliableMapCoordsArray = new Array<RoomExit>();
-        avaliableMapCoordsArray.addAll(avaliableExitsSet.orderedItems());
-
-        OrderedSet<RoomExit> newavaliableMapCoordsSet = new OrderedSet<RoomExit>();
-
-        //TODO should be minRange from starting room's position inside of just guessing the room's position is 0;
-        for(int i = avaliableMapCoordsArray.size - 1; i >= 0; i--) {
-            RoomExit re = avaliableMapCoordsArray.get(i);
-            if(re.getLeaveCoords().getX() <= minRange && re.getLeaveCoords().getY() <= minRange &&
-                    re.getLeaveCoords().getX() >= -minRange && re.getLeaveCoords().getY() >= -minRange ) {
-                avaliableMapCoordsArray.removeValue(re, false);
-            }
-        }
-
-        newavaliableMapCoordsSet.addAll(avaliableMapCoordsArray);
-
-        if(newavaliableMapCoordsSet.size != 0) {
-            return placeRoomUsingDoors(room, newavaliableMapCoordsSet, unavaliableMapCoords, rand);
-        }
-
-        return false;
-
-    }*/
-
-
-
     /**
      * Generates the co-ordinates that will be used to mock the moving of a room into a different position
      * and if the mock is successfull these co-ordinates will be used to move the room in the free position
@@ -426,13 +411,6 @@ public class JigsawGenerator {
             m.addY(diffY);
         }
 
-/*
-        for(MapCoords m : a.getAdjacentCoords()) {
-            m.addX(diffX);
-            m.addY(diffY);
-        }*/
-
-
         for(DoorComponent dc : a.getDoors()){
             dc.leaveCoords.add(diffX, diffY);
             dc.currentCoords.add(diffX, diffY);
@@ -445,217 +423,47 @@ public class JigsawGenerator {
     }
 
 
-
-
-
-
-}
-
-
-
-
-/*
-
-
-public class MapJigsawGenerator {
-
-    public Array<Room> generateTutorialJigsaw(){
-
-
-        while(roomPieces.size > 0) {
-            int i = rand.nextInt(roomPieces.size);
-            Room nextRoomToBePlaced = roomPieces.get(i);
-            roomPieces.removeIndex(i);
-            if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableExitsSet, unavaliableMapCoords, rand)){
-                actualRooms.add(nextRoomToBePlaced);
-            }
-            unavaliableMapCoords.addAll(nextRoomToBePlaced.getMapCoordsArray());
-            for (RoomExit re : nextRoomToBePlaced.getRoomExits()) {
-                if(!unavaliableMapCoords.contains(re.getLeaveCoords())) {
-                    avaliableExitsSet.add(re);
-                }
-            }
-        }
-
-        for(Room r : itemPieces){
-            int range = (int) Math.floor(Math.sqrt(totalRooms));
-            if(placeRoomUsingDoors(r, avaliableExitsSet, unavaliableMapCoords, rand)) {
-                actualRooms.add(r);
-                unavaliableMapCoords.addAll(r.getMapCoordsArray());
-                unavaliableMapCoords.addAll(r.getAdjacentMapCoords());
-            }
-        }
-
-        int range = (int) ((Math.sqrt(totalRooms) - 1) / 2);
-        System.out.println("range is " + range);
-        for(Room r : bossPieces){
-            //TODO if you find out a way to print out 1000 maps with this method see if -1 range is better than +0 range
-            if(placeRoomAtRange(r, avaliableExitsSet, unavaliableMapCoords, rand, range)) {
-                actualRooms.add(r);
-            }
-        }
-
-        cleanLeafs(actualRooms);
-
-        return actualRooms;
-
-    }
-
-
-
-
-
-
-    public boolean placeRoomUsingDoors(Room room, OrderedSet<RoomExit> avaliableExitsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
-
-        Array<RoomExit> avaliableExitsArray = new Array<RoomExit>();
-        avaliableExitsArray.addAll(avaliableExitsSet.orderedItems());
-
-        boolean roomPlaced = false;
-
-        while(!roomPlaced) {
-
-            if(avaliableExitsArray.size <= 0){
-                break;
-            }
-
-            int avaliableExitSelector = rand.nextInt(avaliableExitsArray.size);
-            //The available co-ordinates we can shift to.
-            RoomExit selectedAvaliableExit = avaliableExitsArray.get(avaliableExitSelector);
-
-            avaliableExitsArray.removeIndex(avaliableExitSelector);
-
-            Array<RoomExit> linkableExitsArray = new Array<RoomExit>();
-
-            for(RoomExit re : room.getRoomExits()) {
-                switch (selectedAvaliableExit.getDirection()){
-                    case LEFT: if(re.getDirection() == RoomExit.EXIT_DIRECTION.RIGHT)
-                        linkableExitsArray.add(re);
-                        break;
-                    case RIGHT: if(re.getDirection() == RoomExit.EXIT_DIRECTION.LEFT)
-                        linkableExitsArray.add(re);
-                        break;
-                    case UP: if(re.getDirection() == RoomExit.EXIT_DIRECTION.DOWN)
-                        linkableExitsArray.add(re);
-                        break;
-                    case DOWN: if(re.getDirection() == RoomExit.EXIT_DIRECTION.UP)
-                        linkableExitsArray.add(re);
-                        break;
-                }
-            }
-
-            while(!roomPlaced && linkableExitsArray.size > 0) {
-
-                if(linkableExitsArray.size <= 0){
-                    break;
-                }
-
-                int linkableExitsSelector = rand.nextInt(linkableExitsArray.size);
-                //The available co-ordinates we can shift to.
-                RoomExit selectedLinkableExit = linkableExitsArray.get(linkableExitsSelector);
-
-                linkableExitsArray.removeIndex(linkableExitsSelector);
-
-                MapCoords shiftCoords = generateShiftCoords(selectedAvaliableExit.getLeaveCoords(), selectedLinkableExit.getRoomCoords());
-
-                //Mocks moving the room
-                Array<MapCoords> mockCoords = room.mockShiftCoordinatePosition(shiftCoords);
-
-                for (int j = 0; j < mockCoords.size; j++) {
-                    if (!unavaliableMapCoords.contains(mockCoords.get(j))) {
-                        roomPlaced = true;
+    public void cleanArenas(Array<Arena> arenas){
+        for(int i = 0; i < arenas.size; i++) {
+            Arena a = arenas.get(i);
+            for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
+                DoorComponent dc = a.getDoors().get(j);
+                if (!findDoorWithinFoundRoom(dc, arenas)) {
+                    Bag<Component> bag = a.findBag(dc);
+                    if (BagSearch.contains(ActiveOnTouchComponent.class, bag)) {
+                        a.getBagOfEntities().remove(bag);
                     } else {
-                        roomPlaced = false;
-                        break;
+                        CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
+                        if(cbc != null) {
+                            a.getBagOfEntities().remove(bag);
+                            a.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), arenaSkin));
+                        }
                     }
+                    a.adjacentCoords.removeValue(dc.leaveCoords, false);
+                    a.doors.removeValue(dc, true);
                 }
-
-                if (roomPlaced) {
-                    room.shiftCoordinatePosition(shiftCoords);
-                    avaliableExitsSet.remove(selectedAvaliableExit);
-                }
-
-            }
-
-        }
-
-        return roomPlaced;
-
-    }
-
-
-    public boolean placeRoomAtRange(Room room, OrderedSet<RoomExit> avaliableExitsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand, int minRange){
-        Array<RoomExit> avaliableMapCoordsArray = new Array<RoomExit>();
-        avaliableMapCoordsArray.addAll(avaliableExitsSet.orderedItems());
-
-        OrderedSet<RoomExit> newavaliableMapCoordsSet = new OrderedSet<RoomExit>();
-
-        //TODO should be minRange from starting room's position inside of just guessing the room's position is 0;
-        for(int i = avaliableMapCoordsArray.size - 1; i >= 0; i--) {
-            RoomExit re = avaliableMapCoordsArray.get(i);
-            if(re.getLeaveCoords().getX() <= minRange && re.getLeaveCoords().getY() <= minRange &&
-                    re.getLeaveCoords().getX() >= -minRange && re.getLeaveCoords().getY() >= -minRange ) {
-                avaliableMapCoordsArray.removeValue(re, false);
-            }
-        }
-
-        newavaliableMapCoordsSet.addAll(avaliableMapCoordsArray);
-
-        if(newavaliableMapCoordsSet.size != 0) {
-            return placeRoomUsingDoors(room, newavaliableMapCoordsSet, unavaliableMapCoords, rand);
-        }
-
-        return false;
-
-    }
-
-    public Room getStartingRoom() {
-        return startingRoom;
-    }
-
-
-    /**
-     * Cleans up any stray Room exits that do not lead to another room.
-     * @param rooms - The generated array of rooms
-
-public void cleanLeafs(Array<Room> rooms){
-    for(int j = rooms.size - 1; j >= 0; j--){
-        for(int i = rooms.get(j).getRoomExits().size - 1; i >=0; i--) {
-            RoomExit re = rooms.get(j).getRoomExits().get(i);
-            if(!findDoor(re.getRoomCoords(), re.getLeaveCoords(), rooms)) {
-                if(re instanceof RoomDoor) {
-                    rooms.get(j).replaceDoorwithWall((RoomDoor) re);
-                    rooms.get(j).getRoomDoors().removeValue((RoomDoor) re, false);
-                } else if(re instanceof RoomGrate){
-                    rooms.get(j).getRoomGrates().removeValue((RoomGrate) re, false);
-                }
-                rooms.get(j).getRoomExits().removeValue(re, false);
             }
         }
     }
-}
 
-    public boolean findDoor(MapCoords EnterFrom, MapCoords LeaveTo, Array<Room> rooms){
-        for(Room r : rooms) {
-            if(r.containsExitWithCoords(EnterFrom, LeaveTo)){
-                return true;
-            }
+
+    @SuppressWarnings("SimplifiableIfStatement")
+    public boolean findDoorWithinFoundRoom(DoorComponent dc, Array<Arena> arenas){
+        Arena a = findRoom(dc.leaveCoords, arenas);
+        if(a != null) {
+            //System.out.println("Find Door " + a.adjacentCoords.contains(dc.currentCoords, false));
+            return a.adjacentCoords.contains(dc.currentCoords, false);
         }
         return false;
     }
 
-    public MapCoords generateShiftCoords(MapCoords newPosition, MapCoords oldPosition) {
-        int diffX = newPosition.getX() - oldPosition.getX();
-        int diffY = newPosition.getY() - oldPosition.getY();
-        return new MapCoords(diffX, diffY);
+    public static Arena findRoom(MapCoords mc, Array<Arena> arenas){
+        for(Arena a : arenas){
+            //System.out.println("Find room " + a.cotainingCoords.contains(mc, false));
+            if(a.cotainingCoords.contains(mc, false)){
+                return a;
+            }
+        }
+        return null;
     }
-
-
-
-
 }
-
-
-
-
- */
