@@ -52,6 +52,7 @@ public class Level1Rooms extends AbstractFactory {
         ag.add(room11());
         ag.add(room12());
         ag.add(room13());
+        ag.add(room14());
         return ag;
     }
 
@@ -269,6 +270,43 @@ public class Level1Rooms extends AbstractFactory {
                 arenaEnemyPlacementFactory.spawnLargeBouncer(a, a.getWidth() / 2,(a.getHeight() - a.getHeight() / 2));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
+            }
+        };
+    }
+
+
+    public ArenaGen room14() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                MapCoords m = new MapCoords();
+                Arena arena = new Arena(m);
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(m,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .buildArena(arena);
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(10f), Measure.units(20f), Measure.units(25f), arenaSkin));
+                arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(30f), Measure.units(35f)));
+                arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(30f), Measure.units(35f)));
+                arenaEnemyPlacementFactory.silverHead(arena, arena.getWidth() / 2, Measure.units(45f));
+
+
+
+
+
+
+
+
+                return arena;
             }
         };
     }

@@ -15,7 +15,18 @@ due to the way the future bound is used.
 -Chest need a loot table and so do stores and Item Rooms (but for that I may need more items
 -Create TextureLoader Parameter. 
 
--Black Room Transition to avoid jarring room transition
+-Black Room Transition to avoid jarring room transition **
+-Add in a Time Limit of sorts where we die if you run out of time. 
+-Collisions should stop a grapple or you just travel for ever. 
+-Add accelerant to camera so the movement isn't so jarring
+-Message when you enter a new level
+
+
+###Bugs
+- You can trigger shooting and moving the have the same pointer due to platforms. You double tap
+to go below and then hold to move it counts as the same pointer and you shoot and move
+
+
 
 
 

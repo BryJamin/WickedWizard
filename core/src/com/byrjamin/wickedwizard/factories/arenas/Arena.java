@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -22,7 +23,7 @@ public class Arena {
     public RoomType roomType;
 
     private MapCoords startingCoords;
-    public Array<MapCoords> cotainingCoords;
+    public Array<MapCoords> cotainingCoords = new Array<MapCoords>();
     public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
 
     public Array<DoorComponent> doors = new Array<DoorComponent>();
@@ -36,9 +37,7 @@ public class Arena {
      * @param mapCoords
      */
     public Arena(Array<MapCoords> mapCoords) {
-        startingCoords = mapCoords.get(0);
-        this.cotainingCoords = mapCoords;
-        roomType = RoomType.NORMAL;
+        this(mapCoords, RoomType.NORMAL);
     }
 
     public Arena(Array<MapCoords> mapCoords, RoomType roomType) {
@@ -46,6 +45,25 @@ public class Arena {
         this.cotainingCoords = mapCoords;
         this.roomType = roomType;
     }
+
+    public Arena(MapCoords... mapCoords) {
+        this(RoomType.NORMAL, mapCoords);
+    }
+
+    public Arena(RoomType roomType, MapCoords... mapCoords) {
+
+        startingCoords = mapCoords[0];
+
+        for(MapCoords m : mapCoords) {
+            this.cotainingCoords.add(m);
+        }
+
+        this.roomType = roomType;
+    }
+
+
+
+
 
     public Bag<Bag<Component>> getBagOfEntities() {
         return bagOfEntities;

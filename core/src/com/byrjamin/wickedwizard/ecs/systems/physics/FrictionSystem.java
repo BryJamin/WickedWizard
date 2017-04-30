@@ -46,10 +46,10 @@ public class FrictionSystem extends EntityProcessingSystem {
             float friction = Measure.units(7.5f);
             float minSpeed = Measure.units(0f);
 
-            if(pm.has(e)) {
-                if(!cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) && !gm.get(e).gliding){
-                    minSpeed = Measure.units(20f);
-                }
+            if(pm.has(e) && gm.has(e)) {
+                    if (!cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) && !gm.get(e).gliding) {
+                        minSpeed = Measure.units(20f);
+                    }
             }
 
              if (vc.velocity.x >= minSpeed) {

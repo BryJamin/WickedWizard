@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.Random;
 
@@ -262,16 +263,16 @@ public class JigsawGenerator {
 
             for(DoorComponent dc : room.getDoors()) {
                 switch (selectedAvaliableDoor.exit){
-                    case left: if(dc.exit == DoorComponent.DIRECTION.right)
+                    case LEFT: if(dc.exit == Direction.RIGHT)
                         linkableDoorsArray.add(dc);
                         break;
-                    case right: if(dc.exit == DoorComponent.DIRECTION.left)
+                    case RIGHT: if(dc.exit == Direction.LEFT)
                         linkableDoorsArray.add(dc);
                         break;
-                    case up: if(dc.exit == DoorComponent.DIRECTION.down)
+                    case UP: if(dc.exit == Direction.DOWN)
                         linkableDoorsArray.add(dc);
                         break;
-                    case down: if(dc.exit == DoorComponent.DIRECTION.up)
+                    case DOWN: if(dc.exit == Direction.UP)
                         linkableDoorsArray.add(dc);
                         break;
                 }

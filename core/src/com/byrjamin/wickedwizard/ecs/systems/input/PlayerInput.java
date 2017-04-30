@@ -65,11 +65,6 @@ public class PlayerInput extends InputAdapter{
     }
 
 
-    public void update(World world){
-        this.world = world;
-    }
-
-
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {

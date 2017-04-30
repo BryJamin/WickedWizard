@@ -29,8 +29,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchCompon
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
-import com.sun.media.sound.AlawCodec;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,13 +53,12 @@ public class RenderingSystem extends EntitySystem {
     public ShapeRenderer shapeRenderer;
     public OrthographicCamera gamecam;
     public AssetManager assetManager;
-    public ArenaSkin arenaSkin;
     public TextureAtlas atlas;
 
     public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, ArenaSkin arenaSkin, OrthographicCamera gamecam) {
+    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, OrthographicCamera gamecam) {
         super(Aspect.all(PositionComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
@@ -71,7 +68,6 @@ public class RenderingSystem extends EntitySystem {
         this.batch = batch;
         this.gamecam = gamecam;
         this.assetManager = assetManager;
-        this.arenaSkin = arenaSkin;
         this.atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
 
         shapeRenderer = new ShapeRenderer();
@@ -192,8 +188,8 @@ public class RenderingSystem extends EntitySystem {
             for(int i = 0; i < trbc.columns; i++){
                 for(int j = 0; j < trbc.rows; j ++){
                     batch.draw(trbc.regions.get(count),
-                            pc.getX() + (trbc.width * i),
-                            pc.getY() + (trbc.height * j),
+                            pc.getX() + (trbc.width * i) + trbc.offsetX,
+                            pc.getY() + (trbc.height * j) + trbc.offsetY,
                             trbc.width + 1, trbc.height + 1); //This is to avoid pixel errors between repeated textures
                     count++;
                 }

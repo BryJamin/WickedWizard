@@ -25,15 +25,15 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
-import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-
-import java.util.Random;
+import com.byrjamin.wickedwizard.utils.RoomTransition;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 13/03/2017.
@@ -64,7 +64,16 @@ public class RoomTransitionSystem extends EntitySystem {
     private MapCoords destination;
     private MapCoords previousDestination;
     private MapCoords playerLocation = new MapCoords(0,0);
+    private DoorComponent currentDoor;
     private float doorEntryPercentage;
+
+
+    public RoomTransition entryTransition;
+    public RoomTransition exitTransition;
+
+    private boolean canNowExitTransition = false;
+
+    private MoveToComponent blackScreenTarget;
 
 
     @SuppressWarnings("unchecked")
@@ -77,8 +86,61 @@ public class RoomTransitionSystem extends EntitySystem {
         unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
     }
 
+    public RoomTransition getEntryTransition() {
+        return entryTransition;
+    }
+
+    public RoomTransition getExitTransition() {
+        return exitTransition;
+    }
+
     @Override
     protected void processSystem() {
+
+
+        if(canNowExitTransition) {
+
+            if (exitTransition == null) {
+                blackScreen2(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
+                entryTransition = null;
+                return;
+            }
+
+            if(!exitTransition.isFinished()){
+                System.out.println("dhawmhduawhduawhduawmdawudaw");
+                exitTransition.update(world.delta);
+                return;
+            } else {
+
+                System.out.println("dhawmhduawhduawhduawmdawudaw");
+                canNowExitTransition = false;
+                exitTransition = null;
+                world.getSystem(PlayerInputSystem.class).setEnabled(true);
+                processingFlag = false;
+            }
+
+
+            return;
+
+        }
+
+        if(entryTransition == null) {
+            System.out.println("inside");
+            world.getSystem(PlayerInputSystem.class).setEnabled(false);
+            blackScreen(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
+        }
+
+        if(!entryTransition.isFinished()){
+            System.out.println("inside");
+            entryTransition.update(world.delta);
+            return;
+        } else {
+            System.out.println("huihuii");
+        }
+
+
+        //TODO add entity that covers screen once is has been completed continue to process system
+
         //Pack
 
         packRoom(world, currentArena);
@@ -120,18 +182,18 @@ public class RoomTransitionSystem extends EntitySystem {
 
                 if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
                     switch (dc.exit){
-                        case left: player.position.x = cbc.bound.getX() + cbc.bound.getWidth() + pBound.bound.getWidth();
+                        case LEFT: player.position.x = cbc.bound.getX() + cbc.bound.getWidth() + pBound.bound.getWidth();
                             player.position.y = doorEntryY;
                             break;
-                        case right: player.position.x = cbc.bound.getX() - pBound.bound.getWidth();
+                        case RIGHT: player.position.x = cbc.bound.getX() - pBound.bound.getWidth();
                             player.position.y = doorEntryY;
                             break;
-                        case up:
+                        case UP:
                             player.position.x = cbc.getCenterX();
                             player.position.y = cbc.getCenterY();
                             vc.velocity.y /= 2;
                             break;
-                        case down:
+                        case DOWN:
                             player.position.x = cbc.getCenterX();
                             player.position.y = cbc.getCenterY();
                             vc.velocity.y = 0;
@@ -154,14 +216,6 @@ public class RoomTransitionSystem extends EntitySystem {
         world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class).reset();
         Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity;
 
-/*        if(Math.abs(velocity.x) > Measure.units(60f) / 2) {
-            velocity.x = velocity.x > 0 ? Measure.units(60f) / 2 : -Measure.units(60f) / 2;
-        }*/
-/*
-        if(velocity.y > Measure.units(60f)) {
-            velocity.y = Measure.units(60f);
-        }*/
-
         velocity.y = velocity.y / 2;
         velocity.x = velocity.x / 2 ;
 
@@ -169,6 +223,9 @@ public class RoomTransitionSystem extends EntitySystem {
         //System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
         System.out.println(currentArena.cotainingCoords);
+
+
+        canNowExitTransition = true;
 
     }
 
@@ -202,7 +259,6 @@ public class RoomTransitionSystem extends EntitySystem {
     @Override
     protected boolean checkProcessing() {
         if (processingFlag) {
-            processingFlag = false;
             return true;
         }
         return false;
@@ -282,11 +338,6 @@ public class RoomTransitionSystem extends EntitySystem {
 
     }
 
-
-
-
-
-
     public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
         aGUI.update(world.delta, gamecam, visitedArenas, unvisitedButAdjacentArenas,
                 getCurrentArena(),
@@ -295,15 +346,118 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
-    public boolean goFromTo(MapCoords previousDestination, MapCoords destination, float doorEntryPercentage){
+    /**
+     * The direction the transition starts from
+     * @param start
+     * @param gamecam
+     */
+    public void blackScreen(Direction start, OrthographicCamera gamecam) {
 
-        Arena next = findRoom(destination);
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+        float startX;
+        float startY;
+
+        float width = gamecam.viewportWidth;
+        float height = gamecam.viewportHeight;
+
+        float endX;
+        float endY;
+
+        switch(start){
+            case LEFT:
+            default:
+                entryTransition = new RoomTransition(camX, camY, width, height);
+                entryTransition.fromLeftToCenter();
+                break;
+            case RIGHT:
+                entryTransition = new RoomTransition(camX, camY, width, height);
+                entryTransition.fromRightToCenter();
+                break;
+            case UP:
+                entryTransition = new RoomTransition(camX, camY, width, height);
+                entryTransition.fromTopToCenter();
+                break;
+            case DOWN:
+                entryTransition = new RoomTransition(camX, camY, width, height);
+                entryTransition.fromBottomToCenter();
+                break;
+        }
+/*
+
+        blackScreenTarget = new MoveToComponent();
+        blackScreenTarget.targetX = endX;
+        blackScreenTarget.targetY = endY;
+        blackScreenTarget.accelX = Measure.units(10f);
+        blackScreenTarget.accelY = Measure.units(10f);
+        blackScreenTarget.maxX = Measure.units(10f);
+        blackScreenTarget.maxY = Measure.units(10f);
+
+        Entity e = world.createEntity();
+        e.edit().add(new PositionComponent(startX, startY))
+                .add(new VelocityComponent())
+                .add(new AccelerantComponent(Measure.units(20f), Measure.units(20f)))
+                .add(blackScreenTarget)
+                .add(new CollisionBoundComponent(new Rectangle(startX, startY, width, height)));
+
+
+        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        sc.color = Color.WHITE;
+
+        e.edit().add(sc);
+        e.edit().add(new IntangibleComponent());
+*/
+
+    }
+
+
+    public void blackScreen2(Direction start, OrthographicCamera gamecam) {
+
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+        float startX;
+        float startY;
+
+        float width = gamecam.viewportWidth;
+        float height = gamecam.viewportHeight;
+
+        float endX;
+        float endY;
+
+        switch (start) {
+            case LEFT:
+            default:
+                exitTransition = new RoomTransition(camX, camY, width, height);
+                exitTransition.fromCenterToLeft();
+                break;
+            case RIGHT:
+                exitTransition = new RoomTransition(camX, camY, width, height);
+                exitTransition.fromCenterToRight();
+                break;
+            case UP:
+                exitTransition = new RoomTransition(camX, camY, width, height);
+                exitTransition.fromCenterToBottom();
+                break;
+            case DOWN:
+                exitTransition = new RoomTransition(camX, camY, width, height);
+                exitTransition.fromCenterToTop();
+                break;
+        }
+
+    }
+
+
+    public boolean goFromTo(DoorComponent dc, float doorEntryPercentage){
+
+        Arena next = findRoom(dc.leaveCoords);
         if(next != null) {
             processingFlag = true;
-            this.previousDestination = previousDestination;
-            this.destination = destination;
+            this.currentDoor = dc;
+            this.previousDestination = dc.currentCoords;
+            this.destination = dc.leaveCoords;
             this.doorEntryPercentage = doorEntryPercentage;
-            //processSystem();
             return true;
         }
         return false;
@@ -319,19 +473,6 @@ public class RoomTransitionSystem extends EntitySystem {
         playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / ArenaShellFactory.SECTION_HEIGHT));
         return playerLocation;
     }
-
-/*    public MapCoords getCurrentPlayerLocation(){
-        PositionComponent position = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
-        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (position.getX() / ArenaShellFactory.SECTION_WIDTH));
-        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (position.getY() / ArenaShellFactory.SECTION_HEIGHT));
-        return playerLocation;
-    }*/
-
-
-
-
-
-
 
     public Array<Arena> getRoomArray() {
         return roomArray;

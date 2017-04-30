@@ -87,10 +87,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     }
 
 
-    public InputProcessor getInputProcessor() {
-        return playerInput;
-    }
-
     public PlayerInput getPlayerInput() {
         return playerInput;
     }

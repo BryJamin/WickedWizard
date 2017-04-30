@@ -38,11 +38,11 @@ public class ArenaShellFactory extends AbstractFactory {
 
     public final float WALLWIDTH = Measure.units(5);
 
-    public final Arena createOmniArena(){
+    public Arena createOmniArena(){
         return createOmniArena(new MapCoords(0,0));
     }
 
-    public final Arena createOmniArena(MapCoords defaultCoords) {
+    public Arena createOmniArena(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -59,14 +59,31 @@ public class ArenaShellFactory extends AbstractFactory {
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR))
                 .buildArena(arena);
-/*        new ArenaBuilder.Builder(defaultCoords, assetManager, arena)
-                .section(new ArenaBuilder.Section(defaultCoords,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR)).build();*/
+
         return arena;
     }
+
+    public Arena createSmallArena(MapCoords defaultCoords, boolean leftDoor, boolean rightDoor, boolean ceilingDoor, boolean topDoor) {
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+
+        Arena arena = new Arena(containingCorrds);
+
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT);
+
+        arena = new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR))
+                .buildArena(arena);
+
+        return arena;
+    }
+
 
     public Arena createWidth2Arena(){
         return createWidth2Arena(new MapCoords(0,0));

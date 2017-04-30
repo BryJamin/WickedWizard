@@ -51,10 +51,10 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
             if (!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY())) {
                 if (cbc.getCenterX() > pBound.getCenterX()) {
                     vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
-                    if(cbc.getCenterX() - vc.velocity.x * world.delta < pBound.getCenterX()) vc.velocity.x /= 2;
+                    if(cbc.getCenterX() - vc.velocity.x * world.delta < pBound.getCenterX()) vc.velocity.x = 0;
                 } else {
                     vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
-                    if(cbc.getCenterX() + vc.velocity.x * world.delta > pBound.getCenterX()) vc.velocity.x /= 2;
+                    if(cbc.getCenterX() + vc.velocity.x * world.delta > pBound.getCenterX()) vc.velocity.x = 0;
                 }
 
                 if(!gm.has(e)) { //TODO For now if an entity has gravity it can't really follow a player's Y so I just skip this application

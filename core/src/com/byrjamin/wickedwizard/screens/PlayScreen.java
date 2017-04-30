@@ -88,6 +88,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.RoomTransition;
 
 
 import java.util.Random;
@@ -167,8 +168,8 @@ public class PlayScreen extends AbstractScreen {
 
         InputMultiplexer multiplexer = new InputMultiplexer();
 
-        if (!gameOver) {
-            multiplexer.addProcessor(world.getSystem(PlayerInputSystem.class).getInputProcessor());
+        if (!gameOver && world.getSystem(PlayerInputSystem.class).isEnabled()) {
+            multiplexer.addProcessor(world.getSystem(PlayerInputSystem.class).getPlayerInput());
         } else {
             multiplexer.addProcessor(gestureDetector);
         }
@@ -187,7 +188,7 @@ public class PlayScreen extends AbstractScreen {
                         //new FindPlayerSystem(player),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, manager,new SolitarySkin(atlas), gamecam),
+                        new RenderingSystem(game.batch, manager, gamecam),
                         new BoundsDrawingSystem()
                 )
                 .build();
@@ -269,9 +270,9 @@ public class PlayScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
                         new ClearCollisionsSystem(),
-                        new CameraSystem(gamecam, gamePort),
                         new FollowPositionSystem(),
-                        new RenderingSystem(game.batch, manager, new SolitarySkin(atlas), gamecam),
+                        new CameraSystem(gamecam, gamePort),
+                        new RenderingSystem(game.batch, manager, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         new ChangeLevelSystem(jg, atlas),
@@ -340,6 +341,18 @@ public class PlayScreen extends AbstractScreen {
 
         if(!gameOver) {
             world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
+
+            RoomTransition rt = world.getSystem(RoomTransitionSystem.class).entryTransition;
+            if(rt != null) {
+                world.getSystem(RoomTransitionSystem.class).entryTransition.draw(game.batch);
+            }
+
+            rt = world.getSystem(RoomTransitionSystem.class).exitTransition;
+            if(rt != null) {
+                world.getSystem(RoomTransitionSystem.class).exitTransition.draw(game.batch);
+            }
+
+
         }
 
 

@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 
 /**
  * Created by Home on 13/03/2017.
@@ -65,9 +66,8 @@ public class DoorSystem extends EntityProcessingSystem {
                             float doorEntryPercentage = ((cbm.get(e).bound.y - cbc.bound.getY()) /
                                     (cbc.bound.getHeight()));
 
-                            world.getSystem(com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).goFromTo(
-                                    dm.get(doorEntity).currentCoords,
-                                    dm.get(doorEntity).leaveCoords,
+                            world.getSystem(RoomTransitionSystem.class).goFromTo(
+                                    dm.get(doorEntity),
                                     doorEntryPercentage);
                         }
                     }

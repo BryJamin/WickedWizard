@@ -78,8 +78,8 @@ public class SilverHeadFactory extends EnemyFactory {
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
-        bag.add(new AccelerantComponent(accelX, 0, maxX, 0));
-        bag.add(new MoveToPlayerComponent());
+        //bag.add(new AccelerantComponent(accelX, 0, maxX, 0));
+        //bag.add(new MoveToPlayerComponent());
         bag.add(new AnimationStateComponent(STANDING));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(STANDING, new Animation<TextureRegion>(0.15f, atlas.findRegions(TextureStrings.SILVERHEAD_ST), Animation.PlayMode.LOOP));
@@ -147,16 +147,16 @@ public class SilverHeadFactory extends EnemyFactory {
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setState(STANDING);
-                AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
+/*                AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
                 ac.accelX = accelX;
-                ac.maxX = maxX;
+                ac.maxX = maxX;*/
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-                AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
+         /*       AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
                 ac.accelX = chargeAccelX;
-                ac.maxX = chargeMaxX;
+                ac.maxX = chargeMaxX;*/
             }
         };
 

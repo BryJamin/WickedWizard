@@ -18,7 +18,7 @@ public class GravitySystem extends EntityProcessingSystem {
     ComponentMapper<GravityComponent> gm;
     ComponentMapper<GlideComponent> glm;
 
-    private static final float MAXGRAVITY = -Measure.units(150f);
+    private static final float MAXGRAVITY = -Measure.units(110f);
 
     @SuppressWarnings("unchecked")
     public GravitySystem() {

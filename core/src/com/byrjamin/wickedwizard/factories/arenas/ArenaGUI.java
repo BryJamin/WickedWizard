@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 20/03/2017.
@@ -237,22 +238,22 @@ public class ArenaGUI {
                 float MINI_SIZE = SIZE / 4;
 
                 //Left Line
-                if (dc.exit == DoorComponent.DIRECTION.left) {
+                if (dc.exit == Direction.LEFT) {
                     mapRenderer.line(x, y + MINI_SIZE, x, y + SIZE - MINI_SIZE);
                 }
 
                 //Right Line
-                if (dc.exit == DoorComponent.DIRECTION.right) {
+                if (dc.exit == Direction.RIGHT) {
                     mapRenderer.line(x + SIZE, y + MINI_SIZE, x + SIZE, y + SIZE - MINI_SIZE);
                 }
 
                 //Top Line
-                if (dc.exit == DoorComponent.DIRECTION.up) {
+                if (dc.exit == Direction.UP) {
                     mapRenderer.line(x + MINI_SIZE, y + SIZE, x + SIZE - MINI_SIZE, y + SIZE);
                 }
 
                 //Bottom Line
-                if (dc.exit == DoorComponent.DIRECTION.down) {
+                if (dc.exit == Direction.DOWN) {
                     mapRenderer.line(x + MINI_SIZE, y, x + SIZE - MINI_SIZE, y);
                 }
             }

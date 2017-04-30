@@ -87,7 +87,7 @@ public class CameraSystem extends EntitySystem {
         gamecam.position.x = cbc.getCenterX();
 
         targetY = cbc.getCenterY();
-
+/*
         left.x = cbc.bound.x - gamecam.viewportWidth / 2;
         left.y = cbc.bound.y;
         left.height = cbc.bound.height;
@@ -107,7 +107,7 @@ public class CameraSystem extends EntitySystem {
         top.x = cbc.bound.x;
         top.y = cbc.bound.y + cbc.bound.height;
         top.height = gamecam.viewportHeight / 3;;
-        top.width = cbc.bound.width;
+        top.width = cbc.bound.width;*/
 
 
         IntBag entities = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class)

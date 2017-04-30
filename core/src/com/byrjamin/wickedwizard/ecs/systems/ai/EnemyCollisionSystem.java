@@ -25,7 +25,7 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public EnemyCollisionSystem() {
-        super(Aspect.all(PlayerComponent.class));
+        super(Aspect.all(PlayerComponent.class, BlinkComponent.class));
     }
 
     @Override

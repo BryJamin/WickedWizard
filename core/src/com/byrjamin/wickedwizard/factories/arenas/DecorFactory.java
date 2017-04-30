@@ -38,6 +38,7 @@ import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 04/03/2017.
@@ -77,6 +78,7 @@ public class DecorFactory extends AbstractFactory {
         TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, Measure.units(5f), Measure.units(5),
                 atlas.findRegions("platform"),
                 TextureRegionComponent.PLAYER_LAYER_FAR);
+        trbc.offsetY = -1;
         //trbc.color = new Color(1,1,1, 0.2f);
         bag.add(trbc);
 
@@ -105,7 +107,7 @@ public class DecorFactory extends AbstractFactory {
 */
 
 
-    public Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, DoorComponent.DIRECTION exit){
+    public Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
@@ -135,7 +137,7 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-    public Bag<Component> grateBag(float x, float y, MapCoords current, MapCoords leaveCoords, DoorComponent.DIRECTION exit){
+    public Bag<Component> grateBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
         Bag<Component> bag = new Bag<Component>();
 
         float width = Measure.units(10);

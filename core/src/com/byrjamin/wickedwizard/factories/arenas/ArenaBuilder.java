@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 16/04/2017.
@@ -80,7 +81,7 @@ public class ArenaBuilder {
                 arena.addDoor(decorFactory.doorBag(0 + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX - 1, coordY),
-                        DoorComponent.DIRECTION.left));
+                        Direction.LEFT));
             }
             //Right
             if(s.right == wall.FULL) {
@@ -90,7 +91,7 @@ public class ArenaBuilder {
                 arena.addDoor(decorFactory.doorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX + 1, coordY),
-                        DoorComponent.DIRECTION.right));
+                        Direction.RIGHT));
             }
 
             //Ceiling
@@ -100,7 +101,7 @@ public class ArenaBuilder {
                     arena.addDoor(decorFactory.grateBag(SECTION_WIDTH / 2 + posX, 900 + posY,
                             new MapCoords(coordX, coordY),
                             new MapCoords(coordX, coordY + 1),
-                            DoorComponent.DIRECTION.up));
+                            Direction.UP));
                 }
             }
 
@@ -112,7 +113,7 @@ public class ArenaBuilder {
                     arena.addDoor(decorFactory.grateBag(SECTION_WIDTH / 2 + posX, 400 + posY,
                             new MapCoords(coordX, coordY),
                             new MapCoords(coordX, coordY -1),
-                            DoorComponent.DIRECTION.down));
+                            Direction.DOWN));
                 }
             }
 
@@ -120,7 +121,7 @@ public class ArenaBuilder {
             arena.addEntity(BackgroundFactory.backgroundBags(0 + posX,0 + posY,
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
-                    Measure.units(15),
+                    Measure.units(20),
                     arenaSkin.getBackgroundTextures(),
                     arenaSkin));
 

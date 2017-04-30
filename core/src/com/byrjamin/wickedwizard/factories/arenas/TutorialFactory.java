@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_NEAR;
 
@@ -208,7 +209,7 @@ public class TutorialFactory extends ArenaShellFactory {
         bag = decorFactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 3),
-                DoorComponent.DIRECTION.up);
+                Direction.UP);
         //arena.addDoor(bag);
         arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
 /*

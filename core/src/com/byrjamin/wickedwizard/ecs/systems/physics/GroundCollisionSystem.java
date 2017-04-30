@@ -7,13 +7,18 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
@@ -24,6 +29,7 @@ import com.byrjamin.wickedwizard.utils.collider.Collider;
 public class GroundCollisionSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
+    ComponentMapper<PlayerComponent> playerm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WallComponent> wm;
@@ -45,8 +51,35 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
+        Array<Rectangle> collidableobjects = new Array<Rectangle>();
+
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class));
         IntBag entityIds = subscription.getEntities();
+
+        for(int i = 0; i < entityIds.size(); i++){
+            collidableobjects.add(wm.get(entityIds.get(i)).bound);
+        }
+
+        subscription = world.getAspectSubscriptionManager().get(Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
+        entityIds = subscription.getEntities();
+
+        if(!playerm.has(e)) {
+            for(int i = 0; i < entityIds.size(); i++){
+                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
+            }
+
+        }
+
+        subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
+        entityIds = subscription.getEntities();
+
+        if(!playerm.has(e) && !bm.has(e)) {
+
+            for(int i = 0; i < entityIds.size(); i++){
+                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
+            }
+
+        }
 
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
@@ -64,9 +97,8 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         }
         //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
-        for(int i = 0; i < entityIds.size(); i++) {
+        for(Rectangle r : collidableobjects) {
 
-            Rectangle r = wm.get(entityIds.get(i)).bound;
             Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, r);
 
             if(c != Collider.Collision.NONE){

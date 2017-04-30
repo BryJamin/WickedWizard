@@ -46,11 +46,24 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
+        Array<Rectangle> collidableobjects = new Array<Rectangle>();
+
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class));
         IntBag entityIds = subscription.getEntities();
 
-        EntitySubscription subscription2 = world.getAspectSubscriptionManager().get(Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
-        IntBag doorEntityIds = subscription2.getEntities();
+        for(int i = 0; i < entityIds.size(); i++){
+            collidableobjects.add(wm.get(entityIds.get(i)).bound);
+        }
+
+        subscription = world.getAspectSubscriptionManager().get(Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
+        entityIds = subscription.getEntities();
+
+        if(!playerm.has(e)) {
+            for(int i = 0; i < entityIds.size(); i++){
+                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
+            }
+
+        }
 
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
@@ -60,19 +73,6 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
         futureRectangle.x += vc.velocity.x * world.delta;
         futureRectangle.y += vc.velocity.y * world.delta;
 
-
-        Array<Rectangle> collidableobjects = new Array<Rectangle>();
-
-        for(int i = 0; i < entityIds.size(); i++){
-            collidableobjects.add(wm.get(entityIds.get(i)).bound);
-        }
-
-        if(!playerm.has(e)) {
-            for(int i = 0; i < doorEntityIds.size(); i++){
-                collidableobjects.add(cbm.get(doorEntityIds.get(i)).bound);
-            }
-
-        }
 
 
         for(Rectangle r : collidableobjects) {

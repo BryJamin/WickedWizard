@@ -90,6 +90,16 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         a.addEntity(spawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
     }
 
+    public void silverHead(Arena a, float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return silverHeadFactory.silverHead(x,y);
+            }
+        });
+        a.addEntity(spawnerFactory.spawnerBag(x, y + Measure.units(2.5f), s));
+    }
+
     public void silverHead(Arena a){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
