@@ -40,7 +40,7 @@ public class CameraSystem extends EntitySystem {
 
 
     //TODO add acceleration?
-    private float acceleration = Measure.units(2.5f);
+    private float acceleration = Measure.units(10f);
     private float cameraMaxVelocity = Measure.units(110f);
     private Vector2 cameraVelocity;
 
