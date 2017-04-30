@@ -48,7 +48,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new PositionComponent(600,900));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());
-        bag.add(new CollisionBoundComponent(new Rectangle(0,0,100, 100)));
+        bag.add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
         bag.add(new CurrencyComponent(50));
