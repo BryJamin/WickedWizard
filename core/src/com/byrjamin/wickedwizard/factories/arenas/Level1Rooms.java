@@ -39,20 +39,20 @@ public class Level1Rooms extends AbstractFactory {
 
     public Array<ArenaGen> getLevel1RoomArray(){
         Array<ArenaGen> ag = new Array<ArenaGen>();
-        ag.add(room1());
-        ag.add(room2());
-        ag.add(room3());
-        ag.add(room4());
-        ag.add(room5());
-        ag.add(room6());
+        //ag.add(room1());
+        //ag.add(room2());
+        //ag.add(room3());
+        //ag.add(room4());
+        //ag.add(room5());
+        //ag.add(room6());
         ag.add(room7LetterI());
-        ag.add(room8());
-        ag.add(deadEndW2());
-        ag.add(room10());
-        ag.add(room11());
-        ag.add(room12());
-        ag.add(room13());
-        ag.add(room14());
+        //ag.add(room8());
+        //ag.add(deadEndW2());
+        ag.add(room10Height2());
+        //ag.add(room11());
+        //ag.add(room12());
+        //ag.add(room13());
+        //ag.add(room14());
         return ag;
     }
 
@@ -202,7 +202,7 @@ public class Level1Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room10(){
+    public ArenaGen room10Height2(){
 
         return new ArenaGen() {
             @Override

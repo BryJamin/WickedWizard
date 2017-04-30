@@ -21,13 +21,13 @@ public class DesktopLauncher {
 		String outputDir = projectPath;
 		String packFileName = "sprite";
 
-		Settings settings = new Settings();
+/*		Settings settings = new Settings();
 		settings.maxWidth = 2048;
 		settings.maxHeight = 2048;
 		settings.filterMin = Texture.TextureFilter.MipMapLinearLinear;
 		settings.combineSubdirectories = true;
 
-		TexturePacker.process(settings, inputDir,outputDir,packFileName);
+		TexturePacker.process(settings, inputDir,outputDir,packFileName);*/
 
 		new LwjglApplication(new MainGame(), config);
 	}
