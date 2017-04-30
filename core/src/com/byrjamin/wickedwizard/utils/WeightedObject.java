@@ -1,9 +1,5 @@
 package com.byrjamin.wickedwizard.utils;
 
-/**
- * Created by Home on 22/04/2017.
- */
-
 public class WeightedObject<T> {
 
     private T t;

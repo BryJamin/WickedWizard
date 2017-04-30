@@ -12,6 +12,12 @@ import com.byrjamin.wickedwizard.utils.Pair;
 
 public interface PickUp {
 
+    /**
+     * Applies an affect to the given entity (Most likely the player)
+     * @param world - The current world instance. Items can affect more than just the player
+     * @param player - The Entity the item can be applied to.
+     * @return - Returns true if the item can be used/picked up by the entity.
+     */
     boolean applyEffect(World world, Entity player);
     Pair<String, Integer> getRegionName();
 

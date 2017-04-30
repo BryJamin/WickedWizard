@@ -8,7 +8,6 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
@@ -218,14 +217,14 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         wingChildren.clear();
 
         Entity e = world.createEntity();
-        for(Component c : pf.rightWings(parc, pc)) {
+        for(Component c : pf.wings(parc, pc, true)) {
             e.edit().add(c);
         }
 
         wingChildren.add(e.getComponent(ChildComponent.class));
 
         e = world.createEntity();
-        for(Component c : pf.leftWings(parc, pc)) {
+        for(Component c : pf.wings(parc, pc, false)) {
             e.edit().add(c);
         }
 

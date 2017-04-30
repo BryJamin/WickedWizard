@@ -30,13 +30,6 @@ public class JigsawGeneratorTest extends GameTest {
     @Test
     public void testGenerateJigsaw() throws Exception {
 
-
-        System.out.println(Gdx.files.absolute("C:\\Users\\Home\\Documents\\University\\WickedWizard\\android\\assets\\sprite.atlas").exists());
-
-
-        System.out.println(Gdx.files.getLocalStoragePath());
-
-
         AssetManager assetManager = new AssetManager();
 
         TextureAtlasLoader textureAtlasLoader = new TextureAtlasLoader(new LocalFileHandleResolver());

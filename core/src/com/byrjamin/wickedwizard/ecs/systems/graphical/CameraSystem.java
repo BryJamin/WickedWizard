@@ -106,8 +106,6 @@ public class CameraSystem extends EntitySystem {
             gamecam.position.x = a.getWidth() - gamecam.viewportWidth / 2;
         }
 
-
-        System.out.println("Target y is " + targetY);
         if(gamecam.position.y >= targetY) {
 
             cameraVelocity.y = (cameraVelocity.y > 0) ? 0 : cameraVelocity.y;

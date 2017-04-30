@@ -39,6 +39,11 @@ public class WeightedRoll<T> {
         return weightedObjects;
     }
 
+    /**
+     * Randomly selects a WeightedObject from the WeightObject array
+     * using their weights.
+     * @return - The WeightedObjects held object.
+     */
     public T roll(){
 
         Array<T> objects = new Array<T>();
@@ -73,6 +78,11 @@ public class WeightedRoll<T> {
     }
 
 
+    /**
+     * Randomly selects a WeightedObject from the WeightObject array
+     * using their weights.
+     * @return The Weighted Object
+     */
     public WeightedObject<T> rollForWeight(){
 
         Array<T> objects = new Array<T>();
@@ -91,18 +101,18 @@ public class WeightedRoll<T> {
 
         int roll = random.nextInt(totalWeight);
 
-        WeightedObject<T> chosen = null;
+        WeightedObject<T> chosenWeight = null;
 
         for(int i = 0; i < percentages.length; i++){
             if(roll < percentages[i]){
-                chosen = weightedObjects.get(i);
+                chosenWeight = weightedObjects.get(i);
                 break;
             }
             roll -= percentages[i];
         }
 
 
-        return chosen;
+        return chosenWeight;
 
     }
 

@@ -2,9 +2,6 @@ package com.byrjamin.wickedwizard.utils.collider;
 
 import com.badlogic.gdx.math.Rectangle;
 
-/**
- * Created by Home on 14/04/2017.
- */
 
 public class HitBox {
 

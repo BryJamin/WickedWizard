@@ -107,12 +107,9 @@ public class RoomTransitionSystem extends EntitySystem {
             }
 
             if(!exitTransition.isFinished()){
-                System.out.println("dhawmhduawhduawhduawmdawudaw");
                 exitTransition.update(world.delta);
                 return;
             } else {
-
-                System.out.println("dhawmhduawhduawhduawmdawudaw");
                 canNowExitTransition = false;
                 exitTransition = null;
                 //world.getSystem(PlayerInputSystem.class).setEnabled(true);
@@ -125,7 +122,6 @@ public class RoomTransitionSystem extends EntitySystem {
         }
 
         if(entryTransition == null) {
-            System.out.println("inside");
             //world.getSystem(PlayerInputSystem.class).setEnabled(false);
 
             for(BaseSystem s: world.getSystems()){
@@ -138,11 +134,9 @@ public class RoomTransitionSystem extends EntitySystem {
         }
 
         if(!entryTransition.isFinished()){
-            System.out.println("inside");
             entryTransition.update(world.delta);
             return;
         } else {
-            System.out.println("huihuii");
         }
 
 

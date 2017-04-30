@@ -129,13 +129,6 @@ public class PlayerInput extends InputAdapter{
                 lastTapY = screenY;
                 lastTapPointer = pointer;
 
-
-                System.out.println(Gdx.input.getCurrentEventTime() - tapStartTime / (double) 1000000000 < 0.4);
-
-                long number = Gdx.input.getCurrentEventTime() - tapStartTime;
-                System.out.println("Number" + number);
-
-
                //if(number < tapInterval) {
                     Vector3 input = new Vector3(screenX, screenY, 0);
                     gameport.unproject(input);

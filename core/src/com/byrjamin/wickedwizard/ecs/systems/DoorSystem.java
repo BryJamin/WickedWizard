@@ -59,8 +59,6 @@ public class DoorSystem extends EntityProcessingSystem {
                    // System.out.println("INSIDE THA DOOR");
 
                     if(lm.has(doorEntity)) {
-
-                        System.out.println(lm.get(doorEntity).isLocked() + "Running");
                         if(!lm.get(doorEntity).isLocked()) {
 
                             float doorEntryPercentage = ((cbm.get(e).bound.y - cbc.bound.getY()) /

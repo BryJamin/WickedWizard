@@ -48,6 +48,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new PositionComponent(600,900));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());
+        bag.add(new PlayerComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
@@ -88,11 +89,17 @@ public class PlayerFactory extends AbstractFactory {
     }
 
 
-    public ComponentBag rightWings(ParentComponent parc, PositionComponent pc){
+    /**
+     * @param parc - Parent Component the wings will be attached to
+     * @param pc - Position Components the wings will be followings
+     * @param isLeft - Whether or not the wing is a left or right wing
+     * @return - Returns a bag of components used to create an Entity
+     */
+    public ComponentBag wings(ParentComponent parc, PositionComponent pc, boolean isLeft){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(pc.getX(), pc.getY()));
-        bag.add(new FollowPositionComponent(pc.position, Measure.units(4), -Measure.units(1)));
+        bag.add(new FollowPositionComponent(pc.position, isLeft ? Measure.units(4) : -Measure.units(4), -Measure.units(1)));
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         bag.add(sc);
@@ -103,6 +110,7 @@ public class PlayerFactory extends AbstractFactory {
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wings"),
                 -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
+        trc.scaleX = isLeft ? 1 : -1;
         bag.add(trc);
 
 
@@ -112,33 +120,6 @@ public class PlayerFactory extends AbstractFactory {
 
         return bag;
     }
-
-    public ComponentBag leftWings(ParentComponent parc, PositionComponent pc){
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(pc.getX(), pc.getY()));
-        bag.add(new FollowPositionComponent(pc.position, -Measure.units(4), -Measure.units(1)));
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
-        bag.add(sc);
-        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions("wings"), Animation.PlayMode.LOOP));
-        AnimationComponent ac = new AnimationComponent(aniMap);
-        bag.add(ac);
-
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wings"),
-                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6),
-                TextureRegionComponent.PLAYER_LAYER_FAR);
-        trc.scaleX = -1;
-        bag.add(trc);
-
-        ChildComponent cc = new ChildComponent();
-        parc.children.add(cc);
-        bag.add(cc);
-
-        return bag;
-    }
-
 
 
 
