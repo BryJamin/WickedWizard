@@ -6,6 +6,7 @@ import com.artemis.EntitySystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -39,7 +40,9 @@ public class CameraSystem extends EntitySystem {
 
 
     //TODO add acceleration?
-    private float cameraVelocity = Measure.units(200f);
+    private float acceleration = Measure.units(2.5f);
+    private float cameraMaxVelocity = Measure.units(110f);
+    private Vector2 cameraVelocity;
 
     private Rectangle left = new Rectangle();
     private Rectangle right = new Rectangle();
@@ -63,7 +66,7 @@ public class CameraSystem extends EntitySystem {
         super(Aspect.all(PlayerComponent.class));
         this.gamecam = gamecam;
         this.gamePort = gamePort;
-
+        this.cameraVelocity = new Vector2();
     }
 
     @Override
@@ -79,67 +82,23 @@ public class CameraSystem extends EntitySystem {
 
         if(currentArena != a){
             currentArena = a;
-
             int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
             gamecam.position.set(cbc.getCenterX(), offsetY * gamecam.viewportHeight + Measure.units(30f), 0);
-
-            //  MathUtils.clamp(gamecam.position.x, 0, a.getWidth());
-
         }
 
 
         gamecam.position.x = cbc.getCenterX();
 
         targetY = cbc.getCenterY();
-/*
-        left.x = cbc.bound.x - gamecam.viewportWidth / 2;
-        left.y = cbc.bound.y;
-        left.height = cbc.bound.height;
-        left.width = gamecam.viewportWidth / 2;
-
-        right.x = cbc.bound.x + cbc.bound.width;
-        right.y = cbc.bound.y;
-        right.height = cbc.bound.height;
-        right.width = gamecam.viewportWidth / 2;
 
 
-        bottom.x = cbc.bound.x;
-        bottom.y = cbc.bound.y - gamecam.viewportHeight / 3;
-        bottom.height = gamecam.viewportHeight / 3;;
-        bottom.width = cbc.bound.width;
-
-        top.x = cbc.bound.x;
-        top.y = cbc.bound.y + cbc.bound.height;
-        top.height = gamecam.viewportHeight / 3;;
-        top.width = cbc.bound.width;*/
-
-
-        IntBag entities = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class)
-                .exclude(ActiveOnTouchComponent.class)).getEntities();
-
-        for(int i = 0; i < entities.size(); i++) {
-            int entity = entities.get(i);
-
-            WallComponent wallBound = wm.get(entity);
-
-            Collider.Collision topCollision = Collider.cleanCollision(top, top, wallBound.bound);
-            Collider.Collision bottomCollision = Collider.cleanCollision(bottom, bottom, wallBound.bound);
-
-
-/*            if(topCollision == BOTTOM  || topCollision == TOP  || bottomCollision == TOP || bottomCollision == BOTTOM ) {
-                int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
-                targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
-                break;
-            }*/
-
-            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
-                    || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
-                int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
-                targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
-                break;
-            }
+        if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
+                || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
+            int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
+            targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
 
         }
+
 
         if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
             gamecam.position.x = gamePort.getWorldWidth() / 2;
@@ -147,12 +106,26 @@ public class CameraSystem extends EntitySystem {
             gamecam.position.x = a.getWidth() - gamecam.viewportWidth / 2;
         }
 
+
+        System.out.println("Target y is " + targetY);
         if(gamecam.position.y >= targetY) {
-            gamecam.position.y = (gamecam.position.y - cameraVelocity * world.delta < targetY)
-                    ? targetY : gamecam.position.y - cameraVelocity * world.delta;
+
+            cameraVelocity.y = (cameraVelocity.y > 0) ? 0 : cameraVelocity.y;
+
+            cameraVelocity.y = (cameraVelocity.y - acceleration <= -cameraMaxVelocity) ?
+                    -cameraMaxVelocity : cameraVelocity.y - acceleration;
+
+            boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
+            gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
         } else {
-            gamecam.position.y = (gamecam.position.y + cameraVelocity * world.delta > targetY)
-                    ? targetY : gamecam.position.y + cameraVelocity * world.delta;
+
+            cameraVelocity.y = (cameraVelocity.y < 0) ? 0 : cameraVelocity.y;
+
+            cameraVelocity.y = (cameraVelocity.y + acceleration >= cameraMaxVelocity) ?
+                    cameraMaxVelocity : cameraVelocity.y + acceleration;
+
+            boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta > targetY);
+            gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
         }
 
 
