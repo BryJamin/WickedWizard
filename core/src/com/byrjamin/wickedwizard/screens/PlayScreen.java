@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
@@ -295,6 +295,9 @@ public class PlayScreen extends AbstractScreen {
         for (Component comp : player) {
             entity.edit().add(comp);
         }
+
+        world.getSystem(MessageBannerSystem.class).createBanner("Solitary", "Hurry Up and Leave");
+
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
         currencyComponent = entity.getComponent(CurrencyComponent.class);

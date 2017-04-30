@@ -1,8 +1,8 @@
-package com.byrjamin.wickedwizard.ecs.systems;
+package com.byrjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.BaseSystem;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.CBlockSkin;
@@ -11,11 +11,11 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.FreedomSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.PrisonSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 
-import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.CBLOCK;
-import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.FOUNDARY;
-import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.FREEDOMRUN;
-import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.PRISON;
-import static com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem.Level.SOLITARY;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.CBLOCK;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FOUNDARY;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FREEDOMRUN;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.PRISON;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.SOLITARY;
 
 /**
  * Created by Home on 29/04/2017.
@@ -69,15 +69,19 @@ public class ChangeLevelSystem extends BaseSystem {
         switch (level) {
             case SOLITARY: level = PRISON;
                 jigsawGenerator.setNoBattleRooms(13);
+                world.getSystem(MessageBannerSystem.class).createBanner("Prison", "It's brighter here");
                 break;
             case PRISON: level = FOUNDARY;
                 jigsawGenerator.setNoBattleRooms(15);
+                world.getSystem(MessageBannerSystem.class).createBanner("Foundary", "Watch your Step");
                 break;
             case FOUNDARY: level = CBLOCK;
                 jigsawGenerator.setNoBattleRooms(15);
+                world.getSystem(MessageBannerSystem.class).createBanner("C-Block", "Better than D-Block");
                 break;
             case CBLOCK: level = FREEDOMRUN;
                 jigsawGenerator.setNoBattleRooms(18);
+                world.getSystem(MessageBannerSystem.class).createBanner("Final Run", "Almost free..");
                 break;
             case FREEDOMRUN:
                 //TODO world.endGame

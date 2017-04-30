@@ -6,7 +6,6 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.systems.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
