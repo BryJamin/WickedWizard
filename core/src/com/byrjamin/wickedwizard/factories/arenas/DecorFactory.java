@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
@@ -52,6 +53,39 @@ public class DecorFactory extends AbstractFactory {
         bag.add(trbc);
 
         return bag;
+    }
+
+
+    public ComponentBag chevronBag(float x, float y, float rotationInDegrees){
+
+        float width = Measure.units(8);
+        float height = Measure.units(8);
+
+        x = x - width;
+        y = y - height;
+
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+
+        AnimationStateComponent sc = new AnimationStateComponent();
+        bag.add(sc);
+
+        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
+        aniMap.put(sc.getState(),
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("chevron"), Animation.PlayMode.LOOP_PINGPONG));
+        bag.add(new AnimationComponent(aniMap));
+
+        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(sc.getState()).getKeyFrame(sc.stateTime), width, height,
+                TextureRegionComponent.BACKGROUND_LAYER_NEAR);
+
+        trc.rotation = rotationInDegrees;
+
+        bag.add(trc);
+
+        return bag;
+
+
     }
 
 

@@ -31,17 +31,20 @@ import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComp
 public class TutorialFactory extends ArenaShellFactory {
 
     private final String moveTutorialString1 = "Exit this room on the right";
-    private final String moveTutorialString2 = "Touch in this area to move!";
+    private final String moveTutorialString2 = "TOUCH WITHIN THIS AREA TO MOVE!";
 
 
-    private final String jumpTutorialString =
-            "Tap above your character to jump and start gliding! \n \n DOUBLE Tap below your character to cancel gliding";
-    private final String enemyTutorialString =
+    private static final String jumpTutorialString =
+            "Tap above your character to jump and glide! \n \n DOUBLE Tap below your character to cancel glide";
+    private static final String enemyTutorialString =
             "Hark! A Worthy Foe! \n \n Hold down within this area to shoot \n \n Drag to change aim";
-    private final String grappleTutorialString =
+    private static final String grappleTutorialString =
             "Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it";
-    private final String endString =
+    private static final String endString =
             "Yea you seem about ready \n \n Now go and adventure!";
+
+    private static final String platformString =
+            "Double Tap Below your character to \n Fall through platforms";
 
     public TutorialFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager, arenaSkin);
@@ -67,19 +70,24 @@ public class TutorialFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        Bag<Component> bag = new Bag<Component>();
+  /*      Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
         TextureFontComponent tfc = new TextureFontComponent(moveTutorialString1);
         bag.add(tfc);
-        arena.addEntity(bag);
+        arena.addEntity(bag);*/
 
-        bag = new Bag<Component>();
+        Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 150));
-        tfc = new TextureFontComponent(moveTutorialString2);
+        TextureFontComponent tfc = new TextureFontComponent(moveTutorialString2);
         tfc.layer = FOREGROUND_LAYER_NEAR;
         tfc.setColor(1,1,1,1);
         bag.add(tfc);
         arena.addEntity(bag);
+
+
+        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
 
 /*        bag = new Bag<Component>();
         createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, Color.BLACK);
@@ -90,6 +98,62 @@ public class TutorialFactory extends ArenaShellFactory {
         bag.add(sc);
         bag.add(new FadeComponent());*/
         arena.addEntity(createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, Color.BLACK));
+
+        return arena;
+
+    }
+
+
+    public Arena platformTutorial(MapCoords defaultCoords){
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+        containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
+
+        Arena arena = new Arena(containingCorrds);
+
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT * 2);
+
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL))
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.NONE)).buildArena(arena);
+
+        //Blocker
+        arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(10f), Measure.units(20f), Measure.units(50f), arenaSkin));
+
+        //Left platforms
+        arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(30f), Measure.units(35f)));
+        arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(55f), Measure.units(35f)));
+
+
+
+        //Right platforms
+        arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(30f), Measure.units(35f)));
+        arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(55f), Measure.units(35f)));
+
+        //Arrows
+        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), 180));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(55f), 180));
+        //arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), 0));
+        //arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(27f), Measure.units(22.5f), 0));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(27f), Measure.units(52.5f), 0));
+
+        TextureFontComponent tfc = new TextureFontComponent(platformString);
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(0, 1500));
+        bag.add(tfc);
+
+        arena.addEntity(bag);
 
         return arena;
 
@@ -119,6 +183,10 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(decorFactory.wallBag(WIDTH - WALLWIDTH * 6,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3, arenaSkin));
         //HIDDEN SAFETY NET
         arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3, arenaSkin));
+
+        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(0, 800));
@@ -162,7 +230,7 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(createTutorialHighlight(0, HEIGHT - WALLWIDTH / 2, WIDTH, WALLWIDTH / 2));
 
         bag = new BlobFactory(assetManager).blobBag(arena.getWidth() - Measure.units(12), WALLWIDTH * 4);
-        BagSearch.getObjectOfTypeClass(AccelerantComponent.class, bag).maxX = Measure.units(1);
+        BagSearch.getObjectOfTypeClass(AccelerantComponent.class, bag).maxX = Measure.units(0);
         arena.addEntity(bag);
 
 

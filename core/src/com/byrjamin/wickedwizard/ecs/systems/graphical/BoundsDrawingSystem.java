@@ -39,10 +39,12 @@ public class BoundsDrawingSystem extends EntitySystem {
         }*/
 
 
+/*
         if(world.getSystem(PlayerInputSystem.class) != null) {
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
                     world.getSystem(PlayerInputSystem.class).movementArea);
         }
+*/
 
 
 /*        if(world.getSystem(CameraSystem.class) != null){

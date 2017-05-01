@@ -108,9 +108,6 @@ public class PlayScreen extends AbstractScreen {
 
     public final TextureAtlas atlas;
     public AssetManager manager;
-    public ShaderProgram shaderOutline;
-
-    private Pixmap pixmap;
 
     private BitmapFont currencyFont;
 
@@ -149,7 +146,7 @@ public class PlayScreen extends AbstractScreen {
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
 
-        jg.generateTutorial = false;
+        jg.generateTutorial = true;
         createWorld();
     }
 
