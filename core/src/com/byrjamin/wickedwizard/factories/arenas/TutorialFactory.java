@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
@@ -77,7 +78,7 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(bag);*/
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 150));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 150));
         TextureFontComponent tfc = new TextureFontComponent(moveTutorialString2);
         tfc.layer = FOREGROUND_LAYER_NEAR;
         tfc.setColor(1,1,1,1);
@@ -150,7 +151,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
         TextureFontComponent tfc = new TextureFontComponent(platformString);
         ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(0, 1500));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1500));
         bag.add(tfc);
 
         arena.addEntity(bag);
@@ -189,7 +190,7 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 800));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
         bag.add(new TextureFontComponent(jumpTutorialString));
         arena.addEntity(bag);
 
@@ -220,7 +221,7 @@ public class TutorialFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.DOOR)).buildArena(arena);
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 1000));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1000));
         bag.add(new TextureFontComponent(enemyTutorialString));
         arena.addEntity(bag);
 
@@ -285,7 +286,7 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));*/
 
         bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 800));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
         bag.add(new TextureFontComponent(grappleTutorialString));
         arena.addEntity(bag);
 
@@ -320,7 +321,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
         Bag<Component> bag = new Bag<Component>();
 
-        bag.add(new PositionComponent(0, 800));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
         bag.add(new TextureFontComponent(endString));
         arena.addEntity(bag);
 

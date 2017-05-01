@@ -24,6 +24,7 @@ to go below and then hold to move it counts as the same pointer and you shoot an
 -Message for Solitary level is positioned incorrectly
 -General clean up and maintenance, seperating of the RoomTransitionSystem into different classes
 - Potential bug with room transition animation on wide rooms. Sliver of old room may be visible
+- May be possible to fall through the world due to player input being unpaused when the enxt transition screen is going (hard to replicate)
 
 
 

@@ -100,6 +100,8 @@ public class RenderingSystem extends EntitySystem {
 
     protected void process(Entity e) {
 
+        //System.out.println("INSIDE");
+
         PositionComponent pc = pm.get(e);
 
         if(trm.has(e)) {
@@ -207,7 +209,7 @@ public class RenderingSystem extends EntitySystem {
             bmf.setColor(trfc.color);
             bmf.draw(batch, trfc.text,
                     pc.getX() + trfc.offsetX, pc.getY() + trfc.offsetY
-            ,gamecam.viewportWidth, Align.center, true);
+            ,trfc.width, Align.center, true);
             bmf.setColor(Color.WHITE);
         }
 

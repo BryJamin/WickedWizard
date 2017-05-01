@@ -56,6 +56,7 @@ public class JigsawGenerator {
     }
 
     public void setSkin(ArenaSkin arenaSkin) {
+        this.arenaSkin = arenaSkin;
         this.level1Rooms = new Level1Rooms(assetManager, arenaSkin);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);

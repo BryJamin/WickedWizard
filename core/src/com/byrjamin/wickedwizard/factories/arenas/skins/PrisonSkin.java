@@ -23,4 +23,15 @@ public class PrisonSkin extends AbstractSkin{
         return new Color(0,0.5f,0,1);
     }*/
 
+
+    @Override
+    public Color getBackgroundTint() {
+        return new Color(0.5f,0.5f,0.5f,1);
+    }
+
+    @Override
+    public Color getWallTint() {
+        return new Color(0.3f,0.3f,0.3f,1);
+    }
+
 }

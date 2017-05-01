@@ -181,11 +181,11 @@ public class ItemFactory extends AbstractFactory {
         ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x, y - Measure.units(5)));
         priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
-        TextureFontComponent trc = new TextureFontComponent(""+money);
-        trc.width = width / 2;
-        trc.offsetX = -Measure.units(45f);
-        trc.offsetY =  Measure.units(2.8f);
-        priceTag.add(trc);
+        TextureFontComponent tfc = new TextureFontComponent(""+money);
+        //tfc.width = width / 2;
+        tfc.offsetX = Measure.units(5);
+        tfc.offsetY = Measure.units(2.5f);
+        priceTag.add(tfc);
         ChildComponent c = new ChildComponent();
         pc.children.add(c);
         priceTag.add(c);

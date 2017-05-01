@@ -129,7 +129,7 @@ public class PlayScreen extends AbstractScreen {
 
     //TODO IF you ever click in the deck area don't cast any spells
 
-    public PlayScreen(MainGame game) {
+    public PlayScreen(MainGame game, boolean isTutorial) {
         super(game);
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
@@ -142,11 +142,10 @@ public class PlayScreen extends AbstractScreen {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
         jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas),3, random);
-
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
 
-        jg.generateTutorial = true;
+        jg.generateTutorial = isTutorial;
         createWorld();
     }
 
@@ -486,7 +485,7 @@ public class PlayScreen extends AbstractScreen {
         public boolean tap(float x, float y, int count, int button) {
 
             if (gameOver) {
-                createWorld();
+                game.setScreen(new MenuScreen(game));
                 gameOver = false;
             }
 
