@@ -189,7 +189,7 @@ public class PlayScreen extends AbstractScreen {
         fc.fadeIn = true;
 
         Entity e = deathWorld.createEntity();
-        e.edit().add(new PositionComponent(gamecam.position.x - gamePort.getWorldWidth() / 2
+        e.edit().add(new PositionComponent(gamecam.position.x
                 ,gamecam.position.y - gamePort.getWorldHeight() / 2 + 800));
         TextureFontComponent tfc = new TextureFontComponent("Oh dear, you seem to have died \n\n Tap to restart");
         e.edit().add(tfc);
@@ -305,10 +305,6 @@ public class PlayScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(gamecam.combined);
-
-        //TODO this doesn't fit the slowdown fly everywhere problem when using artemis
-        //TODO look into proper ways ot do delta time capping, or just make it that on desktop if the mouse is
-        //TODO touching the screen pause the game.
 
         if (delta < 0.04f) {
             world.setDelta(delta);

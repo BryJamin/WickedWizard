@@ -78,7 +78,7 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(bag);*/
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 150));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 125));
         TextureFontComponent tfc = new TextureFontComponent(moveTutorialString2);
         tfc.layer = FOREGROUND_LAYER_NEAR;
         tfc.setColor(1,1,1,1);
