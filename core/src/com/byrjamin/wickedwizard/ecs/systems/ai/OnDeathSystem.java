@@ -52,7 +52,20 @@ public class OnDeathSystem  extends BaseSystem {
                 for (Component c : bag) {
                     e.edit().add(c);
                 }
-                e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
+
+                if(cbm.has(deadEntity)){
+                    CollisionBoundComponent cbc = cbm.get(deadEntity);
+
+                    if(cbm.has (e)) {
+                        CollisionBoundComponent odcbc = cbm.get(e);
+
+                        e.getComponent(PositionComponent.class).position = new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0);
+
+                    }
+
+                } else {
+                    e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
+                }
             }
         }
 
