@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
@@ -33,6 +34,7 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new BlinkComponent());
         fillbag.add(new EnemyComponent());
         OnDeathComponent odc = new OnDeathComponent();
+        df.giblets(odc, 5, Color.CYAN);
         fillbag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
         return fillbag;
 

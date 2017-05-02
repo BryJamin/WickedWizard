@@ -15,6 +15,8 @@ due to the way the future bound is used.
 -Add in a Time Limit of sorts where we die if you run out of time. 
 -Improve message banner to have an offset so you can change where it shows up. 
 -Add a fade to the item pickup entity. 
+- Giblets. create an Ondeath that spawns out giblets when an enemies dies
+- Minion component, (can't drop loot))
 
 
 ###Bugs
@@ -55,6 +57,9 @@ to go below and then hold to move it counts as the same pointer and you shoot an
 - New Bosses 
     - Prince and Princess box for a face. Two enemies that when one dies the other tries to ressurect
     - Giant KugelDusche enemy that the player has to traverse of moving planks to hit. 
+    
+- New Rooms 
+    - Room where 
     
 - Explosives and Lasers
   

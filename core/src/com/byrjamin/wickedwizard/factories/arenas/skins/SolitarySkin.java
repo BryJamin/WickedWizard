@@ -22,6 +22,8 @@ public class SolitarySkin extends AbstractSkin {
 
 
 
+
+
 /*    @Override
     public Color getBackgroundTint() {
         return new Color(0.5f,0.5f,0.5f,1);

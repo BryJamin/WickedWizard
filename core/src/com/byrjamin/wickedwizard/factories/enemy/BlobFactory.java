@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -213,6 +214,7 @@ public class BlobFactory extends EnemyFactory {
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        df.giblets(odc, 10, Color.GREEN);
         bag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
 
 
