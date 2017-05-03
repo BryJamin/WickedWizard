@@ -78,11 +78,13 @@ public class DeathFactory extends AbstractFactory {
         for(int i = 0; i < numberOfGiblets; i++) {
 
             int vx = random.nextInt((int) Measure.units(100f)) + 50;
+            int vy = random.nextInt((int) Measure.units(100f)) + 50;
             vx = random.nextBoolean() ? vx : -vx;
+            vy = random.nextBoolean() ? vy : -vy;
 
             bag = new ComponentBag();
             bag.add(new PositionComponent());
-            bag.add(new VelocityComponent(vx, vx));
+            bag.add(new VelocityComponent(vx, vy));
             bag.add(new BounceComponent());
             bag.add(new CollisionBoundComponent(new Rectangle(0, 0, Measure.units(1f), Measure.units(1f))));
             bag.add(new ExpireComponent(0.4f));

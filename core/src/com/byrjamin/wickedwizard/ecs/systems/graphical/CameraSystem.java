@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
@@ -38,9 +39,22 @@ public class CameraSystem extends EntitySystem {
 
     private Arena currentArena;
 
+    private boolean transitioning;
+
+
+
+    private enum CameraMode {
+        FIXED, CENTER_FOLLOW
+    }
+
+    private CameraMode cameraMode;
 
     //TODO add acceleration?
-    private float acceleration = Measure.units(15f);
+
+    private static final float fixedAcceleration = Measure.units(5f);
+    private static final float centerFollowAcceleration = Measure.units(15f);
+
+    private float acceleration = Measure.units(5f);
     private float cameraMaxVelocity = Measure.units(130f);
     private Vector2 cameraVelocity;
 
@@ -67,6 +81,7 @@ public class CameraSystem extends EntitySystem {
         this.gamecam = gamecam;
         this.gamePort = gamePort;
         this.cameraVelocity = new Vector2();
+        this.cameraMode = CameraMode.FIXED;
     }
 
     @Override
@@ -74,12 +89,23 @@ public class CameraSystem extends EntitySystem {
         updateGamecam();
     }
 
+
+
+    public void fixedFollow(){
+
+
+
+
+    }
+
+    //TODO need to break this method up. It is too large and confusing.
     public void updateGamecam() {
         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
 
 
         Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
 
+        //sets camera on room transfer
         if(currentArena != a){
             currentArena = a;
             int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
@@ -87,46 +113,95 @@ public class CameraSystem extends EntitySystem {
         }
 
 
+
         gamecam.position.x = cbc.getCenterX();
 
-        targetY = cbc.getCenterY();
+        if(cameraMode == CameraMode.CENTER_FOLLOW && cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)){
+            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
+                    || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
+                cameraMode = CameraMode.FIXED;
+                acceleration = fixedAcceleration;
+            }
+        }
 
-
-        //if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)) {
+        if(cameraMode == CameraMode.FIXED) {
             if (cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
                     || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
                 int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
                 targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
+            } else {
+                cameraMode = CameraMode.CENTER_FOLLOW;
+                acceleration = centerFollowAcceleration;
+                transitioning = true;
             }
+        }
+
+        if(cameraMode == CameraMode.CENTER_FOLLOW){
+            targetY = cbc.getCenterY();
+        }
         //}
 
 
+        //TODO transitioning boolean goes here.
+
+        if(transitioning || cameraMode == CameraMode.FIXED) {
+            if (gamecam.position.y >= targetY) {
+                cameraVelocity.y = (cameraVelocity.y > 0) ? 0 : cameraVelocity.y;
+                cameraVelocity.y = (cameraVelocity.y - acceleration <= -cameraMaxVelocity) ?
+                        -cameraMaxVelocity : cameraVelocity.y - acceleration;
+
+                boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
+                gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
+
+                if(onTarget) transitioning = false;
+
+            } else {
+
+                cameraVelocity.y = (cameraVelocity.y < 0) ? 0 : cameraVelocity.y;
+
+                cameraVelocity.y = (cameraVelocity.y + acceleration >= cameraMaxVelocity) ?
+                        cameraMaxVelocity : cameraVelocity.y + acceleration;
+
+                boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta > targetY);
+                gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
+
+                if(onTarget) transitioning = false;
+            }
+        }
+
+/*        System.out.println("Transitioning is currenty " + transitioning);
+        System.out.println("Target Y is " + targetY);*/
+
+
+        if(cameraMode == CameraMode.CENTER_FOLLOW && !transitioning) {
+            gamecam.position.y = cbc.getCenterY();
+        }
+
+
+        //Camera max height and minium height bounds.
+        if(gamecam.position.y <= Measure.units(30f)) {
+            gamecam.position.y = Measure.units(30f);
+        } else if (gamecam.position.y >= currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f)) {
+            gamecam.position.y = currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f);
+            cameraMode = CameraMode.FIXED;
+        }
+
+        //Camera max width and minium width bounds
         if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
             gamecam.position.x = gamePort.getWorldWidth() / 2;
         } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= a.getWidth()){
             gamecam.position.x = a.getWidth() - gamecam.viewportWidth / 2;
         }
 
-        if(gamecam.position.y >= targetY) {
 
-            cameraVelocity.y = (cameraVelocity.y > 0) ? 0 : cameraVelocity.y;
+/*        if(gamecam.position.y + ArenaShellFactory.SECTION_HEIGHT >= currentArena.getHeight()) {
+            gamecam.position.y = currentArena.getHeight() - ArenaShellFactory.SECTION_HEIGHT;
+        }*/
 
-            cameraVelocity.y = (cameraVelocity.y - acceleration <= -cameraMaxVelocity) ?
-                    -cameraMaxVelocity : cameraVelocity.y - acceleration;
-
-            boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
-            gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
-        } else {
-
-            cameraVelocity.y = (cameraVelocity.y < 0) ? 0 : cameraVelocity.y;
-
-            cameraVelocity.y = (cameraVelocity.y + acceleration >= cameraMaxVelocity) ?
-                    cameraMaxVelocity : cameraVelocity.y + acceleration;
-
-            boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta > targetY);
-            gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
-        }
-
+/*
+        System.out.println(cameraMode);
+        System.out.println(transitioning);
+*/
 
         gamecam.update();
 
@@ -134,6 +209,7 @@ public class CameraSystem extends EntitySystem {
         world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
                 gamecam.position.y - gamePort.getWorldHeight() / 2);
     }
+
 
 
     public OrthographicCamera getGamecam() {
@@ -193,26 +269,3 @@ public class CameraSystem extends EntitySystem {
         return bottom;
     }
 }
-
-
-/*
-
-            gamecam.position.set((int) map.getActiveRoom().getWizard().getCenterX(),(int) map.getActiveRoom().getWizard().getCenterY(), 0);
-
-            if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
-                gamecam.position.set(gamePort.getWorldWidth() / 2,gamecam.position.y, 0);
-            } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= map.getActiveRoom().WIDTH){
-                gamecam.position.set((int) (map.getActiveRoom().WIDTH - gamecam.viewportWidth / 2),(int) gamecam.position.y, 0);
-            }
-
-            if(gamecam.position.y <= gamePort.getWorldHeight() / 2){
-                gamecam.position.set(gamecam.position.x, gamePort.getWorldHeight() / 2, 0);
-            } else if(gamecam.position.y + gamecam.viewportHeight / 2 >= map.getActiveRoom().HEIGHT){
-                gamecam.position.set((int) gamecam.position.x,(int) (map.getActiveRoom().HEIGHT - gamecam.viewportHeight / 2), 0);
-            }
-
-            gamecam.update();
-
-
-
- */

@@ -257,13 +257,13 @@ public class PlayScreen extends AbstractScreen {
                         )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
-                        new ClearCollisionsSystem(),
                         new FollowPositionSystem(),
                         new CameraSystem(gamecam, gamePort),
                         new RenderingSystem(game.batch, manager, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         new ChangeLevelSystem(jg, atlas),
+                        new ClearCollisionsSystem(),
                         new RoomTransitionSystem(startingArena, arenaArray)
                 )
                 .build();
