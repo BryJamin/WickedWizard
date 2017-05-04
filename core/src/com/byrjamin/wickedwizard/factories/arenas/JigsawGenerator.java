@@ -171,10 +171,10 @@ public class JigsawGenerator {
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
         placedArenas.add(startingArena);
         placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
-        placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(2,0)));
-        placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(3,0)));
-        placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(3,3)));
-        placedArenas.add(tutorialFactory.endTutorial(new MapCoords(4,3)));
+        placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(4,0)));
+        placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
+        placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(6,3)));
+        placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
 
         Arena f = arenaShellFactory.createOmniArena(new MapCoords(5,3));
         placedArenas.add(f);

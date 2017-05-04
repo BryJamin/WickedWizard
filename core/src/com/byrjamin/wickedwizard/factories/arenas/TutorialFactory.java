@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
@@ -36,7 +37,12 @@ public class TutorialFactory extends ArenaShellFactory {
 
 
     private static final String jumpTutorialString =
-            "Tap above your character to jump and glide! \n \n DOUBLE Tap below your character to cancel glide";
+            "Tap ABOVE your character to jump and glide! \n \n DOUBLE Tap BELOW your character to cancel glide";
+
+
+    private static final String doubleJumpTutorialString =
+            "Tap ABOVE your character and tap ABOVE AGAIN \n To DOUBLE Jump";
+
     private static final String enemyTutorialString =
             "Hark! A Worthy Foe! \n \n Hold down within this area to shoot \n \n Drag to change aim";
     private static final String grappleTutorialString =
@@ -71,14 +77,14 @@ public class TutorialFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
-  /*      Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(0, 800));
-        TextureFontComponent tfc = new TextureFontComponent(moveTutorialString1);
-        bag.add(tfc);
-        arena.addEntity(bag);*/
+        Bag<Component> textBag = new Bag<Component>();
+        textBag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
+        TextureFontComponent text = new TextureFontComponent(moveTutorialString1);
+        textBag.add(text);
+        arena.addEntity(textBag);
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 125));
+        bag.add(new PositionComponent(arena.getWidth() / 2, 125));
         TextureFontComponent tfc = new TextureFontComponent(moveTutorialString2);
         tfc.layer = FOREGROUND_LAYER_NEAR;
         tfc.setColor(1,1,1,1);
@@ -165,34 +171,60 @@ public class TutorialFactory extends ArenaShellFactory {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+        containingCorrds.add(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()));
 
         Arena arena = new Arena(containingCorrds);
 
-        arena.setWidth(SECTION_WIDTH);
+        arena.setWidth(SECTION_WIDTH * 3);
         arena.setHeight(SECTION_HEIGHT);
 
         arena = new ArenaBuilder(assetManager, arenaSkin).addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.NONE)).buildArena(arena);
+                        ArenaBuilder.wall.FULL))
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        //BEFORE GAP
+/*        //BEFORE GAP
         arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3, arenaSkin));
         //AFTER GAP
         arena.addEntity(decorFactory.wallBag(WIDTH - WALLWIDTH * 6,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3, arenaSkin));
         //HIDDEN SAFETY NET
-        arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3, arenaSkin));
+        arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3, arenaSkin));*/
 
-        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.wallBag(Measure.units(30f),  Measure.units(10f), Measure.units(70f), WALLWIDTH * 2, arenaSkin));
+
+        arena.addEntity(decorFactory.wallBag(Measure.units(180f),  Measure.units(10f), Measure.units(60f), WALLWIDTH * 6, arenaSkin));
+
+
+/*        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), -90));
         arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));*/
 
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
-        bag.add(new TextureFontComponent(jumpTutorialString));
-        arena.addEntity(bag);
+        Bag<Component> jumpTutorialTextbag = new Bag<Component>();
+        jumpTutorialTextbag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
+        TextureFontComponent jump = new TextureFontComponent(jumpTutorialString);
+        jump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
+        jumpTutorialTextbag.add(jump);
+        arena.addEntity(jumpTutorialTextbag);
+
+        Bag<Component> doubleJumpTutorialTextbag = new Bag<Component>();
+        doubleJumpTutorialTextbag.add(new PositionComponent(Measure.units(175f), 1000));
+        TextureFontComponent doubleJump = new TextureFontComponent(doubleJumpTutorialString);
+        doubleJump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
+        doubleJumpTutorialTextbag.add(doubleJump);
+        arena.addEntity(doubleJumpTutorialTextbag);
 
 
         return arena;

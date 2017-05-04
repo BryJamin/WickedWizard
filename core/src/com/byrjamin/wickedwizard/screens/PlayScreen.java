@@ -283,8 +283,8 @@ public class PlayScreen extends AbstractScreen {
         for (Component comp : player) {
             entity.edit().add(comp);
         }
-
-        world.getSystem(MessageBannerSystem.class).createBanner("Solitary", "Hurry Up and Leave");
+/*
+        world.getSystem(MessageBannerSystem.class).createBanner("Solitary", "Hurry Up and Leave");*/
 
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
@@ -410,6 +410,7 @@ public class PlayScreen extends AbstractScreen {
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
 
+/*
         for (int i = 0; i < jumpresource.jumps; i++) {
 
             float width = MainGame.GAME_UNITS * 2.5f;
@@ -420,30 +421,31 @@ public class PlayScreen extends AbstractScreen {
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
                     width, height);
         }
+*/
 
 
         PickUp p = new MoneyPlus1();
 
         game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(14f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
                 Measure.units(2f), Measure.units(2f));
 
         currencyFont.draw(game.batch, "" + currencyComponent.money,
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(9f),
                 Measure.units(7f), Align.left, true);
 
         p = new KeyUp();
 
         game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(18f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15f),
                 Measure.units(2.5f), Measure.units(2.5f));
 
         currencyFont.draw(game.batch, "" + currencyComponent.keys,
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15.3f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
                 Measure.units(5f), Align.center, true);
 
     }

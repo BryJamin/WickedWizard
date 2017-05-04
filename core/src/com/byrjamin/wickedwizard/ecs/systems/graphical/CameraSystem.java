@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.ecs.systems.graphical;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.EntitySystem;
-import com.artemis.utils.IntBag;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +12,7 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
@@ -54,8 +54,10 @@ public class CameraSystem extends EntitySystem {
     private static final float fixedAcceleration = Measure.units(5f);
     private static final float centerFollowAcceleration = Measure.units(15f);
 
+
     private float acceleration = Measure.units(5f);
-    private float cameraMaxVelocity = Measure.units(130f);
+    private float cameramaxVelocity = Measure.units(30f);
+    private float cameradefaultMaxVelocity = Measure.units(130f);
     private Vector2 cameraVelocity;
 
     private Rectangle left = new Rectangle();
@@ -102,6 +104,8 @@ public class CameraSystem extends EntitySystem {
     public void updateGamecam() {
         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
 
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+
 
         Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
 
@@ -147,8 +151,8 @@ public class CameraSystem extends EntitySystem {
         if(transitioning || cameraMode == CameraMode.FIXED) {
             if (gamecam.position.y >= targetY) {
                 cameraVelocity.y = (cameraVelocity.y > 0) ? 0 : cameraVelocity.y;
-                cameraVelocity.y = (cameraVelocity.y - acceleration <= -cameraMaxVelocity) ?
-                        -cameraMaxVelocity : cameraVelocity.y - acceleration;
+                cameraVelocity.y = (cameraVelocity.y - acceleration <= -cameradefaultMaxVelocity) ?
+                        -cameradefaultMaxVelocity : cameraVelocity.y - acceleration;
 
                 boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
                 gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
@@ -159,8 +163,8 @@ public class CameraSystem extends EntitySystem {
 
                 cameraVelocity.y = (cameraVelocity.y < 0) ? 0 : cameraVelocity.y;
 
-                cameraVelocity.y = (cameraVelocity.y + acceleration >= cameraMaxVelocity) ?
-                        cameraMaxVelocity : cameraVelocity.y + acceleration;
+                cameraVelocity.y = (cameraVelocity.y + acceleration >= cameradefaultMaxVelocity) ?
+                        cameradefaultMaxVelocity : cameraVelocity.y + acceleration;
 
                 boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta > targetY);
                 gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;

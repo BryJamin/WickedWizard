@@ -7,6 +7,7 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Change tutorial to have more 'forced sections' (teach double jump)
 -Create a menu Screen and when you start game if you have no preferences of tutorial make one. 
 - Vertical wall bug. You can land on the side of top of wall vertically stacking with one another,
 due to the way the future bound is used. 
