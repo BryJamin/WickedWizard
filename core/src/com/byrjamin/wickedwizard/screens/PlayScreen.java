@@ -13,15 +13,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
@@ -54,7 +51,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
@@ -84,7 +81,6 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -239,7 +235,6 @@ public class PlayScreen extends AbstractScreen {
                         new OnDeathSystem(),
                         new FadeSystem(),
                         new PhaseSystem(),
-                        new MoveToSystem(),
                         new ProximitySystem(),
                         new FindChildSystem(),
                         new PickUpSystem(),
@@ -253,6 +248,7 @@ public class PlayScreen extends AbstractScreen {
                         new StateSystem(),
                         new SpawnerSystem(),
                         new GravitySystem(),
+                        new GrappleSystem(),
                         new FrictionSystem()
                         )
                 .with(WorldConfigurationBuilder.Priority.LOW,
@@ -464,6 +460,9 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void resume() {
+
+
+
 
     }
 

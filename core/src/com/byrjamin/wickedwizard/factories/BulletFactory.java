@@ -63,7 +63,7 @@ public class BulletFactory extends AbstractFactory {
 
 
     public Bag<Component> basicBulletBag(float x, float y, float scale) {
-        return basicBulletBag(x ,y ,scale ,atlas.findRegion("bullet"), Color.WHITE);
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion("bullet"), new Color(1,1,1,1));
     }
 
     public Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
@@ -95,6 +95,9 @@ public class BulletFactory extends AbstractFactory {
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion,-width / 2,-height / 2,  width * 2, height * 2, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
         trc.color = color;
+
+        System.out.println("Bullet color should be " + trc.color);
+
         bag.add(trc);
         return bag;
     }
@@ -130,7 +133,7 @@ public class BulletFactory extends AbstractFactory {
 
 
     public ComponentBag enemyBlockBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        for(Component c : basicBulletBlockBag(x,y,4, atlas.findRegion("block") , Color.BLACK)){
+        for(Component c : basicBulletBlockBag(x,y,4, atlas.findRegion("block") , new Color(Color.BLACK))){
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(20) * Math.cos(angleOfTravel)), (float) (Measure.units(20) * Math.sin(angleOfTravel))));

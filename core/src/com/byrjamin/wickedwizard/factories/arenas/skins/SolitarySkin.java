@@ -17,21 +17,23 @@ public class SolitarySkin extends AbstractSkin {
 
     @Override
     public Array<? extends TextureRegion> getWallTexture() {
-        return atlas.findRegions("brick");
+        return atlas.findRegions("block");
     }
 
 
+    @Override
+    public Array<? extends TextureRegion> getBackgroundTextures() {
+        return atlas.findRegions("block");
+    }
 
-
-
-/*    @Override
+    @Override
     public Color getBackgroundTint() {
-        return new Color(0.5f,0.5f,0.5f,1);
+        return new Color(0.3f,0.3f,0.3f,1);
     }
 
     @Override
     public Color getWallTint() {
-        return new Color(0.3f,0.3f,0.3f,1);
-    }*/
+        return new Color(0.4f,0.4f,0.4f,1);
+    }
 
 }

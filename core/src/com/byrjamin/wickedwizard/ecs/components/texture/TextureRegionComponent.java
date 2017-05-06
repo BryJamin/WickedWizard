@@ -46,7 +46,7 @@ public class TextureRegionComponent extends Component{
     public float rotation = 0;
 
     public Color color = new Color(1,1,1,1);
-    public Color DEFAULT = Color.WHITE;
+    public Color DEFAULT = new Color(1,1,1,1);
 
     public TextureRegionComponent(TextureRegion region, float offsetX, float offsetY, float width, float height, int layer) {
         this.region = region;

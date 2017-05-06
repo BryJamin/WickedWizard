@@ -23,6 +23,6 @@ public class MoneyPlus1 implements PickUp {
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("money", 0);
+        return new Pair<String, Integer>("gold", 0);
     }
 }

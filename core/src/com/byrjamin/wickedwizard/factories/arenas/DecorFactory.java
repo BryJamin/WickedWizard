@@ -33,11 +33,11 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
  */
 public class DecorFactory extends AbstractFactory {
 
-   // private ArenaSkin arenaSkin;
+    private ArenaSkin arenaSkin;
 
     public DecorFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
-       // this.arenaSkin = arenaSkin;
+        this.arenaSkin = arenaSkin;
     }
 
 
@@ -171,8 +171,9 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("grate"), width, height,
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("hole"), width, height,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR);
+        trc.color = arenaSkin.getBackgroundTint();
         //trc.setColor(0.7f, 0, 0f, 1);
 
 
@@ -184,9 +185,9 @@ public class DecorFactory extends AbstractFactory {
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
         aniMap.put(AnimationStateComponent.State.LOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("grate"), Animation.PlayMode.REVERSED));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("hole"), Animation.PlayMode.REVERSED));
         aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("grate")));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("hole")));
         bag.add(new AnimationComponent(aniMap));
 
 

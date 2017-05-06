@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -224,7 +225,9 @@ public class BlobFactory extends EnemyFactory {
         SpawnerFactory.Spawner s = new SpawnerFactory.Spawner() {
             @Override
             public Bag<Component> spawnBag(float x, float y) {
-                return smallblobBag(x,y);
+                Bag<Component> b = smallblobBag(x,y);
+                b.add(new MinionComponent());
+                return b;
             }
         };
 

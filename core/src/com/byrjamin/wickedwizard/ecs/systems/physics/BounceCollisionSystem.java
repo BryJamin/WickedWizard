@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
@@ -64,6 +65,17 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
             }
 
         }
+
+        subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
+        entityIds = subscription.getEntities();
+
+        if(!playerm.has(e) && !bm.has(e)) {
+
+            for(int i = 0; i < entityIds.size(); i++){
+                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
+            }
+        }
+
 
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);

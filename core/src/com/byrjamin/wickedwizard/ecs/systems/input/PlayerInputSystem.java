@@ -119,7 +119,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     if (input.y <= movementArea.y + movementArea.getHeight()) {
                         ac.accelX = Measure.units(15f) * sc.speed;
                         ac.maxX = Measure.units(80f) * sc.speed;
-                        MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
+                        GrappleSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
                     }
                 }
             }
@@ -183,7 +183,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
             float x = r.x + r.getWidth() / 2;
             float y = r.y + r.getHeight() / 2;
 
-            world.getSystem(MoveToSystem.class).flyToNoPathCheck(
+            world.getSystem(GrappleSystem.class).flyToNoPathCheck(
                     Math.atan2(y - cbc.getCenterY(), x - cbc.getCenterX()),
                     x,
                     y,

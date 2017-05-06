@@ -22,7 +22,7 @@ import com.byrjamin.wickedwizard.utils.collider.Collider;
  * Created by Home on 22/03/2017.
  */
 
-public class MoveToSystem extends EntityProcessingSystem {
+public class GrappleSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<VelocityComponent> vm;
@@ -31,7 +31,7 @@ public class MoveToSystem extends EntityProcessingSystem {
     ComponentMapper<WallComponent> wm;
 
     @SuppressWarnings("unchecked")
-    public MoveToSystem() {
+    public GrappleSystem() {
         super(Aspect.all(PositionComponent.class, MoveToComponent.class, VelocityComponent.class, AccelerantComponent.class));
     }
 
@@ -42,7 +42,19 @@ public class MoveToSystem extends EntityProcessingSystem {
         MoveToComponent mtc = mtm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
+        if(vc.velocity.y < 0 && cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)){
+            mtc.targetX = null;
+            mtc.targetY = null;
+        } else if(vc.velocity.y > 0 && cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true)) {
+            mtc.targetX = null;
+            mtc.targetY = null;
+        }
+
+
+
         Float targetX = mtc.targetX;
+
+
 
         if(targetX != null){
 

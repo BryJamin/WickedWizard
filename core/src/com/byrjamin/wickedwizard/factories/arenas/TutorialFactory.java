@@ -48,7 +48,7 @@ public class TutorialFactory extends ArenaShellFactory {
     private static final String grappleTutorialString =
             "Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it";
     private static final String endString =
-            "Yea you seem about ready \n \n Now go and adventure!";
+            "Yea you seem about ready \n \n Tap on the hole in the wall to head to adventure!";
 
     private static final String platformString =
             "Double Tap Below your character to \n Fall through platforms";
@@ -347,15 +347,20 @@ public class TutorialFactory extends ArenaShellFactory {
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
         Bag<Component> bag = new Bag<Component>();
 
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 700));
         bag.add(new TextureFontComponent(endString));
         arena.addEntity(bag);
+
+
+        arena.addEntity(decorFactory.chevronBag(Measure.units(42.5f), Measure.units(48.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(65f), Measure.units(48.5f), 90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(54f), Measure.units(23f), 0));
 
         return arena;
 

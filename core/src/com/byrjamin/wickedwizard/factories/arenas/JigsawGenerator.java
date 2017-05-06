@@ -10,7 +10,6 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
@@ -173,17 +172,17 @@ public class JigsawGenerator {
         placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(4,0)));
         placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
-        placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(6,3)));
+        placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
         placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
 
-        Arena f = arenaShellFactory.createOmniArena(new MapCoords(5,3));
+        Arena f = arenaShellFactory.createOmniArena(new MapCoords(6,4));
         placedArenas.add(f);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
         avaliableDoorsSet.addAll(f.getDoors());
 
 
-        placedArenas = generateMapAroundPresetPoints(placedArenas,level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, 5);
+        placedArenas = generateMapAroundPresetPoints(placedArenas,level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, noBattleRooms);
 
         placeItemRoom(placedArenas, avaliableDoorsSet);
         placeShopRoom(placedArenas, avaliableDoorsSet);
@@ -236,7 +235,7 @@ public class JigsawGenerator {
 
     public boolean placeBossRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors, int range) {
 
-        Arena bossRoom = arenaShellFactory.createWidth2Arena();
+        Arena bossRoom = arenaShellFactory.createWidth2ArenaWithVerticalDoors();
         bossRoom.roomType = Arena.RoomType.BOSS;
         new ArenaEnemyPlacementFactory(assetManager).biggablobba(bossRoom);
 

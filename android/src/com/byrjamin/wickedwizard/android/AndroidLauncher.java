@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.android;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -14,12 +15,16 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new MainGame(), config);
+
+		config.hideStatusBar = true;
+		config.useImmersiveMode = true;
+
 	}
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		if (hasFocus && Build.VERSION.SDK_INT >= 19) {
+/*		if (hasFocus && Build.VERSION.SDK_INT >= 19) {
 			getWindow().getDecorView().setSystemUiVisibility(
 					View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 							| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -28,7 +33,26 @@ public class AndroidLauncher extends AndroidApplication {
 							| View.SYSTEM_UI_FLAG_FULLSCREEN
 							| View.SYSTEM_UI_FLAG_IMMERSIVE
 							| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-		}
+		}*/
+
+
+
 	}
 
+	@Override
+	protected void onResume() {
+
+/*		if(Build.VERSION.SDK_INT >= 19) {
+			getWindow().getDecorView().setSystemUiVisibility(
+					View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+							| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+							| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+							| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+							| View.SYSTEM_UI_FLAG_FULLSCREEN
+							| View.SYSTEM_UI_FLAG_IMMERSIVE
+							| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		}*/
+
+		super.onResume();
+	}
 }

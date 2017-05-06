@@ -57,6 +57,9 @@ public class TurretFactory extends EnemyFactory {
 
     public Bag<Component> fixedTurret(float x, float y, float angleInDegrees, float fireRate, float fireDelay){
 
+        float width = Measure.units(10f);
+        float height = Measure.units(10f);
+
         x = x - width / 2;
         y = y - width / 2;
 

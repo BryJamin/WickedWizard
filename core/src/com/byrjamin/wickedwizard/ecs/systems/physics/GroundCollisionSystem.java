@@ -79,6 +79,8 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
                 collidableobjects.add(cbm.get(entityIds.get(i)).bound);
             }
 
+            System.out.println("oh dear");
+
         }
 
         PositionComponent pc = pm.get(e);

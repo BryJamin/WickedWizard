@@ -19,6 +19,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
@@ -41,6 +42,7 @@ public class RenderingSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm;
     private ComponentMapper<BlinkComponent> bm;
+    private ComponentMapper<BulletComponent> bulletm;
     private ComponentMapper<HighlightComponent> hm;
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<TextureRegionBatchComponent> trbm;
@@ -166,6 +168,10 @@ public class RenderingSystem extends EntitySystem {
 
             batch.setColor(trc.color);
 
+            if(bulletm.has(e)) {
+                System.out.println("Color of bullet is " + trc.color);
+            }
+
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
                     originX, originY,
@@ -223,9 +229,12 @@ public class RenderingSystem extends EntitySystem {
             shapeRenderer.begin(sc.shapeType);
             shapeRenderer.setColor(sc.color);
             shapeRenderer.rect(pc.getX(),pc.getY(), sc.width, sc.height);
+            shapeRenderer.setColor(Color.WHITE);
             shapeRenderer.end();
             batch.begin();
         }
+
+        batch.setColor(1,1,1,1);
 
 
 

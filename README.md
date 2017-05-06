@@ -15,10 +15,9 @@ due to the way the future bound is used.
 -Create TextureLoader Parameter. For usages in tests 
 -Add in a Time Limit of sorts where we die if you run out of time. 
 -Improve message banner to have an offset so you can change where it shows up. 
--Add a fade to the item pickup entity. 
 - Giblets. create an Ondeath that spawns out giblets when an enemies dies
 - Minion component, (can't drop loot))
-
+- Camera shake on explosion
 
 ###Bugs
 - You can trigger shooting and moving the have the same pointer due to platforms. You double tap
@@ -70,8 +69,9 @@ to go below and then hold to move it counts as the same pointer and you shoot an
 -Platforms I have created the functionality and design of platform as a first place. You need to double tap to go below them.
 -Message when you enter a new level**
 - Due to the change in item a class may need to be created for Item. This way you can get the index,
-of the texture region it uses when calling to the axis. ** Used a pair class to solve this**
+of the texture region it uses when calling to the axis. ** Used a pair class to solve this **
 -Black Room Transition to avoid jarring room transition **
 -Add accelerant to camera so the movement isn't so jarring ** it is still jarring
 -- Create a tutorial section for platforms 
+-Add a fade to the item pickup entity. 
 

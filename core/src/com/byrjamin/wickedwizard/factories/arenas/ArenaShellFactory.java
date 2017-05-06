@@ -1,16 +1,10 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
-import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
-import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
@@ -18,7 +12,7 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
  * Created by Home on 18/03/2017.
  */
 
-public class ArenaShellFactory extends AbstractFactory {
+public class  ArenaShellFactory extends AbstractFactory {
 
     protected DecorFactory decorFactory;
     protected ArenaSkin arenaSkin;
@@ -85,12 +79,12 @@ public class ArenaShellFactory extends AbstractFactory {
     }
 
 
-    public Arena createWidth2Arena(){
-        return createWidth2Arena(new MapCoords(0,0));
+    public Arena createWidth2ArenaWithVerticalDoors(){
+        return createWidth2ArenaWithVerticalDoors(new MapCoords(0,0));
     }
 
 
-    public Arena createWidth2Arena(MapCoords defaultCoords) {
+    public Arena createWidth2ArenaWithVerticalDoors(MapCoords defaultCoords) {
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
         containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
@@ -114,6 +108,8 @@ public class ArenaShellFactory extends AbstractFactory {
 
         return arena;
     }
+
+
 
 
     public Arena createHeight2Arena(MapCoords defaultCoords) {

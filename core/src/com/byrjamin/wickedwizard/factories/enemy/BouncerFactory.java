@@ -34,7 +34,7 @@ public class BouncerFactory extends EnemyFactory {
 
     private static final Random random = new Random();
 
-    private static final float speed = Measure.units(35f);
+    private static final float speed = Measure.units(25f);
 
     public ComponentBag smallBouncer(float x, float y){
 

@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -29,6 +30,8 @@ public class OnDeathSystem  extends BaseSystem {
     ComponentMapper<LootComponent> lm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<PositionComponent> pm;
+
+    ComponentMapper<MinionComponent> mm;
 
     @Override
     protected void processSystem() {
@@ -53,6 +56,7 @@ public class OnDeathSystem  extends BaseSystem {
                     e.edit().add(c);
                 }
 
+
                 if(cbm.has(deadEntity)){
                     CollisionBoundComponent cbc = cbm.get(deadEntity);
 
@@ -61,6 +65,8 @@ public class OnDeathSystem  extends BaseSystem {
 
                         e.getComponent(PositionComponent.class).position = new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0);
 
+                    } else {
+                        e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
                     }
 
                 } else {
@@ -69,7 +75,7 @@ public class OnDeathSystem  extends BaseSystem {
             }
         }
 
-        if(lm.has(deadEntity) && cbm.has(deadEntity)) {
+        if(lm.has(deadEntity) && cbm.has(deadEntity) && !mm.has(deadEntity)) {
             CollisionBoundComponent cbc = cbm.get(deadEntity);
             world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());
         }

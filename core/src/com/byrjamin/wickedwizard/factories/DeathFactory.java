@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -88,6 +89,14 @@ public class DeathFactory extends AbstractFactory {
             bag.add(new BounceComponent());
             bag.add(new CollisionBoundComponent(new Rectangle(0, 0, Measure.units(1f), Measure.units(1f))));
             bag.add(new ExpireComponent(0.4f));
+
+            FadeComponent fc = new FadeComponent();
+            fc.fadeIn = false;
+            fc.alphaTimeLimit = 0.8f;
+            fc.alphaTimer = 0.8f;
+            fc.isEndless = false;
+
+            bag.add(fc);
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), Measure.units(1f), Measure.units(1f),
                     TextureRegionComponent.ENEMY_LAYER_MIDDLE);
