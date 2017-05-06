@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -50,11 +51,15 @@ public class MainGame extends Game {
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size1Params.fontFileName = "fonts/Roboto-Black.ttf";
 		size1Params.fontParameters.size = (int) Measure.units(3f);
+		size1Params.fontParameters.borderColor = Color.BLACK;
+		size1Params.fontParameters.borderWidth = 3;
 		manager.load(Assets.small, BitmapFont.class, size1Params);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size2Params.fontFileName = "fonts/Roboto-Black.ttf";
         size2Params.fontParameters.size = (int) Measure.units(4f);
+        size2Params.fontParameters.borderColor = Color.BLACK;
+        size2Params.fontParameters.borderWidth = 3;
         manager.load(Assets.medium, BitmapFont.class, size2Params);
 
 

@@ -173,9 +173,6 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("hole"), width, height,
-                TextureRegionComponent.BACKGROUND_LAYER_NEAR);
-        trc.color = arenaSkin.getBackgroundTint();
         //trc.setColor(0.7f, 0, 0f, 1);
 
 
@@ -193,6 +190,10 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new AnimationComponent(aniMap));
 
 
+        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime), width, height,
+                TextureRegionComponent.BACKGROUND_LAYER_NEAR);
+        trc.color = arenaSkin.getBackgroundTint();
+        
         bag.add(trc);
         bag.add(new GrappleableComponent());
         bag.add(new ActiveOnTouchComponent());

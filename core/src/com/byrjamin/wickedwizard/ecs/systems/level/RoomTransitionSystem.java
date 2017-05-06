@@ -114,6 +114,10 @@ public class RoomTransitionSystem extends EntitySystem {
                 exitTransition = null;
                 //world.getSystem(PlayerInputSystem.class).setEnabled(true);
                 processingFlag = false;
+
+                for(BaseSystem s: world.getSystems()){
+                    s.setEnabled(true);
+                }
             }
 
 
@@ -225,8 +229,11 @@ public class RoomTransitionSystem extends EntitySystem {
 
         System.out.println(currentArena.cotainingCoords);
 
+
         for(BaseSystem s: world.getSystems()){
-            s.setEnabled(true);
+            if(s instanceof CameraSystem) {
+                s.setEnabled(true);
+            }
         }
 
         canNowExitTransition = true;
