@@ -142,15 +142,17 @@ public class DecorFactory extends AbstractFactory {
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
         aniMap.put(AnimationStateComponent.State.LOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("door")));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door")));
         aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("door"), Animation.PlayMode.REVERSED));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door"), Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(aniMap));
         //TODO explains the giant blob
 
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
-                -Measure.units(8.5f), 0, Measure.units(22), Measure.units(20),
+                0, 0, Measure.units(27), Measure.units(22),
                 TextureRegionComponent.PLAYER_LAYER_FAR);
+
+        trc.color = arenaSkin.getWallTint();
         //trc.setColor(0.7f, 0, 0f, 1);
         bag.add(trc);
         //bag.add(new GrappleableComponent());

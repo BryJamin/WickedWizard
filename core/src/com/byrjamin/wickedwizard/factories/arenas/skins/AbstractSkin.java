@@ -19,7 +19,7 @@ public abstract class AbstractSkin implements ArenaSkin{
 
     @Override
     public Array<? extends TextureRegion> getBackgroundTextures() {
-        return atlas.findRegions("backgrounds/wall");
+        return atlas.findRegions("block");
     }
 
     @Override
@@ -29,7 +29,7 @@ public abstract class AbstractSkin implements ArenaSkin{
 
     @Override
     public Array<? extends TextureRegion> getWallTexture() {
-        return atlas.findRegions("brick");
+        return atlas.findRegions("block");
     }
 
     @Override

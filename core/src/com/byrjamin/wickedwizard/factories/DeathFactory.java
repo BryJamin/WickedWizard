@@ -92,8 +92,8 @@ public class DeathFactory extends AbstractFactory {
 
             FadeComponent fc = new FadeComponent();
             fc.fadeIn = false;
-            fc.alphaTimeLimit = 0.8f;
-            fc.alphaTimer = 0.8f;
+            fc.alphaTimeLimit = 0.4f;
+            fc.alphaTimer = 0.4f;
             fc.isEndless = false;
 
             bag.add(fc);

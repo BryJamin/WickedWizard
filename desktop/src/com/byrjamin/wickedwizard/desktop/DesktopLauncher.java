@@ -25,6 +25,7 @@ public class DesktopLauncher {
 		settings.maxWidth = 2048;
 		settings.maxHeight = 2048;
 		settings.filterMin = Texture.TextureFilter.MipMapLinearLinear;
+		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 
 		TexturePacker.process(settings, inputDir,outputDir,packFileName);
