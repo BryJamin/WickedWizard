@@ -32,10 +32,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
 
     public Arena createItemRoom(MapCoords defaultCoords) {
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-
-        Arena arena = new Arena(containingCorrds, Arena.RoomType.ITEM);
+        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
 
 
         arena.setWidth(SECTION_WIDTH);
@@ -54,7 +51,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
 
 
         for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(arena.getWidth() / 2,
-                Measure.units(12), items[random.nextInt(items.length)])) {
+                Measure.units(17), items[random.nextInt(items.length)])) {
             arena.addEntity(b);
         }
         return arena;
@@ -67,7 +64,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
         containingCorrds.add(defaultCoords);
         containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
-        Arena arena = new Arena(containingCorrds, Arena.RoomType.ITEM);
+        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, containingCorrds.toArray());
 
 
         arena.setWidth(SECTION_WIDTH * 2);

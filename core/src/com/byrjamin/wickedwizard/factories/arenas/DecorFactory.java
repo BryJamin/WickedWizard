@@ -34,10 +34,12 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
 public class DecorFactory extends AbstractFactory {
 
     private ArenaSkin arenaSkin;
+    private BackgroundFactory bf;
 
     public DecorFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
         this.arenaSkin = arenaSkin;
+        bf = new BackgroundFactory();
     }
 
 
@@ -46,7 +48,7 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
-        TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
                 arenaSkin.getWallTexture(),
                 TextureRegionComponent.PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
@@ -96,7 +98,7 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PlatformComponent());
         //bag.add(new WallComponent(new Rectangle(x,y, width, Measure.units(5f))));
 
-        TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, Measure.units(5f), Measure.units(5),
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, Measure.units(5f), Measure.units(5),
                 atlas.findRegions("platform"),
                 TextureRegionComponent.PLAYER_LAYER_FAR);
         trbc.offsetY = -1;
@@ -193,7 +195,7 @@ public class DecorFactory extends AbstractFactory {
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime), width, height,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR);
         trc.color = arenaSkin.getBackgroundTint();
-        
+
         bag.add(trc);
         bag.add(new GrappleableComponent());
         bag.add(new ActiveOnTouchComponent());

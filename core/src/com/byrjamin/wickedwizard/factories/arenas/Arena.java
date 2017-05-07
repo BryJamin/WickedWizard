@@ -5,6 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
 /**
@@ -23,6 +24,9 @@ public class Arena {
     public RoomType roomType;
 
     private MapCoords startingCoords;
+
+    private ArenaSkin arenaSkin;
+
     public Array<MapCoords> cotainingCoords = new Array<MapCoords>();
     public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
 
@@ -32,25 +36,11 @@ public class Arena {
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
     private Bag<Bag<Component>> doorBags = new Bag<Bag<Component>>();
 
-    /**
-     * The first co-ordinate of mapcoords is taken to be the initial drawing co-orindate
-     * @param mapCoords
-     */
-    public Arena(Array<MapCoords> mapCoords) {
-        this(mapCoords, RoomType.NORMAL);
+    public Arena(ArenaSkin arenaSkin, MapCoords... mapCoords) {
+        this(RoomType.NORMAL, arenaSkin, mapCoords);
     }
 
-    public Arena(Array<MapCoords> mapCoords, RoomType roomType) {
-        startingCoords = mapCoords.get(0);
-        this.cotainingCoords = mapCoords;
-        this.roomType = roomType;
-    }
-
-    public Arena(MapCoords... mapCoords) {
-        this(RoomType.NORMAL, mapCoords);
-    }
-
-    public Arena(RoomType roomType, MapCoords... mapCoords) {
+    public Arena(RoomType roomType, ArenaSkin arenaSkin, MapCoords... mapCoords) {
 
         startingCoords = mapCoords[0];
 
@@ -59,6 +49,7 @@ public class Arena {
         }
 
         this.roomType = roomType;
+        this.arenaSkin = arenaSkin;
     }
 
 
@@ -134,5 +125,9 @@ public class Arena {
 
     public MapCoords getStartingCoords() {
         return startingCoords;
+    }
+
+    public ArenaSkin getArenaSkin() {
+        return arenaSkin;
     }
 }

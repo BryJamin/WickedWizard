@@ -41,12 +41,12 @@ public class  ArenaShellFactory extends AbstractFactory {
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
 
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(arenaSkin, defaultCoords);
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
-        arena = new ArenaBuilder(assetManager, arenaSkin)
+        arena = new ArenaBuilder(assetManager, arena.getArenaSkin())
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -59,10 +59,7 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public Arena createSmallArena(MapCoords defaultCoords, boolean leftDoor, boolean rightDoor, boolean ceilingDoor, boolean topDoor) {
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(arenaSkin, defaultCoords);
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
@@ -86,10 +83,8 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public Arena createWidth2ArenaWithVerticalDoors(MapCoords defaultCoords) {
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
         arena.setWidth(SECTION_WIDTH * 2);
         arena.setHeight(SECTION_HEIGHT);
@@ -113,11 +108,8 @@ public class  ArenaShellFactory extends AbstractFactory {
 
 
     public Arena createHeight2Arena(MapCoords defaultCoords) {
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-        containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
 
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT * 2);
@@ -142,11 +134,7 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
         arena.setWidth(SECTION_WIDTH * 2);
         arena.setHeight(SECTION_HEIGHT);
@@ -190,10 +178,7 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public Arena createDeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(arenaSkin, defaultCoords);
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
@@ -233,7 +218,13 @@ public class  ArenaShellFactory extends AbstractFactory {
         containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 2));
         containingCorrds.add(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 2));
 
-        Arena arena = new Arena(containingCorrds);
+        Arena arena = new Arena(arenaSkin, defaultCoords,
+                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 2),
+                new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY() + 2));
 
         arena.setWidth(SECTION_WIDTH * 3);
         arena.setHeight(SECTION_HEIGHT * 3);

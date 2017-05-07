@@ -3,8 +3,21 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.items.Item;
@@ -33,6 +46,8 @@ public class ShopFactory extends ArenaShellFactory {
     public ShopFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager, arenaSkin);
         itemFactory = new ItemFactory(assetManager);
+        this.arenaSkin = new ShopSkin(atlas);
+
     }
 
     public Arena createShop(){
@@ -41,10 +56,7 @@ public class ShopFactory extends ArenaShellFactory {
 
     public Arena createShop(MapCoords defaultCoords) {
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-
-        Arena arena = new Arena(containingCorrds, Arena.RoomType.SHOP);
+        Arena arena = new Arena(Arena.RoomType.SHOP, arenaSkin, defaultCoords);
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
@@ -82,7 +94,21 @@ public class ShopFactory extends ArenaShellFactory {
 
 
 
-        arena.addEntity(new BlobFactory(assetManager).shopKeeperBlob(arena.getWidth() / 2, arena.getHeight() / 4));
+
+
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(arena.getWidth() / 2, Measure.units(10f)));
+        bag.add(new VelocityComponent(0, 0));
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0,  new Animation<TextureRegion>(0.1f, atlas.findRegions("shopkeeper"), Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+        bag.add(new TextureRegionComponent(atlas.findRegion("shopkeeper"),
+                0, 0, Measure.units(15f), Measure.units(15f),
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+
+        arena.addEntity(bag);
 
 
 

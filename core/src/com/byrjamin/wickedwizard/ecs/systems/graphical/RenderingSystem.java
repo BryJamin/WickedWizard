@@ -198,7 +198,9 @@ public class RenderingSystem extends EntitySystem {
                     batch.draw(trbc.regions.get(count),
                             pc.getX() + (trbc.width * i) + trbc.offsetX,
                             pc.getY() + (trbc.height * j) + trbc.offsetY,
-                            trbc.width + 1, trbc.height + 1); //This is to avoid pixel errors between repeated textures
+                            trbc.width + 1,
+                            //The top does not have the extra pixel
+                            (j == trbc.rows - 1) ? trbc.height : trbc.height + 1); //This is to avoid pixel errors between repeated textures
                     count++;
                 }
             }

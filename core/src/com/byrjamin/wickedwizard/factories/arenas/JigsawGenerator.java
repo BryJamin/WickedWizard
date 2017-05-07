@@ -433,7 +433,7 @@ public class JigsawGenerator {
                         CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
                         if(cbc != null) {
                             a.getBagOfEntities().remove(bag);
-                            a.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), arenaSkin));
+                            a.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), a.getArenaSkin()));
                         }
                     }
                     a.adjacentCoords.removeValue(dc.leaveCoords, false);

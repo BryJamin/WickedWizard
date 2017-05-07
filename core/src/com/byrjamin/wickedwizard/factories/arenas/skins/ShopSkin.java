@@ -4,24 +4,29 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 /**
- * Created by Home on 28/04/2017.
+ * Created by Home on 07/05/2017.
  */
 
-public class FoundarySkin extends AbstractSkin {
-    public FoundarySkin(TextureAtlas atlas) {
+public class ShopSkin extends  AbstractSkin{
+
+    public ShopSkin(TextureAtlas atlas) {
         super(atlas);
     }
 
-
     @Override
     public Color getBackgroundTint() {
-        return new Color(204/255f, 255/255f, 255/255f, 1);
+        return new Color(247/255f, 220/255f, 180/255f, 1);
     }
 
     //999999
 
     @Override
     public Color getWallTint() {
-        return new Color(66/255f, 99/255f, 99/255f, 1);
+        return new Color(169/255f, 125/255f, 93/255f, 1);
     }
+
+
+
+
+
 }

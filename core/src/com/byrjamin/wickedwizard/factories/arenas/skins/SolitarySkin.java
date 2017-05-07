@@ -26,31 +26,20 @@ public class SolitarySkin extends AbstractSkin {
         return atlas.findRegions("block");
     }
 
-/*    @Override
+    @Override
     public Color getBackgroundTint() {
-        return new Color(0.3f,0.3f,0.3f,1);
+        return new Color(0.7f,0.7f,0.7f,1);
     }
 
     @Override
     public Color getWallTint() {
         return new Color(0.4f,0.4f,0.4f,1);
-    }*/
-
-
-
-
-
-    @Override
-    public Color getBackgroundTint() {
-        return new Color(204/255f, 255/255f, 255/255f, 1);
     }
 
-    //999999
 
-    @Override
-    public Color getWallTint() {
-        return new Color(66/255f, 99/255f, 99/255f, 1);
-    }
+
+
+
 
 
 

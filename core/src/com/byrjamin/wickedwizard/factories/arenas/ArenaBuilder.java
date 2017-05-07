@@ -34,6 +34,7 @@ public class ArenaBuilder {
 
     private AssetManager assetManager;
     private ArenaSkin arenaSkin;
+    private BackgroundFactory bf = new BackgroundFactory();
 
     public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin){
         this.assetManager = assetManager;
@@ -118,7 +119,7 @@ public class ArenaBuilder {
             }
 
             //Background
-            arena.addEntity(BackgroundFactory.backgroundBags(0 + posX,0 + posY,
+            arena.addEntity(bf.backgroundBags(0 + posX,0 + posY,
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
                     Measure.units(20),

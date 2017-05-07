@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.factories;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -61,15 +62,15 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions("squ_walk"), Animation.PlayMode.LOOP));
-        k.put(1, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions("squ_firing")));
+        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions("block_walk"), Animation.PlayMode.LOOP));
+        k.put(1, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions("block_walk")));
         bag.add(new AnimationComponent(k));
 
 
         StatComponent statComponent = new StatComponent();
-        statComponent.fireRate = 1f;
-        statComponent.damage = 1f;
-        statComponent.speed = 1f;
+        statComponent.fireRate = 10f;
+        statComponent.damage = 10f;
+        statComponent.speed = 1.5f;
 
         bag.add(statComponent);
         WeaponComponent wc = new WeaponComponent(new Pistol(assetManager), 0.3f);
@@ -78,8 +79,10 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("squ_walk"),-Measure.units(0.5f), 0,
-                Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("squ_walk"),0, 0,
+                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+        trc.color = new Color(Color.WHITE);
+        trc.DEFAULT = new Color(Color.WHITE);
         bag.add(trc);
 
         bag.add(new DirectionalComponent());

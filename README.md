@@ -15,8 +15,6 @@ due to the way the future bound is used.
 -Create TextureLoader Parameter. For usages in tests 
 -Add in a Time Limit of sorts where we die if you run out of time. 
 -Improve message banner to have an offset so you can change where it shows up. 
-- Giblets. create an Ondeath that spawns out giblets when an enemies dies
-- Minion component, (can't drop loot))
 - Camera shake on explosion
 
 ###Bugs
@@ -74,4 +72,6 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 -Add accelerant to camera so the movement isn't so jarring ** it is still jarring
 -- Create a tutorial section for platforms 
 -Add a fade to the item pickup entity. 
+- Giblets. create an Ondeath that spawns out giblets when an enemies dies
+- Minion component, (can't drop loot))
 

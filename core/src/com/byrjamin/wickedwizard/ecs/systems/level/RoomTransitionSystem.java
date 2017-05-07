@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -97,11 +98,28 @@ public class RoomTransitionSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
+        if(!canNowExitTransition) {
+            if(entryTransition == null) {
+                for(BaseSystem s: world.getSystems()){
+                    if(!(s instanceof RenderingSystem) && !(s instanceof RoomTransitionSystem)) {
+                        s.setEnabled(false);
+                    }
+                }
+                entryAnimation(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
+            }
+
+            if(!entryTransition.isFinished()){
+                entryTransition.update(world.delta);
+                return;
+            }
+        }
+
+
 
         if(canNowExitTransition) {
 
             if (exitTransition == null) {
-                blackScreen2(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
+                exitAnimation(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
                 entryTransition = null;
                 return;
             }
@@ -125,29 +143,22 @@ public class RoomTransitionSystem extends EntitySystem {
 
         }
 
-        if(entryTransition == null) {
-            //world.getSystem(PlayerInputSystem.class).setEnabled(false);
 
-            for(BaseSystem s: world.getSystems()){
-                if(!(s instanceof RenderingSystem) && !(s instanceof RoomTransitionSystem)) {
-                    s.setEnabled(false);
-                }
+        switchRooms();
+
+        for(BaseSystem s: world.getSystems()){
+            if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
+                s.setEnabled(true);
             }
-
-            blackScreen(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
         }
 
-        if(!entryTransition.isFinished()){
-            entryTransition.update(world.delta);
-            return;
-        } else {
-        }
+        canNowExitTransition = true;
 
 
-        //TODO add entity that covers screen once is has been completed continue to process system
+    }
 
-        //Pack
 
+    public void switchRooms(){
         packRoom(world, currentArena);
 
 
@@ -156,9 +167,7 @@ public class RoomTransitionSystem extends EntitySystem {
             return;
         }
         visitedArenas.add(currentArena);
-        if(unvisitedButAdjacentArenas.contains(currentArena)){
-            unvisitedButAdjacentArenas.remove(currentArena);
-        }
+        unvisitedButAdjacentArenas.remove(currentArena);
 
         for(Arena a : getAdjacentArenas(currentArena)){
             if(!visitedArenas.contains(a)){
@@ -178,29 +187,29 @@ public class RoomTransitionSystem extends EntitySystem {
 
             if(dm.has(e)){
                 DoorComponent dc = dm.get(e);
-                CollisionBoundComponent cbc = cbm.get(e);
+                CollisionBoundComponent doorBound = cbm.get(e);
                 PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
                 CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                 VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
 
-                float doorEntryY = cbc.bound.y + (cbc.bound.getHeight() * doorEntryPercentage);
+                float doorEntryY = doorBound.bound.y + (doorBound.bound.getHeight() * doorEntryPercentage);
 
                 if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
                     switch (dc.exit){
-                        case LEFT: player.position.x = cbc.bound.getX() + cbc.bound.getWidth() + pBound.bound.getWidth();
+                        case LEFT: player.position.x = doorBound.bound.getX() + doorBound.bound.getWidth() + pBound.bound.getWidth();
                             player.position.y = doorEntryY;
                             break;
-                        case RIGHT: player.position.x = cbc.bound.getX() - pBound.bound.getWidth();
+                        case RIGHT: player.position.x = doorBound.bound.getX() - pBound.bound.getWidth();
                             player.position.y = doorEntryY;
                             break;
                         case UP:
-                            player.position.x = cbc.getCenterX();
-                            player.position.y = cbc.getCenterY();
+                            player.position.x = doorBound.getCenterX();
+                            player.position.y = doorBound.getCenterY();
                             vc.velocity.y /= 2;
                             break;
                         case DOWN:
-                            player.position.x = cbc.getCenterX();
-                            player.position.y = cbc.getCenterY();
+                            player.position.x = doorBound.getCenterX();
+                            player.position.y = doorBound.getCenterY();
                             vc.velocity.y = 0;
                             break;
                     }
@@ -227,19 +236,8 @@ public class RoomTransitionSystem extends EntitySystem {
         world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).getPlayerInput().activeGrapple = false;
         //System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
-        System.out.println(currentArena.cotainingCoords);
-
-
-        for(BaseSystem s: world.getSystems()){
-            if(s instanceof CameraSystem) {
-                s.setEnabled(true);
-            }
-        }
-
-        canNowExitTransition = true;
 
     }
-
 
     public Arena findRoom(MapCoords destination){
         for(Arena a : roomArray) {
@@ -361,19 +359,13 @@ public class RoomTransitionSystem extends EntitySystem {
      * @param start
      * @param gamecam
      */
-    public void blackScreen(Direction start, OrthographicCamera gamecam) {
+    public void entryAnimation(Direction start, OrthographicCamera gamecam) {
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
-        float startX;
-        float startY;
-
         float width = gamecam.viewportWidth;
         float height = gamecam.viewportHeight;
-
-        float endX;
-        float endY;
 
         switch(start){
             case LEFT:
@@ -394,47 +386,17 @@ public class RoomTransitionSystem extends EntitySystem {
                 entryTransition.fromBottomToCenter();
                 break;
         }
-/*
-
-        blackScreenTarget = new MoveToComponent();
-        blackScreenTarget.targetX = endX;
-        blackScreenTarget.targetY = endY;
-        blackScreenTarget.accelX = Measure.units(10f);
-        blackScreenTarget.accelY = Measure.units(10f);
-        blackScreenTarget.maxX = Measure.units(10f);
-        blackScreenTarget.maxY = Measure.units(10f);
-
-        Entity e = world.createEntity();
-        e.edit().add(new PositionComponent(startX, startY))
-                .add(new VelocityComponent())
-                .add(new AccelerantComponent(Measure.units(20f), Measure.units(20f)))
-                .add(blackScreenTarget)
-                .add(new CollisionBoundComponent(new Rectangle(startX, startY, width, height)));
-
-
-        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
-        sc.color = Color.WHITE;
-
-        e.edit().add(sc);
-        e.edit().add(new IntangibleComponent());
-*/
 
     }
 
 
-    public void blackScreen2(Direction start, OrthographicCamera gamecam) {
+    public void exitAnimation(Direction start, OrthographicCamera gamecam) {
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
-        float startX;
-        float startY;
-
         float width = gamecam.viewportWidth;
         float height = gamecam.viewportHeight;
-
-        float endX;
-        float endY;
 
         switch (start) {
             case LEFT:

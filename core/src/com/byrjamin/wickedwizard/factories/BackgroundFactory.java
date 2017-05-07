@@ -20,7 +20,7 @@ public class BackgroundFactory {
 
 
 
-    public static Bag<Component>backgroundBags(float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE, Array<? extends TextureRegion> selection, ArenaSkin arenaSkin){
+    public Bag<Component>backgroundBags(float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE, Array<? extends TextureRegion> selection, ArenaSkin arenaSkin){
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x, y));
         TextureRegionBatchComponent trbc = generateTRBC(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, TILE_SIZE, selection, TextureRegionComponent.BACKGROUND_LAYER_FAR,1,1);
@@ -30,7 +30,7 @@ public class BackgroundFactory {
     }
 
 
-    public static TextureRegionBatchComponent generateTRBC (float width,
+    public TextureRegionBatchComponent generateTRBC (float width,
                                                             float height,
                                                             float tile_size,
                                                             Array<? extends TextureRegion> selection,
@@ -55,7 +55,7 @@ public class BackgroundFactory {
 
     }
 
-    public static TextureRegionBatchComponent generateTRBC (float width, float height, float tile_size, Array<? extends TextureRegion> selection, int layer){
+    public TextureRegionBatchComponent generateTRBC (float width, float height, float tile_size, Array<? extends TextureRegion> selection, int layer){
         return generateTRBC(width,height,tile_size,selection,layer,0,0);
     }
 
