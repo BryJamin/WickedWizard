@@ -91,6 +91,9 @@ public class ChestFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
 
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                if(!cbc.bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound)) return;
+
                 if(world.getMapper(LockComponent.class).has(e)) {
                     CurrencyComponent cc =  world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
                     if(cc.keys - 1 < 0 ) return;
@@ -110,7 +113,6 @@ public class ChestFactory extends AbstractFactory {
 
                 }
 
-                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                 for(int i = 0; i < e.getComponent(LootComponent.class).maxDrops; i++) {
                     world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());

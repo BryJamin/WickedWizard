@@ -96,8 +96,6 @@ public class BulletFactory extends AbstractFactory {
         trc.DEFAULT = color;
         trc.color = color;
 
-        System.out.println("Bullet color should be " + trc.color);
-
         bag.add(trc);
         return bag;
     }

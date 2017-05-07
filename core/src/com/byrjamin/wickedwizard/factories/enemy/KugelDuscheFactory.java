@@ -94,7 +94,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         pc.addPhaseSequence(0,0);
 
         bag.add(pc);
-        bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
+       // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 
 
 

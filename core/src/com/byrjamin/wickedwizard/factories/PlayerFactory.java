@@ -68,9 +68,9 @@ public class PlayerFactory extends AbstractFactory {
 
 
         StatComponent statComponent = new StatComponent();
-        statComponent.fireRate = 10f;
-        statComponent.damage = 10f;
-        statComponent.speed = 1.5f;
+        statComponent.fireRate = 1f;
+        statComponent.damage = 1f;
+        statComponent.speed = 1f;
 
         bag.add(statComponent);
         WeaponComponent wc = new WeaponComponent(new Pistol(assetManager), 0.3f);

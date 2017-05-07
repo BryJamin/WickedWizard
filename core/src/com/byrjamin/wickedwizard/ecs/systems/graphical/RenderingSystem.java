@@ -168,10 +168,6 @@ public class RenderingSystem extends EntitySystem {
 
             batch.setColor(trc.color);
 
-            if(bulletm.has(e)) {
-                System.out.println("Color of bullet is " + trc.color);
-            }
-
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
                     originX, originY,
