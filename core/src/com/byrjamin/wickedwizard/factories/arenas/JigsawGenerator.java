@@ -175,7 +175,7 @@ public class JigsawGenerator {
         placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
         placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
 
-        Arena f = arenaShellFactory.createOmniArena(new MapCoords(6,4));
+        Arena f = arenaShellFactory.createOmniArenaSquareCenter(new MapCoords(6,4));
         placedArenas.add(f);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
@@ -196,8 +196,8 @@ public class JigsawGenerator {
     public Array<Arena> generateJigsaw() {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
-        startingArena = arenaShellFactory.createOmniArena();
-        startingArena.addEntity(decorFactory.platform(500,500,1000));
+        startingArena = arenaShellFactory.createOmniArenaSquareCenter();
+        //startingArena.addEntity(decorFactory.platform(500,500,1000));
         placedArenas.add(startingArena);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();

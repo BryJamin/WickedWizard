@@ -32,11 +32,11 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public final float WALLWIDTH = Measure.units(5);
 
-    public Arena createOmniArena(){
-        return createOmniArena(new MapCoords(0,0));
+    public Arena createOmniArenaSquareCenter(){
+        return createOmniArenaSquareCenter(new MapCoords(0,0));
     }
 
-    public Arena createOmniArena(MapCoords defaultCoords) {
+    public Arena createOmniArenaSquareCenter(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
         containingCorrds.add(defaultCoords);
@@ -53,6 +53,9 @@ public class  ArenaShellFactory extends AbstractFactory {
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR))
                 .buildArena(arena);
+
+
+        arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(25f), Measure.units(20f), Measure.units(10f), arenaSkin));
 
         return arena;
     }
@@ -93,8 +96,8 @@ public class  ArenaShellFactory extends AbstractFactory {
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL))
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.DOOR))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR,
@@ -152,13 +155,13 @@ public class  ArenaShellFactory extends AbstractFactory {
             right = new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                     ArenaBuilder.wall.NONE,
                     ArenaBuilder.wall.DOOR,
-                    ArenaBuilder.wall.DOOR,
+                    ArenaBuilder.wall.FULL,
                     ArenaBuilder.wall.DOOR);
         } else {
             left = new ArenaBuilder.Section(defaultCoords,
                     ArenaBuilder.wall.DOOR,
                     ArenaBuilder.wall.NONE,
-                    ArenaBuilder.wall.DOOR,
+                    ArenaBuilder.wall.FULL,
                     ArenaBuilder.wall.DOOR);
 
             right = new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),

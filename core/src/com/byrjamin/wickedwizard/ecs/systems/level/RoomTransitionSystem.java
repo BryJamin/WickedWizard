@@ -33,6 +33,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.RoomTransition;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
@@ -212,7 +213,7 @@ public class RoomTransitionSystem extends EntitySystem {
                             System.out.println("DOWN");
                             player.position.x = doorBound.getCenterX();
                             player.position.y = doorBound.bound.getY() + pBound.bound.getHeight();
-                            vc.velocity.y = (vc.velocity.y > 0) ? 0 : vc.velocity.y;
+                            vc.velocity.y = (vc.velocity.y < Measure.units(70f)) ? Measure.units(70f) : vc.velocity.y;
                             break;
                     }
 
