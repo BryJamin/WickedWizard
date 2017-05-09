@@ -3,7 +3,10 @@ package com.byrjamin.wickedwizard.factories.enemy;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -11,6 +14,8 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
@@ -44,13 +49,20 @@ public class TurretFactory extends EnemyFactory {
 
         Bag<Component> bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
-                -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY),
+                0, 0, width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
                 ));
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(), 2f);
         bag.add(wc);
         bag.add(new FiringAIComponent());
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY), Animation.PlayMode.LOOP_RANDOM));
+
+        bag.add(new AnimationComponent(animMap));
+
 
         return bag;
     }
@@ -91,9 +103,16 @@ public class TurretFactory extends EnemyFactory {
             bag.add(new VelocityComponent(-300, 0));
         }
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(9), Measure.units(9)), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
-                -Measure.units(1f), 0, Measure.units(12), Measure.units(12),
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY),
+                0, 0, width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
+        ));
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY), Animation.PlayMode.LOOP_RANDOM));
+
+
+        bag.add(new AnimationComponent(animMap));
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(), 2f);
         bag.add(wc);

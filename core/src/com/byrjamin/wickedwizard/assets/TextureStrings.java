@@ -19,6 +19,10 @@ public class TextureStrings {
     public static final String BLOB_ATTACKING = "blob_attack";
     public static final String BLOB_DYING = "blob_dying";
 
+    //SENTRY
+    public static final String SENTRY = "sentry";
+
+
     //SILVERHEAD
     public static final String SILVERHEAD_ST = "silverhead_standing";
     public static final String SILVERHEAD_HIDING = "silverhead_hiding";

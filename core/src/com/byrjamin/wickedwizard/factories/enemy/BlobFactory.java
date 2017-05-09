@@ -49,8 +49,8 @@ public class BlobFactory extends EnemyFactory {
     private final float width = Measure.units(9);
     private final float height = Measure.units(9);
 
-    private final float textureWidth = Measure.units(12);
-    private final float textureHeight = Measure.units(12);
+    private final float textureWidth = Measure.units(11);
+    private final float textureHeight = Measure.units(11);
 
     private final float textureOffsetX = -Measure.units(1f);
     private final float textureOffsetY = 0;
@@ -81,7 +81,7 @@ public class BlobFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
 
 
         bag.add(new AnimationComponent(animMap));
@@ -109,7 +109,7 @@ public class BlobFactory extends EnemyFactory {
         sc.setState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0,  new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
@@ -130,7 +130,7 @@ public class BlobFactory extends EnemyFactory {
         bag.add(new GravityComponent());
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0,  new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
@@ -154,7 +154,7 @@ public class BlobFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0,  new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(this.atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX * scale,
@@ -184,11 +184,11 @@ public class BlobFactory extends EnemyFactory {
         cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(33), Measure.units(17))));
         cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(29), Measure.units(5)),
                 Measure.units(2), Measure.units(17)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(26), Measure.units(5)),
-                Measure.units(4), Measure.units(22)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(17), Measure.units(3)),
-                Measure.units(8), Measure.units(27)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(9), Measure.units(9)),
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(23), Measure.units(5)),
+                Measure.units(5), Measure.units(22)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(15), Measure.units(3)),
+                Measure.units(9), Measure.units(27)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(9), Measure.units(7)),
                 Measure.units(12), Measure.units(30)));
 
         bag.add(cbc);

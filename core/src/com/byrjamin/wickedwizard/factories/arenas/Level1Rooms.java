@@ -39,9 +39,9 @@ public class Level1Rooms extends AbstractFactory {
 
     public Array<ArenaGen> getLevel1RoomArray(){
         Array<ArenaGen> ag = new Array<ArenaGen>();
-/*        ag.add(room1());
+        ag.add(room1());
         ag.add(room2());
-        ag.add(room3());*/
+        ag.add(room3());
         ag.add(room4());
 /*        ag.add(room5());
         ag.add(room6());

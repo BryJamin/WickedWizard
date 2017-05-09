@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
@@ -168,6 +169,8 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+        startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
+
         placedArenas.add(startingArena);
         placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(4,0)));
@@ -197,6 +200,7 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArenaSquareCenter();
+        //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
         //startingArena.addEntity(decorFactory.platform(500,500,1000));
         placedArenas.add(startingArena);
 
