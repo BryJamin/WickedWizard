@@ -53,8 +53,8 @@ public class MainGame extends Game {
 		size1Params.fontParameters.size = (int) Measure.units(3f);
 		size1Params.fontParameters.borderColor = Color.BLACK;
 		size1Params.fontParameters.borderWidth = 0;
-        size1Params.fontParameters.genMipMaps = true;
-        size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
+        //size1Params.fontParameters.genMipMaps = true;
+        //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
 		manager.load(Assets.small, BitmapFont.class, size1Params);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
@@ -62,8 +62,8 @@ public class MainGame extends Game {
         size2Params.fontParameters.size = (int) Measure.units(4f);
         size2Params.fontParameters.borderColor = Color.BLACK;
         size2Params.fontParameters.borderWidth = 0;
-        size1Params.fontParameters.genMipMaps = true;
-        size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
+        //size1Params.fontParameters.genMipMaps = true;
+        //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
         manager.load(Assets.medium, BitmapFont.class, size2Params);
 
 

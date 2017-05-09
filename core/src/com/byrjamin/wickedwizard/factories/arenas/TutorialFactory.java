@@ -110,11 +110,8 @@ public class TutorialFactory extends ArenaShellFactory {
 
     public Arena platformTutorial(MapCoords defaultCoords){
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-        containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
-
-        Arena arena = new Arena(arenaSkin, containingCorrds.toArray());
+        Arena arena = new Arena(arenaSkin, defaultCoords,
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT * 2);
@@ -166,12 +163,9 @@ public class TutorialFactory extends ArenaShellFactory {
 
     public Arena jumpTutorial(MapCoords defaultCoords){
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-        containingCorrds.add(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()));
-
-        Arena arena = new Arena(arenaSkin, containingCorrds.toArray());
+        Arena arena = new Arena(arenaSkin, defaultCoords,
+                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()));
 
         arena.setWidth(SECTION_WIDTH * 3);
         arena.setHeight(SECTION_HEIGHT);
@@ -269,12 +263,9 @@ public class TutorialFactory extends ArenaShellFactory {
 
     public Arena grappleTutorial(MapCoords defaultCoords){
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-        containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1));
-        containingCorrds.add(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2));
-
-        Arena arena = new Arena(arenaSkin, containingCorrds.toArray());
+        Arena arena = new Arena(arenaSkin, defaultCoords,
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2));
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT * 3);
@@ -330,10 +321,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
     public Arena endTutorial(MapCoords defaultCoords){
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-
-        Arena arena = new Arena(arenaSkin, containingCorrds.toArray());
+        Arena arena = new Arena(arenaSkin, defaultCoords);
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);

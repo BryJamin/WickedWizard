@@ -13,6 +13,8 @@ public class DoorComponent extends Component {
     public MapCoords currentCoords;
     public MapCoords leaveCoords;
 
+    public boolean ignore = false;
+
 
     public Direction exit;
     public Direction entry;

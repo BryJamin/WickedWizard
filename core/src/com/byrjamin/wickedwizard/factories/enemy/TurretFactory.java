@@ -77,34 +77,6 @@ public class TurretFactory extends EnemyFactory {
         return bag;
     }
 
-    public ComponentBag fixedWallTurret(float x, float y, float angleInDegrees, float fireRate, float fireDelay){
-
-        float width = Measure.units(5);
-        float height = Measure.units(5);
-
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wall_turret"), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
-        trc.rotation = angleInDegrees + 90;
-
-        bag.add(trc);
-
-        //Hazard?
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-/*        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
-                -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
-        ));*/
-
-        WeaponComponent wc = new WeaponComponent(new Pistol(assetManager, fireRate), fireDelay);
-        bag.add(wc);
-        bag.add(new FiringAIComponent(angleInDegrees));
-
-        return bag;
-    }
-
-
     public Bag<Component> movingTurret(float x, float y){
 
         x = x - width / 2;

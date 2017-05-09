@@ -46,6 +46,8 @@ public class DoorSystem extends EntityProcessingSystem {
         for(int i = 0; i < entityIds.size(); i++){
             int doorEntity = entityIds.get(i);
 
+            if(dm.get(doorEntity).ignore) continue;
+
             if(aotm.has(doorEntity)) {
                 if(!aotm.get(doorEntity).isActive) {
                     continue;
