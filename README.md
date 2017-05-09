@@ -7,9 +7,10 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
-- Change chest to open only when near it 
+- Create a 'god mode' and 'bounds mode' menu option. 
+- Change animation so it is easier to queue animations such as the firing animation. 
+
 - Change turret to have animation
-- Change grate to use whole square
 
 - Change tutorial to have more 'forced sections' (teach double jump)
 -Create a menu Screen and when you start game if you have no preferences of tutorial make one. 
@@ -78,4 +79,5 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 -Add a fade to the item pickup entity. 
 - Giblets. create an Ondeath that spawns out giblets when an enemies dies
 - Minion component, (can't drop loot))
+- Change chest to open only when near it 
 
