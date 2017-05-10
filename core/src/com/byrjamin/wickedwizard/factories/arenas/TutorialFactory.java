@@ -48,7 +48,7 @@ public class TutorialFactory extends ArenaShellFactory {
     private static final String grappleTutorialString =
             "Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it";
     private static final String endString =
-            "Yea you seem about ready \n \n Tap on the hole in the wall to head to adventure!";
+            "Yea you seem about ready \n \n Now off to adventure!";
 
     private static final String platformString =
             "Double Tap Below your character to \n Fall through platforms";
@@ -292,12 +292,14 @@ public class TutorialFactory extends ArenaShellFactory {
 
         //TODO find less lazy way to add the highlight to the arena
         Bag<Component> bag;
-        bag = decorFactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
+
+        arena.addEntity(decorFactory.platform(0, HEIGHT - Measure.units(35), WIDTH));
+/*        bag = decorFactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 3),
                 Direction.UP);
         //arena.addDoor(bag);
-        arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
+        arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));*/
 /*
         //GROUND
         arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));*/
@@ -308,7 +310,7 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(bag);
 
 
-        for(int i = 0; i < 4; i ++) {
+        for(int i = 0; i < 5; i ++) {
             bag = decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50 + (i * 30)));
             arena.addEntity(bag);
             arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
@@ -329,8 +331,8 @@ public class TutorialFactory extends ArenaShellFactory {
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
         Bag<Component> bag = new Bag<Component>();
@@ -340,9 +342,15 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(bag);
 
 
+/*
         arena.addEntity(decorFactory.chevronBag(Measure.units(42.5f), Measure.units(48.5f), -90));
         arena.addEntity(decorFactory.chevronBag(Measure.units(65f), Measure.units(48.5f), 90));
         arena.addEntity(decorFactory.chevronBag(Measure.units(54f), Measure.units(23f), 0));
+*/
+
+        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
+        arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
 
         return arena;
 

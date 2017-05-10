@@ -30,6 +30,7 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
+/*
         for(Entity e : this.getEntities()){
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(e).bound);
 
@@ -43,6 +44,7 @@ public class BoundsDrawingSystem extends EntitySystem {
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
                     world.getSystem(PlayerInputSystem.class).movementArea);
         }
+*/
 
 
 /*        if(world.getSystem(CameraSystem.class) != null){

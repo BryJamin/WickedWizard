@@ -43,7 +43,7 @@ public class Level1Rooms extends AbstractFactory {
         ag.add(room2());
         ag.add(room3());
         ag.add(room4());
-/*        ag.add(room5());
+        ag.add(room5());
         ag.add(room6());
         //ag.add(room7LetterI());
         ag.add(room8());
@@ -54,7 +54,7 @@ public class Level1Rooms extends AbstractFactory {
         ag.add(room13());
         ag.add(room14());
         ag.add(room15());
-        ag.add(room16());*/
+        ag.add(room16());
         return ag;
     }
 
