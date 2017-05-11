@@ -124,7 +124,7 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter();
-                arenaEnemyPlacementFactory.silverHead(a);
+                arenaEnemyPlacementFactory.silverHead(a, a.getWidth() / 2, Measure.units(40f));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }

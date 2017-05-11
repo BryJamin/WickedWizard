@@ -38,10 +38,10 @@ public class SilverHeadFactory extends EnemyFactory {
 
     private final float health = 11f;
 
-    private final float textureWidth = Measure.units(12);
-    private final float textureHeight = Measure.units(12);
+    private final float textureWidth = Measure.units(9);
+    private final float textureHeight = Measure.units(9);
 
-    private final float textureOffsetX = -Measure.units(1.5f);
+    private final float textureOffsetX = 0;
     private final float textureOffsetY = 0;
 
     private final float accelX = Measure.units(5f);
