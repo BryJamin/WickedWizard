@@ -25,17 +25,17 @@ public class PlusOne implements Item {
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("heart", 2);
+        return new Pair<String, Integer>("item_medicine", 2);
     }
 
     @Override
     public String getName() {
-        return "Empty Heart";
+        return "Medicine";
     }
 
     @Override
     public String getDescription() {
-        return "Health Up!";
+        return "Health +";
     }
 }
 

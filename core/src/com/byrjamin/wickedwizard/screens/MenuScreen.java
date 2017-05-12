@@ -128,7 +128,7 @@ public class MenuScreen extends AbstractScreen {
 
 
         tutorialGameButton = createButton(world, "Tutorial", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(10f));
+                ,gameport.getWorldHeight() / 2 + Measure.units(5f));
 
 
         //Player

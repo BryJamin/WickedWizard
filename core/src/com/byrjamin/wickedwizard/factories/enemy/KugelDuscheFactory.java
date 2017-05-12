@@ -5,7 +5,12 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -19,6 +24,8 @@ import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
@@ -60,7 +67,15 @@ public class KugelDuscheFactory extends EnemyFactory {
         this.bf = new BulletFactory(assetManager);
     }
 
-    public ComponentBag kugelDusche(float x, float y){
+
+    public ComponentBag kugelDusche(float x, float y) {
+        return kugelDusche(x, y, new Random().nextBoolean());
+    };
+
+    public ComponentBag kugelDusche(float x, float y, boolean isLeft){
+
+
+        final boolean left = isLeft;
 
         x = x - width / 2;
         y = y - height / 2;
@@ -68,19 +83,32 @@ public class KugelDuscheFactory extends EnemyFactory {
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 25);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion("sprite_health2"),
-                width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
-        ));
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.KUGELDUSCHE_EMPTY),
+                (left) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
+
+
+        bag.add(new AnimationComponent(animMap));
+
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.KUGELDUSCHE_EMPTY),
+                width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+
+        trc.color = new Color(Color.BLACK);
+        trc.DEFAULT = new Color(Color.BLACK);
+
+        bag.add(trc);
         bag.add(new FiringAIComponent(0));
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
 
-        Action p = new Action() {
 
-            private float angle = (new Random().nextBoolean()) ? 5 : -5;
+        Action p = new Action() {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians(angle);
+                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((left) ? 5 : -5);
             }
 
             @Override

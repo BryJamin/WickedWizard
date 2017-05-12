@@ -4,11 +4,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
-import com.byrjamin.wickedwizard.factories.items.passives.FireRateUp;
+import com.byrjamin.wickedwizard.factories.items.passives.ItemSwiftShot;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.passives.PlusOne;
@@ -45,7 +43,8 @@ public class ItemArenaFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
+        Item[] items = {new PlusOne(), new DamageUp(), new ItemSwiftShot()};
+        //Item[] items = {new DamageUp()};
 
         Random random = new Random();
 
@@ -79,7 +78,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
 
-        Item[] items = {new PlusOne(), new DamageUp(), new FireRateUp()};
+        Item[] items = {new PlusOne(), new DamageUp(), new ItemSwiftShot()};
 
         Random random = new Random();
 

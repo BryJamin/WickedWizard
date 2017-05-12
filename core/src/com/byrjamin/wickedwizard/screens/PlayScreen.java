@@ -399,9 +399,11 @@ public class PlayScreen extends AbstractScreen {
             }
         }
 
+        float screenoffset = Measure.units(2.5f);
+
         for(int i = 0; i < healthRegions.size; i++) {
             game.batch.draw(healthRegions.get(i),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (100 * i),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(8f),
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
         }
@@ -423,7 +425,7 @@ public class PlayScreen extends AbstractScreen {
         PickUp p = new MoneyPlus1();
 
         game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
                 Measure.units(2f), Measure.units(2f));
 
@@ -435,7 +437,7 @@ public class PlayScreen extends AbstractScreen {
         p = new KeyUp();
 
         game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(2.5f),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15f),
                 Measure.units(2.5f), Measure.units(2.5f));
 

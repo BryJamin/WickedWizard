@@ -19,6 +19,9 @@ public class TextureStrings {
     public static final String BLOB_ATTACKING = "blob_attack";
     public static final String BLOB_DYING = "blob_dying";
 
+
+    //Kugeldusche
+    public static final String KUGELDUSCHE_EMPTY = "kugel";
     //SENTRY
     public static final String SENTRY = "sentry";
 

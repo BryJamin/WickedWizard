@@ -12,7 +12,7 @@ import com.byrjamin.wickedwizard.utils.Pair;
  * Created by Home on 16/04/2017.
  */
 
-public class FireRateUp implements Item {
+public class ItemSwiftShot implements Item {
 
 
     @Override
@@ -23,16 +23,16 @@ public class FireRateUp implements Item {
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("bullet_red", 0);
+        return new Pair<String, Integer>("item_swift_shot", 0);
     }
 
     @Override
     public String getName() {
-        return "Red Sphere";
+        return "Swift Shot";
     }
 
     @Override
     public String getDescription() {
-        return "Fire Rate Up!";
+        return "FireRate +";
     }
 }

@@ -16,22 +16,22 @@ public class DamageUp implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).damage += 1f;
+        player.getComponent(StatComponent.class).damage += 0.2f;
         return true;
     }
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("bullet_blue", 0);
+        return new Pair<String, Integer>("item_anger", 0);
     }
 
     @Override
     public String getName() {
-        return "Blue Sphere";
+        return "Anger";
     }
 
     @Override
     public String getDescription() {
-        return "Damage Up!";
+        return "Damage +";
     }
 }

@@ -42,7 +42,7 @@ public class Level1Rooms extends AbstractFactory {
         ag.add(room1());
         ag.add(room2());
         ag.add(room3());
-        ag.add(room4());
+        ag.add(room4Kugel());
         ag.add(room5());
         ag.add(room6());
         //ag.add(room7LetterI());
@@ -94,7 +94,7 @@ public class Level1Rooms extends AbstractFactory {
         };
     }
 
-    public ArenaGen room4(){
+    public ArenaGen room4Kugel(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {

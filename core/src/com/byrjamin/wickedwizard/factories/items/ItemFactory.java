@@ -6,6 +6,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.World;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -140,8 +141,15 @@ public class ItemFactory extends AbstractFactory {
         Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
 
         bag.add(new CollisionBoundComponent(bound));
-        bag.add(new TextureRegionComponent(atlas.findRegion("altar"), width, height,
-                TextureRegionComponent.PLAYER_LAYER_FAR));
+
+        TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion("altar"), width, height,
+                TextureRegionComponent.PLAYER_LAYER_FAR);
+
+        altarTexture.DEFAULT = new Color(Color.BLACK);
+        altarTexture.color = new Color(Color.BLACK);
+
+        bag.add(altarTexture);
+
         bag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
 
         bags.add(altarItemTexture);
