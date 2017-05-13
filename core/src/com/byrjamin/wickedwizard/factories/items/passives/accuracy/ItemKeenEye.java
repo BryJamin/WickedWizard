@@ -1,37 +1,37 @@
-package com.byrjamin.wickedwizard.factories.items.passives;
+package com.byrjamin.wickedwizard.factories.items.passives.accuracy;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
- * Created by Home on 15/04/2017.
+ * Created by Home on 13/05/2017.
  */
 
-public class DamageUp implements Item {
+public class ItemKeenEye implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).damage += 0.2f;
+        player.getComponent(StatComponent.class).accuracy += PresetStatIncrease.major;
         return true;
     }
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item_anger", 0);
+        return new Pair<String, Integer>("item/KeenEye", 0);
     }
 
     @Override
     public String getName() {
-        return "Anger";
+        return "Keen Eye";
     }
 
     @Override
     public String getDescription() {
-        return "Damage +";
+        return "Accuracy+";
     }
+
 }

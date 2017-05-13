@@ -57,6 +57,8 @@ public class RenderingSystem extends EntitySystem {
     public AssetManager assetManager;
     public TextureAtlas atlas;
 
+    public Color batchColor = new Color(Color.WHITE);
+
     public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
@@ -174,7 +176,7 @@ public class RenderingSystem extends EntitySystem {
                     trc.width, trc.height,
                     trc.scaleX * rendDirection(e), trc.scaleY,
                     trc.rotation);
-            batch.setColor(Color.WHITE);
+            batch.setColor(batchColor);
 
             if(shaderOn){
                     batch.end();
@@ -200,7 +202,7 @@ public class RenderingSystem extends EntitySystem {
                     count++;
                 }
             }
-            batch.setColor(Color.WHITE);
+            batch.setColor(batchColor);
 
         }
 
@@ -227,12 +229,12 @@ public class RenderingSystem extends EntitySystem {
             shapeRenderer.begin(sc.shapeType);
             shapeRenderer.setColor(sc.color);
             shapeRenderer.rect(pc.getX(),pc.getY(), sc.width, sc.height);
-            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.setColor(batchColor);
             shapeRenderer.end();
             batch.begin();
         }
 
-        batch.setColor(1,1,1,1);
+        batch.setColor(batchColor);
 
 
 

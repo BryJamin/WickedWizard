@@ -32,9 +32,12 @@ public class JigsawGeneratorTest extends GameTest {
 
         AssetManager assetManager = new AssetManager();
 
+        System.out.println(Gdx.files.getLocalStoragePath());
+        System.out.println(Gdx.files.getExternalStoragePath());
+
         TextureAtlasLoader textureAtlasLoader = new TextureAtlasLoader(new LocalFileHandleResolver());
 
-        assetManager.setLoader(TextureAtlas.class, "/as",textureAtlasLoader);
+        assetManager.setLoader(TextureAtlas.class,textureAtlasLoader);
         assetManager.load("sprite.atlas", TextureAtlas.class);
         assetManager.finishLoading();
         TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
@@ -71,7 +74,8 @@ public class JigsawGeneratorTest extends GameTest {
                     break;
                 }
             }
-
+            System.out.println("Arena size is: " +arenas.size);
+            System.out.println(i);
             assertTrue(bossRoom);
 
 

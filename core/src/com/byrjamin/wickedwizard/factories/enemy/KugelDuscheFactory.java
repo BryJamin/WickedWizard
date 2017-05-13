@@ -108,7 +108,7 @@ public class KugelDuscheFactory extends EnemyFactory {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((left) ? 5 : -5);
+                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((left) ? 7.5 : -7.5);
             }
 
             @Override

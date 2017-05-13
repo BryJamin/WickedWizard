@@ -291,7 +291,6 @@ public class ItemFactory extends AbstractFactory {
                         for (int i = 0; i < entityIds.size(); i++) {
                             Entity player = world.getEntity(entityIds.get(i));
                             ac.pickUp.applyEffect(world, player);
-
                             world.getSystem(PickUpSystem.class).itemOverHead(player, item.getRegionName());
                             world.getSystem(MessageBannerSystem.class).createBanner(item.getName(), item.getDescription());
 

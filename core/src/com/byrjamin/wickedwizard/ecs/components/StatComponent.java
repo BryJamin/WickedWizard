@@ -8,9 +8,30 @@ import com.artemis.Component;
 
 public class StatComponent extends Component {
 
+
+    //Your damage based on the weapon
     public float damage = 1;
+
+    public float armor = 0;
+
+    //How fast you fire your weapon
     public float fireRate = 1;
+
+    //How fast the character travels curren max should be 5?
     public float speed = 1;
+
+    //Increases crit chance, money drops? etc?
+    public float luck = 1;
+
+    //How far you shoot depending on the weapon
+    public float range = 1;
+
+    //How fast bullets travel
+    public float shotSpeed = 1;
+
+    //Crit Chance
+    public float accuracy = 1;
+
 
     public StatComponent(){
 

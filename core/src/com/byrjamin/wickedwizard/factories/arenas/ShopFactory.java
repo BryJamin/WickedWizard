@@ -18,9 +18,9 @@ import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.passives.ChangeColor;
-import com.byrjamin.wickedwizard.factories.items.passives.DamageUp;
-import com.byrjamin.wickedwizard.factories.items.passives.ItemSwiftShot;
-import com.byrjamin.wickedwizard.factories.items.passives.PlusOne;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.Anger;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
+import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -62,7 +62,7 @@ public class ShopFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        Item[] items = {new PlusOne(), new DamageUp(), new ItemSwiftShot()};
+        Item[] items = {new Medicine(), new Anger(), new ItemSwiftShot()};
         PickUp[] pickUps = {new HealthUp()};
 
 /*        MapCoords[] locations = new MapCoords[]{ new MapCoords((int) Measure.units(20), (int) Measure.units(40)),
@@ -74,7 +74,7 @@ public class ShopFactory extends ArenaShellFactory {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new DamageUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new Anger(), 5)) {
             arena.addEntity(b);
         }
 
