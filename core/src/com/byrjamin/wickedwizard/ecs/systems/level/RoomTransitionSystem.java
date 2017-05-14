@@ -18,6 +18,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -35,6 +36,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.RoomTransition;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -147,6 +149,21 @@ public class RoomTransitionSystem extends EntitySystem {
 
         switchRooms();
 
+
+/*        if(currentArena.roomType == Arena.RoomType.ITEM){
+
+            for(AltarComponent ac : currentArena.altars){
+                if(ac.hasItem){
+
+                }
+            }
+            currentArena.fin
+
+
+
+
+        }*/
+
         for(BaseSystem s: world.getSystems()){
             if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
                 s.setEnabled(true);
@@ -187,42 +204,12 @@ public class RoomTransitionSystem extends EntitySystem {
             }
 
             if(dm.has(e)){
-                DoorComponent dc = dm.get(e);
-                CollisionBoundComponent doorBound = cbm.get(e);
-                PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
-                CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-
-                float doorEntryY = doorBound.bound.y + (doorBound.bound.getHeight() * doorEntryPercentage);
-
-                if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
-                    switch (dc.exit){
-                        case LEFT: player.position.x = doorBound.bound.getX() + doorBound.bound.getWidth() + pBound.bound.getWidth();
-                            player.position.y = doorEntryY;
-                            break;
-                        case RIGHT: player.position.x = doorBound.bound.getX() - pBound.bound.getWidth();
-                            player.position.y = doorEntryY;
-                            break;
-                        case UP:
-                            System.out.println("UP");
-                            player.position.x = doorBound.getCenterX();
-                            player.position.y = doorBound.bound.getY() - pBound.bound.getHeight();;
-                            vc.velocity.y = (vc.velocity.y > 0) ? 0 : vc.velocity.y;
-                            break;
-                        case DOWN:
-                            System.out.println("DOWN");
-                            player.position.x = doorBound.getCenterX();
-                            player.position.y = doorBound.bound.getY() + pBound.bound.getHeight() * 2;
-                            vc.velocity.y = (vc.velocity.y < Measure.units(70f)) ? Measure.units(70f) : vc.velocity.y;
-                            break;
-                    }
-
-                    pBound.bound.x = player.position.x;
-                    pBound.bound.y = player.position.y;
-
-                }
-
-
+                placePlayerAfterTransition(dm.get(e),
+                        cbm.get(e),
+                        world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class),
+                        doorEntryPercentage);
             }
 
 
@@ -240,6 +227,43 @@ public class RoomTransitionSystem extends EntitySystem {
         //System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
 
+    }
+
+    public void placePlayerAfterTransition(DoorComponent dc,
+                                           CollisionBoundComponent doorBoundary,
+                                           PositionComponent playerPosition,
+                                           CollisionBoundComponent playerBoundary,
+                                           VelocityComponent playerVelocity,
+                                           float doorEntryPercentage){
+
+        float doorEntryY = doorBoundary.bound.y + (doorBoundary.bound.getHeight() * doorEntryPercentage);
+
+        if(dc.currentCoords.equals(destination) && dc.leaveCoords.equals(previousDestination)){
+            switch (dc.exit){
+                case LEFT: playerPosition.position.x = doorBoundary.bound.getX() + doorBoundary.bound.getWidth() + playerBoundary.bound.getWidth();
+                    playerPosition.position.y = doorEntryY;
+                    break;
+                case RIGHT: playerPosition.position.x = doorBoundary.bound.getX() - playerBoundary.bound.getWidth();
+                    playerPosition.position.y = doorEntryY;
+                    break;
+                case UP:
+                    System.out.println("UP");
+                    playerPosition.position.x = doorBoundary.getCenterX();
+                    playerPosition.position.y = doorBoundary.bound.getY() - playerBoundary.bound.getHeight();;
+                    playerVelocity.velocity.y = (playerVelocity.velocity.y > 0) ? 0 : playerVelocity.velocity.y;
+                    break;
+                case DOWN:
+                    System.out.println("DOWN");
+                    playerPosition.position.x = doorBoundary.getCenterX();
+                    playerPosition.position.y = doorBoundary.bound.getY() + playerBoundary.bound.getHeight() * 2;
+                    playerVelocity.velocity.y = (playerVelocity.velocity.y < Measure.units(70f)) ? Measure.units(70f) : playerVelocity.velocity.y;
+                    break;
+            }
+
+            playerBoundary.bound.x = playerPosition.position.x;
+            playerBoundary.bound.y = playerPosition.position.y;
+
+        }
     }
 
     public Arena findRoom(MapCoords destination){

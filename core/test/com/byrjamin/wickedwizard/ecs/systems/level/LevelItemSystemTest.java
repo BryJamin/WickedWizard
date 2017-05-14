@@ -1,22 +1,17 @@
 package com.byrjamin.wickedwizard.ecs.systems.level;
 
-import com.artemis.Entity;
-import com.artemis.World;
-import com.artemis.WorldConfiguration;
-import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.byrjamin.wickedwizard.GameTest;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.items.Item;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Random;
 
 /**
  * Created by Home on 13/05/2017.
@@ -42,9 +37,9 @@ public class LevelItemSystemTest extends GameTest {
         assetManager.finishLoading();
         TextureAtlas atlas = assetManager.get("/android/assets/sprite.atlas", TextureAtlas.class);
 
-        LevelItemSystem l = new LevelItemSystem();
+        LevelItemSystem l = new LevelItemSystem(new Random());
 
-        for(Item i : l.getAvaliableItemList()) {
+        for(Item i : l.getItemPool()) {
             Assert.assertTrue(i.getRegionName().getLeft()
                     + " index "
                     + i.getRegionName().getRight()

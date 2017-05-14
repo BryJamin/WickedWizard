@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
@@ -115,7 +116,7 @@ public class ChestFactory extends AbstractFactory {
 
 
                 for(int i = 0; i < e.getComponent(LootComponent.class).maxDrops; i++) {
-                    world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());
+                    world.getSystem(LuckSystem.class).spawnChestPickUp(cbc.getCenterX(), cbc.getCenterY());
                 }
 
                 e.edit().remove(ActionOnTouchComponent.class);

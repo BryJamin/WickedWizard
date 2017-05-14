@@ -22,8 +22,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
@@ -113,9 +116,11 @@ public class PlayScreen extends AbstractScreen {
     private JumpComponent jumpresource;
     private CurrencyComponent currencyComponent;
     private HealthComponent healthResource;
+    private StatComponent stats;
 
     GestureDetector gestureDetector;
     private boolean gameOver = false;
+    private boolean isTutorial;
 
     private ArenaGUI arenaGUI;
     private Random random;
@@ -127,6 +132,7 @@ public class PlayScreen extends AbstractScreen {
 
     public PlayScreen(MainGame game, boolean isTutorial) {
         super(game);
+        this.isTutorial = isTutorial;
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
@@ -137,11 +143,7 @@ public class PlayScreen extends AbstractScreen {
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         random = new Random();
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas),3, random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
-
-
-        jg.generateTutorial = isTutorial;
         createWorld();
     }
 
@@ -208,6 +210,14 @@ public class PlayScreen extends AbstractScreen {
 
     public void createWorld(){
 
+        LevelItemSystem lis = new LevelItemSystem(random);
+
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 3 ,lis.getItemPool(), random);
+        currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
+
+
+        jg.generateTutorial = isTutorial;
+
         arenaArray = jg.generate();
         Arena startingArena = jg.getStartingRoom();
 
@@ -219,6 +229,7 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),
+                        new ExpiryRangeSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
@@ -258,6 +269,7 @@ public class PlayScreen extends AbstractScreen {
                         new RenderingSystem(game.batch, manager, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
+                        lis,
                         new ChangeLevelSystem(jg, atlas),
                         new ClearCollisionsSystem(),
                         new RoomTransitionSystem(startingArena, arenaArray)
@@ -284,6 +296,7 @@ public class PlayScreen extends AbstractScreen {
 
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
+        stats = entity.getComponent(StatComponent.class);
         currencyComponent = entity.getComponent(CurrencyComponent.class);
         arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena);
     }
@@ -384,9 +397,9 @@ public class PlayScreen extends AbstractScreen {
 
         for(int i = 1; i <= healthResource.health; i++){
             if(i <= healthResource.health && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion("heart", 0));
+                healthRegions.add(atlas.findRegion("item/heart", 0));
             } else if(healthResource.health % 2 != 0 && i == healthResource.health){
-                healthRegions.add(atlas.findRegion("heart", 1));
+                healthRegions.add(atlas.findRegion("item/heart", 1));
             }
         }
 
@@ -395,32 +408,29 @@ public class PlayScreen extends AbstractScreen {
 
         for(int i = 1; i <= emptyHealth; i++) {
             if(i <= emptyHealth && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion("heart", 2));
+                healthRegions.add(atlas.findRegion("item/heart", 2));
             }
         }
 
         float screenoffset = Measure.units(2.5f);
+
+        int count = 0;
 
         for(int i = 0; i < healthRegions.size; i++) {
             game.batch.draw(healthRegions.get(i),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(8f),
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            count++;
         }
 
-/*
-        for (int i = 0; i < jumpresource.jumps; i++) {
-
-            float width = MainGame.GAME_UNITS * 2.5f;
-            float height = MainGame.GAME_UNITS * 2.5f;
-
-            game.batch.draw(atlas.findRegion("bullet_blue"),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + 50 + (50 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
-                    width, height);
+        for(int i = count; i < stats.armor + count; i++) {
+            game.batch.draw(atlas.findRegion("item/armor"),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(8f),
+                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            //count++;
         }
-*/
-
 
         PickUp p = new MoneyPlus1();
 

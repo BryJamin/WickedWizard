@@ -11,6 +11,8 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
+import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
@@ -38,11 +40,13 @@ public class JigsawGenerator {
     private ShopFactory shopFactory;
     private ArenaSkin arenaSkin;
 
+    private Array<Item> itemPool;
+
     private DecorFactory decorFactory;
 
     public boolean generateTutorial = true;
 
-    public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, Random rand){
+    public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, Array<Item> itemPool, Random rand){
         this.assetManager = assetManager;
         this.level1Rooms = new Level1Rooms(assetManager, arenaSkin);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
@@ -52,6 +56,7 @@ public class JigsawGenerator {
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
         this.noBattleRooms = noBattleRooms;
         this.arenaSkin = arenaSkin;
+        this.itemPool = itemPool;
         this.rand = rand;
     }
 
@@ -220,7 +225,17 @@ public class JigsawGenerator {
 
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
-        Arena itemRoom = itemArenaFactory.createItemRoom();
+
+        Item item;
+        if(itemPool.size > 0) {
+            int i = rand.nextInt(itemPool.size);
+            item = itemPool.get(i);
+            itemPool.removeValue(item, true);
+        } else {
+            item = new ItemVitaminC();
+        }
+
+        Arena itemRoom = itemArenaFactory.createItemRoom(item);
         if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(itemRoom);
             return true;

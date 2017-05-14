@@ -41,7 +41,7 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
                 for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
                 if(cbm.get(e).bound.overlaps(hb.hitbox)){
                     if(!bm.get(e).isHit) {
-                        hm.get(e).health -= 1;
+                        hm.get(e).applyDamage(1);
                         bm.get(e).isHit = true;
                         break;
                     }

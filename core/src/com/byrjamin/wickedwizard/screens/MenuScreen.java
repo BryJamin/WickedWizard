@@ -28,6 +28,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
@@ -188,6 +189,8 @@ public class MenuScreen extends AbstractScreen {
 
     public Rectangle createButton(World world, String text, float x, float y){
 
+        SolitarySkin ss = new SolitarySkin(atlas);
+
         float width = Measure.units(20f);
         float height = Measure.units(10f);
 
@@ -197,12 +200,24 @@ public class MenuScreen extends AbstractScreen {
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x,y));
         TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
-        tfc.color = new Color(Color.BLACK);
+        tfc.color = ss.getBackgroundTint();
+        tfc.DEFAULT = ss.getBackgroundTint();
         e.edit().add(tfc);
 
         Rectangle r = new Rectangle(x, y, width, height);
 
         e.edit().add(new CollisionBoundComponent(r));
+
+
+        Entity shape = world.createEntity();
+        shape.edit().add(new PositionComponent(x,y));
+
+        ShapeComponent sc = new ShapeComponent(width,height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+        sc.color = ss.getWallTint();
+        sc.DEFAULT = ss.getWallTint();
+
+
+        shape.edit().add(new ShapeComponent(width,height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
         return r;
 

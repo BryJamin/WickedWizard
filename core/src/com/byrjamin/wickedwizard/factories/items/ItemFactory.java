@@ -125,22 +125,21 @@ public class ItemFactory extends AbstractFactory {
         altarItemTexture.add(new PositionComponent());
         altarItemTexture.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
         altarItemTexture.add(new FollowPositionComponent(positionComponent.position, width / 2 - Measure.units(2.5f), Measure.units(5)));
-
         ChildComponent c = new ChildComponent();
         altarItemTexture.add(c);
 
-        ComponentBag bag = new ComponentBag();
-        bag.add(new ParentComponent(c));
-        bag.add(positionComponent);
+        ComponentBag altarBag = new ComponentBag();
+        altarBag.add(new ParentComponent(c));
+        altarBag.add(positionComponent);
         //bag.add(new PickUpComponent(item));
-        bag.add(new AltarComponent(item));
+        altarBag.add(new AltarComponent(item));
         // bag.add(new HighlightComponent());
-        bag.add(new VelocityComponent());
-        bag.add(new GravityComponent());
+        altarBag.add(new VelocityComponent());
+        altarBag.add(new GravityComponent());
 
         Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
-
-        bag.add(new CollisionBoundComponent(bound));
+        altarBag.add(new CollisionBoundComponent(bound));
+        altarBag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
 
         TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion("altar"), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR);
@@ -148,16 +147,11 @@ public class ItemFactory extends AbstractFactory {
         altarTexture.DEFAULT = new Color(Color.BLACK);
         altarTexture.color = new Color(Color.BLACK);
 
-        bag.add(altarTexture);
+        altarBag.add(altarTexture);
 
-        bag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
 
         bags.add(altarItemTexture);
-        bags.add(bag);
-
-
-
-
+        bags.add(altarBag);
 
         return bags;
     }

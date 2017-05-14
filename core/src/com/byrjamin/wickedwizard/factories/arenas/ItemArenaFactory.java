@@ -24,11 +24,11 @@ public class ItemArenaFactory extends ArenaShellFactory {
         this.itemFactory = new ItemFactory(assetManager);
     }
 
-    public Arena createItemRoom(){
-        return createItemRoom(new MapCoords(0,0));
+    public Arena createItemRoom(Item item){
+        return createItemRoom(new MapCoords(0,0), item);
     }
 
-    public Arena createItemRoom(MapCoords defaultCoords) {
+    public Arena createItemRoom(MapCoords defaultCoords, Item item) {
 
         Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
 
@@ -43,14 +43,8 @@ public class ItemArenaFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        Item[] items = {new Medicine(), new Anger(), new ItemSwiftShot()};
-        //Item[] items = {new DamageUp()};
-
-        Random random = new Random();
-
-
         for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(arena.getWidth() / 2,
-                Measure.units(17), items[random.nextInt(items.length)])) {
+                Measure.units(17), item)) {
             arena.addEntity(b);
         }
         return arena;

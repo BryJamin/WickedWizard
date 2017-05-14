@@ -4,8 +4,10 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
 /**
@@ -31,10 +33,9 @@ public class Arena {
     public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
 
     public Array<DoorComponent> doors = new Array<DoorComponent>();
+    public Array<AltarComponent> altars = new Array<AltarComponent>();
 
-    //private Bag<Bag<Component>> doors = new Bag<Bag<Component>>();
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
-    private Bag<Bag<Component>> doorBags = new Bag<Bag<Component>>();
 
     public Arena(ArenaSkin arenaSkin, MapCoords... mapCoords) {
         this(RoomType.NORMAL, arenaSkin, mapCoords);
@@ -76,8 +77,17 @@ public class Arena {
             if(c instanceof DoorComponent){
                 adjacentCoords.add(((DoorComponent) c).leaveCoords);
                 doors.add((DoorComponent) c);
-                doorBags.add(door);
                 bagOfEntities.add(door);
+                return;
+            }
+        }
+    }
+
+    public void addAltar(Bag<Component> altar){
+        for(Component c : altar){
+            if(c instanceof AltarComponent){
+                altars.add((AltarComponent) c);
+                bagOfEntities.add(altar);
                 return;
             }
         }
@@ -88,11 +98,17 @@ public class Arena {
     }
 
     public void addEntity(Bag<Component> entityBag){
+        if(BagSearch.contains(AltarComponent.class, entityBag)){
+            altars.add(BagSearch.getObjectOfTypeClass(AltarComponent.class, entityBag));
+        }
         bagOfEntities.add(entityBag);
     }
 
     public void addEntity(Bag<Component>... entityBags){
         for(Bag<Component> bag : entityBags) {
+            if(BagSearch.contains(AltarComponent.class, bag)){
+                altars.add(BagSearch.getObjectOfTypeClass(AltarComponent.class, bag));
+            }
             bagOfEntities.add(bag);
         }
     }

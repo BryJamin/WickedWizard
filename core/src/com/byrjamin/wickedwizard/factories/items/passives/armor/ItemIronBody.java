@@ -18,7 +18,7 @@ public class ItemIronBody implements Item {
     public boolean applyEffect(World world, Entity player) {
 
         HealthComponent hc = player.getComponent(HealthComponent.class);
-        hc.maxHealth = hc.maxHealth + 1;
+        hc.maxHealth = hc.maxHealth + 2;
         hc.health = (hc.health + 1 >= hc.maxHealth) ? hc.maxHealth : hc.health + 2;
 
         //TODO increase Speed and 1Armor

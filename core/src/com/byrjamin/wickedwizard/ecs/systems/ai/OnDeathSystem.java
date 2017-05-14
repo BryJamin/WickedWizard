@@ -7,6 +7,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -17,6 +18,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import javafx.geometry.Pos;
 
@@ -50,27 +52,42 @@ public class OnDeathSystem  extends BaseSystem {
 
         if(odm.has(deadEntity)){
 
+            System.out.println("so...");
+
+            System.out.println(odm.get(deadEntity).getComponentBags().size);
+
             for (ComponentBag bag : odm.get(deadEntity).getComponentBags()) {
-                Entity e = world.createEntity();
+                Entity newEntity = world.createEntity();
+                System.out.println("why though");
                 for (Component c : bag) {
-                    e.edit().add(c);
+
+                    newEntity.edit().add(c);
                 }
 
 
                 if(cbm.has(deadEntity)){
                     CollisionBoundComponent cbc = cbm.get(deadEntity);
 
-                    if(cbm.has (e)) {
-                        CollisionBoundComponent odcbc = cbm.get(e);
+                    if(cbm.has (newEntity)) {
+                        CollisionBoundComponent odcbc = cbm.get(newEntity);
 
-                        e.getComponent(PositionComponent.class).position = new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0);
+                        newEntity.getComponent(PositionComponent.class).position = new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0);
+
+                        if(cbm.has(newEntity)){
+                            Rectangle r = newEntity.getComponent(CollisionBoundComponent.class).bound;
+                            r.x = cbc.getCenterX();
+                            r.y = cbc.getCenterY();
+                        }
+
 
                     } else {
-                        e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
+
+                        newEntity.getComponent(PositionComponent.class).position = new Vector3(pc.position);
                     }
 
                 } else {
-                    e.getComponent(PositionComponent.class).position = new Vector3(pc.position);
+
+                    newEntity.getComponent(PositionComponent.class).position = new Vector3(pc.position);
                 }
             }
         }

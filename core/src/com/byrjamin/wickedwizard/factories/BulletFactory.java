@@ -85,7 +85,7 @@ public class BulletFactory extends AbstractFactory {
 
         bag.add(new PositionComponent(cX, cY));
         bag.add(new BulletComponent());
-        bag.add(new ExpireComponent(10f)); //TODO Probably doesn't have to be this long (or delete bullets if they leave the room bounds)
+        //bag.add(new ExpireComponent(10f)); //TODO Probably doesn't have to be this long (or delete bullets if they leave the room bounds)
         bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height)));
 

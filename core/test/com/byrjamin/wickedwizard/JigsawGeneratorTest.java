@@ -9,6 +9,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
@@ -55,7 +56,9 @@ public class JigsawGeneratorTest extends GameTest {
 
             int numberOfRooms = random.nextInt(100);
 
-            JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms, random);
+            LevelItemSystem lis = new LevelItemSystem(new Random());
+
+            JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms,lis.getItemPool(), random);
             jg.generateTutorial = false;
 
             Array<Arena> arenas = jg.generate();
