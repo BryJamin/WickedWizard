@@ -5,6 +5,8 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.World;
 import com.artemis.utils.IntBag;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -15,7 +17,6 @@ import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
@@ -32,8 +33,8 @@ import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -43,10 +44,13 @@ import java.util.Random;
  * Created by Home on 09/04/2017.
  */
 
-public class ItemFactory {
+public class ItemFactory extends AbstractFactory {
 
+    public ItemFactory(AssetManager assetManager) {
+        super(assetManager);
+    }
 
-    public static ComponentBag createPickUpBag(float x, float y, PickUp pickUp){
+    public ComponentBag createPickUpBag(float x, float y, PickUp pickUp){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -57,13 +61,13 @@ public class ItemFactory {
         bag.add(new GravityComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
-        bag.add(new TextureRegionComponent(pickUp.getRegion(), Measure.units(5), Measure.units(5),
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
 
         return bag;
     }
 
-    public static ComponentBag createIntangibleFollowingPickUpBag(float x, float y, PickUp pickUp){
+    public ComponentBag createIntangibleFollowingPickUpBag(float x, float y, PickUp pickUp){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -71,19 +75,22 @@ public class ItemFactory {
         Random random = new Random();
 
         bag.add(new VelocityComponent(random.nextInt((int) Measure.units(60f)) -Measure.units(30f), Measure.units(30f)));
+
+        //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
+
         bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(5f),Measure.units(5f), Measure.units(50), Measure.units(50f)));
+        bag.add(new AccelerantComponent(Measure.units(20f),Measure.units(20f), Measure.units(150f), Measure.units(150f)));
         bag.add(new IntangibleComponent());
         bag.add(new PickUpComponent(pickUp));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
-        bag.add(new TextureRegionComponent(pickUp.getRegion(), Measure.units(5), Measure.units(5),
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(2), Measure.units(2),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
         return bag;
     }
 
 
-    public static ComponentBag createFloatingItemBag(float x, float y, Item item){
+    public ComponentBag createFloatingItemBag(float x, float y, Item item){
 
         float width = Measure.units(8);
         float height = Measure.units(8);
@@ -96,13 +103,13 @@ public class ItemFactory {
         bag.add(new PickUpComponent(item));
         bag.add(new HighlightComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new TextureRegionComponent(item.getRegion(), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR));
         return bag;
     }
 
 
-    public static Array<ComponentBag> createItemAltarBag(float x, float y, Item item){
+    public Array<ComponentBag> createItemAltarBag(float x, float y, Item item){
 
         float width = Measure.units(15);
         float height = Measure.units(15);
@@ -116,40 +123,41 @@ public class ItemFactory {
 
         ComponentBag altarItemTexture = new ComponentBag();
         altarItemTexture.add(new PositionComponent());
-        altarItemTexture.add(new TextureRegionComponent(item.getRegion(), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        altarItemTexture.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
         altarItemTexture.add(new FollowPositionComponent(positionComponent.position, width / 2 - Measure.units(2.5f), Measure.units(5)));
-
         ChildComponent c = new ChildComponent();
         altarItemTexture.add(c);
 
-        ComponentBag bag = new ComponentBag();
-        bag.add(new ParentComponent(c));
-        bag.add(positionComponent);
+        ComponentBag altarBag = new ComponentBag();
+        altarBag.add(new ParentComponent(c));
+        altarBag.add(positionComponent);
         //bag.add(new PickUpComponent(item));
-        bag.add(new AltarComponent(item));
+        altarBag.add(new AltarComponent(item));
         // bag.add(new HighlightComponent());
-        bag.add(new VelocityComponent());
-        bag.add(new GravityComponent());
+        altarBag.add(new VelocityComponent());
+        altarBag.add(new GravityComponent());
 
         Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
+        altarBag.add(new CollisionBoundComponent(bound));
+        altarBag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
 
-        bag.add(new CollisionBoundComponent(bound));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion("altar"), width, height,
-                TextureRegionComponent.PLAYER_LAYER_FAR));
-        bag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
+        TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion("altar"), width, height,
+                TextureRegionComponent.PLAYER_LAYER_FAR);
+
+        altarTexture.DEFAULT = new Color(Color.BLACK);
+        altarTexture.color = new Color(Color.BLACK);
+
+        altarBag.add(altarTexture);
+
 
         bags.add(altarItemTexture);
-        bags.add(bag);
-
-
-
-
+        bags.add(altarBag);
 
         return bags;
     }
 
 
-    public static Array<ComponentBag> createShopItemBag(float x, float y, PickUp pickUp, int money){
+    public Array<ComponentBag> createShopItemBag(float x, float y, PickUp pickUp, int money){
 
         float width = Measure.units(6);
         float height = Measure.units(6);
@@ -163,7 +171,7 @@ public class ItemFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(pickUp.getRegion(), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(pickUp));
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
@@ -174,12 +182,12 @@ public class ItemFactory {
 
         ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x, y - Measure.units(5)));
-        priceTag.add(new TextureRegionComponent(new MoneyPlus1().getRegion(), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
-        TextureFontComponent trc = new TextureFontComponent(""+money);
-        trc.width = width / 2;
-        trc.offsetX = -Measure.units(45f);
-        trc.offsetY =  Measure.units(2.8f);
-        priceTag.add(trc);
+        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        TextureFontComponent tfc = new TextureFontComponent(""+money);
+        //tfc.width = width / 2;
+        tfc.offsetX = Measure.units(5);
+        tfc.offsetY = Measure.units(2.5f);
+        priceTag.add(tfc);
         ChildComponent c = new ChildComponent();
         pc.children.add(c);
         priceTag.add(c);
@@ -277,8 +285,7 @@ public class ItemFactory {
                         for (int i = 0; i < entityIds.size(); i++) {
                             Entity player = world.getEntity(entityIds.get(i));
                             ac.pickUp.applyEffect(world, player);
-
-                            world.getSystem(PickUpSystem.class).itemOverHead(player, item.getRegion());
+                            world.getSystem(PickUpSystem.class).itemOverHead(player, item.getRegionName());
                             world.getSystem(MessageBannerSystem.class).createBanner(item.getName(), item.getDescription());
 
                         }

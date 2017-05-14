@@ -7,6 +7,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
@@ -31,7 +32,7 @@ public class FrictionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public FrictionSystem() {
-        super(Aspect.all(VelocityComponent.class).exclude(BulletComponent.class, EnemyComponent.class));
+        super(Aspect.all(VelocityComponent.class).one(PlayerComponent.class, AltarComponent.class));
     }
 
     @Override
@@ -46,10 +47,10 @@ public class FrictionSystem extends EntityProcessingSystem {
             float friction = Measure.units(7.5f);
             float minSpeed = Measure.units(0f);
 
-            if(pm.has(e)) {
-                if(!cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) && !gm.get(e).gliding){
-                    minSpeed = Measure.units(20f);
-                }
+            if(pm.has(e) && gm.has(e)) {
+                    if (!cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) && !gm.get(e).gliding) {
+                        minSpeed = Measure.units(20f);
+                    }
             }
 
              if (vc.velocity.x >= minSpeed) {

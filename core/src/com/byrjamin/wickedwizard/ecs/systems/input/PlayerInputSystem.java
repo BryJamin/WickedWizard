@@ -8,7 +8,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -32,7 +32,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
@@ -86,10 +86,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     }
 
 
-    public InputProcessor getInputProcessor() {
-        return playerInput;
-    }
-
     public PlayerInput getPlayerInput() {
         return playerInput;
     }
@@ -123,7 +119,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     if (input.y <= movementArea.y + movementArea.getHeight()) {
                         ac.accelX = Measure.units(15f) * sc.speed;
                         ac.maxX = Measure.units(80f) * sc.speed;
-                        MoveToSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
+                        GrappleSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
                     }
                 }
             }
@@ -187,7 +183,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
             float x = r.x + r.getWidth() / 2;
             float y = r.y + r.getHeight() / 2;
 
-            world.getSystem(MoveToSystem.class).flyToNoPathCheck(
+            world.getSystem(GrappleSystem.class).flyToNoPathCheck(
                     Math.atan2(y - cbc.getCenterY(), x - cbc.getCenterX()),
                     x,
                     y,
@@ -211,6 +207,9 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public void turnOnGlide(){
 
+        AssetManager am = world.getSystem(RenderingSystem.class).assetManager;
+        PlayerFactory pf = new PlayerFactory(am);
+
         PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
         ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
@@ -218,14 +217,14 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         wingChildren.clear();
 
         Entity e = world.createEntity();
-        for(Component c : PlayerFactory.rightWings(parc, pc)) {
+        for(Component c : pf.wings(parc, pc, true)) {
             e.edit().add(c);
         }
 
         wingChildren.add(e.getComponent(ChildComponent.class));
 
         e = world.createEntity();
-        for(Component c : PlayerFactory.leftWings(parc, pc)) {
+        for(Component c : pf.wings(parc, pc, false)) {
             e.edit().add(c);
         }
 

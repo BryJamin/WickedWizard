@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -61,11 +62,6 @@ public class PlayerInput extends InputAdapter{
         this.world = world;
         this.movementArea = movementArea;
         this.gameport = gameport;
-    }
-
-
-    public void update(World world){
-        this.world = world;
     }
 
 
@@ -133,13 +129,6 @@ public class PlayerInput extends InputAdapter{
                 lastTapY = screenY;
                 lastTapPointer = pointer;
 
-
-                System.out.println(Gdx.input.getCurrentEventTime() - tapStartTime / (double) 1000000000 < 0.4);
-
-                long number = Gdx.input.getCurrentEventTime() - tapStartTime;
-                System.out.println("Number" + number);
-
-
                //if(number < tapInterval) {
                     Vector3 input = new Vector3(screenX, screenY, 0);
                     gameport.unproject(input);
@@ -157,6 +146,7 @@ public class PlayerInput extends InputAdapter{
                         }
 
                     } else if (tapCount == 2) {
+                        if(world.getSystem(PlatformSystem.class).fallThoughPlatform()) return true;
                         world.getSystem(PlayerInputSystem.class).turnOffGlide();
                     }
                 //}

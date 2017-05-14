@@ -5,10 +5,13 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -16,13 +19,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.ArrayList;
@@ -36,6 +42,7 @@ public class RenderingSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm;
     private ComponentMapper<BlinkComponent> bm;
+    private ComponentMapper<BulletComponent> bulletm;
     private ComponentMapper<HighlightComponent> hm;
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<TextureRegionBatchComponent> trbm;
@@ -47,11 +54,15 @@ public class RenderingSystem extends EntitySystem {
     public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
     public OrthographicCamera gamecam;
+    public AssetManager assetManager;
+    public TextureAtlas atlas;
+
+    public Color batchColor = new Color(Color.WHITE);
 
     public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch, OrthographicCamera gamecam) {
+    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, OrthographicCamera gamecam) {
         super(Aspect.all(PositionComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
@@ -60,6 +71,9 @@ public class RenderingSystem extends EntitySystem {
         ));
         this.batch = batch;
         this.gamecam = gamecam;
+        this.assetManager = assetManager;
+        this.atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
+
         shapeRenderer = new ShapeRenderer();
         orderedEntities = new ArrayList<Entity>();
 
@@ -90,6 +104,8 @@ public class RenderingSystem extends EntitySystem {
 
     protected void process(Entity e) {
 
+        //System.out.println("INSIDE");
+
         PositionComponent pc = pm.get(e);
 
         if(trm.has(e)) {
@@ -99,6 +115,7 @@ public class RenderingSystem extends EntitySystem {
             boolean shaderOn = false;
 
             if(bm.has(e)){
+
                 shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT;
             }
 
@@ -152,13 +169,14 @@ public class RenderingSystem extends EntitySystem {
 
 
             batch.setColor(trc.color);
+
             batch.draw(trc.region,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
                     originX, originY,
                     trc.width, trc.height,
                     trc.scaleX * rendDirection(e), trc.scaleY,
                     trc.rotation);
-            batch.setColor(Color.WHITE);
+            batch.setColor(batchColor);
 
             if(shaderOn){
                     batch.end();
@@ -171,15 +189,20 @@ public class RenderingSystem extends EntitySystem {
         if(trbm.has(e)){
             TextureRegionBatchComponent trbc = trbm.get(e);
             int count = 0;
+            batch.setColor(trbc.color);
+
             for(int i = 0; i < trbc.columns; i++){
                 for(int j = 0; j < trbc.rows; j ++){
                     batch.draw(trbc.regions.get(count),
-                            pc.getX() + (trbc.width * i),
-                            pc.getY() + (trbc.height * j),
-                            trbc.width + 1, trbc.height + 1); //This is to avoid pixel errors between repeated textures
+                            pc.getX() + (trbc.width * i) + trbc.offsetX,
+                            pc.getY() + (trbc.height * j) + trbc.offsetY,
+                            trbc.width + 1,
+                            //The top does not have the extra pixel
+                            (j == trbc.rows - 1) ? trbc.height : trbc.height + 1); //This is to avoid pixel errors between repeated textures
                     count++;
                 }
             }
+            batch.setColor(batchColor);
 
         }
 
@@ -188,11 +211,12 @@ public class RenderingSystem extends EntitySystem {
             //TODO should really use the font width not this random ass camera shizz
 
             TextureFontComponent trfc = trfm.get(e);
-            trfc.font.setColor(trfc.color);
-            trfc.font.draw(batch, trfc.text,
+            BitmapFont bmf = assetManager.get(trfc.font, BitmapFont.class);
+            bmf.setColor(trfc.color);
+            bmf.draw(batch, trfc.text,
                     pc.getX() + trfc.offsetX, pc.getY() + trfc.offsetY
-            ,gamecam.viewportWidth, Align.center, true);
-            trfc.font.setColor(Color.WHITE);
+            ,trfc.width, Align.center, true);
+            bmf.setColor(Color.WHITE);
         }
 
         if(sm.has(e)) {
@@ -205,9 +229,12 @@ public class RenderingSystem extends EntitySystem {
             shapeRenderer.begin(sc.shapeType);
             shapeRenderer.setColor(sc.color);
             shapeRenderer.rect(pc.getX(),pc.getY(), sc.width, sc.height);
+            shapeRenderer.setColor(batchColor);
             shapeRenderer.end();
             batch.begin();
         }
+
+        batch.setColor(batchColor);
 
 
 
@@ -271,5 +298,12 @@ public class RenderingSystem extends EntitySystem {
     public void removed(Entity e) {
         orderedEntities.remove(e);
     }
-    
+
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
 }

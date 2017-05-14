@@ -1,123 +1,419 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.factories.EntityFactory;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
+import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
+
+import java.util.Random;
 
 /**
  * Created by Home on 13/04/2017.
  */
 
-public class Level1Rooms {
+public class Level1Rooms extends AbstractFactory {
 
-    public static ArenaGen[] agArray = {room1(), room2(), room3()};
+    ArenaShellFactory arenaShellFactory;
+    ChestFactory chestFactory;
+    DecorFactory decorFactory;
+    ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
+    TurretFactory turretFactory;
 
-    public static Array<ArenaGen> getLevel1RoomArray(){
+    ArenaSkin arenaSkin;
+
+    public Level1Rooms(AssetManager assetManager, ArenaSkin arenaSkin) {
+        super(assetManager);
+        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
+        this.chestFactory = new ChestFactory(assetManager);
+        this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager);
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+        this.turretFactory = new TurretFactory(assetManager);
+        this.arenaSkin = arenaSkin;
+    }
+
+    public ArenaGen[] agArray = {room1(), room2(), room3()};
+
+    public Array<ArenaGen> getLevel1RoomArray(){
         Array<ArenaGen> ag = new Array<ArenaGen>();
         ag.add(room1());
         ag.add(room2());
         ag.add(room3());
-        ag.add(room4());
+        ag.add(room4Kugel());
         ag.add(room5());
         ag.add(room6());
-        ag.add(room7());
-        //ag.add(room8());
+        //ag.add(room7LetterI());
+        ag.add(room8());
+        ag.add(deadEndW2());
+        ag.add(room10Height2());
+        ag.add(room11());
+        ag.add(room12());
+        ag.add(room13());
+        ag.add(room14());
+        ag.add(room15());
+        ag.add(room16());
         return ag;
     }
 
-    public static ArenaGen room1(){
+    public ArenaGen room1(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.blobRoom(a);
+                Arena a = arenaShellFactory.createOmniArenaSquareCenter();
+                arenaEnemyPlacementFactory.blobRoom(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room2(){
+    public ArenaGen room2(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.movingTurretRoomRight(a);
+                Arena a = arenaShellFactory.createOmniArenaSquareCenter();
+                arenaEnemyPlacementFactory.movingTurretRoomRight(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room3(){
+    public ArenaGen room3(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.movingDoubleTurretRoom(a);
+                Arena a = arenaShellFactory.createOmniArenaSquareCenter();
+                arenaEnemyPlacementFactory.movingDoubleTurretRoom(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room4(){
+    public ArenaGen room4Kugel(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.kugelDusche(a);
+                MapCoords m = new MapCoords();
+                Arena arena = new Arena(arenaSkin, m);
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(m,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+                arena.addEntity(arenaEnemyPlacementFactory.kugelDuscheFactory.kugelDusche(arena.getWidth() / 2,(arena.getHeight() / 2) + Measure.units(2.5f)));
+                arena.roomType = Arena.RoomType.TRAP;
+                return arena;
+            }
+        };
+    }
+
+    public ArenaGen room5(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = arenaShellFactory.createOmniArenaSquareCenter();
+                arenaEnemyPlacementFactory.silverHead(a, a.getWidth() / 2, Measure.units(40f));
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room5(){
+    public ArenaGen room6(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena();
-                RoomDecorationFactory.silverHead(a);
+                Arena a = arenaShellFactory.createWidth2ArenaWithVerticalDoors();
+                arenaEnemyPlacementFactory.movingDoubleTurretRoom(a);
+                a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
         };
     }
 
-    public static ArenaGen room6(){
+    public ArenaGen room7LetterI(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createWidth2Arena();
-                RoomDecorationFactory.movingDoubleTurretRoom(a);
-                return a;
-            }
-        };
-    }
-
-    public static ArenaGen room7(){
-        return new ArenaGen() {
-            @Override
-            public Arena createArena() {
-                Arena a = ArenaShellFactory.createLetterIArena(new MapCoords(0,0));
+                Arena a = arenaShellFactory.createLetterIArena(new MapCoords(0,0));
                // RoomDecorationFactory.movingDoubleTurretRoom(a);
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(30f)));
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(60f)));
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(90f)));
-                a.addEntity(EntityFactory.grapplePointBag(a.getWidth() / 2, Measure.units(120f)));
+                a.addEntity(decorFactory.grapplePointBag(a.getWidth() / 2, Measure.units(40f)));
+                a.addEntity(decorFactory.grapplePointBag(a.getWidth() / 2, Measure.units(70f)));
+                a.addEntity(decorFactory.grapplePointBag(a.getWidth() / 2, Measure.units(100f)));
+                a.addEntity(decorFactory.grapplePointBag(a.getWidth() / 2, Measure.units(130f)));
+                a.addEntity(decorFactory.grapplePointBag(a.getWidth() / 2, Measure.units(160f)));
                 return a;
             }
         };
     }
 
 
-    public static ArenaGen room8(){
+    public ArenaGen room8(){
         return new ArenaGen() {
             @Override
             public Arena createArena() {
-                Arena a = ArenaShellFactory.createOmniArena(new MapCoords(0,0));
+
+                Random random = new Random();
+                boolean mirror = random.nextBoolean();
+
+                Arena a = arenaShellFactory.createDeadEndArena(new MapCoords(0,0), mirror);
+
+                float chestPosX = mirror ? a.getWidth() / 4 : a.getWidth() - a.getWidth() / 4;
+
+                a.addEntity(chestFactory.lockedChestBag(chestPosX, a.getHeight() / 4));
+                //RoomDecorationFactory.blobRoom(a);
                 return a;
             }
         };
     }
 
 
+    public ArenaGen deadEndW2(){
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+
+                Random random = new Random();
+                boolean mirror = random.nextBoolean();
+
+                Arena a = arenaShellFactory.createWidth2DeadEndArena(new MapCoords(0, 0), mirror);
+
+                float posX = mirror ? Measure.units(10) : a.getWidth() - Measure.units(10f);
+                float chestPosX = mirror ? Measure.units(30f) : a.getWidth() - Measure.units(30f);
+                float blockerPosX = mirror ? a.getWidth() - Measure.units(80f) : Measure.units(80f);
+
+                float angle =  mirror ? 0 : 180;
+
+                a.addEntity(chestFactory.chestBag(chestPosX, Measure.units(15f)));
+
+                a.addEntity(decorFactory.wallBag(blockerPosX, Measure.units(45f), Measure.units(10f), Measure.units(10f), arenaSkin));
+                a.addEntity(decorFactory.wallBag(blockerPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f), arenaSkin));
+
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(50f),  angle, 3.0f, 0f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 1.5f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 1.5f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 1.5f));
+                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 0f));
+
+
+                return a;
+            }
+        };
+
+
+    }
+
+
+    public ArenaGen room10Height2(){
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = arenaShellFactory.createHeight2Arena(new MapCoords(0,0));
+
+                a.addEntity(decorFactory.wallBag(a.getWidth() - Measure.units(60f), Measure.units(35f),
+                        Measure.units(60f), Measure.units(5), arenaSkin));
+
+                a.addEntity(decorFactory.wallBag(0, Measure.units(65f),
+                        Measure.units(60f), Measure.units(5), arenaSkin));
+
+                a.addEntity(decorFactory.platform(Measure.units(5), Measure.units(35f), Measure.units(35f)));
+
+                a.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(65f), Measure.units(35f)));
+
+
+
+                return a;
+            }
+        };
+    }
+
+
+    public ArenaGen room11(){
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = arenaShellFactory.createOmniArenaSquareCenter(new MapCoords(0,0));
+                arenaEnemyPlacementFactory.spawnBouncer(a, a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+                arenaEnemyPlacementFactory.spawnBouncer(a, a.getWidth() - a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+                a.roomType = Arena.RoomType.TRAP;
+
+                return a;
+            }
+        };
+    }
+
+
+
+    public ArenaGen room12(){
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = arenaShellFactory.createOmniArenaSquareCenter(new MapCoords(0,0));
+                arenaEnemyPlacementFactory.spawnBouncer(a, a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+                arenaEnemyPlacementFactory.spawnBouncer(a, a.getWidth() - a.getWidth() / 4,(a.getHeight() - a.getHeight() / 4) + Measure.units(2.5f));
+
+                a.roomType = Arena.RoomType.TRAP;
+
+                a.addEntity(decorFactory.wallBag(a.getWidth() - Measure.units(25f), Measure.units(35f),
+                        Measure.units(5f), Measure.units(5), arenaSkin));
+
+                a.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(35f),
+                        Measure.units(5f), Measure.units(5), arenaSkin));
+
+
+                return a;
+            }
+        };
+    }
+
+
+    public ArenaGen room13(){
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                Arena a = arenaShellFactory.createOmniArenaSquareCenter(new MapCoords(0,0));
+                arenaEnemyPlacementFactory.spawnLargeBouncer(a, a.getWidth() / 2,(a.getHeight() - a.getHeight() / 2));
+                a.roomType = Arena.RoomType.TRAP;
+                return a;
+            }
+        };
+    }
+
+
+    public ArenaGen room14() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                MapCoords m = new MapCoords();
+                Arena arena = new Arena(arenaSkin, m);
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(m,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .buildArena(arena);
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(10f), Measure.units(20f), Measure.units(25f), arenaSkin));
+                arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(30f), Measure.units(35f)));
+                arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(30f), Measure.units(35f)));
+                arenaEnemyPlacementFactory.silverHead(arena, arena.getWidth() / 2, Measure.units(45f));
+
+
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room15() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                MapCoords m = new MapCoords();
+                Arena arena = new Arena(arenaSkin, m);
+
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(m,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .buildArena(arena);
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(10f), Measure.units(5f), Measure.units(25f), arenaSkin));
+                arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(30f), Measure.units(15f)));
+
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(10f), Measure.units(5f), Measure.units(25f), arenaSkin));
+                arena.addEntity(decorFactory.platform(arena.getWidth() - Measure.units(20f), Measure.units(30f), Measure.units(15f)));
+
+                arena.addEntity(arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(Measure.units(30f), Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(Measure.units(40f), Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(Measure.units(50f), Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(Measure.units(60f), Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(Measure.units(70f), Measure.units(20f)));
+
+
+
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room16() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+                MapCoords m = new MapCoords();
+                Arena arena = new Arena(arenaSkin, m);
+
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(m,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .buildArena(arena);
+
+                arena.addEntity(decorFactory.wallBag(0, Measure.units(30f), Measure.units(45f), arena.getHeight(), arenaSkin));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(45f), Measure.units(30f),
+                        Measure.units(45f), Measure.units(15f), arenaSkin));
+
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(25), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(30), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(35), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(40), Measure.units(25f),  -90, 3.0f, 1.5f));
+
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(55), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(60), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(65), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(70), Measure.units(25f),  -90, 3.0f, 1.5f));
+
+
+                arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(30f),
+                        Measure.units(50f)));
+/*                arena.addEntity(turretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 1.5f));
+                arena.addEntity(turretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 1.5f));
+                arena.addEntity(turretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 1.5f));
+                arena.addEntity(turretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 0f));*/
+
+                return arena;
+            }
+        };
+    }
 
 }

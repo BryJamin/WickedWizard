@@ -1,9 +1,5 @@
 package com.byrjamin.wickedwizard.utils;
 
-/**
- * Created by Home on 22/04/2017.
- */
-
 public class WeightedObject<T> {
 
     private T t;
@@ -20,5 +16,9 @@ public class WeightedObject<T> {
 
     public int getWeight() {
         return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }

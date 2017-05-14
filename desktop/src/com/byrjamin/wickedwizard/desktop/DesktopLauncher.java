@@ -24,7 +24,8 @@ public class DesktopLauncher {
 		Settings settings = new Settings();
 		settings.maxWidth = 2048;
 		settings.maxHeight = 2048;
-		settings.filterMin = Texture.TextureFilter.MipMapLinearLinear;
+		settings.filterMin = Texture.TextureFilter.MipMapNearestNearest;
+		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 
 		TexturePacker.process(settings, inputDir,outputDir,packFileName);

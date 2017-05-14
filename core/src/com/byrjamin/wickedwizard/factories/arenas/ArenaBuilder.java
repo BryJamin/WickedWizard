@@ -1,13 +1,19 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
+import com.artemis.Component;
+import com.artemis.utils.Bag;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
-import com.byrjamin.wickedwizard.factories.EntityFactory;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 16/04/2017.
@@ -30,49 +36,35 @@ public class ArenaBuilder {
     private MapCoords defaultCoords;
     private Array<Section> sections = new Array<Section>();
 
-    public static class Builder {
+    private AssetManager assetManager;
+    private ArenaSkin arenaSkin;
+    private BackgroundFactory bf = new BackgroundFactory();
 
-        //Required Parameters
-        private final MapCoords startingCoords;
-        private Arena arena;
-        //private final float posX;
-        //private final float posY;
+    public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin){
+        this.assetManager = assetManager;
+        this.arenaSkin = arenaSkin;
+    }
 
-        //optional Paramters
-        private Array<Section> sections = new Array<Section>();
-
-        public Builder(MapCoords startingCoords, Arena arena) {
-            this.startingCoords = startingCoords;
-            this.arena = arena;
-        }
-
-        public Builder section (Section section){
-            sections.add(section);
-         //   arena.cotainingCoords.add(section.coords);
-            return this;
-        }
-
-        public ArenaBuilder build() {
-            return new ArenaBuilder(this, arena);
-        }
-
+    public ArenaBuilder addSection(Section s){
+        sections.add(s);
+        return this;
     }
 
 
-    public ArenaBuilder(Builder builder, Arena arena){
-        defaultCoords = builder.startingCoords;
-        sections = builder.sections;
+    public Arena buildArena(Arena arena){
 
+        defaultCoords = arena.getStartingCoords();
+
+        DecorFactory decorFactory = new DecorFactory(assetManager, arenaSkin);
 
         for(Section s : sections) {
 
 
             //arena.cotainingCoords.add(s.coords);
 
-            System.out.println(sections.size);
+            //System.out.println(sections.size);
 
             int multX = s.coords.getX() - defaultCoords.getX();
-            System.out.println("MultX is " + multX);
             int multY = s.coords.getY() - defaultCoords.getY();
 
             int coordX = defaultCoords.getX() + multX;
@@ -88,60 +80,103 @@ public class ArenaBuilder {
 
             //Left
             if(s.left == wall.FULL) {
-                arena.addEntity(EntityFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
+                arena.addEntity(decorFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT, arenaSkin));
             } else if(s.left == wall.DOOR){
-                arena.addEntity(EntityFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
-                arena.addDoor(EntityFactory.doorBag(0 + posX, Measure.units(10) + posY,
+                arena.addEntity(decorFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, arenaSkin));
+                arena.addDoor(decorFactory.doorBag(0 + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX - 1, coordY),
-                        DoorComponent.DIRECTION.left));
+                        Direction.LEFT));
             }
             //Right
             if(s.right == wall.FULL) {
-                arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT));
+                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT, arenaSkin));
             } else if(s.right == wall.DOOR){
-                arena.addEntity(EntityFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT));
-                arena.addDoor(EntityFactory.doorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
+                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT -  WALLWIDTH * 4, arenaSkin));
+                arena.addDoor(decorFactory.doorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
                         new MapCoords(coordX, coordY),
                         new MapCoords(coordX + 1, coordY),
-                        DoorComponent.DIRECTION.right));
+                        Direction.RIGHT));
             }
 
             //Ceiling
-            if(s.ceiling != wall.NONE){
-                arena.addEntity(EntityFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH));
-                if(s.ceiling == wall.DOOR) {
-                    arena.addDoor(EntityFactory.grateBag(SECTION_WIDTH / 2 + posX, 900 + posY,
+            if(s.ceiling == wall.FULL){
+                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH, arenaSkin));
+/*                if(s.ceiling == wall.DOOR) {
+                    arena.addDoor(decorFactory.grateBag(SECTION_WIDTH / 2 + posX, 900 + posY,
                             new MapCoords(coordX, coordY),
                             new MapCoords(coordX, coordY + 1),
-                            DoorComponent.DIRECTION.up));
-                }
+                            Direction.UP));
+                }*/
+            } else if(s.ceiling == wall.DOOR) {
+
+                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
+
+                arena.addDoor(decorFactory.horizontalDoorBag(Measure.units(40f) + posX, SECTION_HEIGHT - WALLWIDTH + posY,
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY + 1),
+                        Direction.UP));
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
+
             }
 
             //Floor
-            if(s.floor != wall.NONE){
-                arena.addEntity(EntityFactory.wallBag(0 + posX,  -WALLWIDTH + posY, SECTION_WIDTH, WALLWIDTH * 3));
-
-                if(s.floor == wall.DOOR) {
-                    arena.addDoor(EntityFactory.grateBag(SECTION_WIDTH / 2 + posX, 400 + posY,
+            if(s.floor == wall.FULL){
+                arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, SECTION_WIDTH, WALLWIDTH * 2, arenaSkin));
+/*                if(s.ceiling == wall.DOOR) {
+                    arena.addDoor(decorFactory.grateBag(SECTION_WIDTH / 2 + posX, 900 + posY,
                             new MapCoords(coordX, coordY),
-                            new MapCoords(coordX, coordY -1),
-                            DoorComponent.DIRECTION.down));
-                }
+                            new MapCoords(coordX, coordY + 1),
+                            Direction.UP));
+                }*/
+            } else if(s.floor == wall.DOOR) {
+
+                arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
+
+                arena.addDoor(decorFactory.horizontalDoorBag(Measure.units(40f) + posX, 0 + posY,
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY - 1),
+                        Direction.DOWN));
+
+                Bag<Component> bag = decorFactory.horizontalDoorBag(Measure.units(40f) + posX, Measure.units(5f) + posY,
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY - 1),
+                        Direction.DOWN);
+
+                BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
+
+
+                arena.addEntity(decorFactory.platform(Measure.units(40f), Measure.units(5f), Measure.units(20f)));
+
+                arena.addDoor(bag);
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
+
             }
 
             //Background
-            arena.addEntity(BackgroundFactory.backgroundBags(0 + posX,0 + posY,
+            arena.addEntity(bf.backgroundBags(0 + posX,0 + posY,
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
-                    Measure.units(15),
-                    PlayScreen.atlas.findRegions("backgrounds/wall")));
+                    Measure.units(20),
+                    arenaSkin.getBackgroundTextures(),
+                    arenaSkin));
 
 
 
         }
 
+
+
+        return arena;
+
+
+
+
     }
+
+
 
 
     public Section findSection(MapCoords mapCoords) {

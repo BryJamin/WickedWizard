@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 20/03/2017.
@@ -31,8 +32,9 @@ public class ArenaGUI {
     private MapCoords currentCoords;
 
     private Color currentRoomColor = new Color(1, 1, 1, 0.8f);
-    private Color roomColor = new Color(0.5f, 0.5f, 0.5f, 0.8f);
-    private Color undiscoveredRoomColor = new Color(0.1f, 0.1f, 0.1f, 0.8f);
+    private Color roomColor = new Color(0.5f, 0.5f, 0.5f, 0.6f);
+    private Color undiscoveredRoomColor = new Color(0.1f, 0.1f, 0.1f, 0.6f);
+    private Color mapBackGroundColor = new Color(0.1f, 0.1f, 0.1f, 0.2f);
     private Color borderColor = new Color(0, 1, 1, 1);
     private Color doorColor = new Color(1f, 0f, 0f, 1f);
     private Color locationBlinkColor = new Color (0,0,1,0.5f);
@@ -61,7 +63,7 @@ public class ArenaGUI {
         this.currentRoom = currentRoom;
         this.currentCoords = currentCoords;
 
-        System.out.println(currentCoords);
+        //System.out.println(currentCoords);
 
         this.arenas = visitedArenas.orderedItems();
         this.undiscoveredArenas = undiscoveredArenas.orderedItems();
@@ -95,10 +97,9 @@ public class ArenaGUI {
     }
 
     public void drawMapContainer(SpriteBatch batch){
-
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        mapRenderer.setColor(undiscoveredRoomColor);
+        mapRenderer.setColor(mapBackGroundColor);
         mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5);
         mapRenderer.end();
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -237,22 +238,22 @@ public class ArenaGUI {
                 float MINI_SIZE = SIZE / 4;
 
                 //Left Line
-                if (dc.exit == DoorComponent.DIRECTION.left) {
+                if (dc.exit == Direction.LEFT) {
                     mapRenderer.line(x, y + MINI_SIZE, x, y + SIZE - MINI_SIZE);
                 }
 
                 //Right Line
-                if (dc.exit == DoorComponent.DIRECTION.right) {
+                if (dc.exit == Direction.RIGHT) {
                     mapRenderer.line(x + SIZE, y + MINI_SIZE, x + SIZE, y + SIZE - MINI_SIZE);
                 }
 
                 //Top Line
-                if (dc.exit == DoorComponent.DIRECTION.up) {
+                if (dc.exit == Direction.UP) {
                     mapRenderer.line(x + MINI_SIZE, y + SIZE, x + SIZE - MINI_SIZE, y + SIZE);
                 }
 
                 //Bottom Line
-                if (dc.exit == DoorComponent.DIRECTION.down) {
+                if (dc.exit == Direction.DOWN) {
                     mapRenderer.line(x + MINI_SIZE, y, x + SIZE - MINI_SIZE, y);
                 }
             }

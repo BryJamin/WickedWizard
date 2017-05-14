@@ -17,9 +17,15 @@ public class ComponentBag extends Bag<Component> {
     @Override
     public void add(Component component) {
 
-        if(BagSearch.contains(component.getClass(), this)){
-            //TODO throw exception
+        try {
+            if(BagSearch.contains(component.getClass(), this)) {
+                throw new Exception("Class " + component.getClass().toString() + " already contained inside bag");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
         }
+
 
         super.add(component);
     }

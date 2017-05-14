@@ -8,6 +8,11 @@ public class MapCoords {
     private int x;
     private int y;
 
+    public MapCoords(){
+        this.x = 0;
+        this.y = 0;
+    }
+
     public MapCoords(int x, int y){
         this.x = x;
         this.y = y;

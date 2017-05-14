@@ -18,5 +18,7 @@ void main() {
     //red flash
   //gl_FragColor = vec4(1 ,0,0, texColor.a);
 
-  gl_FragColor = v_color * texColor;
+  //gl_FragColor = v_color * texColor;
+
+  gl_FragColor = vec4(1,1,1, texColor.a);
 }

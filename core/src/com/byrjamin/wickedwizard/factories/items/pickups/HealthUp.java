@@ -7,6 +7,7 @@ import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 09/04/2017.
@@ -23,7 +24,7 @@ public class HealthUp implements PickUp {
     }
 
     @Override
-    public TextureRegion getRegion() {
-        return PlayScreen.atlas.findRegion("heart", 1);
+    public Pair<String, Integer> getRegionName() {
+        return new Pair<String, Integer>("heart", 1);
     }
 }

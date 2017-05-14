@@ -4,6 +4,8 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,6 +14,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -32,36 +35,44 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
-import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.utils.AnimationPacker;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 26/03/2017.
  */
 
-public class BlobFactory {
+public class BlobFactory extends EnemyFactory {
 
-    private static final float width = Measure.units(9);
-    private static final float height = Measure.units(9);
+    private final float width = Measure.units(9);
+    private final float height = Measure.units(9);
 
-    private static final float textureWidth = Measure.units(12);
-    private static final float textureHeight = Measure.units(12);
+    private final float textureWidth = Measure.units(11);
+    private final float textureHeight = Measure.units(11);
 
-    private static final float textureOffsetX = -Measure.units(1f);
-    private static final float textureOffsetY = 0;
+    private final float textureOffsetX = -Measure.units(1f);
+    private final float textureOffsetY = 0;
 
-    public static Bag<Component> blobBag(float x, float y){
+    private ItemFactory itemf;
+    private WeaponFactory wf;
+    private DeathFactory df;
+
+    public BlobFactory(AssetManager assetManager) {
+        super(assetManager);
+        this.df = new DeathFactory(assetManager);
+        this.itemf = new ItemFactory(assetManager);
+        this.wf = new WeaponFactory(assetManager);
+    }
+
+    public Bag<Component> blobBag(float x, float y){
 
 
         x = x - width / 2;
         y = y - height / 2;
 
-        Bag<Component> bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
+        Bag<Component> bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
@@ -70,17 +81,17 @@ public class BlobFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
 
 
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
         return bag;
     }
 
-    public static Bag<Component> dummyBlob(float x, float y){
+    public Bag<Component> dummyBlob(float x, float y){
 
 
         x = x - width / 2;
@@ -98,15 +109,15 @@ public class BlobFactory {
         sc.setState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
         return bag;
     }
 
-    public static Bag<Component> shopKeeperBlob(float x, float y){
+    public Bag<Component> shopKeeperBlob(float x, float y){
 
 
         x = x - width / 2;
@@ -119,22 +130,22 @@ public class BlobFactory {
         bag.add(new GravityComponent());
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
         return bag;
     }
 
-    public static Bag<Component> smallblobBag(float x, float y){
+    public Bag<Component> smallblobBag(float x, float y){
 
         float scale = 0.5f;
 
         x = x - width* scale / 2;
         y = y - height * scale / 2;
 
-        Bag<Component> bag = EnemyFactory.defaultEnemyBag(new ComponentBag(), x , y, width * scale, height * scale, 2);
+        Bag<Component> bag = this.defaultEnemyBag(new ComponentBag(), x , y, width * scale, height * scale, 2);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width * scale, height * scale), true));
         bag.add(new GravityComponent());
@@ -143,9 +154,9 @@ public class BlobFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, AnimationPacker.genAnimation(0.25f / 1f, TextureStrings.BLOB_STANDING, Animation.PlayMode.LOOP));
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
+        bag.add(new TextureRegionComponent(this.atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX * scale,
                 textureOffsetY * scale,
                 textureWidth * scale,
@@ -155,7 +166,7 @@ public class BlobFactory {
     }
 
 
-    public static Bag<Component> BiggaBlobbaBag(float x, float y){
+    public Bag<Component> BiggaBlobbaBag(float x, float y){
 
 
         x = x - width / 2;
@@ -173,11 +184,11 @@ public class BlobFactory {
         cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(33), Measure.units(17))));
         cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(29), Measure.units(5)),
                 Measure.units(2), Measure.units(17)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(26), Measure.units(5)),
-                Measure.units(4), Measure.units(22)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(17), Measure.units(3)),
-                Measure.units(8), Measure.units(27)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(9), Measure.units(9)),
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(23), Measure.units(5)),
+                Measure.units(5), Measure.units(22)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(15), Measure.units(3)),
+                Measure.units(9), Measure.units(27)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(9), Measure.units(7)),
                 Measure.units(12), Measure.units(30)));
 
         bag.add(cbc);
@@ -190,9 +201,9 @@ public class BlobFactory {
         bag.add(new BlinkComponent());
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, AnimationPacker.genAnimation(1f / 20f, TextureStrings.BIGGABLOBBA_STANDING, Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(1f / 20f, atlas.findRegions(TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BIGGABLOBBA_STANDING),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BIGGABLOBBA_STANDING),
                 -Measure.units(6),
                 0,
                 Measure.units(45),
@@ -200,20 +211,23 @@ public class BlobFactory {
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        odc.getComponentBags().addAll(ItemFactory.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        bag.add(DeathFactory.basicOnDeathExplosion(odc, width, height, 0,0));
+        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
+        df.giblets(odc, 10, Color.GREEN);
+        bag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
 
 
-        WeaponComponent wc = new WeaponComponent(WeaponFactory.EnemyWeapon(),  1.5f);
+        WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(),  1.5f);
         bag.add(wc);
 
         SpawnerFactory.Spawner s = new SpawnerFactory.Spawner() {
             @Override
             public Bag<Component> spawnBag(float x, float y) {
-                return smallblobBag(x,y);
+                Bag<Component> b = smallblobBag(x,y);
+                b.add(new MinionComponent());
+                return b;
             }
         };
 

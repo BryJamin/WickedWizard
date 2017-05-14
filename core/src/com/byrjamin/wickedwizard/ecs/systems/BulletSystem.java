@@ -7,6 +7,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -46,8 +47,11 @@ public class BulletSystem extends EntityProcessingSystem {
                 BlinkComponent bc = world.getSystem(FindPlayerSystem.class).getPC(BlinkComponent.class);
 
                 if(!bc.isHit) {
+
+                    StatComponent sc = world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class);
+
                     HealthComponent hc = world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class);
-                    hc.health = hc.health - 1;
+                    hc.applyDamage(1);
                     bc.isHit = true;
                     System.out.println(hc.health);
                 }
@@ -57,7 +61,8 @@ public class BulletSystem extends EntityProcessingSystem {
             }
 
         } else if(fm.has(e)){
-            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class, CollisionBoundComponent.class, HealthComponent.class));
+            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
+                    EnemyComponent.class, CollisionBoundComponent.class, HealthComponent.class));
             IntBag entityIds = subscription.getEntities();
 
             for(int i = 0; i < entityIds.size(); i++){
@@ -72,7 +77,7 @@ public class BulletSystem extends EntityProcessingSystem {
                             BlinkComponent bc = bm.get(entityIds.get(i));
                             bc.isHit = true;
                         }
-                        world.getSystem(OnDeathSystem.class).kill(e);
+                        world.getSystem(com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
                         break;
                     }
                 }

@@ -16,12 +16,21 @@ public class FiringAIComponent extends Component{
     //uses radians
     public double firingAngleInRadians;
 
+    public float firingDelay;
+
     public FiringAIComponent(){
         ai = AI.TARGETED;
     }
 
-    public FiringAIComponent(double firingAngleInRadians) {
+    public FiringAIComponent(double firingAngleInDegrees) {
         this.ai = AI.UNTARGETED;
-        this.firingAngleInRadians = firingAngleInRadians;
+        this.firingAngleInRadians = Math.toRadians(firingAngleInDegrees);
     }
+
+    public FiringAIComponent(double firingAngleInDegrees, float firingDelay) {
+        this.ai = AI.UNTARGETED;
+        this.firingAngleInRadians = Math.toRadians(firingAngleInDegrees);
+        this.firingDelay = firingDelay;
+    }
+
 }
