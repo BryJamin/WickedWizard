@@ -33,8 +33,6 @@ to go below and then hold to move it counts as the same pointer and you shoot an
 
 
 
-
-
 ### Backburner (Broad goals that need to be broken down once we reach them)
 
 -Giant Factory? Similar to AssetManager, is generic and stores all Factories? 
