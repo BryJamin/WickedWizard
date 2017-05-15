@@ -226,6 +226,16 @@ public class JigsawGenerator {
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
+
+        Arena itemRoom = itemArenaFactory.createItemRoom(generateItem(itemPool));
+        if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), rand)){
+            placedArenas.add(itemRoom);
+            return true;
+        }
+        return false;
+    }
+
+    public Item generateItem(Array<Item> itemPool){
         Item item;
         if(itemPool.size > 0) {
             int i = rand.nextInt(itemPool.size);
@@ -234,17 +244,15 @@ public class JigsawGenerator {
         } else {
             item = new ItemVitaminC();
         }
-
-        Arena itemRoom = itemArenaFactory.createItemRoom(item);
-        if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), rand)){
-            placedArenas.add(itemRoom);
-            return true;
-        }
-        return false;
+        return item;
     }
 
     public boolean placeShopRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
-        Arena shopRoom = shopFactory.createShop();
+
+        Item item1 = generateItem(itemPool);
+        Item item2 = generateItem(itemPool);
+
+        Arena shopRoom = shopFactory.createShop(item1, item2);
         if(placeRoomUsingDoors(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(shopRoom);
             return true;

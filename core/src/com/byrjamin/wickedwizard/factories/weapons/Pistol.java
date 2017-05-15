@@ -66,7 +66,7 @@ public class Pistol implements Weapon{
         if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?
                     baseDamage * e.getComponent(StatComponent.class).damage :
-                    baseDamage * e.getComponent(StatComponent.class).damage * 1.25f; //crit multiplier
+                    baseDamage * e.getComponent(StatComponent.class).damage * 2f; //crit multiplier
         }
         //world.getSystem(FindPlayerSystem.class)
     }

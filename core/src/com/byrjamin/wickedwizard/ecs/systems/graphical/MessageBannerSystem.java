@@ -87,7 +87,7 @@ public class MessageBannerSystem extends BaseSystem {
         blackBackingBox.edit().add(new FollowPositionComponent(gamecam.position, - MainGame.GAME_WIDTH / 2, Measure.units(5)));
 
         ShapeComponent sc = new ShapeComponent(0,0, MainGame.GAME_WIDTH, Measure.units(10f), TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        sc.color = Color.BLACK;
+        sc.color = new Color(Color.BLACK);
         sc.color.a = 0;
         sc.shapeType = ShapeRenderer.ShapeType.Filled;
         blackBackingBox.edit().add(sc);
