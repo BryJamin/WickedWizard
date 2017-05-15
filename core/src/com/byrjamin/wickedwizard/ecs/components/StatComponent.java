@@ -12,7 +12,7 @@ public class StatComponent extends Component {
     //Your damage based on the weapon
     public float damage = 1;
 
-    public float armor = 2;
+    public float armor = 0;
 
     //How fast you fire your weapon
     public float fireRate = 1;
