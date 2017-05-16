@@ -24,7 +24,7 @@ public class ItemSlimeCoat implements Item {
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/Quickness", 0);
+        return new Pair<String, Integer>("blob", 0);
     }
 
     @Override

@@ -30,6 +30,15 @@ public class DesktopLauncher {
 
 		TexturePacker.process(settings, inputDir,outputDir,packFileName);
 
+/*		 settings = new Settings();
+		settings.maxWidth = 1024;
+		settings.maxHeight = 1024;
+		settings.filterMin = Texture.TextureFilter.Nearest;
+		settings.duplicatePadding = true;
+		settings.combineSubdirectories = true;
+
+		TexturePacker.process(settings, projectPath + "/images/tobepacked/item",outputDir,"item");*/
+
 		new LwjglApplication(new MainGame(), config);
 	}
 }
