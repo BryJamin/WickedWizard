@@ -56,7 +56,7 @@ public class BulletSystem extends EntityProcessingSystem {
                     System.out.println(hc.health);
                 }
 
-                e.deleteFromWorld();
+                world.getSystem(com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
 
             }
 

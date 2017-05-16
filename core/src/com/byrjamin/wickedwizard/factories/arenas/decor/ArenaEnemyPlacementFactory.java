@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
@@ -27,17 +28,19 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public SilverHeadFactory silverHeadFactory;
     public SpawnerFactory spawnerFactory;
     public TurretFactory turretFactory;
+    private ArenaSkin arenaSkin;
 
     //TODO convert this into a class where you spawn enemies.
 
-    public ArenaEnemyPlacementFactory(AssetManager assetManager) {
+    public ArenaEnemyPlacementFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
         this.blobFactory = new BlobFactory(assetManager);
         this.bouncerFactory = new BouncerFactory(assetManager);
         this.kugelDuscheFactory = new KugelDuscheFactory(assetManager);
         this.silverHeadFactory = new SilverHeadFactory(assetManager);
-        this.spawnerFactory = new SpawnerFactory(assetManager);
+        this.spawnerFactory = new SpawnerFactory(assetManager, arenaSkin);
         this.turretFactory = new TurretFactory(assetManager);
+        this.arenaSkin = arenaSkin;
     }
 
     public void spawnBlob(Arena a, float x, float y){

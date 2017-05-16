@@ -46,7 +46,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag((arena.getWidth() / 2) - Measure.units(5),
+        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag((arena.getWidth() / 2) - Measure.units(7.5f),
                 Measure.units(10), item)) {
             arena.addEntity(b);
         }

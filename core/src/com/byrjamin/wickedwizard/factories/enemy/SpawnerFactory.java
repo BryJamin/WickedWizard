@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -22,8 +23,11 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class SpawnerFactory extends EnemyFactory {
 
-    public SpawnerFactory(AssetManager assetManager) {
+    private ArenaSkin arenaSkin;
+
+    public SpawnerFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
+        this.arenaSkin = arenaSkin;
     }
 
     private static float width = Measure.units(12f);
@@ -46,7 +50,7 @@ public class SpawnerFactory extends EnemyFactory {
         animMap.put(0, a);
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(a.getKeyFrame(sc.stateTime), width, height,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
 
         SpawnerComponent spawn = new SpawnerComponent(spawners, 1.0f);
         spawn.offsetX = width / 2;

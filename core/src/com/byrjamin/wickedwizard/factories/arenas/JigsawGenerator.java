@@ -263,7 +263,7 @@ public class JigsawGenerator {
 
         Arena bossRoom = arenaShellFactory.createWidth2ArenaWithVerticalDoors();
         bossRoom.roomType = Arena.RoomType.BOSS;
-        new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager).biggablobba(bossRoom);
+        new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin).biggablobba(bossRoom);
 
         if (placeRoomAtRangeWithDoors(bossRoom,
                 avaliableDoors,createUnavaliableMapCoords(placedArenas), rand, range)) {

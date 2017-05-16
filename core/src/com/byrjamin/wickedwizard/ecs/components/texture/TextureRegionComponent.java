@@ -64,6 +64,12 @@ public class TextureRegionComponent extends Component{
         this(region, 0,0, width, height, layer);
     }
 
+    public TextureRegionComponent(TextureRegion region, float width, float height, int layer, Color color){
+        this(region, 0,0, width, height, layer);
+        this.color = color;
+        this.DEFAULT = color;
+    }
+
 
     public void setColor(float r, float g, float b, float a){
         color.set(r,g,b,a);
