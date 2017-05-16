@@ -4,13 +4,10 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
@@ -22,7 +19,6 @@ import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_NEAR;
 
@@ -30,7 +26,7 @@ import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComp
  * Created by Home on 01/04/2017.
  */
 
-public class TutorialFactory extends ArenaShellFactory {
+public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
     private final String moveTutorialString1 = "Exit this room on the right";
     private final String moveTutorialString2 = "TOUCH WITHIN THIS AREA TO MOVE!";

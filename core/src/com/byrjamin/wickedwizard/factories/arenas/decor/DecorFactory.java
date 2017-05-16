@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.decor;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;

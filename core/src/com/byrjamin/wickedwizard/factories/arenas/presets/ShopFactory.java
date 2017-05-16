@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.presets;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
@@ -11,17 +11,14 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.factories.items.PickUp;
-import com.byrjamin.wickedwizard.factories.items.passives.ChangeColor;
-import com.byrjamin.wickedwizard.factories.items.passives.damage.Anger;
-import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
-import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -29,7 +26,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 18/04/2017.
  */
 
-public class ShopFactory extends ArenaShellFactory {
+public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
     private ItemFactory itemFactory;
 

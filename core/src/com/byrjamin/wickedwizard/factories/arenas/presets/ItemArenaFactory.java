@@ -1,7 +1,9 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.presets;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
@@ -15,7 +17,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
-public class ItemArenaFactory extends ArenaShellFactory {
+public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
     ItemFactory itemFactory;
 
@@ -33,6 +35,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
         Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
 
 
+
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
@@ -43,8 +46,8 @@ public class ItemArenaFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
 
-        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(arena.getWidth() / 2,
-                Measure.units(17), item)) {
+        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag((arena.getWidth() / 2) - Measure.units(5),
+                Measure.units(10), item)) {
             arena.addEntity(b);
         }
         return arena;

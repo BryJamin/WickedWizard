@@ -16,9 +16,8 @@ Let's see how far I get in 8 months using an hour per day
 -Create a menu Screen and when you start game if you have no preferences of tutorial make one. 
 - Vertical wall bug. You can land on the side of top of wall vertically stacking with one another,
 due to the way the future bound is used. 
--Chest need a loot table and so do stores and Item Rooms (but for that I may need more items
 -Create TextureLoader Parameter. For usages in tests 
--Add in a Time Limit of sorts where we die if you run out of time. 
+-Add in a Time Limit of sorts where we die if you run out of time. *probably won't*
 -Improve message banner to have an offset so you can change where it shows up. 
 - Camera shake on explosion
 
@@ -77,5 +76,6 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 -Add a fade to the item pickup entity. 
 - Giblets. create an Ondeath that spawns out giblets when an enemies dies
 - Minion component, (can't drop loot))
-- Change chest to open only when near it 
+- Change chest to open only when near it
+ --Chest need a loot table and so do stores and Item Rooms (but for that I may need more items** Need to make differnet item pools
 

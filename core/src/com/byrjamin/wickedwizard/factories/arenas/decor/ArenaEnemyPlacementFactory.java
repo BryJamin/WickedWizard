@@ -1,10 +1,11 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.decor;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
@@ -20,12 +21,12 @@ import com.byrjamin.wickedwizard.utils.Measure;
 public class ArenaEnemyPlacementFactory extends AbstractFactory {
 
 
-    BlobFactory blobFactory;
-    BouncerFactory bouncerFactory;
-    KugelDuscheFactory kugelDuscheFactory;
-    SilverHeadFactory silverHeadFactory;
-    SpawnerFactory spawnerFactory;
-    TurretFactory turretFactory;
+    public BlobFactory blobFactory;
+    public BouncerFactory bouncerFactory;
+    public KugelDuscheFactory kugelDuscheFactory;
+    public SilverHeadFactory silverHeadFactory;
+    public SpawnerFactory spawnerFactory;
+    public TurretFactory turretFactory;
 
     //TODO convert this into a class where you spawn enemies.
 
@@ -39,7 +40,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.turretFactory = new TurretFactory(assetManager);
     }
 
-    public void blobRoom(Arena a){
+    public void spawnBlob(Arena a, float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
@@ -52,7 +53,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
             }
         });
         //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
-        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s));
+        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
     }
 
     public void turretRoom(Arena a){

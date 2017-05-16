@@ -41,7 +41,7 @@ public class SpawnerFactory extends EnemyFactory {
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setState(0);
         bag.add(sc);
-        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.CIRCLE), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, a);
         bag.add(new AnimationComponent(animMap));

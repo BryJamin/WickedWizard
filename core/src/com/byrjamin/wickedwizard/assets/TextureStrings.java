@@ -35,6 +35,8 @@ public class TextureStrings {
     public static final String BOUNCER_DEFAULT = "bouncer";
 
 
+    //SPAWNER
+    public static final String SPAWNER = "spawner";
 
     public static final String CIRCLE = "circle";
 

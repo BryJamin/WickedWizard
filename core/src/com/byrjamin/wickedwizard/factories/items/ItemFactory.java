@@ -114,9 +114,6 @@ public class ItemFactory extends AbstractFactory {
         float width = Measure.units(15);
         float height = Measure.units(15);
 
-        x = x - width / 2;
-        y = y - height / 2;
-
         Array<ComponentBag> bags =  new Array<ComponentBag>();
 
         PositionComponent positionComponent = new PositionComponent(x,y);
