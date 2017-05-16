@@ -22,6 +22,8 @@ public class BoundsDrawingSystem extends EntitySystem {
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<BlinkComponent> bm;
 
+    public boolean isDrawing;
+
     @SuppressWarnings("unchecked")
     public BoundsDrawingSystem() {
         super(Aspect.all(CollisionBoundComponent.class));
@@ -30,6 +32,11 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
+
+        //System.out.println(enabled);
+
+        if(!isDrawing) return;
+
         for(Entity e : this.getEntities()){
             BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(e).bound);
 

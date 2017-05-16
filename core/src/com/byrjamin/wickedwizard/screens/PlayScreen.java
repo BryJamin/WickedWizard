@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
@@ -276,8 +277,14 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .build();
 
+
+
         world = new World(config);
         world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
+
+
+        world.getSystem(BoundsDrawingSystem.class).isDrawing =
+                Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
 
         for (Bag<Component> bag : startingArena.getBagOfEntities()) {
             Entity entity = world.createEntity();
@@ -297,6 +304,16 @@ public class PlayScreen extends AbstractScreen {
         jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
         stats = entity.getComponent(StatComponent.class);
+
+
+        if(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false)) {
+            stats.damage = 10f;
+            stats.accuracy = 99f;
+            stats.fireRate = 10f;
+            stats.speed = 1.5f;
+        }
+
+
         currencyComponent = entity.getComponent(CurrencyComponent.class);
         arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena);
     }
