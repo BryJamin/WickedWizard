@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
+import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
@@ -28,6 +29,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public SilverHeadFactory silverHeadFactory;
     public SpawnerFactory spawnerFactory;
     public TurretFactory turretFactory;
+    public GoatWizardFactory goatWizardFactory;
     private ArenaSkin arenaSkin;
 
     //TODO convert this into a class where you spawn enemies.
@@ -40,6 +42,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.silverHeadFactory = new SilverHeadFactory(assetManager);
         this.spawnerFactory = new SpawnerFactory(assetManager, arenaSkin);
         this.turretFactory = new TurretFactory(assetManager);
+        this.goatWizardFactory = new GoatWizardFactory(assetManager);
         this.arenaSkin = arenaSkin;
     }
 
@@ -63,38 +66,27 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         a.addEntity(turretFactory.fixedLockOnTurret(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(25)));
     }
 
-    public void movingTurretRoom(Arena a){
+    public void movingTurretRoom(Arena a, float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return turretFactory.movingTurret(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(Measure.units(20), Measure.units(50), s));
+        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
     }
 
-    public void movingTurretRoomRight(Arena a){
-        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingTurret(x,y);
-            }
-        });
-        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15), s));
-    }
-
-
-    public void kugelDusche(Arena a){
+    public void kugelDusche(Arena a, float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return kugelDuscheFactory.kugelDusche(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
+        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
     }
 
-    public void silverHead(Arena a, float x, float y){
+    public void spawnSilverHead(Arena a, float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
@@ -103,17 +95,6 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         });
         a.addEntity(spawnerFactory.spawnerBag(x, y + Measure.units(2.5f), s));
     }
-
-    public void silverHead(Arena a){
-        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return silverHeadFactory.silverHead(x,y);
-            }
-        });
-        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() / 2,(a.getHeight() / 2) + Measure.units(2.5f), s));
-    }
-
 
     public void spawnBouncer(Arena a, float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
@@ -135,25 +116,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         a.addEntity(spawnerFactory.spawnerBag(x, y, s));
     }
 
-
-
-    public void movingDoubleTurretRoom(Arena a){
+    public void spawnGoatWizard(Arena a, float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingTurret(x,y);
+                return goatWizardFactory.goatWizard(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15), s));
-
-        s = new Array<SpawnerFactory.Spawner>();
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingTurret(x,y);
-            }
-        });
-        a.addEntity(spawnerFactory.spawnerBag(Measure.units(20), a.getHeight() - Measure.units(15), s));
-
+        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
     }
 
 

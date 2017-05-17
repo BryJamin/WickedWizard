@@ -9,6 +9,13 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
+import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
+import com.byrjamin.wickedwizard.factories.arenas.levels.Level2Rooms;
+import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
+import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
+import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
@@ -28,15 +35,18 @@ public class JigsawGenerator {
 
     private int noBattleRooms;
 
+    private ChangeLevelSystem.Level currentLevel;
+
     private Random rand;
 
     private Arena startingArena;
     private AssetManager assetManager;
     private Level1Rooms level1Rooms;
+    private Level2Rooms level2Rooms;
     private TutorialFactory tutorialFactory;
-    private com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
-    private com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory itemArenaFactory;
-    private com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory shopFactory;
+    private ArenaShellFactory arenaShellFactory;
+    private ItemArenaFactory itemArenaFactory;
+    private ShopFactory shopFactory;
     private ArenaSkin arenaSkin;
 
     private Array<Item> itemPool;
@@ -47,8 +57,9 @@ public class JigsawGenerator {
 
     public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, Array<Item> itemPool, Random rand){
         this.assetManager = assetManager;
-        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin);
-        this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
+        this.level1Rooms = new com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms(assetManager, arenaSkin);
+        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin);
+        this.tutorialFactory = new com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, arenaSkin);
         this.shopFactory = new com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory(assetManager, arenaSkin);
@@ -57,15 +68,20 @@ public class JigsawGenerator {
         this.arenaSkin = arenaSkin;
         this.itemPool = itemPool;
         this.rand = rand;
+        this.currentLevel = ChangeLevelSystem.Level.SOLITARY;
     }
 
     public void setSkin(ArenaSkin arenaSkin) {
         this.arenaSkin = arenaSkin;
-        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin);
-        this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
+        this.level1Rooms = new com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms(assetManager, arenaSkin);
+        this.tutorialFactory = new com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, arenaSkin);
         this.shopFactory = new com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory(assetManager, arenaSkin);
+    }
+
+    public void setCurrentLevel(ChangeLevelSystem.Level currentLevel){
+        this.currentLevel = currentLevel;
     }
 
     public void setNoBattleRooms(int noBattleRooms){
@@ -211,7 +227,7 @@ public class JigsawGenerator {
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
         avaliableDoorsSet.addAll(startingArena.getDoors());
 
-        placedArenas = generateMapAroundPresetPoints(placedArenas,level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, noBattleRooms);
+        placedArenas = generateMapAroundPresetPoints(placedArenas, arenaGennerators(), avaliableDoorsSet, noBattleRooms);
 
         placeItemRoom(placedArenas, avaliableDoorsSet);
         placeShopRoom(placedArenas, avaliableDoorsSet);
@@ -219,6 +235,26 @@ public class JigsawGenerator {
         placeBossRoom(placedArenas, avaliableDoorsSet, range);
 
         return placedArenas;
+    }
+
+
+
+    public Array<ArenaGen> arenaGennerators(){
+
+        Array<ArenaGen> arenaGens;
+
+        switch(currentLevel){
+            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray();
+                break;
+            case PRISON: arenaGens = level2Rooms.getLevel2RoomArray();
+                break;
+            default: arenaGens = level1Rooms.getLevel1RoomArray();
+                break;
+        }
+
+
+        return arenaGens;
+
     }
 
 

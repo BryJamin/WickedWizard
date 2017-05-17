@@ -14,6 +14,10 @@ public class VelocityComponent extends Component{
         velocity = new Vector2(vlx, vly);
     }
 
+    public VelocityComponent(VelocityComponent vc) {
+        velocity = new Vector2(vc.velocity.x, vc.velocity.y);
+    }
+
     public VelocityComponent(){
         this(0,0);
     }

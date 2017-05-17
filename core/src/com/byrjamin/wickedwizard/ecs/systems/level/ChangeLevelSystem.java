@@ -89,6 +89,7 @@ public class ChangeLevelSystem extends BaseSystem {
         }
 
         jigsawGenerator.setSkin(level.getArenaSkin());
+        jigsawGenerator.setCurrentLevel(level);
 
         System.out.println(level);
 

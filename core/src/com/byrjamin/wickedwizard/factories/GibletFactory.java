@@ -28,6 +28,11 @@ public class GibletFactory extends AbstractFactory {
         super(assetManager);
     }
 
+
+    public OnDeathComponent defaultGiblets(OnDeathComponent fillodc, Color color){
+        return  giblets(fillodc, 5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), color);
+    }
+
     public OnDeathComponent giblets(OnDeathComponent fillodc, int numberOfGiblets,float life,int minSpeed,int maxSpeed, float size, Color color){
 
         ComponentBag bag;

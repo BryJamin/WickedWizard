@@ -38,6 +38,10 @@ public class TextureStrings {
     //SPAWNER
     public static final String SPAWNER = "spawner";
 
+
+    //GOATWIZARD
+    public static final String GOATWIZARD = "goat_wizard";
+
     public static final String CIRCLE = "circle";
 
     //BOSSES

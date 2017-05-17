@@ -140,7 +140,7 @@ public class MenuScreen extends AbstractScreen {
 
 
         startTutorial = createButton(world, "Tutorial", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(15f));
+                ,gameport.getWorldHeight() / 2 + Measure.units(10f));
 
 
         boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, false);

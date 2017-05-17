@@ -1,8 +1,14 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.levels;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
+import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
@@ -17,10 +23,10 @@ import java.util.Random;
 
 public class Level1Rooms extends AbstractFactory {
 
-    com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
+    ArenaShellFactory arenaShellFactory;
     ChestFactory chestFactory;
-    com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
-    com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
+    DecorFactory decorFactory;
+    ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
     TurretFactory turretFactory;
 
     ArenaSkin arenaSkin;
@@ -86,7 +92,7 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter();
-                arenaEnemyPlacementFactory.movingTurretRoomRight(a);
+                arenaEnemyPlacementFactory.movingTurretRoom(a, a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -98,7 +104,8 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter();
-                arenaEnemyPlacementFactory.movingDoubleTurretRoom(a);
+                arenaEnemyPlacementFactory.movingTurretRoom(a, a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15));
+                arenaEnemyPlacementFactory.movingTurretRoom(a, Measure.units(20), a.getHeight() - Measure.units(15));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -135,7 +142,7 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter();
-                arenaEnemyPlacementFactory.silverHead(a, a.getWidth() / 2, Measure.units(40f));
+                arenaEnemyPlacementFactory.spawnSilverHead(a, a.getWidth() / 2, Measure.units(40f));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -147,7 +154,8 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createWidth2ArenaWithVerticalDoors();
-                arenaEnemyPlacementFactory.movingDoubleTurretRoom(a);
+                arenaEnemyPlacementFactory.movingTurretRoom(a, a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15));
+                arenaEnemyPlacementFactory.movingTurretRoom(a, Measure.units(20), a.getHeight() - Measure.units(15));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -330,7 +338,7 @@ public class Level1Rooms extends AbstractFactory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(10f), Measure.units(20f), Measure.units(25f), arenaSkin));
                 arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(30f), Measure.units(35f)));
                 arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(30f), Measure.units(35f)));
-                arenaEnemyPlacementFactory.silverHead(arena, arena.getWidth() / 2, Measure.units(45f));
+                arenaEnemyPlacementFactory.spawnSilverHead(arena, arena.getWidth() / 2, Measure.units(45f));
 
 
                 return arena;

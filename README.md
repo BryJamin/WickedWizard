@@ -7,6 +7,8 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Menus can be used by enabling and disabling entities
+
 - Create a 'god mode' and 'bounds mode' menu option. 
 - Change animation so it is easier to queue animations such as the firing animation. 
 

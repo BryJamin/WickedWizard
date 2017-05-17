@@ -29,6 +29,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
@@ -230,6 +231,7 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),
+                        new OrbitalSystem(),
                         new ExpiryRangeSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
