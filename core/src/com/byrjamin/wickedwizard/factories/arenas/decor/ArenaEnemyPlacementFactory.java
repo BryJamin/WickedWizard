@@ -70,7 +70,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingTurret(x,y);
+                return turretFactory.movingSentry(x,y);
             }
         });
         a.addEntity(spawnerFactory.spawnerBag(x, y, s));

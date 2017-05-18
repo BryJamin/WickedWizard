@@ -52,13 +52,8 @@ public class OnDeathSystem  extends BaseSystem {
 
         if(odm.has(deadEntity)){
 
-            System.out.println("so...");
-
-            System.out.println(odm.get(deadEntity).getComponentBags().size);
-
             for (ComponentBag bag : odm.get(deadEntity).getComponentBags()) {
                 Entity newEntity = world.createEntity();
-                System.out.println("why though");
                 for (Component c : bag) {
 
                     newEntity.edit().add(c);

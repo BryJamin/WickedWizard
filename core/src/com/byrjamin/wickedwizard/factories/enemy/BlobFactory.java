@@ -106,7 +106,7 @@ public class BlobFactory extends EnemyFactory {
         bag.add(new HealthComponent(1000));
         bag.add(new BlinkComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));

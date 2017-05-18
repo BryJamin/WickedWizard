@@ -157,7 +157,7 @@ public class MenuScreen extends AbstractScreen {
         player.edit().add(new VelocityComponent(0,0));
         player.edit().add(new GravityComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         player.edit().add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();

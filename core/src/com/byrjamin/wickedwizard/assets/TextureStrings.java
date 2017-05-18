@@ -24,7 +24,7 @@ public class TextureStrings {
     public static final String KUGELDUSCHE_EMPTY = "kugel";
     //SENTRY
     public static final String SENTRY = "sentry";
-
+    public static final String SENTRY_FIRING = "sentry_firing";
 
     //SILVERHEAD
     public static final String SILVERHEAD_ST = "silverhead_standing";

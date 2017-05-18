@@ -24,7 +24,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.sun.java.swing.plaf.motif.MotifRadioButtonMenuItemUI;
 
 import java.util.Random;
 
@@ -50,7 +49,7 @@ public class DeathFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent());
         AnimationStateComponent asc = new AnimationStateComponent();
-        asc.setState(aniNumber);
+        asc.setDefaultState(aniNumber);
         bag.add(asc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(aniNumber,
@@ -136,7 +135,7 @@ public class DeathFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10), Measure.units(10))));
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.02f, atlas.findRegions("squ_dash"), Animation.PlayMode.LOOP));

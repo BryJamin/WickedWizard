@@ -77,11 +77,11 @@ public class DecorFactory extends AbstractFactory {
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(sc.getState(),
+        aniMap.put(sc.getDefaultState(),
                 new Animation<TextureRegion>(1 / 35f, atlas.findRegions("chevron"), Animation.PlayMode.LOOP_PINGPONG));
         bag.add(new AnimationComponent(aniMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(sc.getState()).getKeyFrame(sc.stateTime), width, height,
+        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(sc.getDefaultState()).getKeyFrame(sc.stateTime), width, height,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR);
 
         trc.rotation = rotationInDegrees;
@@ -150,7 +150,8 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setCurrentState(AnimationStateComponent.State.UNLOCKED.getState());
         sc.stateTime = 100f;
         bag.add(sc);
 
@@ -190,7 +191,8 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setCurrentState(AnimationStateComponent.State.UNLOCKED.getState());
         sc.stateTime = 100f;
         bag.add(sc);
 
@@ -240,7 +242,7 @@ public class DecorFactory extends AbstractFactory {
 
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
         sc.stateTime = 100f;
         bag.add(sc);
 

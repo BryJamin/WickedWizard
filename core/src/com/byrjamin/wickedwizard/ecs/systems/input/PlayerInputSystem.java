@@ -154,13 +154,13 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     StatComponent statComponent = world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class);
 
                     if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate() / statComponent.fireRate)) {
-                        asc.setState(1);
+                        asc.queueAnimationState(AnimationStateComponent.FIRING);
                         wc.weapon.fire(world,e, x, y, angleOfTravel);
                     }
                 }
             } else {
-                if (asc.getState() != 0) {
-                    asc.setState(0);
+                if (asc.getDefaultState() != 0) {
+                    asc.setDefaultState(0);
                 }
             }
         }

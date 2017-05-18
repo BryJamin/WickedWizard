@@ -30,7 +30,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.weapons.Pistol;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 /**
@@ -58,12 +57,12 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
         k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions("block_walk"), Animation.PlayMode.LOOP));
-        k.put(1, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions("block_walk")));
+        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions("block_walk")));
         bag.add(new AnimationComponent(k));
 
 
@@ -79,7 +78,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("squ_walk"),0, 0,
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),0, 0,
                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         trc.color = new Color(Color.WHITE);
         trc.DEFAULT = new Color(Color.WHITE);
@@ -103,7 +102,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new PositionComponent(pc.getX(), pc.getY()));
         bag.add(new FollowPositionComponent(pc.position, isLeft ? Measure.units(4) : -Measure.units(4), -Measure.units(1)));
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
         aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions("wings"), Animation.PlayMode.LOOP));

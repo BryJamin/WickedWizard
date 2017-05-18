@@ -63,7 +63,7 @@ public class LockSystem extends EntitySystem {
                 }
 
                 if(sm.has(e)){
-                    sm.get(e).setState(AnimationStateComponent.State.LOCKED.getState());
+                    sm.get(e).setDefaultState(AnimationStateComponent.State.LOCKED.getState());
                 }
 
             }
@@ -86,7 +86,7 @@ public class LockSystem extends EntitySystem {
                 }
 
                 if(sm.has(e)){
-                    sm.get(e).setState(AnimationStateComponent.State.UNLOCKED.getState());
+                    sm.get(e).setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
                 }
 
             }

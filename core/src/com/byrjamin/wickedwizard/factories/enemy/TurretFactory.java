@@ -60,7 +60,7 @@ public class TurretFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY), Animation.PlayMode.LOOP_RANDOM));
-
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
 
@@ -89,7 +89,7 @@ public class TurretFactory extends EnemyFactory {
         return bag;
     }
 
-    public Bag<Component> movingTurret(float x, float y){
+    public Bag<Component> movingSentry(float x, float y){
 
         x = x - width / 2;
         y = y - width / 2;
@@ -110,6 +110,7 @@ public class TurretFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY), Animation.PlayMode.LOOP_RANDOM));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING)));
 
 
         bag.add(new AnimationComponent(animMap));

@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 
 /**
@@ -49,12 +50,23 @@ public class FiringAISystem extends EntityProcessingSystem {
                     CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
                     wc.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
+
+                    if(world.getMapper(AnimationStateComponent.class).has(e)){
+                        e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
+                    }
                 }
                 break;
             case UNTARGETED:
                 if(wc.timer.isFinishedAndReset()){
                     wc.weapon.fire(world,e, cbc.getCenterX(), cbc.getCenterY(), fc.firingAngleInRadians);
+
+                    if(world.getMapper(AnimationStateComponent.class).has(e)){
+                        e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
+                    }
+
                 }
+
+
                 break;
         }
 

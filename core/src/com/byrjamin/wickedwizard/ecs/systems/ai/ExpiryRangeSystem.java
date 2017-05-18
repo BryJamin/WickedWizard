@@ -32,7 +32,7 @@ public class ExpiryRangeSystem extends EntityProcessingSystem {
         erc.distanceTravelled += Math.abs(distanceTravelled);
         erc.currentPosition.set(pc.position);
 
-        System.out.println(erc.distanceTravelled);
+        //System.out.println(erc.distanceTravelled);
 
         if(erc.distanceTravelled > erc.range){
 
