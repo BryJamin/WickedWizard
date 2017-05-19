@@ -8,6 +8,8 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -147,7 +149,13 @@ public class PlayScreen extends AbstractScreen {
         random = new Random();
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
         createWorld();
+
+
+        Gdx.input.setCatchBackKey(true);
     }
+
+
+
 
     public TextureAtlas getAtlas() {
         return atlas;
@@ -160,9 +168,23 @@ public class PlayScreen extends AbstractScreen {
 
         if (!gameOver && world.getSystem(PlayerInputSystem.class).isEnabled()) {
             multiplexer.addProcessor(world.getSystem(PlayerInputSystem.class).getPlayerInput());
+            multiplexer.addProcessor(new InputAdapter() {
+                @Override
+                public boolean keyDown(int keycode) {
+
+                    if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
+                        pauseWorld(world);
+                    }
+
+                    return super.keyDown(keycode);
+                }
+            });
         } else {
             multiplexer.addProcessor(gestureDetector);
         }
+
+
+
 
         Gdx.input.setInputProcessor(multiplexer);
     }
@@ -325,6 +347,7 @@ public class PlayScreen extends AbstractScreen {
 
     }
 
+
     @Override
     public void render(float delta) {
 
@@ -348,6 +371,7 @@ public class PlayScreen extends AbstractScreen {
         handleInput(world.delta);
         world.process();
 
+
         if(world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health <= 0 && !gameOver){
             gameOver = true;
             jg.generateTutorial = false;
@@ -356,6 +380,17 @@ public class PlayScreen extends AbstractScreen {
 
         if(!gameOver) {
             world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
+
+            //Map of the world
+            arenaGUI.draw(game.batch);
+
+            game.batch.draw(atlas.findRegion("pause"), gamecam.position.x + gamecam.viewportWidth / 2 - Measure.units(2.5f),
+                    gamecam.position.y,
+                    Measure.units(2.5f),
+                    Measure.units(2.5f));
+
+            //HUD
+            drawHUD(world, gamecam);
 
             RoomTransition rt = world.getSystem(RoomTransitionSystem.class).entryTransition;
             if(rt != null) {
@@ -371,9 +406,6 @@ public class PlayScreen extends AbstractScreen {
         }
 
 
-        drawHUD(world, gamecam);
-        //s.draw(game.batch);
-        arenaGUI.draw(game.batch);
 
         if(gameOver){
 
@@ -388,13 +420,9 @@ public class PlayScreen extends AbstractScreen {
         }
 
 
-
-        //pauseWorld(world);
-
-        //System.out.println(Gdx.graphics.getFramesPerSecond());
-
-
     }
+
+
 
 
     public void pauseWorld(World world){
@@ -475,6 +503,12 @@ public class PlayScreen extends AbstractScreen {
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
                 Measure.units(5f), Align.center, true);
 
+
+        System.out.println(gamecam.position.x);
+        System.out.println(gamecam.position.y);
+
+
+
     }
 
     @Override
@@ -519,6 +553,8 @@ public class PlayScreen extends AbstractScreen {
 
             return true;
         }
+
+
 
     }
 
