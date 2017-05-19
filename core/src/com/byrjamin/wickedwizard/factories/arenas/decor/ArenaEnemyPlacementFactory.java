@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -46,7 +47,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.arenaSkin = arenaSkin;
     }
 
-    public void spawnBlob(Arena a, float x, float y){
+    public Bag<Component> spawnBlob(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
@@ -59,7 +60,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
             }
         });
         //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
-        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
     public void turretRoom(Arena a){

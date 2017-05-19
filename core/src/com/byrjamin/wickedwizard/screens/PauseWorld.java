@@ -88,7 +88,7 @@ public class PauseWorld {
 
 
         Entity statText = world.createEntity();
-        statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(50f)));
+        statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(55f)));
         statText.edit().add(new TextureFontComponent(Assets.medium, "Stats", Measure.units(10f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
         String[] stats = new String[]
@@ -102,13 +102,23 @@ public class PauseWorld {
                         String.format(Locale.getDefault(), "Spd %.0f", playerStats.speed * 100) + "%",
                 };
 
-        statsText(world, stats[0], camX + Measure.units(5), camY + Measure.units(45f));
+
+        for(int i = 0; i < stats.length; i++){
+            statsText(world, stats[i], camX + Measure.units(5), camY + Measure.units(50f - (5 * i)));
+        }
+
+
+        Entity itemText = world.createEntity();
+        itemText.edit().add(new PositionComponent(camX + Measure.units(30f), camY + Measure.units(55f)));
+        itemText.edit().add(new TextureFontComponent(Assets.medium, "Items", Measure.units(15f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+
+/*        statsText(world, stats[0], camX + Measure.units(5), camY + Measure.units(45f));
         statsText(world, stats[1], camX + Measure.units(5), camY + Measure.units(40f));
         statsText(world, stats[2], camX + Measure.units(5), camY + Measure.units(35f));
         statsText(world, stats[3], camX + Measure.units(5), camY + Measure.units(30f));
         statsText(world, stats[4], camX + Measure.units(5), camY + Measure.units(25f));
         statsText(world, stats[5], camX + Measure.units(5), camY + Measure.units(20f));
-        statsText(world, stats[6], camX + Measure.units(5), camY + Measure.units(15f));
+        statsText(world, stats[6], camX + Measure.units(5), camY + Measure.units(15f));*/
 
 
 

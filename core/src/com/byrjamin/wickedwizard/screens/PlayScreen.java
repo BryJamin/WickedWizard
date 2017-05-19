@@ -432,9 +432,12 @@ public class PlayScreen extends AbstractScreen {
 
 
         if(!gameOver) {
-            world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
+            if(!isPaused) {
+                world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
+            }
 
             //Map of the world
+
             arenaGUI.draw(game.batch);
 
             //HUD
