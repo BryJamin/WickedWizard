@@ -18,9 +18,6 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
-import javafx.geometry.Pos;
 
 /**
  * Created by Home on 01/04/2017.

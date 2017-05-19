@@ -33,8 +33,6 @@ public class OrbitalSystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
 
-        System.out.println("Inside");
-
         PositionComponent pc = pm.get(e);
         OrbitComponent oc = om.get(e);
 

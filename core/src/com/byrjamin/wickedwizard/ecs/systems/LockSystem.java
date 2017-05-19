@@ -23,7 +23,7 @@ public class LockSystem extends EntitySystem {
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<GrappleableComponent> gm;
     ComponentMapper<DoorComponent> dm;
-    ComponentMapper<LockComponent> lm;
+    private ComponentMapper<LockComponent> lm;
 
 
     //TODO maybe put this into the DoorSystem?

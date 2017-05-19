@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -107,7 +108,7 @@ public class PlayScreen extends AbstractScreen {
 
     private OrthographicCamera gamecam;
 
-    private Viewport gamePort;
+    private Viewport gameport;
 
     public final TextureAtlas atlas;
     public AssetManager manager;
@@ -116,6 +117,9 @@ public class PlayScreen extends AbstractScreen {
 
     private World world;
     private World deathWorld;
+    private World pauseWorld;
+
+    private boolean isPaused = false;
 
     private JumpComponent jumpresource;
     private CurrencyComponent currencyComponent;
@@ -143,9 +147,9 @@ public class PlayScreen extends AbstractScreen {
         Assets.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gamePort = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
+        gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
         //Moves the gamecamer to the (0,0) position instead of being in the center.
-        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
         random = new Random();
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
         createWorld();
@@ -166,14 +170,26 @@ public class PlayScreen extends AbstractScreen {
 
         InputMultiplexer multiplexer = new InputMultiplexer();
 
-        if (!gameOver && world.getSystem(PlayerInputSystem.class).isEnabled()) {
-            multiplexer.addProcessor(world.getSystem(PlayerInputSystem.class).getPlayerInput());
+        if (!gameOver) {
+            if(world.getSystem(PlayerInputSystem.class).isEnabled()) {
+                multiplexer.addProcessor(world.getSystem(PlayerInputSystem.class).getPlayerInput());
+            }
             multiplexer.addProcessor(new InputAdapter() {
                 @Override
                 public boolean keyDown(int keycode) {
 
                     if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
-                        pauseWorld(world);
+                        if(!isPaused) {
+                            pauseWorld(world);
+
+                            PauseWorld pw = new PauseWorld(game.batch, game.manager, gamecam);
+                            pauseWorld = pw.startWorld();
+
+                            isPaused = true;
+                        } else {
+                            unpauseWorld(world);
+                            isPaused = false;
+                        }
                     }
 
                     return super.keyDown(keycode);
@@ -188,6 +204,31 @@ public class PlayScreen extends AbstractScreen {
 
         Gdx.input.setInputProcessor(multiplexer);
     }
+
+
+    public void createPauseScreenWorld(){
+
+        WorldConfiguration config = new WorldConfigurationBuilder()
+                .with(WorldConfigurationBuilder.Priority.HIGHEST,
+                        new MovementSystem()
+                )
+                .with(WorldConfigurationBuilder.Priority.HIGH,
+                        new AnimationSystem(),
+                        //new FindPlayerSystem(player),
+                        new FadeSystem())
+                .with(WorldConfigurationBuilder.Priority.LOW,
+                        new RenderingSystem(game.batch, manager, gamecam),
+                        new BoundsDrawingSystem()
+                )
+                .build();
+
+        PauseWorld pw = new PauseWorld(game.batch, game.manager, gamecam);
+        pauseWorld = pw.startWorld();
+
+
+    }
+
+
 
 
     public void createDeathScreenWorld(){
@@ -212,15 +253,15 @@ public class PlayScreen extends AbstractScreen {
 
         Entity e = deathWorld.createEntity();
         e.edit().add(new PositionComponent(gamecam.position.x
-                ,gamecam.position.y - gamePort.getWorldHeight() / 2 + 800));
+                ,gamecam.position.y - gameport.getWorldHeight() / 2 + 800));
         TextureFontComponent tfc = new TextureFontComponent("Oh dear, you seem to have died \n\n Tap to restart");
         e.edit().add(tfc);
         e.edit().add(fc);
 
 
         e = deathWorld.createEntity();
-        e.edit().add(new PositionComponent(gamecam.position.x - gamePort.getWorldWidth() / 2,
-                gamecam.position.y - gamePort.getWorldHeight() / 2));
+        e.edit().add(new PositionComponent(gamecam.position.x - gameport.getWorldWidth() / 2,
+                gamecam.position.y - gameport.getWorldHeight() / 2));
         ShapeComponent sc = new ShapeComponent(gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
         sc.color = Color.BLACK;
         sc.color.a = 0.5f;
@@ -280,7 +321,7 @@ public class PlayScreen extends AbstractScreen {
                         new MoveToPlayerAISystem(),
                         new PlatformSystem(),
                         new JumpSystem(),
-                        new PlayerInputSystem(gamecam, gamePort),
+                        new PlayerInputSystem(gamecam, gameport),
                         new StateSystem(),
                         new SpawnerSystem(),
                         new GravitySystem(),
@@ -290,7 +331,7 @@ public class PlayScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
                         new FollowPositionSystem(),
-                        new CameraSystem(gamecam, gamePort),
+                        new CameraSystem(gamecam, gameport),
                         new RenderingSystem(game.batch, manager, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
@@ -378,19 +419,17 @@ public class PlayScreen extends AbstractScreen {
             createDeathScreenWorld();
         }
 
+        drawHUD(world, gamecam);
+
+
         if(!gameOver) {
             world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
 
             //Map of the world
             arenaGUI.draw(game.batch);
 
-            game.batch.draw(atlas.findRegion("pause"), gamecam.position.x + gamecam.viewportWidth / 2 - Measure.units(2.5f),
-                    gamecam.position.y,
-                    Measure.units(2.5f),
-                    Measure.units(2.5f));
-
             //HUD
-            drawHUD(world, gamecam);
+
 
             RoomTransition rt = world.getSystem(RoomTransitionSystem.class).entryTransition;
             if(rt != null) {
@@ -405,6 +444,11 @@ public class PlayScreen extends AbstractScreen {
 
         }
 
+
+
+        if(isPaused){
+            pauseWorld.process();
+        }
 
 
         if(gameOver){
@@ -431,8 +475,17 @@ public class PlayScreen extends AbstractScreen {
                 s.setEnabled(false);
             }
         }
+    }
+
+    public void unpauseWorld(World world){
+
+        for(BaseSystem s: world.getSystems()){
+                s.setEnabled(true);
+        }
 
     }
+
+
 
     public void drawHUD(World world, OrthographicCamera gamecam){
 
@@ -504,17 +557,12 @@ public class PlayScreen extends AbstractScreen {
                 Measure.units(5f), Align.center, true);
 
 
-        System.out.println(gamecam.position.x);
-        System.out.println(gamecam.position.y);
-
-
-
     }
 
     @Override
     public void resize(int width, int height) {
         //Updates the view port to the designated width and height.
-        gamePort.update(width, height);
+        gameport.update(width, height);
 
     }
 
@@ -549,6 +597,16 @@ public class PlayScreen extends AbstractScreen {
             if (gameOver) {
                 game.setScreen(new MenuScreen(game));
                 gameOver = false;
+                return true;
+            }
+
+            if(isPaused) {
+
+                Vector3 touchInput = new Vector3(x, y, 0);
+                gameport.unproject(touchInput);
+
+
+
             }
 
             return true;

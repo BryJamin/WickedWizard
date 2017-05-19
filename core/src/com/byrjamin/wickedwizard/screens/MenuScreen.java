@@ -234,7 +234,7 @@ public class MenuScreen extends AbstractScreen {
         sc.DEFAULT = ss.getWallTint();
 
 
-        shape.edit().add(new ShapeComponent(width,height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
+        shape.edit().add(sc);
 
         return e;
 

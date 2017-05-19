@@ -304,6 +304,7 @@ public class RoomTransitionSystem extends EntitySystem {
         arena.getBagOfEntities().clear();
 
         for(Entity e : this.getEntities()){
+
             if(!bm.has(e) && !em.has(e)) {
 
                 if(cm.has(e)){
