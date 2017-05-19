@@ -16,7 +16,7 @@ public class ItemLuckyShot implements Item {
     @Override
     public boolean applyEffect(World world, Entity player) {
         player.getComponent(StatComponent.class).damage += PresetStatIncrease.minor;
-        player.getComponent(StatComponent.class).fireRate += PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).luck += PresetStatIncrease.minor;
         return true;
     }
 

@@ -146,8 +146,8 @@ public class MenuScreen extends AbstractScreen {
         boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
         boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
 
-        boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", gameport.getWorldWidth() / 4, Measure.units(20));
-        godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", gameport.getWorldWidth() / 4 * 3, Measure.units(20));
+        boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", gameport.getWorldWidth() / 4, Measure.units(27.5f));
+        godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", gameport.getWorldWidth() / 4 * 3, Measure.units(27.5f));
 
         //Player
 

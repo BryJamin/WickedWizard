@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
@@ -22,6 +23,8 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.utils.Measure;
+
+import java.util.Locale;
 
 /**
  * Created by ae164 on 19/05/17.
@@ -40,6 +43,8 @@ public class PauseWorld {
 
     private Entity returntoMainMenu;
 
+    private Entity test;
+
     public PauseWorld(SpriteBatch batch, AssetManager manager, OrthographicCamera gamecam){
 
         this.batch = batch;
@@ -51,7 +56,7 @@ public class PauseWorld {
 
     }
 
-    public World startWorld(){
+    public World startWorld(StatComponent playerStats){
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -72,21 +77,53 @@ public class PauseWorld {
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
-        System.out.println(gamecam.viewportWidth / 2);
-
-        returntoMainMenu = menuButton.createButton(world, "Return to Main Menu", camX + gamecam.viewportWidth / 2 + Measure.units(20f)
-                ,camY + gamecam.viewportHeight / 2 + Measure.units(0f), Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
-
-        System.out.println("?????????????????");
-
+        returntoMainMenu = menuButton.createButton(world, "Main Menu", camX + Measure.units(55f)
+                ,camY + Measure.units(5f), Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
 
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(camX,camY));
-        e.edit().add(new ShapeComponent(camX,camY, gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.5f)));
+        e.edit().add(new ShapeComponent(0,0, gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));
+
+
+
+        Entity statText = world.createEntity();
+        statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(50f)));
+        statText.edit().add(new TextureFontComponent(Assets.medium, "Stats", Measure.units(10f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+
+        String[] stats = new String[]
+                {
+                        String.format(Locale.getDefault(), "Dmg %.2f", playerStats.damage),
+                        String.format(Locale.getDefault(), "Fir %.2f", playerStats.fireRate),
+                        String.format(Locale.getDefault(), "Rng %.2f", playerStats.range),
+                        String.format(Locale.getDefault(), "Acc %.2f", playerStats.accuracy),
+                        String.format(Locale.getDefault(), "Lck %.2f", playerStats.luck),
+                        String.format(Locale.getDefault(), "Crt %.2f", playerStats.crit) + "%",
+                        String.format(Locale.getDefault(), "Spd %.0f", playerStats.speed * 100) + "%",
+                };
+
+        statsText(world, stats[0], camX + Measure.units(5), camY + Measure.units(45f));
+        statsText(world, stats[1], camX + Measure.units(5), camY + Measure.units(40f));
+        statsText(world, stats[2], camX + Measure.units(5), camY + Measure.units(35f));
+        statsText(world, stats[3], camX + Measure.units(5), camY + Measure.units(30f));
+        statsText(world, stats[4], camX + Measure.units(5), camY + Measure.units(25f));
+        statsText(world, stats[5], camX + Measure.units(5), camY + Measure.units(20f));
+        statsText(world, stats[6], camX + Measure.units(5), camY + Measure.units(15f));
+
+
+
+
+        //e.edit().add(new PositionComponent())
+
 
 
         return world;
+    }
+
+    public void statsText(World world, String text, float x, float y){
+        Entity damage = world.createEntity();
+        damage.edit().add(new PositionComponent(x, y));
+        damage.edit().add(new TextureFontComponent(Assets.medium, text, Measure.units(20f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
     }
 
 
@@ -105,6 +142,11 @@ public class PauseWorld {
 
     public void endWorld(){
         //world.
+    }
+
+
+    public void process(){
+        world.process();
     }
 
 

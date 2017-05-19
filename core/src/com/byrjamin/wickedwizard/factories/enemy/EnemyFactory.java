@@ -34,8 +34,9 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new BlinkComponent());
         fillbag.add(new EnemyComponent());
         OnDeathComponent odc = new OnDeathComponent();
-        df.giblets(odc, 5, new Color(Color.WHITE));
-        fillbag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
+        //df.giblets(odc, 5, new Color(Color.WHITE));
+        //fillbag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
+        fillbag.add(df.giblets(odc, 5, new Color(Color.WHITE)));
         return fillbag;
 
     }

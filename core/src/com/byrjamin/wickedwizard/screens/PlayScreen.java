@@ -183,14 +183,14 @@ public class PlayScreen extends AbstractScreen {
 
                     if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
                         if(!isPaused) {
-                            pauseWorld(world);
+                            endGame(world);
 
                             pauseWorld = new PauseWorld(game.batch, game.manager, gamecam);
-                            pauseWorld.startWorld();
+                            pauseWorld.startWorld(world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class));
 
                             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
 
-                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(3f), 6, rts.getRoomArray(), rts.getCurrentArena());
+                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getRoomArray(), rts.getCurrentArena());
 
                             isPaused = true;
                         } else {
@@ -213,6 +213,7 @@ public class PlayScreen extends AbstractScreen {
     }
 
 
+/*
     public void createPauseScreenWorld(){
 
         WorldConfiguration config = new WorldConfigurationBuilder()
@@ -229,11 +230,12 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .build();
 
-        pauseWorld = new PauseWorld(game.batch, game.manager, gamecam);
-        pauseWorld.startWorld();
+        endGame = new PauseWorld(game.batch, game.manager, gamecam);
+        endGame.startWorld();
 
 
     }
+*/
 
 
 
@@ -412,7 +414,7 @@ public class PlayScreen extends AbstractScreen {
         }
 
         if(gameOver){
-            pauseWorld(world);
+            endGame(world);
         }
 
 
@@ -454,11 +456,6 @@ public class PlayScreen extends AbstractScreen {
 
 
         if(isPaused){
-            pauseWorld.getWorld().process();
-
-            RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
-
-
 
             if (delta < 0.04f) {
                 pauseWorld.getWorld().setDelta(delta);
@@ -466,12 +463,18 @@ public class PlayScreen extends AbstractScreen {
                 pauseWorld.getWorld().setDelta(0.02f);
             }
 
+
+            pauseWorld.process();
+
+            RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
+
             float camX = gamecam.position.x - gamecam.viewportWidth / 2;
             float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
             pauseArenaGUI.update(pauseWorld.getWorld().delta,
-                    camX + Measure.units(45f),
-                    camY + Measure.units(40f),
+                    camX + Measure.units(75f),
+                    camY + Measure.units(35f),
                     rts.getVisitedArenas(),
                     rts.getUnvisitedButAdjacentArenas(),
                     rts.getCurrentArena(),
@@ -499,7 +502,7 @@ public class PlayScreen extends AbstractScreen {
 
 
 
-    public void pauseWorld(World world){
+    public void endGame(World world){
         for(BaseSystem s: world.getSystems()){
             if(!(s instanceof RenderingSystem)) {
                 s.setEnabled(false);

@@ -35,9 +35,6 @@ public class MenuButton {
     public Entity createButton(World world, String text, float x, float y, float width, float height, Color foreground, Color background) {
 
 
-        x = x - width / 2;
-        y = y - width / 2;
-
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x, y));
         TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
