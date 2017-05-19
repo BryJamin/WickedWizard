@@ -69,24 +69,39 @@ public class PauseWorld {
 
         world = new World(config);
 
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
         System.out.println(gamecam.viewportWidth / 2);
 
-        returntoMainMenu = menuButton.createButton(world, "Return to Main Menu", gamecam.viewportWidth / 2 + Measure.units(20f)
-                ,gamecam.viewportHeight / 2 + Measure.units(0f), Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
+        returntoMainMenu = menuButton.createButton(world, "Return to Main Menu", camX + gamecam.viewportWidth / 2 + Measure.units(20f)
+                ,camY + gamecam.viewportHeight / 2 + Measure.units(0f), Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
 
         System.out.println("?????????????????");
 
 
 
         Entity e = world.createEntity();
-        e.edit().add(new PositionComponent(0,0));
-        e.edit().add(new ShapeComponent(0,0, gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.5f)));
+        e.edit().add(new PositionComponent(camX,camY));
+        e.edit().add(new ShapeComponent(camX,camY, gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.5f)));
 
 
         return world;
     }
 
 
+    public World getWorld() {
+        return world;
+    }
+
+    public Entity getReturntoMainMenu() {
+        return returntoMainMenu;
+    }
+
+
+    public boolean isReturnToMainMenuTouched(float x, float y){
+        return returntoMainMenu.getComponent(CollisionBoundComponent.class).bound.contains(x,y);
+    }
 
     public void endWorld(){
         //world.

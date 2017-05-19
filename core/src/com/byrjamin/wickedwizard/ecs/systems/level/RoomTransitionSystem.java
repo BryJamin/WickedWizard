@@ -85,6 +85,7 @@ public class RoomTransitionSystem extends EntitySystem {
         //visitedArenas.addAll(roomArray);
         this.roomArray = roomArray;
         visitedArenas.add(currentArena);
+        visitedArenas.addAll(roomArray);
         unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
     }
 
@@ -373,12 +374,23 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
     public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
-        aGUI.update(world.delta, gamecam, visitedArenas, unvisitedButAdjacentArenas,
+        aGUI.update(world.delta,
+                gamecam.position.x + Measure.units(40),
+                gamecam.position.y + Measure.units(20),
+                visitedArenas,
+                unvisitedButAdjacentArenas,
                 getCurrentArena(),
                 getCurrentPlayerLocation()
                 );
     }
 
+    public OrderedSet<Arena> getVisitedArenas() {
+        return visitedArenas;
+    }
+
+    public OrderedSet<Arena> getUnvisitedButAdjacentArenas() {
+        return unvisitedButAdjacentArenas;
+    }
 
     /**
      * The direction the transition starts from

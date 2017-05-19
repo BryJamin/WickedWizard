@@ -117,7 +117,9 @@ public class PlayScreen extends AbstractScreen {
 
     private World world;
     private World deathWorld;
-    private World pauseWorld;
+
+
+    private PauseWorld pauseWorld;
 
     private boolean isPaused = false;
 
@@ -131,6 +133,7 @@ public class PlayScreen extends AbstractScreen {
     private boolean isTutorial;
 
     private ArenaGUI arenaGUI;
+    private ArenaGUI pauseArenaGUI;
     private Random random;
     private JigsawGenerator jg;
     private Array<Arena> arenaArray;
@@ -182,8 +185,12 @@ public class PlayScreen extends AbstractScreen {
                         if(!isPaused) {
                             pauseWorld(world);
 
-                            PauseWorld pw = new PauseWorld(game.batch, game.manager, gamecam);
-                            pauseWorld = pw.startWorld();
+                            pauseWorld = new PauseWorld(game.batch, game.manager, gamecam);
+                            pauseWorld.startWorld();
+
+                            RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
+                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(3f), 6, rts.getRoomArray(), rts.getCurrentArena());
 
                             isPaused = true;
                         } else {
@@ -201,7 +208,7 @@ public class PlayScreen extends AbstractScreen {
 
 
 
-
+        multiplexer.addProcessor(gestureDetector);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -222,8 +229,8 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .build();
 
-        PauseWorld pw = new PauseWorld(game.batch, game.manager, gamecam);
-        pauseWorld = pw.startWorld();
+        pauseWorld = new PauseWorld(game.batch, game.manager, gamecam);
+        pauseWorld.startWorld();
 
 
     }
@@ -277,7 +284,7 @@ public class PlayScreen extends AbstractScreen {
 
         LevelItemSystem lis = new LevelItemSystem(random);
 
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 3 ,lis.getItemPool(), random);
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 15 ,lis.getItemPool(), random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
 
@@ -447,7 +454,30 @@ public class PlayScreen extends AbstractScreen {
 
 
         if(isPaused){
-            pauseWorld.process();
+            pauseWorld.getWorld().process();
+
+            RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
+
+
+            if (delta < 0.04f) {
+                pauseWorld.getWorld().setDelta(delta);
+            } else {
+                pauseWorld.getWorld().setDelta(0.02f);
+            }
+
+            float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+            float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+            pauseArenaGUI.update(pauseWorld.getWorld().delta,
+                    camX + Measure.units(45f),
+                    camY + Measure.units(40f),
+                    rts.getVisitedArenas(),
+                    rts.getUnvisitedButAdjacentArenas(),
+                    rts.getCurrentArena(),
+                    rts.getCurrentPlayerLocation());
+
+            pauseArenaGUI.draw(game.batch);
         }
 
 
@@ -600,12 +630,21 @@ public class PlayScreen extends AbstractScreen {
                 return true;
             }
 
+
+
             if(isPaused) {
 
                 Vector3 touchInput = new Vector3(x, y, 0);
                 gameport.unproject(touchInput);
 
 
+                System.out.println("??????!!!!!!!!");
+
+                System.out.println(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y));
+
+                if(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y)){
+                    game.setScreen(new MenuScreen(game));
+                }
 
             }
 

@@ -57,8 +57,17 @@ public class ArenaGUI {
         this.currentRoom = currentRoom;
     }
 
+    public ArenaGUI(float x, float y, float size,int range,  Array<Arena> arenas, Arena currentRoom) {
+        this.mapx = x;
+        this.mapy = y;
+        this.arenas = arenas;
+        this.SIZE = size;
+        this.range = range;
+        this.currentRoom = currentRoom;
+    }
 
-    public void update(float dt, OrthographicCamera gamecam, OrderedSet<Arena> visitedArenas, OrderedSet<Arena> undiscoveredArenas, Arena currentRoom, MapCoords currentCoords){
+
+    public void update(float dt, float x, float y, OrderedSet<Arena> visitedArenas, OrderedSet<Arena> undiscoveredArenas, Arena currentRoom, MapCoords currentCoords){
 
         this.currentRoom = currentRoom;
         this.currentCoords = currentCoords;
@@ -74,8 +83,8 @@ public class ArenaGUI {
             blink = !blink;
             mapBlinker = 0;
         }
-        mapy = gamecam.position.y + Measure.units(20);
-        mapx = gamecam.position.x + Measure.units(40);
+        mapx = x;
+        mapy = y;
     }
 
 
@@ -100,11 +109,13 @@ public class ArenaGUI {
         mapRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         mapRenderer.begin(ShapeRenderer.ShapeType.Filled);
         mapRenderer.setColor(mapBackGroundColor);
-        mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5);
+
+        //TODO used to be         mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5); which I guess could allow a rectangl
+        mapRenderer.rect(mapx - SIZE * (range - 1), mapy - SIZE * (range - 1), SIZE * (range * 2 - 1), SIZE * (range * 2 - 1));
         mapRenderer.end();
         mapRenderer.begin(ShapeRenderer.ShapeType.Line);
         mapRenderer.setColor(Color.WHITE);
-        mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5);
+        mapRenderer.rect(mapx - SIZE * (range - 1), mapy - SIZE * (range - 1), SIZE * (range * 2 - 1), SIZE * (range * 2 - 1));
         mapRenderer.end();
 
     }

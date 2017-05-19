@@ -151,7 +151,7 @@ public class MenuScreen extends AbstractScreen {
 
         //Player
 
-        Entity player = world.createEntity();
+/*        Entity player = world.createEntity();
         player.edit().add(new PositionComponent(Measure.units(80f),Measure.units(18f)));
         player.edit().add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
         player.edit().add(new VelocityComponent(0,0));
@@ -168,7 +168,7 @@ public class MenuScreen extends AbstractScreen {
                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         trc.color = new Color(Color.WHITE);
         trc.DEFAULT = new Color(Color.WHITE);
-        player.edit().add(trc);
+        player.edit().add(trc);*/
 
 
         SolitarySkin ss = new SolitarySkin(atlas);
