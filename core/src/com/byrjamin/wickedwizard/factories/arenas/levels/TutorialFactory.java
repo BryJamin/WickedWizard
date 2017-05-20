@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
+import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -105,8 +106,8 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         cb.add(new OrbitComponent(new Vector3(arena.getWidth() / 2, arena.getHeight() / 2, 0), Measure.units(20f), 4, 0));
 
         arena.addEntity(cb);*/
-
-        arena.addEntity(new GoatWizardFactory(assetManager).goatWizard(arena.getWidth() / 2, arena.getHeight() / 2));
+/*
+        arena.addEntity(new KugelDuscheFactory(assetManager).kugelDusche(arena.getWidth() / 2, arena.getHeight() / 2));*/
 
 /*        cb = new ComponentBag();
         cb.add(new PositionComponent(arena.getWidth() / 2, arena.getHeight() / 2));

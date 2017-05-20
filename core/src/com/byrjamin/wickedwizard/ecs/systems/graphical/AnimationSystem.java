@@ -42,7 +42,10 @@ public class AnimationSystem extends EntityProcessingSystem {
 
             System.out.println(canRemove);
 
-            if(canRemove)  sc.getStateQueue().removeFirst();
+            if(canRemove)  {
+                key = sc.getDefaultState();
+                sc.getStateQueue().removeFirst();
+            }
 
             //TODO need to check animation is finished before switching back to the default state.
             //TODO also need to check this works using the turrets
