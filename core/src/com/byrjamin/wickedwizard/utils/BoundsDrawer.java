@@ -90,6 +90,26 @@ public class BoundsDrawer {
         }
     }
 
+    public static void drawBounds(SpriteBatch batch, Color c, Array<Rectangle> bounds) {
+
+        if(batch.isDrawing()) {
+            batch.end();
+        }
+
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(c);
+        for(Rectangle r : bounds) {
+            shapeRenderer.rect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
+        }
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.end();
+
+        if(!batch.isDrawing()) {
+            batch.begin();
+        }
+    }
+
     /**
      * Draws the boundaries of an Array of Circles
      * @param batch - The SpriteBatch

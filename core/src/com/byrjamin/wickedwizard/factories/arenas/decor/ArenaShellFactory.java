@@ -3,12 +3,15 @@ package com.byrjamin.wickedwizard.factories.arenas.decor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 18/03/2017.
@@ -61,6 +64,41 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         return arena;
     }
+
+    public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords) {
+
+
+
+        Arena arena = new Arena(arenaSkin, defaultCoords);
+
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT);
+
+        arena = new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR))
+                .buildArena(arena);
+
+
+
+        //TODO in order to clean up this grapple if a top route doesn't exist a mark it with a door.
+
+        ComponentBag bag = decorFactory.hiddenGrapplePointBag(arena.getWidth() / 2, (arena.getHeight() / 4) * 3);
+
+        DoorComponent dc = new DoorComponent(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
+                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1), Direction.UP);
+        dc.ignore = true;
+
+        bag.add(dc);
+
+        arena.addDoor(bag);
+
+        return arena;
+    }
+
 
     public Arena createSmallArena(MapCoords defaultCoords, boolean leftDoor, boolean rightDoor, boolean ceilingDoor, boolean topDoor) {
 

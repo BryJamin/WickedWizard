@@ -222,7 +222,6 @@ public class RenderingSystem extends EntitySystem {
         if(sm.has(e)) {
 
             batch.end();
-
             ShapeComponent sc = sm.get(e);
             Gdx.gl.glEnable(GL20.GL_BLEND);
             shapeRenderer.setProjectionMatrix(gamecam.combined);

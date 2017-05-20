@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -489,7 +490,7 @@ public class JigsawGenerator {
                 DoorComponent dc = a.getDoors().get(j);
                 if (!findDoorWithinFoundRoom(dc, arenas)) {
                     Bag<Component> bag = a.findBag(dc);
-                    if (BagSearch.contains(ActiveOnTouchComponent.class, bag)) {
+                    if (BagSearch.contains(ActiveOnTouchComponent.class, bag) || BagSearch.contains(InCombatActionComponent.class, bag)) {
                         a.getBagOfEntities().remove(bag);
                     } else {
                         CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);

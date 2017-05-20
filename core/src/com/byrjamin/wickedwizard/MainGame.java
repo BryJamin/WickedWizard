@@ -1,9 +1,11 @@
 package com.byrjamin.wickedwizard;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -42,6 +44,11 @@ public class MainGame extends Game {
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(0, 0);
 		manager.load("sprite.atlas", TextureAtlas.class);
+
+
+		System.out.println(Gdx.files.getLocalStoragePath());
+		System.out.println(Gdx.files.getExternalStoragePath());
+
 
 		FileHandleResolver resolver = new InternalFileHandleResolver();
 		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));

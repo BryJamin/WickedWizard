@@ -39,9 +39,9 @@ public class JigsawGeneratorTest extends GameTest {
         TextureAtlasLoader textureAtlasLoader = new TextureAtlasLoader(new LocalFileHandleResolver());
 
         assetManager.setLoader(TextureAtlas.class,textureAtlasLoader);
-        assetManager.load("sprite.atlas", TextureAtlas.class);
+        assetManager.load(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         assetManager.finishLoading();
-        TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
+        TextureAtlas atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
 
 

@@ -30,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
@@ -304,6 +305,7 @@ public class PlayScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),
                         new OrbitalSystem(),
+                        new InCombatSystem(),
                         new ExpiryRangeSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),

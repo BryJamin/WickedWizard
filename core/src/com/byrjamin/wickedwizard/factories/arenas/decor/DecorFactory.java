@@ -1,6 +1,8 @@
 package com.byrjamin.wickedwizard.factories.arenas.decor;
 
 import com.artemis.Component;
+import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,7 +12,9 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -19,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
@@ -265,12 +270,12 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-    public Bag<Component> grapplePointBag(float x, float y){
+    public ComponentBag grapplePointBag(float x, float y){
 
         float width = Measure.units(10);
         float height = Measure.units(10);
 
-        Bag<Component> bag = new Bag<Component>();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x - width /  2,y - height /2 ));
         bag.add(new CollisionBoundComponent(new Rectangle(x - width / 2,y - height / 2, width, height)));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.GRAPPLE),
@@ -282,6 +287,36 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new GrappleableComponent());
 
         return bag;
+
+    }
+
+
+
+    public ComponentBag hiddenGrapplePointBag(float x, float y){
+
+        ComponentBag bag = grapplePointBag(x, y);
+
+        Action combatAction = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().remove(FadeComponent.class);
+                e.edit().remove(GrappleableComponent.class);
+                e.edit().add(new FadeComponent(false, 0.5f, false));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FadeComponent.class);
+                e.edit().add(new GrappleableComponent());
+                e.edit().add(new FadeComponent(true, 0.5f, false));
+            }
+        };
+
+        bag.add(new InCombatActionComponent(combatAction));
+
+
+        return bag;
+
 
     }
 

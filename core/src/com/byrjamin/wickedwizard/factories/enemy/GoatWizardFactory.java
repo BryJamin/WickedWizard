@@ -47,8 +47,8 @@ public class GoatWizardFactory extends EnemyFactory {
     private static final float height = Measure.units(20f);
     private static final float width = Measure.units(20f);
 
-    private static final float texheight = Measure.units(10f);
-    private static final float texwidth = Measure.units(10f);
+    private static final float texheight = Measure.units(15f);
+    private static final float texwidth = Measure.units(15f);
 
     private final GibletFactory gibletFactory;
 
@@ -76,7 +76,7 @@ public class GoatWizardFactory extends EnemyFactory {
         CollisionBoundComponent cbc = new CollisionBoundComponent();
 
         cbc.bound = new Rectangle(x , y , width, height);
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(10), Measure.units(10)), Measure.units(5), Measure.units(5)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(7), Measure.units(7)), Measure.units(6.5f), Measure.units(7.5f)));
 
         bag.add(cbc);
 
@@ -87,7 +87,7 @@ public class GoatWizardFactory extends EnemyFactory {
         bag.add(new AnimationComponent(animMap));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOATWIZARD),
-                texwidth / 2, texheight / 2, texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+                (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
         trc.DEFAULT = new Color(91f / 255f,50f / 255f,86f / 255f, 1);

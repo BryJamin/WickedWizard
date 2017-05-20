@@ -4,7 +4,9 @@ import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
+import com.artemis.EntitySubscription;
 import com.artemis.utils.Bag;
+import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
@@ -21,6 +23,8 @@ public class RoomTypeSystem extends BaseSystem {
 
 
     public boolean nextLevelDoor = false;
+
+    private boolean inCombat = false;
 
     @Override
     protected void processSystem() {
@@ -49,6 +53,9 @@ public class RoomTypeSystem extends BaseSystem {
 
 
                     world.getSystem(LockSystem.class).unlockDoors();
+                    world.getSystem(InCombatSystem.class).leaveCombat();
+
+
                     if(current.roomType == Arena.RoomType.BOSS) {
                         if (!nextLevelDoor && world.getSystem(ChangeLevelSystem.class).getLevel() != ChangeLevelSystem.Level.FREEDOMRUN) {
                             Entity e = world.createEntity();
@@ -61,6 +68,7 @@ public class RoomTypeSystem extends BaseSystem {
 
                 } else {
                     world.getSystem(LockSystem.class).lockDoors();
+                    world.getSystem(InCombatSystem.class).goInCombat();
                 }
                 break;
             case ITEM:

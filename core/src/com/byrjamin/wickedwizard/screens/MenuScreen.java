@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -91,7 +92,7 @@ public class MenuScreen extends AbstractScreen {
 
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
-        atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
+        atlas = game.manager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         Assets.initialize(game.manager);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
