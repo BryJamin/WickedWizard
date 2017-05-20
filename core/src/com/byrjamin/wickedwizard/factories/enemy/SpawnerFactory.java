@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -30,16 +31,16 @@ public class SpawnerFactory extends EnemyFactory {
         this.arenaSkin = arenaSkin;
     }
 
-    private static float width = Measure.units(12f);
-    private static float height = Measure.units(12f);
+    private static float width = Measure.units(10f);
+    private static float height = Measure.units(10f);
 
-    public Bag<Component> spawnerBag(float x, float y, Array<Spawner> spawners){
+    public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners){
 
         x = x - width / 2;
         y = y - height / 2;
 
 
-        Bag<Component> bag = new Bag<Component>();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
         AnimationStateComponent sc = new AnimationStateComponent();

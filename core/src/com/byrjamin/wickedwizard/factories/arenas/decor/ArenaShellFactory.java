@@ -249,6 +249,30 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
 
+    public Arena createWidth2WithAllDoorsArena(MapCoords defaultCoords){
+
+        Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+        arena.setWidth(SECTION_WIDTH * 2);
+        arena.setHeight(SECTION_HEIGHT);
+
+        arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR))
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR)).buildArena(arena);
+
+        return arena;
+
+    }
+
+
 
     public Arena createLetterIArena(MapCoords defaultCoords) {
 

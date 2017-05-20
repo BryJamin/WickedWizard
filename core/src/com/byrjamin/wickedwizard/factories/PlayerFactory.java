@@ -1,22 +1,36 @@
 package com.byrjamin.wickedwizard.factories;
 
+import com.artemis.Aspect;
+import com.artemis.Entity;
+import com.artemis.EntitySubscription;
+import com.artemis.World;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
+import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
@@ -25,12 +39,19 @@ import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.factories.weapons.Pistol;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 
 /**
  * Created by Home on 06/04/2017.
@@ -114,10 +135,116 @@ public class PlayerFactory extends AbstractFactory {
         trc.scaleX = isLeft ? 1 : -1;
         bag.add(trc);
 
+        bag.add(new WingComponent());
 
         ChildComponent cc = new ChildComponent();
         parc.children.add(cc);
+
+
+        System.out.println("Child size is" + parc.children.size);
+
         bag.add(cc);
+
+        return bag;
+    }
+
+    public ComponentBag grappleShot(ParentComponent parc,float x, float y, double angle){
+
+
+        float width = Measure.units(2);
+        float height = Measure.units(2);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x, y));
+
+        bag.add(new VelocityComponent(BulletMath.velocityX(Measure.units(120f), angle), BulletMath.velocityY(Measure.units(120f), angle)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        //bag.add(new IntangibleComponent());
+        //bag.add(new BulletComponent());
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"),
+                width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
+        bag.add(trc);
+
+
+/*        ChildComponent cc = new ChildComponent();
+        parc.children.add(cc);
+        bag.add(cc);*/
+
+        bag.add(new GrappleComponent());
+
+
+        ConditionalActionComponent cac = new ConditionalActionComponent();
+        cac.condition = new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+
+                Rectangle r = world.getSystem(GrapplePointSystem.class).returnTouchedGrapple(entity.getComponent(CollisionBoundComponent.class).getCenterX(),
+                entity.getComponent(CollisionBoundComponent.class).getCenterY());
+
+                if(r != null) {
+
+                    CollisionBoundComponent cbc = entity.getComponent(CollisionBoundComponent.class);
+                    PositionComponent pc = entity.getComponent(PositionComponent.class);
+                    cbc.bound.setCenter(r.getX() + r.getWidth() / 2, r.getY() + r.getHeight() / 2);
+                    pc.position.set(cbc.bound.x, cbc.bound.y, pc.position.z);
+
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        };
+
+
+        cac.action = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
+
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+
+
+                float x = e.getComponent(CollisionBoundComponent.class).getCenterX();
+                float y = e.getComponent(CollisionBoundComponent.class).getCenterY();
+
+                world.getSystem(GrappleSystem.class).flyToNoPathCheck(
+                        BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), x, y),
+                        x, y,
+                        Measure.units(150f),
+                        mtc, cbc);
+
+                mtc.endSpeedX = 0;
+                mtc.maxEndSpeedY = 150f / 2; //150f = MAXGRAPPLEMOVEMENT
+
+
+                world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = true;
+
+                e.edit().remove(VelocityComponent.class);
+
+                e.edit().remove(ConditionalActionComponent.class);
+
+                e.edit().add(new ExpireComponent(1f));
+                e.edit().add(new FadeComponent(false, 1f, false));
+
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        };
+
+
+        bag.add(cac);
+
+
 
         return bag;
     }

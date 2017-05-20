@@ -172,9 +172,15 @@ public class GrappleSystem extends EntityProcessingSystem {
         mtc.maxX = Math.abs(cosine * speedOfTravel);
         mtc.maxY = Math.abs(sine * speedOfTravel);
 
+        System.out.println("?mtc should have something set I guess");
+
         //mtc.endSpeedY =
 
     }
+
+
+    //TODO in future if I do shoot out something check if it hits something then if it does perform a grapple action? Holy shizz I think I figure it out.
+    //public void grappleCollisionCheck;
 
 
 

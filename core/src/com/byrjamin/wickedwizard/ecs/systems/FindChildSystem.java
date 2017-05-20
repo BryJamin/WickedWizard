@@ -32,6 +32,9 @@ public class FindChildSystem extends EntitySystem {
     public Entity findChildEntity(ChildComponent c){
 
         for(Entity e : this.getEntities()){
+
+            System.out.println(e.getComponent(ChildComponent.class) == c);
+
             if(e.getComponent(ChildComponent.class) == c) return e;
         }
         return null;

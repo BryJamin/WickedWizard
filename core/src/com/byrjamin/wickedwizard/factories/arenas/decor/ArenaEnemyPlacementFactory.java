@@ -63,18 +63,26 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
-    public void turretRoom(Arena a){
-        a.addEntity(turretFactory.fixedLockOnTurret(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(25)));
+
+    public ComponentBag spawnFixedSentry(float x, float y) {
+
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.fixedLockOnTurret(x,y);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
-    public void movingTurretRoom(Arena a, float x, float y){
+    public ComponentBag spawnMovingSentry(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return turretFactory.movingSentry(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
     public void kugelDusche(Arena a, float x, float y){
@@ -107,14 +115,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         a.addEntity(spawnerFactory.spawnerBag(x, y, s));
     }
 
-    public void spawnLargeBouncer(Arena a, float x, float y){
+    public ComponentBag spawnLargeBouncer(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return bouncerFactory.largeBouncer(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
     public void spawnGoatWizard(Arena a, float x, float y){

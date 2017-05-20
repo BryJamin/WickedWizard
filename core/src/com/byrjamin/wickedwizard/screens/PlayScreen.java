@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
@@ -337,7 +338,8 @@ public class PlayScreen extends AbstractScreen {
                         new SpawnerSystem(),
                         new GravitySystem(),
                         new GrappleSystem(),
-                        new FrictionSystem()
+                        new FrictionSystem(),
+                        new ConditionalActionSystem()
                         )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),

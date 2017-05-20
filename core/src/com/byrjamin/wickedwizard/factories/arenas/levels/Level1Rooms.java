@@ -6,7 +6,6 @@ import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
-import com.byrjamin.wickedwizard.factories.arenas.WaveArena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -44,11 +43,11 @@ public class Level1Rooms extends AbstractFactory {
 
     public Array<ArenaGen> getLevel1RoomArray(){
         Array<ArenaGen> ag = new Array<ArenaGen>();
- /*       ag.add(room1blobLeft());
+        ag.add(room1blobLeft());
         ag.add(room1blobRight());
-        ag.add(room1blobRightAndLeft());*/
+        ag.add(room1blobRightAndLeft());
         ag.add(room1blobRightNoBlock());
-/*        ag.add(room2());
+        ag.add(room2());
         ag.add(room3());
         ag.add(room5());
         ag.add(room6());
@@ -58,10 +57,10 @@ public class Level1Rooms extends AbstractFactory {
         ag.add(room10Height2());
         ag.add(room11());
         ag.add(room12());
-        ag.add(room13());
+        ag.add(room13LargeBouncer());
         ag.add(room14());
         ag.add(room15());
-        ag.add(room16());*/
+        ag.add(room16());
         return ag;
     }
 
@@ -121,7 +120,7 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter();
-                arenaEnemyPlacementFactory.movingTurretRoom(a, a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15));
+                a.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15)));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -133,8 +132,10 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter();
-                arenaEnemyPlacementFactory.movingTurretRoom(a, a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15));
-                arenaEnemyPlacementFactory.movingTurretRoom(a, Measure.units(20), a.getHeight() - Measure.units(15));
+
+                a.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15)));
+                a.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(20), a.getHeight() - Measure.units(15)));
+
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -159,8 +160,9 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createWidth2ArenaWithVerticalDoors();
-                arenaEnemyPlacementFactory.movingTurretRoom(a, a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15));
-                arenaEnemyPlacementFactory.movingTurretRoom(a, Measure.units(20), a.getHeight() - Measure.units(15));
+
+                a.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15)));
+                a.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(20), a.getHeight() - Measure.units(15)));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -307,13 +309,13 @@ public class Level1Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room13(){
+    public ArenaGen room13LargeBouncer(){
 
         return new ArenaGen() {
             @Override
             public Arena createArena() {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter(new MapCoords(0,0));
-                arenaEnemyPlacementFactory.spawnLargeBouncer(a, a.getWidth() / 2,(a.getHeight() - a.getHeight() / 2));
+                a.addEntity(arenaEnemyPlacementFactory.spawnLargeBouncer(a.getWidth() / 2,(a.getHeight() - Measure.units(15f))));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }

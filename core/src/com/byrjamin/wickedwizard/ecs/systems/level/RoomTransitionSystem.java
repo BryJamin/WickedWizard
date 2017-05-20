@@ -85,7 +85,7 @@ public class RoomTransitionSystem extends EntitySystem {
         //visitedArenas.addAll(roomArray);
         this.roomArray = roomArray;
         visitedArenas.add(currentArena);
-        visitedArenas.addAll(roomArray);
+        //visitedArenas.addAll(roomArray);
         unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
     }
 

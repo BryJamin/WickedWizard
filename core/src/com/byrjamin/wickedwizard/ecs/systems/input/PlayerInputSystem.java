@@ -6,6 +6,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.utils.Bag;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -18,6 +19,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
@@ -31,9 +33,11 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
@@ -172,29 +176,34 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public void grappleTo(float grappleX, float grappleY) {
 
+
+        AssetManager am = world.getSystem(RenderingSystem.class).assetManager;
+        PlayerFactory pf = new PlayerFactory(am);
+
+        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
+        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
+
+
         Rectangle r = world.getSystem(GrapplePointSystem.class).returnTouchedGrapple(grappleX, grappleY);
 
 
+
         if(r != null) {
-            MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
-            CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-            AccelerantComponent ac = world.getSystem(FindPlayerSystem.class).getPC(AccelerantComponent.class);
 
-            float x = r.x + r.getWidth() / 2;
-            float y = r.y + r.getHeight() / 2;
+            Bag<Component> bag = pf.grappleShot(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class),
+                    cbc.getCenterX(),
+                    cbc.getCenterY(), BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(),
+                    r.x + r.getWidth() / 2,
+                    r.y + r.getHeight() / 2));
 
-            world.getSystem(GrappleSystem.class).flyToNoPathCheck(
-                    Math.atan2(y - cbc.getCenterY(), x - cbc.getCenterX()),
-                    x,
-                    y,
-                    GRAPPLE_MOVEMENT * 10,
-                    mtc,
-                    cbc);
+            Entity e = world.createEntity();
 
-            mtc.endSpeedX = 0;
-            mtc.maxEndSpeedY = MAX_GRAPPLE_MOVEMENT / 2;
-            // mtc.endSpeedY = GRAPPLE_MOVEMENT * 5;
-            world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = true;
+            for(Component c : bag) {
+                e.edit().add(c);
+            }
+
+
             turnOffGlide();
 
             world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity.y = 0;
@@ -214,21 +223,15 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
 
-        wingChildren.clear();
-
         Entity e = world.createEntity();
         for(Component c : pf.wings(parc, pc, true)) {
             e.edit().add(c);
         }
 
-        wingChildren.add(e.getComponent(ChildComponent.class));
-
         e = world.createEntity();
         for(Component c : pf.wings(parc, pc, false)) {
             e.edit().add(c);
         }
-
-        wingChildren.add(e.getComponent(ChildComponent.class));
 
         glc.gliding = true;
         glc.active = true;
@@ -240,17 +243,27 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
 
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(ChildComponent.class));
-        IntBag entityIds = subscription.getEntities();
+
+        //TODO find it only for the wings component
+
+       // System.out.println("CHILDREN :" + parc.children.size);
 
 
+        Array<ChildComponent> ok  = new Array<ChildComponent>();
+        ok.addAll(parc.children);
 
-        for(int i = 0; i < entityIds.size(); i++){
-            ChildComponent c = world.getMapper(ChildComponent.class).get(entityIds.get(i));
-            if(parc.children.contains(c, true)){
-                parc.children.removeValue(c, true);
-                world.delete(entityIds.get(i));
+        for(ChildComponent childComponent : ok) {
+
+            Entity e = world.getSystem(FindChildSystem.class).findChildEntity(childComponent);
+
+            if(e != null) {
+
+                if (world.getMapper(WingComponent.class).has(e)) {
+                    parc.children.removeValue(childComponent, false);
+                    world.deleteEntity(e);
+                }
             }
+
         }
 
         glc.gliding = false;

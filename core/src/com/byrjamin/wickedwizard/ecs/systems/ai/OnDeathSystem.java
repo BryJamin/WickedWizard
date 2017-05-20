@@ -94,7 +94,7 @@ public class OnDeathSystem  extends BaseSystem {
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all());
         IntBag entityIds = subscription.getEntities();
-        //System.out.println(entityIds.size());
+     //   System.out.println(entityIds.size());
     }
 
 

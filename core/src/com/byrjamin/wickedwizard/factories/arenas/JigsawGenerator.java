@@ -190,6 +190,9 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+
+        //startingArena = level1Rooms.room13LargeBouncer().createArena();
+
         //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
 
         placedArenas.add(startingArena);
