@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
@@ -190,6 +191,7 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+        //startingArena = shopFactory.createShop(new ItemVitaminC(), new ItemVitaminC());
 
      //   startingArena = level2Rooms.oneTurretTwoBouncers().createArena();
 
@@ -225,7 +227,7 @@ public class JigsawGenerator {
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArenaSquareCenter();
 
-        startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
+        //startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
         //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
         //startingArena.addEntity(decorFactory.platform(500,500,1000));
         placedArenas.add(startingArena);

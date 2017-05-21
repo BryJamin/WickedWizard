@@ -48,6 +48,7 @@ public class Level2Rooms extends AbstractFactory{
         ag.add(room4Kugel());
         ag.add(goatWizardCenter());
         ag.add(oneTurretTwoBouncers());
+        ag.add(width2RoomOnlyVerticalExits());
         return ag;
     }
 

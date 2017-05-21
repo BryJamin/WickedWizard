@@ -69,19 +69,19 @@ public class ChangeLevelSystem extends BaseSystem {
         switch (level) {
             case SOLITARY: level = PRISON;
                 jigsawGenerator.setNoBattleRooms(13);
-                world.getSystem(MessageBannerSystem.class).createBanner("Prison", "It's brighter here");
+                world.getSystem(MessageBannerSystem.class).createBanner("Chapter 2", "");
                 break;
             case PRISON: level = FOUNDARY;
                 jigsawGenerator.setNoBattleRooms(15);
-                world.getSystem(MessageBannerSystem.class).createBanner("Foundary", "Watch your Step");
+                world.getSystem(MessageBannerSystem.class).createBanner("Chapter 3", "");
                 break;
             case FOUNDARY: level = CBLOCK;
                 jigsawGenerator.setNoBattleRooms(15);
-                world.getSystem(MessageBannerSystem.class).createBanner("C-Block", "Better than D-Block");
+                world.getSystem(MessageBannerSystem.class).createBanner("Chapter 4", "");
                 break;
             case CBLOCK: level = FREEDOMRUN;
                 jigsawGenerator.setNoBattleRooms(18);
-                world.getSystem(MessageBannerSystem.class).createBanner("Final Run", "Almost free..");
+                world.getSystem(MessageBannerSystem.class).createBanner("Chapter 5", "");
                 break;
             case FREEDOMRUN:
                 //TODO world.endGame

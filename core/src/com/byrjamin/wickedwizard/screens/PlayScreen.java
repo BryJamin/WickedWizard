@@ -289,7 +289,7 @@ public class PlayScreen extends AbstractScreen {
 
         LevelItemSystem lis = new LevelItemSystem(random);
 
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 15 ,lis.getItemPool(), random);
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 ,lis.getItemPool(), random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
 

@@ -156,8 +156,15 @@ public class ItemFactory extends AbstractFactory {
 
     public Array<ComponentBag> createShopItemBag(float x, float y, PickUp pickUp, int money){
 
-        float width = Measure.units(6);
-        float height = Measure.units(6);
+        float width = Measure.units(10);
+        float height = Measure.units(10);
+
+        float textureWidth = Measure.units(5f);
+        float textureHeight = Measure.units(5f);
+
+        float goldWidth = Measure.units(2.5f);
+        float goldHeight = Measure.units(2.5f);
+
 
         x = x - width / 2;
         y = y - height / 2;
@@ -168,7 +175,12 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()),
+                (width / 2) - (textureWidth / 2),
+                (height / 2) - (textureHeight / 2),
+                textureWidth,
+                textureHeight,
+                TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(pickUp));
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
@@ -178,8 +190,8 @@ public class ItemFactory extends AbstractFactory {
 
 
         ComponentBag priceTag = new ComponentBag();
-        priceTag.add(new PositionComponent(x, y - Measure.units(5)));
-        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
+        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), goldWidth, goldHeight, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         TextureFontComponent tfc = new TextureFontComponent(""+money);
         //tfc.width = width / 2;
         tfc.offsetX = Measure.units(5);
