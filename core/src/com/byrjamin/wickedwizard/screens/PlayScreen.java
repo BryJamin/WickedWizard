@@ -34,6 +34,7 @@ import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
@@ -90,7 +91,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -311,7 +312,9 @@ public class PlayScreen extends AbstractScreen {
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
+                        new CollisionSystem(),
                         new BounceCollisionSystem(),
+                        new GroundCollisionSystem(),
                         new BulletSystem(),
                         new EnemyCollisionSystem(),
                         new MessageBannerSystem(),
@@ -319,7 +322,6 @@ public class PlayScreen extends AbstractScreen {
                         new FiringAISystem(),
                         new GrapplePointSystem(),
                         new LockSystem(),
-                        new GroundCollisionSystem(),
                         new HealthSystem(),
                         new OnDeathSystem(),
                         new FadeSystem(),

@@ -145,7 +145,7 @@ public class ArenaBuilder {
                 BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
 
 
-                arena.addEntity(decorFactory.platform(Measure.units(40f), Measure.units(5f), Measure.units(20f)));
+                arena.addEntity(decorFactory.platform(Measure.units(40f) + posX, Measure.units(5f), Measure.units(20f)));
 
                 arena.addDoor(bag);
 

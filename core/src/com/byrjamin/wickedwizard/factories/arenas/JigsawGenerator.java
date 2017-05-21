@@ -191,7 +191,7 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        //startingArena = level1Rooms.room13LargeBouncer().createArena();
+     //   startingArena = level2Rooms.oneTurretTwoBouncers().createArena();
 
         //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
 
@@ -224,6 +224,8 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArenaSquareCenter();
+
+        startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
         //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
         //startingArena.addEntity(decorFactory.platform(500,500,1000));
         placedArenas.add(startingArena);

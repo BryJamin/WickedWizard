@@ -120,6 +120,7 @@ public class Level2Rooms extends AbstractFactory{
 
 
 
+    //TODO not a fan of the enemy placement
     public ArenaGen width2RoomOnlyVerticalExits(){
         return new ArenaGen() {
             @Override
@@ -129,6 +130,7 @@ public class Level2Rooms extends AbstractFactory{
                 MapCoords defaultCoords = new MapCoords(0,0);
 
                 Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+                arena.roomType = Arena.RoomType.TRAP;
 
                 arena.setWidth(SECTION_WIDTH * 2);
                 arena.setHeight(SECTION_HEIGHT);
@@ -148,8 +150,35 @@ public class Level2Rooms extends AbstractFactory{
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(20), Measure.units(20), arena.getWidth() - Measure.units(40), Measure.units(25f), arenaSkin));
 
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(12.5f), (arena.getHeight() / 2) + Measure.units(2.5f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(12.5f), (arena.getHeight() / 2) + Measure.units(2.5f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(12.5f), (arena.getHeight() / 2) + Measure.units(7.5f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(12.5f), (arena.getHeight() / 2) + Measure.units(7.5f)));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15f), Measure.units(17.5f)));
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15f), Measure.units(27.5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(20f), Measure.units(17.5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(20f), Measure.units(32.5f)));
+
+
+
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(5), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(10), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(15), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
+
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(10), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(15), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(20), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
+
+                /*arena.addEntity(decorFactory.fixedWallTurret(Measure.units(30), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(35), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(40), Measure.units(25f),  -90, 3.0f, 1.5f));
+
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(55), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(60), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(65), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(70), Measure.units(25f),  -90, 3.0f, 1.5f));
+*/
 
 
 
@@ -158,6 +187,8 @@ public class Level2Rooms extends AbstractFactory{
         };
     }
 
+
+    //Room where you drop down to pick up a chest but you need to perform grapples to get back up. well turrets are firing on you.
 
 
 }

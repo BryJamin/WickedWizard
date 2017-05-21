@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -27,6 +28,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -283,7 +285,7 @@ public class DecorFactory extends AbstractFactory {
                 Measure.units(2.5f),
                 Measure.units(5),
                 Measure.units(5),
-                TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+                TextureRegionComponent.BACKGROUND_LAYER_NEAR, arenaSkin.getWallTint()));
         bag.add(new GrappleableComponent());
 
         return bag;
@@ -297,16 +299,23 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = grapplePointBag(x, y);
 
         Action combatAction = new Action() {
+
+
+            CollisionBoundComponent cbc;
+
             @Override
             public void performAction(World world, Entity e) {
                 e.edit().remove(FadeComponent.class);
                 e.edit().remove(GrappleableComponent.class);
+                cbc = e.getComponent(CollisionBoundComponent.class);
+                e.edit().remove(cbc);
                 e.edit().add(new FadeComponent(false, 0.5f, false));
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(FadeComponent.class);
+                e.edit().add(cbc);
                 e.edit().add(new GrappleableComponent());
                 e.edit().add(new FadeComponent(true, 0.5f, false));
             }

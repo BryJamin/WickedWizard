@@ -7,6 +7,8 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Make shop bounds a bit larger so you can click objects easier
+
 - Enemies that can traverse through platforms
 
 - Menus can be used by enabling and disabling entities
