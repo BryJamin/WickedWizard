@@ -16,7 +16,7 @@ public class DesktopLauncher {
 		config.forceExit = true;
 
 //TODO this allows you to pack textures without needing to open the texture packer just uncomment it
-/*	String projectPath = System.getProperty("user.dir");
+	String projectPath = System.getProperty("user.dir");
 		String inputDir = projectPath + "/images/tobepacked";
 		String outputDir = projectPath;
 		String packFileName = "sprite";
@@ -28,7 +28,7 @@ public class DesktopLauncher {
 		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 
-		TexturePacker.process(settings, inputDir,outputDir,packFileName);*/
+		TexturePacker.process(settings, inputDir,outputDir,packFileName);
 
 /*		 settings = new Settings();
 		settings.maxWidth = 1024;
