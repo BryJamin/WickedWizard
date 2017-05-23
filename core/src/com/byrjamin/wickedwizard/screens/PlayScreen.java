@@ -126,7 +126,6 @@ public class PlayScreen extends AbstractScreen {
 
     private boolean isPaused = false;
 
-    private JumpComponent jumpresource;
     private CurrencyComponent currencyComponent;
     private HealthComponent healthResource;
     private StatComponent stats;
@@ -214,32 +213,6 @@ public class PlayScreen extends AbstractScreen {
         multiplexer.addProcessor(gestureDetector);
         Gdx.input.setInputProcessor(multiplexer);
     }
-
-
-/*
-    public void createPauseScreenWorld(){
-
-        WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new MovementSystem()
-                )
-                .with(WorldConfigurationBuilder.Priority.HIGH,
-                        new AnimationSystem(),
-                        //new FindPlayerSystem(player),
-                        new FadeSystem())
-                .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, manager, gamecam),
-                        new BoundsDrawingSystem()
-                )
-                .build();
-
-        endGame = new PauseWorld(game.batch, game.manager, gamecam);
-        endGame.startWorld();
-
-
-    }
-*/
-
 
 
 
@@ -378,10 +351,7 @@ public class PlayScreen extends AbstractScreen {
         for (Component comp : player) {
             entity.edit().add(comp);
         }
-/*
-        world.getSystem(MessageBannerSystem.class).createBanner("Solitary", "Hurry Up and Leave");*/
 
-        jumpresource = entity.getComponent(JumpComponent.class);
         healthResource = entity.getComponent(HealthComponent.class);
         stats = entity.getComponent(StatComponent.class);
 
