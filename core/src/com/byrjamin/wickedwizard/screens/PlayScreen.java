@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
@@ -279,6 +280,7 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),
+                        new ExplosionSystem(),
                         new OrbitalSystem(),
                         new InCombatSystem(),
                         new ExpiryRangeSystem(),

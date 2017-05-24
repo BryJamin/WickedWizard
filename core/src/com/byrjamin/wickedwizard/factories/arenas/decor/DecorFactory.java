@@ -342,12 +342,27 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wall_turret"), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WALLTURRET), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
         trc.rotation = angleInDegrees + 90;
         trc.DEFAULT = arenaSkin.getWallTint();
         trc.color = arenaSkin.getWallTint();
 
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(fireRate / atlas.findRegions(TextureStrings.WALLTURRET).size, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.REVERSED));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.005f / 1f, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.NORMAL));
+
+
+        bag.add(new AnimationComponent(animMap));
+
+
+
         bag.add(trc);
+
+
+
+
 
         //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));

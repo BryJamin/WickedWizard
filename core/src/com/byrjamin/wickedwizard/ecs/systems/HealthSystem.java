@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
+import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
@@ -22,6 +23,8 @@ public class HealthSystem extends EntityProcessingSystem {
     ComponentMapper<StatComponent> sm;
     ComponentMapper<PlayerComponent> pm;
 
+    ComponentMapper<BlinkComponent> bm;
+
     @SuppressWarnings("unchecked")
     public HealthSystem() {
         super(Aspect.all(HealthComponent.class));
@@ -35,14 +38,26 @@ public class HealthSystem extends EntityProcessingSystem {
         if(hc.getAccumulatedDamage() > 0) {
             if (sm.has(e) && pm.has(e)) {
 
-                if(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false)) return;
+                if(!bm.get(e).isHit) {
 
-                StatComponent sc = sm.get(e);
-                if (sc.armor > 0) {
-                    sc.armor -= 1;
-                } else {
-                    hc.health -= 1;
+                    if (Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false))
+                        return;
+
+                    StatComponent sc = sm.get(e);
+                    if (sc.armor > 0) {
+                        sc.armor -= 1;
+                    } else {
+                        hc.health -= 1;
+                    }
+
+                    bm.get(e).isHit = true;
+
                 }
+
+
+
+
+
             } else {
                 hc.health = hc.health - hc.getAccumulatedDamage();
             }

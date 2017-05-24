@@ -11,6 +11,8 @@ public class TextureStrings {
     public static final String WINGS = "wings";
 
 
+    public static final String WALLTURRET = "wall_turret";
+
     //ENEMIES
     public static final String EXPLOSION = "explosion";
 

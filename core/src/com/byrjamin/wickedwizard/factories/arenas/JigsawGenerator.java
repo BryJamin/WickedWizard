@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
+import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
@@ -196,9 +197,14 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
+        //startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
+
         for(ComponentBag bag : new MaceFactory(assetManager).orbitalMace(startingArena.getWidth() / 2, startingArena.getHeight() /2)) {
             startingArena.addEntity(bag);
         }
+
+
+        startingArena.addEntity(new BombFactory(assetManager).bomb(startingArena.getWidth() / 2, startingArena.getHeight() /2));
         //startingArena.addEntity(new MaceFactory(assetManager).orbitalMace(startingArena.getWidth() / 2, startingArena.getHeight() /2));
         //startingArena = shopFactory.createShop(new ItemVitaminC(), new ItemVitaminC());
 

@@ -47,13 +47,8 @@ public class BulletSystem extends EntityProcessingSystem {
                 BlinkComponent bc = world.getSystem(FindPlayerSystem.class).getPC(BlinkComponent.class);
 
                 if(!bc.isHit) {
-
-                    StatComponent sc = world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class);
-
                     HealthComponent hc = world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class);
                     hc.applyDamage(1);
-                    bc.isHit = true;
-                    System.out.println(hc.health);
                 }
 
                 world.getSystem(com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);

@@ -7,8 +7,6 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
-- Make shop bounds a bit larger so you can click objects easier
-
 - Enemies that can traverse through platforms
 
 - Menus can be used by enabling and disabling entities
@@ -22,7 +20,6 @@ Let's see how far I get in 8 months using an hour per day
 - Vertical wall bug. You can land on the side of top of wall vertically stacking with one another,
 due to the way the future bound is used.
 
-- Out of Combat component
 
 ###Bugs
 
@@ -33,8 +30,6 @@ to go below and then hold to move it counts as the same pointer and you shoot an
 -Collisions should stop a grapple or you just travel for ever. 
 - Message for Solitary level is positioned incorrectly
 - General clean up and maintenance, seperating of the RoomTransitionSystem/PlayScreen into different classes
-- May be possible to fall through the world due to player input being unpaused when the enxt transition screen is going (hard to replicate)
-
 
 
 ### Backburner (Broad goals that need to be broken down once we reach them)
@@ -91,8 +86,8 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 - Minion component, (can't drop loot))
 - Change chest to open only when near it
  --Chest need a loot table and so do stores and Item Rooms (but for that I may need more items** Need to make differnet item pools
-
+- Make shop bounds a bit larger so you can click objects easier
 - Create a 'god mode' and 'bounds mode' menu option.
 - Change animation so it is easier to queue animations such as the firing animation.
-
+- Out of Combat component
 - Potential bug with room transition animation on wide rooms. Sliver of old room may be visible (Fixed for now but I dislike the implimentation due to the size of the class)

@@ -22,7 +22,7 @@ public class ExpireSystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
         ExpireComponent ec = em.get(e);
-        if ((ec.expiryTime -= world.delta) <= 0) world.deleteEntity(e);
+        if ((ec.expiryTime -= world.delta) <= 0) world.getSystem(OnDeathSystem.class).kill(e);
     }
 
 }

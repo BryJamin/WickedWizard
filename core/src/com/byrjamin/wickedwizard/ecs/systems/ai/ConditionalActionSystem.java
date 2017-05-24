@@ -28,9 +28,6 @@ public class ConditionalActionSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-
-        System.out.println("Sigh");
-
         if(cac.get(e).condition.condition(world, e)){
             cac.get(e).action.performAction(world, e);
         }

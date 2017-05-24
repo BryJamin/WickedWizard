@@ -66,6 +66,9 @@ public class OnDeathSystem  extends BaseSystem {
                         newEntity.getComponent(PositionComponent.class).position = new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0);
 
                         if(cbm.has(newEntity)){
+
+                            //TODO need to use the cnetering math
+
                             Rectangle r = newEntity.getComponent(CollisionBoundComponent.class).bound;
                             r.x = cbc.getCenterX();
                             r.y = cbc.getCenterY();

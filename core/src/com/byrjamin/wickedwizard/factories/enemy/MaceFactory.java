@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -71,7 +72,7 @@ public class MaceFactory extends EnemyFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(0,0, width, height), true));
-        bag.add(new EnemyComponent());
+        bag.add(new HazardComponent());
         bag.add(new IntangibleComponent());
         bag.add(oc);
 
