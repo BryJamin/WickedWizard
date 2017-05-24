@@ -60,14 +60,14 @@ public class BombFactory extends  AbstractFactory{
         bag.add(new VelocityComponent());
         bag.add(new ExpireComponent(3f));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOMB),
                 width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions("bomb"), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BOMB), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -95,10 +95,11 @@ public class BombFactory extends  AbstractFactory{
         bag.add(cac);
 
         OnDeathComponent odc = new OnDeathComponent();
-        odc.addComponenetsToBag(new ExplosionComponent(1),
+        odc.getComponentBags().add(bombExplosion(x,y,width*4,height*4));
+/*        odc.addComponenetsToBag(new ExplosionComponent(1),
                 new CollisionBoundComponent(new Rectangle(x,y,width * 2,height * 2)),
                 new PositionComponent(),
-                new ExpireComponent(2));
+                new ExpireComponent(2));*/
         bag.add(odc);
 
 
@@ -106,6 +107,32 @@ public class BombFactory extends  AbstractFactory{
 
     }
 
+
+    public ComponentBag bombExplosion(float x, float y, float width, float height){
+
+        ComponentBag bag = new ComponentBag();
+
+        bag.add(new ExplosionComponent(1));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height)));
+        bag.add(new PositionComponent(x,y));
+
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.EXPLOSION),
+                width, height,
+                TextureRegionComponent.ENEMY_LAYER_NEAR));
+
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(TextureStrings.EXPLOSION)));
+
+        bag.add(new AnimationComponent(animMap));
+
+        bag.add(new ExpireComponent(4f));
+
+
+        return bag;
+
+    }
 
 
 

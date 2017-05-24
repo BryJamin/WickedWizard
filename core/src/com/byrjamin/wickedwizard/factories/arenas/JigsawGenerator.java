@@ -199,7 +199,7 @@ public class JigsawGenerator {
 
         //startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
 
-        for(ComponentBag bag : new MaceFactory(assetManager).orbitalMace(startingArena.getWidth() / 2, startingArena.getHeight() /2)) {
+        for(ComponentBag bag : new MaceFactory(assetManager).orbitalMace(startingArena.getWidth() / 2, startingArena.getHeight() / 4 * 3)) {
             startingArena.addEntity(bag);
         }
 

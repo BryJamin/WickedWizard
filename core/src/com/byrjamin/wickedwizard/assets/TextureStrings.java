@@ -14,12 +14,11 @@ public class TextureStrings {
     public static final String WALLTURRET = "wall_turret";
 
     //ENEMIES
+    public static final String BOMB = "bomb";
     public static final String EXPLOSION = "explosion";
 
     //BLOB
     public static final String BLOB_STANDING = "blob";
-    public static final String BLOB_ATTACKING = "blob_attack";
-    public static final String BLOB_DYING = "blob_dying";
 
 
     //Kugeldusche
