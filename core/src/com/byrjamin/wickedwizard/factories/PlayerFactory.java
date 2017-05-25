@@ -176,9 +176,9 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(trc);
 
 
-/*        ChildComponent cc = new ChildComponent();
+        ChildComponent cc = new ChildComponent();
         parc.children.add(cc);
-        bag.add(cc);*/
+        bag.add(cc);
 
         bag.add(new GrappleComponent());
 

@@ -67,11 +67,21 @@ public class OnDeathSystem  extends BaseSystem {
 
                         if(cbm.has(newEntity)){
 
-                            //TODO need to use the cnetering math
+
 
                             Rectangle r = newEntity.getComponent(CollisionBoundComponent.class).bound;
-                            r.x = cbc.getCenterX();
-                            r.y = cbc.getCenterY();
+                            r.x = cbc.getCenterX() - r.getWidth() / 2;
+                            r.y = cbc.getCenterY() - r.getHeight() / 2;
+
+
+                            PositionComponent newEntityPc = newEntity.getComponent(PositionComponent.class);
+
+                            newEntityPc.position.x = r.x;
+                            newEntityPc.position.y = r.y;
+
+                            System.out.println(r.x + "X");
+                            System.out.println(r.y + "y");
+
                         }
 
 

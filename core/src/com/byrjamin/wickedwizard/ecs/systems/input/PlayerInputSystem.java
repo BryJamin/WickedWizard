@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.WingComponent;
@@ -35,6 +36,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.utils.BulletMath;
@@ -190,6 +192,14 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
 
         if(r != null) {
+
+
+            IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(GrappleComponent.class, ChildComponent.class)).getEntities();
+
+            for(int i = 0; i < intBag.size(); i++) {
+                Entity grapple = world.getEntity(intBag.get(i));
+                if (parc.children.contains(grapple.getComponent(ChildComponent.class), true)) world.getSystem(OnDeathSystem.class).kill(grapple);
+            }
 
             Bag<Component> bag = pf.grappleShot(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class),
                     cbc.getCenterX(),
