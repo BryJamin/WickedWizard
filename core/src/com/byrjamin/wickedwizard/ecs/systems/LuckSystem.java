@@ -51,10 +51,10 @@ public class LuckSystem extends BaseSystem {
         Random random = new Random();
 
         Array<WeightedObject<PickUp>> pickUps = new Array<WeightedObject<PickUp>>();
-        pickUps.add(new WeightedObject<PickUp>(null, 50));
+        pickUps.add(new WeightedObject<PickUp>(null, 20));
         pickUps.add(new WeightedObject<PickUp>(new HealthUp(), 5));
         pickUps.add(new WeightedObject<PickUp>(new KeyUp(), 5));
-        pickUps.add(new WeightedObject<PickUp>(new MoneyPlus1(), 40));
+        pickUps.add(new WeightedObject<PickUp>(new MoneyPlus1(), 70));
 
         WeightedRoll<PickUp> weightedRoll = new WeightedRoll<PickUp>(pickUps, random);
 

@@ -34,7 +34,7 @@ public class GibletFactory extends AbstractFactory {
         return  giblets(fillodc, 5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), color);
     }
 
-    public OnDeathComponent giblets(OnDeathComponent fillodc, int numberOfGiblets,float life,int minSpeed,int maxSpeed, float size, Color color){
+    public OnDeathComponent giblets(OnDeathComponent fillodc, int numberOfGiblets,float life,float minSpeed,float maxSpeed, float size, Color color){
 
         ComponentBag bag;
 
@@ -42,8 +42,8 @@ public class GibletFactory extends AbstractFactory {
 
         for(int i = 0; i < numberOfGiblets; i++) {
 
-            int vx = random.nextInt(maxSpeed - minSpeed) + minSpeed;
-            int vy = random.nextInt(maxSpeed - minSpeed) + minSpeed;
+            float vx = random.nextFloat() * (maxSpeed - minSpeed) + minSpeed;
+            float vy = random.nextFloat() * (maxSpeed - minSpeed) + minSpeed;
             vx = random.nextBoolean() ? vx : -vx;
             vy = random.nextBoolean() ? vy : -vy;
 
@@ -58,7 +58,7 @@ public class GibletFactory extends AbstractFactory {
             //bag.add(fc);
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size,
-                    TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+                    TextureRegionComponent.PLAYER_LAYER_NEAR);
             trc.DEFAULT = color;
             trc.color = color;
 

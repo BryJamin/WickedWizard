@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -82,6 +83,11 @@ public class GrappleSystem extends EntityProcessingSystem {
                 vc.velocity.y = (vc.velocity.y < Measure.units(0)) ? 0 : vc.velocity.y;
                 vc.velocity.y = (vc.velocity.y > mtc.maxEndSpeedY) ? mtc.maxEndSpeedY : vc.velocity.y;
 
+                //TODO review this.
+                if(world.getMapper(JumpComponent.class).has(e)) {
+                    e.getComponent(JumpComponent.class).jumps = 1;
+                }
+
 
             } else if (currentPosition >= targetY) {
                 vc.velocity.y = (vc.velocity.y <= -mtc.maxX) ? -mtc.maxY : vc.velocity.y - mtc.accelY;
@@ -89,6 +95,8 @@ public class GrappleSystem extends EntityProcessingSystem {
                 vc.velocity.y = (vc.velocity.y >= mtc.maxY) ? mtc.maxY : vc.velocity.y + mtc.accelY;
             }
         }
+
+
 
 /*
     if(mtc.targetX != null && mtc.targetY != null) {

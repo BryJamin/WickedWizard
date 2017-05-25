@@ -52,6 +52,7 @@ public class Level2Rooms extends AbstractFactory{
         ag.add(oneTurretTwoBouncers());
         ag.add(width2RoomOnlyVerticalExits());
         ag.add(grappleTreasureRoom());
+        ag.add(largeBattleRoom());
         return ag;
     }
 
@@ -191,7 +192,6 @@ public class Level2Rooms extends AbstractFactory{
                 Arena arena = new Arena(arenaSkin, defaultCoords,
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2));
-                arena.roomType = Arena.RoomType.TRAP;
 
                 arena.setWidth(SECTION_WIDTH);
                 arena.setHeight(SECTION_HEIGHT * 3);
@@ -257,7 +257,57 @@ public class Level2Rooms extends AbstractFactory{
     }
 
 
-    //Room where you drop down to pick up a chest but you need to perform grapples to get back up. well turrets are firing on you.
+
+    public ArenaGen largeBattleRoom(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena() {
+
+                MapCoords defaultCoords = new MapCoords(0,0);
+
+                Arena arena = new Arena(arenaSkin, defaultCoords,
+                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena.setWidth(SECTION_WIDTH * 2);
+                arena.setHeight(SECTION_HEIGHT * 2);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                                        ArenaBuilder.wall.NONE,
+                                        ArenaBuilder.wall.DOOR,
+                                        ArenaBuilder.wall.DOOR,
+                                        ArenaBuilder.wall.NONE)).buildArena(arena);
+
+
+                arena.addEntity(decorFactory.platform(0, SECTION_HEIGHT + Measure.units(5), arena.getWidth()));
+
+                arena.addEntity(decorFactory.platform(0, SECTION_HEIGHT / 2, arena.getWidth()));
+
+
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(5)));
+
+                return arena;
+            }
+        };
+    }
 
 
 }

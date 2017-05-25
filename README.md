@@ -7,8 +7,6 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
-- Make a grapple a tap not a touchdown
-
 - Turn everything into using TextureStrings
 
 - Enemies that can traverse through platforms
@@ -27,7 +25,6 @@ due to the way the future bound is used.
 
 ###Bugs
 
--
 
 - You can trigger shooting and moving the have the same pointer due to platforms. You double tap
 to go below and then hold to move it counts as the same pointer and you shoot and move
@@ -95,3 +92,5 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 - Change animation so it is easier to queue animations such as the firing animation.
 - Out of Combat component
 - Potential bug with room transition animation on wide rooms. Sliver of old room may be visible (Fixed for now but I dislike the implimentation due to the size of the class)
+- Make a grapple a tap not a touchdown
+- Parent Component on death should also kill the child component 

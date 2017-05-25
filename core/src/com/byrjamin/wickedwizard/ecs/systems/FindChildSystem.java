@@ -4,8 +4,10 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
@@ -30,15 +32,23 @@ public class FindChildSystem extends EntitySystem {
     }
 
     public Entity findChildEntity(ChildComponent c){
-
         for(Entity e : this.getEntities()){
-
             System.out.println(e.getComponent(ChildComponent.class) == c);
-
             if(e.getComponent(ChildComponent.class) == c) return e;
         }
         return null;
     }
 
+
+    public Entity findParentEntity(ChildComponent c){
+        IntBag parents = world.getAspectSubscriptionManager().get(Aspect.all(ParentComponent.class)).getEntities();
+        for(int i = 0; i < parents.size(); i++){
+            ParentComponent pc = world.getEntity(parents.get(i)).getComponent(ParentComponent.class);
+            if(pc.children.contains(c, true)){
+                return world.getEntity(parents.get(i));
+            }
+        }
+        return null;
+    }
 
 }

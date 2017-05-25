@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.Pair;
@@ -52,7 +53,7 @@ public class PickUpSystem extends EntityProcessingSystem {
             if(player.bound.overlaps(item.bound)){
                 PickUpComponent ic = im.get(itemEntity);
                 if(ic.getPickUp().applyEffect(world, e)) {;
-                    world.delete(itemEntity);
+                    world.getSystem(OnDeathSystem.class).kill(world.getEntity(itemEntity));
                 }
             }
 
