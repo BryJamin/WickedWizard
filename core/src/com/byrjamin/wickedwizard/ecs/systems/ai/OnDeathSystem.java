@@ -110,7 +110,9 @@ public class OnDeathSystem  extends BaseSystem {
 
         if(cm.has(deadEntity)){
             Entity parent = world.getSystem(FindChildSystem.class).findParentEntity(cm.get(deadEntity));
-            parent.getComponent(ParentComponent.class).children.removeValue(cm.get(deadEntity), true);
+            if(parent != null) {
+                parent.getComponent(ParentComponent.class).children.removeValue(cm.get(deadEntity), true);
+            }
         }
 
         if(parentm.has(deadEntity)){

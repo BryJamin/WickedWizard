@@ -241,7 +241,7 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
-        startingArena = level2Rooms.largeBattleRoom().createArena();
+       // startingArena = level2Rooms.largeBattleRoom().createArena();
 
         //startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
         //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
