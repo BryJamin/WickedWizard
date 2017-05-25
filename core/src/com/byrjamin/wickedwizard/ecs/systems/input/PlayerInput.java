@@ -129,30 +129,34 @@ public class PlayerInput extends InputAdapter{
                     Vector3 input = new Vector3(screenX, screenY, 0);
                     gameport.unproject(input);
 
+
+                    boolean grapple = false;
                     if(world.getSystem(GrapplePointSystem.class).touchedGrapple(input.x, input.y)){
                         world.getSystem(PlayerInputSystem.class).grappleTo(input.x, input.y);
-                        return true;
+                        grapple= true;
                     };
 
-                    CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                    VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                    JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
+                    if(!grapple) {
+                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                        JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
 
-                    if (input.y > cbc.getCenterY()) {
-                        if (jc.jumps > 0) {
-                            vc.velocity.y = Measure.units(80f);
-                            jc.jumps--;
-                            world.getSystem(PlayerInputSystem.class).turnOffGlide();
-                            world.getSystem(PlayerInputSystem.class).turnOnGlide();
+                        if (input.y > cbc.getCenterY()) {
+                            if (jc.jumps > 0) {
+                                vc.velocity.y = Measure.units(80f);
+                                jc.jumps--;
+                                world.getSystem(PlayerInputSystem.class).turnOffGlide();
+                                world.getSystem(PlayerInputSystem.class).turnOnGlide();
+                            }
+
+                        } else if (tapCount == 2) {
+                            if (!world.getSystem(PlatformSystem.class).fallThoughPlatform()) {
+                                world.getSystem(PlayerInputSystem.class).turnOffGlide();
+                            }
+
                         }
-
-                    } else if (tapCount == 2) {
-                        if(world.getSystem(PlatformSystem.class).fallThoughPlatform()) return true;
-                        world.getSystem(PlayerInputSystem.class).turnOffGlide();
-
+                        //}
                     }
-                //}
-
             }
 
             //}
