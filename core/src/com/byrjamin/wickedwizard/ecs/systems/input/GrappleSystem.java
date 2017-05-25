@@ -79,7 +79,10 @@ public class GrappleSystem extends EntityProcessingSystem {
 
             if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
                 mtc.targetY = null;
-                vc.velocity.y = (vc.velocity.y > Measure.units(0f)) ? vc.velocity.y / 2 : Measure.units(40);
+                vc.velocity.y = (vc.velocity.y < Measure.units(0)) ? 0 : vc.velocity.y;
+                vc.velocity.y = (vc.velocity.y > mtc.maxEndSpeedY) ? mtc.maxEndSpeedY : vc.velocity.y;
+
+
             } else if (currentPosition >= targetY) {
                 vc.velocity.y = (vc.velocity.y <= -mtc.maxX) ? -mtc.maxY : vc.velocity.y - mtc.accelY;
             } else {

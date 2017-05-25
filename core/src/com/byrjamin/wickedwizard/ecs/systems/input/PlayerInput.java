@@ -78,28 +78,21 @@ public class PlayerInput extends InputAdapter{
 
         if(world.getSystem(ShoppingSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y)) return true;
 
-        if(!activeGrapple) {
-            activeGrapple = world.getSystem(GrapplePointSystem.class).touchedGrapple(touchInput.x, touchInput.y);
+
+        tapStartTime = Gdx.input.getCurrentEventTime();
+        tapSquareCenterX = screenX;
+        tapSquareCenterY = screenY;
+        inTapSquare = true;
+
+        if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
+            movementInputPoll = pointer;
+            world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
+        } else if(firingInputPoll == null){
+            firingInputPoll = pointer;
         }
 
-        if(!activeGrapple) {
 
-            tapStartTime = Gdx.input.getCurrentEventTime();
-            tapSquareCenterX = screenX;
-            tapSquareCenterY = screenY;
-            inTapSquare = true;
-
-            if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
-                movementInputPoll = pointer;
-                world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
-            } else if(firingInputPoll == null){
-                firingInputPoll = pointer;
-            }
-        } else {
-            world.getSystem(PlayerInputSystem.class).grappleTo(touchInput.x, touchInput.y);
-        }
-
-        world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
+        //world.getSystem(ActiveOnTouchSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y);
 
         return false;
     }
@@ -123,6 +116,9 @@ public class PlayerInput extends InputAdapter{
                         !isWithinTapSquare(screenX,screenY,lastTapX,lastTapY) ||
                         test) { tapCount = 0;}
 
+
+                //TODO may need to put it below this possible maybe I dunno
+
                 tapCount++;
                 lastTapTime = TimeUtils.nanoTime();
                 lastTapX = screenX;
@@ -132,6 +128,11 @@ public class PlayerInput extends InputAdapter{
                //if(number < tapInterval) {
                     Vector3 input = new Vector3(screenX, screenY, 0);
                     gameport.unproject(input);
+
+                    if(world.getSystem(GrapplePointSystem.class).touchedGrapple(input.x, input.y)){
+                        world.getSystem(PlayerInputSystem.class).grappleTo(input.x, input.y);
+                        return true;
+                    };
 
                     CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);

@@ -226,7 +226,7 @@ public class PlayerFactory extends AbstractFactory {
                         mtc, cbc);
 
                 mtc.endSpeedX = 0;
-                mtc.maxEndSpeedY = 150f / 2; //150f = MAXGRAPPLEMOVEMENT
+                mtc.maxEndSpeedY = Measure.units(80f);//150f = MAXGRAPPLEMOVEMENT
 
 
                 world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = true;

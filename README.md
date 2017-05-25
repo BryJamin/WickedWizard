@@ -7,6 +7,8 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Make a grapple a tap not a touchdown
+
 - Turn everything into using TextureStrings
 
 - Enemies that can traverse through platforms

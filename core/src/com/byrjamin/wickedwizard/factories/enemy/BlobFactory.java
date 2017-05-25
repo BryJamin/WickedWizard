@@ -216,7 +216,6 @@ public class BlobFactory extends EnemyFactory {
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         df.giblets(odc, 10, Color.GREEN);
-        bag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
 
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(),  1.5f);
