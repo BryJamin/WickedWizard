@@ -304,6 +304,14 @@ public class Level2Rooms extends AbstractFactory{
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(5)));
 
+
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(40f), arena.getHeight() / 2 - Measure.units(5)));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(40f), Measure.units(100f)));
+
                 return arena;
             }
         };

@@ -25,9 +25,6 @@ due to the way the future bound is used.
 
 ###Bugs
 
-
-- You can trigger shooting and moving the have the same pointer due to platforms. You double tap
-to go below and then hold to move it counts as the same pointer and you shoot and move
 -Collisions should stop a grapple or you just travel for ever. 
 - Message for Solitary level is positioned incorrectly
 - General clean up and maintenance, seperating of the RoomTransitionSystem/PlayScreen into different classes
@@ -94,3 +91,5 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 - Potential bug with room transition animation on wide rooms. Sliver of old room may be visible (Fixed for now but I dislike the implimentation due to the size of the class)
 - Make a grapple a tap not a touchdown
 - Parent Component on death should also kill the child component 
+- You can trigger shooting and moving the have the same pointer due to platforms. You double tap
+to go below and then hold to move it counts as the same pointer and you shoot and move
