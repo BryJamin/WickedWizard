@@ -163,8 +163,8 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
 
-        public void createBlock(World world, ParentComponent pc, Vector3 centerOfOrbit, float startAngle, Color color){
 
+            public void createBlock(World world, ParentComponent pc, Vector3 centerOfOrbit, float startAngle, Color color){
 
 
             float radius = Measure.units(10);

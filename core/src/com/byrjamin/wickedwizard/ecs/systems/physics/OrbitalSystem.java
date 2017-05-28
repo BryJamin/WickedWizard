@@ -5,14 +5,9 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
-import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.HitBox;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 16/05/2017.
@@ -36,10 +31,10 @@ public class OrbitalSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
         OrbitComponent oc = om.get(e);
 
-        oc.angle += oc.speedInDegrees;
+        oc.angleInDegrees += oc.speedInDegrees;
 
-        float x = (float) (oc.centerOfOrbit.x + (oc.radius * Math.cos(Math.toRadians(oc.angle))));
-        float y = (float) (oc.centerOfOrbit.y + (oc.radius * Math.sin(Math.toRadians(oc.angle))));
+        float x = (float) (oc.centerOfOrbit.x + (oc.radius * Math.cos(Math.toRadians(oc.angleInDegrees))));
+        float y = (float) (oc.centerOfOrbit.y + (oc.radius * Math.sin(Math.toRadians(oc.angleInDegrees))));
 
         if(cbm.has(e)){
             CollisionBoundComponent cbc = cbm.get(e);

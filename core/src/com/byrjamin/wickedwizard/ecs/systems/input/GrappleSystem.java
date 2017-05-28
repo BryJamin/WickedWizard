@@ -183,8 +183,6 @@ public class GrappleSystem extends EntityProcessingSystem {
         mtc.maxX = Math.abs(cosine * speedOfTravel);
         mtc.maxY = Math.abs(sine * speedOfTravel);
 
-        System.out.println("?mtc should have something set I guess");
-
         //mtc.endSpeedY =
 
     }

@@ -21,6 +21,10 @@ public class TextureStrings {
     public static final String BLOB_STANDING = "blob";
 
 
+    //AMOEBA
+    public static final String AMOEBA = "amoeba";
+
+
     //Kugeldusche
     public static final String KUGELDUSCHE_EMPTY = "kugel";
     //SENTRY
@@ -49,6 +53,11 @@ public class TextureStrings {
 
     //BIGGABLOBBA
     public static final String BIGGABLOBBA_STANDING = "biggablobba";
+
+    //WANDA
+    public static final String WANDA_STANDING = "enemy/wanda_standing";
+    public static final String WANDA_FIRING = "enemy/wanda_firing";
+
 
     public static final String GRAPPLE = "grapple";
 

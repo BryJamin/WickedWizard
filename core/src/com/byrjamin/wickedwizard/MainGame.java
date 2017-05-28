@@ -58,7 +58,7 @@ public class MainGame extends Game {
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size1Params.fontFileName = "fonts/Roboto-Black.ttf";
 		size1Params.fontParameters.size = (int) Measure.units(3f);
-		size1Params.fontParameters.borderColor = Color.BLACK;
+		size1Params.fontParameters.borderColor = new Color(Color.BLACK);
 		size1Params.fontParameters.borderWidth = 0;
         //size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
@@ -67,7 +67,7 @@ public class MainGame extends Game {
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size2Params.fontFileName = "fonts/Roboto-Black.ttf";
         size2Params.fontParameters.size = (int) Measure.units(4f);
-        size2Params.fontParameters.borderColor = Color.BLACK;
+        size2Params.fontParameters.borderColor = new Color(Color.BLACK);
         size2Params.fontParameters.borderWidth = 0;
         //size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;

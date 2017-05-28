@@ -12,6 +12,8 @@ import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.BombFactory;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
@@ -20,6 +22,7 @@ import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.enemy.AmoebaFactory;
 import com.byrjamin.wickedwizard.factories.enemy.MaceFactory;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
@@ -197,14 +200,18 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
+        startingArena = new WandaRoom(assetManager, arenaSkin).wandaArena().createArena();
+        //startingArena = new GiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena();
+        //startingArena.addEntity(new AmoebaFactory(assetManager).amoeba(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
+
         /*startingArena = level2Rooms.grappleTreasureRoom().createArena();*/
 
-        for(ComponentBag bag : new MaceFactory(assetManager).orbitalMace(startingArena.getWidth() / 2, startingArena.getHeight() / 4 * 3)) {
+/*        for(ComponentBag bag : new MaceFactory(assetManager).orbitalMace(startingArena.getWidth() / 2, startingArena.getHeight() / 4 * 3)) {
             startingArena.addEntity(bag);
         }
 
 
-        startingArena.addEntity(new BombFactory(assetManager).bomb(startingArena.getWidth() / 2, startingArena.getHeight() /2));
+        startingArena.addEntity(new BombFactory(assetManager).bomb(startingArena.getWidth() / 2, startingArena.getHeight() /2));*/
         //startingArena.addEntity(new MaceFactory(assetManager).orbitalMace(startingArena.getWidth() / 2, startingArena.getHeight() /2));
         //startingArena = shopFactory.createShop(new ItemVitaminC(), new ItemVitaminC());
 

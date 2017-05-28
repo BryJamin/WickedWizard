@@ -1,18 +1,22 @@
 package com.byrjamin.wickedwizard.screens;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
+import com.artemis.EntitySubscription;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -28,6 +32,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
@@ -249,7 +254,7 @@ public class PlayScreen extends AbstractScreen {
         e.edit().add(new PositionComponent(gamecam.position.x - gameport.getWorldWidth() / 2,
                 gamecam.position.y - gameport.getWorldHeight() / 2));
         ShapeComponent sc = new ShapeComponent(gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
-        sc.color = Color.BLACK;
+        sc.color = new Color(Color.BLACK);
         sc.color.a = 0.5f;
         sc.layer = -1;
 
@@ -280,6 +285,7 @@ public class PlayScreen extends AbstractScreen {
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),
+                        new ActionAfterTimeSystem(),
                         new ExplosionSystem(),
                         new OrbitalSystem(),
                         new InCombatSystem(),
@@ -385,7 +391,7 @@ public class PlayScreen extends AbstractScreen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
 
-        if (delta < 0.04f) {
+        if (delta < 0.02f) {
             world.setDelta(delta);
         } else {
             world.setDelta(0.02f);
@@ -438,7 +444,7 @@ public class PlayScreen extends AbstractScreen {
 
         if(isPaused){
 
-            if (delta < 0.04f) {
+            if (delta < 0.02f) {
                 pauseWorld.getWorld().setDelta(delta);
             } else {
                 pauseWorld.getWorld().setDelta(0.02f);
@@ -476,6 +482,14 @@ public class PlayScreen extends AbstractScreen {
 
             deathWorld.process();
         }
+
+
+
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all());
+        IntBag entityIds = subscription.getEntities();
+        System.out.println("Number of entities of screen is + " + entityIds.size());
+
+        System.out.println("Frame rate is : " + Gdx.graphics.getFramesPerSecond());
 
 
     }
@@ -620,9 +634,6 @@ public class PlayScreen extends AbstractScreen {
 
                 Vector3 touchInput = new Vector3(x, y, 0);
                 gameport.unproject(touchInput);
-
-
-                System.out.println("??????!!!!!!!!");
 
                 System.out.println(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y));
 

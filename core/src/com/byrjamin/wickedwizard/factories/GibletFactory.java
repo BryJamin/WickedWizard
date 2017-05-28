@@ -24,6 +24,7 @@ import java.util.Random;
 public class GibletFactory extends AbstractFactory {
 
     private final static int aniNumber = 1;
+    private final Random random = new Random();
 
     public GibletFactory(AssetManager assetManager) {
         super(assetManager);
@@ -37,8 +38,6 @@ public class GibletFactory extends AbstractFactory {
     public OnDeathComponent giblets(OnDeathComponent fillodc, int numberOfGiblets,float life,float minSpeed,float maxSpeed, float size, Color color){
 
         ComponentBag bag;
-
-        Random random = new Random();
 
         for(int i = 0; i < numberOfGiblets; i++) {
 

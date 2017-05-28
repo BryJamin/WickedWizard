@@ -27,15 +27,13 @@ public class EnemyFactory extends AbstractFactory {
         df = new DeathFactory(assetManager);
     }
 
-    public ComponentBag defaultEnemyBag (ComponentBag fillbag, float x, float y, float width, float height, float health) {
+    protected ComponentBag defaultEnemyBag (ComponentBag fillbag, float x, float y, float width, float height, float health) {
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new LootComponent());
         fillbag.add(new HealthComponent(health));
         fillbag.add(new BlinkComponent());
         fillbag.add(new EnemyComponent());
         OnDeathComponent odc = new OnDeathComponent();
-        //df.giblets(odc, 5, new Color(Color.WHITE));
-        //fillbag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
         fillbag.add(df.giblets(odc, 5, new Color(Color.WHITE)));
         return fillbag;
 

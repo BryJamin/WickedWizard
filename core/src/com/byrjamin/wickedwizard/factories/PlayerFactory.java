@@ -141,9 +141,6 @@ public class PlayerFactory extends AbstractFactory {
         ChildComponent cc = new ChildComponent();
         parc.children.add(cc);
 
-
-        System.out.println("Child size is" + parc.children.size);
-
         bag.add(cc);
 
         return bag;
@@ -162,7 +159,7 @@ public class PlayerFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
 
-        bag.add(new VelocityComponent(BulletMath.velocityX(Measure.units(120f), angle), BulletMath.velocityY(Measure.units(120f), angle)));
+        bag.add(new VelocityComponent(BulletMath.velocityX(Measure.units(150f), angle), BulletMath.velocityY(Measure.units(150f), angle)));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         //bag.add(new IntangibleComponent());
         //bag.add(new BulletComponent());

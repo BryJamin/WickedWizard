@@ -82,6 +82,13 @@ public class BulletFactory extends AbstractFactory {
         return bag;
     }
 
+    public Bag<Component> basicEnemyBulletBagNoGibs(float x, float y, float scale) {
+
+        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
+        bag.add(new EnemyComponent());
+        return bag;
+    }
+
 
     public Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
         Bag<Component> bag = new Bag<Component>();

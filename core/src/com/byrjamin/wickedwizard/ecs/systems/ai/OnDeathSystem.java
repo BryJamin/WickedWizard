@@ -85,9 +85,6 @@ public class OnDeathSystem  extends BaseSystem {
                             newEntityPc.position.x = r.x;
                             newEntityPc.position.y = r.y;
 
-                            System.out.println(r.x + "X");
-                            System.out.println(r.y + "y");
-
                         }
 
 
@@ -131,9 +128,6 @@ public class OnDeathSystem  extends BaseSystem {
 
         deadEntity.deleteFromWorld();
 
-
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all());
-        IntBag entityIds = subscription.getEntities();
      //   System.out.println(entityIds.size());
     }
 

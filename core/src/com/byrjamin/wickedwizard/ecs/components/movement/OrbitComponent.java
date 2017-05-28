@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.components.movement;
 
 import com.artemis.Component;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -17,7 +16,7 @@ public class OrbitComponent extends Component {
 
     public float speedInDegrees;
 
-    public float angle;
+    public float angleInDegrees;
 
     public float offsetX;
     public float offsetY;
@@ -28,15 +27,15 @@ public class OrbitComponent extends Component {
         speedInDegrees = 1;
     }
 
-    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float angle){
-        this(centerOfOrbit, radius, speedInDegrees, angle, 0, 0);
+    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float angleInDegrees){
+        this(centerOfOrbit, radius, speedInDegrees, angleInDegrees, 0, 0);
     }
 
-    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float angle, float offsetX, float offsetY){
+    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float angleInDegrees, float offsetX, float offsetY){
         this.centerOfOrbit = centerOfOrbit;
         this.radius = radius;
         this.speedInDegrees = speedInDegrees;
-        this.angle = angle;
+        this.angleInDegrees = angleInDegrees;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }

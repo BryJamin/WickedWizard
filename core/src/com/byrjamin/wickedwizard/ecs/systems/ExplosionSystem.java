@@ -49,8 +49,6 @@ public class ExplosionSystem extends EntityProcessingSystem {
                 get(Aspect.all(HealthComponent.class, CollisionBoundComponent.class));
         */
 
-        System.out.println("YO");
-
         IntBag entities = subscription.getEntities();
 
 
@@ -59,9 +57,6 @@ public class ExplosionSystem extends EntityProcessingSystem {
         for(int i = 0; i < entities.size(); i++){
 
             int entity = entities.get(i);
-
-
-            System.out.println("YO");
 
             CollisionBoundComponent cbc = cbm.get(entity);
             HealthComponent hc = hm.get(entity);

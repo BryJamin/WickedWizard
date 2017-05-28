@@ -45,8 +45,6 @@ public class FiringAISystem extends EntityProcessingSystem {
             case TARGETED:
                 if(wc.timer.isFinishedAndReset()){
 
-                    System.out.println("SHOULD FIRE NOW");
-
                     CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
                     wc.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);

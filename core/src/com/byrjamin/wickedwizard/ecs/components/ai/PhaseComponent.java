@@ -37,12 +37,6 @@ public class PhaseComponent extends Component {
         }
     }
 
-    public void addStateSequence(int... sequence){
-        for(int i : sequence){
-            stateSequence.add(i);
-        }
-    }
-
     public Action getCurrentPhase(int phaseNo){
         return phaseArray.get(phaseNo);
     }

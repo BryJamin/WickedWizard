@@ -35,9 +35,6 @@ public class ExpiryRangeSystem extends EntityProcessingSystem {
         //System.out.println(erc.distanceTravelled);
 
         if(erc.distanceTravelled > erc.range){
-
-            System.out.println("Inside");
-
             world.getSystem(OnDeathSystem.class).kill(e);
         }
     }
