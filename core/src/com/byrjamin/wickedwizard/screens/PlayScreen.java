@@ -275,7 +275,7 @@ public class PlayScreen extends AbstractScreen {
 
         jg.generateTutorial = isTutorial;
 
-        arenaArray = jg.generate();
+        jg.generate();
         Arena startingArena = jg.getStartingRoom();
 
         ComponentBag player = new PlayerFactory(game.manager).playerBag();

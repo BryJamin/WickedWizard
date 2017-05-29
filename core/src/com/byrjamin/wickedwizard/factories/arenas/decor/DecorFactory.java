@@ -388,6 +388,12 @@ public class DecorFactory extends AbstractFactory {
     public ComponentBag mapPortal (float x, float y, BossTeleporterComponent btc){
 
 
+        float width = Measure.units(10f);
+        float height = Measure.units(10f);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
 
@@ -404,7 +410,7 @@ public class DecorFactory extends AbstractFactory {
 
             }
         }));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10), Measure.units(10))));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(0);
@@ -423,6 +429,47 @@ public class DecorFactory extends AbstractFactory {
 
     }
 
+    public ComponentBag levelPortal(float x, float y){
+
+
+        float width = Measure.units(10f);
+        float height = Measure.units(10f);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x, y));
+
+        bag.add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(MapTeleportationSystem.class).recreateWorld();
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setDefaultState(0);
+        bag.add(sc);
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.02f, atlas.findRegions("squ_dash"), Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+
+        bag.add(new TextureRegionComponent(atlas.findRegion("squ_dash"),
+                Measure.units(10),
+                Measure.units(10),
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+
+        return bag;
+
+    }
 
 
 }

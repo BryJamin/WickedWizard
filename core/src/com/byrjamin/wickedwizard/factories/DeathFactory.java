@@ -114,43 +114,4 @@ public class DeathFactory extends AbstractFactory {
 
     }
 
-
-
-    public ComponentBag worldPortal (float x, float y){
-
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x, y));
-        bag.add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(RoomTransitionSystem.class).recreateWorld();
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10), Measure.units(10))));
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(0);
-        bag.add(sc);
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.02f, atlas.findRegions("squ_dash"), Animation.PlayMode.LOOP));
-        bag.add(new AnimationComponent(animMap));
-
-        bag.add(new TextureRegionComponent(atlas.findRegion("squ_dash"),
-                Measure.units(10),
-                Measure.units(10),
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-
-
-        return bag;
-
-    }
-
-
-
 }

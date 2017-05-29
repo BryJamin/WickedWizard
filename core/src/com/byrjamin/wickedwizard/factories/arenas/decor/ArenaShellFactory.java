@@ -87,11 +87,9 @@ public class  ArenaShellFactory extends AbstractFactory {
         //TODO in order to clean up this grapple if a top route doesn't exist a mark it with a door.
 
         ComponentBag bag = decorFactory.hiddenGrapplePointBag(arena.getWidth() / 2, (arena.getHeight() / 4) * 3);
-
         DoorComponent dc = new DoorComponent(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1), Direction.UP);
         dc.ignore = true;
-
         bag.add(dc);
 
         arena.addDoor(bag);

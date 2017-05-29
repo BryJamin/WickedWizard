@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
@@ -28,7 +29,7 @@ public class ArenaBuilder {
     public static final float WALLWIDTH = Measure.units(5);
 
     public enum wall {
-        FULL, DOOR, NONE
+        FULL, DOOR, NONE, GRAPPLE
     }
 
     private MapCoords defaultCoords;
@@ -116,6 +117,26 @@ public class ArenaBuilder {
                         Direction.UP));
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
+
+            } else if(s.ceiling == wall.GRAPPLE){
+
+                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
+
+                arena.addDoor(decorFactory.horizontalDoorBag(Measure.units(40f) + posX, SECTION_HEIGHT - WALLWIDTH + posY,
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY + 1),
+                        Direction.UP));
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
+
+                ComponentBag bag = decorFactory.hiddenGrapplePointBag(posX + SECTION_WIDTH / 2, posY + ((SECTION_HEIGHT / 4) * 3));
+                DoorComponent dc = new DoorComponent(
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY + 1),
+                        Direction.UP);
+                dc.ignore = true;
+                bag.add(dc);
+                arena.addDoor(bag);
 
             }
 

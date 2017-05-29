@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
 
@@ -23,14 +24,6 @@ import java.util.Random;
  */
 
 public class MapTeleportationSystem extends EntitySystem {
-
-    private Random random;
-
-    private GiantKugelRoom giantKugelRoom;
-    private WandaRoom wandaRoom;
-
-
-    private AssetManager assetManager;
 
     private HashMap<BossTeleporterComponent, ArenaMap> mapTracker;
 
@@ -62,16 +55,9 @@ public class MapTeleportationSystem extends EntitySystem {
             processingFlag = true;
             switchMap(btc);
         }
-
-
-
-
     }
 
     public void switchMap(BossTeleporterComponent from){
-
-
-        System.out.println("like wah");
 
         boolean exists = false;
         BossTeleporterComponent to = new BossTeleporterComponent();
@@ -87,13 +73,13 @@ public class MapTeleportationSystem extends EntitySystem {
         if(exists) {
             if (mapTracker.containsKey(to)) {
 
-                System.out.println(mapTracker.containsKey(to));
-
                 ArenaMap map = mapTracker.get(to);
                 RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
                 rts.packRoom(world, rts.getCurrentArena());
                 rts.setCurrentMap(map);
                 rts.unpackRoom(rts.getCurrentArena());
+                rts.getVisitedArenas().add(rts.getCurrentArena());
+                rts.getUnvisitedButAdjacentArenas().addAll(rts.getAdjacentArenas(rts.getCurrentArena()));
 
 
                 PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
@@ -109,6 +95,29 @@ public class MapTeleportationSystem extends EntitySystem {
             }
         }
 
+
+    }
+
+
+    public void recreateWorld(){
+
+        RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+        rts.packRoom(world, rts.getCurrentArena());
+
+        JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).incrementLevel();
+        jg.generateTutorial = false;
+        jg.generate();
+
+        mapTracker = jg.getMapTracker();
+
+        rts.setCurrentMap(jg.getStartingMap());
+        rts.unpackRoom(rts.getCurrentArena());
+        rts.getVisitedArenas().add(rts.getCurrentArena());
+        rts.getUnvisitedButAdjacentArenas().addAll(rts.getAdjacentArenas(rts.getCurrentArena()));
+
+        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+        player.position.x = rts.getCurrentArena().getWidth() / 2;
+        player.position.y = rts.getCurrentArena().getHeight() / 2;
 
     }
 

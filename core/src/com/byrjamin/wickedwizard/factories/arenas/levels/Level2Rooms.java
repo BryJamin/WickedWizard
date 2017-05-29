@@ -254,6 +254,7 @@ public class Level2Rooms extends AbstractFactory{
 
 
 
+
     public ArenaGen largeBattleRoom(){
         return new ArenaGen() {
             @Override
@@ -282,12 +283,12 @@ public class Level2Rooms extends AbstractFactory{
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                         ArenaBuilder.wall.NONE,
                                         ArenaBuilder.wall.DOOR,
-                                        ArenaBuilder.wall.DOOR,
+                                        ArenaBuilder.wall.GRAPPLE,
                                         ArenaBuilder.wall.NONE)).buildArena(arena);
 
 
