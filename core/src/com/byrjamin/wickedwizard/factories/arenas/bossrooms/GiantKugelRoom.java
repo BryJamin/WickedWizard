@@ -45,10 +45,7 @@ public class GiantKugelRoom extends AbstractFactory {
     public ArenaGen giantKugelArena(){
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-
-
-                MapCoords defaultCoords = new MapCoords(0,0);
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords,
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),

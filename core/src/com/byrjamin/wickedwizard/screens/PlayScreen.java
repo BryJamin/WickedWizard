@@ -39,6 +39,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
@@ -268,7 +269,7 @@ public class PlayScreen extends AbstractScreen {
 
         LevelItemSystem lis = new LevelItemSystem(random);
 
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 ,lis.getItemPool(), random);
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 2 ,lis.getItemPool(), random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
 
@@ -334,7 +335,8 @@ public class PlayScreen extends AbstractScreen {
                         lis,
                         new ChangeLevelSystem(jg, atlas),
                         new ClearCollisionsSystem(),
-                        new RoomTransitionSystem(startingArena, arenaArray)
+                        new MapTeleportationSystem(jg.getMapTracker()),
+                        new RoomTransitionSystem(jg.getStartingMap())
                 )
                 .build();
 
@@ -417,7 +419,17 @@ public class PlayScreen extends AbstractScreen {
 
         if(!gameOver) {
             if(!isPaused) {
-                world.getSystem(RoomTransitionSystem.class).updateGUI(arenaGUI, gamecam);
+
+                RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
+                arenaGUI.update(world.delta,
+                        gamecam.position.x + Measure.units(40),
+                        gamecam.position.y + Measure.units(20),
+                        rts.getVisitedArenas(),
+                        rts.getUnvisitedButAdjacentArenas(),
+                        rts.getCurrentArena(),
+                        rts.getCurrentPlayerLocation());
+
             }
 
             //Map of the world
@@ -483,13 +495,13 @@ public class PlayScreen extends AbstractScreen {
             deathWorld.process();
         }
 
-
+/*
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all());
         IntBag entityIds = subscription.getEntities();
         System.out.println("Number of entities of screen is + " + entityIds.size());
 
-        System.out.println("Frame rate is : " + Gdx.graphics.getFramesPerSecond());
+        System.out.println("Frame rate is : " + Gdx.graphics.getFramesPerSecond());*/
 
 
     }

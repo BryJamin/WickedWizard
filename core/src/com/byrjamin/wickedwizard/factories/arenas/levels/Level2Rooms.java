@@ -60,15 +60,15 @@ public class Level2Rooms extends AbstractFactory{
     public ArenaGen room4Kugel(){
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-                MapCoords m = new MapCoords();
-                Arena arena = new Arena(arenaSkin, m);
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords);
 
                 arena.setWidth(SECTION_WIDTH);
                 arena.setHeight(SECTION_HEIGHT);
 
                 arena = new ArenaBuilder(assetManager, arenaSkin)
-                        .addSection(new ArenaBuilder.Section(m,
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
@@ -85,15 +85,15 @@ public class Level2Rooms extends AbstractFactory{
     public ArenaGen goatWizardCenter(){
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-                MapCoords m = new MapCoords();
-                Arena arena = new Arena(arenaSkin, m);
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords);
 
                 arena.setWidth(SECTION_WIDTH);
                 arena.setHeight(SECTION_HEIGHT);
 
                 arena = new ArenaBuilder(assetManager, arenaSkin)
-                        .addSection(new ArenaBuilder.Section(m,
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
@@ -111,8 +111,8 @@ public class Level2Rooms extends AbstractFactory{
     public ArenaGen oneTurretTwoBouncers(){
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-                Arena a = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena a = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
                 a.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(a.getWidth() / 2, a.getHeight() / 2));
                 a.addEntity(arenaEnemyPlacementFactory.spawnLargeBouncer(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15f)));
                 a.addEntity(arenaEnemyPlacementFactory.spawnLargeBouncer(Measure.units(20), a.getHeight() - Measure.units(15f)));
@@ -129,9 +129,7 @@ public class Level2Rooms extends AbstractFactory{
     public ArenaGen width2RoomOnlyVerticalExits(){
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-
-                MapCoords defaultCoords = new MapCoords(0,0);
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
                 arena.roomType = Arena.RoomType.TRAP;
@@ -185,9 +183,7 @@ public class Level2Rooms extends AbstractFactory{
     public ArenaGen grappleTreasureRoom(){
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-
-                MapCoords defaultCoords = new MapCoords(0,0);
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords,
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
@@ -261,9 +257,7 @@ public class Level2Rooms extends AbstractFactory{
     public ArenaGen largeBattleRoom(){
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-
-                MapCoords defaultCoords = new MapCoords(0,0);
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords,
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),

@@ -14,8 +14,11 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -29,6 +32,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchCompon
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -377,6 +382,46 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
+
+
+
+    public ComponentBag mapPortal (float x, float y, BossTeleporterComponent btc){
+
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x, y));
+
+        bag.add(btc);
+
+        bag.add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(MapTeleportationSystem.class).goFromTo(e.getComponent(BossTeleporterComponent.class));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10), Measure.units(10))));
+
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setDefaultState(0);
+        bag.add(sc);
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.02f, atlas.findRegions("squ_dash"), Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+
+        bag.add(new TextureRegionComponent(atlas.findRegion("squ_dash"),
+                Measure.units(10),
+                Measure.units(10),
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+
+        return bag;
+
+    }
 
 
 

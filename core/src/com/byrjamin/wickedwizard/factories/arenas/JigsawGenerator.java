@@ -9,10 +9,11 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
-import com.byrjamin.wickedwizard.factories.BombFactory;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -22,18 +23,15 @@ import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.enemy.AmoebaFactory;
-import com.byrjamin.wickedwizard.factories.enemy.MaceFactory;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
-import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
 import com.byrjamin.wickedwizard.utils.BagSearch;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -49,6 +47,11 @@ public class JigsawGenerator {
     private Random rand;
 
     private Arena startingArena;
+
+    private ArenaMap startingMap;
+
+    private Arena bossArena;
+
     private AssetManager assetManager;
     private Level1Rooms level1Rooms;
     private Level2Rooms level2Rooms;
@@ -57,6 +60,10 @@ public class JigsawGenerator {
     private ItemArenaFactory itemArenaFactory;
     private ShopFactory shopFactory;
     private ArenaSkin arenaSkin;
+
+
+    private HashMap<BossTeleporterComponent, ArenaMap> mapTracker = new HashMap<BossTeleporterComponent, ArenaMap>();
+
 
     private Array<Item> itemPool;
 
@@ -149,7 +156,7 @@ public class JigsawGenerator {
             int i = rand.nextInt(arenaGenArray.size);
 
             WeightedObject<ArenaGen> weightedObject = roll.rollForWeight();
-            Arena nextRoomToBePlaced = weightedObject.obj().createArena();
+            Arena nextRoomToBePlaced = weightedObject.obj().createArena(new MapCoords());
             if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, rand)){
                 placedArenas.add(nextRoomToBePlaced);
                 unavaliableMapCoords.addAll(nextRoomToBePlaced.getCotainingCoords());
@@ -179,6 +186,8 @@ public class JigsawGenerator {
 
     public Array<Arena> generate(){
 
+        mapTracker.clear();
+
         Array<Arena> arenas;
 
         if(generateTutorial){
@@ -194,13 +203,32 @@ public class JigsawGenerator {
 
     }
 
+
+    public ArenaMap WandaRoom(BossTeleporterComponent btc){
+
+        Array<Arena> placedArenas = new Array<Arena>();
+
+        Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,0));
+        startingArena.addEntity(decorFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2,
+                btc));
+
+        placedArenas.add(startingArena);
+        placedArenas.add(new WandaRoom(assetManager, arenaSkin).wandaArena().createArena(new MapCoords(1,0)));
+
+        ArenaMap map = new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
+
+        this.cleanArenas(placedArenas);
+
+        return map;
+
+    }
+
     public Array<Arena> generateTutorialJigsaw(){
 
         Array<Arena> placedArenas = new Array<Arena>();
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
-
-        startingArena = new WandaRoom(assetManager, arenaSkin).wandaArena().createArena();
+        //startingArena = new WandaRoom(assetManager, arenaSkin).wandaArena().createArena(new MapCoords());
         //startingArena = new GiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena();
         //startingArena.addEntity(new AmoebaFactory(assetManager).amoeba(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
 
@@ -238,7 +266,20 @@ public class JigsawGenerator {
         placeItemRoom(placedArenas, avaliableDoorsSet);
         placeShopRoom(placedArenas, avaliableDoorsSet);
         int range = (int) ((Math.sqrt(placedArenas.size) - 7 /*tutorial rooms */) / 2);
-        placeBossRoom(placedArenas, avaliableDoorsSet, range);
+
+        LinkComponent teleportLink = new LinkComponent();
+
+        BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
+
+        Arena bossRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+        bossRoom.roomType = Arena.RoomType.BOSS;
+        bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2, btc));
+
+        placeBossRoom(bossRoom, placedArenas, avaliableDoorsSet, range);
+        startingMap = new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
+        mapTracker.put(btc, startingMap);
+
+
 
         return placedArenas;
 
@@ -263,7 +304,28 @@ public class JigsawGenerator {
         placeItemRoom(placedArenas, avaliableDoorsSet);
         placeShopRoom(placedArenas, avaliableDoorsSet);
         int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
-        placeBossRoom(placedArenas, avaliableDoorsSet, range);
+
+
+
+        LinkComponent teleportLink = new LinkComponent();
+
+        BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
+
+        Arena bossRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+        bossRoom.roomType = Arena.RoomType.BOSS;
+        bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2, btc));
+
+        placeBossRoom(bossRoom, placedArenas, avaliableDoorsSet, range);
+        startingMap = new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
+        mapTracker.put(btc, startingMap);
+
+
+        btc = new BossTeleporterComponent(teleportLink);
+
+        mapTracker.put(btc, WandaRoom(btc));
+
+
+
 
         return placedArenas;
     }
@@ -326,15 +388,10 @@ public class JigsawGenerator {
         return false;
     }
 
-    public boolean placeBossRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors, int range) {
-
-        Arena bossRoom = arenaShellFactory.createWidth2ArenaWithVerticalDoors();
-        bossRoom.roomType = Arena.RoomType.BOSS;
-        new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin).biggablobba(bossRoom);
+    public boolean placeBossRoom(Arena bossRoom, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors, int range) {
 
         if (placeRoomAtRangeWithDoors(bossRoom,
                 avaliableDoors,createUnavaliableMapCoords(placedArenas), rand, range)) {
-
             placedArenas.add(bossRoom);
             return true;
         }
@@ -511,6 +568,15 @@ public class JigsawGenerator {
     public Arena getStartingRoom() {
         return startingArena;
     }
+
+    public HashMap<BossTeleporterComponent, ArenaMap> getMapTracker() {
+        return mapTracker;
+    }
+
+    public ArenaMap getStartingMap() {
+        return startingMap;
+    }
+
 
 
     public void cleanArenas(Array<Arena> arenas){

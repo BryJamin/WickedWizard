@@ -43,19 +43,19 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 public class RoomTransitionSystem extends EntitySystem {
 
-    ComponentMapper<BulletComponent> bm;
-    ComponentMapper<PositionComponent> pm;
-    ComponentMapper<VelocityComponent> vm;
-    ComponentMapper<GravityComponent> gm;
-    ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<ActiveOnTouchComponent> aotm;
-    ComponentMapper<DoorComponent> dm;
-    ComponentMapper<MoveToComponent> mtm;
-    ComponentMapper<ParentComponent> parm;
-    ComponentMapper<ExpireComponent> em;
-    ComponentMapper<ChildComponent> cm;
+    private ComponentMapper<BulletComponent> bm;
+    private ComponentMapper<PositionComponent> pm;
+    private ComponentMapper<VelocityComponent> vm;
+    private ComponentMapper<GravityComponent> gm;
+    private ComponentMapper<CollisionBoundComponent> cbm;
+    private ComponentMapper<ActiveOnTouchComponent> aotm;
+    private ComponentMapper<DoorComponent> dm;
+    private ComponentMapper<MoveToComponent> mtm;
+    private ComponentMapper<ParentComponent> parm;
+    private ComponentMapper<ExpireComponent> em;
+    private ComponentMapper<ChildComponent> cm;
 
-
+    private ArenaMap currentMap;
 
     private Arena currentArena;
     private Array<Arena> roomArray;
@@ -79,13 +79,18 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
     @SuppressWarnings("unchecked")
-    public RoomTransitionSystem(Arena currentArena, Array<Arena> roomArray) {
+    public RoomTransitionSystem(ArenaMap arenaMap) {
         super(Aspect.all().exclude(PlayerComponent.class));
-        this.currentArena = currentArena;
+        this.currentArena = arenaMap.getCurrentArena();
         //visitedArenas.addAll(roomArray);
-        this.roomArray = roomArray;
+        this.roomArray = arenaMap.getRoomArray();
+        this.currentMap = arenaMap;
+
+        this.visitedArenas = arenaMap.getVisitedArenas();
         visitedArenas.add(currentArena);
         //visitedArenas.addAll(roomArray);
+
+        this.unvisitedButAdjacentArenas = arenaMap.getUnvisitedButAdjacentArenas();
         unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
     }
 
@@ -373,25 +378,6 @@ public class RoomTransitionSystem extends EntitySystem {
 
     }
 
-    public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
-        aGUI.update(world.delta,
-                gamecam.position.x + Measure.units(40),
-                gamecam.position.y + Measure.units(20),
-                visitedArenas,
-                unvisitedButAdjacentArenas,
-                getCurrentArena(),
-                getCurrentPlayerLocation()
-                );
-    }
-
-    public OrderedSet<Arena> getVisitedArenas() {
-        return visitedArenas;
-    }
-
-    public OrderedSet<Arena> getUnvisitedButAdjacentArenas() {
-        return unvisitedButAdjacentArenas;
-    }
-
     /**
      * The direction the transition starts from
      * @param start
@@ -473,9 +459,6 @@ public class RoomTransitionSystem extends EntitySystem {
         return false;
     }
 
-    public Arena getCurrentArena() {
-        return currentArena;
-    }
 
     public MapCoords getCurrentPlayerLocation(){
         CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
@@ -484,9 +467,48 @@ public class RoomTransitionSystem extends EntitySystem {
         return playerLocation;
     }
 
+    public void setCurrentArena(Arena currentArena) {
+        this.currentArena = currentArena;
+    }
+
+    public Arena getCurrentArena() {
+        return currentArena;
+    }
+
+    public void setRoomArray(Array<Arena> roomArray) {
+        this.roomArray = roomArray;
+    }
+
     public Array<Arena> getRoomArray() {
         return roomArray;
     }
 
 
+    public void setVisitedArenas(OrderedSet<Arena> visitedArenas) {
+        this.visitedArenas = visitedArenas;
+    }
+
+    public OrderedSet<Arena> getVisitedArenas() {
+        return visitedArenas;
+    }
+
+    public void setUnvisitedButAdjacentArenas(OrderedSet<Arena> unvisitedButAdjacentArenas) {
+        this.unvisitedButAdjacentArenas = unvisitedButAdjacentArenas;
+    }
+
+    public OrderedSet<Arena> getUnvisitedButAdjacentArenas() {
+        return unvisitedButAdjacentArenas;
+    }
+
+    public void setCurrentMap(ArenaMap currentMap) {
+        this.currentMap = currentMap;
+        this.currentArena = currentMap.getCurrentArena();
+        this.roomArray = currentMap.getRoomArray();
+        this.visitedArenas = currentMap.getVisitedArenas();
+        this.unvisitedButAdjacentArenas = currentMap.getUnvisitedButAdjacentArenas();
+    }
+
+    public ArenaMap getCurrentMap() {
+        return currentMap;
+    }
 }

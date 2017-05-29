@@ -40,20 +40,7 @@ public class FindPlayerSystem extends BaseSystem {
 
         return BagSearch.getObjectOfTypeClass(cls, playerBag);
     }
-/*    public Entity getPCEntity(PlayerComponent pc){
 
-        world.getAspectSubscriptionManager().get(Aspect.all(PlayerComponent.class));
 
-        try {
-            T t = BagSearch.getObjectOfTypeClass(cls, playerBag);
-            if (t == null) {
-                throw new Exception("Player Component does not exist");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return BagSearch.getObjectOfTypeClass(cls, playerBag);
-    }*/
 
 }

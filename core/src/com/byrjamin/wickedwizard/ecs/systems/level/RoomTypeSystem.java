@@ -56,7 +56,7 @@ public class RoomTypeSystem extends BaseSystem {
                     world.getSystem(InCombatSystem.class).leaveCombat();
 
 
-                    if(current.roomType == Arena.RoomType.BOSS) {
+/*                    if(current.roomType == Arena.RoomType.BOSS) {
                         if (!nextLevelDoor && world.getSystem(ChangeLevelSystem.class).getLevel() != ChangeLevelSystem.Level.FREEDOMRUN) {
                             Entity e = world.createEntity();
                             for (Component c : new DeathFactory(world.getSystem(RenderingSystem.class).getAssetManager()).worldPortal(current.getWidth() / 2, current.getHeight() / 2)) {
@@ -64,7 +64,7 @@ public class RoomTypeSystem extends BaseSystem {
                             }
                             nextLevelDoor = true;
                         }
-                    }
+                    }*/
 
                 } else {
                     world.getSystem(LockSystem.class).lockDoors();

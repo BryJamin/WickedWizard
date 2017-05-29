@@ -10,10 +10,8 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossGurner;
 import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWanda;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.utils.Measure;
 
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
@@ -46,9 +44,7 @@ public class WandaRoom extends AbstractFactory {
     public ArenaGen wandaArena() {
         return new ArenaGen() {
             @Override
-            public Arena createArena() {
-
-                MapCoords defaultCoords = new MapCoords(0, 0);
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords);
                 arena.roomType = Arena.RoomType.TRAP;
@@ -58,7 +54,7 @@ public class WandaRoom extends AbstractFactory {
 
                 arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);

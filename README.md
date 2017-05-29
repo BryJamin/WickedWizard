@@ -7,6 +7,8 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Destructable chests
+
 - Turn everything into using TextureStrings
 
 - Enemies that can traverse through platforms
