@@ -7,7 +7,11 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Need to make roomtransition a system so I can activate it when you use a teleporter
+instead of it being restricted to the roomtransition system
+
 -Death screen needs a specific area to click
+
 
 - Destructable chests
 

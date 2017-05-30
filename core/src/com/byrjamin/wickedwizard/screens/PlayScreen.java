@@ -134,7 +134,6 @@ public class PlayScreen extends AbstractScreen {
     private boolean isPaused = false;
 
     private CurrencyComponent currencyComponent;
-    private HealthComponent healthResource;
     private StatComponent stats;
 
     GestureDetector gestureDetector;
@@ -269,7 +268,7 @@ public class PlayScreen extends AbstractScreen {
 
         LevelItemSystem lis = new LevelItemSystem(random);
 
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 2 ,lis.getItemPool(), random);
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 ,lis.getItemPool(), random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
 
@@ -362,7 +361,7 @@ public class PlayScreen extends AbstractScreen {
             entity.edit().add(comp);
         }
 
-        healthResource = entity.getComponent(HealthComponent.class);
+
         stats = entity.getComponent(StatComponent.class);
 
 
@@ -408,7 +407,7 @@ public class PlayScreen extends AbstractScreen {
         world.process();
 
 
-        if(world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health <= 0 && !gameOver){
+        if(stats.health <= 0 && !gameOver){
             gameOver = true;
             jg.generateTutorial = false;
             createDeathScreenWorld();
@@ -535,15 +534,15 @@ public class PlayScreen extends AbstractScreen {
 
         Array<TextureRegion> healthRegions = new Array<TextureRegion>();
 
-        for(int i = 1; i <= healthResource.health; i++){
-            if(i <= healthResource.health && i % 2 == 0) {
+        for(int i = 1; i <= stats.health; i++){
+            if(i <= stats.health && i % 2 == 0) {
                 healthRegions.add(atlas.findRegion("item/heart", 0));
-            } else if(healthResource.health % 2 != 0 && i == healthResource.health){
+            } else if(stats.health % 2 != 0 && i == stats.health){
                 healthRegions.add(atlas.findRegion("item/heart", 1));
             }
         }
 
-        int emptyHealth = (int) healthResource.maxHealth - (int) healthResource.health;
+        int emptyHealth = stats.maxHealth - stats.health;
         emptyHealth = (emptyHealth % 2 == 0) ? emptyHealth : emptyHealth - 1;
 
         for(int i = 1; i <= emptyHealth; i++) {

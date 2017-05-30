@@ -107,10 +107,10 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR))
+                        leftDoor ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        rightDoor ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        ceilingDoor ? ArenaBuilder.wall.GRAPPLE : ArenaBuilder.wall.FULL,
+                        topDoor ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL))
                 .buildArena(arena);
 
         return arena;

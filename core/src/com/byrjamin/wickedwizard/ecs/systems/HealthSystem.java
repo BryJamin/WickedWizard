@@ -47,7 +47,7 @@ public class HealthSystem extends EntityProcessingSystem {
                     if (sc.armor > 0) {
                         sc.armor -= 1;
                     } else {
-                        hc.health -= 1;
+                        sc.health -= 1;
                     }
 
                     bm.get(e).isHit = true;

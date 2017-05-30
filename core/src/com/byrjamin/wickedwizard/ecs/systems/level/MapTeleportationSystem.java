@@ -105,7 +105,6 @@ public class MapTeleportationSystem extends EntitySystem {
 
                         mtc.reset();
 
-
                     }
                 }
             }

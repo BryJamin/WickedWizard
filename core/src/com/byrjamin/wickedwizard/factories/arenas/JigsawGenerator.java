@@ -246,7 +246,7 @@ public class JigsawGenerator {
 
         BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
 
-        Arena bossRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+        Arena bossRoom = arenaShellFactory.createSmallArena(new MapCoords(), true, true, false ,true);
         bossRoom.roomType = Arena.RoomType.BOSS;
         bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2, btc));
 
@@ -291,7 +291,7 @@ public class JigsawGenerator {
 
         BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
 
-        Arena bossRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+        Arena bossRoom = arenaShellFactory.createSmallArena(new MapCoords(), true, true, false ,true);
         bossRoom.roomType = Arena.RoomType.BOSS;
         bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2, btc));
 
