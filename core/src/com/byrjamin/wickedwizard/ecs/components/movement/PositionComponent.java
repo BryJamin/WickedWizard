@@ -27,5 +27,13 @@ public class PositionComponent extends Component {
         return position.y;
     }
 
+    public void setX(float x){
+        this.position.x = x;
+    }
+
+    public void setY(float y){
+        this.position.y = y;
+    }
+
 
 }

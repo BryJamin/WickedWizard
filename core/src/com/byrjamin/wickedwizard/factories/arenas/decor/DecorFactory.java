@@ -17,6 +17,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
@@ -394,12 +395,11 @@ public class DecorFactory extends AbstractFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x, y));
-
+        ComponentBag bag = portal(x,y);
+        Rectangle r = new Rectangle(x,y,width,height);
         bag.add(btc);
 
-        bag.add(new ActionOnTouchComponent(new Action() {
+        bag.add(new ProximityTriggerAIComponent(r, new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MapTeleportationSystem.class).goFromTo(e.getComponent(BossTeleporterComponent.class));
@@ -410,16 +410,32 @@ public class DecorFactory extends AbstractFactory {
 
             }
         }));
+
+        return bag;
+
+    }
+
+
+    private ComponentBag portal(float x, float y){
+
+
+        float width = Measure.units(10f);
+        float height = Measure.units(10f);
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x, y));
+
+
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.02f, atlas.findRegions("squ_dash"), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.1f, atlas.findRegions("teleporter"), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion("squ_dash"),
+        bag.add(new TextureRegionComponent(atlas.findRegion("teleporter"),
                 Measure.units(10),
                 Measure.units(10),
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
@@ -428,6 +444,7 @@ public class DecorFactory extends AbstractFactory {
         return bag;
 
     }
+
 
     public ComponentBag levelPortal(float x, float y){
 
@@ -438,10 +455,10 @@ public class DecorFactory extends AbstractFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x, y));
+        ComponentBag bag = portal(x,y);
+        Rectangle r = new Rectangle(x,y,width,height);
 
-        bag.add(new ActionOnTouchComponent(new Action() {
+        bag.add(new ProximityTriggerAIComponent(r, new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MapTeleportationSystem.class).recreateWorld();
@@ -452,19 +469,6 @@ public class DecorFactory extends AbstractFactory {
 
             }
         }));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(0);
-        bag.add(sc);
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.02f, atlas.findRegions("squ_dash"), Animation.PlayMode.LOOP));
-        bag.add(new AnimationComponent(animMap));
-
-        bag.add(new TextureRegionComponent(atlas.findRegion("squ_dash"),
-                Measure.units(10),
-                Measure.units(10),
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
         return bag;

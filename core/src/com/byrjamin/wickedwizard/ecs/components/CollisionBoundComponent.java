@@ -40,6 +40,14 @@ public class CollisionBoundComponent extends Component{
         return bound.y + bound.height / 2;
     }
 
+    public void setCenterX(float x) {
+        bound.x = x - bound.getWidth() / 2;
+    }
+
+    public void setCenterY(float y) {
+        bound.y = y - bound.getHeight() / 2;
+    }
+
     public Array<Collider.Collision> getRecentCollisions() {
         return recentCollisions;
     }

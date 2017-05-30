@@ -9,11 +9,15 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,12 +88,24 @@ public class MapTeleportationSystem extends EntitySystem {
 
                 PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
                 CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
+                world.getSystem(PlayerInputSystem.class).turnOffGlide();
 
-                System.out.println("size of entites" + this.getEntities().size());
+                //System.out.println("size of entites" + this.getEntities().size());
                 for (Entity e : this.getEntities()) {
                     if (btm.get(e).link == to.link) {
-                        pc.position.x = cbm.get(e).getCenterX();
-                        pc.position.y = cbm.get(e).getCenterY();
+
+                        cbc.setCenterY(cbm.get(e).getCenterY());
+                        cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight();
+                        vc.velocity.y = -Measure.units(40f);
+
+                        pc.setX(cbc.bound.x);
+                        pc.setY(cbc.bound.y);
+
+                        mtc.reset();
+
+
                     }
                 }
             }

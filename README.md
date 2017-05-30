@@ -7,6 +7,8 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+-Death screen needs a specific area to click
+
 - Destructable chests
 
 - Turn everything into using TextureStrings

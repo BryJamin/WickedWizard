@@ -55,105 +55,105 @@ backgrounds/herringbone
   index: 0
 backgrounds/wall
   rotate: false
-  xy: 529, 623
+  xy: 463, 491
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 backgrounds/wall
   rotate: false
-  xy: 133, 161
+  xy: 529, 557
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 backgrounds/wall
   rotate: false
-  xy: 199, 227
+  xy: 595, 623
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 backgrounds/wall
   rotate: false
-  xy: 265, 293
+  xy: 133, 95
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 backgrounds/wall
   rotate: false
-  xy: 331, 359
+  xy: 199, 161
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 backgrounds/wall
   rotate: false
-  xy: 397, 425
+  xy: 265, 227
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 backgrounds/wall
   rotate: false
-  xy: 463, 491
+  xy: 331, 293
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 backgrounds/wall
   rotate: false
-  xy: 529, 557
+  xy: 397, 359
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 7
 backgrounds/wall
   rotate: false
-  xy: 595, 623
+  xy: 463, 425
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 8
 backgrounds/wall
   rotate: false
-  xy: 133, 95
+  xy: 529, 491
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 9
 backgrounds/wall
   rotate: false
-  xy: 199, 161
+  xy: 595, 557
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 10
 backgrounds/wall
   rotate: false
-  xy: 265, 227
+  xy: 661, 623
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 11
 backgrounds/wall
   rotate: false
-  xy: 331, 293
+  xy: 199, 95
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 12
 backgrounds/wall
   rotate: false
-  xy: 397, 359
+  xy: 265, 161
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 13
 backgrounds/wall
   rotate: false
-  xy: 463, 425
+  xy: 331, 227
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -622,42 +622,42 @@ circle
   index: 1
 circle
   rotate: false
-  xy: 463, 325
+  xy: 331, 127
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 circle
   rotate: false
-  xy: 529, 391
+  xy: 397, 193
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 circle
   rotate: false
-  xy: 595, 457
+  xy: 463, 259
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 circle
   rotate: false
-  xy: 661, 523
+  xy: 529, 325
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 circle
   rotate: false
-  xy: 727, 589
+  xy: 595, 391
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 circle
   rotate: false
-  xy: 793, 655
+  xy: 661, 457
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -734,49 +734,49 @@ door
   index: 9
 enemy/wanda_firing
   rotate: false
-  xy: 463, 359
+  xy: 331, 161
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/wanda_standing
   rotate: false
-  xy: 463, 359
+  xy: 331, 161
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/wanda_standing
+  rotate: false
+  xy: 331, 161
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
-enemy/wanda_standing
-  rotate: false
-  xy: 463, 359
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
 enemy/wanda_firing
   rotate: false
-  xy: 529, 425
+  xy: 397, 227
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/wanda_firing
   rotate: false
-  xy: 595, 491
+  xy: 463, 293
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/wanda_standing
   rotate: false
-  xy: 661, 557
+  xy: 529, 359
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/wanda_standing
   rotate: false
-  xy: 661, 557
+  xy: 529, 359
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -1301,7 +1301,7 @@ kugel
   index: 3
 ladder
   rotate: false
-  xy: 331, 127
+  xy: 727, 523
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -1686,42 +1686,42 @@ spawner
   index: 8
 sprite_health0
   rotate: false
-  xy: 397, 193
+  xy: 793, 589
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health1
   rotate: false
-  xy: 35, 1
+  xy: 859, 655
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health2
   rotate: false
-  xy: 2011, 951
+  xy: 35, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health3
   rotate: false
-  xy: 167, 61
+  xy: 2011, 951
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health4
   rotate: false
-  xy: 463, 291
+  xy: 167, 61
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite_health5
   rotate: false
-  xy: 827, 655
+  xy: 893, 655
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -1749,75 +1749,61 @@ squ_dash
   index: 2
 squ_dash
   rotate: false
-  xy: 463, 257
+  xy: 927, 655
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 squ_dash
   rotate: false
-  xy: 861, 655
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
-squ_dash
-  rotate: false
   xy: 2011, 883
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 5
+  index: 4
 squ_dash
   rotate: false
   xy: 235, 61
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 6
-squ_firing
-  rotate: false
-  xy: 895, 655
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 0
-squ_firing
-  rotate: false
-  xy: 895, 655
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 1
-squ_firing
-  rotate: false
-  xy: 895, 655
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
   index: 5
-squ_walk
+squ_dash
   rotate: false
-  xy: 895, 655
+  xy: 961, 655
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
-squ_walk
-  rotate: false
-  xy: 895, 655
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
+  index: 6
 squ_firing
   rotate: false
   xy: 2011, 849
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
+  index: 0
 squ_firing
+  rotate: false
+  xy: 2011, 849
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+squ_firing
+  rotate: false
+  xy: 2011, 849
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+squ_walk
+  rotate: false
+  xy: 2011, 849
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
+squ_walk
   rotate: false
   xy: 2011, 849
   size: 32, 32
@@ -1830,17 +1816,17 @@ squ_firing
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
-squ_walk
+  index: 2
+squ_firing
   rotate: false
-  xy: 929, 655
+  xy: 269, 61
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 1
-squ_walk
+  index: 4
+squ_firing
   rotate: false
-  xy: 929, 655
+  xy: 995, 655
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -1851,45 +1837,59 @@ squ_walk
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
-wall_turret
+  index: 1
+squ_walk
   rotate: false
-  xy: 529, 491
+  xy: 2011, 815
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+squ_walk
+  rotate: false
+  xy: 1029, 655
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+teleporter
+  rotate: false
+  xy: 529, 623
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-wall_turret
+teleporter
   rotate: false
-  xy: 595, 557
+  xy: 133, 161
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-wall_turret
+teleporter
   rotate: false
-  xy: 661, 623
+  xy: 199, 227
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
-wall_turret
+teleporter
   rotate: false
-  xy: 199, 95
+  xy: 265, 293
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
-wall_turret
+teleporter
   rotate: false
-  xy: 265, 161
+  xy: 331, 359
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
-wall_turret
+teleporter
   rotate: false
-  xy: 331, 227
+  xy: 397, 425
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -1900,45 +1900,87 @@ wall_turret
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
+  index: 0
+wall_turret
+  rotate: false
+  xy: 463, 359
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+wall_turret
+  rotate: false
+  xy: 529, 425
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+wall_turret
+  rotate: false
+  xy: 595, 491
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+wall_turret
+  rotate: false
+  xy: 661, 557
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+wall_turret
+  rotate: false
+  xy: 727, 623
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+wall_turret
+  rotate: false
+  xy: 265, 95
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
   index: 6
 wings
   rotate: false
-  xy: 727, 623
+  xy: 595, 425
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 wings
   rotate: false
-  xy: 265, 95
+  xy: 661, 491
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 wings
   rotate: false
-  xy: 265, 95
+  xy: 661, 491
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 wings
   rotate: false
-  xy: 331, 161
+  xy: 727, 557
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 wings
   rotate: false
-  xy: 331, 161
+  xy: 727, 557
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 wings
   rotate: false
-  xy: 397, 227
+  xy: 793, 623
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
