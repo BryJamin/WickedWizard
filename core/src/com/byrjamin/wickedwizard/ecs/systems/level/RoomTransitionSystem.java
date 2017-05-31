@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -92,77 +93,25 @@ public class RoomTransitionSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        if(!canNowExitTransition) {
-            if(entryTransition == null) {
+        world.getSystem(ScreenWipeSystem.class).startScreenWipe(currentDoor.exit, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                switchRooms();
                 for(BaseSystem s: world.getSystems()){
-                    if(!(s instanceof RenderingSystem) && !(s instanceof RoomTransitionSystem)) {
-                        s.setEnabled(false);
+                    if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
+                        s.setEnabled(true);
                     }
                 }
-                entryAnimation(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
             }
 
-            if(!entryTransition.isFinished()){
-                entryTransition.update(world.delta);
-                return;
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
             }
-        }
+        });
 
-
-
-        if(canNowExitTransition) {
-
-            if (exitTransition == null) {
-                exitAnimation(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
-                entryTransition = null;
-                return;
-            }
-
-            if(!exitTransition.isFinished()){
-                exitTransition.update(world.delta);
-                return;
-            } else {
-                canNowExitTransition = false;
-                exitTransition = null;
-                //world.getSystem(PlayerInputSystem.class).setEnabled(true);
-                processingFlag = false;
-
-                for(BaseSystem s: world.getSystems()){
-                    s.setEnabled(true);
-                }
-            }
-
-
-            return;
-
-        }
-
-
-        switchRooms();
-
-
-/*        if(currentArena.roomType == Arena.RoomType.ITEM){
-
-            for(AltarComponent ac : currentArena.altars){
-                if(ac.hasItem){
-
-                }
-            }
-            currentArena.fin
-
-
-
-
-        }*/
-
-        for(BaseSystem s: world.getSystems()){
-            if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
-                s.setEnabled(true);
-            }
-        }
-
-        canNowExitTransition = true;
-
+        processingFlag = false;
 
     }
 
@@ -335,74 +284,6 @@ public class RoomTransitionSystem extends EntitySystem {
         }
 
     }
-
-
-    /**
-     * The direction the transition starts from
-     * @param start
-     * @param gamecam
-     */
-    public void entryAnimation(Direction start, OrthographicCamera gamecam) {
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        float width = gamecam.viewportWidth;
-        float height = gamecam.viewportHeight;
-
-        switch(start){
-            case LEFT:
-            default:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromLeftToCenter();
-                break;
-            case RIGHT:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromRightToCenter();
-                break;
-            case UP:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromTopToCenter();
-                break;
-            case DOWN:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromBottomToCenter();
-                break;
-        }
-
-    }
-
-
-    public void exitAnimation(Direction start, OrthographicCamera gamecam) {
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        float width = gamecam.viewportWidth;
-        float height = gamecam.viewportHeight;
-
-        switch (start) {
-            case LEFT:
-            default:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToLeft();
-                break;
-            case RIGHT:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToRight();
-                break;
-            case UP:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToBottom();
-                break;
-            case DOWN:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToTop();
-                break;
-        }
-
-    }
-
 
     public boolean goFromTo(DoorComponent dc, float doorEntryPercentage){
 

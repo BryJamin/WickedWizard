@@ -5,23 +5,25 @@ import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by Home on 28/05/2017.
@@ -57,24 +59,40 @@ public class MapTeleportationSystem extends EntitySystem {
 
         if(mapTracker.containsKey(btc)){
             processingFlag = true;
-            switchMap(btc);
+
+            final BossTeleporterComponent hmm = btc;
+
+
+            world.getSystem(ScreenWipeSystem.class).startScreenWipe(Direction.DOWN, new Action() {
+                @Override
+                public void performAction(World world, Entity e) {
+                    switchMap(hmm);
+                    for(BaseSystem s: world.getSystems()){
+                        if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
+                            s.setEnabled(true);
+                        }
+                    }
+                }
+
+                @Override
+                public void cleanUpAction(World world, Entity e) {
+
+                }
+            });
+
+
+
+
+
         }
     }
 
     public void switchMap(BossTeleporterComponent from){
 
-        boolean exists = false;
-        BossTeleporterComponent to = new BossTeleporterComponent();
+        BossTeleporterComponent to = isTeleportAvaliable(from);
 
-        for(BossTeleporterComponent btc : mapTracker.keySet()){
-            if(from.link == btc.link && from != btc){
-                exists = true;
-                to = btc;
-                break;
-            }
-        }
+        if(to != null) {
 
-        if(exists) {
             if (mapTracker.containsKey(to)) {
 
                 ArenaMap map = mapTracker.get(to);
@@ -85,6 +103,11 @@ public class MapTeleportationSystem extends EntitySystem {
                 rts.getVisitedArenas().add(rts.getCurrentArena());
                 rts.getUnvisitedButAdjacentArenas().addAll(rts.getAdjacentArenas(rts.getCurrentArena()));
 
+                for(Arena a : rts.getAdjacentArenas(rts.getCurrentArena())) {
+                    if(!rts.getVisitedArenas().contains(a)) {
+                        rts.getUnvisitedButAdjacentArenas().add(a);
+                    }
+                }
 
                 PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
                 CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
@@ -112,6 +135,17 @@ public class MapTeleportationSystem extends EntitySystem {
 
 
     }
+
+
+    public BossTeleporterComponent isTeleportAvaliable(BossTeleporterComponent from){
+        for(BossTeleporterComponent btc : mapTracker.keySet()){
+            if(from.link == btc.link && from != btc){
+                return btc;
+            }
+        }
+        return null;
+    }
+
 
 
     public void recreateWorld(){

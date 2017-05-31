@@ -40,8 +40,6 @@ public class AnimationSystem extends EntityProcessingSystem {
                 canRemove = (ac.animations.get(key).isAnimationFinished(sc.stateTime)) && key == sc.getCurrentState();
             }
 
-            System.out.println(canRemove);
-
             if(canRemove)  {
                 key = sc.getDefaultState();
                 sc.getStateQueue().removeFirst();

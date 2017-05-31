@@ -40,6 +40,7 @@ import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
@@ -329,6 +330,7 @@ public class PlayScreen extends AbstractScreen {
                         new FollowPositionSystem(),
                         new CameraSystem(gamecam, gameport),
                         new RenderingSystem(game.batch, manager, gamecam),
+                        new ScreenWipeSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         lis,
@@ -436,18 +438,6 @@ public class PlayScreen extends AbstractScreen {
             arenaGUI.draw(game.batch);
 
             //HUD
-
-
-            RoomTransition rt = world.getSystem(RoomTransitionSystem.class).entryTransition;
-            if(rt != null) {
-                world.getSystem(RoomTransitionSystem.class).entryTransition.draw(game.batch);
-            }
-
-            rt = world.getSystem(RoomTransitionSystem.class).exitTransition;
-            if(rt != null) {
-                world.getSystem(RoomTransitionSystem.class).exitTransition.draw(game.batch);
-            }
-
 
         }
 

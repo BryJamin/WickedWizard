@@ -37,6 +37,9 @@ public class RoomTransitionAnim {
     private float endX;
     private float endY;
 
+    private float startX;
+    private float startY;
+
     private float differenceX;
     private float differenceY;
 
@@ -52,6 +55,9 @@ public class RoomTransitionAnim {
     public RoomTransitionAnim(float startX, float startY, float endX, float endY, float WIDTH, float HEIGHT){
         position.x = startX;
         position.y = startY;
+
+        this.startX = startX;
+        this.startY = startY;
 
         this.endX = endX;
         this.endY = endY;
@@ -97,7 +103,7 @@ public class RoomTransitionAnim {
             position.x += distancePerSecondX * dt;
             position.y += distancePerSecondY * dt;
 
-            if (distancePerSecondX > 0) {
+            if (distancePerSecondX > startX) {
                 if (position.x > endX) {
                     position.x = endX;
                     finished = true;
@@ -110,7 +116,7 @@ public class RoomTransitionAnim {
             }
 
 
-            if (distancePerSecondY > 0) {
+            if (distancePerSecondY > startY) {
                 if (position.y > endY) {
                     position.y = endY;
                     finished = true;

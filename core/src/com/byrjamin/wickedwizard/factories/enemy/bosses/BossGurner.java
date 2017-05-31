@@ -203,12 +203,10 @@ public class BossGurner extends EnemyFactory{
         public void cleanUpAction(World world, Entity e) {
 
 
-            Array<ChildComponent> ok  = new Array<ChildComponent>();
-            ok.addAll(e.getComponent(ParentComponent.class).children);
+            Array<ChildComponent> childComponents  = new Array<ChildComponent>();
+            childComponents.addAll(e.getComponent(ParentComponent.class).children);
 
-            for(ChildComponent c : ok) {
-
-                System.out.println(e.getComponent(ParentComponent.class).children.size + " number of chillies");
+            for(ChildComponent c : childComponents) {
 
                 Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
 
