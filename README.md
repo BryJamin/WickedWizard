@@ -7,11 +7,11 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
-- Need to make roomtransition a system so I can activate it when you use a teleporter
-instead of it being restricted to the roomtransition system
+- Need to improve roomtransition system to have fades and use the game camera
+
+- Need to convert moveto and similar following math to use angles
 
 -Death screen needs a specific area to click
-
 
 - Destructable chests
 
@@ -20,8 +20,6 @@ instead of it being restricted to the roomtransition system
 - Enemies that can traverse through platforms
 
 - Menus can be used by enabling and disabling entities
-
-- Change turret to have animation
 
 - Change tutorial to have more 'forced sections' (teach how to stop gliding)
 
@@ -101,3 +99,4 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 - Parent Component on death should also kill the child component 
 - You can trigger shooting and moving the have the same pointer due to platforms. You double tap
 to go below and then hold to move it counts as the same pointer and you shoot and move
+- Change turret to have animation

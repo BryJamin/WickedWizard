@@ -1,20 +1,15 @@
 package com.byrjamin.wickedwizard.ecs.systems.ai;
 
-import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
-import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
@@ -29,7 +24,7 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 public class OnDeathSystem  extends BaseSystem {
 
-    ComponentMapper<OnDeathComponent> odm;
+    ComponentMapper<OnDeathActionComponent> odam;
     ComponentMapper<LootComponent> lm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<PositionComponent> pm;
@@ -51,54 +46,10 @@ public class OnDeathSystem  extends BaseSystem {
 
     public void kill(Entity deadEntity) {
 
-        PositionComponent pc = pm.get(deadEntity);
-
-        if(odm.has(deadEntity)){
-
-            for (ComponentBag bag : odm.get(deadEntity).getComponentBags()) {
-                Entity newEntity = world.createEntity();
-                for (Component c : bag) {
-
-                    newEntity.edit().add(c);
-                }
-
-
-                if(cbm.has(deadEntity)){
-                    CollisionBoundComponent cbc = cbm.get(deadEntity);
-
-                    if(cbm.has (newEntity)) {
-                        CollisionBoundComponent odcbc = cbm.get(newEntity);
-
-                        newEntity.getComponent(PositionComponent.class).position = new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0);
-
-                        if(cbm.has(newEntity)){
-
-
-
-                            Rectangle r = newEntity.getComponent(CollisionBoundComponent.class).bound;
-                            r.x = cbc.getCenterX() - r.getWidth() / 2;
-                            r.y = cbc.getCenterY() - r.getHeight() / 2;
-
-
-                            PositionComponent newEntityPc = newEntity.getComponent(PositionComponent.class);
-
-                            newEntityPc.position.x = r.x;
-                            newEntityPc.position.y = r.y;
-
-                        }
-
-
-                    } else {
-
-                        newEntity.getComponent(PositionComponent.class).position = new Vector3(pc.position);
-                    }
-
-                } else {
-
-                    newEntity.getComponent(PositionComponent.class).position = new Vector3(pc.position);
-                }
-            }
+        if(odam.has(deadEntity)){
+            odam.get(deadEntity).action.performAction(world, deadEntity);
         }
+
 
         if(lm.has(deadEntity) && cbm.has(deadEntity) && !mm.has(deadEntity)) {
             CollisionBoundComponent cbc = cbm.get(deadEntity);
@@ -125,6 +76,7 @@ public class OnDeathSystem  extends BaseSystem {
             }
 
         }
+
 
         deadEntity.deleteFromWorld();
 

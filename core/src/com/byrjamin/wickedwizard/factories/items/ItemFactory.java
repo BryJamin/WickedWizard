@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
@@ -94,7 +94,7 @@ public class ItemFactory extends AbstractFactory {
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
 
-        bag.add(new GibletFactory(assetManager).bombGiblets(new OnDeathComponent(),10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)));
+        bag.add(new OnDeathActionComponent(new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW))));
 
         return bag;
     }

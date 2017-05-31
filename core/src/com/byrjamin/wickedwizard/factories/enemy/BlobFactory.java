@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
@@ -210,13 +209,14 @@ public class BlobFactory extends EnemyFactory {
                 Measure.units(45),
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        OnDeathComponent odc = new OnDeathComponent();
+        //TODO fix biggablobba
+/*        OnDeathComponent odc = new OnDeathComponent();
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         df.giblets(odc, 10, Color.GREEN);
-        bag.add(odc);
+        bag.add(odc);*/
 
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(),  1.5f);

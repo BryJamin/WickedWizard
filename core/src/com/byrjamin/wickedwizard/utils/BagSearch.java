@@ -42,4 +42,12 @@ public class BagSearch {
         return null;
     }
 
+    public static <T, B> void removeObjectOfTypeClass(Class<T> cls, Bag<B> bag){
+        for(B ok : bag){
+            if(ok.getClass() == cls){
+                bag.remove(ok);
+            }
+        }
+    }
+
 }

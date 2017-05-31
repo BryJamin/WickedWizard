@@ -1,17 +1,12 @@
 package com.byrjamin.wickedwizard.ecs.systems.graphical;
 
 import com.artemis.Aspect;
-import com.artemis.BaseSystem;
-import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
-import com.badlogic.gdx.math.Vector2;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**

@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -7,15 +9,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 import java.util.Random;
 
@@ -59,10 +64,21 @@ public class BouncerFactory extends EnemyFactory {
         x = x - width * 2 / 2;
         y = y - height * 2 / 2;
         ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, random.nextBoolean());
+        BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
 
-        OnDeathComponent odc = BagSearch.getObjectOfTypeClass(OnDeathComponent.class, bag);
-        odc.getComponentBags().add(smallBouncerTargeted(0,0, true));
-        odc.getComponentBags().add(smallBouncerTargeted(0,0, false));
+        bag.add(new OnDeathActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                BagToEntity.bagToEntity(world.createEntity(),smallBouncerTargeted(cbc.getCenterX(), cbc.getCenterY(), true));
+                BagToEntity.bagToEntity(world.createEntity(),smallBouncerTargeted(cbc.getCenterX(), cbc.getCenterY(), false));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
 
         return bag;
     }

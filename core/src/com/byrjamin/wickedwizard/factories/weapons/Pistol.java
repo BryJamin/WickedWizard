@@ -6,8 +6,8 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
@@ -59,9 +59,9 @@ public class Pistol implements Weapon{
         if(isCrit) bullet.getComponent(TextureRegionComponent.class).color.set(0,0,0,1);
 
         if(isCrit) {
-            gibletFactory.giblets(bullet.getComponent(OnDeathComponent.class), 10,0.4f, (int) 0, (int) Measure.units(40f),Measure.units(0.5f), new Color(0, 0, 0, 1));
+            bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(10,0.4f, 0, (int) Measure.units(40f),Measure.units(0.5f), new Color(0, 0, 0, 1))));
         } else {
-            gibletFactory.giblets(bullet.getComponent(OnDeathComponent.class), 5, 0.2f, (int) 0, (int) Measure.units(20f),Measure.units(0.5f), new Color(1, 1, 1, 1));
+            bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int) 0, (int) Measure.units(20f),Measure.units(0.5f), new Color(1, 1, 1, 1))));
         }
         if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?
