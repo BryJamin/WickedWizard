@@ -1,28 +1,30 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.levels;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
+import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
+import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_NEAR;
 
@@ -30,7 +32,7 @@ import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComp
  * Created by Home on 01/04/2017.
  */
 
-public class TutorialFactory extends ArenaShellFactory {
+public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
     private final String moveTutorialString1 = "Exit this room on the right";
     private final String moveTutorialString2 = "TOUCH WITHIN THIS AREA TO MOVE!";
@@ -61,11 +63,16 @@ public class TutorialFactory extends ArenaShellFactory {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-        //arena.addEntity(SilverHeadFactory.silverHead(1000, 600));
+
+
+        //arena.addEntity(SilverHeadFactory.spawnSilverHead(1000, 600));
         //arena.addEntity(KugelDuscheFactory.kugelDusche(arena.getWidth() / 2,arena.getHeight() / 2));
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
+
+
+
 
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -93,6 +100,23 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
         arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
 
+/*        ComponentBag cb = new ComponentBag();
+        cb.add(new PositionComponent(arena.getWidth() / 2, arena.getHeight() / 2));
+        cb.add(new CollisionBoundComponent(new Rectangle(arena.getWidth() / 2, arena.getHeight() / 2, Measure.units(10f), Measure.units(10f))));
+        cb.add(new OrbitComponent(new Vector3(arena.getWidth() / 2, arena.getHeight() / 2, 0), Measure.units(20f), 4, 0));
+
+        arena.addEntity(cb);*/
+/*
+        arena.addEntity(new KugelDuscheFactory(assetManager).kugelDusche(arena.getWidth() / 2, arena.getHeight() / 2));*/
+
+/*        cb = new ComponentBag();
+        cb.add(new PositionComponent(arena.getWidth() / 2, arena.getHeight() / 2));
+        cb.add(new CollisionBoundComponent(new Rectangle(arena.getWidth() / 2, arena.getHeight() / 2, Measure.units(10f), Measure.units(10f))));
+        cb.add(new OrbitComponent(new Vector3(arena.getWidth() / 2, arena.getHeight() / 2, 0), Measure.units(10f), 4, 0));
+
+        arena.addEntity(cb);*/
+
+
 /*        bag = new Bag<Component>();
         createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, Color.BLACK);
 
@@ -101,7 +125,7 @@ public class TutorialFactory extends ArenaShellFactory {
         ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2, FOREGROUND_LAYER_NEAR);
         bag.add(sc);
         bag.add(new FadeComponent());*/
-        arena.addEntity(createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, Color.BLACK));
+        arena.addEntity(createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, new Color(Color.BLACK)));
 
         return arena;
 

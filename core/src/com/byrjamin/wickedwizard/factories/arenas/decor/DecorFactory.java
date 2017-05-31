@@ -1,8 +1,11 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.decor;
 
 import com.artemis.Component;
+import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,7 +13,13 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -19,9 +28,13 @@ import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.LockComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -77,11 +90,11 @@ public class DecorFactory extends AbstractFactory {
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(sc.getState(),
+        aniMap.put(sc.getDefaultState(),
                 new Animation<TextureRegion>(1 / 35f, atlas.findRegions("chevron"), Animation.PlayMode.LOOP_PINGPONG));
         bag.add(new AnimationComponent(aniMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(sc.getState()).getKeyFrame(sc.stateTime), width, height,
+        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(sc.getDefaultState()).getKeyFrame(sc.stateTime), width, height,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR);
 
         trc.rotation = rotationInDegrees;
@@ -150,7 +163,8 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setCurrentState(AnimationStateComponent.State.UNLOCKED.getState());
         sc.stateTime = 100f;
         bag.add(sc);
 
@@ -190,7 +204,8 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new DoorComponent(current, leaveCoords, exit));
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setCurrentState(AnimationStateComponent.State.UNLOCKED.getState());
         sc.stateTime = 100f;
         bag.add(sc);
 
@@ -240,7 +255,7 @@ public class DecorFactory extends AbstractFactory {
 
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(AnimationStateComponent.State.UNLOCKED.getState());
+        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
         sc.stateTime = 100f;
         bag.add(sc);
 
@@ -263,12 +278,12 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-    public Bag<Component> grapplePointBag(float x, float y){
+    public ComponentBag grapplePointBag(float x, float y){
 
         float width = Measure.units(10);
         float height = Measure.units(10);
 
-        Bag<Component> bag = new Bag<Component>();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x - width /  2,y - height /2 ));
         bag.add(new CollisionBoundComponent(new Rectangle(x - width / 2,y - height / 2, width, height)));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.GRAPPLE),
@@ -276,10 +291,47 @@ public class DecorFactory extends AbstractFactory {
                 Measure.units(2.5f),
                 Measure.units(5),
                 Measure.units(5),
-                TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+                TextureRegionComponent.BACKGROUND_LAYER_NEAR, arenaSkin.getWallTint()));
         bag.add(new GrappleableComponent());
 
         return bag;
+
+    }
+
+
+
+    public ComponentBag hiddenGrapplePointBag(float x, float y){
+
+        ComponentBag bag = grapplePointBag(x, y);
+
+        Action combatAction = new Action() {
+
+
+            CollisionBoundComponent cbc;
+
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().remove(FadeComponent.class);
+                e.edit().remove(GrappleableComponent.class);
+                cbc = e.getComponent(CollisionBoundComponent.class);
+                e.edit().remove(cbc);
+                e.edit().add(new FadeComponent(false, 0.5f, false));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FadeComponent.class);
+                e.edit().add(cbc);
+                e.edit().add(new GrappleableComponent());
+                e.edit().add(new FadeComponent(true, 0.5f, false));
+            }
+        };
+
+        bag.add(new InCombatActionComponent(combatAction));
+
+
+        return bag;
+
 
     }
 
@@ -296,12 +348,27 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wall_turret"), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WALLTURRET), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
         trc.rotation = angleInDegrees + 90;
         trc.DEFAULT = arenaSkin.getWallTint();
         trc.color = arenaSkin.getWallTint();
 
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(fireRate / atlas.findRegions(TextureStrings.WALLTURRET).size, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.REVERSED));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.005f / 1f, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.NORMAL));
+
+
+        bag.add(new AnimationComponent(animMap));
+
+
+
         bag.add(trc);
+
+
+
+
 
         //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
@@ -317,6 +384,96 @@ public class DecorFactory extends AbstractFactory {
     }
 
 
+
+
+    public ComponentBag mapPortal (float x, float y, BossTeleporterComponent btc){
+
+
+        float width = Measure.units(10f);
+        float height = Measure.units(10f);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        ComponentBag bag = portal(x,y);
+        Rectangle r = new Rectangle(x,y,width,height);
+        bag.add(btc);
+
+        bag.add(new ProximityTriggerAIComponent(r, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(MapTeleportationSystem.class).goFromTo(e.getComponent(BossTeleporterComponent.class));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+
+        return bag;
+
+    }
+
+
+    private ComponentBag portal(float x, float y){
+
+
+        float width = Measure.units(10f);
+        float height = Measure.units(10f);
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x, y));
+
+
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+
+        AnimationStateComponent sc = new AnimationStateComponent();
+        sc.setDefaultState(0);
+        bag.add(sc);
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.1f, atlas.findRegions("teleporter"), Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+
+        bag.add(new TextureRegionComponent(atlas.findRegion("teleporter"),
+                Measure.units(10),
+                Measure.units(10),
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+
+        return bag;
+
+    }
+
+
+    public ComponentBag levelPortal(float x, float y){
+
+
+        float width = Measure.units(10f);
+        float height = Measure.units(10f);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        ComponentBag bag = portal(x,y);
+        Rectangle r = new Rectangle(x,y,width,height);
+
+        bag.add(new ProximityTriggerAIComponent(r, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(MapTeleportationSystem.class).recreateWorld();
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+
+
+        return bag;
+
+    }
 
 
 }

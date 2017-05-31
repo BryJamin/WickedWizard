@@ -15,7 +15,7 @@ public class FoundarySkin extends AbstractSkin {
 
     @Override
     public Color getBackgroundTint() {
-        return new Color(204/255f, 255/255f, 255/255f, 1);
+        return new Color(176/255f, 196/255f, 222/255f, 1);
     }
 
     //999999

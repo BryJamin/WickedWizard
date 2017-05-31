@@ -10,6 +10,8 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
+import java.util.Stack;
+
 /**
  * Created by Home on 13/03/2017.
  */
@@ -70,6 +72,25 @@ public class Arena {
     }
 
 
+    private Stack<Bag<Bag<Component>>> waves = new Stack<Bag<Bag<Component>>>();
+
+    public void addWave(Bag<Component>... bags){
+        Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
+
+        for(Bag<Component> b : bags){
+            bagOfBags.add(b);
+        }
+        waves.add(bagOfBags);
+    }
+
+
+    public void addWave(Bag<Bag<Component>> bags){
+        waves.add(bags);
+    }
+
+    public Stack<Bag<Bag<Component>>> getWaves() {
+        return waves;
+    }
 
 
     public void addDoor(Bag<Component> door){

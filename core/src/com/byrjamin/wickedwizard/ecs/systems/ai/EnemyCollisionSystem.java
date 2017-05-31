@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
@@ -32,22 +33,20 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class).exclude(BulletComponent.class));
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.one(EnemyComponent.class, HazardComponent.class).exclude(BulletComponent.class));
         IntBag entityIds = subscription.getEntities();
 
-        for(int i = 0; i < entityIds.size(); i++) {
-            if(cbm.has(entityIds.get(i))){
+        for (int i = 0; i < entityIds.size(); i++) {
+            if (cbm.has(entityIds.get(i))) {
 
-                for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
-                if(cbm.get(e).bound.overlaps(hb.hitbox)){
-                    if(!bm.get(e).isHit) {
+                for (HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
+                    if (cbm.get(e).bound.overlaps(hb.hitbox)) {
                         hm.get(e).applyDamage(1);
-                        bm.get(e).isHit = true;
                         break;
                     }
-                }
             }
         }
+
 
         //PositionComponent pc = pm.get(e);
         //VelocityComponent vc = vm.get(e);

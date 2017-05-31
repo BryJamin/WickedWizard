@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -62,7 +63,7 @@ public class GrappleSystem extends EntityProcessingSystem {
 
             if (cbc.bound.contains(mtc.targetX, cbc.getCenterY())) {
                 mtc.targetX = null;
-                vc.velocity.x = vc.velocity.x / 3;
+                vc.velocity.x = vc.velocity.x / 4;
                 //vc.velocity.x = mtc.endSpeedX;
             } else if (currentPosition >= targetX) {
                 vc.velocity.x = (vc.velocity.x <= -mtc.maxX) ? -mtc.maxX : vc.velocity.x - mtc.accelX;
@@ -79,13 +80,23 @@ public class GrappleSystem extends EntityProcessingSystem {
 
             if (cbc.bound.contains(cbc.getCenterX(), mtc.targetY)) {
                 mtc.targetY = null;
-                vc.velocity.y = (vc.velocity.y > Measure.units(2f)) ? vc.velocity.y / 2 : 400;
+                vc.velocity.y = (vc.velocity.y < Measure.units(0)) ? 0 : vc.velocity.y;
+                vc.velocity.y = (vc.velocity.y > mtc.maxEndSpeedY) ? mtc.maxEndSpeedY : vc.velocity.y;
+
+                //TODO review this.
+                if(world.getMapper(JumpComponent.class).has(e)) {
+                    e.getComponent(JumpComponent.class).jumps = 1;
+                }
+
+
             } else if (currentPosition >= targetY) {
                 vc.velocity.y = (vc.velocity.y <= -mtc.maxX) ? -mtc.maxY : vc.velocity.y - mtc.accelY;
             } else {
                 vc.velocity.y = (vc.velocity.y >= mtc.maxY) ? mtc.maxY : vc.velocity.y + mtc.accelY;
             }
         }
+
+
 
 /*
     if(mtc.targetX != null && mtc.targetY != null) {
@@ -175,6 +186,10 @@ public class GrappleSystem extends EntityProcessingSystem {
         //mtc.endSpeedY =
 
     }
+
+
+    //TODO in future if I do shoot out something check if it hits something then if it does perform a grapple action? Holy shizz I think I figure it out.
+    //public void grappleCollisionCheck;
 
 
 

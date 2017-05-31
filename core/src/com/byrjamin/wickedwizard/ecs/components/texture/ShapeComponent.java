@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.components.texture;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -17,6 +18,16 @@ public class ShapeComponent extends TextureRegionComponent{
         this.width = width;
         this.height = height;
         this.layer = layer;
+    }
+
+    public ShapeComponent(float offsetX, float offsetY, float width, float height, int layer, Color color) {
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.width = width;
+        this.height = height;
+        this.layer = layer;
+        this.color = color;
+        this.DEFAULT = color;
     }
 
     public ShapeComponent(){

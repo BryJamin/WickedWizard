@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Pair;
@@ -18,6 +19,10 @@ public class MoneyPlus1 implements PickUp {
     @Override
     public boolean applyEffect(World world, Entity player) {
         player.getComponent(CurrencyComponent.class).money += 1;
+
+
+
+
         return true;
     }
 

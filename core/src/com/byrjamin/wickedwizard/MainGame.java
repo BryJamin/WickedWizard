@@ -1,9 +1,11 @@
 package com.byrjamin.wickedwizard;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -43,6 +45,11 @@ public class MainGame extends Game {
 		//Gdx.input.setCursorPosition(0, 0);
 		manager.load("sprite.atlas", TextureAtlas.class);
 
+
+		System.out.println(Gdx.files.getLocalStoragePath());
+		System.out.println(Gdx.files.getExternalStoragePath());
+
+
 		FileHandleResolver resolver = new InternalFileHandleResolver();
 		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
 		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
@@ -51,7 +58,7 @@ public class MainGame extends Game {
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size1Params.fontFileName = "fonts/Roboto-Black.ttf";
 		size1Params.fontParameters.size = (int) Measure.units(3f);
-		size1Params.fontParameters.borderColor = Color.BLACK;
+		size1Params.fontParameters.borderColor = new Color(Color.BLACK);
 		size1Params.fontParameters.borderWidth = 0;
         //size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
@@ -60,7 +67,7 @@ public class MainGame extends Game {
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size2Params.fontFileName = "fonts/Roboto-Black.ttf";
         size2Params.fontParameters.size = (int) Measure.units(4f);
-        size2Params.fontParameters.borderColor = Color.BLACK;
+        size2Params.fontParameters.borderColor = new Color(Color.BLACK);
         size2Params.fontParameters.borderWidth = 0;
         //size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;

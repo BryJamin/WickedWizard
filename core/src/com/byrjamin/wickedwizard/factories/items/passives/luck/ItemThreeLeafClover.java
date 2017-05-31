@@ -16,8 +16,8 @@ public class ItemThreeLeafClover implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        HealthComponent hc = player.getComponent(HealthComponent.class);
-        hc.maxHealth = hc.maxHealth + 2;
+        StatComponent sc = player.getComponent(StatComponent.class);
+        sc.maxHealth = sc.maxHealth + 2;
 
         player.getComponent(StatComponent.class).luck += PresetStatIncrease.minor;
         return true;

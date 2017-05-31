@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories.arenas;
+package com.byrjamin.wickedwizard.factories.arenas.presets;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
@@ -11,16 +11,14 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
+import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.factories.items.PickUp;
-import com.byrjamin.wickedwizard.factories.items.passives.ChangeColor;
-import com.byrjamin.wickedwizard.factories.items.passives.damage.Anger;
-import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
-import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -28,7 +26,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 18/04/2017.
  */
 
-public class ShopFactory extends ArenaShellFactory {
+public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
     private ItemFactory itemFactory;
 
@@ -44,11 +42,11 @@ public class ShopFactory extends ArenaShellFactory {
 
     }
 
-    public Arena createShop(){
-        return createShop(new MapCoords(0,0));
+    public Arena createShop(Item item1, Item item2){
+        return createShop(new MapCoords(0,0), item1, item2);
     };
 
-    public Arena createShop(MapCoords defaultCoords) {
+    public Arena createShop(MapCoords defaultCoords, Item item1, Item item2) {
 
         Arena arena = new Arena(Arena.RoomType.SHOP, arenaSkin, defaultCoords);
 
@@ -61,28 +59,26 @@ public class ShopFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena(arena);
-
-        Item[] items = {new Medicine(), new Anger(), new ItemSwiftShot()};
-        PickUp[] pickUps = {new HealthUp()};
+        
 
 /*        MapCoords[] locations = new MapCoords[]{ new MapCoords((int) Measure.units(20), (int) Measure.units(40)),
                 new MapCoords((int) Measure.units(40), (int) Measure.units(40)),
                 new MapCoords((int) Measure.units(60), (int) Measure.units(40)),
                 new MapCoords((int) Measure.units(80), (int) Measure.units(40))};*/
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new HealthUp(), 1)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new HealthUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new Anger(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new KeyUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(40), new ItemSwiftShot(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(40), item1, 10)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(40), new ChangeColor(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(40), item2, 10)) {
             arena.addEntity(b);
         }
 

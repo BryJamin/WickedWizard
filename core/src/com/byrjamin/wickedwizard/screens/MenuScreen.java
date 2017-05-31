@@ -8,33 +8,27 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
-import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.factories.arenas.DecorFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -42,10 +36,8 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -71,16 +63,28 @@ public class MenuScreen extends AbstractScreen {
     private Rectangle startGameButton;
     private Rectangle tutorialGameButton;
 
+
+    private Entity startGame;
+    private Entity startTutorial;
+
+    private Entity boundOption;
+    private Entity godOption;
+
     GestureDetector gestureDetector;
     private boolean gameOver = false;
+
+    private Preferences settings;
 
     //TODO IF you ever click in the deck area don't cast any spells
 
     public MenuScreen(MainGame game) {
         super(game);
+
+        settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
+
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
-        atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
+        atlas = game.manager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         Assets.initialize(game.manager);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -89,7 +93,7 @@ public class MenuScreen extends AbstractScreen {
 
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
-        createDeathScreenWorld();
+        createMenu();
     }
 
     public TextureAtlas getAtlas() {
@@ -104,7 +108,7 @@ public class MenuScreen extends AbstractScreen {
     }
 
 
-    public void createDeathScreenWorld(){
+    public void createMenu(){
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem()
@@ -112,7 +116,7 @@ public class MenuScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new AnimationSystem(),
                         new StateSystem(),
-                        new GroundCollisionSystem(),
+                        new CollisionSystem(),
                         //new FindPlayerSystem(player),
                         new GravitySystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
@@ -124,23 +128,29 @@ public class MenuScreen extends AbstractScreen {
 
         world = new World(config);
 
-        startGameButton = createButton(world, "Start", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(20f));
+        startGame = createButton(world, "Start", gameport.getWorldWidth() / 2
+                ,gameport.getWorldHeight() / 2 + Measure.units(25f));
 
 
-        tutorialGameButton = createButton(world, "Tutorial", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(5f));
+        startTutorial = createButton(world, "Tutorial", gameport.getWorldWidth() / 2
+                ,gameport.getWorldHeight() / 2 + Measure.units(10f));
 
+
+        boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
+        boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
+
+        boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", gameport.getWorldWidth() / 4, Measure.units(27.5f));
+        godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", gameport.getWorldWidth() / 4 * 3, Measure.units(27.5f));
 
         //Player
 
-        Entity player = world.createEntity();
+/*        Entity player = world.createEntity();
         player.edit().add(new PositionComponent(Measure.units(80f),Measure.units(18f)));
         player.edit().add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
         player.edit().add(new VelocityComponent(0,0));
         player.edit().add(new GravityComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         player.edit().add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
@@ -151,7 +161,7 @@ public class MenuScreen extends AbstractScreen {
                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         trc.color = new Color(Color.WHITE);
         trc.DEFAULT = new Color(Color.WHITE);
-        player.edit().add(trc);
+        player.edit().add(trc);*/
 
 
         SolitarySkin ss = new SolitarySkin(atlas);
@@ -187,11 +197,11 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-    public Rectangle createButton(World world, String text, float x, float y){
+    public Entity createButton(World world, String text, float x, float y){
 
         SolitarySkin ss = new SolitarySkin(atlas);
 
-        float width = Measure.units(20f);
+        float width = Measure.units(30f);
         float height = Measure.units(10f);
 
         x = x - width / 2;
@@ -217,9 +227,9 @@ public class MenuScreen extends AbstractScreen {
         sc.DEFAULT = ss.getWallTint();
 
 
-        shape.edit().add(new ShapeComponent(width,height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
+        shape.edit().add(sc);
 
-        return r;
+        return e;
 
     }
 
@@ -285,13 +295,41 @@ public class MenuScreen extends AbstractScreen {
             Vector3 touchInput = new Vector3(x, y, 0);
             gameport.unproject(touchInput);
 
-            if (startGameButton.contains(touchInput.x,touchInput.y)) {
+            if (startGame.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
                 game.setScreen(new PlayScreen(game, false));
             }
 
-            if (tutorialGameButton.contains(touchInput.x,touchInput.y)) {
+            if (startTutorial.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
                 game.setScreen(new PlayScreen(game, true));
             }
+
+            if (boundOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
+
+                boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
+
+
+                settings.putBoolean(PreferenceStrings.SETTINGS_BOUND, !isBound).flush();
+
+                boundOption.getComponent(TextureFontComponent.class).text = !isBound ? "Bounds on" : "Bounds off";
+                //game.setScreen(new PlayScreen(game, true));
+            }
+
+            if (godOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
+
+                boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, true);
+
+
+                settings.putBoolean(PreferenceStrings.SETTINGS_GODMODE, !isGod).flush();
+
+                godOption.getComponent(TextureFontComponent.class).text = !isGod ? "GodMode on" : "GodMode off";
+
+
+                //game.setScreen(new PlayScreen(game, true));
+            }
+
+
+
+           // boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
 
             return true;
         }

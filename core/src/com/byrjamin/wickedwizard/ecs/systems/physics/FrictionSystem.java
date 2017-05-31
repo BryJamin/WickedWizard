@@ -32,7 +32,7 @@ public class FrictionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public FrictionSystem() {
-        super(Aspect.all(VelocityComponent.class).one(PlayerComponent.class, AltarComponent.class));
+        super(Aspect.all(VelocityComponent.class).one(PlayerComponent.class, PickUpComponent.class));
     }
 
     @Override

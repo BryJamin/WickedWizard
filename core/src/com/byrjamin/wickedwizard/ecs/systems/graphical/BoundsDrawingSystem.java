@@ -5,6 +5,8 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -22,6 +24,8 @@ public class BoundsDrawingSystem extends EntitySystem {
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<BlinkComponent> bm;
 
+    public boolean isDrawing;
+
     @SuppressWarnings("unchecked")
     public BoundsDrawingSystem() {
         super(Aspect.all(CollisionBoundComponent.class));
@@ -30,18 +34,25 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
-        for(Entity e : this.getEntities()){
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, cbm.get(e).bound);
 
+        //System.out.println(enabled);
+
+
+        Array<Rectangle> bounds = new Array<Rectangle>();
+        Array<Rectangle> hitboxes = new Array<Rectangle>();
+
+        if(!isDrawing) return;
+
+        for(Entity e : this.getEntities()){
+            bounds.add(cbm.get(e).bound);
             for(HitBox hb : cbm.get(e).hitBoxes) {
-                BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.CYAN, hb.hitbox);
+                hitboxes.add(hb.hitbox);
             }
         }
 
 
         if(world.getSystem(PlayerInputSystem.class) != null) {
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
-                    world.getSystem(PlayerInputSystem.class).movementArea);
+            bounds.add(world.getSystem(PlayerInputSystem.class).movementArea);
         }
 
 
@@ -60,6 +71,11 @@ public class BoundsDrawingSystem extends EntitySystem {
 
         }*/
 
+
+
+
+        BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, bounds);
+        BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.CYAN, hitboxes);
 
 
 

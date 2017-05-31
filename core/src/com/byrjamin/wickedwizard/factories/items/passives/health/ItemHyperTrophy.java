@@ -16,12 +16,12 @@ public class ItemHyperTrophy implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        HealthComponent hc = player.getComponent(HealthComponent.class);
-        hc.maxHealth = hc.maxHealth + 1;
-        hc.health = (hc.health + 1 >= hc.maxHealth) ? hc.maxHealth : hc.health + 2;
+        StatComponent sc = player.getComponent(StatComponent.class);
+        sc.maxHealth = sc.maxHealth + 1;
+        sc.health = (sc.health + 1 >= sc.maxHealth) ? sc.maxHealth : sc.health + 2;
 
-        player.getComponent(StatComponent.class).speed -= PresetStatIncrease.Speed.major;
-        player.getComponent(StatComponent.class).damage += PresetStatIncrease.minor;
+        sc.speed -= PresetStatIncrease.Speed.major;
+        sc.damage += PresetStatIncrease.minor;
 
         return true;
     }

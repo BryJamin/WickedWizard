@@ -14,6 +14,8 @@ import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -22,31 +24,34 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class SpawnerFactory extends EnemyFactory {
 
-    public SpawnerFactory(AssetManager assetManager) {
+    private ArenaSkin arenaSkin;
+
+    public SpawnerFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
+        this.arenaSkin = arenaSkin;
     }
 
-    private static float width = Measure.units(12f);
-    private static float height = Measure.units(12f);
+    private static float width = Measure.units(10f);
+    private static float height = Measure.units(10f);
 
-    public Bag<Component> spawnerBag(float x, float y, Array<Spawner> spawners){
+    public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners){
 
         x = x - width / 2;
         y = y - height / 2;
 
 
-        Bag<Component> bag = new Bag<Component>();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         bag.add(sc);
-        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.CIRCLE), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, a);
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(a.getKeyFrame(sc.stateTime), width, height,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
 
         SpawnerComponent spawn = new SpawnerComponent(spawners, 1.0f);
         spawn.offsetX = width / 2;

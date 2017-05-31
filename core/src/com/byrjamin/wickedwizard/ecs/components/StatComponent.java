@@ -9,10 +9,14 @@ import com.artemis.Component;
 public class StatComponent extends Component {
 
 
+    public int health = 6;
+    public int maxHealth = 6;
+
+
     //Your damage based on the weapon
     public float damage = 1;
 
-    public float armor = 2;
+    public float armor = 0;
 
     //How fast you fire your weapon
     public float fireRate = 1;

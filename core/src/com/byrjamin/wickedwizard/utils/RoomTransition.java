@@ -38,7 +38,9 @@ public class RoomTransition {
     }
 
     public void draw(SpriteBatch batch){
-        transitionAnim.draw(batch);
+       // if(!isFinished()) {
+            transitionAnim.draw(batch);
+    //    }
     }
 
     public void fromCenterToLeft(){

@@ -7,33 +7,40 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
-- Create a 'god mode' and 'bounds mode' menu option. 
-- Change animation so it is easier to queue animations such as the firing animation. 
+- Need to make roomtransition a system so I can activate it when you use a teleporter
+instead of it being restricted to the roomtransition system
+
+-Death screen needs a specific area to click
+
+
+- Destructable chests
+
+- Turn everything into using TextureStrings
+
+- Enemies that can traverse through platforms
+
+- Menus can be used by enabling and disabling entities
 
 - Change turret to have animation
 
-- Change tutorial to have more 'forced sections' (teach double jump)
--Create a menu Screen and when you start game if you have no preferences of tutorial make one. 
+- Change tutorial to have more 'forced sections' (teach how to stop gliding)
+
+-Create a menu Screen and when you start game if you have no preferences of tutorial make one.
+
 - Vertical wall bug. You can land on the side of top of wall vertically stacking with one another,
-due to the way the future bound is used. 
--Chest need a loot table and so do stores and Item Rooms (but for that I may need more items
--Create TextureLoader Parameter. For usages in tests 
--Add in a Time Limit of sorts where we die if you run out of time. 
--Improve message banner to have an offset so you can change where it shows up. 
-- Camera shake on explosion
+due to the way the future bound is used.
+
 
 ###Bugs
-- You can trigger shooting and moving the have the same pointer due to platforms. You double tap
-to go below and then hold to move it counts as the same pointer and you shoot and move
--Collisions should stop a grapple or you just travel for ever. 
--Message for Solitary level is positioned incorrectly
--General clean up and maintenance, seperating of the RoomTransitionSystem into different classes
-- Potential bug with room transition animation on wide rooms. Sliver of old room may be visible
-- May be possible to fall through the world due to player input being unpaused when the enxt transition screen is going (hard to replicate)
 
+-Collisions should stop a grapple or you just travel for ever. 
+- Message for Solitary level is positioned incorrectly
+- General clean up and maintenance, seperating of the RoomTransitionSystem/PlayScreen into different classes
 
 
 ### Backburner (Broad goals that need to be broken down once we reach them)
+
+- Use the new orbital component to
 
 -Giant Factory? Similar to AssetManager, is generic and stores all Factories? 
 - Biggablobba needs a phase where he goes underground and chases the player 
@@ -63,6 +70,12 @@ to go below and then hold to move it counts as the same pointer and you shoot an
     - Room where 
     
 - Explosives and Lasers
+
+- Add in a Time Limit of sorts where we die if you run out of time. *probably won't*
+
+- Create TextureLoader Parameter. For usages in tests
+- Improve message banner to have an offset so you can change where it shows up.
+- Camera shake on explosion
   
 
 ### Completed
@@ -77,5 +90,14 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 -Add a fade to the item pickup entity. 
 - Giblets. create an Ondeath that spawns out giblets when an enemies dies
 - Minion component, (can't drop loot))
-- Change chest to open only when near it 
-
+- Change chest to open only when near it
+ --Chest need a loot table and so do stores and Item Rooms (but for that I may need more items** Need to make differnet item pools
+- Make shop bounds a bit larger so you can click objects easier
+- Create a 'god mode' and 'bounds mode' menu option.
+- Change animation so it is easier to queue animations such as the firing animation.
+- Out of Combat component
+- Potential bug with room transition animation on wide rooms. Sliver of old room may be visible (Fixed for now but I dislike the implimentation due to the size of the class)
+- Make a grapple a tap not a touchdown
+- Parent Component on death should also kill the child component 
+- You can trigger shooting and moving the have the same pointer due to platforms. You double tap
+to go below and then hold to move it counts as the same pointer and you shoot and move

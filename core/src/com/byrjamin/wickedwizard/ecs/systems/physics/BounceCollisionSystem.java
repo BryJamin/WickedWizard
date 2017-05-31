@@ -47,48 +47,12 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        Array<Rectangle> collidableobjects = new Array<Rectangle>();
-
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class));
-        IntBag entityIds = subscription.getEntities();
-
-        for(int i = 0; i < entityIds.size(); i++){
-            collidableobjects.add(wm.get(entityIds.get(i)).bound);
-        }
-
-        subscription = world.getAspectSubscriptionManager().get(Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
-        entityIds = subscription.getEntities();
-
-        if(!playerm.has(e)) {
-            for(int i = 0; i < entityIds.size(); i++){
-                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
-            }
-
-        }
-
-        subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
-        entityIds = subscription.getEntities();
-
-        if(!playerm.has(e) && !bm.has(e)) {
-
-            for(int i = 0; i < entityIds.size(); i++){
-                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
-            }
-        }
-
-
-        PositionComponent pc = pm.get(e);
-        VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
+        VelocityComponent vc = vm.get(e);
+        PositionComponent pc = pm.get(e);
 
-        Rectangle futureRectangle = new Rectangle(cbc.bound);
-        futureRectangle.x += vc.velocity.x * world.delta;
-        futureRectangle.y += vc.velocity.y * world.delta;
+        for(Collider.Collision c : cbc.getRecentCollisions()){
 
-
-
-        for(Rectangle r : collidableobjects) {
-            Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, r);
             if(c != Collider.Collision.NONE) {
                 switch (c) {
                     case TOP:
@@ -111,7 +75,9 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
                     e.deleteFromWorld();
                 }
             }
+
         }
+
 
     }
 

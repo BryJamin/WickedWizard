@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 

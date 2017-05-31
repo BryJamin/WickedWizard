@@ -20,8 +20,8 @@ public class ChangeColor extends AbstractItem {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(TextureRegionComponent.class).color = Color.CYAN;
-        player.getComponent(TextureRegionComponent.class).DEFAULT = Color.CYAN;
+        player.getComponent(TextureRegionComponent.class).color = new Color(Color.CYAN);
+        player.getComponent(TextureRegionComponent.class).DEFAULT = new Color(Color.CYAN);
         return super.applyEffect(world, player);
     }
 

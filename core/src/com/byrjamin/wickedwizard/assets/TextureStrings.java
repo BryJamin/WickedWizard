@@ -11,20 +11,25 @@ public class TextureStrings {
     public static final String WINGS = "wings";
 
 
+    public static final String WALLTURRET = "wall_turret";
+
     //ENEMIES
+    public static final String BOMB = "bomb";
     public static final String EXPLOSION = "explosion";
 
     //BLOB
     public static final String BLOB_STANDING = "blob";
-    public static final String BLOB_ATTACKING = "blob_attack";
-    public static final String BLOB_DYING = "blob_dying";
+
+
+    //AMOEBA
+    public static final String AMOEBA = "amoeba";
 
 
     //Kugeldusche
     public static final String KUGELDUSCHE_EMPTY = "kugel";
     //SENTRY
     public static final String SENTRY = "sentry";
-
+    public static final String SENTRY_FIRING = "sentry_firing";
 
     //SILVERHEAD
     public static final String SILVERHEAD_ST = "silverhead_standing";
@@ -35,6 +40,12 @@ public class TextureStrings {
     public static final String BOUNCER_DEFAULT = "bouncer";
 
 
+    //SPAWNER
+    public static final String SPAWNER = "spawner";
+
+
+    //GOATWIZARD
+    public static final String GOATWIZARD = "goat_wizard";
 
     public static final String CIRCLE = "circle";
 
@@ -42,6 +53,11 @@ public class TextureStrings {
 
     //BIGGABLOBBA
     public static final String BIGGABLOBBA_STANDING = "biggablobba";
+
+    //WANDA
+    public static final String WANDA_STANDING = "enemy/wanda_standing";
+    public static final String WANDA_FIRING = "enemy/wanda_firing";
+
 
     public static final String GRAPPLE = "grapple";
 

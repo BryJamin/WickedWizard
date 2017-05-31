@@ -18,8 +18,6 @@ import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
-import javafx.geometry.Pos;
-
 /**
  * Created by Home on 29/04/2017.
  */

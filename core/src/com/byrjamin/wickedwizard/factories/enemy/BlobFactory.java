@@ -106,7 +106,7 @@ public class BlobFactory extends EnemyFactory {
         bag.add(new HealthComponent(1000));
         bag.add(new BlinkComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
+        sc.setDefaultState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
@@ -216,7 +216,7 @@ public class BlobFactory extends EnemyFactory {
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         df.giblets(odc, 10, Color.GREEN);
-        bag.add(df.basicOnDeathExplosion(odc, width, height, 0,0));
+        bag.add(odc);
 
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(),  1.5f);

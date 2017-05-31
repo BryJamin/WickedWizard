@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -30,7 +29,7 @@ public class ArenaBuilder {
     public static final float WALLWIDTH = Measure.units(5);
 
     public enum wall {
-        FULL, DOOR, NONE
+        FULL, DOOR, NONE, GRAPPLE
     }
 
     private MapCoords defaultCoords;
@@ -55,7 +54,7 @@ public class ArenaBuilder {
 
         defaultCoords = arena.getStartingCoords();
 
-        DecorFactory decorFactory = new DecorFactory(assetManager, arenaSkin);
+        com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
 
         for(Section s : sections) {
 
@@ -119,6 +118,26 @@ public class ArenaBuilder {
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
 
+            } else if(s.ceiling == wall.GRAPPLE){
+
+                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
+
+                arena.addDoor(decorFactory.horizontalDoorBag(Measure.units(40f) + posX, SECTION_HEIGHT - WALLWIDTH + posY,
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY + 1),
+                        Direction.UP));
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
+
+                ComponentBag bag = decorFactory.hiddenGrapplePointBag(posX + SECTION_WIDTH / 2, posY + ((SECTION_HEIGHT / 4) * 3));
+                DoorComponent dc = new DoorComponent(
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY + 1),
+                        Direction.UP);
+                dc.ignore = true;
+                bag.add(dc);
+                arena.addDoor(bag);
+
             }
 
             //Floor
@@ -147,7 +166,7 @@ public class ArenaBuilder {
                 BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
 
 
-                arena.addEntity(decorFactory.platform(Measure.units(40f), Measure.units(5f), Measure.units(20f)));
+                arena.addEntity(decorFactory.platform(Measure.units(40f) + posX, Measure.units(5f), Measure.units(20f)));
 
                 arena.addDoor(bag);
 
@@ -159,7 +178,7 @@ public class ArenaBuilder {
             arena.addEntity(bf.backgroundBags(0 + posX,0 + posY,
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
-                    Measure.units(20),
+                    Measure.units(15),
                     arenaSkin.getBackgroundTextures(),
                     arenaSkin));
 

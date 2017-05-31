@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Array;
 public class ParentComponent extends Component {
     public Array<com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent> children = new Array<com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent>();
 
+    private boolean isLinked = true;
+
     public ParentComponent(){
 
     }

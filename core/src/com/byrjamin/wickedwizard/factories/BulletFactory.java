@@ -19,6 +19,8 @@ import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -53,6 +55,8 @@ public class BulletFactory extends AbstractFactory {
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
+
+
         return fill;
     }
 
@@ -68,7 +72,19 @@ public class BulletFactory extends AbstractFactory {
 
     public Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
 
-        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , Color.RED);
+        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
+        bag.add(new EnemyComponent());
+
+
+        OnDeathComponent odc = BagSearch.getObjectOfTypeClass(OnDeathComponent.class, bag);
+        bag.add(new GibletFactory(assetManager).giblets(odc, 5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED)));
+
+        return bag;
+    }
+
+    public Bag<Component> basicEnemyBulletBagNoGibs(float x, float y, float scale) {
+
+        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
         bag.add(new EnemyComponent());
         return bag;
     }
@@ -89,12 +105,10 @@ public class BulletFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height)));
 
-        OnDeathComponent odc = new OnDeathComponent();
-        bag.add(new DeathFactory(assetManager).basicOnDeathExplosion(odc, width, height));
-
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion,-width / 2,-height / 2,  width * 2, height * 2, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
         trc.color = color;
+        bag.add(new OnDeathComponent());
 
         bag.add(trc);
         return bag;

@@ -87,7 +87,7 @@ public class SilverHeadFactory extends EnemyFactory {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(AnimationStateComponent.class).setState(CLOSING);
+                e.getComponent(AnimationStateComponent.class).setDefaultState(CLOSING);
             }
 
             @Override
@@ -100,7 +100,7 @@ public class SilverHeadFactory extends EnemyFactory {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(AnimationStateComponent.class).setState(CHARING);
+                e.getComponent(AnimationStateComponent.class).setDefaultState(CHARING);
             }
 
             @Override
@@ -116,7 +116,7 @@ public class SilverHeadFactory extends EnemyFactory {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(AnimationStateComponent.class).setState(OPENING);
+                e.getComponent(AnimationStateComponent.class).setDefaultState(OPENING);
                 wc.timer.skip();
                 e.edit().add(wc);
                 e.edit().add(fc);
@@ -134,7 +134,7 @@ public class SilverHeadFactory extends EnemyFactory {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(AnimationStateComponent.class).setState(STANDING);
+                e.getComponent(AnimationStateComponent.class).setDefaultState(STANDING);
 /*                AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
                 ac.accelX = accelX;
                 ac.maxX = maxX;*/

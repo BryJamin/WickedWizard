@@ -13,12 +13,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -32,11 +32,10 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.RoomTransition;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -45,24 +44,19 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 public class RoomTransitionSystem extends EntitySystem {
 
-    ComponentMapper<BulletComponent> bm;
-    ComponentMapper<PositionComponent> pm;
-    ComponentMapper<VelocityComponent> vm;
-    ComponentMapper<GravityComponent> gm;
-    ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<ActiveOnTouchComponent> aotm;
-    ComponentMapper<DoorComponent> dm;
-    ComponentMapper<MoveToComponent> mtm;
-    ComponentMapper<ParentComponent> parm;
-    ComponentMapper<ExpireComponent> em;
-    ComponentMapper<ChildComponent> cm;
+    private ComponentMapper<BulletComponent> bm;
+    private ComponentMapper<PositionComponent> pm;
+    private ComponentMapper<VelocityComponent> vm;
+    private ComponentMapper<GravityComponent> gm;
+    private ComponentMapper<CollisionBoundComponent> cbm;
+    private ComponentMapper<ActiveOnTouchComponent> aotm;
+    private ComponentMapper<DoorComponent> dm;
+    private ComponentMapper<MoveToComponent> mtm;
+    private ComponentMapper<ParentComponent> parm;
+    private ComponentMapper<ExpireComponent> em;
+    private ComponentMapper<ChildComponent> cm;
 
-
-
-    private Arena currentArena;
-    private Array<Arena> roomArray;
-    private OrderedSet<Arena> visitedArenas = new OrderedSet<Arena>();
-    private OrderedSet<Arena> unvisitedButAdjacentArenas = new OrderedSet<Arena>();
+    private ArenaMap currentMap;
 
     private boolean processingFlag = false;
     private MapCoords destination;
@@ -81,13 +75,11 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
     @SuppressWarnings("unchecked")
-    public RoomTransitionSystem(Arena currentArena, Array<Arena> roomArray) {
+    public RoomTransitionSystem(ArenaMap arenaMap) {
         super(Aspect.all().exclude(PlayerComponent.class));
-        this.currentArena = currentArena;
-        //visitedArenas.addAll(roomArray);
-        this.roomArray = roomArray;
-        visitedArenas.add(currentArena);
-        unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
+        this.currentMap = arenaMap;
+        currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
+        currentMap.getUnvisitedButAdjacentArenas().addAll(getAdjacentArenas(currentMap.getCurrentArena()));
     }
 
     public RoomTransition getEntryTransition() {
@@ -101,99 +93,49 @@ public class RoomTransitionSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        if(!canNowExitTransition) {
-            if(entryTransition == null) {
+        world.getSystem(ScreenWipeSystem.class).startScreenWipe(currentDoor.exit, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                switchRooms();
                 for(BaseSystem s: world.getSystems()){
-                    if(!(s instanceof RenderingSystem) && !(s instanceof RoomTransitionSystem)) {
-                        s.setEnabled(false);
+                    if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
+                        s.setEnabled(true);
                     }
                 }
-                entryAnimation(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
             }
 
-            if(!entryTransition.isFinished()){
-                entryTransition.update(world.delta);
-                return;
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
             }
-        }
+        });
 
-
-
-        if(canNowExitTransition) {
-
-            if (exitTransition == null) {
-                exitAnimation(currentDoor.exit, world.getSystem(CameraSystem.class).getGamecam());
-                entryTransition = null;
-                return;
-            }
-
-            if(!exitTransition.isFinished()){
-                exitTransition.update(world.delta);
-                return;
-            } else {
-                canNowExitTransition = false;
-                exitTransition = null;
-                //world.getSystem(PlayerInputSystem.class).setEnabled(true);
-                processingFlag = false;
-
-                for(BaseSystem s: world.getSystems()){
-                    s.setEnabled(true);
-                }
-            }
-
-
-            return;
-
-        }
-
-
-        switchRooms();
-
-
-/*        if(currentArena.roomType == Arena.RoomType.ITEM){
-
-            for(AltarComponent ac : currentArena.altars){
-                if(ac.hasItem){
-
-                }
-            }
-            currentArena.fin
-
-
-
-
-        }*/
-
-        for(BaseSystem s: world.getSystems()){
-            if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
-                s.setEnabled(true);
-            }
-        }
-
-        canNowExitTransition = true;
-
+        processingFlag = false;
 
     }
 
 
     public void switchRooms(){
-        packRoom(world, currentArena);
+
+        packRoom(world, currentMap.getCurrentArena());
 
 
-        currentArena = findRoom(destination);
-        if(currentArena == null){
+        currentMap.setCurrentArena(findRoom(destination));
+        if(currentMap.getCurrentArena() == null){
             return;
         }
-        visitedArenas.add(currentArena);
-        unvisitedButAdjacentArenas.remove(currentArena);
 
-        for(Arena a : getAdjacentArenas(currentArena)){
-            if(!visitedArenas.contains(a)){
-                unvisitedButAdjacentArenas.add(a);
+        currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
+        currentMap.getUnvisitedButAdjacentArenas().remove(currentMap.getCurrentArena());
+
+        for(Arena a : getAdjacentArenas(currentMap.getCurrentArena())){
+            if(!currentMap.getVisitedArenas().contains(a)){
+                currentMap.getUnvisitedButAdjacentArenas().add(a);
             }
         }
 
-        for(Bag<Component> b : currentArena.getBagOfEntities()){
+        for(Bag<Component> b : currentMap.getCurrentArena().getBagOfEntities()){
             Entity e = world.createEntity();
             for(Component c : b){
                 e.edit().add(c);
@@ -267,7 +209,7 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
     public Arena findRoom(MapCoords destination){
-        for(Arena a : roomArray) {
+        for(Arena a : currentMap.getRoomArray()) {
             if(a.cotainingCoords.contains(destination, false)){
                 return a;
             }
@@ -306,6 +248,7 @@ public class RoomTransitionSystem extends EntitySystem {
         arena.getBagOfEntities().clear();
 
         for(Entity e : this.getEntities()){
+
             if(!bm.has(e) && !em.has(e)) {
 
                 if(cm.has(e)){
@@ -342,112 +285,6 @@ public class RoomTransitionSystem extends EntitySystem {
 
     }
 
-
-    public void recreateWorld(){
-
-        packRoom(world, currentArena);
-
-        JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).incrementLevel();
-        jg.generateTutorial = false;
-
-        visitedArenas.clear();
-        unvisitedButAdjacentArenas.clear();
-
-        this.roomArray = jg.generate();
-        this.currentArena = jg.getStartingRoom();
-
-        unpackRoom(currentArena);
-
-        visitedArenas.add(currentArena);
-        unvisitedButAdjacentArenas.addAll(getAdjacentArenas(currentArena));
-
-
-        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
-        player.position.x = currentArena.getWidth() / 2;
-        player.position.y = currentArena.getHeight() / 2;
-
-
-        //TODO this is some cheesy code, please fix later.
-        world.getSystem(RoomTypeSystem.class).nextLevelDoor = false;
-
-
-    }
-
-    public void updateGUI(ArenaGUI aGUI, OrthographicCamera gamecam){
-        aGUI.update(world.delta, gamecam, visitedArenas, unvisitedButAdjacentArenas,
-                getCurrentArena(),
-                getCurrentPlayerLocation()
-                );
-    }
-
-
-    /**
-     * The direction the transition starts from
-     * @param start
-     * @param gamecam
-     */
-    public void entryAnimation(Direction start, OrthographicCamera gamecam) {
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        float width = gamecam.viewportWidth;
-        float height = gamecam.viewportHeight;
-
-        switch(start){
-            case LEFT:
-            default:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromLeftToCenter();
-                break;
-            case RIGHT:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromRightToCenter();
-                break;
-            case UP:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromTopToCenter();
-                break;
-            case DOWN:
-                entryTransition = new RoomTransition(camX, camY, width, height);
-                entryTransition.fromBottomToCenter();
-                break;
-        }
-
-    }
-
-
-    public void exitAnimation(Direction start, OrthographicCamera gamecam) {
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        float width = gamecam.viewportWidth;
-        float height = gamecam.viewportHeight;
-
-        switch (start) {
-            case LEFT:
-            default:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToLeft();
-                break;
-            case RIGHT:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToRight();
-                break;
-            case UP:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToBottom();
-                break;
-            case DOWN:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToTop();
-                break;
-        }
-
-    }
-
-
     public boolean goFromTo(DoorComponent dc, float doorEntryPercentage){
 
         Arena next = findRoom(dc.leaveCoords);
@@ -462,20 +299,37 @@ public class RoomTransitionSystem extends EntitySystem {
         return false;
     }
 
-    public Arena getCurrentArena() {
-        return currentArena;
-    }
 
     public MapCoords getCurrentPlayerLocation(){
         CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-        playerLocation.setX(currentArena.getStartingCoords().getX() + (int) (pBound.getCenterX() / ArenaShellFactory.SECTION_WIDTH));
-        playerLocation.setY(currentArena.getStartingCoords().getY() + (int) (pBound.getCenterY() / ArenaShellFactory.SECTION_HEIGHT));
+        playerLocation.setX(currentMap.getCurrentArena().getStartingCoords().getX() + (int) (pBound.getCenterX() / ArenaShellFactory.SECTION_WIDTH));
+        playerLocation.setY(currentMap.getCurrentArena().getStartingCoords().getY() + (int) (pBound.getCenterY() / ArenaShellFactory.SECTION_HEIGHT));
         return playerLocation;
     }
 
-    public Array<Arena> getRoomArray() {
-        return roomArray;
+    public void setCurrentMap(ArenaMap currentMap) {
+        this.currentMap = currentMap;
     }
 
+    public ArenaMap getCurrentMap() {
+        return currentMap;
+    }
+
+    public Arena getCurrentArena(){
+        return currentMap.getCurrentArena();
+    }
+
+    public Array<Arena> getRoomArray(){
+        return currentMap.getRoomArray();
+    }
+
+
+    public OrderedSet<Arena> getVisitedArenas(){
+        return currentMap.getVisitedArenas();
+    }
+
+    public OrderedSet<Arena> getUnvisitedButAdjacentArenas(){
+        return currentMap.getUnvisitedButAdjacentArenas();
+    }
 
 }

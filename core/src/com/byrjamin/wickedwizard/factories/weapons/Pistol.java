@@ -59,14 +59,14 @@ public class Pistol implements Weapon{
         if(isCrit) bullet.getComponent(TextureRegionComponent.class).color.set(0,0,0,1);
 
         if(isCrit) {
-            gibletFactory.giblets(bullet.getComponent(OnDeathComponent.class), 10,0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(0, 0, 0, 1));
+            gibletFactory.giblets(bullet.getComponent(OnDeathComponent.class), 10,0.4f, (int) 0, (int) Measure.units(40f),Measure.units(0.5f), new Color(0, 0, 0, 1));
         } else {
-            gibletFactory.giblets(bullet.getComponent(OnDeathComponent.class), 5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(1, 1, 1, 1));
+            gibletFactory.giblets(bullet.getComponent(OnDeathComponent.class), 5, 0.2f, (int) 0, (int) Measure.units(20f),Measure.units(0.5f), new Color(1, 1, 1, 1));
         }
         if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?
                     baseDamage * e.getComponent(StatComponent.class).damage :
-                    baseDamage * e.getComponent(StatComponent.class).damage * 1.25f; //crit multiplier
+                    baseDamage * e.getComponent(StatComponent.class).damage * 2f; //crit multiplier
         }
         //world.getSystem(FindPlayerSystem.class)
     }

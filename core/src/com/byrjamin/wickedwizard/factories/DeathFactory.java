@@ -24,7 +24,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.sun.java.swing.plaf.motif.MotifRadioButtonMenuItemUI;
 
 import java.util.Random;
 
@@ -50,7 +49,7 @@ public class DeathFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent());
         AnimationStateComponent asc = new AnimationStateComponent();
-        asc.setState(aniNumber);
+        asc.setDefaultState(aniNumber);
         bag.add(asc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(aniNumber,
@@ -114,44 +113,5 @@ public class DeathFactory extends AbstractFactory {
 
 
     }
-
-
-
-    public ComponentBag worldPortal (float x, float y){
-
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x, y));
-        bag.add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(RoomTransitionSystem.class).recreateWorld();
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10), Measure.units(10))));
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setState(0);
-        bag.add(sc);
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.02f, atlas.findRegions("squ_dash"), Animation.PlayMode.LOOP));
-        bag.add(new AnimationComponent(animMap));
-
-        bag.add(new TextureRegionComponent(atlas.findRegion("squ_dash"),
-                Measure.units(10),
-                Measure.units(10),
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-
-
-        return bag;
-
-    }
-
-
 
 }

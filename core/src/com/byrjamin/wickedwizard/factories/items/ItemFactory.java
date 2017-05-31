@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
@@ -34,7 +35,9 @@ import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -74,17 +77,24 @@ public class ItemFactory extends AbstractFactory {
 
         Random random = new Random();
 
-        bag.add(new VelocityComponent(random.nextInt((int) Measure.units(60f)) -Measure.units(30f), Measure.units(30f)));
 
+        float angle = random.nextFloat() * (360);
+
+        float speed = random.nextFloat() * (Measure.units(300f));
+
+        bag.add(new VelocityComponent(BulletMath.velocityX(speed, Math.toRadians(angle)), BulletMath.velocityY(speed, Math.toRadians(angle))));
         //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
 
         bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(20f),Measure.units(20f), Measure.units(150f), Measure.units(150f)));
+        bag.add(new AccelerantComponent(Measure.units(100f), Measure.units(100f)));
         bag.add(new IntangibleComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
         bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(2), Measure.units(2),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
+
+
+        bag.add(new GibletFactory(assetManager).bombGiblets(new OnDeathComponent(),10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)));
 
         return bag;
     }
@@ -113,9 +123,6 @@ public class ItemFactory extends AbstractFactory {
 
         float width = Measure.units(15);
         float height = Measure.units(15);
-
-        x = x - width / 2;
-        y = y - height / 2;
 
         Array<ComponentBag> bags =  new Array<ComponentBag>();
 
@@ -159,8 +166,15 @@ public class ItemFactory extends AbstractFactory {
 
     public Array<ComponentBag> createShopItemBag(float x, float y, PickUp pickUp, int money){
 
-        float width = Measure.units(6);
-        float height = Measure.units(6);
+        float width = Measure.units(10);
+        float height = Measure.units(10);
+
+        float textureWidth = Measure.units(5f);
+        float textureHeight = Measure.units(5f);
+
+        float goldWidth = Measure.units(2.5f);
+        float goldHeight = Measure.units(2.5f);
+
 
         x = x - width / 2;
         y = y - height / 2;
@@ -171,7 +185,12 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()),
+                (width / 2) - (textureWidth / 2),
+                (height / 2) - (textureHeight / 2),
+                textureWidth,
+                textureHeight,
+                TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(pickUp));
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
@@ -181,8 +200,8 @@ public class ItemFactory extends AbstractFactory {
 
 
         ComponentBag priceTag = new ComponentBag();
-        priceTag.add(new PositionComponent(x, y - Measure.units(5)));
-        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), width / 2, height / 2, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
+        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), goldWidth, goldHeight, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         TextureFontComponent tfc = new TextureFontComponent(""+money);
         //tfc.width = width / 2;
         tfc.offsetX = Measure.units(5);

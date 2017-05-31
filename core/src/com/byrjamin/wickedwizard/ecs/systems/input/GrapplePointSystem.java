@@ -30,22 +30,23 @@ public class GrapplePointSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
+
+        grapples.clear();
+
+        for(Entity e : this.getEntities()){
+            grapples.add(e.getComponent(CollisionBoundComponent.class).bound);
+        }
+
+
+
+
     }
 
     @Override
     protected boolean checkProcessing() {
-        return false;
+        return true;
     }
 
-    @Override
-    public void inserted(Entity e) {
-        grapples.add(cbm.get(e).bound);
-    }
-
-    @Override
-    public void removed(Entity e) {
-        grapples.removeValue(cbm.get(e).bound, true);
-    }
 
     public Vector2 canGrappleTo(float inputX, float inputY){
         for(Rectangle r : grapples){
