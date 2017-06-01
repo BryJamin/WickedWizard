@@ -20,7 +20,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class EnemyFactory extends AbstractFactory {
 
-    GibletFactory gibletFactory;
+    private GibletFactory gibletFactory;
 
     public EnemyFactory(AssetManager assetManager) {
         super(assetManager);

@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
@@ -47,13 +49,12 @@ public class ChestFactory extends AbstractFactory {
         y = y- width / 2;
 
         bag.add(new PositionComponent(x, y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
         bag.add(new LootComponent(3));
         bag.add(new GravityComponent());
-        bag.add(new ActionOnTouchComponent(generateLoot()));
-
-
+        bag.add(new HealthComponent(3));
+        bag.add(new BlinkComponent());
         bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
 
