@@ -7,6 +7,9 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Change OndeathSystem Loot System to take in a Loot Component which would better have information to 
+distribute loot. e.g (rarity value) (Or pickup Drop chances versus only dropping gold)
+
 - Need to improve roomtransition system to have fades and use the game camera
 
 - Need to convert moveto and similar following math to use angles

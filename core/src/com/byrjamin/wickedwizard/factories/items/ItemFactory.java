@@ -10,11 +10,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -66,7 +68,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
         bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
-
+        bag.add(new FrictionComponent());
         return bag;
     }
 
@@ -80,13 +82,11 @@ public class ItemFactory extends AbstractFactory {
 
         float angle = random.nextFloat() * (360);
 
-        float speed = random.nextFloat() * (Measure.units(300f));
+        float speed = random.nextFloat() * (Measure.units(100f) - Measure.units(50f)) + Measure.units(50f);
 
         bag.add(new VelocityComponent(BulletMath.velocityX(speed, Math.toRadians(angle)), BulletMath.velocityY(speed, Math.toRadians(angle))));
         //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
 
-        bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(100f), Measure.units(100f)));
         bag.add(new IntangibleComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
@@ -94,7 +94,24 @@ public class ItemFactory extends AbstractFactory {
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
 
+        bag.add(new FrictionComponent(true, true));
         bag.add(new OnDeathActionComponent(new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW))));
+
+
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                //e.edit().add(new VelocityComponent());
+                e.edit().add(new MoveToPlayerComponent());
+                e.edit().add(new AccelerantComponent(Measure.units(100f), Measure.units(100f)));
+                e.edit().add(new IntangibleComponent());
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }, 0.5f));
 
         return bag;
     }

@@ -27,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
@@ -61,6 +62,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new PositionComponent(600,900));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());
+        bag.add(new FrictionComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());

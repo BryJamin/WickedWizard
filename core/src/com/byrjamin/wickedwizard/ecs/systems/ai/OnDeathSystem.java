@@ -53,7 +53,9 @@ public class OnDeathSystem  extends BaseSystem {
 
         if(lm.has(deadEntity) && cbm.has(deadEntity) && !mm.has(deadEntity)) {
             CollisionBoundComponent cbc = cbm.get(deadEntity);
-            world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());
+            for(int i = 0; i < lm.get(deadEntity).maxDrops; i++) {
+                world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());
+            }
         }
 
         if(cm.has(deadEntity)){

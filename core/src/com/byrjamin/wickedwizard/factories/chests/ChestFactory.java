@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.factories.chests;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -25,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -34,8 +37,13 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class ChestFactory extends AbstractFactory {
 
+
+    private GibletFactory gibletFactory;
+
     public ChestFactory(AssetManager assetManager) {
+
         super(assetManager);
+        this.gibletFactory = new GibletFactory(assetManager);
     }
 
     public final float width = Measure.units(10f);
@@ -51,12 +59,14 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
-        bag.add(new LootComponent(3));
+        bag.add(new LootComponent(6));
         bag.add(new GravityComponent());
         bag.add(new HealthComponent(3));
         bag.add(new BlinkComponent());
         bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
+        bag.add(new OnDeathActionComponent(gibletFactory.giblets(5,0.4f,
+                Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE))));
 
         return bag;
     }
@@ -76,6 +86,8 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new LootComponent(6));
         bag.add(new GravityComponent());
         bag.add(new ActionOnTouchComponent(generateLoot()));
+
+
 
 
         bag.add(new TextureRegionComponent(atlas.findRegion("locked_chest", 0), width, height,
