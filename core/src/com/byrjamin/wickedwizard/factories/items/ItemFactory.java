@@ -9,6 +9,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
@@ -35,6 +36,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
+import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
@@ -95,7 +97,18 @@ public class ItemFactory extends AbstractFactory {
 
 
         bag.add(new FrictionComponent(true, true));
-        bag.add(new OnDeathActionComponent(new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW))));
+        bag.add(new OnDeathActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)).performAction(world, e);
+                world.getSystem(SoundSystem.class).playSound(SoundStrings.coinPickUpMix);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
 
 
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -103,7 +116,7 @@ public class ItemFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 //e.edit().add(new VelocityComponent());
                 e.edit().add(new MoveToPlayerComponent());
-                e.edit().add(new AccelerantComponent(Measure.units(100f), Measure.units(100f)));
+                e.edit().add(new AccelerantComponent(Measure.units(125f), Measure.units(125f)));
                 e.edit().add(new IntangibleComponent());
             }
 

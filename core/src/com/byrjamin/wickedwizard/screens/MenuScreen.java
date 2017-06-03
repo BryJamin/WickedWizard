@@ -10,20 +10,31 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
+import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
@@ -70,6 +81,10 @@ public class MenuScreen extends AbstractScreen {
     private Entity boundOption;
     private Entity godOption;
 
+    private Entity musicSetting;
+
+    private Entity soundSetting;
+
     GestureDetector gestureDetector;
     private boolean gameOver = false;
 
@@ -109,6 +124,9 @@ public class MenuScreen extends AbstractScreen {
 
 
     public void createMenu(){
+
+        SoundSystem soundSystem = new SoundSystem(manager);
+
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem()
@@ -121,10 +139,13 @@ public class MenuScreen extends AbstractScreen {
                         new GravitySystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RenderingSystem(game.batch, manager, gamecam),
-                        new BoundsDrawingSystem()
+                        new BoundsDrawingSystem(true),
+                        soundSystem
 
                 )
                 .build();
+
+        soundSystem.playMusic(MusicStrings.high_c);
 
         world = new World(config);
 
@@ -139,9 +160,40 @@ public class MenuScreen extends AbstractScreen {
         boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
         boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
 
-        boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", gameport.getWorldWidth() / 4, Measure.units(27.5f));
-        godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", gameport.getWorldWidth() / 4 * 3, Measure.units(27.5f));
+        boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+        boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
+        boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", Measure.units(20f), Measure.units(30));
+        godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", Measure.units(20f), Measure.units(20));
+
+        float x = Measure.units(50f);
+        float y = Measure.units(10f);
+
+        musicSetting = world.createEntity();
+        musicSetting.edit().add(new PositionComponent(x, y));
+        musicSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
+        TextureRegionComponent trc = new TextureRegionComponent(musicOn ? atlas.findRegion(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegion(TextureStrings.SETTINGS_MUSIC_OFF),
+                Measure.units(10f), Measure.units(10f), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+        musicSetting.edit().add(trc);
+        musicSetting.edit().add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, musicOn ? atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
+        musicSetting.edit().add(new AnimationComponent(animMap));
+
+
+        x = Measure.units(60f);
+        y = Measure.units(10f);
+
+        soundSetting = world.createEntity();
+        soundSetting.edit().add(new PositionComponent(x, y));
+        soundSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
+        trc = new TextureRegionComponent(soundOn ? atlas.findRegion(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegion(TextureStrings.SETTINGS_SOUND_OFF),
+                Measure.units(10f), Measure.units(10f), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+        soundSetting.edit().add(trc);
+        soundSetting.edit().add(new AnimationStateComponent(0));
+        animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, soundOn ? atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
+        soundSetting.edit().add(new AnimationComponent(animMap));
         //Player
 
 /*        Entity player = world.createEntity();
@@ -171,12 +223,12 @@ public class MenuScreen extends AbstractScreen {
 
 
         Bag<Bag<Component>> bags = new Bag<Bag<Component>>();
-        bags.add(df.wallBag(0, 0, Measure.units(5), gameport.getWorldHeight(), ss));
-        bags.add(df.wallBag(0, 0, gameport.getWorldWidth(), Measure.units(10f), ss));
-        bags.add(df.wallBag(0, gameport.getWorldHeight() - Measure.units(5f), gameport.getWorldWidth(), Measure.units(5), ss));
+        bags.add(df.wallBag(0, 0, Measure.units(5), gameport.getWorldHeight(), new Color(Color.BLACK)));
+        bags.add(df.wallBag(0, 0, gameport.getWorldWidth(), Measure.units(10f), new Color(Color.BLACK)));
+        bags.add(df.wallBag(0, gameport.getWorldHeight() - Measure.units(5f), gameport.getWorldWidth(), Measure.units(5), new Color(Color.BLACK)));
 
         bags.add(bf.backgroundBags(0,0, gameport.getWorldWidth(), gameport.getWorldHeight(), Measure.units(20),
-                atlas.findRegions("block"), ss));
+                atlas.findRegions("block"), new Color(Color.BLACK)));
 
         for(Bag<Component> b  : bags) {
             Entity e = world.createEntity();
@@ -209,16 +261,19 @@ public class MenuScreen extends AbstractScreen {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x,y));
-        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
-        tfc.color = ss.getBackgroundTint();
-        tfc.DEFAULT = ss.getBackgroundTint();
+        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width, height,
+                TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.WHITE));
+
+
+        /*        tfc.color = ss.getBackgroundTint();
+        tfc.DEFAULT = ss.getBackgroundTint();*/
         e.edit().add(tfc);
 
         Rectangle r = new Rectangle(x, y, width, height);
 
         e.edit().add(new CollisionBoundComponent(r));
 
-
+/*
         Entity shape = world.createEntity();
         shape.edit().add(new PositionComponent(x,y));
 
@@ -227,7 +282,7 @@ public class MenuScreen extends AbstractScreen {
         sc.DEFAULT = ss.getWallTint();
 
 
-        shape.edit().add(sc);
+        shape.edit().add(sc);*/
 
         return e;
 
@@ -286,6 +341,21 @@ public class MenuScreen extends AbstractScreen {
 
     }
 
+    public void setUpMusicEntity(Entity musicEntity, boolean musicOn) {
+            musicEntity.getComponent(AnimationComponent.class).animations.put(0,
+                    new Animation<TextureRegion>(0.15f / 1f, musicOn ?
+                            atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) :
+                            atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
+        System.out.println(musicOn);
+    }
+
+    public void setUpSoundEntity(Entity soundEntity, boolean soundOn) {
+        soundEntity.getComponent(AnimationComponent.class).animations.put(0,
+                new Animation<TextureRegion>(0.15f / 1f, soundOn ?
+                        atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) :
+                        atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
+    }
+
     public class gestures extends AbstractGestureDectector {
 
         @Override
@@ -297,19 +367,18 @@ public class MenuScreen extends AbstractScreen {
 
             if (startGame.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
                 game.setScreen(new PlayScreen(game, false));
+                world.getSystem(SoundSystem.class).stopMusic();
             }
 
             if (startTutorial.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
                 game.setScreen(new PlayScreen(game, true));
+                world.getSystem(SoundSystem.class).stopMusic();
             }
 
             if (boundOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
 
                 boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
-
-
                 settings.putBoolean(PreferenceStrings.SETTINGS_BOUND, !isBound).flush();
-
                 boundOption.getComponent(TextureFontComponent.class).text = !isBound ? "Bounds on" : "Bounds off";
                 //game.setScreen(new PlayScreen(game, true));
             }
@@ -317,16 +386,24 @@ public class MenuScreen extends AbstractScreen {
             if (godOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
 
                 boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, true);
-
-
                 settings.putBoolean(PreferenceStrings.SETTINGS_GODMODE, !isGod).flush();
-
                 godOption.getComponent(TextureFontComponent.class).text = !isGod ? "GodMode on" : "GodMode off";
 
 
                 //game.setScreen(new PlayScreen(game, true));
             }
 
+            if(musicSetting.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x, touchInput.y)) {
+                boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+                settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, !musicOn).flush();
+                setUpMusicEntity(musicSetting, !musicOn);
+            }
+
+            if(soundSetting.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x, touchInput.y)) {
+                boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
+                settings.putBoolean(PreferenceStrings.SETTINGS_SOUND, !soundOn).flush();
+                setUpSoundEntity(soundSetting, !soundOn);
+            }
 
 
            // boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);

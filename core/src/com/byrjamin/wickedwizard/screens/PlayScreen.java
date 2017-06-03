@@ -29,9 +29,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
@@ -268,6 +270,8 @@ public class PlayScreen extends AbstractScreen {
     public void createWorld(){
 
         LevelItemSystem lis = new LevelItemSystem(random);
+        SoundSystem soundSystem = new SoundSystem(manager);
+        soundSystem.playMusic(MusicStrings.song8);
 
         jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 ,lis.getItemPool(), random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
@@ -334,6 +338,7 @@ public class PlayScreen extends AbstractScreen {
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         lis,
+                        soundSystem,
                         new ChangeLevelSystem(jg, atlas),
                         new ClearCollisionsSystem(),
                         new MapTeleportationSystem(jg.getMapTracker()),
@@ -615,7 +620,7 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
     }
 
     public class gestures extends AbstractGestureDectector {
@@ -625,6 +630,7 @@ public class PlayScreen extends AbstractScreen {
 
             if (gameOver) {
                 game.setScreen(new MenuScreen(game));
+                world.dispose();
                 gameOver = false;
                 return true;
             }
@@ -640,6 +646,7 @@ public class PlayScreen extends AbstractScreen {
 
                 if(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y)){
                     game.setScreen(new MenuScreen(game));
+                    world.dispose();
                 }
 
             }

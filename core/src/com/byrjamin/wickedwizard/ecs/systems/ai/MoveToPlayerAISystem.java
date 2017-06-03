@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 
 /**
  * Created by Home on 06/03/2017.
@@ -48,7 +49,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
             //TODO new if statements do not account for enemies with slow accelerations (they no longer slide)
 
-            if (!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY())) {
+            if (!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && gm.has(e)) {
                 if (cbc.getCenterX() > pBound.getCenterX()) {
                     vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
                     if(cbc.getCenterX() - vc.velocity.x * world.delta < pBound.getCenterX()) vc.velocity.x = 0;
@@ -57,16 +58,54 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
                     if(cbc.getCenterX() + vc.velocity.x * world.delta > pBound.getCenterX()) vc.velocity.x = 0;
                 }
 
-                if(!gm.has(e)) { //TODO For now if an entity has gravity it can't really follow a player's Y so I just skip this application
-                    if (cbc.getCenterY() > pBound.getCenterY()) {
-                        vc.velocity.y = (vc.velocity.y <= -ac.maxY) ? -ac.maxY : vc.velocity.y - ac.accelY;
-                        if(cbc.getCenterY() - vc.velocity.y * world.delta < pBound.getCenterY()) vc.velocity.y = 0;
-                    } else {
-                        vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
-                        if(cbc.getCenterY() + vc.velocity.y * world.delta > pBound.getCenterY()) vc.velocity.y = 0;
-                    }
-                }
             }
+
+
+        if(!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && !gm.has(e)) {
+
+            double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), pBound.getCenterX(), pBound.getCenterY());
+
+            float vy = BulletMath.velocityY(vc.velocity.y, angleOfTravel);
+            float accelY = BulletMath.velocityY(ac.accelY, angleOfTravel);
+            float maxY = BulletMath.velocityY(ac.maxY, angleOfTravel);
+
+            if(vy >= 0){
+                vc.velocity.y = (vy > maxY) ? maxY : vy + accelY;
+            } else {
+                vc.velocity.y = (vy < maxY) ? maxY : vy - accelY;
+            }
+
+
+            float vx = BulletMath.velocityX(vc.velocity.x, angleOfTravel);
+            float accelX = BulletMath.velocityX(ac.accelX, angleOfTravel);
+            float maxX = BulletMath.velocityX(ac.maxX, angleOfTravel);
+
+            System.out.println(vx + " x velcoty");
+            System.out.println(accelX + " x aceelx");
+            System.out.println(maxX + " x maxX");
+
+            //TODO negaitve math is weird
+
+            if(vx >= 0){
+                vc.velocity.x = (vx > maxX) ? maxX : vx + accelX;
+            } else {
+                vc.velocity.x = (vx < maxX) ? maxX : vx - accelX;
+            }
+
+           // vc.velocity.x = (Math.abs(vx) > Math.abs(maxX)) ? maxX : vx + accelX;
+
+/*
+           // vc.velocity.y = ()
+
+            //TODO For now if an entity has gravity it can't really follow a player's Y so I just skip this application
+            if (cbc.getCenterY() > pBound.getCenterY()) {
+                vc.velocity.y = (vc.velocity.y <= -ac.maxY) ? -ac.maxY : vc.velocity.y - ac.accelY;
+                if(cbc.getCenterY() - vc.velocity.y * world.delta < pBound.getCenterY()) vc.velocity.y = 0;
+            } else {
+                vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
+                if(cbc.getCenterY() + vc.velocity.y * world.delta > pBound.getCenterY()) vc.velocity.y = 0;
+            }*/
+        }
 
 
 

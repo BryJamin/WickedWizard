@@ -1,11 +1,8 @@
 package com.byrjamin.wickedwizard.ecs.systems.ai;
 
 import com.artemis.BaseSystem;
-import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
@@ -16,7 +13,6 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 /**
  * Created by Home on 01/04/2017.
@@ -53,9 +49,9 @@ public class OnDeathSystem  extends BaseSystem {
 
         if(lm.has(deadEntity) && cbm.has(deadEntity) && !mm.has(deadEntity)) {
             CollisionBoundComponent cbc = cbm.get(deadEntity);
-            for(int i = 0; i < lm.get(deadEntity).maxDrops; i++) {
-                world.getSystem(LuckSystem.class).spawnPickUp(cbc.getCenterX(), cbc.getCenterY());
-            }
+            //for(int i = 0; i < lm.get(deadEntity).moneyDrops; i++) {
+            world.getSystem(LuckSystem.class).rollForLoot(lm.get(deadEntity), cbc.getCenterX(), cbc.getCenterY());
+            //}
         }
 
         if(cm.has(deadEntity)){

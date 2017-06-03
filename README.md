@@ -10,13 +10,13 @@ Let's see how far I get in 8 months using an hour per day
 - Change OndeathSystem Loot System to take in a Loot Component which would better have information to 
 distribute loot. e.g (rarity value) (Or pickup Drop chances versus only dropping gold)
 
+- Make giblets also spawn an opposite travelling in the other direction. 
+
 - Need to improve roomtransition system to have fades and use the game camera
 
 - Need to convert moveto and similar following math to use angles
 
 -Death screen needs a specific area to click
-
-- Destructable chests
 
 - Turn everything into using TextureStrings
 
@@ -103,3 +103,4 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 - You can trigger shooting and moving the have the same pointer due to platforms. You double tap
 to go below and then hold to move it counts as the same pointer and you shoot and move
 - Change turret to have animation
+- Destructable chests

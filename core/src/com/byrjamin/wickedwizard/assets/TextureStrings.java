@@ -11,6 +11,14 @@ public class TextureStrings {
     public static final String WINGS = "wings";
 
 
+
+    public static final String SETTINGS_SOUND_ON = "settings/sound";
+    public static final String SETTINGS_SOUND_OFF = "settings/sound_off";
+
+    public static final String SETTINGS_MUSIC_ON = "settings/music";
+    public static final String SETTINGS_MUSIC_OFF = "settings/music_off";
+
+
     public static final String WALLTURRET = "wall_turret";
 
     //ENEMIES

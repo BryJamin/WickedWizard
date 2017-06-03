@@ -12,7 +12,6 @@ import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
@@ -59,10 +58,20 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
-        bag.add(new LootComponent(6));
+        bag.add(new LootComponent(5, 2));
         bag.add(new GravityComponent());
         bag.add(new HealthComponent(3));
         bag.add(new BlinkComponent());
+
+        bag.add(new AnimationStateComponent(1));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+
+
+        System.out.println(atlas.findRegions("chest").size + " is Chest Size");
+
+        animMap.put(1, new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions("chest"), Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+
         bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
         bag.add(new OnDeathActionComponent(gibletFactory.giblets(5,0.4f,
@@ -83,9 +92,9 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
         bag.add(new VelocityComponent());
         bag.add(new LockComponent());
-        bag.add(new LootComponent(6));
+        bag.add(new LootComponent(6, 2));
         bag.add(new GravityComponent());
-        bag.add(new ActionOnTouchComponent(generateLoot()));
+       // bag.add(new ActionOnTouchComponent(generateLoot()));
 
 
 
@@ -95,56 +104,5 @@ public class ChestFactory extends AbstractFactory {
 
         return bag;
     }
-
-
-
-
-    public Action generateLoot() {
-
-        return new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                if(!cbc.bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound)) return;
-
-                if(world.getMapper(LockComponent.class).has(e)) {
-                    CurrencyComponent cc =  world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
-                    if(cc.keys - 1 < 0 ) return;
-                    else cc.keys -= 1;
-
-                    IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-                    animMap.put(0, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions("locked_chest")));
-                    e.edit().add(new AnimationComponent(animMap));
-
-
-                } else {
-
-                    IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-                    animMap.put(0, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions("chest")));
-                    e.edit().add(new AnimationComponent(animMap));
-
-
-                }
-
-
-                for(int i = 0; i < e.getComponent(LootComponent.class).maxDrops; i++) {
-                    world.getSystem(LuckSystem.class).spawnChestPickUp(cbc.getCenterX(), cbc.getCenterY());
-                }
-
-                e.edit().remove(ActionOnTouchComponent.class);
-                e.edit().add(new AnimationStateComponent());
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        };
-
-    }
-
-
-
 
 }

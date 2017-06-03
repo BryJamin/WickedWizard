@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -25,6 +26,15 @@ public class BackgroundFactory {
         bag.add(new PositionComponent(x, y));
         TextureRegionBatchComponent trbc = generateTRBC(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, TILE_SIZE, selection, TextureRegionComponent.BACKGROUND_LAYER_FAR,1,1);
         trbc.color = arenaSkin.getBackgroundTint();
+        bag.add(trbc);
+        return bag;
+    }
+
+    public Bag<Component>backgroundBags(float x, float y, float BACKGROUND_WIDTH, float BACKGROUND_HEIGHT, float TILE_SIZE, Array<? extends TextureRegion> selection, Color color){
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x, y));
+        TextureRegionBatchComponent trbc = generateTRBC(BACKGROUND_WIDTH, BACKGROUND_HEIGHT, TILE_SIZE, selection, TextureRegionComponent.BACKGROUND_LAYER_FAR,1,1);
+        trbc.color = color;
         bag.add(trbc);
         return bag;
     }

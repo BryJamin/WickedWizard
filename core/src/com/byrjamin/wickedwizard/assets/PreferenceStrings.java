@@ -12,6 +12,9 @@ public class PreferenceStrings {
     public final static String SETTINGS_BOUND = "bounds";
     public final static String SETTINGS_GODMODE = "godmode";
 
+    public final static String SETTINGS_SOUND = "sound";
+    public final static String SETTINGS_MUSIC = "music";
+
 
 
 

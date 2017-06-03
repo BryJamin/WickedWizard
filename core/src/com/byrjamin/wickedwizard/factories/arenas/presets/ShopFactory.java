@@ -28,6 +28,9 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
+    //TODO Shop Tutorial Popup reads: Oh look a shop, buy items by believing in yourself
+
+
     private ItemFactory itemFactory;
 
 /*    public ShopFactory(AssetManager assetManager) {

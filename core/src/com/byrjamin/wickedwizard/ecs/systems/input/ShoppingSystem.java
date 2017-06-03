@@ -47,25 +47,8 @@ public class ShoppingSystem extends EntitySystem {
     public boolean activeOnTouchTrigger(float inputX, float inputY) {
         for (Entity e : this.getEntities()) {
             if(cbm.get(e).bound.contains(inputX, inputY)){
-               // if(world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class).money - cm.get(e).money >= 0) {
-                  //  world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class).money -= cm.get(e).money;
-        /*            aotm.get(e).action.performAction(world, e);
-
-                    //TODO only certain items should be deleted from the world when bought. E.G keys or something
-
-                    if(pm.has(e)) {
-                        for(ChildComponent c : pm.get(e).children) {
-                            world.getSystem(FindChildSystem.class).findChildEntity(c).deleteFromWorld();
-
-                            //TODO children seem to not exist?
-                        }
-                    }*/
-
-            aotm.get(e).action.performAction(world, e);
-
-                    //e.deleteFromWorld();
-                    return true;
-                //}
+                aotm.get(e).action.performAction(world, e);
+                return true;
             }
         }
         return false;

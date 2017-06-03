@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
@@ -54,6 +55,12 @@ public class AnimationSystem extends EntityProcessingSystem {
 
         if(key != sc.getCurrentState()) {
             sc.setCurrentState(key);
+        }
+
+        if(world.getMapper(LootComponent.class).has(e)){
+            System.out.println("Animation");
+            System.out.println(ac.animations.containsKey(sc.getCurrentState()));
+            System.out.println(ac.animations.get(sc.getCurrentState()).getKeyFrameIndex(sc.stateTime));
         }
 
 

@@ -73,6 +73,22 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
+    public Bag<Component> wallBag(float x, float y, float width, float height, Color color){
+        Bag<Component> bag = new Bag<Component>();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
+                arenaSkin.getWallTexture(),
+                TextureRegionComponent.PLAYER_LAYER_FAR);
+        trbc.color = color;
+        trbc.DEFAULT = color;
+        bag.add(trbc);
+
+        return bag;
+    }
+
+
 
     public ComponentBag chevronBag(float x, float y, float rotationInDegrees){
 

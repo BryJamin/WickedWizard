@@ -31,6 +31,11 @@ public class BoundsDrawingSystem extends EntitySystem {
         super(Aspect.all(CollisionBoundComponent.class));
     }
 
+    public BoundsDrawingSystem(boolean isDrawing) {
+        super(Aspect.all(CollisionBoundComponent.class));
+        this.isDrawing = isDrawing;
+    }
+
 
     @Override
     protected void processSystem() {

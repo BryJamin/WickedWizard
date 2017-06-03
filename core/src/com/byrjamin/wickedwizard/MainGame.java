@@ -6,6 +6,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +17,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.MusicStrings;
+import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -45,8 +49,16 @@ public class MainGame extends Game {
 		//Gdx.input.setCursorPosition(0, 0);
 		manager.load("sprite.atlas", TextureAtlas.class);
 
+		manager.load(MusicStrings.high_c, Music.class);
+		manager.load(MusicStrings.song8, Music.class);
 
-		System.out.println(Gdx.files.getLocalStoragePath());
+        manager.load(SoundStrings.playerFire, Sound.class);
+        manager.load(SoundStrings.enemyFire, Sound.class);
+        manager.load(SoundStrings.explosion, Sound.class);
+        manager.load(SoundStrings.coinPickUp, Sound.class);
+
+
+        System.out.println(Gdx.files.getLocalStoragePath());
 		System.out.println(Gdx.files.getExternalStoragePath());
 
 
