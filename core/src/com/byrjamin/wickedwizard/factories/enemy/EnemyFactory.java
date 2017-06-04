@@ -56,5 +56,26 @@ public class EnemyFactory extends AbstractFactory {
 
     }
 
+    protected ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float width, float height, float health) {
+        fillbag.add(new PositionComponent(x, y));
+        fillbag.add(new HealthComponent(health));
+        fillbag.add(new BlinkComponent());
+        fillbag.add(new EnemyComponent());
+        fillbag.add(new OnDeathActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                gibletFactory.giblets(5, 0.4f,
+                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
+                world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+        return fillbag;
+    }
+
 
 }

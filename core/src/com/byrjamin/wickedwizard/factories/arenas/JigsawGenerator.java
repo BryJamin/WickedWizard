@@ -222,6 +222,7 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
+        startingArena = level2Rooms.trapAmoeba().createArena(new MapCoords(0,0));
         startingArena.addEntity(new ChestFactory(assetManager).chestBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
 
         placedArenas.add(startingArena);

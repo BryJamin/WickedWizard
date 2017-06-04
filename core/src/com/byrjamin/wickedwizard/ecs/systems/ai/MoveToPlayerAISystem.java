@@ -65,32 +65,28 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
             double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), pBound.getCenterX(), pBound.getCenterY());
 
+            System.out.println("MTPS Angle of Travel" + Math.toDegrees(angleOfTravel) + " Enitity " + e.getId());
+
             float vy = BulletMath.velocityY(vc.velocity.y, angleOfTravel);
             float accelY = BulletMath.velocityY(ac.accelY, angleOfTravel);
             float maxY = BulletMath.velocityY(ac.maxY, angleOfTravel);
 
-            if(vy >= 0){
-                vc.velocity.y = (vy > maxY) ? maxY : vy + accelY;
-            } else {
-                vc.velocity.y = (vy < maxY) ? maxY : vy - accelY;
-            }
+            vc.velocity.y = (Math.abs(vy) + Math.abs(accelY) >= Math.abs(maxY)) ? maxY : vy + accelY;
 
 
             float vx = BulletMath.velocityX(vc.velocity.x, angleOfTravel);
             float accelX = BulletMath.velocityX(ac.accelX, angleOfTravel);
             float maxX = BulletMath.velocityX(ac.maxX, angleOfTravel);
 
-            System.out.println(vx + " x velcoty");
-            System.out.println(accelX + " x aceelx");
-            System.out.println(maxX + " x maxX");
+            vc.velocity.x = (Math.abs(vx) + Math.abs(accelX) >= Math.abs(maxX)) ? maxX : vx + accelX;
+            //vc.velocity.x = maxX;
 
-            //TODO negaitve math is weird
 
-            if(vx >= 0){
-                vc.velocity.x = (vx > maxX) ? maxX : vx + accelX;
-            } else {
-                vc.velocity.x = (vx < maxX) ? maxX : vx - accelX;
-            }
+            System.out.println(vx + accelX);
+
+
+            System.out.println("Velocity X MTPS" + vc.velocity.x + " Enitity " + e.getId());
+            System.out.println("Velocity Y " + vc.velocity.y + " Enitity " + e.getId());
 
            // vc.velocity.x = (Math.abs(vx) > Math.abs(maxX)) ? maxX : vx + accelX;
 
@@ -105,6 +101,9 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
                 vc.velocity.y = (vc.velocity.y >= ac.maxY) ? ac.maxY : vc.velocity.y + ac.accelY;
                 if(cbc.getCenterY() + vc.velocity.y * world.delta > pBound.getCenterY()) vc.velocity.y = 0;
             }*/
+        } else if(cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY())){
+            vc.velocity.x = 0;
+            vc.velocity.y = 0;
         }
 
 

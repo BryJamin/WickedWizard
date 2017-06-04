@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.enemy.AmoebaFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
@@ -24,6 +25,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
 public class ArenaEnemyPlacementFactory extends AbstractFactory {
 
 
+    public AmoebaFactory amoebaFactory;
     public BlobFactory blobFactory;
     public BouncerFactory bouncerFactory;
     public KugelDuscheFactory kugelDuscheFactory;
@@ -44,7 +46,24 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.spawnerFactory = new SpawnerFactory(assetManager, arenaSkin);
         this.turretFactory = new TurretFactory(assetManager);
         this.goatWizardFactory = new GoatWizardFactory(assetManager);
+        this.amoebaFactory = new AmoebaFactory(assetManager);
         this.arenaSkin = arenaSkin;
+    }
+
+    public Bag<Component> spawnAmoeba(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return blobFactory.blobBag(x,y);
+            }
+        });
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return blobFactory.smallblobBag(x,y);
+            }
+        });
+        //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
     public Bag<Component> spawnBlob(float x, float y){
@@ -65,7 +84,6 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
 
 
     public ComponentBag spawnFixedSentry(float x, float y) {
-
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
@@ -133,11 +151,6 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
             }
         });
         a.addEntity(spawnerFactory.spawnerBag(x, y, s));
-    }
-
-
-    public void biggablobba(Arena a){
-        a.addEntity(blobFactory.BiggaBlobbaBag(a.getWidth() / 2, Measure.units(20)));
     }
 
 }

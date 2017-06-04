@@ -125,6 +125,8 @@ public class Level2Rooms extends AbstractFactory{
 
 
 
+
+
     //TODO not a fan of the enemy placement
     public ArenaGen width2RoomOnlyVerticalExits(){
         return new ArenaGen() {
@@ -311,6 +313,29 @@ public class Level2Rooms extends AbstractFactory{
             }
         };
     }
+
+
+    public ArenaGen trapAmoeba(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+/*
+                for(int i = 0; i < 5; i++) {
+                    arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(10 * i)));
+                }*/
+/*                arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(10));
+                arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(20));
+                arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(30));
+                arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(40));
+                arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(50));*/
+
+                return arena;
+            }
+        };
+    }
+
 
 
 }
