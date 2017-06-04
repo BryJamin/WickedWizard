@@ -1,9 +1,16 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
@@ -14,6 +21,9 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.factories.hazards.SpikeBallFactory;
+import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -53,6 +63,7 @@ public class Level2Rooms extends AbstractFactory{
         ag.add(width2RoomOnlyVerticalExits());
         ag.add(grappleTreasureRoom());
         ag.add(largeBattleRoom());
+        ag.add(trapAmoeba());
         return ag;
     }
 
@@ -321,10 +332,49 @@ public class Level2Rooms extends AbstractFactory{
             public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-/*
-                for(int i = 0; i < 5; i++) {
-                    arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(10 * i)));
-                }*/
+                arena.roomType = Arena.RoomType.TRAP;
+
+                ComponentBag bag = new ChestFactory(assetManager).chestBag(arena.getWidth() / 2, arena.getHeight() / 2,
+                        new OnDeathActionComponent(new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                new GibletFactory(assetManager).giblets(5,0.4f,
+                                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
+
+                                Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+
+                                for(int i = 0; i < 3; i++) {
+                                    BagToEntity.bagToEntity(world.createEntity(),
+                                            arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(20 * i)));
+                                }
+
+                                for(int i = 0; i < 3; i++) {
+                                    BagToEntity.bagToEntity(world.createEntity(),
+                                            arenaEnemyPlacementFactory.amoebaFactory.amoeba(arena.getWidth(), Measure.units(20 * i)));
+                                }
+
+                                for(int i = 0; i < 6; i++) {
+                                    BagToEntity.bagToEntity(world.createEntity(),
+                                            arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(20 * i), arena.getHeight()));
+                                }
+
+                                for(int i = 0; i < 6; i++) {
+                                    BagToEntity.bagToEntity(world.createEntity(),
+                                            arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(20 * i), 0));
+                                }
+
+                            }
+
+                            @Override
+                            public void cleanUpAction(World world, Entity e) {
+
+                            }
+                        })
+
+                        );
+
+                arena.addEntity(bag);
+                arena.addEntity(decorFactory.platform(Measure.units(35f), Measure.units(20f), Measure.units(30f)));
 /*                arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(10));
                 arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(20));
                 arenaEnemyPlacementFactory.amoebaFactory.amoeba(Measure.units(0), Measure.units(30));

@@ -7,6 +7,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -22,6 +23,7 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
 
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<ExploderComponent> em;
     ComponentMapper<BlinkComponent> bm;
 
     @SuppressWarnings("unchecked")
@@ -42,6 +44,9 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
                 for (HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
                     if (cbm.get(e).bound.overlaps(hb.hitbox)) {
                         hm.get(e).applyDamage(1);
+                        if(em.has(entityIds.get(i))){
+                            world.getSystem(OnDeathSystem.class).kill(world.getEntity((entityIds.get(i))));
+                        }
                         break;
                     }
             }

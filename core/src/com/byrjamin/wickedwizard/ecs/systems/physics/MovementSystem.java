@@ -35,9 +35,6 @@ public class MovementSystem extends EntityProcessingSystem {
 
         pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta, 0);
 
-        System.out.println("Velocity X MS" + vc.velocity.x + " Enitity " + e.getId());
-        System.out.println("Velocity Y " + vc.velocity.y + " Enitity " + e.getId());
-
 
         if(cbm.has(e)) {
             CollisionBoundComponent cbc = cbm.get(e);

@@ -66,9 +66,6 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new AnimationStateComponent(1));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
 
-
-        System.out.println(atlas.findRegions("chest").size + " is Chest Size");
-
         animMap.put(1, new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions("chest"), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
@@ -76,6 +73,35 @@ public class ChestFactory extends AbstractFactory {
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
         bag.add(new OnDeathActionComponent(gibletFactory.giblets(5,0.4f,
                 Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE))));
+
+        return bag;
+    }
+
+
+    public ComponentBag chestBag(float x, float y, OnDeathActionComponent odac) {
+
+        ComponentBag bag = new ComponentBag();
+
+        x = x - width / 2;
+        y = y- width / 2;
+
+        bag.add(new PositionComponent(x, y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
+        bag.add(new VelocityComponent());
+        bag.add(new LootComponent(5, 2));
+        bag.add(new GravityComponent());
+        bag.add(new HealthComponent(3));
+        bag.add(new BlinkComponent());
+
+        bag.add(new AnimationStateComponent(1));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+
+        animMap.put(1, new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions("chest"), Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+
+        bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
+                TextureRegionComponent.ENEMY_LAYER_NEAR));
+        bag.add(odac);
 
         return bag;
     }

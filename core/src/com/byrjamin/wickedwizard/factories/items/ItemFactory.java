@@ -116,8 +116,9 @@ public class ItemFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 //e.edit().add(new VelocityComponent());
                 e.edit().add(new MoveToPlayerComponent());
-                e.edit().add(new AccelerantComponent(Measure.units(5f), Measure.units(5f), Measure.units(125f), Measure.units(125f)));
+                e.edit().add(new AccelerantComponent(Measure.units(125f), Measure.units(125f)));
                 e.edit().add(new IntangibleComponent());
+                e.edit().remove(FrictionComponent.class);
             }
 
             @Override

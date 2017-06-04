@@ -23,10 +23,11 @@ public class BagToEntity {
         }
     }
 
-    public static void bagToEntity(Entity e, Bag<Component> bag){
+    public static Entity bagToEntity(Entity e, Bag<Component> bag){
         for(Component c : bag){
             e.edit().add(c);
         }
+        return e;
     }
 
 }
