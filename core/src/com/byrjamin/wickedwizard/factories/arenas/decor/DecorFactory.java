@@ -12,14 +12,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
+import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -32,6 +36,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
@@ -42,7 +47,10 @@ import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
+
+import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
 
 /**
  * Created by Home on 04/03/2017.
@@ -66,7 +74,7 @@ public class DecorFactory extends AbstractFactory {
 
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
                 arenaSkin.getWallTexture(),
-                TextureRegionComponent.PLAYER_LAYER_FAR);
+                PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
         bag.add(trbc);
 
@@ -80,7 +88,7 @@ public class DecorFactory extends AbstractFactory {
 
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
                 arenaSkin.getWallTexture(),
-                TextureRegionComponent.PLAYER_LAYER_FAR);
+                PLAYER_LAYER_FAR);
         trbc.color = color;
         trbc.DEFAULT = color;
         bag.add(trbc);
@@ -132,7 +140,7 @@ public class DecorFactory extends AbstractFactory {
 
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, Measure.units(5f), Measure.units(5),
                 atlas.findRegions("platform"),
-                TextureRegionComponent.PLAYER_LAYER_FAR);
+                PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
         trbc.offsetY = -1;
         //trbc.color = new Color(1,1,1, 0.2f);
@@ -194,7 +202,7 @@ public class DecorFactory extends AbstractFactory {
 
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
                 0, 0, Measure.units(27), Measure.units(22),
-                TextureRegionComponent.PLAYER_LAYER_FAR);
+                PLAYER_LAYER_FAR);
 
         trc.color = arenaSkin.getWallTint();
         trc.DEFAULT = arenaSkin.getWallTint();
@@ -235,7 +243,7 @@ public class DecorFactory extends AbstractFactory {
 
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
                 -Measure.units(2.5f), Measure.units(2.5f), Measure.units(27), Measure.units(22),
-                TextureRegionComponent.PLAYER_LAYER_FAR);
+                PLAYER_LAYER_FAR);
 
         trc.color = arenaSkin.getWallTint();
         trc.DEFAULT = arenaSkin.getWallTint();
@@ -244,52 +252,6 @@ public class DecorFactory extends AbstractFactory {
         //trc.setColor(0.7f, 0, 0f, 1);
         bag.add(trc);
         //bag.add(new GrappleableComponent());
-        bag.add(new LockComponent());
-        return bag;
-    }
-
-
-
-
-
-
-    public Bag<Component> grateBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
-        Bag<Component> bag = new Bag<Component>();
-
-        float width = Measure.units(10);
-        float height = Measure.units(10);
-
-        x = x - width / 2;
-        y = y - height / 2;
-
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
-        bag.add(new DoorComponent(current, leaveCoords, exit));
-
-        //trc.setColor(0.7f, 0, 0f, 1);
-
-
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
-        sc.stateTime = 100f;
-        bag.add(sc);
-
-        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(AnimationStateComponent.State.LOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("hole"), Animation.PlayMode.REVERSED));
-        aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("hole")));
-        bag.add(new AnimationComponent(aniMap));
-
-
-        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime), width, height,
-                TextureRegionComponent.BACKGROUND_LAYER_NEAR);
-        trc.color = arenaSkin.getBackgroundTint();
-
-        bag.add(trc);
-        bag.add(new GrappleableComponent());
-        bag.add(new ActiveOnTouchComponent());
         bag.add(new LockComponent());
         return bag;
     }
@@ -313,8 +275,6 @@ public class DecorFactory extends AbstractFactory {
         return bag;
 
     }
-
-
 
     public ComponentBag hiddenGrapplePointBag(float x, float y){
 
@@ -345,15 +305,9 @@ public class DecorFactory extends AbstractFactory {
 
         bag.add(new InCombatActionComponent(combatAction));
 
-
         return bag;
 
-
     }
-
-
-
-
 
     public ComponentBag fixedWallTurret(float x, float y, float angleInDegrees, float fireRate, float fireDelay){
 
@@ -381,10 +335,6 @@ public class DecorFactory extends AbstractFactory {
 
 
         bag.add(trc);
-
-
-
-
 
         //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
@@ -485,6 +435,58 @@ public class DecorFactory extends AbstractFactory {
 
             }
         }));
+
+
+        return bag;
+
+    }
+
+
+
+    public ComponentBag lockBox(float x , float y, float width, float height){
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.LOCKBOX), width, height, PLAYER_LAYER_FAR, arenaSkin.getWallTint()));
+        bag.add(new WallComponent(new Rectangle(x,y,width,height)));
+
+
+        bag.add(new ConditionalActionComponent(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+
+                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CurrencyComponent cc = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
+
+                Rectangle futureRectangle = new Rectangle(cbc.bound);
+                futureRectangle.x += (vc.velocity.x * world.delta);
+                futureRectangle.y += (vc.velocity.y * world.delta);
+
+
+                Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, entity.getComponent(CollisionBoundComponent.class).bound);
+                //cbc.getRecentCollisions().add(c);
+                //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
+
+                boolean canUnlock = c != Collider.Collision.NONE && cc.keys >= 0;
+                if (canUnlock) cc.keys--;
+
+                return canUnlock;
+            }
+        }, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.deleteFromWorld();
+                //TODO add giblet factory?
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+        //bag.add()
 
 
         return bag;

@@ -37,6 +37,12 @@ public class LuckSystem extends BaseSystem {
 
     private float luck;
 
+    private Random random;
+
+
+    public LuckSystem(Random random){
+        this.random = random;
+    }
 
 
 
@@ -71,9 +77,6 @@ public class LuckSystem extends BaseSystem {
 
 
     public void spawnPickUp(float x , float y){
-
-        Random random = new Random();
-
         Array<WeightedObject<PickUp>> pickUps = new Array<WeightedObject<PickUp>>();
         //TODO apply luck
         pickUps.add(new WeightedObject<PickUp>(null, 70));
@@ -97,8 +100,6 @@ public class LuckSystem extends BaseSystem {
 
 
     public void spawnChestPickUp(float x , float y){
-
-        Random random = new Random();
 
         Array<WeightedObject<PickUp>> pickUps = new Array<WeightedObject<PickUp>>();
         pickUps.add(new WeightedObject<PickUp>(new HealthUp(), chestHeart + (int) luck));

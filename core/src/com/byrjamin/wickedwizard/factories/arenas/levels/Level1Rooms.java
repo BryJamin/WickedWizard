@@ -1,8 +1,15 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
@@ -12,6 +19,8 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -23,21 +32,23 @@ import java.util.Random;
 
 public class Level1Rooms extends AbstractFactory {
 
-    ArenaShellFactory arenaShellFactory;
-    ChestFactory chestFactory;
-    DecorFactory decorFactory;
-    ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
-    TurretFactory turretFactory;
+    private ArenaShellFactory arenaShellFactory;
+    private ChestFactory chestFactory;
+    private DecorFactory decorFactory;
+    private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
+    private TurretFactory turretFactory;
 
-    ArenaSkin arenaSkin;
+    private ArenaSkin arenaSkin;
+    private Random random;
 
-    public Level1Rooms(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public Level1Rooms(AssetManager assetManager, ArenaSkin arenaSkin, Random random) {
         super(assetManager);
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
         this.chestFactory = new ChestFactory(assetManager);
         this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
         this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.turretFactory = new TurretFactory(assetManager);
+        this.random = random;
         this.arenaSkin = arenaSkin;
     }
 
@@ -53,14 +64,16 @@ public class Level1Rooms extends AbstractFactory {
         ag.add(room6());
         //ag.add(room7LetterI());
         ag.add(room8());
-        ag.add(deadEndW2());
+        ag.add(room9deadEndW2());
         ag.add(room10Height2());
         ag.add(room11());
         ag.add(room12());
         ag.add(room13LargeBouncer());
         ag.add(room14());
         ag.add(room15());
-        ag.add(room16());
+        ag.add(room16treasureTwoturretWallsOneChest());
+        ag.add(room17verticalTwoFixedTurrets());
+        ag.add(room18trapTwobounceoneturret());
         return ag;
     }
 
@@ -191,14 +204,24 @@ public class Level1Rooms extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Random random = new Random();
+                random = new Random();
                 boolean mirror = random.nextBoolean();
 
                 Arena a = arenaShellFactory.createDeadEndArena(defaultCoords, mirror);
 
-                float chestPosX = mirror ? a.getWidth() / 4 : a.getWidth() - a.getWidth() / 4;
+                float chestPosX = mirror ? Measure.units(10f) : a.getWidth() -  Measure.units(10f);
+                float chest2PosX = mirror ? Measure.units(20f) : a.getWidth() - Measure.units(20f);
 
-                a.addEntity(chestFactory.lockedChestBag(chestPosX, a.getHeight() / 4));
+                float wallPosX = mirror ? 0 : a.getWidth() - Measure.units(40f);
+                float lockPosX = mirror ? Measure.units(30f) : a.getWidth() - Measure.units(40f);
+
+                a.addEntity(chestFactory.chestBag(chestPosX, a.getHeight() / 4));
+                a.addEntity(chestFactory.chestBag(chest2PosX, a.getHeight() / 4));
+
+                a.addEntity(decorFactory.lockBox(lockPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f)));
+
+                a.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(40f), Measure.units(10f), arenaSkin.getWallTint()));
+
                 //RoomDecorationFactory.spawnBlob(a);
                 return a;
             }
@@ -206,20 +229,21 @@ public class Level1Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen deadEndW2(){
+    public ArenaGen room9deadEndW2(){
 
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Random random = new Random();
-                boolean mirror = random.nextBoolean();
+                boolean mirror = false; //random.nextBoolean();
 
                 Arena a = arenaShellFactory.createWidth2DeadEndArena(defaultCoords, mirror);
 
-                float posX = mirror ? Measure.units(10) : a.getWidth() - Measure.units(10f);
+                float posX = mirror ? Measure.units(5) : a.getWidth() - Measure.units(10f);
+                float lowertTurretPosX = mirror ? Measure.units(50) : a.getWidth() - Measure.units(55);
                 float chestPosX = mirror ? Measure.units(30f) : a.getWidth() - Measure.units(30f);
                 float blockerPosX = mirror ? a.getWidth() - Measure.units(80f) : Measure.units(80f);
+                float lowertTurretWallPosX = mirror ? a.getWidth() - Measure.units(160f) : Measure.units(150f);
 
                 float angle =  mirror ? 0 : 180;
 
@@ -228,11 +252,17 @@ public class Level1Rooms extends AbstractFactory {
                 a.addEntity(decorFactory.wallBag(blockerPosX, Measure.units(45f), Measure.units(10f), Measure.units(10f), arenaSkin));
                 a.addEntity(decorFactory.wallBag(blockerPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f), arenaSkin));
 
-                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(50f),  angle, 3.0f, 0f));
-                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(41f),  angle, 3.0f, 1.5f));
-                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(32f),  angle, 3.0f, 1.5f));
-                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(23f),  angle, 3.0f, 1.5f));
-                a.addEntity(turretFactory.fixedTurret(posX, Measure.units(14f),  angle, 3.0f, 0f));
+
+                a.addEntity(decorFactory.wallBag(lowertTurretWallPosX, Measure.units(45f), Measure.units(10f), Measure.units(10f), arenaSkin));
+                a.addEntity(decorFactory.wallBag(lowertTurretWallPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f), arenaSkin));
+
+
+
+                a.addEntity(decorFactory.fixedWallTurret(lowertTurretPosX, Measure.units(50f),  angle, 3.0f, 0f));
+                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(40f),  angle, 3.0f, 1f));
+                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(30f),  angle, 3.0f, 1f));
+                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(20f),  angle, 3.0f, 1f));
+                a.addEntity(decorFactory.fixedWallTurret(lowertTurretPosX, Measure.units(10f),  angle, 3.0f, 0f));
 
 
                 return a;
@@ -399,7 +429,7 @@ public class Level1Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room16() {
+    public ArenaGen room16treasureTwoturretWallsOneChest() {
 
         return new ArenaGen() {
             @Override
@@ -444,5 +474,112 @@ public class Level1Rooms extends AbstractFactory {
             }
         };
     }
+
+
+
+
+
+    public ArenaGen room18trapTwobounceoneturret() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena.setWidth(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.FULL))
+                        .buildArena(arena);
+
+                ComponentBag bag = new ChestFactory(assetManager).chestBag(arena.getWidth() / 2, arena.getHeight() / 2,
+                        new OnDeathActionComponent(new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                new GibletFactory(assetManager).giblets(5,0.4f,
+                                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
+
+                                Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+
+                                BagToEntity.bagToEntity(world.createEntity(),
+                                        arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15), Measure.units(50f)));
+
+                                BagToEntity.bagToEntity(world.createEntity(),
+                                        arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(15), Measure.units(50f)));
+
+                                BagToEntity.bagToEntity(world.createEntity(),
+                                        arenaEnemyPlacementFactory.spawnFixedSentry(arena.getWidth() / 2, arena.getHeight() / 2));
+                            }
+
+                            @Override
+                            public void cleanUpAction(World world, Entity e) {
+
+                            }
+                        })
+
+                );
+
+                arena.addEntity(bag);
+
+/*
+                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedLockOnTurret(Measure.units(10f), Measure.units(15f)));
+                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedLockOnTurret(arena.getWidth() - Measure.units(10f), Measure.units(15f)));
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(0), Measure.units(20f), Measure.units(40f), Measure.units(40f), arenaSkin));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(20f), Measure.units(40f), Measure.units(40f), arenaSkin));
+*/
+
+
+                return arena;
+            }
+        };
+    }
+
+
+
+    public ArenaGen room17verticalTwoFixedTurrets() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+
+                arena.setWidth(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedLockOnTurret(Measure.units(10f), Measure.units(15f)));
+                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedLockOnTurret(arena.getWidth() - Measure.units(10f), Measure.units(15f)));
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(0), Measure.units(20f), Measure.units(40f), Measure.units(40f), arenaSkin));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(20f), Measure.units(40f), Measure.units(40f), arenaSkin));
+
+
+                return arena;
+            }
+        };
+    }
+
 
 }

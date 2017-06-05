@@ -282,11 +282,14 @@ public class PlayScreen extends AbstractScreen {
         jg.generate();
         Arena startingArena = jg.getStartingRoom();
 
-        ComponentBag player = new PlayerFactory(game.manager).playerBag();
+        ComponentBag player = new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2);
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new MovementSystem()
+                        new MovementSystem(),
+                        new CollisionSystem(),
+                        new BounceCollisionSystem(),
+                        new GroundCollisionSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),
@@ -298,9 +301,6 @@ public class PlayScreen extends AbstractScreen {
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
-                        new CollisionSystem(),
-                        new BounceCollisionSystem(),
-                        new GroundCollisionSystem(),
                         new BulletSystem(),
                         new EnemyCollisionSystem(),
                         new MessageBannerSystem(),
@@ -315,7 +315,7 @@ public class PlayScreen extends AbstractScreen {
                         new ProximitySystem(),
                         new FindChildSystem(),
                         new PickUpSystem(),
-                        new LuckSystem(),
+                        new LuckSystem(random),
                         new ShoppingSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),

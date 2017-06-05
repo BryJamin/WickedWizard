@@ -40,8 +40,11 @@ public class CollisionSystem extends EntityProcessingSystem {
     ComponentMapper<GrappleComponent> gm;
     ComponentMapper<MoveToComponent> mtm;
 
+
+    private Rectangle futureRectangle = new Rectangle();
+
     @SuppressWarnings("unchecked")
-    public CollisionSystem() {
+    public  CollisionSystem() {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
     }
 
@@ -57,40 +60,22 @@ public class CollisionSystem extends EntityProcessingSystem {
 
         Array<Rectangle> collidableobjects = new Array<Rectangle>();
 
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class));
-        IntBag entityIds = subscription.getEntities();
-
-        for(int i = 0; i < entityIds.size(); i++){
-            collidableobjects.add(wm.get(entityIds.get(i)).bound);
-        }
-
-        subscription = world.getAspectSubscriptionManager().get(Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class, GrappleableComponent.class));
-        entityIds = subscription.getEntities();
+        addCollidableObjects(collidableobjects, Aspect.all(WallComponent.class));
 
         if(!playerm.has(e)) {
-            for(int i = 0; i < entityIds.size(); i++){
-                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
-            }
-
+            addCollidableObjects(collidableobjects, Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class, GrappleableComponent.class));
         }
-
-        subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
-        entityIds = subscription.getEntities();
 
         if(!playerm.has(e) && !bm.has(e) && !gm.has(e)) {
-
-            for(int i = 0; i < entityIds.size(); i++){
-                collidableobjects.add(cbm.get(entityIds.get(i)).bound);
-            }
+            addCollidableObjects(collidableobjects, Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
         }
+
 
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
-
-
-        Rectangle futureRectangle = new Rectangle(cbc.bound);
+        futureRectangle = new Rectangle(cbc.bound);
         //System.out.println(futureRectangle.getX());
 
         if(!bm.has(e)) {
@@ -133,6 +118,19 @@ public class CollisionSystem extends EntityProcessingSystem {
     }
 
 
+
+    public void addCollidableObjects(Array<Rectangle> collidableObjects, Aspect.Builder aspect){
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(aspect);
+        IntBag entityIds = subscription.getEntities();
+
+        for(int i = 0; i < entityIds.size(); i++){
+            if(wm.has(entityIds.get(i))) {
+                collidableObjects.add(wm.get(entityIds.get(i)).bound);
+            } else if(cbm.has(entityIds.get(i))) {
+                collidableObjects.add(cbm.get(entityIds.get(i)).bound);
+            }
+        }
+    }
 
 
 

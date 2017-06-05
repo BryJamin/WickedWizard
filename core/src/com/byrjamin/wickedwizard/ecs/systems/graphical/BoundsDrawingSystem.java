@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -22,6 +23,8 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<ProximityTriggerAIComponent> ptam;
+
     ComponentMapper<BlinkComponent> bm;
 
     public boolean isDrawing;
@@ -60,6 +63,11 @@ public class BoundsDrawingSystem extends EntitySystem {
             bounds.add(world.getSystem(PlayerInputSystem.class).movementArea);
         }
 
+/*
+        Array<Rectangle> prox = new Array<Rectangle>();
+        if()
+*/
+
 
 /*        if(world.getSystem(CameraSystem.class) != null){
 
@@ -81,6 +89,7 @@ public class BoundsDrawingSystem extends EntitySystem {
 
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, bounds);
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.CYAN, hitboxes);
+     //   BoundsDrawer.drawBounds();
 
 
 

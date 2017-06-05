@@ -56,17 +56,24 @@ public class PlayerFactory extends AbstractFactory {
         super(assetManager);
     }
 
-    public ComponentBag playerBag(){
+    public ComponentBag playerBag(float x , float y){
+
+        float width = Measure.units(5f);
+        float height = Measure.units(5f);
+
+        x = x - width / 2;
+        y = y - height / 2;
+
 
         ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(600,900));
+        bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());
         bag.add(new FrictionComponent());
-        bag.add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
+        bag.add(new CollisionBoundComponent(new Rectangle(600,900,width, height)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
-        bag.add(new CurrencyComponent(50));
+        bag.add(new CurrencyComponent(50, 50));
         bag.add(new JumpComponent());
         bag.add(new GlideComponent());
         bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
@@ -93,8 +100,8 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),0, 0,
-                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),
+               width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         trc.color = new Color(Color.WHITE);
         trc.DEFAULT = new Color(Color.WHITE);
         bag.add(trc);
