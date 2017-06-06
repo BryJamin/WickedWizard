@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
@@ -150,6 +151,7 @@ public class BlobFactory extends EnemyFactory {
         bag.add(new GravityComponent());
         bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
         bag.add(new MoveToPlayerComponent());
+        bag.add(new ExploderComponent());
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

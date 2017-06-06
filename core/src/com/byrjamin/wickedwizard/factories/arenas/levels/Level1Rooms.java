@@ -1,7 +1,9 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
+import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
@@ -18,6 +20,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
+import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -104,6 +107,8 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
         ag.add(room16treasureTwoturretWallsOneChest());
         ag.add(room17verticalTwoFixedTurrets());
         ag.add(room18trapTwobounceoneturret());
+        ag.add(room19ThroughNarrowLasers());
+        ag.add(room20SmallBlobTrap());
         return ag;
     }
 
@@ -610,6 +615,95 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(0), Measure.units(20f), Measure.units(40f), Measure.units(40f), arenaSkin));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(20f), Measure.units(40f), Measure.units(40f), arenaSkin));
+
+                return arena;
+            }
+        };
+    }
+
+    public ArenaGen room19ThroughNarrowLasers() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+                arena.setWidth(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+                arena.mandatoryDoors.addAll(arena.doors);
+
+                //TODO good place to try offsets you can technically fall into this room
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(0), Measure.units(0), Measure.units(40f), Measure.units(60f), arenaSkin));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(0), Measure.units(40f), Measure.units(60f), arenaSkin));
+
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(22.5f), Measure.units(10f), Measure.units(5f), arenaSkin));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(45f), Measure.units(22.5f),  180, 3.0f, 1.5f));
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(50f), Measure.units(35f), Measure.units(10f), Measure.units(5f), arenaSkin));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(40f), Measure.units(35f),  0, 3.0f, 1.5f));
+
+                arena.addEntity(decorFactory.platform(Measure.units(40f), Measure.units(45f),Measure.units(20f)));
+
+               // arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(10f), Measure.units(5f), arenaSkin));
+
+
+                return arena;
+            }
+        };
+    }
+
+
+
+
+    public ArenaGen room20SmallBlobTrap() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+
+
+                //TODO sort of like a square. Has a wall that in combat that spawns and moves upwards pushing the player upwards
+                //TODO two blob spawners are one either side kind of like this
+
+                // ----------
+                // S    u    s
+                // ----------
+
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+                //TODO good place to try offsets you can technically fall into this room
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(Measure.units(10f), arena.getWidth() / 2,
+                        new SpawnerFactory.Spawner() {
+                            public Bag<Component> spawnBag(float x, float y) {
+                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x,y);
+                            }
+                        }, 3));
+
+                // arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(10f), Measure.units(5f), arenaSkin));
 
 
                 return arena;
