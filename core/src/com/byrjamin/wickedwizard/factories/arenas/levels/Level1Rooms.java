@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.WeightedObject;
 
 import java.util.Random;
 
@@ -30,7 +31,7 @@ import java.util.Random;
  * Created by Home on 13/04/2017.
  */
 
-public class Level1Rooms extends AbstractFactory {
+public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
     private ArenaShellFactory arenaShellFactory;
     private ChestFactory chestFactory;
@@ -50,6 +51,35 @@ public class Level1Rooms extends AbstractFactory {
         this.turretFactory = new TurretFactory(assetManager);
         this.random = random;
         this.arenaSkin = arenaSkin;
+    }
+
+
+    @Override
+    public Array<WeightedObject<ArenaGen>> getAllRooms() {
+        Array<WeightedObject<ArenaGen>>  arenas = new Array<WeightedObject<ArenaGen>>();
+
+        arenas.addAll(new WeightedObject<ArenaGen>(room1blobLeft(), 20),
+                cwo(room1blobLeft()),
+                cwo(room1blobRight()),
+                cwo(room1blobLeft()),
+                cwo(room1blobRightAndLeft()),
+                cwo(room1blobRightNoBlock()),
+                cwo(room2()),
+                cwo(room3()),
+                cwo(room5()),
+                cwo(room6()),
+                cwo(room8())
+                );
+
+
+
+
+
+        return null;
+    }
+
+    public WeightedObject<ArenaGen> cwo (ArenaGen ag){
+        return new WeightedObject<ArenaGen>(ag, 20);
     }
 
     public Array<ArenaGen> getLevel1RoomArray(){
@@ -76,6 +106,10 @@ public class Level1Rooms extends AbstractFactory {
         ag.add(room18trapTwobounceoneturret());
         return ag;
     }
+
+
+
+
 
     public ArenaGen room1blobLeft(){
         return new ArenaGen() {
@@ -448,6 +482,8 @@ public class Level1Rooms extends AbstractFactory {
                                 ArenaBuilder.wall.FULL))
                         .buildArena(arena);
 
+                arena.mandatoryDoors.addAll(arena.doors);
+
                 arena.addEntity(decorFactory.wallBag(0, Measure.units(30f), Measure.units(45f), arena.getHeight(), arenaSkin));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(45f), Measure.units(30f),
                         Measure.units(45f), Measure.units(15f), arenaSkin));
@@ -582,4 +618,8 @@ public class Level1Rooms extends AbstractFactory {
     }
 
 
+    @Override
+    public Array<WeightedObject<ArenaGen>> getOmniRooms() {
+        return null;
+    }
 }

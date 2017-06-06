@@ -35,7 +35,8 @@ public class Arena {
     public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
 
     public Array<DoorComponent> doors = new Array<DoorComponent>();
-    public Array<AltarComponent> altars = new Array<AltarComponent>();
+    public Array<DoorComponent> mandatoryDoors = new Array<DoorComponent>();
+    //public Array<AltarComponent> altars = new Array<AltarComponent>();
 
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
 
@@ -104,32 +105,17 @@ public class Arena {
         }
     }
 
-    public void addAltar(Bag<Component> altar){
-        for(Component c : altar){
-            if(c instanceof AltarComponent){
-                altars.add((AltarComponent) c);
-                bagOfEntities.add(altar);
-                return;
-            }
-        }
-    }
 
     public Array<DoorComponent> getDoors() {
         return doors;
     }
 
     public void addEntity(Bag<Component> entityBag){
-        if(BagSearch.contains(AltarComponent.class, entityBag)){
-            altars.add(BagSearch.getObjectOfTypeClass(AltarComponent.class, entityBag));
-        }
         bagOfEntities.add(entityBag);
     }
 
     public void addEntity(Bag<Component>... entityBags){
         for(Bag<Component> bag : entityBags) {
-            if(BagSearch.contains(AltarComponent.class, bag)){
-                altars.add(BagSearch.getObjectOfTypeClass(AltarComponent.class, bag));
-            }
             bagOfEntities.add(bag);
         }
     }
