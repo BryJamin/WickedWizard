@@ -35,7 +35,7 @@ import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComp
 public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
     private final String moveTutorialString1 = "Exit this room on the right";
-    private final String moveTutorialString2 = "TOUCH WITHIN THIS AREA TO MOVE!";
+    private final String moveTutorialString2 = "Touch within this area of the screen to move";
 
 
     private static final String jumpTutorialString =

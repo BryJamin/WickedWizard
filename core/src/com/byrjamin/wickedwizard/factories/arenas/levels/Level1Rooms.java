@@ -109,6 +109,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
         ag.add(room18trapTwobounceoneturret());
         ag.add(room19ThroughNarrowLasers());
         ag.add(room20SmallBlobTrap());
+        ag.add(room21Width2TopBottomSeperation());
         return ag;
     }
 
@@ -542,7 +543,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                                 ArenaBuilder.wall.FULL))
                         .buildArena(arena);
 
-                ComponentBag bag = new ChestFactory(assetManager).chestBag(arena.getWidth() / 2, arena.getHeight() / 2,
+                ComponentBag bag = new ChestFactory(assetManager).chestBag(arena.getWidth() / 2, Measure.units(15f),
                         new OnDeathActionComponent(new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
@@ -673,10 +674,14 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords);
 
+                boolean isMirrored = random.nextBoolean();
 
+                arena.roomType = Arena.RoomType.TRAP;
 
                 //TODO sort of like a square. Has a wall that in combat that spawns and moves upwards pushing the player upwards
                 //TODO two blob spawners are one either side kind of like this
+
+                //TODO leave it for level 2/3 or something or the weekend when I can created the technology
 
                 // ----------
                 // S    u    s
@@ -690,19 +695,81 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
                         .buildArena(arena);
 
                 //TODO good place to try offsets you can technically fall into this room
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(Measure.units(10f), arena.getWidth() / 2,
+                float spawnPosX = isMirrored ? Measure.units(10f) : arena.getWidth() - Measure.units(10f);
+                float turretPosX = isMirrored ? arena.getWidth() - Measure.units(10f) : Measure.units(10f);
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(spawnPosX, Measure.units(50f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x,y);
                             }
-                        }, 3));
+                        }, 2));
 
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(arena.getWidth() / 2, arena.getHeight() / 2));
+
+
+                // arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(10f), Measure.units(5f), arenaSkin));
+
+
+                return arena;
+            }
+        };
+    }
+
+
+
+    public ArenaGen room21Width2TopBottomSeperation() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH  * 2);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+
+                //arena.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(arena.getWidth() / 2, arena.getHeight() / 2));
+
+                //LEFT
+                arena.addEntity(decorFactory.wallBag(0, Measure.units(30f), Measure.units(50f), Measure.units(5f),arenaSkin));
+                arena.addEntity(decorFactory.platform(Measure.units(50f), Measure.units(30f), Measure.units(30f)));
+
+                //RIGHT
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(50f), Measure.units(30f), Measure.units(50f), Measure.units(5f),arenaSkin));
+                arena.addEntity(decorFactory.platform(arena.getWidth() - Measure.units(80f), Measure.units(30f), Measure.units(30f)));
+
+
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(80f), Measure.units(30f), Measure.units(40f),Measure.units(5), arenaSkin));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.silverHeadFactory.silverHead(arena.getWidth() / 2, Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBlob(Measure.units(15f), Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBlob(arena.getWidth() - Measure.units(15f), Measure.units(20f)));
+
+
+                //TODO split of top and bottom blobs at the bottom silver in the middle turret get spawned in at top (Prox trigger needs to be looked at)
                 // arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(10f), Measure.units(5f), arenaSkin));
 
 
