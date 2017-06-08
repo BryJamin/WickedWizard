@@ -1,22 +1,18 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
-import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -43,7 +39,6 @@ import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
@@ -53,8 +48,6 @@ import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
@@ -105,7 +98,6 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.RoomTransition;
 
 
 import java.util.Random;
@@ -287,6 +279,8 @@ public class PlayScreen extends AbstractScreen {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem(),
+                        //TODO this is here because lock boxes check for a collision but ground collision sets vertical velocity to 0.
+                        //TODO either change lock to except next Tos or
                         new CollisionSystem(),
                         new BounceCollisionSystem(),
                         new GroundCollisionSystem()
@@ -340,7 +334,6 @@ public class PlayScreen extends AbstractScreen {
                         lis,
                         soundSystem,
                         new ChangeLevelSystem(jg, atlas),
-                        new ClearCollisionsSystem(),
                         new MapTeleportationSystem(jg.getMapTracker()),
                         new RoomTransitionSystem(jg.getStartingMap())
                 )

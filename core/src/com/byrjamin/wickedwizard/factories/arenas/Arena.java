@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import java.util.Stack;
@@ -93,16 +94,21 @@ public class Arena {
         return waves;
     }
 
-
-    public void addDoor(Bag<Component> door){
+    public void addDoor(Bag<Component> door, boolean isMandatory){
         for(Component c : door){
             if(c instanceof DoorComponent){
                 adjacentCoords.add(((DoorComponent) c).leaveCoords);
                 doors.add((DoorComponent) c);
+                if(isMandatory) mandatoryDoors.add((DoorComponent) c);
                 bagOfEntities.add(door);
                 return;
             }
         }
+
+    }
+
+    public void addDoor(Bag<Component> door){
+        addDoor(door, false);
     }
 
 

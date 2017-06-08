@@ -65,6 +65,27 @@ public class  ArenaShellFactory extends AbstractFactory {
         return arena;
     }
 
+    public Arena createSmallArenaNoGrapple(MapCoords defaultCoords) {
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+
+        Arena arena = new Arena(arenaSkin, defaultCoords);
+
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT);
+
+        arena = new ArenaBuilder(assetManager, arena.getArenaSkin())
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR))
+                .buildArena(arena);
+
+        return arena;
+    }
+
     public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords) {
 
 

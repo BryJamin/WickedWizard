@@ -48,12 +48,10 @@ public class ChestFactory extends AbstractFactory {
     public final float width = Measure.units(10f);
     public final float height = Measure.units(10f);
 
-    public ComponentBag chestBag(float x, float y) {
+
+    public ComponentBag chestBag(float x, float y){
 
         ComponentBag bag = new ComponentBag();
-
-        x = x - width / 2;
-        y = y- width / 2;
 
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
@@ -77,8 +75,14 @@ public class ChestFactory extends AbstractFactory {
         return bag;
     }
 
+    public ComponentBag centeredChestBag(float x, float y) {
+        x = x - width / 2;
+        y = y- width / 2;
+        return chestBag(x, y);
+    }
 
-    public ComponentBag chestBag(float x, float y, OnDeathActionComponent odac) {
+
+    public ComponentBag centeredChestBag(float x, float y, OnDeathActionComponent odac) {
 
         ComponentBag bag = new ComponentBag();
 
@@ -102,31 +106,6 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
         bag.add(odac);
-
-        return bag;
-    }
-
-
-    public ComponentBag lockedChestBag(float x, float y) {
-
-        ComponentBag bag = new ComponentBag();
-
-        x = x - width / 2;
-        y = y- width / 2;
-
-        bag.add(new PositionComponent(x, y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
-        bag.add(new VelocityComponent());
-        bag.add(new LockComponent());
-        bag.add(new LootComponent(6, 2));
-        bag.add(new GravityComponent());
-       // bag.add(new ActionOnTouchComponent(generateLoot()));
-
-
-
-
-        bag.add(new TextureRegionComponent(atlas.findRegion("locked_chest", 0), width, height,
-                TextureRegionComponent.ENEMY_LAYER_NEAR));
 
         return bag;
     }

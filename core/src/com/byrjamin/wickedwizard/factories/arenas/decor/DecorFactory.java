@@ -452,7 +452,39 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new WallComponent(new Rectangle(x,y,width,height)));
 
 
-        bag.add(new ConditionalActionComponent(new Condition() {
+        bag.add(lockBlockConditionalActionComponent());
+        //bag.add()
+
+
+        return bag;
+
+    }
+
+
+
+
+    public ComponentBag lockWall(float x, float y, float width, float height){
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height)));
+        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
+                atlas.findRegions(TextureStrings.LOCKBOX),
+                PLAYER_LAYER_FAR);
+        trbc.color = arenaSkin.getWallTint();
+        bag.add(trbc);
+
+
+        bag.add(lockBlockConditionalActionComponent());
+
+        return bag;
+    }
+
+    public ConditionalActionComponent lockBlockConditionalActionComponent(){
+
+
+        return new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
 
@@ -469,7 +501,11 @@ public class DecorFactory extends AbstractFactory {
                 //cbc.getRecentCollisions().add(c);
                 //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
-                boolean canUnlock = c != Collider.Collision.NONE && cc.keys >= 0;
+                //TODO this is so you can unlock lock boxes from the bottom
+                boolean nextToBottom = cbc.bound.y + cbc.bound.getHeight() == entity.getComponent(CollisionBoundComponent.class).bound.y;
+
+
+                boolean canUnlock = (c != Collider.Collision.NONE || nextToBottom) && cc.keys >= 0;
                 if (canUnlock) cc.keys--;
 
                 return canUnlock;
@@ -485,11 +521,7 @@ public class DecorFactory extends AbstractFactory {
             public void cleanUpAction(World world, Entity e) {
 
             }
-        }));
-        //bag.add()
-
-
-        return bag;
+        });
 
     }
 

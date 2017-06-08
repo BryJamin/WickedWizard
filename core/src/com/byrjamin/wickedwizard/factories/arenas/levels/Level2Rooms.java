@@ -21,7 +21,6 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.factories.hazards.SpikeBallFactory;
-import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -255,7 +254,7 @@ public class Level2Rooms extends AbstractFactory{
                         new VelocityComponent(-Measure.units(20), 0)));
 
 
-                arena.addEntity(new ChestFactory(assetManager).chestBag(arena.getWidth() / 2, Measure.units(30f)));
+                arena.addEntity(new ChestFactory(assetManager).centeredChestBag(arena.getWidth() / 2, Measure.units(30f)));
 
 
                 arena.addEntity(decorFactory.platform(0, SECTION_HEIGHT * 2 + SECTION_HEIGHT / 2, SECTION_WIDTH));
@@ -334,7 +333,7 @@ public class Level2Rooms extends AbstractFactory{
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
                 arena.roomType = Arena.RoomType.TRAP;
 
-                ComponentBag bag = new ChestFactory(assetManager).chestBag(arena.getWidth() / 2, arena.getHeight() / 2,
+                ComponentBag bag = new ChestFactory(assetManager).centeredChestBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new OnDeathActionComponent(new Action() {
                             @Override
                             public void performAction(World world, Entity e) {

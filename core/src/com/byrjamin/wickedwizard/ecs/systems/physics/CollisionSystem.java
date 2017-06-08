@@ -58,6 +58,8 @@ public class CollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
+        cbm.get(e).getRecentCollisions().clear();
+
         Array<Rectangle> collidableobjects = new Array<Rectangle>();
 
         addCollidableObjects(collidableobjects, Aspect.all(WallComponent.class));
