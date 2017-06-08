@@ -122,7 +122,8 @@ public class JigsawGenerator {
         OrderedSet<DoorComponent> avaliableDoors = new OrderedSet<DoorComponent>();
         for(Arena a : arenas){
             for(DoorComponent dc : a.doors){
-                if(findDoorWithinFoundRoom(dc, arenas)){
+                //TODO needs to be tested
+                if(!findDoorWithinFoundRoom(dc, arenas)){
                     avaliableDoors.add(dc);
                 }
             }
@@ -169,6 +170,9 @@ public class JigsawGenerator {
                     Array<Arena> mockPlacedArenas = new Array<Arena>();
                     mockPlacedArenas.addAll(placedArenas);
 
+                    OrderedSet<DoorComponent> mockAvaliableDoorSet = new OrderedSet<DoorComponent>();
+                    mockAvaliableDoorSet.addAll(mockAvaliableDoorSet);
+
                     boolean isAllDoorsUsed = true;
 
                     for (DoorComponent dc : nextRoomToBePlaced.mandatoryDoors) {
@@ -184,7 +188,7 @@ public class JigsawGenerator {
                         //TODO doesn't factor in multiple mandatoryDoors should I just restrict it to one?
                         //TODO new a mock placedArenas then copy it over if it is accurate.
                             if(nextInnerRoomToBePlaced.mandatoryDoors.size == 0) {
-                                if (fillMandatoryDoor(nextInnerRoomToBePlaced, dc, mockPlacedArenas)) {
+                                if (fillMandatoryDoor(nextInnerRoomToBePlaced, dc, mockPlacedArenas, mockAvaliableDoorSet)) {
                                     weightedArenaGen.setWeight((weightedArenaGen.getWeight() / 5 > 0) ? weightedArenaGen.getWeight() / 5 : 1);
                                     placedRoom = true;
                                     break;
@@ -204,6 +208,8 @@ public class JigsawGenerator {
                         int diff = mockPlacedArenas.size - placedArenas.size;
 
                         placedArenas = mockPlacedArenas;
+                        avaliableDoorsSet = mockAvaliableDoorSet;
+                        unavaliableMapCoords = createUnavaliableMapCoords(placedArenas);
                         addArenaToMap(nextRoomToBePlaced, placedArenas, unavaliableMapCoords, avaliableDoorsSet);
 
                         weightedObject.setWeight((weightedObject.getWeight() / 5 > 0) ? weightedObject.getWeight() / 5 : 1);
@@ -236,7 +242,7 @@ public class JigsawGenerator {
 
 
 
-    public boolean fillMandatoryDoor(Arena arena, DoorComponent mandatoryDoor, Array<Arena> placedArenas){
+    public boolean fillMandatoryDoor(Arena arena, DoorComponent mandatoryDoor, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors){
 
         OrderedSet<DoorComponent> doors = new OrderedSet<DoorComponent>();
         doors.add(mandatoryDoor);
@@ -247,7 +253,7 @@ public class JigsawGenerator {
         while(tries < 15) {
 
             if (placeRoomUsingDoors(arena, doors, unavaliableMapCoords, rand)) {
-                addArenaToMap(arena, placedArenas, unavaliableMapCoords, new OrderedSet<DoorComponent>());
+                addArenaToMap(arena, placedArenas, unavaliableMapCoords, avaliableDoors);
                 return true;
             }
             tries++;
@@ -310,7 +316,7 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        //startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
+        startingArena = level1Rooms.room23CenterSmallspawner().createArena(new MapCoords(0,0));
 
        // startingArena.addEntity(decorFactory.lockBox(Measure.units(20f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
         //startingArena = level1Rooms.room9deadEndW2().createArena(new MapCoords(0,0));

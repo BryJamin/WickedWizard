@@ -108,8 +108,10 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
         ag.add(room17verticalTwoFixedTurrets());
         ag.add(room18trapTwobounceoneturret());
         ag.add(room19ThroughNarrowLasers());
-        ag.add(room20SmallBlobTrap());
+        ag.add(room20CenterFixedTurret());
         ag.add(room21Width2TopBottomSeperation());
+        ag.add(room22FourBlock3BouncersWidth2TopBottomSeperation());
+        ag.add(room23CenterSmallspawner());
         return ag;
     }
 
@@ -318,6 +320,9 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
+
+                //TODO make two doors mandatory
+
                 Arena a = arenaShellFactory.createHeight2Arena(defaultCoords);
 
                 a.addEntity(decorFactory.wallBag(a.getWidth() - Measure.units(60f), Measure.units(35f),
@@ -667,7 +672,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
 
 
-    public ArenaGen room20SmallBlobTrap() {
+    public ArenaGen room20CenterFixedTurret() {
 
         return new ArenaGen() {
             @Override
@@ -703,13 +708,6 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
                 float spawnPosX = isMirrored ? Measure.units(10f) : arena.getWidth() - Measure.units(10f);
                 float turretPosX = isMirrored ? arena.getWidth() - Measure.units(10f) : Measure.units(10f);
-
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(spawnPosX, Measure.units(50f),
-                        new SpawnerFactory.Spawner() {
-                            public Bag<Component> spawnBag(float x, float y) {
-                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x,y);
-                            }
-                        }, 2));
 
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(arena.getWidth() / 2, arena.getHeight() / 2));
@@ -777,6 +775,103 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
             }
         };
     }
+
+
+
+
+    public ArenaGen room22FourBlock3BouncersWidth2TopBottomSeperation() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+                //LEFT
+                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(30f), Measure.units(5f), Measure.units(5f),arenaSkin));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(30f), Measure.units(5f), Measure.units(5f),arenaSkin));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(12.5f), arena.getHeight() / 2 + Measure.units(2.5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f) ));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(12.5f), arena.getHeight() / 2 + Measure.units(2.5f)));
+/*
+                //RIGHT
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(50f), Measure.units(30f), Measure.units(50f), Measure.units(5f),arenaSkin));
+                arena.addEntity(decorFactory.platform(arena.getWidth() - Measure.units(80f), Measure.units(30f), Measure.units(30f)));
+
+
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(80f), Measure.units(30f), Measure.units(40f),Measure.units(5), arenaSkin));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.silverHeadFactory.silverHead(arena.getWidth() / 2, Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBlob(Measure.units(15f), Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBlob(arena.getWidth() - Measure.units(15f), Measure.units(20f)));*/
+
+
+                //TODO split of top and bottom blobs at the bottom silver in the middle turret get spawned in at top (Prox trigger needs to be looked at)
+                // arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(10f), Measure.units(5f), arenaSkin));
+
+
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room23CenterSmallspawner() {
+
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+                arena.setWidth(ArenaShellFactory.SECTION_WIDTH);
+                arena.setHeight(ArenaShellFactory.SECTION_HEIGHT);
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
+                        new SpawnerFactory.Spawner() {
+                            public Bag<Component> spawnBag(float x, float y) {
+                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x,y);
+                            }
+                        }, 3));
+
+
+                return arena;
+            }
+        };
+    }
+
+
+
+
+
+//TODO IDEA since proximitry trigger is going to be revamped for blob and others seperate a small room in two with a platform
+    //TODO place blob ontop (Have it be an open room)
+
 
 
     @Override
