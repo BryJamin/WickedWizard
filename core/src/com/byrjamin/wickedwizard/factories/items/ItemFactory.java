@@ -44,6 +44,7 @@ import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
 
@@ -177,7 +178,7 @@ public class ItemFactory extends AbstractFactory {
 
         Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
         altarBag.add(new CollisionBoundComponent(bound));
-        altarBag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
+        altarBag.add(new ProximityTriggerAIComponent(activeAltar(), new HitBox(bound)));
 
         TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion("altar"), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR);

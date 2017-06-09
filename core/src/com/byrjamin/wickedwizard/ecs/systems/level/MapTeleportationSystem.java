@@ -119,15 +119,14 @@ public class MapTeleportationSystem extends EntitySystem {
                 for (Entity e : this.getEntities()) {
                     if (btm.get(e).link == to.link) {
 
-                        cbc.setCenterY(cbm.get(e).getCenterY());
-                        cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight();
-                        vc.velocity.y = -Measure.units(40f);
+                        cbc.setCenterX(cbm.get(e).getCenterX());
+                        cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight() * 2;
+                        vc.velocity.y = 0;
 
                         pc.setX(cbc.bound.x);
                         pc.setY(cbc.bound.y);
 
                         mtc.reset();
-
                     }
                 }
             }

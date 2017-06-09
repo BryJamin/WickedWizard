@@ -37,10 +37,6 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public final float WALLWIDTH = Measure.units(5);
 
-    public Arena createOmniArenaSquareCenter(){
-        return createOmniArenaSquareCenter(new MapCoords(0,0));
-    }
-
     public Arena createOmniArenaSquareCenter(MapCoords defaultCoords) {
 
         Array<MapCoords> containingCorrds = new Array<MapCoords>();
@@ -87,8 +83,6 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
     public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords) {
-
-
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
@@ -144,7 +138,6 @@ public class  ArenaShellFactory extends AbstractFactory {
 
 
     public Arena createWidth2ArenaWithVerticalDoors(MapCoords defaultCoords) {
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
 
         Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
@@ -165,34 +158,6 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         return arena;
     }
-
-
-
-
-    public Arena createHeight2Arena(MapCoords defaultCoords) {
-
-        Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT * 2);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addSection(new ArenaBuilder.Section(defaultCoords,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.FULL))
-                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.NONE)).buildArena(arena);
-
-        return arena;
-    }
-
-
-
 
     public Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 

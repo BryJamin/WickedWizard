@@ -48,6 +48,7 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
@@ -365,7 +366,7 @@ public class DecorFactory extends AbstractFactory {
         Rectangle r = new Rectangle(x,y,width,height);
         bag.add(btc);
 
-        bag.add(new ProximityTriggerAIComponent(r, new Action() {
+        bag.add(new ProximityTriggerAIComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MapTeleportationSystem.class).goFromTo(e.getComponent(BossTeleporterComponent.class));
@@ -375,7 +376,7 @@ public class DecorFactory extends AbstractFactory {
             public void cleanUpAction(World world, Entity e) {
 
             }
-        }));
+        }, new HitBox(r)));
 
         return bag;
 
@@ -424,7 +425,7 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = portal(x,y);
         Rectangle r = new Rectangle(x,y,width,height);
 
-        bag.add(new ProximityTriggerAIComponent(r, new Action() {
+        bag.add(new ProximityTriggerAIComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MapTeleportationSystem.class).recreateWorld();
@@ -434,7 +435,7 @@ public class DecorFactory extends AbstractFactory {
             public void cleanUpAction(World world, Entity e) {
 
             }
-        }));
+        }, new HitBox(r)));
 
 
         return bag;

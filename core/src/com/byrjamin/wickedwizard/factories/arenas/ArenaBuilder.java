@@ -114,6 +114,8 @@ public class ArenaBuilder {
                         new MapCoords(coordX, coordY + 1),
                         Direction.UP), (s.ceiling == wall.MANDATORYDOOR || s.ceiling == wall.MANDATORYGRAPPLE));
 
+                //System.out.println("SHOULD BE MANDATORY??? " + (s.ceiling == wall.MANDATORYDOOR || s.ceiling == wall.MANDATORYGRAPPLE));
+
                 arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
 
                 if(s.ceiling == wall.GRAPPLE || s.ceiling == wall.MANDATORYGRAPPLE){

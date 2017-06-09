@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -21,6 +22,7 @@ public class MovementSystem extends EntityProcessingSystem {
     ComponentMapper<DirectionalComponent> dm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<ProximityTriggerAIComponent> ptam;
 
     @SuppressWarnings("unchecked")
     public MovementSystem() {
@@ -46,6 +48,13 @@ public class MovementSystem extends EntityProcessingSystem {
                 hb.hitbox.y = pc.getY() + hb.offsetY;
             }
 
+        }
+
+        if(ptam.has(e)){
+            for(HitBox hb : ptam.get(e).proximityHitBoxes){
+                hb.hitbox.x = pc.getX() + hb.offsetX;
+                hb.hitbox.y = pc.getY() + hb.offsetY;
+            }
         }
 
         if(dm.has(e)) {

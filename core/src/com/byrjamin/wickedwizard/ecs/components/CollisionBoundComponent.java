@@ -13,7 +13,7 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 public class CollisionBoundComponent extends Component{
 
     public Rectangle bound;
-    public Array<HitBox> hitBoxes = new Array<HitBox>(); //Make a hitbox class with an offsetx and offset y?
+    public Array<HitBox> hitBoxes = new Array<HitBox>();
 
     public Array<Collider.Collision> recentCollisions = new Array<Collider.Collision>();
 

@@ -316,7 +316,7 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
+        //startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
 
        // startingArena.addEntity(decorFactory.lockBox(Measure.units(20f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
         //startingArena = level1Rooms.room9deadEndW2().createArena(new MapCoords(0,0));
@@ -348,9 +348,9 @@ public class JigsawGenerator {
 
         Arena bossRoom = arenaShellFactory.createSmallArena(new MapCoords(), true, true, false ,true);
         bossRoom.roomType = Arena.RoomType.BOSS;
-        bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2, btc));
+        bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2 + Measure.units(5f), btc));
 
-        placeBossRoom(bossRoom, placedArenas, avaliableDoorsSet, range);
+        placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas), range);
         startingMap = new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
         mapTracker.put(btc, startingMap);
 
@@ -369,8 +369,8 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
-        //startingArena = level1Rooms.room10Height2().createArena(new MapCoords(0,0));
-        startingArena = level1Rooms.room26ThreeExitsOneTurretNoLock().createArena(new MapCoords(0,0));
+        //startingArena = level1Rooms.room29BlobAndBouncer().createArena(new MapCoords());
+        //startingArena = level1Rooms.room26ThreeExitsOneTurretNoLock().createArena(new MapCoords(0,0));
 
         //startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
         //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
@@ -393,7 +393,7 @@ public class JigsawGenerator {
 
         Arena bossRoom = arenaShellFactory.createSmallArena(new MapCoords(), true, true, false ,true);
         bossRoom.roomType = Arena.RoomType.BOSS;
-        bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2, btc));
+        bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2 + Measure.units(5f), btc));
 
         placeBossRoom(bossRoom, placedArenas, avaliableDoorsSet, range);
         startingMap = new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
