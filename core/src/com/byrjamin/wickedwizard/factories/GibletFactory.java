@@ -6,18 +6,15 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -52,7 +49,7 @@ public class GibletFactory extends AbstractFactory {
         return g;
     }
 
-    public class Giblets implements Action {
+    public class Giblets implements Task {
 
         private int numberOfGiblets;
         private final float life;

@@ -5,7 +5,6 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 
 /**
  * Created by Home on 27/05/2017.
@@ -24,7 +23,7 @@ public class ActionAfterTimeSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         ActionAfterTimeComponent aatc = aatm.get(e);
         if ((aatc.timeUntilAction -= world.delta) <= 0) {
-            aatc.action.performAction(world, e);
+            aatc.task.performAction(world, e);
 
             if(aatc.repeat){
                 aatc.timeUntilAction = aatc.resetTime;

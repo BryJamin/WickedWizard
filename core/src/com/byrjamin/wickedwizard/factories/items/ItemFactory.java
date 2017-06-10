@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
@@ -25,7 +26,6 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -98,7 +98,7 @@ public class ItemFactory extends AbstractFactory {
 
 
         bag.add(new FrictionComponent(true, true));
-        bag.add(new OnDeathActionComponent(new Action() {
+        bag.add(new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)).performAction(world, e);
@@ -112,7 +112,7 @@ public class ItemFactory extends AbstractFactory {
         }));
 
 
-        bag.add(new ActionAfterTimeComponent(new Action() {
+        bag.add(new ActionAfterTimeComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 //e.edit().add(new VelocityComponent());
@@ -249,8 +249,8 @@ public class ItemFactory extends AbstractFactory {
     }
 
 
-    private static Action buyItem(){
-        return new Action() {
+    private static Task buyItem(){
+        return new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -313,9 +313,9 @@ public class ItemFactory extends AbstractFactory {
 
 
 
-    private static Action activeAltar (){
+    private static Task activeAltar (){
 
-        return new Action() {
+        return new Task() {
             @Override
             public void performAction(World world, Entity e) {
 

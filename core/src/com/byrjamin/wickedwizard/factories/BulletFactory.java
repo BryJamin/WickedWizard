@@ -74,7 +74,7 @@ public class BulletFactory extends AbstractFactory {
 
 
         OnDeathActionComponent odc = BagSearch.getObjectOfTypeClass(OnDeathActionComponent.class, bag);
-        odc.action = new GibletFactory(assetManager).giblets(5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED));
+        odc.task = new GibletFactory(assetManager).giblets(5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED));
 
         return bag;
     }

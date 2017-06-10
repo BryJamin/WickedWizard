@@ -5,7 +5,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.utils.RoomTransition;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
@@ -19,9 +19,9 @@ public class ScreenWipeSystem extends BaseSystem {
     public RoomTransition entryTransition;
     public RoomTransition exitTransition;
 
-    public Action actionBefore;
-    public Action actionToPerformInbetweenTransition;
-    public Action actionAfter;
+    public Task taskBefore;
+    public Task taskToPerformInbetweenTransition;
+    public Task taskAfter;
 
     private boolean isEntry = false;
     private boolean isExit = false;
@@ -58,7 +58,7 @@ public class ScreenWipeSystem extends BaseSystem {
             entryTransition.draw(batch);
 
             if(entryTransition.isFinished()){
-                actionToPerformInbetweenTransition.performAction(world, null);
+                taskToPerformInbetweenTransition.performAction(world, null);
                 entryTransition.draw(batch);
                 isEntry = false;
                 return;
@@ -79,7 +79,7 @@ public class ScreenWipeSystem extends BaseSystem {
             exitTransition.draw(batch);
 
             if(exitTransition.isFinished()){
-                actionAfter.performAction(world, null);
+                taskAfter.performAction(world, null);
                 isFinished = true;
                 isExit = false;
                 processingFlag = false;
@@ -90,7 +90,7 @@ public class ScreenWipeSystem extends BaseSystem {
 
 
 
-    public void startScreenWipe(Direction start, Action actionToPerformInbetweenTransition){
+    public void startScreenWipe(Direction start, Task taskToPerformInbetweenTransition){
 
         processingFlag = true;
         isEntry = true;
@@ -98,9 +98,9 @@ public class ScreenWipeSystem extends BaseSystem {
         this.direction = start;
         entryAnimation(start, gamecam);
 
-        this.actionToPerformInbetweenTransition = actionToPerformInbetweenTransition;
+        this.taskToPerformInbetweenTransition = taskToPerformInbetweenTransition;
 
-        this.actionBefore = new Action() {
+        this.taskBefore = new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 for(BaseSystem s: world.getSystems()){
@@ -116,7 +116,7 @@ public class ScreenWipeSystem extends BaseSystem {
             }
         };
 
-        this.actionAfter = new Action() {
+        this.taskAfter = new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 for(BaseSystem s: world.getSystems()){
@@ -130,7 +130,7 @@ public class ScreenWipeSystem extends BaseSystem {
             }
         };
 
-        this.actionBefore.performAction(world, null);
+        this.taskBefore.performAction(world, null);
 
     }
 

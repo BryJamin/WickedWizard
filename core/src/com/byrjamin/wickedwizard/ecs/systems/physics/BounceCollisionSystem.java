@@ -62,10 +62,10 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
                         vc.velocity.y = -Math.abs(vc.velocity.y);
                         break;
                     case LEFT:
-                        vc.velocity.x = -Math.abs(vc.velocity.x);
+                        vc.velocity.x = Math.abs(vc.velocity.x);
                         break;
                     case RIGHT:
-                        vc.velocity.x = Math.abs(vc.velocity.x);
+                        vc.velocity.x = -Math.abs(vc.velocity.x);
                         break;
                 }
                 pc.position.x = cbc.bound.getX();

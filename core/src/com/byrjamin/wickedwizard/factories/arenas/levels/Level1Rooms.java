@@ -7,7 +7,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
@@ -49,7 +49,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
         super(assetManager);
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
         this.chestFactory = new ChestFactory(assetManager);
-        this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
+        this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.turretFactory = new TurretFactory(assetManager);
         this.random = random;
@@ -573,7 +573,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                         .buildArena(arena);
 
                 ComponentBag bag = new ChestFactory(assetManager).centeredChestBag(arena.getWidth() / 2, Measure.units(15f),
-                        new OnDeathActionComponent(new Action() {
+                        new OnDeathActionComponent(new Task() {
                             @Override
                             public void performAction(World world, Entity e) {
                                 new GibletFactory(assetManager).giblets(5,0.4f,

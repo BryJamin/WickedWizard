@@ -12,7 +12,7 @@ public class ActionAfterTimeComponent extends Component {
 
     //TODO possible expansion. Repeat 'x' times. Or if set to -1 repeat endlessly;
 
-    public Action action;
+    public Task task;
     public float timeUntilAction;
     public float resetTime;
 
@@ -20,7 +20,7 @@ public class ActionAfterTimeComponent extends Component {
 
     public ActionAfterTimeComponent(){
 
-        action = new Action() {
+        task = new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -35,8 +35,8 @@ public class ActionAfterTimeComponent extends Component {
         timeUntilAction = 0;
     }
 
-    public ActionAfterTimeComponent(Action action, float timeUntilAction){
-        this.action = action;
+    public ActionAfterTimeComponent(Task task, float timeUntilAction){
+        this.task = task;
         this.timeUntilAction = timeUntilAction;
         this.resetTime = timeUntilAction;
     }

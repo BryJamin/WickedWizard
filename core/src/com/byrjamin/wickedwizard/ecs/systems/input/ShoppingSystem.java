@@ -4,15 +4,10 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
-import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
-import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 
 /**
  * Created by Home on 18/04/2017.
@@ -47,7 +42,7 @@ public class ShoppingSystem extends EntitySystem {
     public boolean activeOnTouchTrigger(float inputX, float inputY) {
         for (Entity e : this.getEntities()) {
             if(cbm.get(e).bound.contains(inputX, inputY)){
-                aotm.get(e).action.performAction(world, e);
+                aotm.get(e).task.performAction(world, e);
                 return true;
             }
         }

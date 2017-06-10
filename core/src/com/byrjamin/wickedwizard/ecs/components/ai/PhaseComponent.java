@@ -13,14 +13,14 @@ public class PhaseComponent extends Component {
     public int currentPhase;
     private Array<Float> phaseTimers = new Array<Float>();
 
-    private Array<Action> phaseArray = new Array<Action>();
+    private Array<Task> phaseArray = new Array<Task>();
 
     public Array<Integer> phaseSequence = new Array<Integer>();
     public Array<Integer> stateSequence = new Array<Integer>();
 
 
-    public void addPhase(Float time, Action action){
-        phaseArray.add(action);
+    public void addPhase(Float time, Task task){
+        phaseArray.add(task);
         phaseTimers.add(time);
     }
 
@@ -37,7 +37,7 @@ public class PhaseComponent extends Component {
         }
     }
 
-    public Action getCurrentPhase(int phaseNo){
+    public Task getCurrentPhase(int phaseNo){
         return phaseArray.get(phaseNo);
     }
 

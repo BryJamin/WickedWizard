@@ -10,13 +10,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ExplosionComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -79,7 +77,7 @@ public class BombFactory extends  AbstractFactory{
         };
 
 
-        cac.action = new Action() {
+        cac.task = new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(AnimationComponent.class).animations.get(0).setFrameDuration(0.05f / 1f);
@@ -93,7 +91,7 @@ public class BombFactory extends  AbstractFactory{
 
         bag.add(cac);
 
-        OnDeathActionComponent onDeathActionComponent = new OnDeathActionComponent(new Action() {
+        OnDeathActionComponent onDeathActionComponent = new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
 

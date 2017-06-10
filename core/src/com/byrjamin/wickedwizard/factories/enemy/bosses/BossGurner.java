@@ -16,14 +16,13 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
@@ -34,7 +33,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
@@ -99,7 +97,7 @@ public class BossGurner extends EnemyFactory{
        // bag.add(new WeaponComponent(new KugelWeapon(left), 0.5f));
 
 
-        Action p = new Action() {
+        Task p = new Task() {
 
             @Override
             public void performAction(World world, Entity e) {
@@ -131,7 +129,7 @@ public class BossGurner extends EnemyFactory{
     }
 
 
-    private class Orbitals implements Action {
+    private class Orbitals implements Task {
 
 
         int[] angles = new int[] {-10,80,170, 260};
@@ -178,7 +176,7 @@ public class BossGurner extends EnemyFactory{
                     orbital.edit().add(c);
 
 
-                    orbital.edit().add(new ActionAfterTimeComponent(new Action() {
+                    orbital.edit().add(new ActionAfterTimeComponent(new Task() {
                         @Override
                         public void performAction(World world, Entity e) {
                             e.edit().add(new EnemyComponent());

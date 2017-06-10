@@ -40,6 +40,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
@@ -283,7 +284,8 @@ public class PlayScreen extends AbstractScreen {
                         //TODO either change lock to except next Tos or
                         new CollisionSystem(),
                         new BounceCollisionSystem(),
-                        new GroundCollisionSystem()
+                        new GroundCollisionSystem(),
+                        new OnCollisionActionSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),

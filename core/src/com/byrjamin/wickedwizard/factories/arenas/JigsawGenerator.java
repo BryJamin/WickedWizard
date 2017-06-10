@@ -77,7 +77,7 @@ public class JigsawGenerator {
     public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, Array<Item> itemPool, Random rand){
         this.assetManager = assetManager;
         this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, rand);
-        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin);
+        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, rand);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
@@ -94,7 +94,7 @@ public class JigsawGenerator {
     public void setSkin(ArenaSkin arenaSkin) {
         this.arenaSkin = arenaSkin;
         this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, rand);
-        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin);
+        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, rand);
         this.level1BossMaps = new Level1BossMaps(assetManager, arenaSkin);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
@@ -120,10 +120,14 @@ public class JigsawGenerator {
 
     public OrderedSet<DoorComponent> createAvaliableDoorSet(Array<Arena> arenas){
         OrderedSet<DoorComponent> avaliableDoors = new OrderedSet<DoorComponent>();
+
+        Array<Arena> protectionFromIteratorError = new Array<Arena>();
+        protectionFromIteratorError.addAll(arenas);
+
         for(Arena a : arenas){
             for(DoorComponent dc : a.doors){
                 //TODO needs to be tested
-                if(!findDoorWithinFoundRoom(dc, arenas)){
+                if(!findDoorWithinFoundRoom(dc, protectionFromIteratorError)){
                     avaliableDoors.add(dc);
                 }
             }
@@ -315,6 +319,8 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+
+        startingArena = level1Rooms.room1blobLeft().createArena(new MapCoords());
 
         //startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
 

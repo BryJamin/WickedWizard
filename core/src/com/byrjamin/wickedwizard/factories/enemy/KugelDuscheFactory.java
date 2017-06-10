@@ -15,7 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -94,7 +94,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
 
 
-        Action p = new Action() {
+        Task p = new Task() {
 
             @Override
             public void performAction(World world, Entity e) {

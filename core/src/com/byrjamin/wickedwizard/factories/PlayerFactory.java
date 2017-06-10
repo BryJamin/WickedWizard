@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
@@ -204,7 +204,7 @@ public class PlayerFactory extends AbstractFactory {
         };
 
 
-        cac.action = new Action() {
+        cac.task = new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);

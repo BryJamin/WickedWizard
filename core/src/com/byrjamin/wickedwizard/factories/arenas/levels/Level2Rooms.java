@@ -5,7 +5,7 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
@@ -26,6 +26,8 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
+import java.util.Random;
+
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
 
@@ -40,16 +42,18 @@ public class Level2Rooms extends AbstractFactory{
     DecorFactory decorFactory;
     ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
     TurretFactory turretFactory;
+    Random random;
 
     ArenaSkin arenaSkin;
 
-    public Level2Rooms(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public Level2Rooms(AssetManager assetManager, ArenaSkin arenaSkin, Random random) {
         super(assetManager);
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
         this.chestFactory = new ChestFactory(assetManager);
-        this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
+        this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.turretFactory = new TurretFactory(assetManager);
+        this.random = random;
         this.arenaSkin = arenaSkin;
     }
 
@@ -334,7 +338,7 @@ public class Level2Rooms extends AbstractFactory{
                 arena.roomType = Arena.RoomType.TRAP;
 
                 ComponentBag bag = new ChestFactory(assetManager).centeredChestBag(arena.getWidth() / 2, arena.getHeight() / 2,
-                        new OnDeathActionComponent(new Action() {
+                        new OnDeathActionComponent(new Task() {
                             @Override
                             public void performAction(World world, Entity e) {
                                 new GibletFactory(assetManager).giblets(5,0.4f,

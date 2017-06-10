@@ -11,18 +11,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -37,9 +34,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchCompon
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -281,7 +276,7 @@ public class DecorFactory extends AbstractFactory {
 
         ComponentBag bag = grapplePointBag(x, y);
 
-        Action combatAction = new Action() {
+        Task combatTask = new Task() {
 
 
             CollisionBoundComponent cbc;
@@ -304,7 +299,7 @@ public class DecorFactory extends AbstractFactory {
             }
         };
 
-        bag.add(new InCombatActionComponent(combatAction));
+        bag.add(new InCombatActionComponent(combatTask));
 
         return bag;
 
@@ -366,7 +361,7 @@ public class DecorFactory extends AbstractFactory {
         Rectangle r = new Rectangle(x,y,width,height);
         bag.add(btc);
 
-        bag.add(new ProximityTriggerAIComponent(new Action() {
+        bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MapTeleportationSystem.class).goFromTo(e.getComponent(BossTeleporterComponent.class));
@@ -425,7 +420,7 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = portal(x,y);
         Rectangle r = new Rectangle(x,y,width,height);
 
-        bag.add(new ProximityTriggerAIComponent(new Action() {
+        bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MapTeleportationSystem.class).recreateWorld();
@@ -511,7 +506,7 @@ public class DecorFactory extends AbstractFactory {
 
                 return canUnlock;
             }
-        }, new Action() {
+        }, new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 e.deleteFromWorld();

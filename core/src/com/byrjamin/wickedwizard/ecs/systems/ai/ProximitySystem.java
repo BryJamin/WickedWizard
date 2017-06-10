@@ -31,11 +31,11 @@ public class ProximitySystem extends EntityProcessingSystem {
         ProximityTriggerAIComponent ptac = ptam.get(e);
 
         if(!ptac.triggered && overlapsHitbox(cbc.bound, ptac.proximityHitBoxes)){
-            ptac.action.performAction(world, e);
+            ptac.task.performAction(world, e);
             ptac.triggered = true;
         } else if(!overlapsHitbox(cbc.bound, ptac.proximityHitBoxes) && ptac.triggered){
             ptac.triggered = false;
-            ptac.action.cleanUpAction(world, e);
+            ptac.task.cleanUpAction(world, e);
         }
     }
 

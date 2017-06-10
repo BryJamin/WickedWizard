@@ -3,17 +3,16 @@ package com.byrjamin.wickedwizard.ecs.components.ai;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 
 /**
  * Created by Home on 18/04/2017.
  */
 
 public class ActionOnTouchComponent extends Component {
-    public Action action;
+    public Task task;
 
     public ActionOnTouchComponent() {
-        action = new Action() {
+        task = new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -27,8 +26,8 @@ public class ActionOnTouchComponent extends Component {
     }
 
 
-    public ActionOnTouchComponent(Action action){
-        this.action = action;
+    public ActionOnTouchComponent(Task task){
+        this.task = task;
     }
 
 }

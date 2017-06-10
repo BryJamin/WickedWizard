@@ -13,7 +13,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
@@ -125,7 +125,7 @@ public class BossWanda extends EnemyFactory {
 
 
 
-    private class Phase1 implements Action {
+    private class Phase1 implements Task {
         @Override
         public void performAction(World world, Entity e) {
             e.edit().add(new FadeComponent(true, 0.5f, false));
@@ -171,7 +171,7 @@ public class BossWanda extends EnemyFactory {
         }
     }
 
-    private class Phase2 implements Action {
+    private class Phase2 implements Task {
         Random random = new Random();
 
         @Override
@@ -197,7 +197,7 @@ public class BossWanda extends EnemyFactory {
     }
 
 
-    private class Phase3 implements Action {
+    private class Phase3 implements Task {
 
         private Direction direction;
 
@@ -305,7 +305,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(trc);
 
 
-            e.edit().add(new ActionAfterTimeComponent(new Action() {
+            e.edit().add(new ActionAfterTimeComponent(new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
                     VelocityComponent vc = e.getComponent(VelocityComponent.class);
@@ -384,7 +384,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(trc);
 
 
-            e.edit().add(new ActionAfterTimeComponent(new Action() {
+            e.edit().add(new ActionAfterTimeComponent(new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
                     VelocityComponent vc = e.getComponent(VelocityComponent.class);

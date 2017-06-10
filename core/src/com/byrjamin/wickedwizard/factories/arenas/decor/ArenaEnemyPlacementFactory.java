@@ -18,6 +18,8 @@ import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
+import java.util.Random;
+
 /**
  * Created by Home on 26/03/2017.
  */
@@ -34,10 +36,11 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public TurretFactory turretFactory;
     public GoatWizardFactory goatWizardFactory;
     private ArenaSkin arenaSkin;
+    private Random random;
 
     //TODO convert this into a class where you spawn enemies.
 
-    public ArenaEnemyPlacementFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public ArenaEnemyPlacementFactory(AssetManager assetManager, ArenaSkin arenaSkin, Random random) {
         super(assetManager);
         this.blobFactory = new BlobFactory(assetManager);
         this.bouncerFactory = new BouncerFactory(assetManager);
@@ -47,6 +50,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.turretFactory = new TurretFactory(assetManager);
         this.goatWizardFactory = new GoatWizardFactory(assetManager);
         this.amoebaFactory = new AmoebaFactory(assetManager);
+        this.random = random;
         this.arenaSkin = arenaSkin;
     }
 
@@ -71,11 +75,6 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return blobFactory.blobBag(x,y);
-            }
-        });
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return blobFactory.smallblobBag(x,y);
             }
         });
         //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
@@ -127,7 +126,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return bouncerFactory.smallBouncer(x,y);
+                return bouncerFactory.smallBouncer(x,y, random.nextBoolean());
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
