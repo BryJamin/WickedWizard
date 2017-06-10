@@ -275,7 +275,7 @@ public class PlayScreen extends AbstractScreen {
         jg.generate();
         Arena startingArena = jg.getStartingRoom();
 
-        ComponentBag player = new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2);
+        ComponentBag player = new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(15f));
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -455,6 +455,7 @@ public class PlayScreen extends AbstractScreen {
             pauseWorld.process();
 
             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
 
 
             float camX = gamecam.position.x - gamecam.viewportWidth / 2;

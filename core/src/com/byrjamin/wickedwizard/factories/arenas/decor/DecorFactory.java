@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -47,6 +48,7 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
+import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_NEAR;
 
 /**
  * Created by Home on 04/03/2017.
@@ -60,6 +62,11 @@ public class DecorFactory extends AbstractFactory {
         super(assetManager);
         this.arenaSkin = arenaSkin;
         bf = new BackgroundFactory();
+    }
+
+
+    public Bag<Component> wallBag(float x, float y, float width, float height){
+        return wallBag(x,y,width,height,arenaSkin);
     }
 
 
@@ -454,6 +461,23 @@ public class DecorFactory extends AbstractFactory {
 
         return bag;
 
+    }
+
+    public ComponentBag spikeWall(float x, float y, float width, float height, float angleOfRotationIndegrees){
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
+
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
+                atlas.findRegions(TextureStrings.SPIKEWALL),
+                PLAYER_LAYER_NEAR);
+        trbc.color = arenaSkin.getWallTint();
+        trbc.rotation = angleOfRotationIndegrees;
+        bag.add(trbc);
+
+        bag.add(new HazardComponent());
+
+        return bag;
     }
 
 

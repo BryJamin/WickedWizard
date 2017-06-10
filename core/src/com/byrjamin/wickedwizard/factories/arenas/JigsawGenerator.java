@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
@@ -320,7 +319,7 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        startingArena = level2Rooms.largeBattleRoom().createArena(new MapCoords());
+        startingArena = level2Rooms.room9SpikeWallJump().createArena(new MapCoords());
 
         //startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
 
@@ -378,7 +377,7 @@ public class JigsawGenerator {
         //startingArena = level1Rooms.room29BlobAndBouncer().createArena(new MapCoords());
         //startingArena = level1Rooms.room26ThreeExitsOneTurretNoLock().createArena(new MapCoords(0,0));
 
-        //startingArena = level2Rooms.width2RoomOnlyVerticalExits().createArena();
+        //startingArena = level2Rooms.room4width2RoomOnlyVerticalExits().createArena();
         //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
         //startingArena.addEntity(decorFactory.platform(500,500,1000));
         placedArenas.add(startingArena);
@@ -421,7 +420,7 @@ public class JigsawGenerator {
         Array<ArenaGen> arenaGens;
 
         switch(currentLevel){
-            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray();
+            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
             case PRISON: arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
