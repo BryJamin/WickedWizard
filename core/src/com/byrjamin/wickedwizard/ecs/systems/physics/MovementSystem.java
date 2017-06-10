@@ -26,16 +26,27 @@ public class MovementSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public MovementSystem() {
-        super(Aspect.all(PositionComponent.class, VelocityComponent.class));
+        super(Aspect.all(PositionComponent.class));
     }
 
     @Override
     protected void process(Entity e) {
 
         PositionComponent pc = pm.get(e);
-        VelocityComponent vc = vm.get(e);
 
-        pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta, 0);
+        if(vm.has(e)) {
+            VelocityComponent vc = vm.get(e);
+            pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta, 0);
+
+
+            if(dm.has(e)) {
+                if (vc.velocity.x < 0)
+                    DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.LOW);
+                else if (vc.velocity.x > 0)
+                    DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.LOW);
+            }
+
+        }
 
 
         if(cbm.has(e)) {
@@ -57,12 +68,6 @@ public class MovementSystem extends EntityProcessingSystem {
             }
         }
 
-        if(dm.has(e)) {
-            if (vc.velocity.x < 0)
-                DirectionalSystem.changeDirection(world, e, Direction.LEFT, DirectionalComponent.PRIORITY.LOW);
-            else if (vc.velocity.x > 0)
-                DirectionalSystem.changeDirection(world, e, Direction.RIGHT, DirectionalComponent.PRIORITY.LOW);
-        }
 
 
     }

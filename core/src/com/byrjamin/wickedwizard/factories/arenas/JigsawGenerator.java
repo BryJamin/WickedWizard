@@ -320,7 +320,7 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        startingArena = level1Rooms.room1blobLeft().createArena(new MapCoords());
+        startingArena = level2Rooms.largeBattleRoom().createArena(new MapCoords());
 
         //startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
 

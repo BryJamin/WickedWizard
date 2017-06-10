@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
@@ -19,6 +20,8 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 public class ProximitySystem extends EntityProcessingSystem {
 
     ComponentMapper<PickUpComponent> im;
+
+    ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ProximityTriggerAIComponent> ptam;
 
     public ProximitySystem() {
@@ -27,13 +30,27 @@ public class ProximitySystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+
+        CollisionBoundComponent cbc = cbm.get(e);
         ProximityTriggerAIComponent ptac = ptam.get(e);
 
-        if(!ptac.triggered && overlapsHitbox(cbc.bound, ptac.proximityHitBoxes)){
+        boolean canBeTriggered;
+
+        if(ptac.onCameraTrigger){
+            canBeTriggered = world.getSystem(CameraSystem.class).isOnCamera(cbc.bound);
+
+            System.out.println("I'm I on camera? " +  world.getSystem(CameraSystem.class).isOnCamera(playerCbc.bound));
+
+        } else {
+            canBeTriggered = overlapsHitbox(playerCbc.bound, ptac.proximityHitBoxes);
+        }
+
+
+        if(!ptac.triggered && canBeTriggered){
             ptac.task.performAction(world, e);
             ptac.triggered = true;
-        } else if(!overlapsHitbox(cbc.bound, ptac.proximityHitBoxes) && ptac.triggered){
+        } else if(!canBeTriggered && ptac.triggered){
             ptac.triggered = false;
             ptac.task.cleanUpAction(world, e);
         }

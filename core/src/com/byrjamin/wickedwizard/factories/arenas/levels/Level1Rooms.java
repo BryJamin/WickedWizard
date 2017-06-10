@@ -340,11 +340,11 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 isLeftBottomTopRight ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR,
+                                isLeftBottomTopRight ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                                ArenaBuilder.wall.DOOR,
+                                isLeftBottomTopRight ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.MANDATORYDOOR,
                                 isLeftBottomTopRight ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE)).buildArena(arena);

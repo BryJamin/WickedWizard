@@ -130,7 +130,7 @@ public class DecorFactory extends AbstractFactory {
     public Bag<Component> platform(float x, float y, float width){
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y + Measure.units(2.5f),width,Measure.units(2.5f))));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y + Measure.units(2.5f),width,Measure.units(5f))));
         bag.add(new PlatformComponent());
         //bag.add(new WallComponent(new Rectangle(x,y, width, Measure.units(5f))));
 

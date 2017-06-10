@@ -1,6 +1,8 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.artemis.Component;
+import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
@@ -18,11 +22,13 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
 
@@ -55,7 +61,7 @@ public class TurretFactory extends EnemyFactory {
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(), 2f);
         bag.add(wc);
-        bag.add(new FiringAIComponent());
+        //bag.add(new FiringAIComponent());
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -64,27 +70,19 @@ public class TurretFactory extends EnemyFactory {
         bag.add(new AnimationComponent(animMap));
 
 
-        return bag;
-    }
 
+        bag.add(new ProximityTriggerAIComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new FiringAIComponent());
+            }
 
-    public Bag<Component> fixedTurret(float x, float y, float angleInDegrees, float fireRate, float fireDelay){
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FiringAIComponent.class);
+            }
+        }, true));
 
-        float width = Measure.units(10f);
-        float height = Measure.units(10f);
-
-        x = x - width / 2;
-        y = y - width / 2;
-
-        Bag<Component> bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-/*        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
-                -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
-        ));*/
-
-        WeaponComponent wc = new WeaponComponent(new Pistol(assetManager, fireRate), fireDelay);
-        bag.add(wc);
-        bag.add(new FiringAIComponent(angleInDegrees));
 
         return bag;
     }
@@ -117,11 +115,25 @@ public class TurretFactory extends EnemyFactory {
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(), 2f);
         bag.add(wc);
-        bag.add(new FiringAIComponent());
+        //bag.add(new FiringAIComponent());
         bag.add(new BounceComponent());
+
+        bag.add(new ProximityTriggerAIComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new FiringAIComponent());
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FiringAIComponent.class);
+            }
+        },
+                true));
 
         return bag;
     }
+
 
 
 

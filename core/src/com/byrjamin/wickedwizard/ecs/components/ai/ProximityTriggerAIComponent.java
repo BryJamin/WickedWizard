@@ -14,9 +14,15 @@ public class ProximityTriggerAIComponent extends Component{
 
     public Task task;
     public boolean triggered = false;
+    public boolean onCameraTrigger = false;
 
     public ProximityTriggerAIComponent(){
 
+    }
+
+    public ProximityTriggerAIComponent(Task task, boolean onCameraTrigger){
+        this.task = task;
+        this.onCameraTrigger = onCameraTrigger;
     }
 
     public ProximityTriggerAIComponent(Task task, HitBox... hitBoxes){
