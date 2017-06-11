@@ -7,6 +7,8 @@ Let's see how far I get in 8 months using an hour per day
 
 ### Current Issues
 
+- Chage roomuilder to also calculate the width and height of an arena
+
 - Change OndeathSystem Loot System to take in a Loot Component which would better have information to 
 distribute loot. e.g (rarity value) (Or pickup Drop chances versus only dropping gold)
 

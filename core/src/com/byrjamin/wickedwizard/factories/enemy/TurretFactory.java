@@ -71,6 +71,7 @@ public class TurretFactory extends EnemyFactory {
 
 
 
+
         bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
@@ -82,7 +83,6 @@ public class TurretFactory extends EnemyFactory {
                 e.edit().remove(FiringAIComponent.class);
             }
         }, true));
-
 
         return bag;
     }

@@ -60,7 +60,7 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.GRAPPLE,
                         ArenaBuilder.wall.DOOR)).buildArena(arena);
         
 
@@ -69,19 +69,19 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
                 new MapCoords((int) Measure.units(60), (int) Measure.units(40)),
                 new MapCoords((int) Measure.units(80), (int) Measure.units(40))};*/
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new HealthUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(37.5f), new HealthUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new KeyUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(37.5f), new KeyUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(40), item1, 10)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(37.5f), item1, 10)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(40), item2, 10)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(37.5f), item2, 10)) {
             arena.addEntity(b);
         }
 

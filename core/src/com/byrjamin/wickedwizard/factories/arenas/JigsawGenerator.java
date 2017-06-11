@@ -294,7 +294,7 @@ public class JigsawGenerator {
             arenas = generateJigsaw();
         }
 
-        //this.cleanArenas(arenas);
+        this.cleanArenas(arenas);
     }
 
 
@@ -368,15 +368,10 @@ public class JigsawGenerator {
 
     public Array<Arena> generateJigsaw() {
         Array<Arena> placedArenas = new Array<Arena>();
-        //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
-        startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
-        //startingArena = level1Rooms.room8TwoLockedChest().createArena(new MapCoords());
-        //startingArena = level1Rooms.room29BlobAndBouncer().createArena(new MapCoords());
-        //startingArena = level1Rooms.room26ThreeExitsOneTurretNoLock().createArena(new MapCoords(0,0));
 
-        //startingArena = level2Rooms.room4width2RoomOnlyVerticalExits().createArena();
-        //startingArena.addEntity(new BlobFactory(assetManager).BiggaBlobbaBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
-        //startingArena.addEntity(decorFactory.platform(500,500,1000));
+        startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+
+       // startingArena = level2Rooms.room14WalkingThroughRoom().createArena(new MapCoords());
         placedArenas.add(startingArena);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
@@ -417,7 +412,7 @@ public class JigsawGenerator {
         Array<ArenaGen> arenaGens;
 
         switch(currentLevel){
-            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
+            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
             case PRISON: arenaGens = level2Rooms.getLevel2RoomArray();
                 break;

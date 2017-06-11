@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.AmoebaFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
+import com.byrjamin.wickedwizard.factories.enemy.JigFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
@@ -34,6 +35,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public SilverHeadFactory silverHeadFactory;
     public SpawnerFactory spawnerFactory;
     public TurretFactory turretFactory;
+    public JigFactory jigFactory;
     public GoatWizardFactory goatWizardFactory;
     private ArenaSkin arenaSkin;
     private Random random;
@@ -50,6 +52,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.turretFactory = new TurretFactory(assetManager);
         this.goatWizardFactory = new GoatWizardFactory(assetManager);
         this.amoebaFactory = new AmoebaFactory(assetManager);
+        this.jigFactory = new JigFactory(assetManager);
         this.random = random;
         this.arenaSkin = arenaSkin;
     }
@@ -58,12 +61,19 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return blobFactory.blobBag(x,y);
+                return amoebaFactory.amoeba(x,y);
             }
         });
+        //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
+
+    public Bag<Component> spawnJig(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return blobFactory.smallblobBag(x,y);
+                return jigFactory.stationaryJig(x,y);
             }
         });
         //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
@@ -142,14 +152,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
-    public void spawnGoatWizard(Arena a, float x, float y){
+    public ComponentBag spawnGoatWizard(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return goatWizardFactory.goatWizard(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
 }

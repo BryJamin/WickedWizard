@@ -49,7 +49,7 @@ public class Pistol implements Weapon{
         boolean isCrit = critCalculator.isCrit(sc.crit, sc.accuracy, sc.luck);
 
         Entity bullet = world.createEntity();
-        for(Component c : bulletFactory.basicBulletBag(x,y,1)){
+        for(Component c : bulletFactory.basicBulletBag(x,y,2)){
             bullet.edit().add(c);
         }
         bullet.edit().add(new FriendlyComponent());

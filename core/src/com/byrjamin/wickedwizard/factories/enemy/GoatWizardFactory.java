@@ -17,6 +17,8 @@ import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -94,7 +96,17 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
         bag.add(new WeaponComponent(new GoatWeapon(), 0));
-        bag.add(new FiringAIComponent());
+        bag.add(new ProximityTriggerAIComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new FiringAIComponent());
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FiringAIComponent.class);
+            }
+        }, true));
         bag.add(new ParentComponent());
 
 

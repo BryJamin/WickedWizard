@@ -244,12 +244,12 @@ public class  ArenaShellFactory extends AbstractFactory {
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.GRAPPLE,
                         ArenaBuilder.wall.DOOR))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.GRAPPLE,
                         ArenaBuilder.wall.DOOR)).buildArena(arena);
 
         return arena;

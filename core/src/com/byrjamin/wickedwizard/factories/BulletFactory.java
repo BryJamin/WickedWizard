@@ -40,7 +40,7 @@ public class BulletFactory extends AbstractFactory {
 
     public Entity createEnemyBullet(World world, float x, float y, double angleOfTravel){
         Entity e = world.createEntity();
-        for(Component c : basicEnemyBulletBag(x,y,2)){
+        for(Component c : basicEnemyBulletBag(x,y,4)){
             e.edit().add(c);
         }
         e.edit().add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
@@ -48,7 +48,7 @@ public class BulletFactory extends AbstractFactory {
     }
 
     public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        for(Component c : basicEnemyBulletBag(x,y,2)){
+        for(Component c : basicEnemyBulletBag(x,y,4)){
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
@@ -102,7 +102,7 @@ public class BulletFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height)));
 
-        TextureRegionComponent trc = new TextureRegionComponent(textureRegion,-width / 2,-height / 2,  width * 2, height * 2, TextureRegionComponent.PLAYER_LAYER_FAR);
+        TextureRegionComponent trc = new TextureRegionComponent(textureRegion, width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
         trc.color = color;
         bag.add(new OnDeathActionComponent());

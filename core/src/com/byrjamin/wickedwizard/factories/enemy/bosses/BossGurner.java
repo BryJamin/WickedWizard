@@ -238,7 +238,7 @@ public class BossGurner extends EnemyFactory{
         public void fire(World world, Entity e, float x, float y, double angle) {
             for(int i : angles){
                 double angleOfTravel = angle + Math.toRadians(i);
-                Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 2f);
+                Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4f);
                 bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
                 BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;
 

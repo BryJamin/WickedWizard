@@ -133,7 +133,7 @@ public class KugelDuscheFactory extends EnemyFactory {
                 //Math.toRadians()
                 for(int i : angles){
                     double angleOfTravel = angle + Math.toRadians(i);
-                    Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 1.7f);
+                    Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4);
                     bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
                     BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;
 
