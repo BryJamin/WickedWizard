@@ -28,4 +28,24 @@ public class DoorComponent extends Component {
         this.leaveCoords = leaveCoords;
         this.exit = exit;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DoorComponent that = (DoorComponent) o;
+
+        if (!currentCoords.equals(that.currentCoords)) return false;
+        return leaveCoords.equals(that.leaveCoords);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = currentCoords.hashCode();
+        result = 31 * result + leaveCoords.hashCode();
+        return result;
+    }
 }

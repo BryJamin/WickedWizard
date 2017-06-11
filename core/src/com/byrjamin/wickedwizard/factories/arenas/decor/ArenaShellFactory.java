@@ -203,7 +203,7 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
 
-    public Arena createDeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
+    public Arena createEitherNoLeftOrNoRightArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
         arena.setWidth(SECTION_WIDTH);
@@ -226,8 +226,8 @@ public class  ArenaShellFactory extends AbstractFactory {
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         left,
                         right,
-                        ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.GRAPPLE,
+                        ArenaBuilder.wall.DOOR)).buildArena(arena);
 
         return arena;
     }

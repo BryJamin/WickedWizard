@@ -51,6 +51,8 @@ public class TextureStrings {
     //BOUNCER
     public static final String BOUNCER_DEFAULT = "bouncer";
 
+    //JIG
+    public static final String JIG_FIRING = "enemy/jig_firing";
 
     //SPAWNER
     public static final String SPAWNER = "spawner";

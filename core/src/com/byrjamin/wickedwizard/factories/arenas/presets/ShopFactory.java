@@ -60,8 +60,8 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR)).buildArena(arena);
         
 
 /*        MapCoords[] locations = new MapCoords[]{ new MapCoords((int) Measure.units(20), (int) Measure.units(40)),
@@ -90,7 +90,7 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
 
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(arena.getWidth() / 2, Measure.units(10f)));
+        bag.add(new PositionComponent(Measure.units(67.5f), Measure.units(10f)));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

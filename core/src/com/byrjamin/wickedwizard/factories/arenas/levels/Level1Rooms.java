@@ -255,20 +255,20 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                 random = new Random();
                 boolean mirror = random.nextBoolean();
 
-                Arena a = arenaShellFactory.createDeadEndArena(defaultCoords, mirror);
+                Arena a = arenaShellFactory.createEitherNoLeftOrNoRightArena(defaultCoords, mirror);
 
                 float chestPosX = mirror ? Measure.units(10f) : a.getWidth() -  Measure.units(10f);
                 float chest2PosX = mirror ? Measure.units(20f) : a.getWidth() - Measure.units(20f);
 
-                float wallPosX = mirror ? 0 : a.getWidth() - Measure.units(40f);
-                float lockPosX = mirror ? Measure.units(30f) : a.getWidth() - Measure.units(40f);
+                float wallPosX = mirror ? 0 : a.getWidth() - Measure.units(35f);
+                float lockPosX = mirror ? Measure.units(25f) : a.getWidth() - Measure.units(35f);
 
                 a.addEntity(chestFactory.centeredChestBag(chestPosX, a.getHeight() / 4));
                 a.addEntity(chestFactory.centeredChestBag(chest2PosX, a.getHeight() / 4));
 
                 a.addEntity(decorFactory.lockBox(lockPosX, Measure.units(10f), Measure.units(10f), Measure.units(10f)));
 
-                a.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(40f), Measure.units(10f), arenaSkin.getWallTint()));
+                a.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(35f), Measure.units(10f), arenaSkin.getWallTint()));
 
                 //RoomDecorationFactory.spawnBlob(a);
                 return a;

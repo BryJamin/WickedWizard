@@ -125,8 +125,7 @@ public class JigsawGenerator {
 
         for(Arena a : arenas){
             for(DoorComponent dc : a.doors){
-                //TODO needs to be tested
-                if(!findDoorWithinFoundRoom(dc, protectionFromIteratorError)){
+                if(findRoom(dc.leaveCoords, protectionFromIteratorError) == null){
                     avaliableDoors.add(dc);
                 }
             }
@@ -153,9 +152,6 @@ public class JigsawGenerator {
             roll.addWeightedObject(new WeightedObject<ArenaGen>(ag, 20));
         }
 
-        for(WeightedObject w : roll.getWeightedObjects()){
-            System.out.println(w.getWeight());
-        }
 
 
         int placedRooms = 0;
@@ -298,7 +294,7 @@ public class JigsawGenerator {
             arenas = generateJigsaw();
         }
 
-        this.cleanArenas(arenas);
+        //this.cleanArenas(arenas);
     }
 
 
@@ -319,7 +315,7 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        startingArena = level2Rooms.room9SpikeWallJump().createArena(new MapCoords());
+        //startingArena = level2Rooms.room9SpikeWallJump().createArena(new MapCoords());
 
         //startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
 
@@ -343,8 +339,8 @@ public class JigsawGenerator {
 
         placedArenas = generateMapAroundPresetPoints(placedArenas,level1Rooms.getLevel1RoomArray(), avaliableDoorsSet, noBattleRooms);
 
-        placeItemRoom(placedArenas, avaliableDoorsSet);
-        placeShopRoom(placedArenas, avaliableDoorsSet);
+        placeItemRoom(placedArenas, createAvaliableDoorSet(placedArenas));
+        placeShopRoom(placedArenas, createAvaliableDoorSet(placedArenas));
         int range = (int) ((Math.sqrt(placedArenas.size) - 7 /*tutorial rooms */) / 2);
 
         LinkComponent teleportLink = new LinkComponent();
@@ -374,6 +370,7 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
         //startingArena = ItemRoomFactory.createItemTestRoom(new MapCoords(0,0));
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+        //startingArena = level1Rooms.room8TwoLockedChest().createArena(new MapCoords());
         //startingArena = level1Rooms.room29BlobAndBouncer().createArena(new MapCoords());
         //startingArena = level1Rooms.room26ThreeExitsOneTurretNoLock().createArena(new MapCoords(0,0));
 
@@ -386,8 +383,8 @@ public class JigsawGenerator {
         avaliableDoorsSet.addAll(startingArena.getDoors());
 
         placedArenas = generateMapAroundPresetPoints(placedArenas, arenaGennerators(), avaliableDoorsSet, noBattleRooms);
-        placeItemRoom(placedArenas, avaliableDoorsSet);
-        placeShopRoom(placedArenas, avaliableDoorsSet);
+        placeItemRoom(placedArenas, createAvaliableDoorSet(placedArenas));
+        placeShopRoom(placedArenas, createAvaliableDoorSet(placedArenas));
         int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
 
 
@@ -400,7 +397,7 @@ public class JigsawGenerator {
         bossRoom.roomType = Arena.RoomType.BOSS;
         bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2 + Measure.units(5f), btc));
 
-        placeBossRoom(bossRoom, placedArenas, avaliableDoorsSet, range);
+        placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas), range);
         startingMap = new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
         mapTracker.put(btc, startingMap);
 
@@ -420,7 +417,7 @@ public class JigsawGenerator {
         Array<ArenaGen> arenaGens;
 
         switch(currentLevel){
-            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); arenaGens = level2Rooms.getLevel2RoomArray();
+            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
             case PRISON: arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
@@ -437,8 +434,7 @@ public class JigsawGenerator {
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
-
-        Arena itemRoom = itemArenaFactory.createItemRoom(generateItem(itemPool));
+        Arena itemRoom = itemArenaFactory.createItemRoom(new MapCoords(), generateItem(itemPool), generateItem(itemPool));
         if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), rand)){
             placedArenas.add(itemRoom);
             return true;
