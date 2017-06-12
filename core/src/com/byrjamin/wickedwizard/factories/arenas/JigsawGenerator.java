@@ -382,8 +382,11 @@ public class JigsawGenerator {
         avaliableDoorsSet.addAll(startingArena.getDoors());
 
         placedArenas = generateMapAroundPresetPoints(placedArenas, arenaGennerators(), avaliableDoorsSet, noBattleRooms);
-        placeItemRoom(placedArenas, createAvaliableDoorSet(placedArenas));
-        placeShopRoom(placedArenas, createAvaliableDoorSet(placedArenas));
+
+        avaliableDoorsSet = createAvaliableDoorSet(placedArenas);
+
+        placeItemRoom(placedArenas, avaliableDoorsSet);
+        placeShopRoom(placedArenas, avaliableDoorsSet);
         int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
 
 
@@ -396,7 +399,7 @@ public class JigsawGenerator {
         bossRoom.roomType = Arena.RoomType.BOSS;
         bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2 + Measure.units(5f), btc));
 
-        placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas), range);
+        placeBossRoom(bossRoom, placedArenas, avaliableDoorsSet, range);
         startingMap = new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
         mapTracker.put(btc, startingMap);
 
