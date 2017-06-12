@@ -26,9 +26,9 @@ public class Collider {
 
         Collision c = cleanCollision(currentBound, futureBound, wall);
         switch (c){
-            case LEFT: currentBound.setX(wall.x - currentBound.width);
+            case RIGHT: currentBound.setX(wall.x - currentBound.width);
                 break;
-            case RIGHT: currentBound.setX(wall.x + wall.getWidth());
+            case LEFT: currentBound.setX(wall.x + wall.getWidth());
                 break;
             case TOP: currentBound.setY(wall.y + wall.getHeight());
                 break;
@@ -55,9 +55,9 @@ public class Collider {
 
         if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
             if (currentBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
-                return Collision.LEFT;
-            } else if (currentBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
                 return Collision.RIGHT;
+            } else if (currentBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
+                return Collision.LEFT;
             }
         } else if (wall.overlaps(futureBound)) { //Hit was on top
             if (currentBound.getY() > wall.y + wall.getHeight() / 2) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -22,13 +23,20 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<ProximityTriggerAIComponent> ptam;
+
     ComponentMapper<BlinkComponent> bm;
 
     public boolean isDrawing;
 
     @SuppressWarnings("unchecked")
     public BoundsDrawingSystem() {
+        super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class));
+    }
+
+    public BoundsDrawingSystem(boolean isDrawing) {
         super(Aspect.all(CollisionBoundComponent.class));
+        this.isDrawing = isDrawing;
     }
 
 
@@ -40,13 +48,22 @@ public class BoundsDrawingSystem extends EntitySystem {
 
         Array<Rectangle> bounds = new Array<Rectangle>();
         Array<Rectangle> hitboxes = new Array<Rectangle>();
+        Array<Rectangle> proxhitboxes = new Array<Rectangle>();
+
 
         if(!isDrawing) return;
 
         for(Entity e : this.getEntities()){
-            bounds.add(cbm.get(e).bound);
-            for(HitBox hb : cbm.get(e).hitBoxes) {
-                hitboxes.add(hb.hitbox);
+            if(cbm.has(e)) {
+                bounds.add(cbm.get(e).bound);
+                for (HitBox hb : cbm.get(e).hitBoxes) {
+                    hitboxes.add(hb.hitbox);
+                }
+            }
+            if(ptam.has(e)) {
+                for (HitBox hb : ptam.get(e).proximityHitBoxes) {
+                    proxhitboxes.add(hb.hitbox);
+                }
             }
         }
 
@@ -56,26 +73,10 @@ public class BoundsDrawingSystem extends EntitySystem {
         }
 
 
-/*        if(world.getSystem(CameraSystem.class) != null){
-
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
-                    world.getSystem(CameraSystem.class).getLeft());
-
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
-                    world.getSystem(CameraSystem.class).getRight());
-
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
-                    world.getSystem(CameraSystem.class).getBottom());
-            BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch,
-                    world.getSystem(CameraSystem.class).getTop());
-
-        }*/
-
-
-
-
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, bounds);
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.CYAN, hitboxes);
+        BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.PINK, proxhitboxes);
+     //   BoundsDrawer.drawBounds();
 
 
 

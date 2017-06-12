@@ -11,6 +11,18 @@ public class TextureStrings {
     public static final String WINGS = "wings";
 
 
+
+    public static final String SETTINGS_SOUND_ON = "settings/sound";
+    public static final String SETTINGS_SOUND_OFF = "settings/sound_off";
+
+    public static final String SETTINGS_MUSIC_ON = "settings/music";
+    public static final String SETTINGS_MUSIC_OFF = "settings/music_off";
+
+
+    public static final String LOCKBOX = "decor/lock_block";
+    public static final String SPIKEWALL = "decor/spike_wall";
+
+
     public static final String WALLTURRET = "wall_turret";
 
     //ENEMIES
@@ -39,6 +51,8 @@ public class TextureStrings {
     //BOUNCER
     public static final String BOUNCER_DEFAULT = "bouncer";
 
+    //JIG
+    public static final String JIG_FIRING = "enemy/jig_firing";
 
     //SPAWNER
     public static final String SPAWNER = "spawner";

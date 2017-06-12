@@ -92,6 +92,8 @@ public class BoundsDrawer {
 
     public static void drawBounds(SpriteBatch batch, Color c, Array<Rectangle> bounds) {
 
+        if(bounds.size <= 0) return;
+
         if(batch.isDrawing()) {
             batch.end();
         }

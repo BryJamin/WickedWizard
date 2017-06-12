@@ -55,7 +55,7 @@ public class WeaponFactory extends AbstractFactory {
                 //Math.toRadians()
                 for(int i : angles){
                     double angleOfTravel = angle + Math.toRadians(i);
-                    Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 1.7f);
+                    Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4);
                     bag.add(new VelocityComponent((float) (Measure.units(75) * Math.cos(angleOfTravel)), (float) (Measure.units(75) * Math.sin(angleOfTravel))));
                     bag.add(new GravityComponent());
 

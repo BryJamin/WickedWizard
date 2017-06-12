@@ -1,7 +1,5 @@
 package com.byrjamin.wickedwizard.factories;
 
-import com.artemis.Entity;
-import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,18 +8,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -39,37 +33,9 @@ public class DeathFactory extends AbstractFactory {
         super(assetManager);
     }
 
-    public OnDeathComponent basicOnDeathExplosion( OnDeathComponent fillOdc, float width, float height){
-        return basicOnDeathExplosion(fillOdc, width, height, 0 ,0);
-    }
 
 
-    public OnDeathComponent basicOnDeathExplosion(OnDeathComponent fillodc, float width, float height,
-                                                         float textureOffsetX, float textureOffsetY){
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent());
-        AnimationStateComponent asc = new AnimationStateComponent();
-        asc.setDefaultState(aniNumber);
-        bag.add(asc);
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(aniNumber,
-                new Animation<TextureRegion>(0.02f, atlas.findRegions(TextureStrings.EXPLOSION)));
-        bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(animMap.get(aniNumber).getKeyFrame(0),
-                textureOffsetX,
-                textureOffsetY,
-                width,
-                height,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-        bag.add(new ExpireComponent(animMap.get(aniNumber).getAnimationDuration()));
-
-        fillodc.getComponentBags().add(bag);
-
-        return fillodc;
-    }
-
-
-    public OnDeathComponent giblets(OnDeathComponent fillodc, int numberOfGiblets, Color color){
+  /*  public OnDeathComponent giblets(OnDeathComponent fillodc, int numberOfGiblets, Color color){
 
         ComponentBag bag;
 
@@ -112,6 +78,6 @@ public class DeathFactory extends AbstractFactory {
 
 
 
-    }
+    }*/
 
 }

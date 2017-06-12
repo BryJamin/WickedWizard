@@ -9,16 +9,16 @@ import com.artemis.World;
  */
 
 /**
- * Performs an Action when combat starts,
- * Cleans Up action when Combat is over.
+ * Performs an Task when combat starts,
+ * Cleans Up task when Combat is over.
  */
 public class InCombatActionComponent extends Component {
-    public Action action;
+    public Task task;
 
     private boolean isInCombat;
 
     public InCombatActionComponent() {
-        action = new Action() {
+        task = new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -32,8 +32,8 @@ public class InCombatActionComponent extends Component {
     }
 
 
-    public InCombatActionComponent(Action action){
-        this.action = action;
+    public InCombatActionComponent(Task task){
+        this.task = task;
     }
 
 }

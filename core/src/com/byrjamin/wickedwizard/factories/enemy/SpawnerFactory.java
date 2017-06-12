@@ -34,7 +34,11 @@ public class SpawnerFactory extends EnemyFactory {
     private static float width = Measure.units(10f);
     private static float height = Measure.units(10f);
 
-    public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners){
+    public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners) {
+        return spawnerBag(x,y,spawners,1);
+    }
+
+    public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners, int life){
 
         x = x - width / 2;
         y = y - height / 2;
@@ -56,9 +60,22 @@ public class SpawnerFactory extends EnemyFactory {
         SpawnerComponent spawn = new SpawnerComponent(spawners, 1.0f);
         spawn.offsetX = width / 2;
         spawn.offsetY = height / 2;
+        spawn.life = life;
 
         bag.add(spawn);
         return bag;
+    }
+
+    public ComponentBag spawnerBag(float x, float y, Spawner spawner){
+        Array<Spawner> s = new Array<Spawner>();
+        s.add(spawner);
+        return spawnerBag(x,y, s);
+    }
+
+    public ComponentBag spawnerBag(float x, float y, Spawner spawner, int life){
+        Array<Spawner> s = new Array<Spawner>();
+        s.add(spawner);
+        return spawnerBag(x,y, s, life);
     }
 
 

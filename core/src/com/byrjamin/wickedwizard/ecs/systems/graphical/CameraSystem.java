@@ -272,4 +272,21 @@ public class CameraSystem extends EntitySystem {
     public Rectangle getBottom() {
         return bottom;
     }
+
+
+    public float getCameraX(){
+        return gamecam.position.x - gamecam.viewportWidth / 2;
+    }
+
+    public float getCameraY(){
+        return gamecam.position.y - gamecam.viewportHeight / 2;
+    }
+
+
+    public boolean isOnCamera(Rectangle r){
+        System.out.println(r.getX());
+        boolean isOnX = r.getX() >= getCameraX() && r.getX() - r.getWidth() <= getCameraX() + gamecam.viewportWidth;
+        boolean isOnY = r.getY() >= getCameraY() && r.getY() - r.getHeight() <= getCameraY() + gamecam.viewportHeight;
+        return isOnX && isOnY;
+    }
 }

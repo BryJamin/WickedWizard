@@ -11,19 +11,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 
 /**
  * Created by Home on 29/03/2017.
@@ -43,7 +40,7 @@ public class BulletFactory extends AbstractFactory {
 
     public Entity createEnemyBullet(World world, float x, float y, double angleOfTravel){
         Entity e = world.createEntity();
-        for(Component c : basicEnemyBulletBag(x,y,2)){
+        for(Component c : basicEnemyBulletBag(x,y,4)){
             e.edit().add(c);
         }
         e.edit().add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
@@ -51,7 +48,7 @@ public class BulletFactory extends AbstractFactory {
     }
 
     public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        for(Component c : basicEnemyBulletBag(x,y,2)){
+        for(Component c : basicEnemyBulletBag(x,y,4)){
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
@@ -76,8 +73,8 @@ public class BulletFactory extends AbstractFactory {
         bag.add(new EnemyComponent());
 
 
-        OnDeathComponent odc = BagSearch.getObjectOfTypeClass(OnDeathComponent.class, bag);
-        bag.add(new GibletFactory(assetManager).giblets(odc, 5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED)));
+        OnDeathActionComponent odc = BagSearch.getObjectOfTypeClass(OnDeathActionComponent.class, bag);
+        odc.task = new GibletFactory(assetManager).giblets(5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED));
 
         return bag;
     }
@@ -105,10 +102,10 @@ public class BulletFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height)));
 
-        TextureRegionComponent trc = new TextureRegionComponent(textureRegion,-width / 2,-height / 2,  width * 2, height * 2, TextureRegionComponent.PLAYER_LAYER_FAR);
+        TextureRegionComponent trc = new TextureRegionComponent(textureRegion, width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
         trc.color = color;
-        bag.add(new OnDeathComponent());
+        bag.add(new OnDeathActionComponent());
 
         bag.add(trc);
         return bag;
@@ -133,8 +130,7 @@ public class BulletFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height), true));
 
-        OnDeathComponent odc = new OnDeathComponent();
-        bag.add(new DeathFactory(assetManager).basicOnDeathExplosion(odc, width, height));
+
 
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion, 0, 0,  width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;

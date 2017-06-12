@@ -28,6 +28,9 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
+    //TODO Shop Tutorial Popup reads: Oh look a shop, buy items by believing in yourself
+
+
     private ItemFactory itemFactory;
 
 /*    public ShopFactory(AssetManager assetManager) {
@@ -57,8 +60,8 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.GRAPPLE,
+                        ArenaBuilder.wall.DOOR)).buildArena(arena);
         
 
 /*        MapCoords[] locations = new MapCoords[]{ new MapCoords((int) Measure.units(20), (int) Measure.units(40)),
@@ -66,19 +69,19 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
                 new MapCoords((int) Measure.units(60), (int) Measure.units(40)),
                 new MapCoords((int) Measure.units(80), (int) Measure.units(40))};*/
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(40), new HealthUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(37.5f), new HealthUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(40), new KeyUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(37.5f), new KeyUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(40), item1, 10)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(37.5f), item1, 10)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(40), item2, 10)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(37.5f), item2, 10)) {
             arena.addEntity(b);
         }
 
@@ -87,7 +90,7 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
 
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(arena.getWidth() / 2, Measure.units(10f)));
+        bag.add(new PositionComponent(Measure.units(67.5f), Measure.units(10f)));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

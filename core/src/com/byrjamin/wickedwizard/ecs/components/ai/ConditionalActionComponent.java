@@ -11,12 +11,12 @@ import com.artemis.World;
 public class ConditionalActionComponent extends Component {
 
     public Condition condition;
-    public Action action;
+    public Task task;
 
 
-    public ConditionalActionComponent(Condition condition, Action action) {
+    public ConditionalActionComponent(Condition condition, Task task) {
         this.condition = condition;
-        this.action = action;
+        this.task = task;
     }
 
 
@@ -30,7 +30,7 @@ public class ConditionalActionComponent extends Component {
         };
 
 
-        action = new Action() {
+        task = new Task() {
             @Override
             public void performAction(World world, Entity e) {
 

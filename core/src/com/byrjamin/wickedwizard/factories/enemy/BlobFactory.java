@@ -5,14 +5,16 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
@@ -33,7 +35,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
-import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -46,6 +47,7 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 public class BlobFactory extends EnemyFactory {
 
+    //TODO should just make it ten
     private final float width = Measure.units(9);
     private final float height = Measure.units(9);
 
@@ -73,10 +75,10 @@ public class BlobFactory extends EnemyFactory {
         y = y - height / 2;
 
         Bag<Component> bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
-        bag.add(new VelocityComponent(0, 0));
+        bag.add(new VelocityComponent(Measure.units(15), 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
-        bag.add(new MoveToPlayerComponent());
+        //bag.add(new MoveToPlayerComponent());
         bag.add(new AccelerantComponent(Measure.units(15), 0));
 
         bag.add(new AnimationStateComponent(0));
@@ -88,7 +90,49 @@ public class BlobFactory extends EnemyFactory {
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
                 textureOffsetX, textureOffsetY, textureWidth, textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+        OnCollisionActionComponent onCollisionActionComponent = blobOCAC(Measure.units(15));
+
+        bag.add(onCollisionActionComponent);
+
+
+
+
+        bag.add(new ProximityTriggerAIComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new MoveToPlayerComponent());
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(new MoveToPlayerComponent());
+            }
+        },
+                new HitBox(new Rectangle(x,y,Measure.units(40f), Measure.units(10f)), width, 0),
+                new HitBox(new Rectangle(x,y,Measure.units(40f), Measure.units(10f)), -Measure.units(40f), 0)));
+
+
         return bag;
+    }
+
+    private OnCollisionActionComponent blobOCAC(final float speed){
+        OnCollisionActionComponent onCollisionActionComponent = new OnCollisionActionComponent();
+        onCollisionActionComponent.left = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(VelocityComponent.class).velocity.x = speed;
+            }
+        };
+
+        onCollisionActionComponent.right = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(VelocityComponent.class).velocity.x = -speed;
+            }
+        };
+
+        return onCollisionActionComponent;
     }
 
     public Bag<Component> dummyBlob(float x, float y){
@@ -151,6 +195,7 @@ public class BlobFactory extends EnemyFactory {
         bag.add(new GravityComponent());
         bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
         bag.add(new MoveToPlayerComponent());
+        bag.add(new ExploderComponent());
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -162,6 +207,9 @@ public class BlobFactory extends EnemyFactory {
                 textureWidth * scale,
                 textureHeight * scale,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+
+
         return bag;
     }
 
@@ -210,13 +258,14 @@ public class BlobFactory extends EnemyFactory {
                 Measure.units(45),
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        OnDeathComponent odc = new OnDeathComponent();
+        //TODO fix biggablobba
+/*        OnDeathComponent odc = new OnDeathComponent();
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
         df.giblets(odc, 10, Color.GREEN);
-        bag.add(odc);
+        bag.add(odc);*/
 
 
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(),  1.5f);
@@ -237,7 +286,7 @@ public class BlobFactory extends EnemyFactory {
         PhaseComponent pc = new PhaseComponent();
 
 
-        Action action1 = new Action(){
+        Task task1 = new Task(){
             FiringAIComponent f = new FiringAIComponent();
             @Override
             public void performAction(World world, Entity e) {
@@ -249,7 +298,7 @@ public class BlobFactory extends EnemyFactory {
             }
         };
 
-        Action action2 = new Action(){
+        Task task2 = new Task(){
             @Override
             public void performAction(World world, Entity e) {
                 e.edit().add(sc2);
@@ -265,8 +314,8 @@ public class BlobFactory extends EnemyFactory {
 
 
 
-        pc.addPhase(7.0f, action1);
-        pc.addPhase(5.0f, action2);
+        pc.addPhase(7.0f, task1);
+        pc.addPhase(5.0f, task2);
         pc.addPhaseSequence(1,0);
 
         bag.add(pc);

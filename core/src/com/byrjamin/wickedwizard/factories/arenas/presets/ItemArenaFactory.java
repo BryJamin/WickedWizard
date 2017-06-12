@@ -26,15 +26,10 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
         this.itemFactory = new ItemFactory(assetManager);
     }
 
-    public Arena createItemRoom(Item item){
-        return createItemRoom(new MapCoords(0,0), item);
-    }
-
-    public Arena createItemRoom(MapCoords defaultCoords, Item item) {
+    //TODO actually make the rareItem rare.
+    public Arena createItemRoom(MapCoords defaultCoords, Item item, Item rareItem) {
 
         Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
-
-
 
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
@@ -43,13 +38,25 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.GRAPPLE,
+                        ArenaBuilder.wall.DOOR)).buildArena(arena);
 
-        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag((arena.getWidth() / 2) - Measure.units(7.5f),
-                Measure.units(10), item)) {
+        arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
+        arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
+
+        arena.addEntity(decorFactory.lockWall(arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(20f)));
+
+
+        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(Measure.units(7.5f),
+                Measure.units(40), item)) {
             arena.addEntity(b);
         }
+
+        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(Measure.units(75f),
+                Measure.units(40), rareItem)) {
+            arena.addEntity(b);
+        }
+
         return arena;
     }
 

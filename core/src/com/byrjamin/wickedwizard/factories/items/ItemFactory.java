@@ -9,12 +9,16 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -22,7 +26,6 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -33,6 +36,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
+import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
@@ -40,6 +44,7 @@ import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
 
@@ -66,7 +71,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
         bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
-
+        bag.add(new FrictionComponent());
         return bag;
     }
 
@@ -80,13 +85,11 @@ public class ItemFactory extends AbstractFactory {
 
         float angle = random.nextFloat() * (360);
 
-        float speed = random.nextFloat() * (Measure.units(300f));
+        float speed = random.nextFloat() * (Measure.units(100f) - Measure.units(50f)) + Measure.units(50f);
 
         bag.add(new VelocityComponent(BulletMath.velocityX(speed, Math.toRadians(angle)), BulletMath.velocityY(speed, Math.toRadians(angle))));
         //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
 
-        bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(100f), Measure.units(100f)));
         bag.add(new IntangibleComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
@@ -94,7 +97,36 @@ public class ItemFactory extends AbstractFactory {
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
 
-        bag.add(new GibletFactory(assetManager).bombGiblets(new OnDeathComponent(),10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)));
+        bag.add(new FrictionComponent(true, true));
+        bag.add(new OnDeathActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)).performAction(world, e);
+                world.getSystem(SoundSystem.class).playSound(SoundStrings.coinPickUpMix);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+
+
+        bag.add(new ActionAfterTimeComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                //e.edit().add(new VelocityComponent());
+                e.edit().add(new MoveToPlayerComponent());
+                e.edit().add(new AccelerantComponent(Measure.units(125f), Measure.units(125f)));
+                e.edit().add(new IntangibleComponent());
+                e.edit().remove(FrictionComponent.class);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }, 0.5f));
 
         return bag;
     }
@@ -146,7 +178,7 @@ public class ItemFactory extends AbstractFactory {
 
         Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
         altarBag.add(new CollisionBoundComponent(bound));
-        altarBag.add(new ProximityTriggerAIComponent(bound, activeAltar()));
+        altarBag.add(new ProximityTriggerAIComponent(activeAltar(), new HitBox(bound)));
 
         TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion("altar"), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR);
@@ -217,8 +249,8 @@ public class ItemFactory extends AbstractFactory {
     }
 
 
-    private static Action buyItem(){
-        return new Action() {
+    private static Task buyItem(){
+        return new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -281,9 +313,9 @@ public class ItemFactory extends AbstractFactory {
 
 
 
-    private static Action activeAltar (){
+    private static Task activeAltar (){
 
-        return new Action() {
+        return new Task() {
             @Override
             public void performAction(World world, Entity e) {
 

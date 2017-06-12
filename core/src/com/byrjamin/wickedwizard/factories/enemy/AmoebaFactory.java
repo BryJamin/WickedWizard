@@ -8,10 +8,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
@@ -44,14 +47,17 @@ public class AmoebaFactory extends EnemyFactory {
 
 
         ComponentBag bag = new ComponentBag();
-        this.defaultEnemyBag(bag, x, y, width, height, 3);
+        //bag.add(new PositionComponent(x,y));
+        this.defaultEnemyBagNoLoot(bag, x, y, width, height, 1);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
         bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(0.25f),Measure.units(0.25f), Measure.units(5f), Measure.units(5f)));
+        bag.add(new AccelerantComponent(Measure.units(5f), Measure.units(5f)));
+        bag.add(new ExploderComponent());
 
-        bag.add(new DirectionalComponent());
+        bag.add(new IntangibleComponent());
+        //bag.add(new DirectionalComponent());
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -62,7 +68,7 @@ public class AmoebaFactory extends EnemyFactory {
 
         TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AMOEBA),
                 textureoffsetX, textureoffsetY, textureWidth, textureHeight,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE, new Color(238f / 255f, 187f / 255f, 240f / 255f, 1));
+                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(238f / 255f, 187f / 255f, 240f / 255f, 1));
 
         tfc.scaleX = -1;
 

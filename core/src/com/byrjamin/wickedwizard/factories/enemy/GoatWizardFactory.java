@@ -13,15 +13,15 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
@@ -96,7 +96,17 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
         bag.add(new WeaponComponent(new GoatWeapon(), 0));
-        bag.add(new FiringAIComponent());
+        bag.add(new ProximityTriggerAIComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new FiringAIComponent());
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FiringAIComponent.class);
+            }
+        }, true));
         bag.add(new ParentComponent());
 
 
@@ -182,7 +192,7 @@ public class GoatWizardFactory extends EnemyFactory {
             e.edit().add(new BlinkComponent());
             e.edit().add(new HealthComponent(3));
             e.edit().add(new FadeComponent(true, 1, false));
-            e.edit().add(gibletFactory.defaultGiblets(new OnDeathComponent(), new Color(Color.BLACK)));
+            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.BLACK))));
 
             ChildComponent c = new ChildComponent();
             pc.children.add(c);

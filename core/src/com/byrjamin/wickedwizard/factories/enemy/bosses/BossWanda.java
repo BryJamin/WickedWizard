@@ -10,24 +10,19 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnDeathComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -130,7 +125,7 @@ public class BossWanda extends EnemyFactory {
 
 
 
-    private class Phase1 implements Action {
+    private class Phase1 implements Task {
         @Override
         public void performAction(World world, Entity e) {
             e.edit().add(new FadeComponent(true, 0.5f, false));
@@ -176,7 +171,7 @@ public class BossWanda extends EnemyFactory {
         }
     }
 
-    private class Phase2 implements Action {
+    private class Phase2 implements Task {
         Random random = new Random();
 
         @Override
@@ -202,7 +197,7 @@ public class BossWanda extends EnemyFactory {
     }
 
 
-    private class Phase3 implements Action {
+    private class Phase3 implements Task {
 
         private Direction direction;
 
@@ -302,7 +297,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(new ExpiryRangeComponent(new Vector3(x, y, 0), Measure.units(200f)));
             //e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new FadeComponent(true, 0.2f, false));
-            e.edit().add(gibletFactory.defaultGiblets(new OnDeathComponent(), new Color(Color.RED)));
+            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.RED))));
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
@@ -310,7 +305,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(trc);
 
 
-            e.edit().add(new ActionAfterTimeComponent(new Action() {
+            e.edit().add(new ActionAfterTimeComponent(new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
                     VelocityComponent vc = e.getComponent(VelocityComponent.class);
@@ -381,7 +376,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0), Measure.units(20f)));
             //e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new FadeComponent(true, 0.2f, false));
-            e.edit().add(gibletFactory.defaultGiblets(new OnDeathComponent(), new Color(Color.RED)));
+            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.RED))));
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
@@ -389,7 +384,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(trc);
 
 
-            e.edit().add(new ActionAfterTimeComponent(new Action() {
+            e.edit().add(new ActionAfterTimeComponent(new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
                     VelocityComponent vc = e.getComponent(VelocityComponent.class);

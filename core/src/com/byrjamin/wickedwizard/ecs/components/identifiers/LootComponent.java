@@ -7,12 +7,20 @@ import com.artemis.Component;
  */
 
 public class LootComponent extends Component {
-    public int maxDrops = 1;
+    public int moneyDrops = 1;
+
+    public int lootDrops = 0;
+
 
     public LootComponent() {}
 
-    public LootComponent(int maxDrops){
-        this.maxDrops = maxDrops;
+    public LootComponent(int moneyDrops){
+        this.moneyDrops = moneyDrops;
+    }
+
+    public LootComponent(int moneyDrops, int lootDrops){
+        this.moneyDrops = moneyDrops;
+        this.lootDrops = lootDrops;
     }
 
 

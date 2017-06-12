@@ -6,11 +6,9 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
-import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -20,7 +18,6 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.HashMap;
@@ -63,7 +60,7 @@ public class MapTeleportationSystem extends EntitySystem {
             final BossTeleporterComponent hmm = btc;
 
 
-            world.getSystem(ScreenWipeSystem.class).startScreenWipe(Direction.DOWN, new Action() {
+            world.getSystem(ScreenWipeSystem.class).startScreenWipe(Direction.DOWN, new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
                     switchMap(hmm);
@@ -119,15 +116,14 @@ public class MapTeleportationSystem extends EntitySystem {
                 for (Entity e : this.getEntities()) {
                     if (btm.get(e).link == to.link) {
 
-                        cbc.setCenterY(cbm.get(e).getCenterY());
-                        cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight();
-                        vc.velocity.y = -Measure.units(40f);
+                        cbc.setCenterX(cbm.get(e).getCenterX());
+                        cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight() * 2;
+                        vc.velocity.y = 0;
 
                         pc.setX(cbc.bound.x);
                         pc.setY(cbc.bound.y);
 
                         mtc.reset();
-
                     }
                 }
             }

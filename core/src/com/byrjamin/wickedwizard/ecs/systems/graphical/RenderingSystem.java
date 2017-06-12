@@ -191,14 +191,22 @@ public class RenderingSystem extends EntitySystem {
             int count = 0;
             batch.setColor(trbc.color);
 
+            float originX = trbc.width * 0.5f;
+            float originY = trbc.height * 0.5f;
+
             for(int i = 0; i < trbc.columns; i++){
                 for(int j = 0; j < trbc.rows; j ++){
                     batch.draw(trbc.regions.get(count),
                             pc.getX() + (trbc.width * i) + trbc.offsetX,
                             pc.getY() + (trbc.height * j) + trbc.offsetY,
+                            originX,
+                            originY,
                             trbc.width + 1,
                             //The top does not have the extra pixel
-                            (j == trbc.rows - 1) ? trbc.height : trbc.height + 1); //This is to avoid pixel errors between repeated textures
+                            (j == trbc.rows - 1) ? trbc.height : trbc.height + 1,
+                            trbc.scaleX,
+                            trbc.scaleY,
+                            trbc.rotation); //This is to avoid pixel errors between repeated textures
                     count++;
                 }
             }

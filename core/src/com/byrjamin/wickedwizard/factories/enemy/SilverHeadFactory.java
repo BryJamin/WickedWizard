@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -83,7 +83,7 @@ public class SilverHeadFactory extends EnemyFactory {
                 textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        Action action1 = new Action(){
+        Task task1 = new Task(){
 
             @Override
             public void performAction(World world, Entity e) {
@@ -96,7 +96,7 @@ public class SilverHeadFactory extends EnemyFactory {
             }
         };
 
-        Action action2 = new Action(){
+        Task task2 = new Task(){
 
             @Override
             public void performAction(World world, Entity e) {
@@ -109,7 +109,7 @@ public class SilverHeadFactory extends EnemyFactory {
             }
         };
 
-        Action action3 = new Action(){
+        Task task3 = new Task(){
 
             WeaponComponent wc = new WeaponComponent(wf.SilverHeadWeapon(), 2.0f);
             FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
@@ -130,7 +130,7 @@ public class SilverHeadFactory extends EnemyFactory {
             }
         };
 
-        Action action4 = new Action(){
+        Task task4 = new Task(){
 
             @Override
             public void performAction(World world, Entity e) {
@@ -150,10 +150,10 @@ public class SilverHeadFactory extends EnemyFactory {
 
         PhaseComponent pc = new PhaseComponent();
 
-        pc.addPhase(animMap.get(CLOSING).getAnimationDuration(), action1);
-        pc.addPhase(animMap.get(CHARING).getAnimationDuration(), action2);
-        pc.addPhase(animMap.get(OPENING).getAnimationDuration(), action3);
-        pc.addPhase(2.0f, action4);
+        pc.addPhase(animMap.get(CLOSING).getAnimationDuration(), task1);
+        pc.addPhase(animMap.get(CHARING).getAnimationDuration(), task2);
+        pc.addPhase(animMap.get(OPENING).getAnimationDuration(), task3);
+        pc.addPhase(2.0f, task4);
         pc.addPhaseSequence(2,3,0,1);
 
 

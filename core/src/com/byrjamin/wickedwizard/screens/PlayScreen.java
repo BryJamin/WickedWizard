@@ -1,22 +1,18 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
-import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,9 +25,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
@@ -41,8 +39,8 @@ import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.ClearCollisionsSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
@@ -51,8 +49,6 @@ import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
@@ -103,7 +99,6 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.RoomTransition;
 
 
 import java.util.Random;
@@ -268,6 +263,8 @@ public class PlayScreen extends AbstractScreen {
     public void createWorld(){
 
         LevelItemSystem lis = new LevelItemSystem(random);
+        SoundSystem soundSystem = new SoundSystem(manager);
+        soundSystem.playMusic(MusicStrings.song8);
 
         jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 ,lis.getItemPool(), random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
@@ -278,11 +275,17 @@ public class PlayScreen extends AbstractScreen {
         jg.generate();
         Arena startingArena = jg.getStartingRoom();
 
-        ComponentBag player = new PlayerFactory(game.manager).playerBag();
+        ComponentBag player = new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(15f));
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new MovementSystem()
+                        new MovementSystem(),
+                        //TODO this is here because lock boxes check for a collision but ground collision sets vertical velocity to 0.
+                        //TODO either change lock to except next Tos or
+                        new CollisionSystem(),
+                        new BounceCollisionSystem(),
+                        new GroundCollisionSystem(),
+                        new OnCollisionActionSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ExpireSystem(),
@@ -294,9 +297,6 @@ public class PlayScreen extends AbstractScreen {
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
-                        new CollisionSystem(),
-                        new BounceCollisionSystem(),
-                        new GroundCollisionSystem(),
                         new BulletSystem(),
                         new EnemyCollisionSystem(),
                         new MessageBannerSystem(),
@@ -311,7 +311,7 @@ public class PlayScreen extends AbstractScreen {
                         new ProximitySystem(),
                         new FindChildSystem(),
                         new PickUpSystem(),
-                        new LuckSystem(),
+                        new LuckSystem(random),
                         new ShoppingSystem(),
                         new RoomTypeSystem(),
                         new MoveToPlayerAISystem(),
@@ -334,8 +334,8 @@ public class PlayScreen extends AbstractScreen {
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         lis,
+                        soundSystem,
                         new ChangeLevelSystem(jg, atlas),
-                        new ClearCollisionsSystem(),
                         new MapTeleportationSystem(jg.getMapTracker()),
                         new RoomTransitionSystem(jg.getStartingMap())
                 )
@@ -455,6 +455,7 @@ public class PlayScreen extends AbstractScreen {
             pauseWorld.process();
 
             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
 
 
             float camX = gamecam.position.x - gamecam.viewportWidth / 2;
@@ -615,7 +616,7 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
     }
 
     public class gestures extends AbstractGestureDectector {
@@ -625,6 +626,7 @@ public class PlayScreen extends AbstractScreen {
 
             if (gameOver) {
                 game.setScreen(new MenuScreen(game));
+                world.dispose();
                 gameOver = false;
                 return true;
             }
@@ -640,6 +642,7 @@ public class PlayScreen extends AbstractScreen {
 
                 if(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y)){
                     game.setScreen(new MenuScreen(game));
+                    world.dispose();
                 }
 
             }

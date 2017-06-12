@@ -13,6 +13,8 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
@@ -59,29 +61,40 @@ public class BulletSystem extends EntityProcessingSystem {
             EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
                     EnemyComponent.class, CollisionBoundComponent.class, HealthComponent.class));
             IntBag entityIds = subscription.getEntities();
-
-            for(int i = 0; i < entityIds.size(); i++){
-
-                for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes){
-                    if(hb.hitbox.overlaps(cbc.bound)){
-                        HealthComponent hc = hm.get(entityIds.get(i));
-
-                        System.out.println("Damage is " + bulm.get(e).damage);
-                        hc.applyDamage(bulm.get(e).damage);
-                        if(bm.has(entityIds.get(i))){
-                            BlinkComponent bc = bm.get(entityIds.get(i));
-                            bc.isHit = true;
-                        }
-                        world.getSystem(com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
-                        break;
-                    }
-                }
-
-            }
+            bulletScan(e, entityIds);
         }
+
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
+                CollisionBoundComponent.class, HealthComponent.class).exclude(EnemyComponent.class, PlayerComponent.class));
+        IntBag entityIds = subscription.getEntities();
+        bulletScan(e, entityIds);
 
 
         //pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
+
+    }
+
+
+    public void bulletScan(Entity bullet, IntBag entityIds){
+
+        for(int i = 0; i < entityIds.size(); i++){
+
+            for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes){
+                if(hb.hitbox.overlaps(cbm.get(bullet).bound)){
+                    HealthComponent hc = hm.get(entityIds.get(i));
+
+                    System.out.println("Damage is " + bulm.get(bullet).damage);
+                    hc.applyDamage(bulm.get(bullet).damage);
+                    if(bm.has(entityIds.get(i))){
+                        BlinkComponent bc = bm.get(entityIds.get(i));
+                        bc.isHit = true;
+                    }
+                    world.getSystem(OnDeathSystem.class).kill(bullet);
+                    break;
+                }
+            }
+
+        }
 
     }
 
