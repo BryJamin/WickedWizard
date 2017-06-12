@@ -27,6 +27,8 @@ public class MainGame extends Game {
 
 	public static final float GAME_HEIGHT = 1200;
 	public static final float GAME_WIDTH = 2000;
+	public static final float GAME_BORDER = 100;
+
 
 
 	public static final int GAME_UNITS = 20;

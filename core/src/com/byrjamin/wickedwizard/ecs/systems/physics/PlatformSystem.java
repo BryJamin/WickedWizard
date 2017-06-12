@@ -48,7 +48,7 @@ public class PlatformSystem extends EntitySystem {
 
             if(platform.canPassThrough){
 
-                if(playerBound.bound.getY() > cbc.bound.getY() + cbc.bound.getHeight() && !playerBound.bound.overlaps(cbc.bound)) {
+                if(playerBound.bound.getY() >= cbc.bound.getY() + cbc.bound.getHeight() - Measure.units(1) && !playerBound.bound.overlaps(cbc.bound)) {
                     platform.canPassThrough = false;
                 }
 

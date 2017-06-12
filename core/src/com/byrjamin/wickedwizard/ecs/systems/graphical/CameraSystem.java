@@ -22,6 +22,8 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
+import sun.applet.Main;
+
 /**
  * Created by Home on 23/03/2017.
  */
@@ -57,7 +59,7 @@ public class CameraSystem extends EntitySystem {
 
     private float acceleration = Measure.units(5f);
     private float cameramaxVelocity = Measure.units(30f);
-    private float cameradefaultMaxVelocity = Measure.units(130f);
+    private float cameradefaultMaxVelocity = Measure.units(100f);
     private Vector2 cameraVelocity;
 
     private Rectangle left = new Rectangle();
@@ -117,9 +119,6 @@ public class CameraSystem extends EntitySystem {
         }
 
 
-
-        gamecam.position.x = cbc.getCenterX();
-
         if(cameraMode == CameraMode.CENTER_FOLLOW && cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)){
             if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
                     || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
@@ -131,6 +130,9 @@ public class CameraSystem extends EntitySystem {
         if(cameraMode == CameraMode.FIXED) {
             if (cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
                     || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
+
+                System.out.println("INSIDE OTHER IF");
+
                 int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
                 targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
             } else {
@@ -141,6 +143,9 @@ public class CameraSystem extends EntitySystem {
         }
 
         if(cameraMode == CameraMode.CENTER_FOLLOW){
+
+            System.out.println("SHOULD BE CENTER FOLLOW");
+
             targetY = cbc.getCenterY();
         }
         //}
@@ -155,11 +160,18 @@ public class CameraSystem extends EntitySystem {
                         -cameradefaultMaxVelocity : cameraVelocity.y - acceleration;
 
                 boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
+
+                System.out.println("Upper on target " + onTarget);
+                System.out.println(cameraVelocity.y);
+                System.out.println(targetY);
+
                 gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
 
                 if(onTarget) transitioning = false;
 
             } else {
+
+
 
                 cameraVelocity.y = (cameraVelocity.y < 0) ? 0 : cameraVelocity.y;
 
@@ -169,6 +181,8 @@ public class CameraSystem extends EntitySystem {
                 boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta > targetY);
                 gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
 
+                System.out.println("Lower on target " + onTarget);
+
                 if(onTarget) transitioning = false;
             }
         }
@@ -176,25 +190,36 @@ public class CameraSystem extends EntitySystem {
 /*        System.out.println("Transitioning is currenty " + transitioning);
         System.out.println("Target Y is " + targetY);*/
 
+        System.out.println(transitioning);
 
         if(cameraMode == CameraMode.CENTER_FOLLOW && !transitioning) {
             gamecam.position.y = cbc.getCenterY();
+
+            System.out.println("whhhyyy");
         }
 
 
         //Camera max height and minium height bounds.
         if(gamecam.position.y <= Measure.units(30f)) {
             gamecam.position.y = Measure.units(30f);
-        } else if (gamecam.position.y >= currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f)) {
-            gamecam.position.y = currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f);
-            cameraMode = CameraMode.FIXED;
+        } else if (gamecam.position.y + MainGame.GAME_BORDER >= currentArena.getHeight() - MainGame.GAME_HEIGHT -MainGame.GAME_UNITS+ Measure.units(30f)) {
+            System.out.println("INSIDE IF");
+            if(!transitioning) {
+                gamecam.position.y = currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f) -MainGame.GAME_UNITS;
+                cameraMode = CameraMode.FIXED;
+            }
         }
 
+
+
+
+        // calculating the X position of the camera
+        gamecam.position.x = cbc.getCenterX();
         //Camera max width and minium width bounds
-        if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
-            gamecam.position.x = gamePort.getWorldWidth() / 2;
-        } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= a.getWidth()){
-            gamecam.position.x = a.getWidth() - gamecam.viewportWidth / 2;
+        if(gamecam.position.x <= gamePort.getWorldWidth() / 2 - MainGame.GAME_BORDER){
+            gamecam.position.x = gamePort.getWorldWidth() / 2 - MainGame.GAME_BORDER;
+        } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= a.getWidth() +  MainGame.GAME_BORDER){
+            gamecam.position.x = a.getWidth() - gamecam.viewportWidth / 2 +  MainGame.GAME_BORDER;
         }
 
 
@@ -210,8 +235,8 @@ public class CameraSystem extends EntitySystem {
         gamecam.update();
 
 
-        world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
-                gamecam.position.y - gamePort.getWorldHeight() / 2);
+        world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2  +  MainGame.GAME_BORDER,
+                gamecam.position.y - gamePort.getWorldHeight() / 2 +  MainGame.GAME_BORDER);
     }
 
 

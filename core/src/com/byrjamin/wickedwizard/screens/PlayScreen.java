@@ -18,11 +18,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
@@ -116,6 +118,9 @@ public class PlayScreen extends AbstractScreen {
 
     private Viewport gameport;
 
+
+
+
     public final TextureAtlas atlas;
     public AssetManager manager;
 
@@ -141,6 +146,7 @@ public class PlayScreen extends AbstractScreen {
     private Random random;
     private JigsawGenerator jg;
     private Array<Arena> arenaArray;
+    private ShapeRenderer borderRenderer;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -153,8 +159,15 @@ public class PlayScreen extends AbstractScreen {
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
         Assets.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        borderRenderer = new ShapeRenderer();
+
+
+        gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
+        //gameport.setScreenPosition(-(int)MainGame.GAME_BORDER, -(int)MainGame.GAME_BORDER);
+
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
+       // gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
         random = new Random();
@@ -415,7 +428,10 @@ public class PlayScreen extends AbstractScreen {
             createDeathScreenWorld();
         }
 
+
         drawHUD(world, gamecam);
+
+
 
 
         if(!gameOver) {
@@ -424,8 +440,8 @@ public class PlayScreen extends AbstractScreen {
                 RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
 
                 arenaGUI.update(world.delta,
-                        gamecam.position.x + Measure.units(40),
-                        gamecam.position.y + Measure.units(20),
+                        gamecam.position.x + Measure.units(45),
+                        gamecam.position.y + Measure.units(25),
                         rts.getVisitedArenas(),
                         rts.getUnvisitedButAdjacentArenas(),
                         rts.getCurrentArena(),
@@ -523,6 +539,15 @@ public class PlayScreen extends AbstractScreen {
             game.batch.begin();
         }
 
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+        game.batch.setColor(new Color(Color.BLACK));
+        game.batch.draw(atlas.findRegion("block"), camX, camY + gamecam.viewportHeight - Measure.units(5f), gamecam.viewportWidth, Measure.units(5f));
+        game.batch.draw(atlas.findRegion("block"), camX, camY, gamecam.viewportWidth, Measure.units(5f));
+        game.batch.setColor(new Color(Color.WHITE));
+
+
         Array<TextureRegion> healthRegions = new Array<TextureRegion>();
 
         for(int i = 1; i <= stats.health; i++){
@@ -542,14 +567,14 @@ public class PlayScreen extends AbstractScreen {
             }
         }
 
-        float screenoffset = Measure.units(2.5f);
+        float screenoffset = Measure.units(0f);
 
         int count = 0;
 
         for(int i = 0; i < healthRegions.size; i++) {
             game.batch.draw(healthRegions.get(i),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(8f),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
             count++;
         }
