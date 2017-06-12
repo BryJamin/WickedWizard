@@ -39,10 +39,12 @@ public class ArenaBuilder {
     private AssetManager assetManager;
     private ArenaSkin arenaSkin;
     private BackgroundFactory bf = new BackgroundFactory();
+    private DecorFactory decorFactory;
 
     public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin){
         this.assetManager = assetManager;
         this.arenaSkin = arenaSkin;
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
     }
 
     public ArenaBuilder addSection(Section s){
@@ -51,13 +53,45 @@ public class ArenaBuilder {
     }
 
 
+    public void setWidthAndHeight(Arena a, Array<Section> sections){
+
+        Section s = sections.first();
+
+        int minX = s.coords.getX();
+        int maxX = s.coords.getX();
+        int minY = s.coords.getY();
+        int maxY = s.coords.getY();
+
+        for(Section section : sections) {
+            int x = section.coords.getX();
+            int y = section.coords.getY();
+
+            minX = x < minX ? x : minX;
+            maxX = x > maxX ? x : maxX;
+
+            minY = y < minY ? y : minY;
+            maxY = y > maxY ? y : maxY;
+        }
+
+        int diffX = Math.abs(minX - maxX);
+        int diffY = Math.abs(minY - maxY);
+
+        System.out.println(diffX);
+        System.out.println(diffY);
+
+
+        a.setWidth(SECTION_WIDTH * (diffX + 1));
+        a.setHeight(SECTION_HEIGHT * (diffY + 1));
+
+    }
+
     public Arena buildArena(Arena arena){
 
         defaultCoords = arena.getStartingCoords();
 
+        setWidthAndHeight(arena, sections);
 
 
-        DecorFactory decorFactory = new DecorFactory(assetManager, arenaSkin);
 
         for(Section s : sections) {
 
@@ -65,6 +99,8 @@ public class ArenaBuilder {
             //arena.cotainingCoords.add(s.coords);
 
             //System.out.println(sections.size);
+
+            //TODO multX may not work for negatives
 
             int multX = s.coords.getX() - defaultCoords.getX();
             int multY = s.coords.getY() - defaultCoords.getY();
@@ -135,32 +171,7 @@ public class ArenaBuilder {
             }
 
             //Floor
-            if(s.floor == wall.FULL){
-                arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, SECTION_WIDTH, WALLWIDTH * 2, arenaSkin));
-            } else if(s.floor == wall.DOOR || s.floor == wall.MANDATORYDOOR) {
-
-                arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
-
-                arena.addDoor(decorFactory.horizontalDoorBag(Measure.units(40f) + posX, 0 + posY,
-                        new MapCoords(coordX, coordY),
-                        new MapCoords(coordX, coordY - 1),
-                        Direction.DOWN), s.floor == wall.MANDATORYDOOR);
-
-                Bag<Component> bag = decorFactory.horizontalDoorBag(Measure.units(40f) + posX, Measure.units(5f) + posY,
-                        new MapCoords(coordX, coordY),
-                        new MapCoords(coordX, coordY - 1),
-                        Direction.DOWN);
-
-                BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
-
-
-                arena.addEntity(decorFactory.platform(Measure.units(40f) + posX, Measure.units(5f), Measure.units(20f)));
-
-                arena.addDoor(bag);
-
-                arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
-
-            }
+            buildFloor(arena, s, posX, posY, coordX, coordY);
 
             //Background
             arena.addEntity(bf.backgroundBags(0 + posX,0 + posY,
@@ -181,6 +192,35 @@ public class ArenaBuilder {
 
 
 
+    }
+
+
+    public void buildFloor(Arena arena, Section s, float posX, float posY, int coordX, int coordY){
+        if(s.floor == wall.FULL){
+            arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, SECTION_WIDTH, WALLWIDTH * 2, arenaSkin));
+        } else if(s.floor == wall.DOOR || s.floor == wall.MANDATORYDOOR) {
+
+            arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
+
+            arena.addDoor(decorFactory.horizontalDoorBag(Measure.units(40f) + posX, 0 + posY,
+                    new MapCoords(coordX, coordY),
+                    new MapCoords(coordX, coordY - 1),
+                    Direction.DOWN), s.floor == wall.MANDATORYDOOR);
+
+            Bag<Component> bag = decorFactory.horizontalDoorBag(Measure.units(40f) + posX, Measure.units(5f) + posY,
+                    new MapCoords(coordX, coordY),
+                    new MapCoords(coordX, coordY - 1),
+                    Direction.DOWN);
+
+            BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
+
+            arena.addEntity(decorFactory.platform(Measure.units(40f) + posX, Measure.units(5f), Measure.units(20f)));
+
+            arena.addDoor(bag);
+
+            arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
+
+        }
     }
 
 

@@ -292,9 +292,6 @@ public class Level2Rooms extends AbstractFactory{
                         new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
                 arena.roomType = Arena.RoomType.TRAP;
 
-                arena.setWidth(SECTION_WIDTH * 2);
-                arena.setHeight(SECTION_HEIGHT * 2);
-
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,

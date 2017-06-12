@@ -371,7 +371,11 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-       // startingArena = level2Rooms.room14WalkingThroughRoom().createArena(new MapCoords());
+       // startingArena = level2Rooms.room6largeBattleRoom().createArena(new MapCoords());
+
+        System.out.println(startingArena.getWidth() + "HDUAWDUAWUDHAUWDAUWDHAUWDHUAUW");
+        System.out.println(startingArena.getHeight());
+
         placedArenas.add(startingArena);
 
         OrderedSet<DoorComponent> avaliableDoorsSet = new OrderedSet<DoorComponent>();
@@ -412,7 +416,7 @@ public class JigsawGenerator {
         Array<ArenaGen> arenaGens;
 
         switch(currentLevel){
-            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); arenaGens = level2Rooms.getLevel2RoomArray();
+            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
             case PRISON: arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
