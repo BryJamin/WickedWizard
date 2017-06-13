@@ -308,10 +308,11 @@ public class CameraSystem extends EntitySystem {
     }
 
 
+    //TODO may ned to factor in the border
     public boolean isOnCamera(Rectangle r){
         System.out.println(r.getX());
-        boolean isOnX = r.getX() >= getCameraX() && r.getX() - r.getWidth() <= getCameraX() + gamecam.viewportWidth;
-        boolean isOnY = r.getY() >= getCameraY() && r.getY() - r.getHeight() <= getCameraY() + gamecam.viewportHeight;
+        boolean isOnX = r.getX() >= getCameraX() + MainGame.GAME_BORDER && r.getX() - r.getWidth() <= getCameraX() + gamecam.viewportWidth - MainGame.GAME_BORDER;
+        boolean isOnY = r.getY() >= getCameraY() + MainGame.GAME_BORDER && r.getY() - r.getHeight() <= getCameraY() + gamecam.viewportHeight - MainGame.GAME_BORDER;
         return isOnX && isOnY;
     }
 }

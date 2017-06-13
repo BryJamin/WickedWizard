@@ -1,7 +1,9 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
+import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
@@ -19,6 +21,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
+import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.factories.hazards.SpikeBallFactory;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
@@ -75,6 +78,7 @@ public class Level2Rooms extends AbstractFactory{
         ag.add(room12WallTurretsAndBouncers());
         ag.add(room13GoatWizardAndBlobs());
         ag.add(room14WalkingThroughRoom());
+        ag.add(room15JigAndTurretWithGuard());
         return ag;
     }
 
@@ -626,12 +630,9 @@ public class Level2Rooms extends AbstractFactory{
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, new MapCoords());
+                Arena arena = new Arena(arenaSkin, defaultCoords);
 
-                boolean isLeft = false; //random.nextBoolean();
-
-                arena.setWidth(SECTION_WIDTH);
-                arena.setHeight(SECTION_HEIGHT);
+                boolean isLeft = true; //random.nextBoolean();
 
                 arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -652,6 +653,90 @@ public class Level2Rooms extends AbstractFactory{
 
         };
     }
+
+    public ArenaGen room15JigAndTurretWithGuard() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR)).buildArena(arena);
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(20f), Measure.units(5f), Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(20f), Measure.units(5f), Measure.units(25f)));
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnJig(arena.getWidth() / 2, arena.getHeight() / 2));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, Measure.units(50f)));
+
+                return arena;
+            }
+
+        };
+    }
+
+
+
+    public ArenaGen room16Width2SpikeTreasure() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+                arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL)).buildArena(arena);
+
+
+                arena.addWave(
+                        arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(50f)),
+                        arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(20f))
+                        );
+
+                OnDeathActionComponent odac = new OnDeathActionComponent(new Task() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        new GibletFactory(assetManager).giblets(5,0.4f,
+                                Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
+
+                        Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+                        arena.roomType = Arena.RoomType.TRAP;
+
+                    }
+
+                    @Override
+                    public void cleanUpAction(World world, Entity e) {
+
+                    }
+                });
+
+                arena.addEntity(new ChestFactory(assetManager).chestBag(Measure.units(150f), Measure.units(10f),
+                        odac));
+
+                arena.addEntity(new ChestFactory(assetManager).chestBag(Measure.units(165f), Measure.units(10f),
+                        odac));
+
+                return arena;
+            }
+
+        };
+    }
+
+
 
 
 

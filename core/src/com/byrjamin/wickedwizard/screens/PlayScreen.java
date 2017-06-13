@@ -545,6 +545,8 @@ public class PlayScreen extends AbstractScreen {
         game.batch.setColor(new Color(Color.BLACK));
         game.batch.draw(atlas.findRegion("block"), camX, camY + gamecam.viewportHeight - Measure.units(5f), gamecam.viewportWidth, Measure.units(5f));
         game.batch.draw(atlas.findRegion("block"), camX, camY, gamecam.viewportWidth, Measure.units(5f));
+        game.batch.draw(atlas.findRegion("block"), camX, camY, Measure.units(5f), gamecam.viewportHeight);
+        game.batch.draw(atlas.findRegion("block"), camX + gamecam.viewportWidth - Measure.units(5f), camY, Measure.units(5f), gamecam.viewportHeight);
         game.batch.setColor(new Color(Color.WHITE));
 
 
@@ -582,7 +584,7 @@ public class PlayScreen extends AbstractScreen {
         for(int i = count; i < stats.armor + count; i++) {
             game.batch.draw(atlas.findRegion("item/armor"),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(8f),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
             //count++;
         }
@@ -604,7 +606,7 @@ public class PlayScreen extends AbstractScreen {
         game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
                 gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15f),
-                Measure.units(2.5f), Measure.units(2.5f));
+                Measure.units(3f), Measure.units(3f));
 
         currencyFont.draw(game.batch, "" + currencyComponent.keys,
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),

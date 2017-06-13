@@ -39,9 +39,10 @@ public class RoomTypeSystem extends BaseSystem {
 
                     if(!(current.getWaves().empty())) {
 
-                        Entity newEntity = world.createEntity();
+                        //Entity newEntity = world.createEntity();
 
                         for(Bag<Component> bag : (current.getWaves().pop())){
+                            Entity newEntity = world.createEntity();
                             for(Component c : bag){
                                 newEntity.edit().add(c);
                             }

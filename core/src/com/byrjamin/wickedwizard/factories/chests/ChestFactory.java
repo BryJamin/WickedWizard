@@ -67,6 +67,13 @@ public class ChestFactory extends AbstractFactory {
         return bag;
     }
 
+    public ComponentBag centeredChestBag(float x, float y, OnDeathActionComponent odac){
+        x = x - width / 2;
+        y = y- width / 2;
+        return chestBag(x,y,odac);
+    }
+
+
     public ComponentBag centeredChestBag(float x, float y) {
         x = x - width / 2;
         y = y- width / 2;
@@ -74,12 +81,9 @@ public class ChestFactory extends AbstractFactory {
     }
 
 
-    public ComponentBag centeredChestBag(float x, float y, OnDeathActionComponent odac) {
+    public ComponentBag chestBag(float x, float y, OnDeathActionComponent odac) {
 
         ComponentBag bag = new ComponentBag();
-
-        x = x - width / 2;
-        y = y- width / 2;
 
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
