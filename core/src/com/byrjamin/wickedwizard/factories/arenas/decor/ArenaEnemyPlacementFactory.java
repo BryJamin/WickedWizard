@@ -69,6 +69,17 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
 
+    public Bag<Component> spawnMovingJig(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return jigFactory.movingJig(x,y);
+            }
+        });
+        //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
     public Bag<Component> spawnJig(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
@@ -122,14 +133,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         a.addEntity(spawnerFactory.spawnerBag(x, y, s));
     }
 
-    public void spawnSilverHead(Arena a, float x, float y){
+    public ComponentBag spawnSilverHead(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return silverHeadFactory.silverHead(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(x, y + Measure.units(2.5f), s));
+        return spawnerFactory.spawnerBag(x, y + Measure.units(2.5f), s);
     }
 
     public ComponentBag spawnBouncer(float x, float y){

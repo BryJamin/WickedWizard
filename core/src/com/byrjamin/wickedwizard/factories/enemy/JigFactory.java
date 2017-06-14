@@ -84,6 +84,20 @@ public class JigFactory extends EnemyFactory{
     }
 
 
+    public ComponentBag movingJig(float x, float y){
+
+
+        ComponentBag bag = stationaryJig(x,y);
+        bag.add(new VelocityComponent(Measure.units(10f), 0));
+        bag.add(new BounceComponent());
+
+        return bag;
+
+
+
+
+    }
+
 
 
 

@@ -85,17 +85,25 @@ public class ArenaBuilder {
 
     }
 
+    public void setArenaCoords(Arena a, Array<Section> sections){
+        a.setStartingCoords(sections.get(0).coords);
+        for(Section s : sections){
+            a.addCoords(s.coords);
+        }
+    }
+
     public Arena buildArena(Arena arena){
 
-        defaultCoords = arena.getStartingCoords();
+        if(sections.size <= 0) return arena;
 
+        defaultCoords = arena.getStartingCoords(); //sections.get(0).coords;
+
+        //Arena arena = new Arena(a.roomType, arenaSkin, sections.get(0).coords);
+        //setArenaCoords(a, sections);
         setWidthAndHeight(arena, sections);
 
 
-
         for(Section s : sections) {
-
-
             //arena.cotainingCoords.add(s.coords);
 
             //System.out.println(sections.size);
@@ -248,6 +256,8 @@ public class ArenaBuilder {
         public wall right;
         public wall ceiling;
         public wall floor;
+
+
 
 
         public Section(MapCoords coords, wall left, wall right, wall ceiling, wall floor){

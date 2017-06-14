@@ -209,7 +209,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
-                arenaEnemyPlacementFactory.spawnSilverHead(a, a.getWidth() / 2, Measure.units(40f));
+                a.addEntity(arenaEnemyPlacementFactory.spawnSilverHead(a.getWidth() / 2, Measure.units(40f)));
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
@@ -433,6 +433,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords);
 
+
                 arena.setWidth(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH);
                 arena.setHeight(com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT);
 
@@ -447,7 +448,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                 arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(10f), Measure.units(20f), Measure.units(25f), arenaSkin));
                 arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(30f), Measure.units(35f)));
                 arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(30f), Measure.units(35f)));
-                arenaEnemyPlacementFactory.spawnSilverHead(arena, arena.getWidth() / 2, Measure.units(45f));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnSilverHead(arena.getWidth() / 2, Measure.units(45f)));
 
 
                 return arena;
@@ -487,7 +488,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(x,y);
                             }
-                        }, 5));
+                        }, 4));
 
 
 

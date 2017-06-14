@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.factories.chests;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,6 +12,7 @@ import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -17,8 +20,10 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -104,6 +109,26 @@ public class ChestFactory extends AbstractFactory {
         bag.add(odac);
 
         return bag;
+    }
+
+
+    public OnDeathActionComponent trapODAC(){
+        return new OnDeathActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                new GibletFactory(assetManager).giblets(5,0.4f,
+                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
+
+                Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+                arena.roomType = Arena.RoomType.TRAP;
+
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        });
     }
 
 }

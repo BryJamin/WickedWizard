@@ -40,11 +40,15 @@ public class AmoebaFactory extends EnemyFactory {
     private float textureoffsetY = (height / 2) - (textureHeight / 2);
 
 
-    public ComponentBag amoeba(float x, float y) {
-
+    public ComponentBag fastamoeba(float x , float y){
         x = x - width / 2;
         y = y - height / 2;
+        return amoebaBag(x,y, Measure.units(10f), new Color(Color.RED));
+    }
 
+
+
+    public ComponentBag amoebaBag(float x, float y, float speed, Color color){
 
         ComponentBag bag = new ComponentBag();
         //bag.add(new PositionComponent(x,y));
@@ -79,6 +83,17 @@ public class AmoebaFactory extends EnemyFactory {
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, new Color(Color.CHARTREUSE)));*/
 
         return bag;
+
+
+    }
+
+    public ComponentBag amoeba(float x, float y) {
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        return amoebaBag(x,y, Measure.units(5f), new Color(238f / 255f, 187f / 255f, 240f / 255f, 1));
+
     }
 
 

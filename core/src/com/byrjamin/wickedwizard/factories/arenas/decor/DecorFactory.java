@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
@@ -99,6 +100,18 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
+    public ComponentBag destructibleBlock(float x, float y, float width, float height, Color color){
+
+        ComponentBag bag = new ComponentBag();
+
+        bag.add(new PositionComponent(x,y));
+        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), x,y,width,height, PLAYER_LAYER_FAR, color));
+        bag.add(new HealthComponent(2));
+        return bag;
+    }
+
 
 
     public ComponentBag chevronBag(float x, float y, float rotationInDegrees){
@@ -152,26 +165,6 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-/*
-    public Bag<Component> wallBag(float x, float y, float width, float height){
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
-
-        TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
-                atlas.findRegions("brick"), TextureRegionComponent.PLAYER_LAYER_FAR);
-        trbc.setColor(0.7f, 0, 0f, 1);
-        bag.add(trbc);
-
-        return bag;
-    }
-*/
-
-/*
-    public Bag<Component> wallBag(Rectangle r){
-        return wallBag(r.x, r.y, r.width, r.height);
-    }
-*/
 
     public Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
         return doorBag(x,y,true,current,leaveCoords,exit);

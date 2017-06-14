@@ -57,8 +57,22 @@ public class Arena {
         this.arenaSkin = arenaSkin;
     }
 
+    public Arena(RoomType roomType, ArenaSkin arenaSkin, Array<MapCoords> mapCoords) {
+
+        startingCoords = mapCoords.get(0);
+
+        for(MapCoords m : mapCoords) {
+            this.cotainingCoords.add(m);
+        }
+
+        this.roomType = roomType;
+        this.arenaSkin = arenaSkin;
+    }
 
 
+    public void addCoords(MapCoords coords) {
+        if(!this.cotainingCoords.contains(coords, false)) this.cotainingCoords.add(coords);
+    }
 
 
     public Bag<Bag<Component>> getBagOfEntities() {
@@ -150,6 +164,11 @@ public class Arena {
 
     public void setHeight(float height) {
         this.height = height;
+    }
+
+
+    public void setStartingCoords(MapCoords startingCoords) {
+        this.startingCoords = startingCoords;
     }
 
     public MapCoords getStartingCoords() {

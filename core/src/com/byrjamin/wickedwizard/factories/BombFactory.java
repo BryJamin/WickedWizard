@@ -39,7 +39,7 @@ public class BombFactory extends  AbstractFactory{
     }
 
 
-    public ComponentBag bomb(float x, float y){
+    public ComponentBag bomb(float x, float y, float life){
 
 
         float width = Measure.units(5);
@@ -55,7 +55,7 @@ public class BombFactory extends  AbstractFactory{
 
         bag.add(new GravityComponent());
         bag.add(new VelocityComponent());
-        bag.add(new ExpireComponent(3f));
+        bag.add(new ExpireComponent(life));
 
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOMB),
                 width, height,
@@ -91,6 +91,8 @@ public class BombFactory extends  AbstractFactory{
 
         bag.add(cac);
 
+        //TODO bombs do not have explosion component at the moment
+
         OnDeathActionComponent onDeathActionComponent = new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
@@ -116,6 +118,8 @@ public class BombFactory extends  AbstractFactory{
 
             }
         });
+
+        bag.add(onDeathActionComponent);
 
         return bag;
 

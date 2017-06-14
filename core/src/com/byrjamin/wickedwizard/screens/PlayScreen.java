@@ -288,7 +288,7 @@ public class PlayScreen extends AbstractScreen {
         jg.generate();
         Arena startingArena = jg.getStartingRoom();
 
-        ComponentBag player = new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(15f));
+        ComponentBag player = new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f));
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
