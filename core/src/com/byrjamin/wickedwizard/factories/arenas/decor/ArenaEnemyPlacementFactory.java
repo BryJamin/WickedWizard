@@ -123,14 +123,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
-    public void kugelDusche(Arena a, float x, float y){
+    public ComponentBag spawnkugelDusche(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return kugelDuscheFactory.kugelDusche(x,y);
             }
         });
-        a.addEntity(spawnerFactory.spawnerBag(x, y, s));
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
     public ComponentBag spawnSilverHead(float x, float y){

@@ -69,7 +69,7 @@ public class Level2Rooms extends AbstractFactory{
         ag.add(room3OneTurretTwoLargeBouncers());
         ag.add(room4width2RoomOnlyVerticalExits());
         ag.add(room5grappleTreasureRoom());
-        ag.add(room6largeBattleRoom());
+        ag.add(room6largeRoomWithSentries());
         ag.add(room6trapAmoeba());
         ag.add(room7Height2BlobPatrol());
         ag.add(room8TreasureLockedCenter());
@@ -112,7 +112,7 @@ public class Level2Rooms extends AbstractFactory{
                                 ArenaBuilder.wall.DOOR))
                         .buildArena(arena);
 
-                arena.addEntity(arenaEnemyPlacementFactory.kugelDuscheFactory.kugelDusche(arena.getWidth() / 2,(arena.getHeight() / 2) + Measure.units(2.5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2,(arena.getHeight() / 2) + Measure.units(2.5f)));
                 arena.roomType = Arena.RoomType.TRAP;
                 return arena;
             }
@@ -293,7 +293,7 @@ public class Level2Rooms extends AbstractFactory{
 
     //TODO make better
 
-    public ArenaGen room6largeBattleRoom(){
+    public ArenaGen room6largeRoomWithSentries(){
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -302,7 +302,6 @@ public class Level2Rooms extends AbstractFactory{
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                         new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
-                arena.roomType = Arena.RoomType.TRAP;
 
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -337,10 +336,15 @@ public class Level2Rooms extends AbstractFactory{
 
 
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(40f), arena.getHeight() / 2 - Measure.units(5)));
+                //High
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(100f), Measure.units(100f)));
 
+                //Mid
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLargeBouncer(arena.getWidth() / 2, arena.getHeight() / 2));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(40f), Measure.units(100f)));
+                //LOW
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(Measure.units(40f), Measure.units(20f)));
+
 
                 return arena;
             }
@@ -1132,6 +1136,74 @@ public class Level2Rooms extends AbstractFactory{
 
         };
     }
+
+
+
+
+    public ArenaGen room26largeBattleRoomWithTreasureTrove(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords,
+                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.NONE))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.NONE)).buildArena(arena);
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(65f), Measure.units(5f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(10f), Measure.units(65f), Measure.units(5f), Measure.units(5f)));
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(30f), Measure.units(25f), Measure.units(130f), Measure.units(45f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(50f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(20f), Measure.units(50f)));
+
+                arena.addEntity(decorFactory.lockBox(Measure.units(30f), Measure.units(10f), Measure.units(15f), Measure.units(15f)));
+                arena.addEntity(decorFactory.lockBox(arena.getWidth() - Measure.units(55f), Measure.units(10f), Measure.units(15f), Measure.units(15f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(50f), Measure.units(10f)));
+
+                arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(70f), Measure.units(10f)));
+
+                arena.addEntity(decorFactory.lockWall(Measure.units(65f), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
+                arena.addEntity(decorFactory.lockWall(arena.getWidth() - Measure.units(80), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
+
+                arena.addEntity(chestFactory.chestBag(Measure.units(75f), Measure.units(10f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(90f), Measure.units(10f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(105f), Measure.units(10f)));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnJig(arena.getWidth() / 2, Measure.units(95f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4 * 3, Measure.units(105f)));
+
+
+                return arena;
+            }
+        };
+    }
+
+
 
 
 }

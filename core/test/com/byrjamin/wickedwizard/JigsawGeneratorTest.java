@@ -124,10 +124,7 @@ public class JigsawGeneratorTest extends GameTest {
         TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
 
 
-        //TODO rooms generate and a boss/item always seems to be there however,
-        //TODO and in situation where a room can't be placed there is no endless loop
-        //TODO needs to look into using omni rooms if number of rooms is not the same as entered into /
-        //TODO the generator.
+        //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
 
         for(int i = 0; i < 5000; i++) {
 
