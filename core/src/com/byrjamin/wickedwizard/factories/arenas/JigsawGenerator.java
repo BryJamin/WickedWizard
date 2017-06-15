@@ -371,7 +371,7 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-        startingArena = level2Rooms.room6largeRoomWithSentries().createArena(new MapCoords());
+        startingArena = level2Rooms.room30BlobsAndAmoebasAndTurrets().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 

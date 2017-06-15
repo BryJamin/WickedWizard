@@ -57,7 +57,7 @@ public class AmoebaFactory extends EnemyFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
         bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(5f), Measure.units(5f)));
+        bag.add(new AccelerantComponent(speed, speed));
         bag.add(new ExploderComponent());
 
         bag.add(new IntangibleComponent());
@@ -72,7 +72,7 @@ public class AmoebaFactory extends EnemyFactory {
 
         TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AMOEBA),
                 textureoffsetX, textureoffsetY, textureWidth, textureHeight,
-                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(238f / 255f, 187f / 255f, 240f / 255f, 1));
+                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, color);
 
         tfc.scaleX = -1;
 

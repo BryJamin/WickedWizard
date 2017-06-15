@@ -159,6 +159,8 @@ public class PlayerFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
 
+
+        //TODO I should switch this to the moveto component which should also use the way the moveToPlayerAI works
         bag.add(new VelocityComponent(BulletMath.velocityX(Measure.units(150f), angle), BulletMath.velocityY(Measure.units(150f), angle)));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         //bag.add(new IntangibleComponent());

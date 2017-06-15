@@ -90,6 +90,11 @@ public class Level2Rooms extends AbstractFactory{
         ag.add(room23PlatformingGauntlet());
         ag.add(room24BombSpawn());
         ag.add(room25BombTrap());
+        ag.add(room26largeBattleRoomWithTreasureTrove());
+        ag.add(room27BouncersAndAmoebas());
+        ag.add(room28SmallGurnerAndAmoeba());
+        ag.add(room29Height3GrappleTreasureAndGurner());
+        ag.add(room30BlobsAndAmoebasAndTurrets());
         return ag;
     }
 
@@ -1203,6 +1208,165 @@ public class Level2Rooms extends AbstractFactory{
         };
     }
 
+    public ArenaGen room27BouncersAndAmoebas(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR)).buildArena(arena);
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+
+               // arena.addEntity(decorFactory.wallBag(Measure.units(30f), Measure.units(30f), Measure.units(40f), Measure.units(5f)));
+
+/*
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, Measure.units(45f)));*/
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(0, arena.getHeight()));
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth() / 2, arena.getHeight()));
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth(), arena.getHeight()));
+
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(0, arena.getHeight() / 2));
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth(), arena.getHeight() / 2));
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth() / 2, 0));
+
+                //arena.addEntity(arenaEnemyPlacementFactory.spawnLargeBouncer());
+
+
+
+
+                return arena;
+            }
+        };
+    }
+
+
+
+    public ArenaGen room28SmallGurnerAndAmoeba(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR)).buildArena(arena);
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2, arena.getHeight() / 2));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.amoeba(0, arena.getHeight()));
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.amoeba(arena.getWidth(), arena.getHeight()));
+
+
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room29Height3GrappleTreasureAndGurner(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords,
+                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2));
+
+
+                boolean isLeftAbove = random.nextBoolean();
+                //arena.roomType = Arena.RoomType.TRAP;
+
+                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                isLeftAbove ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.MANDATORYDOOR,
+                                isLeftAbove ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                                isLeftAbove ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.FULL,
+                                isLeftAbove ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.MANDATORYDOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.NONE)).buildArena(arena);
+
+
+                float oddPosx = isLeftAbove ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4;
+                float evenPosX = isLeftAbove ? arena.getWidth() / 4 : arena.getWidth() / 4 * 3;
+
+
+                arena.addEntity(decorFactory.grapplePointBag(oddPosx, Measure.units(45f)));
+                arena.addEntity(decorFactory.grapplePointBag(evenPosX, Measure.units(75)));
+                arena.addEntity(decorFactory.grapplePointBag(oddPosx, Measure.units(105f)));
+                arena.addEntity(decorFactory.grapplePointBag(evenPosX, Measure.units(135f)));
+
+                arena.addEntity(chestFactory.chestBag(isLeftAbove ? Measure.units(15f) : arena.getWidth() - Measure.units(25f), Measure.units(20f), chestFactory.trapODAC()));
+
+                //arena.addEntity(arenaEnemyPlacementFactory.s);
+
+//                arena.roomType = Arena.RoomType.TRAP;
+
+                arena.addWave(
+                        arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2, Measure.units(25f))
+                );
+
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room30BlobsAndAmoebasAndTurrets(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(45f),
+                        new SpawnerFactory.Spawner() {
+                            public Bag<Component> spawnBag(float x, float y) {
+                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x, y);
+                            }
+                        }, 3));
+
+
+                arena.addEntity(decorFactory.wallBag(Measure.units(30f), Measure.units(30f), Measure.units(40f), Measure.units(5f)));
+
+
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(0, arena.getHeight()));
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth() / 2, arena.getHeight()));
+                arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth(), arena.getHeight()));
+
+                return arena;
+
+            }
+
+        };
+    }
 
 
 
