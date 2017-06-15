@@ -10,17 +10,20 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ExplosionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -97,6 +100,11 @@ public class BombFactory extends  AbstractFactory{
             @Override
             public void performAction(World world, Entity e) {
 
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+
+                BagToEntity.bagToEntity(world.createEntity(),
+                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), Measure.units(20f), Measure.units(20f)));
+
                 gf.bombGiblets(10, 0.35f, 0,
                         Measure.units(75f),
                         Measure.units(1.5f),
@@ -120,6 +128,24 @@ public class BombFactory extends  AbstractFactory{
         });
 
         bag.add(onDeathActionComponent);
+
+        return bag;
+
+    }
+
+
+    public ComponentBag bombExplosion(float x, float y, float width, float height) {
+
+        x = x - width / 2;
+        y = y - width / 2;
+
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new ExplosionComponent(1));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
+        bag.add(new PositionComponent(x, y));
+        bag.add(new ExpireComponent(2f));
+        bag.add(new IntangibleComponent());
 
         return bag;
 
