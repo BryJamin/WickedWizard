@@ -189,9 +189,9 @@ public class GibletFactory extends AbstractFactory {
             bag.add(new PositionComponent(cx, cy));
             bag.add(new VelocityComponent(vx, vy));
             // bag.add(new BounceComponent());
-            bag.add(new CollisionBoundComponent(new Rectangle(cx, cy, size, size)));
+            //bag.add(new CollisionBoundComponent(new Rectangle(cx, cy, size, size)));
             bag.add(new ExpireComponent(life));
-            bag.add(new IntangibleComponent());
+            //bag.add(new IntangibleComponent());
             // bag.add(new ExpiryRangeComponent(new Vector3()maxSpeed))
 
 

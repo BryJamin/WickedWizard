@@ -18,7 +18,7 @@ public class Pistol implements Weapon {
 
 
     private float fireRate;
-    private BulletFactory bf;
+    protected BulletFactory bf;
 
     public Pistol(AssetManager assetManager, float fireRate){
         this.fireRate = fireRate;
@@ -26,9 +26,9 @@ public class Pistol implements Weapon {
     }
 
     @Override
-    public void fire(World world, Entity e, float x, float y, double angle) {
+    public void fire(World world, Entity e, float x, float y, double angleInRadians) {
         Entity bullet = world.createEntity();
-        for(Component c : bf.enemyBulletBag(new ComponentBag(), x, y, angle)) bullet.edit().add(c);
+        for(Component c : bf.enemyBulletBag(new ComponentBag(), x, y, angleInRadians)) bullet.edit().add(c);
     }
 
     @Override

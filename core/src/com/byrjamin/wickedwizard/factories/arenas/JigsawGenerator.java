@@ -18,6 +18,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level2Rooms;
+import com.byrjamin.wickedwizard.factories.arenas.levels.Level3Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.Level1BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
@@ -56,6 +57,7 @@ public class JigsawGenerator {
     private AssetManager assetManager;
     private Level1Rooms level1Rooms;
     private Level2Rooms level2Rooms;
+    private Level3Rooms level3Rooms;
     private Level1BossMaps level1BossMaps;
     private TutorialFactory tutorialFactory;
     private ArenaShellFactory arenaShellFactory;
@@ -77,6 +79,7 @@ public class JigsawGenerator {
         this.assetManager = assetManager;
         this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, rand);
         this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, rand);
+        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, rand);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
@@ -94,6 +97,7 @@ public class JigsawGenerator {
         this.arenaSkin = arenaSkin;
         this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, rand);
         this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, rand);
+        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, rand);
         this.level1BossMaps = new Level1BossMaps(assetManager, arenaSkin);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
@@ -371,7 +375,7 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-        startingArena = level2Rooms.room24BombSpawn().createArena(new MapCoords());
+        startingArena = level3Rooms.room1MultiShot().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 

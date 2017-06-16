@@ -260,7 +260,7 @@ public class BossWanda extends EnemyFactory {
         }
 
         @Override
-        public void fire(World world, Entity e, float x, float y, double angle) {
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
             for(int i = 0; i < angles.length; i++) {
                 createBlock(world, new Vector3(e.getComponent(CollisionBoundComponent.class).getCenterX(),
@@ -333,7 +333,7 @@ public class BossWanda extends EnemyFactory {
 
 
         @Override
-        public void fire(World world, Entity e, float x, float y, double angle) {
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
 
             for(int i = 0; i < angles.length; i++) {

@@ -129,10 +129,10 @@ public class KugelDuscheFactory extends EnemyFactory {
             int[] angles = new int[] {0,180};
 
             @Override
-            public void fire(World world,Entity e, float x, float y, double angle) {
+            public void fire(World world,Entity e, float x, float y, double angleInRadians) {
                 //Math.toRadians()
                 for(int i : angles){
-                    double angleOfTravel = angle + Math.toRadians(i);
+                    double angleOfTravel = angleInRadians + Math.toRadians(i);
                     Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4);
                     bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
                     BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;

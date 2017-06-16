@@ -136,7 +136,7 @@ public class GoatWizardFactory extends EnemyFactory {
         //TODO somehow track if any balls have been killed and re-summon after a count down period
 
         @Override
-        public void fire(World world, Entity e, float x, float y, double angle) {
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
             if(isShield) {
                 for (float f : angles) {
@@ -145,7 +145,7 @@ public class GoatWizardFactory extends EnemyFactory {
                 isShield = false;
             } else {
 
-                VelocityComponent vc = new VelocityComponent((float) (Measure.units(40) * Math.cos(angle)), (float) (Measure.units(40) * Math.sin(angle)));
+                VelocityComponent vc = new VelocityComponent((float) (Measure.units(40) * Math.cos(angleInRadians)), (float) (Measure.units(40) * Math.sin(angleInRadians)));
 
                 PositionComponent pc = e.getComponent(PositionComponent.class);
 

@@ -27,7 +27,7 @@ public class TextureStrings {
 
     //ENEMIES
     public static final String BOMB = "bomb";
-    public static final String EXPLOSION = "explosion";
+    public static final String AIR_MINE = "enemy/air_mine";
 
     //BLOB
     public static final String BLOB_STANDING = "blob";
@@ -39,9 +39,28 @@ public class TextureStrings {
 
     //Kugeldusche
     public static final String KUGELDUSCHE_EMPTY = "kugel";
+    public static final String KUGELDUSCHE_LASER = "enemy/kugel_laser";
+
+
     //SENTRY
     public static final String SENTRY = "sentry";
     public static final String SENTRY_FIRING = "sentry_firing";
+
+
+    //TRI-SENTRY
+    public static final String SENTRY_TRI = "enemy/sentry_tri";
+    public static final String SENTRY_FIRING_TRI = "enemy/sentry_tri_firing";
+
+
+    //MODON
+    public static final String MODON = "enemy/modon";
+    public static final String MODON_FIRING = "enemy/modon_firing";
+
+    //FLYBY
+    public static final String FLYBY = "enemy/flyby";
+    public static final String FLYBY_FIRING = "enemy/flyby_firing";
+
+
 
     //SILVERHEAD
     public static final String SILVERHEAD_ST = "silverhead_standing";

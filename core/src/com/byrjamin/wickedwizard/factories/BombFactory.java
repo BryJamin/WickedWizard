@@ -42,6 +42,8 @@ public class BombFactory extends  AbstractFactory{
     }
 
 
+    //TODO bouncey bomb that is a different color
+
     public ComponentBag bomb(float x, float y, float life){
 
 
@@ -113,12 +115,12 @@ public class BombFactory extends  AbstractFactory{
                 gf.bombGiblets(10, 0.35f, 0,
                         Measure.units(75f),
                         Measure.units(1.5f),
-                        new Color(246/ 255f, 45f/255f, 45f/255f, 1f)).performAction(world, e);
+                        new Color(255f/ 255f, 124f/255f, 0f/255f, 1f)).performAction(world, e);
 
                 gf.bombGiblets(10, 0.35f, 0,
                         Measure.units(75f),
                         Measure.units(1.5f),
-                        new Color(246/ 255f, 45f/255f, 45f/255f, 1f)).performAction(world, e);
+                        new Color(249f/ 255f, 188f/255f, 4f/255f, 1f)).performAction(world, e);
             }
 
             @Override

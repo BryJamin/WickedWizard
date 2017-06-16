@@ -123,6 +123,26 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
+    public ComponentBag spawnfixedTriSentry(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.fixedMultiSentry(x,y);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
+    public ComponentBag spawnMovingTriSentry(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.movingHorizontalMultiSentry(x,y);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
     public ComponentBag spawnkugelDusche(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
