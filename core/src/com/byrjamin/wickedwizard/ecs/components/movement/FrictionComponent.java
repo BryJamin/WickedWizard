@@ -10,6 +10,7 @@ public class FrictionComponent extends Component{
 
     public boolean verticalFriction = false;
     public boolean horizontalFriction = true;
+    public boolean airFriction = true;
 
     public FrictionComponent(){
     }

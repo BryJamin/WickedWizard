@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
@@ -23,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbital;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -35,8 +37,8 @@ import java.util.Random;
 
 public class KugelDuscheFactory extends EnemyFactory {
 
-    private final float width = Measure.units(9);
-    private final float height = Measure.units(9f);
+    private final float width = Measure.units(10f);
+    private final float height = Measure.units(10f);
 
     private final float health = 11f;
 
@@ -70,7 +72,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 25);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 25);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
@@ -120,6 +122,56 @@ public class KugelDuscheFactory extends EnemyFactory {
 
 
     }
+
+
+
+    //TODO since this changes this should be a different animation
+    public ComponentBag laserKugel(float x, float y, boolean isLeft){
+
+
+        final boolean left = isLeft;
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 25);
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
+
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.KUGELDUSCHE_LASER),
+                (left) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
+
+
+        bag.add(new AnimationComponent(animMap));
+
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.KUGELDUSCHE_LASER),
+                width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+
+        trc.color = new Color(Color.BLACK);
+        trc.DEFAULT = new Color(Color.BLACK);
+
+        bag.add(trc);
+
+       // bag.add(new ActionAfterTimeComponent(new LaserOrbital(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}), 0));
+        // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
+
+
+        PhaseComponent pc = new PhaseComponent();
+        pc.addPhase(8f, new LaserOrbital(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}));
+        pc.addPhase(8f, new LaserOrbital(assetManager, Measure.units(5f), isLeft ? -1.25f : 1.25f, 10,1f, new int[]{0,180}));
+        pc.addPhaseSequence(1,0);
+
+        bag.add(pc);
+
+
+        return bag;
+
+
+    }
+
 
 
     public Weapon kugelWeapon(){

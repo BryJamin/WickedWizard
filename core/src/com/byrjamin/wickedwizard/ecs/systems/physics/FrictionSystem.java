@@ -34,7 +34,7 @@ public class FrictionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public FrictionSystem() {
-        super(Aspect.all(FrictionComponent.class));
+        super(Aspect.all(FrictionComponent.class, VelocityComponent.class));
     }
 
     @Override
@@ -84,7 +84,7 @@ public class FrictionSystem extends EntityProcessingSystem {
             }
         }
 
-        if(pickUpm.has(e) && cbm.has(e) && gravm.has(e)){
+        if(pickUpm.has(e) && cbm.has(e) && gravm.has(e) || !fm.get(e).airFriction){
             return cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false);
         }
 

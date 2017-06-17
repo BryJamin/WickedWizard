@@ -131,7 +131,7 @@ public class CameraSystem extends EntitySystem {
             if (cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
                     || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
 
-                System.out.println("INSIDE OTHER IF");
+               // System.out.println("INSIDE OTHER IF");
 
                 int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
                 targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
@@ -144,7 +144,7 @@ public class CameraSystem extends EntitySystem {
 
         if(cameraMode == CameraMode.CENTER_FOLLOW){
 
-            System.out.println("SHOULD BE CENTER FOLLOW");
+           // System.out.println("SHOULD BE CENTER FOLLOW");
 
             targetY = cbc.getCenterY();
         }
@@ -160,10 +160,10 @@ public class CameraSystem extends EntitySystem {
                         -cameradefaultMaxVelocity : cameraVelocity.y - acceleration;
 
                 boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
-
+/*
                 System.out.println("Upper on target " + onTarget);
                 System.out.println(cameraVelocity.y);
-                System.out.println(targetY);
+                System.out.println(targetY);*/
 
                 gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
 
@@ -181,7 +181,7 @@ public class CameraSystem extends EntitySystem {
                 boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta > targetY);
                 gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
 
-                System.out.println("Lower on target " + onTarget);
+               // System.out.println("Lower on target " + onTarget);
 
                 if(onTarget) transitioning = false;
             }
@@ -190,12 +190,11 @@ public class CameraSystem extends EntitySystem {
 /*        System.out.println("Transitioning is currenty " + transitioning);
         System.out.println("Target Y is " + targetY);*/
 
-        System.out.println(transitioning);
+        //System.out.println(transitioning);
 
         if(cameraMode == CameraMode.CENTER_FOLLOW && !transitioning) {
             gamecam.position.y = cbc.getCenterY();
 
-            System.out.println("whhhyyy");
         }
 
 
@@ -203,7 +202,7 @@ public class CameraSystem extends EntitySystem {
         if(gamecam.position.y <= Measure.units(30f)) {
             gamecam.position.y = Measure.units(30f);
         } else if (gamecam.position.y + MainGame.GAME_BORDER >= currentArena.getHeight() - MainGame.GAME_HEIGHT -MainGame.GAME_UNITS+ Measure.units(30f)) {
-            System.out.println("INSIDE IF");
+            //System.out.println("INSIDE IF");
             if(!transitioning) {
                 gamecam.position.y = currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f) -MainGame.GAME_UNITS;
                 cameraMode = CameraMode.FIXED;

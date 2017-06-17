@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -57,9 +58,14 @@ public class BlobFactory extends EnemyFactory {
     private final float textureOffsetX = -Measure.units(1f);
     private final float textureOffsetY = 0;
 
+    private float speed = Measure.units(15f);
+
     private ItemFactory itemf;
     private WeaponFactory wf;
     private DeathFactory df;
+
+    private Color defaultBlobColor = new Color(75f / 255f, 232f / 255f, 14f / 255f, 1f);
+    private Color fastBlobColor = new Color(241f / 255f,53f / 255f,53f / 255f, 1f);
 
     public BlobFactory(AssetManager assetManager) {
         super(assetManager);
@@ -68,53 +74,60 @@ public class BlobFactory extends EnemyFactory {
         this.wf = new WeaponFactory(assetManager);
     }
 
-    public Bag<Component> blobBag(float x, float y){
 
+    public ComponentBag blob(float x , float y, float scale, float speed, float health, Color color){
+
+        float width = this.width * scale;
+        float height = this.height * scale;
 
         x = x - width / 2;
         y = y - height / 2;
 
-        Bag<Component> bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 10);
-        bag.add(new VelocityComponent(Measure.units(15), 0));
+
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
+
+        bag.add(new VelocityComponent(speed, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
-        //bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(15), 0));
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
 
-
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
-                textureOffsetX, textureOffsetY, textureWidth, textureHeight,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+                textureOffsetX * scale, textureOffsetY * scale, textureWidth * scale, textureHeight * scale,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE, color));
 
-        OnCollisionActionComponent onCollisionActionComponent = blobOCAC(Measure.units(15));
-
+        OnCollisionActionComponent onCollisionActionComponent = blobOCAC(speed);
         bag.add(onCollisionActionComponent);
 
+        return bag;
 
 
 
-        bag.add(new ProximityTriggerAIComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(new MoveToPlayerComponent());
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(new MoveToPlayerComponent());
-            }
-        },
-                new HitBox(new Rectangle(x,y,Measure.units(40f), Measure.units(10f)), width, 0),
-                new HitBox(new Rectangle(x,y,Measure.units(40f), Measure.units(10f)), -Measure.units(40f), 0)));
+    }
 
 
+
+    public ComponentBag blobBag(float x, float y){
+        return blob(x,y,1,Measure.units(15f), 10, defaultBlobColor);
+    }
+
+    public ComponentBag angryBlobBag(float x, float y){
+        return blob(x,y,1,Measure.units(30f), 15, fastBlobColor);
+    }
+
+    public Bag<Component> smallblobBag(float x, float y){
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, defaultBlobColor);
+        bag.add(new ExploderComponent());
         return bag;
     }
+
+    public ComponentBag angrySmallBag(float x, float y){
+        return blob(x,y,1,Measure.units(45f), 3, fastBlobColor);
+    }
+
 
     private OnCollisionActionComponent blobOCAC(final float speed){
         OnCollisionActionComponent onCollisionActionComponent = new OnCollisionActionComponent();
@@ -161,57 +174,6 @@ public class BlobFactory extends EnemyFactory {
         return bag;
     }
 
-    public Bag<Component> shopKeeperBlob(float x, float y){
-
-
-        x = x - width / 2;
-        y = y - height / 2;
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new VelocityComponent(0, 0));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-        bag.add(new GravityComponent());
-        bag.add(new AnimationStateComponent(0));
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
-        bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOB_STANDING),
-                textureOffsetX, textureOffsetY, textureWidth, textureHeight,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-        return bag;
-    }
-
-    public Bag<Component> smallblobBag(float x, float y){
-
-        float scale = 0.5f;
-
-        x = x - width* scale / 2;
-        y = y - height * scale / 2;
-
-        Bag<Component> bag = this.defaultEnemyBag(new ComponentBag(), x , y, width * scale, height * scale, 2);
-        bag.add(new VelocityComponent(0, 0));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width * scale, height * scale), true));
-        bag.add(new GravityComponent());
-        bag.add(new AccelerantComponent(Measure.units(2.5f), 0, Measure.units(30), 0));
-        bag.add(new MoveToPlayerComponent());
-        bag.add(new ExploderComponent());
-
-        bag.add(new AnimationStateComponent(0));
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.BLOB_STANDING), Animation.PlayMode.LOOP));
-        bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(this.atlas.findRegion(TextureStrings.BLOB_STANDING),
-                textureOffsetX * scale,
-                textureOffsetY * scale,
-                textureWidth * scale,
-                textureHeight * scale,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-
-
-
-        return bag;
-    }
 
 
     public Bag<Component> BiggaBlobbaBag(float x, float y){

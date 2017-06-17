@@ -90,7 +90,7 @@ public class JigsawGenerator {
         this.arenaSkin = arenaSkin;
         this.itemPool = itemPool;
         this.rand = rand;
-        this.currentLevel = ChangeLevelSystem.Level.SOLITARY;
+        this.currentLevel = ChangeLevelSystem.Level.ONE;
     }
 
     public void setSkin(ArenaSkin arenaSkin) {
@@ -375,7 +375,7 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-        startingArena = level3Rooms.room1MultiShot().createArena(new MapCoords());
+        startingArena = level3Rooms.room18LeftToRightLaserGauntlet().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 
@@ -420,9 +420,9 @@ public class JigsawGenerator {
         Array<ArenaGen> arenaGens;
 
         switch(currentLevel){
-            case SOLITARY: arenaGens = level1Rooms.getLevel1RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
+            case ONE: arenaGens = level1Rooms.getLevel1RoomArray(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
-            case PRISON: arenaGens = level2Rooms.getLevel2RoomArray();
+            case THREE: arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
             default: arenaGens = level1Rooms.getLevel1RoomArray();
                 break;

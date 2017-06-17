@@ -73,7 +73,7 @@ public class BossGurner extends EnemyFactory{
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 90);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 90);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
@@ -144,11 +144,8 @@ public class BossGurner extends EnemyFactory{
         @Override
         public void performAction(World world, Entity e) {
 
-
             PositionComponent current = e.getComponent(PositionComponent.class);
-
             ParentComponent pc = new ParentComponent();
-
 
             float bulletSize = Measure.units(7.5f);
             float angleSpeed = isLeft ? 0.5f : -0.5f;

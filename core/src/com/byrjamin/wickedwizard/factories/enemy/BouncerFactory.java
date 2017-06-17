@@ -87,7 +87,7 @@ public class BouncerFactory extends EnemyFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
-        this.defaultEnemyBag(bag, x, y, width, height, 3);
+        this.defaultEnemyBag(bag, x, y, 3);
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

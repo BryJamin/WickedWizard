@@ -44,7 +44,7 @@ public class JigFactory extends EnemyFactory{
         y = y - height / 2;
 
         ComponentBag bag = new ComponentBag();
-        this.defaultEnemyBag(bag, x,y,width,height,15);
+        this.defaultEnemyBag(bag, x,y,15);
 
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));

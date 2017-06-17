@@ -214,41 +214,6 @@ black_block
   orig: 64, 64
   offset: 0, 0
   index: 0
-blob
-  rotate: false
-  xy: 265, 695
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-blob
-  rotate: false
-  xy: 331, 761
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-blob
-  rotate: false
-  xy: 331, 761
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-blob
-  rotate: false
-  xy: 397, 827
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-blob
-  rotate: false
-  xy: 463, 893
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
 block
   rotate: false
   xy: 529, 959
@@ -760,6 +725,41 @@ enemy/air_mine
   orig: 64, 64
   offset: 0, 0
   index: 1
+enemy/blob
+  rotate: false
+  xy: 265, 695
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/blob
+  rotate: false
+  xy: 331, 761
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/blob
+  rotate: false
+  xy: 331, 761
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/blob
+  rotate: false
+  xy: 397, 827
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/blob
+  rotate: false
+  xy: 463, 893
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
 enemy/flyby
   rotate: false
   xy: 199, 299

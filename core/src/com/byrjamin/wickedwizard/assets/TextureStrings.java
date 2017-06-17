@@ -28,9 +28,10 @@ public class TextureStrings {
     //ENEMIES
     public static final String BOMB = "bomb";
     public static final String AIR_MINE = "enemy/air_mine";
+    public static final String MINE = "decor/mine";
 
     //BLOB
-    public static final String BLOB_STANDING = "blob";
+    public static final String BLOB_STANDING = "enemy/blob";
 
 
     //AMOEBA

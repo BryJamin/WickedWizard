@@ -62,7 +62,7 @@ public class SilverHeadFactory extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y,health);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());

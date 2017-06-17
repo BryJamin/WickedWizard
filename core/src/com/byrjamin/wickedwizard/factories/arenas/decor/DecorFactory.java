@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
@@ -40,6 +41,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbital;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -146,9 +148,30 @@ public class DecorFactory extends AbstractFactory {
 
     }
 
+    public ComponentBag outOfCombatPlatform(float x, float y, float width){
+        ComponentBag bag = platform(x,y,width);
 
-    public Bag<Component> platform(float x, float y, float width){
-        Bag<Component> bag = new Bag<Component>();
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().remove(PlatformComponent.class);
+                e.edit().add(new FadeComponent(false, 1.0f, false));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().add(new PlatformComponent());
+                e.edit().add(new FadeComponent(true, 1.0f, false));
+            }
+        }));
+
+        return bag;
+
+    }
+
+
+    public ComponentBag platform(float x, float y, float width){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y + Measure.units(2.5f),width,Measure.units(5f))));
         bag.add(new PlatformComponent());
@@ -473,6 +496,24 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
+    public ComponentBag laserWall(float x, float y, float width, float height){
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
+
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
+                atlas.findRegions("block"),
+                PLAYER_LAYER_NEAR);
+        trbc.color = new Color(Color.RED);
+        bag.add(trbc);
+
+        bag.add(new HazardComponent());
+
+        return bag;
+    }
+
+
+
 
 
 
@@ -496,26 +537,29 @@ public class DecorFactory extends AbstractFactory {
 
     public ConditionalActionComponent lockBlockConditionalActionComponent(){
 
-
         return new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
 
                 VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent wallCbc = entity.getComponent(CollisionBoundComponent.class);
                 CurrencyComponent cc = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
 
-                Rectangle futureRectangle = new Rectangle(cbc.bound);
+                Rectangle futureRectangle = new Rectangle(playerCbc.bound);
                 futureRectangle.x += (vc.velocity.x * world.delta);
                 futureRectangle.y += (vc.velocity.y * world.delta);
 
 
-                Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, entity.getComponent(CollisionBoundComponent.class).bound);
+                Collider.Collision c = Collider.collision(playerCbc.bound, futureRectangle, entity.getComponent(CollisionBoundComponent.class).bound);
                 //cbc.getRecentCollisions().add(c);
                 //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
-                //TODO this is so you can unlock lock boxes from the bottom
-                boolean nextToBottom = cbc.bound.y + cbc.bound.getHeight() == entity.getComponent(CollisionBoundComponent.class).bound.y;
+                //TODO this is so you can unlock lock boxes from the bottom (Although this may need to be improved
+                boolean nextToBottom = playerCbc.bound.y + playerCbc.bound.getHeight() == wallCbc.bound.y &&
+                        playerCbc.bound.getX() > wallCbc.bound.x &&
+                        playerCbc.bound.getX() + playerCbc.bound.getWidth() < wallCbc.bound.x + wallCbc.bound.getWidth();
+
 
 
                 boolean canUnlock = (c != Collider.Collision.NONE || nextToBottom) && cc.keys >= 0;
@@ -537,6 +581,32 @@ public class DecorFactory extends AbstractFactory {
         });
 
     }
+
+
+
+
+
+
+    public ComponentBag laserChain(float x, float y){
+
+        float width = Measure.units(5f);
+        float height = Measure.units(5f);
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(Color.BLACK)));
+        bag.add(new ActionAfterTimeComponent(new LaserOrbital(assetManager, Measure.units(5f), 1f, 10, 0, new int[]{0,180}), 0));
+
+        return bag;
+
+
+    }
+
+
+
+
 
 
 }

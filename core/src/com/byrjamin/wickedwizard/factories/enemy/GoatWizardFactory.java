@@ -67,7 +67,7 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
         ComponentBag bag = new ComponentBag();
-        bag = defaultEnemyBag(bag, x, y, width, height, 15);
+        bag = defaultEnemyBag(bag, x, y, 15);
 
         bag.add(new VelocityComponent(Measure.units(10f), Measure.units(5f)));
         bag.add(new BounceComponent());

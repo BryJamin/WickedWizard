@@ -1,24 +1,14 @@
 package com.byrjamin.wickedwizard;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.AssetLoader;
-import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.utils.MapCoords;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Random;
@@ -60,7 +50,7 @@ public class JigsawGeneratorTest extends GameTest {
 
             JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms,lis.getItemPool(), random);
             jg.generateTutorial = false;
-            jg.setCurrentLevel(ChangeLevelSystem.Level.SOLITARY);
+            jg.setCurrentLevel(ChangeLevelSystem.Level.ONE);
             jg.generate();
 
 
@@ -138,7 +128,7 @@ public class JigsawGeneratorTest extends GameTest {
 
             JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms,lis.getItemPool(), random);
             jg.generateTutorial = false;
-            jg.setCurrentLevel(ChangeLevelSystem.Level.PRISON);
+            jg.setCurrentLevel(ChangeLevelSystem.Level.THREE);
             jg.generate();
 
 

@@ -36,11 +36,15 @@ public class ActionAfterTimeComponent extends Component {
     }
 
     public ActionAfterTimeComponent(Task task, float timeUntilAction){
+        this(task, timeUntilAction, false);
+    }
+
+    public ActionAfterTimeComponent(Task task, float timeUntilAction, boolean repeat){
         this.task = task;
         this.timeUntilAction = timeUntilAction;
         this.resetTime = timeUntilAction;
+        this.repeat = repeat;
     }
-
 
 
 }
