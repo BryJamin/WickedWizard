@@ -275,7 +275,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         arena.addEntity(createTutorialHighlight(0, HEIGHT - WALLWIDTH / 2, WIDTH, WALLWIDTH / 2));
 
         bag = new BlobFactory(assetManager).blobBag(arena.getWidth() - Measure.units(12), WALLWIDTH * 4);
-        BagSearch.getObjectOfTypeClass(AccelerantComponent.class, bag).maxX = Measure.units(0);
+        //BagSearch.getObjectOfTypeClass(AccelerantComponent.class, bag).maxX = Measure.units(0);
         arena.addEntity(bag);
 
 

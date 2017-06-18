@@ -33,10 +33,10 @@ public class GravitySystem extends EntityProcessingSystem {
         if(!gc.ignoreGravity) {
             if(glm.has(e)) {
                 if (glm.get(e).gliding && glm.get(e).active && vc.velocity.y <= 0) {
-                    vc.velocity.add(0, gc.gravity);
-                    if (vc.velocity.y < gc.gravity * 4f) {
+                    vc.velocity.add(0, gc.gravity / 4);
+/*                    if (vc.velocity.y < gc.gravity * 4f) {
                         vc.velocity.y = gc.gravity * 4f;
-                    }
+                    }*/
                 } else {
                     vc.velocity.add(0, gc.gravity);
                     vc.velocity.y = vc.velocity.y > MAXGRAVITY ? vc.velocity.y : MAXGRAVITY;
