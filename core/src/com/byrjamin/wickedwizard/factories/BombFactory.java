@@ -24,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -100,6 +101,8 @@ public class BombFactory extends  AbstractFactory{
 
         //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
+
+        bag.add(new FadeComponent(true, 0.5f, false));
 
         bag.add(new BounceComponent());
         bag.add(new VelocityComponent(startsLeft ? Measure.units(5f) : - Measure.units(5f), startsUp ? Measure.units(5f) : Measure.units(5f)));

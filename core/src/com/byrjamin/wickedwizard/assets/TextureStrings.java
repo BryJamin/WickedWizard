@@ -23,7 +23,7 @@ public class TextureStrings {
     public static final String SPIKEWALL = "decor/spike_wall";
 
 
-    public static final String WALLTURRET = "wall_turret";
+    public static final String WALLTURRET = "decor/turret";
 
     //ENEMIES
     public static final String BOMB = "bomb";

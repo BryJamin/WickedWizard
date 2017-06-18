@@ -158,6 +158,22 @@ public class TurretFactory extends EnemyFactory {
         return bag;
     }
 
+    public Bag<Component> movingVerticalMultiSentry(float x, float y, boolean startsUp){
+
+        ComponentBag bag = fixedMultiSentry(x,y);
+
+
+        if(startsUp) {
+            bag.add(new VelocityComponent(0, 300));
+        } else {
+            bag.add(new VelocityComponent(0, -300));
+        }
+
+        bag.add(new BounceComponent());
+
+        return bag;
+    }
+
 
     public ComponentBag fixedFlyByBombSentry(float x, float y){
         x = x - width / 2;

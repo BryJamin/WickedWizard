@@ -43,6 +43,7 @@ import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbital;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -68,13 +69,13 @@ public class DecorFactory extends AbstractFactory {
     }
 
 
-    public Bag<Component> wallBag(float x, float y, float width, float height){
+    public ComponentBag wallBag(float x, float y, float width, float height){
         return wallBag(x,y,width,height,arenaSkin);
     }
 
 
-    public Bag<Component> wallBag(float x, float y, float width, float height, ArenaSkin arenaSkin){
-        Bag<Component> bag = new Bag<Component>();
+    public ComponentBag wallBag(float x, float y, float width, float height, ArenaSkin arenaSkin){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
@@ -87,8 +88,8 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-    public Bag<Component> wallBag(float x, float y, float width, float height, Color color){
-        Bag<Component> bag = new Bag<Component>();
+    public ComponentBag wallBag(float x, float y, float width, float height, Color color){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
@@ -146,6 +147,28 @@ public class DecorFactory extends AbstractFactory {
         return bag;
 
 
+    }
+
+    public ComponentBag appearInCombatWall(final float x, final float y, final float width, final float height){
+        ComponentBag bag = wallBag(x,y,width,height);
+        BagSearch.removeObjectOfTypeClass(WallComponent.class, bag);
+        BagSearch.getObjectOfTypeClass(TextureRegionBatchComponent.class, bag).color.a = 0;
+
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new WallComponent(new Rectangle(x,y,width,height)));
+                e.edit().add(new FadeComponent(true, 1.0f, false));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(new WallComponent());
+                e.edit().add(new FadeComponent(false, 1.0f, false));
+            }
+        }));
+
+        return bag;
     }
 
     public ComponentBag outOfCombatPlatform(float x, float y, float width){
@@ -338,7 +361,8 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WALLTURRET), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
-        trc.rotation = angleInDegrees + 90;
+
+        trc.rotation = angleInDegrees;
         trc.DEFAULT = arenaSkin.getWallTint();
         trc.color = arenaSkin.getWallTint();
 
@@ -363,7 +387,8 @@ public class DecorFactory extends AbstractFactory {
 
         WeaponComponent wc = new WeaponComponent(new Pistol(assetManager, fireRate), fireDelay);
         bag.add(wc);
-        bag.add(new FiringAIComponent(angleInDegrees));
+        //In order to match firing angle with direction of texture add 90 degrees
+        bag.add(new FiringAIComponent(angleInDegrees + 90));
 
         return bag;
     }

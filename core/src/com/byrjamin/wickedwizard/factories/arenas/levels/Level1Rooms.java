@@ -112,7 +112,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
         ag.add(room21Width2TopBottomSeperation());
         ag.add(room22FourBlock3BouncersWidth2TopBottomSeperation());
         ag.add(room23CenterSmallspawner());
-        ag.add(room24HangingTreasure());
+        ag.add(room24TwoTreasureAndFixedTurret());
         ag.add(room25BlobUpTop());
         ag.add(room26ThreeExitsOneTurretNoLock());
         ag.add(room27LargeBouncerGrappleRoom());
@@ -283,7 +283,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                boolean mirror = false; //random.nextBoolean();
+                boolean mirror = random.nextBoolean();
 
                 Arena a = arenaShellFactory.createWidth2DeadEndArena(defaultCoords, mirror);
 
@@ -293,7 +293,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                 float blockerPosX = mirror ? a.getWidth() - Measure.units(80f) : Measure.units(80f);
                 float lowertTurretWallPosX = mirror ? a.getWidth() - Measure.units(160f) : Measure.units(150f);
 
-                float angle =  mirror ? 0 : 180;
+                float angle =  mirror ? -90 : 90;
 
                 a.addEntity(chestFactory.centeredChestBag(chestPosX, Measure.units(15f)));
 
@@ -524,15 +524,15 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(45f), Measure.units(30f),
                         Measure.units(45f), Measure.units(15f), arenaSkin));
 
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(25), Measure.units(25f),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(30), Measure.units(25f),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(35), Measure.units(25f),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(40), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(25), Measure.units(25f),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(30), Measure.units(25f),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(35), Measure.units(25f),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(40), Measure.units(25f),  180, 3.0f, 1.5f));
 
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(55), Measure.units(25f),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(60), Measure.units(25f),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(65), Measure.units(25f),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(70), Measure.units(25f),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(55), Measure.units(25f), 180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(60), Measure.units(25f),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(65), Measure.units(25f),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(70), Measure.units(25f),  180, 3.0f, 1.5f));
 
 
                 arena.addEntity(chestFactory.centeredChestBag(arena.getWidth() - Measure.units(30f),
@@ -679,10 +679,10 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(22.5f), Measure.units(10f), Measure.units(5f), arenaSkin));
-                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(45f), Measure.units(22.5f),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(45f), Measure.units(22.5f),  90, 3.0f, 1.5f));
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(50f), Measure.units(35f), Measure.units(10f), Measure.units(5f), arenaSkin));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(40f), Measure.units(35f),  0, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(40f), Measure.units(35f),  -90, 3.0f, 1.5f));
 
                 arena.addEntity(decorFactory.platform(Measure.units(40f), Measure.units(45f),Measure.units(20f)));
 
@@ -892,7 +892,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
 
 
-    public ArenaGen room24HangingTreasure() {
+    public ArenaGen room24TwoTreasureAndFixedTurret() {
 
         return new ArenaGen() {
             @Override

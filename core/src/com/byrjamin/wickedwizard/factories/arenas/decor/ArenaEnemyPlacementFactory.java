@@ -117,6 +117,17 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
+    public ComponentBag spawnSmallAngryBlob(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return blobFactory.angrySmallBag(x,y);
+            }
+        });
+        //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
 
     public ComponentBag spawnFixedSentry(float x, float y) {
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
@@ -153,6 +164,16 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return turretFactory.movingHorizontalMultiSentry(x,y);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
+    public ComponentBag spawnMovingVerticalTriSentry(float x, float y, final boolean startsUp){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.movingVerticalMultiSentry(x,y, startsUp);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);

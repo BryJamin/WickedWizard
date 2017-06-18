@@ -38,6 +38,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -120,12 +121,16 @@ public class BlobFactory extends EnemyFactory {
 
     public Bag<Component> smallblobBag(float x, float y){
         ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, defaultBlobColor);
+        BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new ExploderComponent());
         return bag;
     }
 
     public ComponentBag angrySmallBag(float x, float y){
-        return blob(x,y,1,Measure.units(45f), 3, fastBlobColor);
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(45f), 3, fastBlobColor);
+        BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
+        bag.add(new ExploderComponent());
+        return bag;
     }
 
 

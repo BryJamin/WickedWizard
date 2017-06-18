@@ -200,24 +200,13 @@ public class Level2Rooms extends AbstractFactory{
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(12.5f), (arena.getHeight() / 2) + Measure.units(7.5f)));
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(12.5f), (arena.getHeight() / 2) + Measure.units(7.5f)));
 
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(5), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(10), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(15), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
 
-/*
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15f), Measure.units(17.5f)));
-
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15f), Measure.units(27.5f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(20f), Measure.units(17.5f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(20f), Measure.units(32.5f)));
-*/
-
-
-
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(5), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(10), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(15), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
-
-                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(10), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(15), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(20), arena.getHeight() - Measure.units(10),  -90, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(10), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(15), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(20), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
 
                 return arena;
             }
@@ -611,9 +600,9 @@ public class Level2Rooms extends AbstractFactory{
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, arena.getHeight() / 2));
 
 
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(20f), arena.getHeight() - Measure.units(10f), 270, 1.5f, 0));
+                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(20f), arena.getHeight() - Measure.units(10f), 180, 1.5f, 0));
                 //arena.addEntity(decorFactory.fixedWallTurret(Measure.units(25f), arena.getHeight() - Measure.units(10f), 270, 1.5f, 0));
-                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(25f), arena.getHeight() - Measure.units(10f), 270, 1.5f, 0));
+                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(25f), arena.getHeight() - Measure.units(10f), 180, 1.5f, 0));
                 //arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(30), arena.getHeight() - Measure.units(10f), 270, 1.5f, 0));
 
                 return arena;
@@ -768,8 +757,8 @@ public class Level2Rooms extends AbstractFactory{
                         .buildArena(arena);
 
                 for(int i = 0; i < 5; i++){
-                    arena.addEntity(decorFactory.fixedWallTurret(Measure.units(5), Measure.units(30f + (i * 5f)), 0, 4f, 0));
-                    arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(10), Measure.units(30f + (i * 5f)), 180, 4f, 2));
+                    arena.addEntity(decorFactory.fixedWallTurret(Measure.units(5), Measure.units(30f + (i * 5f)), -90, 4f, 0));
+                    arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(10), Measure.units(30f + (i * 5f)), 90, 4f, 2));
                 }
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(10f), Measure.units(5f), Measure.units(20f)));
@@ -930,11 +919,11 @@ public class Level2Rooms extends AbstractFactory{
 
 
                 for(int i = 0; i < 6; i++){
-                    arena.addEntity(decorFactory.fixedWallTurret(Measure.units(80f + (i * 10f)), Measure.units(10f), 90, 1.5f, 0));
+                    arena.addEntity(decorFactory.fixedWallTurret(Measure.units(80f + (i * 10f)), Measure.units(10f), 0, 1.5f, 0));
                 }
 
                 for(int i = 0; i < 6; i++){
-                    arena.addEntity(decorFactory.fixedWallTurret(Measure.units(165f + (i * 10f)), Measure.units(10f), 90, 1.5f, 0));
+                    arena.addEntity(decorFactory.fixedWallTurret(Measure.units(165f + (i * 10f)), Measure.units(10f), 0, 1.5f, 0));
                 }
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(Measure.units(15f), Measure.units(45f)));
