@@ -59,7 +59,7 @@ public class Level3Rooms extends AbstractFactory {
         ag.add(room8Width3CenterTreaureTrapTriAndFlyBy());
         ag.add(room9Width3LaserCenterThing());
         ag.add(room10AmoebaSpawns());
-        ag.add(room11Height2TripMine());
+        ag.add(room11Height3TripMine());
         ag.add(room12FloatyMinesAndBombs());
         ag.add(room13FlyByMinesAndBouncers());
         ag.add(room14TrapRoomTriAndOneBouncers());
@@ -374,7 +374,7 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room11Height2TripMine() {
+    public ArenaGen room11Height3TripMine() {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -1087,7 +1087,7 @@ public class Level3Rooms extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
 
                 arena.roomType = Arena.RoomType.TRAP;
 

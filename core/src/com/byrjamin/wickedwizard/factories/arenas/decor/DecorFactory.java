@@ -73,6 +73,13 @@ public class DecorFactory extends AbstractFactory {
         return wallBag(x,y,width,height,arenaSkin);
     }
 
+    public ArenaSkin getArenaSkin() {
+        return arenaSkin;
+    }
+
+    public void setArenaSkin(ArenaSkin arenaSkin) {
+        this.arenaSkin = arenaSkin;
+    }
 
     public ComponentBag wallBag(float x, float y, float width, float height, ArenaSkin arenaSkin){
         ComponentBag bag = new ComponentBag();
@@ -83,6 +90,7 @@ public class DecorFactory extends AbstractFactory {
                 arenaSkin.getWallTexture(),
                 PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
+        trbc.DEFAULT = arenaSkin.getWallTint();
         bag.add(trbc);
 
         return bag;
