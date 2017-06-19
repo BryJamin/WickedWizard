@@ -5,13 +5,10 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
@@ -44,8 +41,8 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
 
 
-        if((cbc.getRecentCollisions().contains(Collider.Collision.TOP, true ) ||
-                cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true)) &&
+        if((cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true ) ||
+                cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)) &&
                 !( cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) ||
                         cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true))){
             vc.velocity.y = 0;

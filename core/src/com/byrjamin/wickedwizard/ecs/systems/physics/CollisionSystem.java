@@ -94,8 +94,8 @@ public class CollisionSystem extends EntityProcessingSystem {
             if(c != Collider.Collision.NONE){
 
                 switch(c){
-                    case TOP: //vc.velocity.y = 0;
                     case BOTTOM: //vc.velocity.y = 0;
+                    case TOP: //vc.velocity.y = 0;
                         break;
                     //TODO When grappling if you collide with something the target destination should be removed
                     case LEFT:

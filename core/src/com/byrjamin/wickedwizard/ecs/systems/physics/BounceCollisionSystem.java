@@ -3,20 +3,13 @@ package com.byrjamin.wickedwizard.ecs.systems.physics;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
-import com.artemis.utils.IntBag;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
@@ -55,10 +48,10 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
 
             if(c != Collider.Collision.NONE) {
                 switch (c) {
-                    case TOP:
+                    case BOTTOM:
                         vc.velocity.y = Math.abs(vc.velocity.y);
                         break;
-                    case BOTTOM:
+                    case TOP:
                         vc.velocity.y = -Math.abs(vc.velocity.y);
                         break;
                     case LEFT:

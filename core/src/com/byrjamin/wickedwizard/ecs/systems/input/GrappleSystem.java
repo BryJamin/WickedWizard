@@ -43,10 +43,10 @@ public class GrappleSystem extends EntityProcessingSystem {
         MoveToComponent mtc = mtm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
-        if(vc.velocity.y < 0 && cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)){
+        if(vc.velocity.y < 0 && cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true)){
             mtc.targetX = null;
             mtc.targetY = null;
-        } else if(vc.velocity.y > 0 && cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true)) {
+        } else if(vc.velocity.y > 0 && cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)) {
             mtc.targetX = null;
             mtc.targetY = null;
         }

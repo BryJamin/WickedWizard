@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.Bag;
 import com.artemis.utils.IntBag;
@@ -171,7 +170,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
             }
         }
 
-        if (cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)) {
+        if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false)) {
             turnOffGlide();
         }
     }
