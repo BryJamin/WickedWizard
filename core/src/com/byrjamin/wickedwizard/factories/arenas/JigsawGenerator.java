@@ -375,7 +375,7 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-        startingArena = level3Rooms.room30LargeRoomWithTreasureInTheCenter().createArena(new MapCoords());
+        //startingArena = level3Rooms.room30LargeRoomWithTreasureInTheCenter().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 
@@ -422,7 +422,9 @@ public class JigsawGenerator {
         switch(currentLevel){
             case ONE: arenaGens = level1Rooms.getLevel1RoomArray(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
-            case THREE: arenaGens = level2Rooms.getLevel2RoomArray();
+            case TWO: arenaGens = level2Rooms.getLevel2RoomArray();
+                break;
+            case THREE: arenaGens = level3Rooms.getLevel3RoomArray();
                 break;
             default: arenaGens = level1Rooms.getLevel1RoomArray();
                 break;

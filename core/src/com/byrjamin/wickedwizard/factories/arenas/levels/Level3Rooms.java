@@ -75,6 +75,10 @@ public class Level3Rooms extends AbstractFactory {
         ag.add(room24MultiWaveRoomWithMines());
         ag.add(room25Width3WithArenaInTheCenter());
         ag.add(room26Height3GrapplesAndMines());
+        ag.add(room27DBlobs());
+        ag.add(room28SilverHeadAndAmoebas());
+        ag.add(room29JigAndTurrets());
+        ag.add(room30LargeRoomWithTreasureInTheCenter());
         return ag;
     }
 
@@ -1142,17 +1146,49 @@ public class Level3Rooms extends AbstractFactory {
                 //LeftSide
                 arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(0), Measure.units(35f), Measure.units(10f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(35), Measure.units(10f), Measure.units(5f), Measure.units(40f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(35f), Measure.units(5f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(50f)));
 
                 //arena.addEntity(decorFactory.grapplePointBag(Measure.units()));
 
 
                 //RightSide
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(0), Measure.units(35f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(10f), Measure.units(5f), Measure.units(40f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(75f), Measure.units(45f), Measure.units(35f), Measure.units(5f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(20f), Measure.units(50f)));
 
 
+
+                boolean leftHasMines = random.nextBoolean();
+
+                BombFactory bf = new BombFactory(assetManager);
 
                 //Center
-                arena.addEntity(decorFactory.wallBag(Measure.units(95f), Measure.units(0f), Measure.units(15f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(50f), Measure.units(0f), Measure.units(20f), Measure.units(10f)));
+                if(leftHasMines) {
+                    arena.addEntity(bf.mine(Measure.units(50f), Measure.units(10f), 0));
+                    arena.addEntity(bf.mine(Measure.units(65f), Measure.units(10f), 0));
+                }
+                arena.addEntity(chestFactory.chestBag(Measure.units(55f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(70f), Measure.units(0f), Measure.units(20f), Measure.units(10f)));
+                if(!leftHasMines) {
+                    arena.addEntity(bf.mine(arena.getWidth() - Measure.units(70f), Measure.units(10f), 0));
+                    arena.addEntity(bf.mine(arena.getWidth() - Measure.units(55f), Measure.units(10f), 0));
+                }
+                arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(65f), Measure.units(10f)));
+
+
+                arena.addEntity(bf.seaMine(Measure.units(55f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.seaMine(arena.getWidth() - Measure.units(55f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
+
+
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(40f)));
+                arena.addEntity(decorFactory.spikeWall(Measure.units(30f), Measure.units(0f),arena.getWidth(), Measure.units(5f), 0));
+
+
+                //TODO add if neccessary
+                //arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(75f)));
 
                 return arena;
             }

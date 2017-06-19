@@ -64,23 +64,21 @@ public class ChangeLevelSystem extends BaseSystem {
 
     public JigsawGenerator incrementLevel(){
 
-        //Current level sequence. ONE -> THREE -> TWO -> FOUR -> FREEDOM
-
         switch (level) {
-            case ONE: level = THREE;
-                jigsawGenerator.setNoBattleRooms(10);
+            case ONE: level = TWO;
+                jigsawGenerator.setNoBattleRooms(8);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 2", "");
                 break;
-            case THREE: level = TWO;
-                jigsawGenerator.setNoBattleRooms(12);
+            case TWO: level = THREE;
+                jigsawGenerator.setNoBattleRooms(10);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 3", "");
                 break;
-            case TWO: level = FOUR;
-                jigsawGenerator.setNoBattleRooms(14);
+            case THREE: level = FOUR;
+                jigsawGenerator.setNoBattleRooms(12);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 4", "");
                 break;
             case FOUR: level = FREEDOMRUN;
-                jigsawGenerator.setNoBattleRooms(16);
+                jigsawGenerator.setNoBattleRooms(14);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 5", "");
                 break;
             case FREEDOMRUN:
