@@ -127,12 +127,8 @@ public class DecorFactory extends AbstractFactory {
 
     public ComponentBag chevronBag(float x, float y, float rotationInDegrees){
 
-        float width = Measure.units(8);
-        float height = Measure.units(8);
-
-        x = x - width;
-        y = y - height;
-
+        float width = Measure.units(10);
+        float height = Measure.units(10);
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
