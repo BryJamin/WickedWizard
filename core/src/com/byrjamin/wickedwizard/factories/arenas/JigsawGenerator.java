@@ -146,6 +146,7 @@ public class JigsawGenerator {
                                                       OrderedSet<DoorComponent> avaliableDoorsSet, int noOfRoomsPlaced){
 
         Array<Arena> placedArenas = new Array<Arena>();
+        placedArenas.addAll(presetRooms);
         ObjectSet<MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(presetRooms);
 
 
