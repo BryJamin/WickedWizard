@@ -146,7 +146,7 @@ public class PlayerFactory extends AbstractFactory {
         return bag;
     }
 
-    public ComponentBag grappleShot(ParentComponent parc,float x, float y, double angle){
+    public ComponentBag grappleShot(ParentComponent parc,float x, float y, final float targetX, final float targetY, double angle){
 
 
         float width = Measure.units(2);
@@ -161,7 +161,7 @@ public class PlayerFactory extends AbstractFactory {
 
 
         //TODO I should switch this to the moveto component which should also use the way the moveToPlayerAI works
-        bag.add(new VelocityComponent(BulletMath.velocityX(Measure.units(150f), angle), BulletMath.velocityY(Measure.units(150f), angle)));
+        bag.add(new VelocityComponent(BulletMath.velocityX(Measure.units(200f), angle), BulletMath.velocityY(Measure.units(200f), angle)));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         //bag.add(new IntangibleComponent());
         //bag.add(new BulletComponent());
@@ -189,7 +189,7 @@ public class PlayerFactory extends AbstractFactory {
                 Rectangle r = world.getSystem(GrapplePointSystem.class).returnTouchedGrapple(entity.getComponent(CollisionBoundComponent.class).getCenterX(),
                 entity.getComponent(CollisionBoundComponent.class).getCenterY());
 
-                if(r != null) {
+                if(r != null && r.contains(targetX, targetY)) {
 
                     CollisionBoundComponent cbc = entity.getComponent(CollisionBoundComponent.class);
                     PositionComponent pc = entity.getComponent(PositionComponent.class);

@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
@@ -50,6 +51,30 @@ public class GrappleSystem extends EntityProcessingSystem {
             mtc.targetX = null;
             mtc.targetY = null;
         }
+
+
+
+/*        if(!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && !gm.has(e)) {
+
+            double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), pBound.getCenterX(), pBound.getCenterY());
+
+            float vy = BulletMath.velocityY(vc.velocity.y, angleOfTravel);
+            float accelY = BulletMath.velocityY(ac.accelY, angleOfTravel);
+            float maxY = BulletMath.velocityY(ac.maxY, angleOfTravel);
+
+            vc.velocity.y = (Math.abs(vy) + Math.abs(accelY) >= Math.abs(maxY)) ? maxY : vc.velocity.y + accelY;
+
+
+            float vx = BulletMath.velocityX(vc.velocity.x, angleOfTravel);
+            float accelX = BulletMath.velocityX(ac.accelX, angleOfTravel);
+            float maxX = BulletMath.velocityX(ac.maxX, angleOfTravel);
+
+            vc.velocity.x = (Math.abs(vx) + Math.abs(accelX) >= Math.abs(maxX)) ? maxX : vc.velocity.x + accelX;
+
+        } else if(cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY())){
+            vc.velocity.x = 0;
+            vc.velocity.y = 0;
+        }*/
 
 
 

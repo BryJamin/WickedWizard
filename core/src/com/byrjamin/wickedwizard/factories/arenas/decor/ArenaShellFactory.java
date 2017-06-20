@@ -56,7 +56,7 @@ public class  ArenaShellFactory extends AbstractFactory {
                 .buildArena(arena);
 
 
-        arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(25f), Measure.units(20f), Measure.units(10f), arenaSkin));
+        arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(25f), Measure.units(20f), Measure.units(5f), arenaSkin));
 
         return arena;
     }

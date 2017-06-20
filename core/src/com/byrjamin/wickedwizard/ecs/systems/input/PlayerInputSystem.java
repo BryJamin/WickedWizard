@@ -202,9 +202,12 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
             Bag<Component> bag = pf.grappleShot(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class),
                     cbc.getCenterX(),
-                    cbc.getCenterY(), BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(),
+                    cbc.getCenterY(),
                     r.x + r.getWidth() / 2,
-                    r.y + r.getHeight() / 2));
+                    r.y + r.getHeight() / 2,
+                    BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(),
+                            r.x + r.getWidth() / 2,
+                            r.y + r.getHeight() / 2));
 
             Entity e = world.createEntity();
 
