@@ -199,15 +199,14 @@ public class JigsawGenerator {
                         }
                     }
                     if(isAllDoorsUsed){
-                        int diff = mockPlacedArenas.size - placedArenas.size;
+                        int preSize = placedArenas.size;
 
                         placedArenas = mockPlacedArenas;
                         avaliableDoorsSet = mockAvaliableDoorSet;
                         unavaliableMapCoords = createUnavaliableMapCoords(placedArenas);
-
-                        updateUnavaliableCoordsAndLeaveDoors(nextRoomToBePlaced, unavaliableMapCoords, avaliableDoorsSet);
-
+                        addArenaToMap(nextRoomToBePlaced, placedArenas, unavaliableMapCoords, avaliableDoorsSet);
                         weightedObject.setWeight((weightedObject.getWeight() / 5 > 0) ? weightedObject.getWeight() / 5 : 1);
+                        int diff = placedArenas.size - preSize;
                         placedRooms+= diff;
                     }
 
@@ -371,7 +370,7 @@ public class JigsawGenerator {
 
         //startingArena = tutorialFactory.grappleTutorial(new MapCoords());
 
-        startingArena = level4Rooms.room1LaserBouncers().createArena(new MapCoords());
+        //startingArena = level4Rooms.room1LaserBouncers().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 
