@@ -19,6 +19,9 @@ public class MultiPistol extends Pistol{
     }
 
 
+    public void setAngles(int[] angles) {
+        this.angles = angles;
+    }
 
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {

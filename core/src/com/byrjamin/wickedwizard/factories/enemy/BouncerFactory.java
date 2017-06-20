@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.enemy;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,13 +10,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -103,6 +109,32 @@ public class BouncerFactory extends EnemyFactory {
         bag.add(new VelocityComponent(startsLeft ? -speed : speed,speed));
 
         return bag;
+    }
+
+    public ComponentBag laserBouncer(float x, float y, boolean isLeft){
+
+
+        ComponentBag bag = basicBouncer(x,y,width,height,speed, isLeft);
+        BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).region = atlas.findRegion(TextureStrings.BOUNCER_RED);
+
+        MultiPistol multiPistol = new MultiPistol(assetManager, 1.5f);
+        multiPistol.setAngles(new int[] {0,90,180,270});
+
+        bag.add(new WeaponComponent(multiPistol, 0f));
+
+        Action a = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(WeaponComponent.class).weapon.fire(world, e, e.getComponent(CollisionBoundComponent.class).getCenterX(), e.getComponent(CollisionBoundComponent.class).getCenterY(), 0);
+            }
+        };
+
+        bag.add(new OnCollisionActionComponent(a,a,a,a));
+
+
+        return bag;
+
+
     }
 
 

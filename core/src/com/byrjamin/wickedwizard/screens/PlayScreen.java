@@ -279,9 +279,10 @@ public class PlayScreen extends AbstractScreen {
         SoundSystem soundSystem = new SoundSystem(manager);
         soundSystem.playMusic(MusicStrings.song8);
 
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 ,lis.getItemPool(), random);
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 8 ,lis.getItemPool(), random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
+        jg.setCurrentLevel(ChangeLevelSystem.Level.TWO);
 
         jg.generateTutorial = isTutorial;
 

@@ -76,9 +76,6 @@ public class ArenaBuilder {
         int diffX = Math.abs(minX - maxX);
         int diffY = Math.abs(minY - maxY);
 
-        System.out.println(diffX);
-        System.out.println(diffY);
-
 
         a.setWidth(SECTION_WIDTH * (diffX + 1));
         a.setHeight(SECTION_HEIGHT * (diffY + 1));
