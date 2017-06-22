@@ -69,8 +69,12 @@ public class TextureStrings {
     public static final String SILVERHEAD_CHARGING = "silverhead_charging";
 
     //BOUNCER
-    public static final String BOUNCER_DEFAULT = "bouncer";
-    public static final String BOUNCER_RED = "bouncer_stomp";
+    public static final String BOUNCER_DEFAULT = "enemy/bouncer";
+    public static final String BOUNCER_RED = "enemy/bouncer_laser";
+
+    //PYLON
+    public static final String PYLON_CHARGING = "enemy/pylon_charging";
+    public static final String PYLON_SPAWNING = "enemy/pylon_spawning";
 
     //JIG
     public static final String JIG_FIRING = "enemy/jig_firing";

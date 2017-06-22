@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
 import com.byrjamin.wickedwizard.factories.enemy.JigFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.factories.enemy.ModonFactory;
+import com.byrjamin.wickedwizard.factories.enemy.PylonFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
@@ -39,6 +40,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public JigFactory jigFactory;
     public GoatWizardFactory goatWizardFactory;
     public ModonFactory modonFactory;
+    public PylonFactory pylonFactory;
     private ArenaSkin arenaSkin;
     private Random random;
 
@@ -56,6 +58,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.amoebaFactory = new AmoebaFactory(assetManager);
         this.jigFactory = new JigFactory(assetManager);
         this.modonFactory = new ModonFactory(assetManager);
+        this.pylonFactory = new PylonFactory(assetManager);
         this.random = random;
         this.arenaSkin = arenaSkin;
     }

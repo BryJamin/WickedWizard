@@ -54,15 +54,30 @@ public class Level4Rooms extends AbstractFactory {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 4, Measure.units(45f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
                 arena.roomType = Arena.RoomType.TRAP;
                 return arena;
             }
         };
     }
+
+
+    public ArenaGen room2Pylons() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(arena.getWidth() - Measure.units(15f), Measure.units(30f), 90));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(Measure.units(5f), Measure.units(30f), -90));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
+                arena.roomType = Arena.RoomType.TRAP;
+                return arena;
+            }
+        };
+    }
+
 
 
 }

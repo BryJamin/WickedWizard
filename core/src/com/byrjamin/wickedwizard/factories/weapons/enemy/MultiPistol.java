@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 public class MultiPistol extends Pistol{
 
     private int[] angles = new int[] {0,25,-25};
+    private float scale = 4;
 
     public MultiPistol(AssetManager assetManager, float fireRate) {
         super(assetManager, fireRate);
@@ -23,12 +24,16 @@ public class MultiPistol extends Pistol{
         this.angles = angles;
     }
 
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
+
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {
         for(int i : angles) {
             Entity bullet = world.createEntity();
             double angleOfTravel = angleInRadians + Math.toRadians(i);
-            for (Component c : bf.enemyBulletBag(new ComponentBag(), x, y, angleOfTravel)) {
+            for (Component c : bf.enemyBulletBag(new ComponentBag(), x, y,scale, angleOfTravel)) {
                 bullet.edit().add(c);
             }
         }

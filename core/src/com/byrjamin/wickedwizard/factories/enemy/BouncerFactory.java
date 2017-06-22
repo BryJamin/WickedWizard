@@ -115,10 +115,21 @@ public class BouncerFactory extends EnemyFactory {
 
 
         ComponentBag bag = basicBouncer(x,y,width,height,speed, isLeft);
-        BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).region = atlas.findRegion(TextureStrings.BOUNCER_RED);
+
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f,
+                atlas.findRegions(TextureStrings.BOUNCER_RED), Animation.PlayMode.LOOP));
+
+        bag.add(new AnimationComponent(animMap));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOUNCER_RED),
+                0, 0, width, height,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         MultiPistol multiPistol = new MultiPistol(assetManager, 1.5f);
-        multiPistol.setAngles(new int[] {0,90,180,270});
+        multiPistol.setAngles(new int[] {0,30,60,90,120,150,180,210,240,270,300,330});
+        multiPistol.setScale(2);
 
         bag.add(new WeaponComponent(multiPistol, 0f));
 

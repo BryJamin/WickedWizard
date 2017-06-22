@@ -48,7 +48,13 @@ public class BulletFactory extends AbstractFactory {
     }
 
     public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        for(Component c : basicEnemyBulletBag(x,y,4)){
+        return enemyBulletBag(fill,x,y,4,angleOfTravel);
+    }
+
+
+
+    public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, float scale, double angleOfTravel) {
+        for(Component c : basicEnemyBulletBag(x,y,scale)){
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
@@ -56,7 +62,6 @@ public class BulletFactory extends AbstractFactory {
 
         return fill;
     }
-
 
 
 
