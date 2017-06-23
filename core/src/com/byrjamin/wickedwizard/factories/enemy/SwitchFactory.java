@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -9,11 +11,16 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -42,7 +49,7 @@ public class SwitchFactory extends EnemyFactory{
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SWITCH), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SWITCH), Animation.PlayMode.LOOP_PINGPONG));
 
         bag.add(new AnimationComponent(animMap));
         TextureRegionComponent textureRegionComponent = new TextureRegionComponent(atlas.findRegion(TextureStrings.SWITCH),
@@ -55,7 +62,28 @@ public class SwitchFactory extends EnemyFactory{
 
         return bag;
 
+    }
 
+    public ComponentBag fadeInswitchBag(float x , float y, float rotation){
+
+        ComponentBag bag = switchBag(x,y,rotation);
+        final CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(CollisionBoundComponent.class, bag);
+        bag.add(new FadeComponent(true, 0.5f, false));
+
+        bag.add(new ActionAfterTimeComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(cbc);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }, 0.5f));
+
+        return bag;
 
     }
 
