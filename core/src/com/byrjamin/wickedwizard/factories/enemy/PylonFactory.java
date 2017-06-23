@@ -34,7 +34,7 @@ public class PylonFactory extends EnemyFactory {
     public float width = Measure.units(10f);
     public float height = Measure.units(10f);
 
-    private final float health = 15f;
+    private final float health = 9f;
 
     private final static int PYLONCHARGE = 2;
 
@@ -48,7 +48,7 @@ public class PylonFactory extends EnemyFactory {
 
     public ComponentBag pylonBag(float x, float y, float rotationInDegrees){
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, 15);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
         BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
 

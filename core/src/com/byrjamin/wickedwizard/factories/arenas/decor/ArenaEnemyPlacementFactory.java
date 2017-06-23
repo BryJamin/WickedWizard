@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.enemy.AlurmFactory;
 import com.byrjamin.wickedwizard.factories.enemy.AmoebaFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
@@ -41,6 +42,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public GoatWizardFactory goatWizardFactory;
     public ModonFactory modonFactory;
     public PylonFactory pylonFactory;
+    public AlurmFactory alurmFactory;
     private ArenaSkin arenaSkin;
     private Random random;
 
@@ -59,6 +61,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.jigFactory = new JigFactory(assetManager);
         this.modonFactory = new ModonFactory(assetManager);
         this.pylonFactory = new PylonFactory(assetManager);
+        this.alurmFactory = new AlurmFactory(assetManager);
         this.random = random;
         this.arenaSkin = arenaSkin;
     }
@@ -73,6 +76,21 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
         return spawnerFactory.spawnerBag(x, y, s);
     }
+
+
+    public ComponentBag spawnAlurm(float x, float y){
+
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return alurmFactory.alurm(x,y);
+            }
+        });
+        //SpawnerFactory.spawnerBag(a.getWidth() / 4, a.getHeight() / 2, s);
+        return spawnerFactory.spawnerBag(x, y, s);
+
+    }
+
 
 
     public Bag<Component> spawnMovingJig(float x, float y){

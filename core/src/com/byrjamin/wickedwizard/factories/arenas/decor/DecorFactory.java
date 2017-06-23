@@ -44,6 +44,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbital;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -174,6 +175,65 @@ public class DecorFactory extends AbstractFactory {
 
         return bag;
     }
+
+
+    public ComponentBag appearInCombatWallPush(final float x, final float y, final float width, final float height, final float angleOfPushInDegrees){
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
+                arenaSkin.getWallTexture(),
+                PLAYER_LAYER_FAR);
+        trbc.color = arenaSkin.getWallTint();
+        trbc.color.a = 0;
+        trbc.DEFAULT = arenaSkin.getWallTint();
+        bag.add(trbc);
+
+
+
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                e.edit().add(new ProximityTriggerAIComponent(new Task() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                        vc.velocity.x = BulletMath.velocityX(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
+                        vc.velocity.y = BulletMath.velocityY(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
+                        e.getComponent(ProximityTriggerAIComponent.class).triggered = false;
+                    }
+
+                    @Override
+                    public void cleanUpAction(World world, Entity e) {
+
+                    }
+                }, new HitBox(new Rectangle(x,y, width, height))));
+
+
+                FadeComponent fc = new FadeComponent(true, 0.5f, false);
+                fc.minAlpha = 0;
+                fc.maxAlpha = 0.5f;
+                e.edit().add(fc);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(new ProximityTriggerAIComponent());
+                FadeComponent fc = new FadeComponent(false, 0.5f, false);
+                fc.minAlpha = 0;
+                fc.maxAlpha = 0.5f;
+                e.edit().add(fc);
+            }
+        }));
+
+
+
+        return bag;
+    }
+
 
     public ComponentBag outOfCombatPlatform(float x, float y, float width){
         ComponentBag bag = platform(x,y,width);

@@ -45,6 +45,9 @@ public class Level4Rooms extends AbstractFactory {
     public Array<ArenaGen> getLevel4RoomArray() {
         Array<ArenaGen> ag = new Array<ArenaGen>();
         ag.add(room1LaserBouncers());
+        ag.add(room2FlyByAndPylons());
+        ag.add(room3BouncersAndVerticalPylons());
+        ag.add(room4FixedTriAndVerticalPylons());
         return ag;
     }
 
@@ -64,7 +67,7 @@ public class Level4Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room2Pylons() {
+    public ArenaGen room2FlyByAndPylons() {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -77,6 +80,56 @@ public class Level4Rooms extends AbstractFactory {
             }
         };
     }
+
+
+
+
+    public ArenaGen room3BouncersAndVerticalPylons() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(arena.getWidth() - Measure.units(25f), arena.getHeight() - Measure.units(15f), 180));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(Measure.units(15f), arena.getHeight() - Measure.units(15f), 180));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, arena.getHeight() / 2));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4  , arena.getHeight() / 2));
+                arena.roomType = Arena.RoomType.TRAP;
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room4FixedTriAndVerticalPylons() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(arena.getWidth() - Measure.units(25f), arena.getHeight() - Measure.units(15f), 180));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(Measure.units(15f), arena.getHeight() - Measure.units(15f), 180));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(arena.getWidth() / 2, Measure.units(45f)));
+                //arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4  , arena.getHeight() / 2));
+                arena.roomType = Arena.RoomType.TRAP;
+                return arena;
+            }
+        };
+    }
+
+
+
+    public ArenaGen room5Alurm() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAlurm(arena.getWidth() / 2, Measure.units(45f)));
+                //arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4  , arena.getHeight() / 2));
+                arena.roomType = Arena.RoomType.TRAP;
+                return arena;
+            }
+        };
+    }
+
 
 
 

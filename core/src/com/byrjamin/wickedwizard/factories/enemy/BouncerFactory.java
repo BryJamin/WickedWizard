@@ -97,7 +97,7 @@ public class BouncerFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f,
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f,
                 atlas.findRegions(TextureStrings.BOUNCER_DEFAULT), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
@@ -119,7 +119,7 @@ public class BouncerFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f,
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f,
                 atlas.findRegions(TextureStrings.BOUNCER_RED), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));

@@ -956,8 +956,8 @@ public class Level3Rooms extends AbstractFactory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(10f), Measure.units(10f), Measure.units(25f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(45f), Measure.units(10f), Measure.units(55f), Measure.units(35f)));
 
-                arena.addEntity(decorFactory.appearInCombatWall(Measure.units(95f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
-                arena.addEntity(decorFactory.appearInCombatWall(arena.getWidth() - Measure.units(100f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(95f), Measure.units(45f), Measure.units(5f), Measure.units(10f), 0));
+                arena.addEntity(decorFactory.appearInCombatWallPush(arena.getWidth() - Measure.units(100f), Measure.units(45f), Measure.units(5f), Measure.units(10f), 180));
 
 
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(45f), Measure.units(10f), Measure.units(10f), Measure.units(25f)));

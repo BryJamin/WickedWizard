@@ -37,6 +37,10 @@ public class TextureStrings {
     //AMOEBA
     public static final String AMOEBA = "amoeba";
 
+    //ALURM
+    public static final String ALURM = "enemy/alurm";
+    public static final String ALURM_FIRING = "enemy/alurm_firing";
+
 
     //Kugeldusche
     public static final String KUGELDUSCHE_EMPTY = "kugel";
