@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 /**
@@ -35,6 +36,7 @@ public class MultiPistol extends Pistol{
             double angleOfTravel = angleInRadians + Math.toRadians(i);
             for (Component c : bf.enemyBulletBag(new ComponentBag(), x, y,scale, angleOfTravel)) {
                 bullet.edit().add(c);
+                //bullet.edit().remove(CollisionBoundComponent.class);
             }
         }
     }

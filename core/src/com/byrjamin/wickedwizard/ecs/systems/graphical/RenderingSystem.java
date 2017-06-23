@@ -69,8 +69,7 @@ public class RenderingSystem extends EntitySystem {
         super(Aspect.all(PositionComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
-                TextureFontComponent.class,
-                ShapeComponent.class
+                TextureFontComponent.class
         ));
         this.batch = batch;
         this.gamecam = gamecam;
@@ -106,6 +105,7 @@ public class RenderingSystem extends EntitySystem {
     }
 
     protected void process(Entity e) {
+
 
         //System.out.println("INSIDE");
 

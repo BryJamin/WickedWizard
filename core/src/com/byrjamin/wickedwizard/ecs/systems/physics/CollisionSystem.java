@@ -42,10 +42,19 @@ public class CollisionSystem extends EntityProcessingSystem {
 
 
     private Rectangle futureRectangle = new Rectangle();
+    private Rectangle nearByCheckRectangle = new Rectangle();
+    private Array<Rectangle> collidableobjects = new Array<Rectangle>();
+
+    private Aspect.Builder wall;
+    private Aspect.Builder playerWalls;
+    private Aspect.Builder platforms;
 
     @SuppressWarnings("unchecked")
     public  CollisionSystem() {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
+        wall = Aspect.all(WallComponent.class);
+        playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class, GrappleableComponent.class);
+        platforms = Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class);
     }
 
 
@@ -58,26 +67,26 @@ public class CollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        cbm.get(e).getRecentCollisions().clear();
-
-        Array<Rectangle> collidableobjects = new Array<Rectangle>();
-
-        addCollidableObjects(collidableobjects, Aspect.all(WallComponent.class));
-
-        if(!playerm.has(e)) {
-            addCollidableObjects(collidableobjects, Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class, GrappleableComponent.class));
-        }
-
-        if(!playerm.has(e) && !bm.has(e) && !gm.has(e)) {
-            addCollidableObjects(collidableobjects, Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class));
-        }
-
-
         PositionComponent pc = pm.get(e);
         VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
+        cbm.get(e).getRecentCollisions().clear();
 
-        futureRectangle = new Rectangle(cbc.bound);
+        collidableobjects.clear();
+
+        addNearByCollidableObjects(cbc.bound, collidableobjects, wall);
+
+        if(!playerm.has(e)) {
+            addNearByCollidableObjects(cbc.bound, collidableobjects, playerWalls);
+        }
+
+        if(!playerm.has(e) && !bm.has(e) && !gm.has(e)) {
+            addNearByCollidableObjects(cbc.bound, collidableobjects, platforms);
+        }
+
+
+
+        futureRectangle.set(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight());
         //System.out.println(futureRectangle.getX());
 
         if(!bm.has(e)) {
@@ -85,6 +94,10 @@ public class CollisionSystem extends EntityProcessingSystem {
             //System.out.println(futureRectangle.getX());
             futureRectangle.y += (vc.velocity.y * world.delta);
         }
+
+
+        System.out.println("Size of collidableobjects :" + collidableobjects.size);
+
         //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
         for(Rectangle r : collidableobjects) {
@@ -132,6 +145,34 @@ public class CollisionSystem extends EntityProcessingSystem {
                 collidableObjects.add(cbm.get(entityIds.get(i)).bound);
             }
         }
+    }
+
+
+    public void addNearByCollidableObjects(Rectangle r, Array<Rectangle> collidableObjects, Aspect.Builder aspect){
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(aspect);
+        IntBag entityIds = subscription.getEntities();
+
+        for(int i = 0; i < entityIds.size(); i++){
+            if(wm.has(entityIds.get(i))) {
+                if(isNearBy(r, wm.get(entityIds.get(i)).bound)) collidableObjects.add(wm.get(entityIds.get(i)).bound);
+            } else if(cbm.has(entityIds.get(i))) {
+                if(isNearBy(r, cbm.get(entityIds.get(i)).bound)) collidableObjects.add(cbm.get(entityIds.get(i)).bound);
+            }
+        }
+    }
+
+    public boolean isNearBy(Rectangle dynamic, Rectangle stationary){
+
+        float minX = dynamic.getX() - (dynamic.getWidth() * 3 / 2 - dynamic.getWidth() / 2);
+        float maxX = minX + dynamic.getWidth() * 3;
+
+        float minY = dynamic.getY() - (dynamic.getHeight() * 3 / 2 - dynamic.getHeight() / 2);
+        float maxY = minX + dynamic.getHeight() * 3;
+
+        nearByCheckRectangle.set(minX, minY, dynamic.getWidth() * 3, dynamic.getHeight() * 3);
+
+        return stationary.overlaps(nearByCheckRectangle);
+
     }
 
 

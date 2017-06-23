@@ -90,6 +90,10 @@ public class BouncerFactory extends EnemyFactory {
 
     private ComponentBag basicBouncer(float x, float y, float width, float height, float speed, boolean startsLeft) {
 
+        x = x -width / 2;
+        y = y - height / 2;
+
+
         ComponentBag bag = new ComponentBag();
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
@@ -126,6 +130,8 @@ public class BouncerFactory extends EnemyFactory {
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOUNCER_RED),
                 0, 0, width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+        //BagSearch.removeObjectOfTypeClass(VelocityComponent.class, bag);
 
         MultiPistol multiPistol = new MultiPistol(assetManager, 1.5f);
         multiPistol.setAngles(new int[] {0,30,60,90,120,150,180,210,240,270,300,330});

@@ -76,7 +76,7 @@ public class BlobFactory extends EnemyFactory {
     }
 
 
-    public ComponentBag blob(float x , float y, float scale, float speed, float health, Color color){
+    public ComponentBag blob(float x , float y, float scale, float speed, float health, boolean startsRight, Color color){
 
         float width = this.width * scale;
         float height = this.height * scale;
@@ -87,7 +87,7 @@ public class BlobFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
-        bag.add(new VelocityComponent(speed, 0));
+        bag.add(new VelocityComponent(startsRight ? speed : -speed, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
 
@@ -111,23 +111,23 @@ public class BlobFactory extends EnemyFactory {
 
 
 
-    public ComponentBag blobBag(float x, float y){
-        return blob(x,y,1,Measure.units(15f), 10, defaultBlobColor);
+    public ComponentBag blobBag(float x, float y, boolean startsRight){
+        return blob(x,y,1,Measure.units(15f), 10, startsRight, defaultBlobColor);
     }
 
-    public ComponentBag angryBlobBag(float x, float y){
-        return blob(x,y,1,Measure.units(30f), 15, fastBlobColor);
+    public ComponentBag angryBlobBag(float x, float y,  boolean startsRight){
+        return blob(x,y,1,Measure.units(30f), 15, startsRight, fastBlobColor);
     }
 
-    public Bag<Component> smallblobBag(float x, float y){
-        ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, defaultBlobColor);
+    public Bag<Component> smallblobBag(float x, float y,  boolean startsRight){
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, startsRight, defaultBlobColor);
         BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new ExploderComponent());
         return bag;
     }
 
-    public ComponentBag angrySmallBag(float x, float y){
-        ComponentBag bag = blob(x,y,0.5f,Measure.units(45f), 3, fastBlobColor);
+    public ComponentBag angrySmallBag(float x, float y,  boolean startsRight){
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(45f), 3, startsRight, fastBlobColor);
         BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new ExploderComponent());
         return bag;
@@ -238,12 +238,14 @@ public class BlobFactory extends EnemyFactory {
         WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(),  1.5f);
         bag.add(wc);
 
+        //TODO Add a spawner to biggablobba
         SpawnerFactory.Spawner s = new SpawnerFactory.Spawner() {
             @Override
             public Bag<Component> spawnBag(float x, float y) {
-                Bag<Component> b = smallblobBag(x,y);
-                b.add(new MinionComponent());
-                return b;
+                //Bag<Component> b = smallblobBag(x,y);
+                //b.add(new MinionComponent());
+                //return b;
+                return null;
             }
         };
 

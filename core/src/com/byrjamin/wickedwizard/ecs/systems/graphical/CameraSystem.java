@@ -22,8 +22,6 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
-import sun.applet.Main;
-
 /**
  * Created by Home on 23/03/2017.
  */

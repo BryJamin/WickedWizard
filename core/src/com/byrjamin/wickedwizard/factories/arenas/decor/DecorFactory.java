@@ -41,7 +41,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbital;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BulletMath;
@@ -686,11 +686,25 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
         bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(Color.BLACK)));
-        bag.add(new ActionAfterTimeComponent(new LaserOrbital(assetManager, Measure.units(5f), 1f, 10, 0, new int[]{0,180}), 0));
+        bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask(assetManager, Measure.units(5f), 1f, 10, 0, new int[]{0,180}), 0));
 
         return bag;
+    }
 
 
+    public ComponentBag inCombatLaserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
+
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new InCombatActionComponent(laserOrbitalTask));
+
+        return bag;
     }
 
 

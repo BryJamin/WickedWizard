@@ -104,6 +104,7 @@ public class GibletFactory extends AbstractFactory {
             bag.add(new PositionComponent(cx, cy));
             bag.add(new VelocityComponent(vx, vy));
             bag.add(new BounceComponent());
+            //TODO this is temporary
             bag.add(new CollisionBoundComponent(new Rectangle(cx, cy, size, size)));
             bag.add(new ExpireComponent(life));
 

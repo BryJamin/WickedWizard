@@ -167,8 +167,8 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
             public Arena createArena(MapCoords defaultCoords) {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
 
-                a.addWave(arenaEnemyPlacementFactory.spawnBlob(a.getWidth() / 4 * 3, a.getHeight() / 2));
                 a.addWave(arenaEnemyPlacementFactory.spawnBlob(a.getWidth() / 4, a.getHeight() / 2));
+                a.addWave(arenaEnemyPlacementFactory.spawnBlob(a.getWidth() / 4 * 3, a.getHeight() / 2));
 
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
@@ -880,7 +880,7 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
                 arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x,y);
+                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x,y, random.nextBoolean());
                             }
                         }, 3));
 

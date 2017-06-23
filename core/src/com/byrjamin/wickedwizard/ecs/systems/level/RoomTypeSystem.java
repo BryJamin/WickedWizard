@@ -4,16 +4,11 @@ import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.utils.Bag;
-import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.factories.arenas.WaveArena;
 
 /**
  * Created by Home on 25/03/2017.
@@ -37,11 +32,11 @@ public class RoomTypeSystem extends BaseSystem {
             case BOSS:
                 if(world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class).exclude(BulletComponent.class)).getEntities().size() <= 0){
 
-                    if(!(current.getWaves().empty())) {
+                    if(!(current.getWaves().size <= 0)) {
 
                         //Entity newEntity = world.createEntity();
 
-                        for(Bag<Component> bag : (current.getWaves().pop())){
+                        for(Bag<Component> bag : (current.getWaves().removeFirst())){
                             Entity newEntity = world.createEntity();
                             for(Component c : bag){
                                 newEntity.edit().add(c);

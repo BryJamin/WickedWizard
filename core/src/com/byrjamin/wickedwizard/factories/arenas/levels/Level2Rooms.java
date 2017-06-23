@@ -710,28 +710,11 @@ public class Level2Rooms extends AbstractFactory{
                         arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(20f))
                         );
 
-                OnDeathActionComponent odac = new OnDeathActionComponent(new Task() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        new GibletFactory(assetManager).giblets(5,0.4f,
-                                Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
-
-                        Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
-                        arena.roomType = Arena.RoomType.TRAP;
-
-                    }
-
-                    @Override
-                    public void cleanUpAction(World world, Entity e) {
-
-                    }
-                });
-
                 arena.addEntity(new ChestFactory(assetManager).chestBag(Measure.units(150f), Measure.units(10f),
-                        odac));
+                        chestFactory.trapODAC()));
 
                 arena.addEntity(new ChestFactory(assetManager).chestBag(Measure.units(165f), Measure.units(10f),
-                        odac));
+                        chestFactory.trapODAC()));
 
                 return arena;
             }
@@ -768,7 +751,7 @@ public class Level2Rooms extends AbstractFactory{
                 ChestFactory cf = new ChestFactory(assetManager);
 
                 //TODO on harder levels also spawn a turret
-/*                arena.addWave(
+/*                arena.fffffffffff(
                         arenaEnemyPlacementFactory.spaw(Measure.units(20f), Measure.units(50f)),
                         arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(20f))
                 );*/
@@ -834,18 +817,18 @@ public class Level2Rooms extends AbstractFactory{
 
                 arena.roomType = Arena.RoomType.TRAP;
 
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 2, Measure.units(40f)),
+                        arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, Measure.units(40f)),
+                        arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(40f)));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(40f)));
+
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return chestFactory.centeredChestBag(x,y);
                             }
                         }));
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(40f)));
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 2, Measure.units(40f)),
-                        arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, Measure.units(40f)),
-                        arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(40f)));
 
                 return arena;
             }
@@ -872,16 +855,16 @@ public class Level2Rooms extends AbstractFactory{
 
                 arena.roomType = Arena.RoomType.TRAP;
 
+                arena.addWave(arenaEnemyPlacementFactory.spawnSilverHead(Measure.units(20f), Measure.units(40f)),
+                        arenaEnemyPlacementFactory.spawnSilverHead(arena.getWidth() - Measure.units(20f), Measure.units(40f)));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnJig(arena.getWidth() / 2, Measure.units(40f)));
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return chestFactory.centeredChestBag(x,y);
                             }
                         }));
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnJig(arena.getWidth() / 2, Measure.units(40f)));
-                arena.addWave(arenaEnemyPlacementFactory.spawnSilverHead(Measure.units(20f), Measure.units(40f)),
-                arenaEnemyPlacementFactory.spawnSilverHead(arena.getWidth() - Measure.units(20f), Measure.units(40f)));
 
                 return arena;
             }
@@ -1006,14 +989,15 @@ public class Level2Rooms extends AbstractFactory{
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(60f), chestFactory.trapODAC()));
 
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, Measure.units(85f)));
+
+
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(85f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return new BombFactory(assetManager).bomb(x,y, 1f);
                             }
                         }));
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, Measure.units(85f)));
 
                 return arena;
             }
@@ -1039,7 +1023,8 @@ public class Level2Rooms extends AbstractFactory{
 
                 arena.roomType = Arena.RoomType.TRAP;
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(45f),
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return new BombFactory(assetManager).bomb(x,y, 1f);
@@ -1053,7 +1038,8 @@ public class Level2Rooms extends AbstractFactory{
                             }
                         }));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, Measure.units(45f),
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return new BombFactory(assetManager).bomb(x,y, 1f);
@@ -1338,7 +1324,7 @@ public class Level2Rooms extends AbstractFactory{
                 arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x, y);
+                                return arenaEnemyPlacementFactory.blobFactory.smallblobBag(x, y, random.nextBoolean());
                             }
                         }, 3));
 

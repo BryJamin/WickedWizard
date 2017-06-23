@@ -68,7 +68,7 @@ public class AlurmFactory extends EnemyFactory {
     }
 
 
-    public ComponentBag alurm(float x, float y){
+    public ComponentBag alurm(float x, float y, boolean startsRight, boolean startsUp){
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x,y, health);
 
@@ -88,7 +88,7 @@ public class AlurmFactory extends EnemyFactory {
 
 
         bag.add(new BounceComponent());
-        bag.add(new VelocityComponent(true ? -speed : speed,Vspeed));
+        bag.add(new VelocityComponent(startsRight ? speed : -speed, startsUp ? Vspeed : -Vspeed ));
         bag.add(new FiringAIComponent(0));
 
 

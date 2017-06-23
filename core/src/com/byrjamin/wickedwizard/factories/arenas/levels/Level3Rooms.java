@@ -277,11 +277,12 @@ public class Level3Rooms extends AbstractFactory {
      /*           arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 4, Measure.units(17.5f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
 */
+                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
+
                 arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(Measure.units(120), Measure.units(45f)),
                         arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() - Measure.units(110), Measure.units(45f)));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
 
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(140f), Measure.units(10f), chestFactory.trapODAC()));
@@ -621,16 +622,16 @@ public class Level3Rooms extends AbstractFactory {
 
                 arena.roomType = Arena.RoomType.TRAP;
 
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, Measure.units(45f)));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(45f)));
+
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return chestFactory.centeredChestBag(x,y);
                             }
                         }));
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(45f)));
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, Measure.units(45f)));
-
 
                 BombFactory bf = new BombFactory(assetManager);
 
@@ -761,9 +762,15 @@ public class Level3Rooms extends AbstractFactory {
                         .buildArena(arena);
 /*
 
-                arena.addWave(chestFactory.
+                arena.fffffffffff(chestFactory.
                 );
 */
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(35f)),
+                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(Measure.units(20f), Measure.units(20f)),
+                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(arena.getWidth() - Measure.units(20f), Measure.units(20f))
+                );
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {
@@ -771,13 +778,6 @@ public class Level3Rooms extends AbstractFactory {
                                 return chestFactory.centeredChestBag(x,y);
                             }
                         }));
-
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(35f)),
-                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(Measure.units(20f), Measure.units(20f)),
-                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(arena.getWidth() - Measure.units(20f), Measure.units(20f))
-                        );
 
 /*                arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(35f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2 - Measure.units(20f), Measure.units(35f)));
@@ -815,9 +815,8 @@ public class Level3Rooms extends AbstractFactory {
 
                 boolean isLeft = random.nextBoolean();
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnFixedTriSentry(isLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f), Measure.units(45f)));
                 arena.addWave(arenaEnemyPlacementFactory.spawnFixedTriSentry(!isLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f), Measure.units(45f)));
-
+                arena.addWave(arenaEnemyPlacementFactory.spawnFixedTriSentry(isLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f), Measure.units(45f)));
 
                 return arena;
             }
@@ -881,20 +880,21 @@ public class Level3Rooms extends AbstractFactory {
 
                 BombFactory bf = new BombFactory(assetManager);
 
+                arena.addWave(bf.seaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
+                        bf.seaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
+                        arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(5f)));
+
+                arena.addWave(bf.seaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
+                        bf.seaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
+                        arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
+
+
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return chestFactory.centeredChestBag(x,y);
                             }
                         }));
-
-                arena.addWave(bf.seaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
-                        bf.seaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
-                        arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
-
-                arena.addWave(bf.seaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
-                        bf.seaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
-                        arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(5f)));
 
       /*          arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(Measure.units(20f), arena.getHeight() / 2 + Measure.units(2.5f), bool));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(arena.getWidth() - Measure.units(20f) ,arena.getHeight() / 2 + Measure.units(2.5f), !bool));
@@ -936,17 +936,20 @@ public class Level3Rooms extends AbstractFactory {
                                 ArenaBuilder.wall.FULL))
                         .buildArena(arena);
 
-                arena.addWave(
-                        arenaEnemyPlacementFactory.spawnMovingTriSentry(Measure.units(125f), Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() - Measure.units(125f), Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2, Measure.units(32.5f)));
+
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() / 2, Measure.units(32.5f)),
                         arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(Measure.units(125f), Measure.units(45f)),
                         arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() - Measure.units(125f), Measure.units(45f)));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2, Measure.units(32.5f)));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
+                arena.addWave(
+                        arenaEnemyPlacementFactory.spawnMovingTriSentry(Measure.units(125f), Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() - Measure.units(125f), Measure.units(45f)));
+
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(132.5f), Measure.units(15f), chestFactory.trapODAC()));
                 arena.addEntity(chestFactory.chestBag(Measure.units(145f), Measure.units(15f), chestFactory.trapODAC()));
@@ -1037,7 +1040,7 @@ public class Level3Rooms extends AbstractFactory {
                 arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(isLeft ? arena.getWidth() / 4 : arena.getWidth() / 4 * 3, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return arenaEnemyPlacementFactory.blobFactory.angrySmallBag(x,y);
+                                return arenaEnemyPlacementFactory.blobFactory.angrySmallBag(x,y, random.nextBoolean());
                             }
                         }, 4));
 

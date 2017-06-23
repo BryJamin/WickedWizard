@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.screens;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
@@ -411,8 +412,12 @@ public class PlayScreen extends AbstractScreen {
         if (delta < 0.02f) {
             world.setDelta(delta);
         } else {
-            world.setDelta(0.02f);
+            world.setDelta(0.017f);
         }
+
+        System.out.println(world.getAspectSubscriptionManager().get(Aspect.all()).getEntities().size());
+
+        System.out.println(world.delta);
 
         if(gameOver){
             endGame(world);

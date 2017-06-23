@@ -46,6 +46,10 @@ public class TextureStrings {
     public static final String KUGELDUSCHE_EMPTY = "kugel";
     public static final String KUGELDUSCHE_LASER = "enemy/kugel_laser";
 
+    //KNIGHT
+    public static final String KNIGHT = "enemy/knight";
+    public static final String KNIGHT_FIRING = "enemy/knight_firing";
+
 
     //SENTRY
     public static final String SENTRY = "sentry";
@@ -103,6 +107,10 @@ public class TextureStrings {
 
 
     public static final String GRAPPLE = "grapple";
+
+
+    //SWITCH
+    public static final String SWITCH = "enemy/switch";
 
     //PLAYER
 

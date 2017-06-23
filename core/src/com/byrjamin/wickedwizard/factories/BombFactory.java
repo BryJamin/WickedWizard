@@ -92,6 +92,8 @@ public class BombFactory extends  AbstractFactory{
         float width = Measure.units(10);
         float height = Measure.units(10);
 
+        float speed = Measure.units(5f);
+
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -105,7 +107,7 @@ public class BombFactory extends  AbstractFactory{
         bag.add(new FadeComponent(true, 0.5f, false));
 
         bag.add(new BounceComponent());
-        bag.add(new VelocityComponent(startsLeft ? Measure.units(5f) : - Measure.units(5f), startsUp ? Measure.units(5f) : Measure.units(5f)));
+        bag.add(new VelocityComponent(startsLeft ? speed : - speed, startsUp ? speed : -speed));
 
 
         bag.add(new ProximityTriggerAIComponent(new Task() {

@@ -13,6 +13,8 @@ import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
+import java.util.Random;
+
 /**
  * Created by Home on 18/03/2017.
  */
@@ -82,6 +84,24 @@ public class  ArenaShellFactory extends AbstractFactory {
         return arena;
     }
 
+
+    public Arena createSmallArenaNoGrapple(MapCoords defaultCoords, int doorToNotSpawn) {
+
+        Array<MapCoords> containingCorrds = new Array<MapCoords>();
+        containingCorrds.add(defaultCoords);
+
+        Arena arena = new Arena(arenaSkin, defaultCoords);
+
+        arena = new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        doorToNotSpawn != 0 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        doorToNotSpawn != 1 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        doorToNotSpawn != 2 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        doorToNotSpawn != 3 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL)).buildArena(arena);
+
+        return arena;
+    }
+
     public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords) {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
@@ -97,8 +117,6 @@ public class  ArenaShellFactory extends AbstractFactory {
                         ArenaBuilder.wall.DOOR))
                 .buildArena(arena);
 
-
-
         //TODO in order to clean up this grapple if a top route doesn't exist a mark it with a door.
 
         ComponentBag bag = decorFactory.hiddenGrapplePointBag(arena.getWidth() / 2, (arena.getHeight() / 4) * 3);
@@ -108,6 +126,25 @@ public class  ArenaShellFactory extends AbstractFactory {
         bag.add(dc);
 
         arena.addDoor(bag);
+
+        return arena;
+    }
+
+    public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords, int doorToNotSpawn) {
+
+        Arena arena = new Arena(arenaSkin, defaultCoords);
+
+        arena.setWidth(SECTION_WIDTH);
+        arena.setHeight(SECTION_HEIGHT);
+
+        arena = new ArenaBuilder(assetManager, arenaSkin)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        doorToNotSpawn != 0 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        doorToNotSpawn != 1 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        doorToNotSpawn != 2 ? ArenaBuilder.wall.GRAPPLE : ArenaBuilder.wall.FULL,
+                        doorToNotSpawn != 3 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL)).buildArena(arena);
+
+        //TODO in order to clean up this grapple if a top route doesn't exist a mark it with a door.
 
         return arena;
     }

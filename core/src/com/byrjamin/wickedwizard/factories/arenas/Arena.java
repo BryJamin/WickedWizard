@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Queue;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -88,7 +89,7 @@ public class Arena {
     }
 
 
-    private Stack<Bag<Bag<Component>>> waves = new Stack<Bag<Bag<Component>>>();
+    private Queue<Bag<Bag<Component>>> waves = new Queue<Bag<Bag<Component>>>();
 
     public void addWave(Bag<Component>... bags){
         Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
@@ -96,15 +97,15 @@ public class Arena {
         for(Bag<Component> b : bags){
             bagOfBags.add(b);
         }
-        waves.add(bagOfBags);
+        waves.addLast(bagOfBags);
     }
 
 
     public void addWave(Bag<Bag<Component>> bags){
-        waves.add(bags);
+        waves.addLast(bags);
     }
 
-    public Stack<Bag<Bag<Component>>> getWaves() {
+    public Queue<Bag<Bag<Component>>> getWaves() {
         return waves;
     }
 

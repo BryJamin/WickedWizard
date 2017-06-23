@@ -14,7 +14,6 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
@@ -24,7 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
-import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbital;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -155,13 +154,13 @@ public class KugelDuscheFactory extends EnemyFactory {
 
         bag.add(trc);
 
-       // bag.add(new ActionAfterTimeComponent(new LaserOrbital(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}), 0));
+       // bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}), 0));
         // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 
 
         PhaseComponent pc = new PhaseComponent();
-        pc.addPhase(8f, new LaserOrbital(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}));
-        pc.addPhase(8f, new LaserOrbital(assetManager, Measure.units(5f), isLeft ? -1.25f : 1.25f, 10,1f, new int[]{0,180}));
+        pc.addPhase(8f, new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}));
+        pc.addPhase(8f, new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? -1.25f : 1.25f, 10,1f, new int[]{0,180}));
         pc.addPhaseSequence(1,0);
 
         bag.add(pc);

@@ -42,10 +42,6 @@ public class OnCollisionActionSystem extends EntityProcessingSystem {
         CollisionBoundComponent cbc = cbm.get(e);
         OnCollisionActionComponent ocac = ocam.get(e);
 
-        for(Collider.Collision c : cbc.getRecentCollisions()) {
-            System.out.println(c);
-        }
-
         if(cbc.getRecentCollisions().contains(BOTTOM, false)) performAction(ocac.top, world, e);
         if(cbc.getRecentCollisions().contains(TOP, false)) performAction(ocac.bottom, world, e);
         if(cbc.getRecentCollisions().contains(LEFT, false)) performAction(ocac.left, world, e);
