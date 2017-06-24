@@ -60,7 +60,7 @@ public class BulletFactory extends AbstractFactory {
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
-        fill.add(new ExpiryRangeComponent(new Vector3(BagSearch.getObjectOfTypeClass(PositionComponent.class, fill).position), Measure.units(1f)));
+        //fill.add(new ExpiryRangeComponent(new Vector3(BagSearch.getObjectOfTypeClass(PositionComponent.class, fill).position), Measure.units(1f)));
 
         return fill;
     }

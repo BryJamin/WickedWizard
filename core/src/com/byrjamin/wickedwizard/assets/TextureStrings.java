@@ -61,6 +61,11 @@ public class TextureStrings {
     public static final String SENTRY_FIRING_TRI = "enemy/sentry_tri_firing";
 
 
+    //PENTA-SENTRY
+    public static final String SENTRY_PENTA = "enemy/penta_sentry";
+    public static final String SENTRY_FIRING_PENTA = "enemy/penta_sentry_firing";
+
+
     //MODON
     public static final String MODON = "enemy/modon";
     public static final String MODON_FIRING = "enemy/modon_firing";

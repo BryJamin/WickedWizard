@@ -20,6 +20,11 @@ public class MultiPistol extends Pistol{
         super(assetManager, fireRate);
     }
 
+    public MultiPistol(AssetManager assetManager, float fireRate, int... angles) {
+        super(assetManager, fireRate);
+        setAngles(angles);
+    }
+
 
     public void setAngles(int[] angles) {
         this.angles = angles;

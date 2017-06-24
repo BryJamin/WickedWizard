@@ -44,6 +44,7 @@ public class TurretFactory extends EnemyFactory {
     private final float sentryHealth = 10;
     private final float triSentryHealth = 15;
     private final float flyByHealth = 15;
+    private final float pentaHealth = 20;
 
     public TurretFactory(AssetManager assetManager) {
         super(assetManager);
@@ -53,6 +54,9 @@ public class TurretFactory extends EnemyFactory {
 
     final float width = Measure.units(10f);
     final float height = Measure.units(10f);
+
+    final float upgradeWidth = Measure.units(15f);
+    final float upgradeHeight = Measure.units(15f);
 
     public Bag<Component> fixedLockOnTurret(float x, float y){
         x = x - width / 2;
@@ -242,6 +246,39 @@ public class TurretFactory extends EnemyFactory {
 
         return bag;
     }
+
+
+
+
+
+    public ComponentBag fixedPentaSentry(float x, float y){
+        x = x - upgradeWidth / 2;
+        y = y - upgradeHeight / 2;
+
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, pentaHealth);
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, upgradeWidth,upgradeHeight), true));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY_TRI),
+                upgradeWidth, upgradeHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE
+        ));
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY_PENTA), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING_PENTA)));
+
+        bag.add(new AnimationComponent(animMap));
+
+        WeaponComponent wc = new WeaponComponent(new MultiPistol(assetManager, 2f, 0,25,50,-25,-50), 2f);
+        bag.add(wc);
+
+        bag.add(defaultTurretTrigger());
+
+        return bag;
+    }
+
+
+
+
 
 
 
