@@ -99,7 +99,7 @@ of the texture region it uses when calling to the axis. ** Used a pair class to 
 - Create a 'god mode' and 'bounds mode' menu option.
 - Change animation so it is easier to queue animations such as the firing animation.
 - Out of Combat component
-- Potential bug with room transition animation on wide rooms. Sliver of old room may be visible (Fixed for now but I dislike the implimentation due to the size of the class)
+- Potential bug with room transition animation on wide rooms. Sliver of old room may be visible (Fixed for now but I dislike the implimentation due to the orbitalSize of the class)
 - Make a grapple a tap not a touchdown
 - Parent Component on death should also kill the child component 
 - You can trigger shooting and moving the have the same pointer due to platforms. You double tap

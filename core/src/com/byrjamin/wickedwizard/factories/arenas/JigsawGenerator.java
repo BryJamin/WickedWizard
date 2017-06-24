@@ -371,7 +371,7 @@ public class JigsawGenerator {
 
         //startingArena = tutorialFactory.grappleTutorial(new MapCoords());
 
-        startingArena = level4Rooms.room20AlurmAndFlyBy().createArena(new MapCoords());
+        //startingArena = level4Rooms.room30WidthTwoPylonsAlurmsAndKnight().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 
@@ -421,6 +421,8 @@ public class JigsawGenerator {
             case TWO: arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
             case THREE: arenaGens = level3Rooms.getLevel3RoomArray();
+                break;
+            case FOUR: arenaGens = level4Rooms.getLevel4RoomArray();
                 break;
             default: arenaGens = level1Rooms.getLevel1RoomArray();
                 break;

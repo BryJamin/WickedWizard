@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -23,7 +24,8 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
-import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
  * Created by Home on 16/06/2017.
@@ -33,19 +35,102 @@ public class LaserOrbitalTask implements Task {
 
     private int[] angles = new int[] {0,80,170, 260};
 
-    private float size;
+    private float orbitalSize;
+    private float orbitalIntervalSize;
     private float speedInDegrees;
-    private int numberOfOrbitals;
     private float chargeTime;
+
+    private boolean expire = false;
+    private float expiryTime;
+
+    private int numberOfOrbitals;
+
+    private Color color;
 
     private TextureAtlas atlas;
 
+
+    public static class LaserBuilder{
+
+        //Required Parameters
+        private final AssetManager assetManager;
+
+        //Optional Parameters
+        private float orbitalSize = 0;
+        private float orbitalIntervalSize = 0;
+        private float speedInDegrees = 0;
+        private float chargeTime = 0.5f;
+
+        private boolean expire = false;
+        private float expiryTime;
+
+        private int numberOfOrbitals;
+
+        private int[] angles = new int[]{0};
+
+        private Color color = new Color(Color.RED);
+
+        public LaserBuilder(AssetManager assetManager) {
+            this.assetManager = assetManager;
+        }
+
+        public LaserBuilder orbitalSize(float val)
+        { orbitalSize = val; return this; }
+
+        public LaserBuilder orbitalIntervalSize(float val)
+        { orbitalIntervalSize = val; return this; }
+
+        public LaserBuilder orbitalAndIntervalSize(float val)
+        { orbitalSize = val; orbitalIntervalSize = val; return this; }
+
+        public LaserBuilder speedInDegrees(float val)
+        { speedInDegrees = val; return this; }
+
+        public LaserBuilder chargeTime(float val)
+        { chargeTime = val; return this; }
+
+
+        public LaserBuilder expiryTime(float val)
+        { expiryTime = val; expire = true; return this; }
+
+        public LaserBuilder numberOfOrbitals(int val)
+        { numberOfOrbitals = val; return this; }
+
+
+        public LaserBuilder angles(int... val)
+        { angles = val; return this; }
+
+        public LaserOrbitalTask build() {
+            return new LaserOrbitalTask(this);
+        }
+
+
+    }
+
+    public LaserOrbitalTask(LaserBuilder lb){
+        this.atlas = lb.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
+        this.orbitalSize = lb.orbitalSize;
+        this.orbitalIntervalSize = lb.orbitalIntervalSize;
+        this.speedInDegrees = lb.speedInDegrees;
+        this.chargeTime = lb.chargeTime;
+        this.numberOfOrbitals = lb.numberOfOrbitals;
+        this.angles = lb.angles;
+        this.color = lb.color;
+        this.expire = lb.expire;
+        this.expiryTime = lb.expiryTime;
+    }
+
+
+
+
     public LaserOrbitalTask(AssetManager assetManager, float size, float speedInDegrees, int numberOfOrbitals, float chargeTime, int[] angles){
-        this.size = size;
+        this.orbitalSize = size;
+        this.orbitalIntervalSize = size;
         this.speedInDegrees = speedInDegrees;
         this.numberOfOrbitals = numberOfOrbitals;
         this.angles = angles;
         this.chargeTime = chargeTime;
+        this.color = new Color(Color.RED);
         atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
     }
 
@@ -53,8 +138,8 @@ public class LaserOrbitalTask implements Task {
         this.angles = angles;
     }
 
-    public void setSize(float size) {
-        this.size = size;
+    public void setOrbitalSize(float orbitalSize) {
+        this.orbitalSize = orbitalSize;
     }
 
     public void setSpeedInDegrees(float speedInDegrees) {
@@ -83,21 +168,22 @@ public class LaserOrbitalTask implements Task {
             for (int angle : angles) {
                 Entity orbital = world.createEntity();
                 orbital.edit().add(new PositionComponent());
-                orbital.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, size,size), true));
+                orbital.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, orbitalSize, orbitalSize), true));
                 orbital.edit().add(new OrbitComponent(
-                        new Vector3(current.getX(), current.getY(), 0f), i * size,
+                        new Vector3(current.getX(), current.getY(), 0f), i * orbitalIntervalSize,
                         angleSpeed, angle, cbc.bound.width / 2, cbc.bound.height / 2
                 ));
 
                 orbital.edit().add(new TextureRegionComponent(atlas.findRegion("block"),
-                        size,size, TextureRegionComponent.ENEMY_LAYER_FAR, new Color(Color.RED)));
+                        orbitalSize, orbitalSize, TextureRegionComponent.ENEMY_LAYER_FAR, color));
 
                 orbital.edit().add(new FadeComponent(true, chargeTime, false));
                 orbital.edit().add(new IntangibleComponent());
 
                 ChildComponent c = new ChildComponent();
-                pc.children.add(c);
                 orbital.edit().add(c);
+                pc.children.add(c);
+
 
 
                 orbital.edit().add(new ActionAfterTimeComponent(new Task() {
@@ -112,6 +198,32 @@ public class LaserOrbitalTask implements Task {
                     }
                 }, chargeTime));
 
+
+                orbital.edit().add(new OnDeathActionComponent(new Task() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        Entity orbital = world.createEntity();
+                        orbital.edit().add(e.getComponent(PositionComponent.class));
+                        orbital.edit().add(e.getComponent(CollisionBoundComponent.class));
+                        orbital.edit().add(e.getComponent(OrbitComponent.class));
+                        orbital.edit().add(e.getComponent(TextureRegionComponent.class));
+                        orbital.edit().add(new FadeComponent(false, 0.5f, false));
+                        orbital.edit().add(new ExpireComponent(0.6f));
+                        orbital.edit().add(new IntangibleComponent());
+                    }
+
+                    @Override
+                    public void cleanUpAction(World world, Entity e) {
+
+                    }
+                }));
+
+
+                if(expire){
+
+
+                    orbital.edit().add(new ExpireComponent(expiryTime));
+                }
 
             }
 
@@ -130,15 +242,20 @@ public class LaserOrbitalTask implements Task {
         Array<ChildComponent> childComponents  = new Array<ChildComponent>();
         childComponents.addAll(e.getComponent(ParentComponent.class).children);
 
+
+
         for(ChildComponent c : childComponents) {
 
             Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
 
+            System.out.println(child != null);
 
             if(child != null){
-                child.edit().remove(EnemyComponent.class);
+                world.getSystem(OnDeathSystem.class).kill(child);
+/*                child.edit().remove(EnemyComponent.class);
                 child.edit().add(new FadeComponent(false, 0.5f, false));
                 child.edit().add(new ExpireComponent(0.6f));
+                System.out.println("HELP");*/
             }
         };
 

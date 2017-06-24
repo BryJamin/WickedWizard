@@ -14,11 +14,14 @@ import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -69,7 +72,6 @@ public class PylonFactory extends EnemyFactory {
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
         tfc.rotation = rotationInDegrees;
 
-
         bag.add(tfc);
 
         MultiPistol mp = new MultiPistol(assetManager, 1.5f);
@@ -87,7 +89,7 @@ public class PylonFactory extends EnemyFactory {
     }
 
 
-    public ConditionalActionComponent spawningCondition(final float rotationInRadians, final Weapon weapon){
+    private ConditionalActionComponent spawningCondition(final float rotationInRadians, final Weapon weapon){
 
         return new ConditionalActionComponent(new Condition() {
             @Override
@@ -120,7 +122,7 @@ public class PylonFactory extends EnemyFactory {
 
 
 
-    public ConditionalActionComponent firingCondition(final float rotationInRadians, final Weapon weapon){
+    private ConditionalActionComponent firingCondition(final float rotationInRadians, final Weapon weapon){
         return new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
@@ -133,7 +135,9 @@ public class PylonFactory extends EnemyFactory {
 
                     if(isFinished) sc.stateTime = 0;
 
-                    return isFinished;
+                    boolean isOnCamera = world.getSystem(CameraSystem.class).isOnCamera(entity.getComponent(CollisionBoundComponent.class).bound);
+
+                    return isFinished && isOnCamera;
 
                 }
 

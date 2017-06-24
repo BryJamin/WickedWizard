@@ -252,7 +252,6 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                random = new Random();
                 boolean mirror = random.nextBoolean();
 
                 Arena a = arenaShellFactory.createEitherNoLeftOrNoRightArena(defaultCoords, mirror);
@@ -439,8 +438,8 @@ public class Level1Rooms extends AbstractFactory implements LevelRoomSet {
 
                 arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.MANDATORYDOOR,
+                                ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
                         .buildArena(arena);

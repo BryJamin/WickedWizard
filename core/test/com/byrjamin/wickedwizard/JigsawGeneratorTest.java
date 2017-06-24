@@ -128,7 +128,163 @@ public class JigsawGeneratorTest extends GameTest {
 
             JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms,lis.getItemPool(), random);
             jg.generateTutorial = false;
+            jg.setCurrentLevel(ChangeLevelSystem.Level.TWO);
+            jg.generate();
+
+
+            Array<Arena> arenas = jg.getStartingMap().getRoomArray();
+
+            boolean bossRoom = false;
+
+            for (Arena a : arenas) {
+/*                System.out.println(a.roomType);
+                for(MapCoords mc : a.cotainingCoords){
+                    System.out.println(mc);
+                }*/
+                if (a.roomType == Arena.RoomType.BOSS) {
+                    bossRoom = true;
+                    break;
+                }
+            }
+
+            assertTrue(bossRoom);
+
+
+            boolean itemRoom = false;
+
+            for (Arena a : arenas) {
+                if (a.roomType == Arena.RoomType.ITEM) {
+                    itemRoom = true;
+                    break;
+                }
+            }
+
+            assertTrue(itemRoom);
+
+            boolean shopRoom = false;
+
+            for (Arena a : arenas) {
+                if (a.roomType == Arena.RoomType.SHOP) {
+                    shopRoom = true;
+                    break;
+                }
+            }
+
+            assertTrue(shopRoom);
+
+            System.out.println(i);
+
+        }
+
+
+    }
+
+
+    @Test
+    public void testGenerateJigsawLevel3() throws Exception {
+
+        AssetManager assetManager = new AssetManager();
+
+        assetManager.load("sprite.atlas", TextureAtlas.class);
+
+        assetManager.finishLoading();
+
+        TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
+
+
+        //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
+
+        for(int i = 0; i < 5000; i++) {
+
+            Random random = new Random();
+
+            int numberOfRooms = random.nextInt(100);
+
+            System.out.println("Generating for a room size of " + numberOfRooms);
+
+            LevelItemSystem lis = new LevelItemSystem(new Random());
+
+            JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms,lis.getItemPool(), random);
+            jg.generateTutorial = false;
             jg.setCurrentLevel(ChangeLevelSystem.Level.THREE);
+            jg.generate();
+
+
+            Array<Arena> arenas = jg.getStartingMap().getRoomArray();
+
+            boolean bossRoom = false;
+
+            for (Arena a : arenas) {
+/*                System.out.println(a.roomType);
+                for(MapCoords mc : a.cotainingCoords){
+                    System.out.println(mc);
+                }*/
+                if (a.roomType == Arena.RoomType.BOSS) {
+                    bossRoom = true;
+                    break;
+                }
+            }
+
+            assertTrue(bossRoom);
+
+
+            boolean itemRoom = false;
+
+            for (Arena a : arenas) {
+                if (a.roomType == Arena.RoomType.ITEM) {
+                    itemRoom = true;
+                    break;
+                }
+            }
+
+            assertTrue(itemRoom);
+
+            boolean shopRoom = false;
+
+            for (Arena a : arenas) {
+                if (a.roomType == Arena.RoomType.SHOP) {
+                    shopRoom = true;
+                    break;
+                }
+            }
+
+            assertTrue(shopRoom);
+
+            System.out.println(i);
+
+        }
+
+
+    }
+
+
+    @Test
+    public void testGenerateJigsawLevel4() throws Exception {
+
+        AssetManager assetManager = new AssetManager();
+
+        assetManager.load("sprite.atlas", TextureAtlas.class);
+
+        assetManager.finishLoading();
+
+        TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
+
+
+        //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
+
+        for(int i = 0; i < 5000; i++) {
+
+            Random random = new Random();
+
+            int numberOfRooms = random.nextInt(100);
+
+            System.out.println("Generating for a room size of " + numberOfRooms);
+
+            LevelItemSystem lis = new LevelItemSystem(new Random());
+
+            JigsawGenerator jg = new JigsawGenerator(assetManager, new FoundarySkin(atlas), numberOfRooms,lis.getItemPool(), random);
+            jg.generateTutorial = false;
+            jg.setCurrentLevel(ChangeLevelSystem.Level.FOUR);
             jg.generate();
 
 

@@ -415,9 +415,9 @@ public class PlayScreen extends AbstractScreen {
             world.setDelta(0.017f);
         }
 
-        System.out.println(world.getAspectSubscriptionManager().get(Aspect.all()).getEntities().size());
+        //System.out.println(world.getAspectSubscriptionManager().get(Aspect.all()).getEntities().size());
 
-        System.out.println(world.delta);
+        //System.out.println(world.delta);
 
         if(gameOver){
             endGame(world);
