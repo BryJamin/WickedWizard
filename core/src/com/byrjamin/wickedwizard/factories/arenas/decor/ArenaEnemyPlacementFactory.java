@@ -214,6 +214,26 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
+    public ComponentBag spawnFixedPentaSentry(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.fixedPentaSentry(x,y);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s, 1, 1.5f);
+    }
+
+    public ComponentBag spawnMovingPentaSentry(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.movingPentaSentry(x,y, random.nextBoolean(), random.nextBoolean());
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s, 1, 1.5f);
+    }
+
     public ComponentBag spawnFixedFlyByBombSentry(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
@@ -232,6 +252,26 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
+    }
+
+    public ComponentBag spawnFixedFlyByDoubleBombSentry(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.fixedFlyByDoubleBombSentry(x,y);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s, 1, 1.5f);
+    }
+
+    public ComponentBag spawnMovingFlyByDoubleBombSentry(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.movingFlyByDoubleBombSentry(x,y, random.nextBoolean(), random.nextBoolean());
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s, 1, 1.5f);
     }
 
     public ComponentBag spawnkugelDusche(float x, float y){
@@ -333,6 +373,17 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
                 return modonFactory.modon(x,y);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s,1,1.5f);
+    }
+
+
+    public ComponentBag spawnHeavyModon(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return modonFactory.heavyModon(x,y);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s,1,1.5f);

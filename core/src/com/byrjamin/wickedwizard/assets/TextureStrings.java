@@ -70,9 +70,19 @@ public class TextureStrings {
     public static final String MODON = "enemy/modon";
     public static final String MODON_FIRING = "enemy/modon_firing";
 
+    //HEAVY MODON
+    public static final String MODON_HEAVY = "enemy/modon_heavy";
+    public static final String MODON_HEAVY_FIRING = "enemy/modon_heavy_firing";
+    public static final String MODON_HEAVY_IN_AIR = "enemy/modon_heavy_in_air";
+
+
     //FLYBY
     public static final String FLYBY = "enemy/flyby";
     public static final String FLYBY_FIRING = "enemy/flyby_firing";
+
+    //FLYBY
+    public static final String FLYBY_DOUBLE = "enemy/flyby_double";
+    public static final String FLYBY_DOUBLE_FIRING = "enemy/flyby_double_firing";
 
 
 

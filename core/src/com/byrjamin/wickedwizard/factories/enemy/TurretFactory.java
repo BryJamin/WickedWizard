@@ -44,7 +44,8 @@ public class TurretFactory extends EnemyFactory {
     private final float sentryHealth = 10;
     private final float triSentryHealth = 15;
     private final float flyByHealth = 15;
-    private final float pentaHealth = 20;
+    private final float pentaHealth = 30;
+    private final float doubleFlyByHealth = 30;
 
     public TurretFactory(AssetManager assetManager) {
         super(assetManager);
@@ -57,6 +58,8 @@ public class TurretFactory extends EnemyFactory {
 
     final float upgradeWidth = Measure.units(15f);
     final float upgradeHeight = Measure.units(15f);
+
+    private float upgradeSpeed = Measure.units(5f);
 
     public Bag<Component> fixedLockOnTurret(float x, float y){
         x = x - width / 2;
@@ -264,7 +267,7 @@ public class TurretFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY_PENTA), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING_PENTA)));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING_PENTA)));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -275,6 +278,79 @@ public class TurretFactory extends EnemyFactory {
 
         return bag;
     }
+
+    public ComponentBag movingPentaSentry(float x, float y, boolean startsRight, boolean startsUp){
+        ComponentBag bag = fixedPentaSentry(x,y);
+        bag.add(new VelocityComponent(startsRight ? upgradeSpeed : -upgradeSpeed, startsUp ? upgradeSpeed : -upgradeSpeed));
+        bag.add(new BounceComponent());
+        return bag;
+    }
+
+
+
+
+    public ComponentBag fixedFlyByDoubleBombSentry(float x, float y){
+        x = x - upgradeWidth / 2;
+        y = y - upgradeHeight / 2;
+
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, doubleFlyByHealth);
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, upgradeWidth, upgradeHeight), true));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.FLYBY),
+                0, 0, upgradeWidth, upgradeHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE
+        ));
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.FLYBY_DOUBLE), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.FLYBY_DOUBLE_FIRING)));
+
+        bag.add(new AnimationComponent(animMap));
+
+        WeaponComponent wc = new WeaponComponent(new Weapon() {
+
+
+            int[] angles = new int[]{0,30, -35};
+
+            @Override
+            public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+
+                for(int i : angles) {
+                    Entity newEntity = BagToEntity.bagToEntity(world.createEntity(), bf.bomb(x, y, 1f));
+                    FrictionComponent fc = new FrictionComponent();
+                    fc.airFriction = false;
+                    newEntity.edit().add(fc);
+                    //TODO maybe improve this? should bp,bs just drop vertically and not be aimed?
+                    newEntity.getComponent(VelocityComponent.class).velocity.y = BulletMath.velocityY(Measure.units(75f), angleInRadians + Math.toRadians(i));
+                    newEntity.getComponent(VelocityComponent.class).velocity.x = BulletMath.velocityX(Measure.units(75f), angleInRadians + Math.toRadians(i));
+
+                }
+            }
+
+            @Override
+            public float getBaseFireRate() {
+                return 2;
+            }
+
+            @Override
+            public float getBaseDamage() {
+                return 0;
+            }
+        }, 2f);
+        bag.add(wc);
+
+        bag.add(defaultTurretTrigger());
+
+        return bag;
+    }
+
+
+    public ComponentBag movingFlyByDoubleBombSentry(float x, float y, boolean startsRight, boolean startsUp){
+        ComponentBag bag = fixedFlyByDoubleBombSentry(x,y);
+        bag.add(new VelocityComponent(startsRight ? upgradeSpeed : -upgradeSpeed, startsUp ? upgradeSpeed : -upgradeSpeed));
+        bag.add(new BounceComponent());
+        return bag;
+    }
+
 
 
 

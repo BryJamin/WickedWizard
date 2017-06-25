@@ -70,13 +70,17 @@ public class BulletFactory extends AbstractFactory {
 
 
 
-    public Bag<Component> basicBulletBag(float x, float y, float scale) {
+    public ComponentBag basicBulletBag(float x, float y, float scale) {
         return basicBulletBag(x ,y ,scale ,atlas.findRegion("block"), new Color(1,1,1,1));
     }
 
-    public Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
+    public ComponentBag basicBulletBag(float x, float y, float scale, Color color) {
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion("block"), color);
+    }
 
-        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
+    public ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
+
+        ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
         bag.add(new EnemyComponent());
 
 
@@ -94,8 +98,8 @@ public class BulletFactory extends AbstractFactory {
     }
 
 
-    public Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
-        Bag<Component> bag = new Bag<Component>();
+    public ComponentBag basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
+        ComponentBag bag = new ComponentBag();
 
         float width = this.width * scale;
         float height = this.height * scale;
