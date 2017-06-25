@@ -172,11 +172,31 @@ public class Level5Rooms extends AbstractFactory {
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
                 arena.roomType = Arena.RoomType.TRAP;
-                arena.addEntity(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, Measure.units(40f)));
+
+                boolean startsLeft = random.nextBoolean();
+
+                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f), 0, startsLeft));
+                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f), 180, startsLeft));
                 return arena;
             }
         };
     }
+
+
+    public ArenaGen room7SingularGhostlyEncounterWithACenter() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
+                arena.roomType = Arena.RoomType.TRAP;
+                boolean startsLeft = random.nextBoolean();
+                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f), 0, startsLeft));
+                return arena;
+            }
+        };
+    }
+
+
 
 
 

@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.AlurmFactory;
 import com.byrjamin.wickedwizard.factories.enemy.AmoebaFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
+import com.byrjamin.wickedwizard.factories.enemy.CowlFactory;
 import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
 import com.byrjamin.wickedwizard.factories.enemy.JigFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KnightFactory;
@@ -39,6 +40,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public BlobFactory blobFactory;
     public BombFactory bombFactory;
     public BouncerFactory bouncerFactory;
+    public CowlFactory cowlFactory;
     public GoatWizardFactory goatWizardFactory;
     public JigFactory jigFactory;
     public KnightFactory knightFactory;
@@ -62,6 +64,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.blobFactory = new BlobFactory(assetManager);
         this.bombFactory = new BombFactory(assetManager);
         this.bouncerFactory = new BouncerFactory(assetManager);
+        this.cowlFactory = new CowlFactory(assetManager);
         this.goatWizardFactory = new GoatWizardFactory(assetManager);
         this.jigFactory = new JigFactory(assetManager);
         this.knightFactory = new KnightFactory(assetManager);
@@ -387,6 +390,17 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
             }
         });
         return spawnerFactory.spawnerBag(x, y, s,1,1.5f);
+    }
+
+
+    public ComponentBag spawnCowl(float x, float y){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return cowlFactory.cowl(x,y, 0, random.nextBoolean());
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
     }
 
 }

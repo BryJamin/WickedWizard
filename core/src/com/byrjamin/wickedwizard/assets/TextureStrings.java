@@ -41,6 +41,10 @@ public class TextureStrings {
     public static final String ALURM = "enemy/alurm";
     public static final String ALURM_FIRING = "enemy/alurm_firing";
 
+    //COWL
+    public static final String COWL = "enemy/cowl";
+    public static final String COWL_FIRING = "enemy/cowl_firing";
+
 
     //Kugeldusche
     public static final String KUGELDUSCHE_EMPTY = "kugel";

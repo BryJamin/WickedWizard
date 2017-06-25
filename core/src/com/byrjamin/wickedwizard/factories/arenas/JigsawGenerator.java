@@ -375,7 +375,7 @@ public class JigsawGenerator {
 
         //startingArena = tutorialFactory.grappleTutorial(new MapCoords());
 
-        startingArena = level5Rooms.room5HeavyModon().createArena(new MapCoords());
+        startingArena = level5Rooms.room7SingularGhostlyEncounterWithACenter().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 

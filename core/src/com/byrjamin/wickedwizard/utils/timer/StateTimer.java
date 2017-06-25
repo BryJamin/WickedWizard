@@ -6,7 +6,7 @@ package com.byrjamin.wickedwizard.utils.timer;
 public class StateTimer {
 
     private float resetTime;
-    private float timeRemaining;
+    public float timeRemaining;
 
     public StateTimer(float timer){
         this.resetTime = timer;

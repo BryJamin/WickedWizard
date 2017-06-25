@@ -178,7 +178,7 @@ public class KnightFactory extends EnemyFactory {
 
                     OrbitComponent oc = child.getComponent(OrbitComponent.class);
 
-                    double angle = Math.toRadians(oc.angleInDegrees);
+                    double angle = Math.toRadians(oc.currentAngleInDegrees);
 
                     child.edit().add(new VelocityComponent(
                             BulletMath.velocityX(Measure.units(75f), angle),

@@ -18,6 +18,10 @@ public class WeaponComponent extends Component{
         this.weapon = weapon;
     }
 
+    public void addChargeTime(float chargeTime){
+        timer.timeRemaining = chargeTime;
+    }
+
     public WeaponComponent(){}
 
 }

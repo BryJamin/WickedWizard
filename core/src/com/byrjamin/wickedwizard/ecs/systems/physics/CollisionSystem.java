@@ -35,9 +35,9 @@ public class CollisionSystem extends EntityProcessingSystem {
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WallComponent> wm;
-    ComponentMapper<BulletComponent> bm;
+    ComponentMapper<BulletComponent> bulletm;
     ComponentMapper<BounceComponent> boucem;
-    ComponentMapper<GrappleComponent> gm;
+    ComponentMapper<GrappleComponent> grapplem;
     ComponentMapper<MoveToComponent> mtm;
 
 
@@ -80,7 +80,7 @@ public class CollisionSystem extends EntityProcessingSystem {
             addNearByCollidableObjects(cbc.bound, collidableobjects, playerWalls);
         }
 
-        if(!playerm.has(e) && !bm.has(e) && !gm.has(e)) {
+        if(!playerm.has(e) && !bulletm.has(e) && !grapplem.has(e)) {
             addNearByCollidableObjects(cbc.bound, collidableobjects, platforms);
         }
 
@@ -89,7 +89,7 @@ public class CollisionSystem extends EntityProcessingSystem {
         futureRectangle.set(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight());
         //System.out.println(futureRectangle.getX());
 
-        if(!bm.has(e)) {
+        if(!bulletm.has(e)) {
             futureRectangle.x += (vc.velocity.x * world.delta);
             //System.out.println(futureRectangle.getX());
             futureRectangle.y += (vc.velocity.y * world.delta);
@@ -115,7 +115,7 @@ public class CollisionSystem extends EntityProcessingSystem {
                 pc.position.x = cbc.bound.getX();
                 pc.position.y = cbc.bound.getY();
 
-                if(bm.has(e) || gm.has(e)){
+                if(bulletm.has(e) || grapplem.has(e)){
                     world.getSystem(OnDeathSystem.class).kill(e);
                 }
 

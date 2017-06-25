@@ -260,7 +260,7 @@ public class TurretFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, pentaHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, upgradeWidth,upgradeHeight), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY_TRI),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY_PENTA),
                 upgradeWidth, upgradeHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 
@@ -295,7 +295,7 @@ public class TurretFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, doubleFlyByHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, upgradeWidth, upgradeHeight), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.FLYBY),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.FLYBY_DOUBLE),
                 0, 0, upgradeWidth, upgradeHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 

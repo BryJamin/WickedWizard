@@ -5,8 +5,12 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
@@ -27,6 +31,7 @@ public class MultiPistol extends Pistol{
 
     private boolean gravity = false;
     private boolean expire = false;
+    private boolean intangible = false;
     private boolean enemy = true;
 
     private int[] angles = new int[] {0,25,-25};
@@ -45,10 +50,11 @@ public class MultiPistol extends Pistol{
         private float shotScale = 4;
         private float fireRate = 1.5f;
         private float shotSpeed = Measure.units(50);
-        private float expireRange;
+        private float expireRange = Measure.units(100f);
 
         private boolean gravity = false;
         private boolean expire = false;
+        private boolean intangible = false;
         private boolean enemy = true;
 
         private int[] angles = new int[]{0};
@@ -73,6 +79,9 @@ public class MultiPistol extends Pistol{
 
         public PistolBuilder gravity(boolean val)
         { gravity = val; return this; }
+
+        public PistolBuilder intangible(boolean val)
+        { intangible = val; return this; }
 
         public PistolBuilder expire(boolean val)
         { expire = val; return this; }
@@ -103,6 +112,7 @@ public class MultiPistol extends Pistol{
         this.expireRange = pb.expireRange;
         this.gravity = pb.gravity;
         this.expire = pb.expire;
+        this.intangible = pb.intangible;
         this.enemy = pb.enemy;
 
         this.angles = pb.angles;
@@ -144,6 +154,16 @@ public class MultiPistol extends Pistol{
                 if(enemy) bullet.edit().add(new EnemyComponent());
 
                 if(gravity) bullet.edit().add(new GravityComponent());
+
+                if(intangible) bullet.edit().add(new IntangibleComponent());
+
+                if(expire) {
+
+                    CollisionBoundComponent cbc = bullet.getComponent(CollisionBoundComponent.class);
+                    bullet.edit().add(new ExpiryRangeComponent(
+                            new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0), expireRange));
+                }
+
 
                 bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
                         Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED))));
