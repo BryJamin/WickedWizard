@@ -54,6 +54,10 @@ public class TextureStrings {
     public static final String KNIGHT = "enemy/knight";
     public static final String KNIGHT_FIRING = "enemy/knight_firing";
 
+    //COWL
+    public static final String LASERUS = "enemy/laserus";
+    public static final String LASERUS_FIRING = "enemy/laserus_firing";
+
 
     //SENTRY
     public static final String SENTRY = "sentry";

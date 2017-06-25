@@ -70,6 +70,9 @@ public class AlurmFactory extends EnemyFactory {
 
     public ComponentBag alurm(float x, float y, boolean startsRight, boolean startsUp){
 
+        x = x - width / 2;
+        y = y - width / 2;
+
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x,y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));

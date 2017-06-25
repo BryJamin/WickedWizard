@@ -115,11 +115,6 @@ public class RenderingSystem extends EntitySystem {
         if(trm.has(e)) {
             TextureRegionComponent trc = trm.get(e);
 
-/*            if(world.getSystem(CameraSystem.class) != null) {
-                if (!world.getSystem(CameraSystem.class).isOnCamera(new Rectangle(pc.getX(), pc.getY(), trc.width, trc.height)))
-                    return;
-            }*/
-
             boolean shaderOn = false;
 
             if(bm.has(e)){

@@ -39,6 +39,7 @@ public class LaserOrbitalTask implements Task {
     private float orbitalIntervalSize;
     private float speedInDegrees;
     private float chargeTime;
+    private float disperseTime = 0.5f;
 
     private boolean expire = false;
     private float expiryTime;
@@ -60,6 +61,8 @@ public class LaserOrbitalTask implements Task {
         private float orbitalIntervalSize = 0;
         private float speedInDegrees = 0;
         private float chargeTime = 0.5f;
+        private float disperseTime = 0.5f;
+
 
         private boolean expire = false;
         private float expiryTime;
@@ -88,6 +91,9 @@ public class LaserOrbitalTask implements Task {
 
         public LaserBuilder chargeTime(float val)
         { chargeTime = val; return this; }
+
+        public LaserBuilder disperseTime(float val)
+        { disperseTime = val; return this; }
 
 
         public LaserBuilder expiryTime(float val)
@@ -118,6 +124,7 @@ public class LaserOrbitalTask implements Task {
         this.color = lb.color;
         this.expire = lb.expire;
         this.expiryTime = lb.expiryTime;
+        this.disperseTime = lb.disperseTime;
     }
 
 
@@ -174,8 +181,10 @@ public class LaserOrbitalTask implements Task {
                         angleSpeed, angle, cbc.bound.width / 2, cbc.bound.height / 2
                 ));
 
+                //TODO was Enemy Layer Far
+
                 orbital.edit().add(new TextureRegionComponent(atlas.findRegion("block"),
-                        orbitalSize, orbitalSize, TextureRegionComponent.ENEMY_LAYER_FAR, color));
+                        orbitalSize, orbitalSize, TextureRegionComponent.FOREGROUND_LAYER_NEAR, color));
 
                 orbital.edit().add(new FadeComponent(true, chargeTime, false));
                 orbital.edit().add(new IntangibleComponent());
@@ -207,8 +216,8 @@ public class LaserOrbitalTask implements Task {
                         orbital.edit().add(e.getComponent(CollisionBoundComponent.class));
                         orbital.edit().add(e.getComponent(OrbitComponent.class));
                         orbital.edit().add(e.getComponent(TextureRegionComponent.class));
-                        orbital.edit().add(new FadeComponent(false, 0.5f, false));
-                        orbital.edit().add(new ExpireComponent(0.6f));
+                        orbital.edit().add(new FadeComponent(false, disperseTime, false));
+                        orbital.edit().add(new ExpireComponent(disperseTime + 0.1f));
                         orbital.edit().add(new IntangibleComponent());
                     }
 

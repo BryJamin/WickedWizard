@@ -185,7 +185,8 @@ public class Level4Rooms extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = new Arena(arenaSkin, defaultCoords,
+                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -426,7 +427,7 @@ public class Level4Rooms extends AbstractFactory {
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 4, Measure.units(85f)),
                         arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 4 * 3, Measure.units(85f)),
-                        arenaEnemyPlacementFactory.spawnAlurm(arena.getWidth() / 2, Measure.units(85f)));
+                        arenaEnemyPlacementFactory.spawnAlurm(arena.getWidth() / 2, Measure.units(105f)));
 
 
                 arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(0), upperGroundPosY - Measure.units(5f), arena.getWidth(), Measure.units(5), 90));

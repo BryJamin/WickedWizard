@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
 import com.byrjamin.wickedwizard.factories.enemy.JigFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KnightFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
+import com.byrjamin.wickedwizard.factories.enemy.LaserusFactory;
 import com.byrjamin.wickedwizard.factories.enemy.ModonFactory;
 import com.byrjamin.wickedwizard.factories.enemy.PylonFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SilverHeadFactory;
@@ -45,6 +46,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public JigFactory jigFactory;
     public KnightFactory knightFactory;
     public KugelDuscheFactory kugelDuscheFactory;
+    public LaserusFactory laserusFactory;
     public ModonFactory modonFactory;
     public PylonFactory pylonFactory;
     public SilverHeadFactory silverHeadFactory;
@@ -69,6 +71,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.jigFactory = new JigFactory(assetManager);
         this.knightFactory = new KnightFactory(assetManager);
         this.kugelDuscheFactory = new KugelDuscheFactory(assetManager);
+        this.laserusFactory = new LaserusFactory(assetManager);
         this.modonFactory = new ModonFactory(assetManager);
         this.pylonFactory = new PylonFactory(assetManager);
         this.silverHeadFactory = new SilverHeadFactory(assetManager);
@@ -401,6 +404,20 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
+    }
+
+    public ComponentBag spawnLaserus(float x, float y, final boolean startsRight, final boolean startsUp){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return laserusFactory.laserus(x,y, startsRight, startsUp);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
+    public ComponentBag spawnLaserus(float x, float y){
+        return spawnLaserus(x, y, random.nextBoolean(), random.nextBoolean());
     }
 
 }

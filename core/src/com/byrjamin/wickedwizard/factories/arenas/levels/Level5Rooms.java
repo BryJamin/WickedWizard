@@ -49,6 +49,14 @@ public class Level5Rooms extends AbstractFactory {
     public Array<ArenaGen> getLevel5RoomArray() {
         Array<ArenaGen> ag = new Array<ArenaGen>();
         ag.add(room1PentaSentry());
+        ag.add(room2DoubleFlyBy());
+        ag.add(room3Width2DoubleFlyByAndPentaSentryMoving());
+        ag.add(room4TrapRoomPentaAndDoubleFlyBy());
+        ag.add(room5HeavyModon());
+        ag.add(room6GhostlyEncounter());
+        ag.add(room7SingularGhostlyEncounterWithACenter());
+        ag.add(room8Lazerus());
+        ag.add(room9TwoLazerus());
         return ag;
     }
 
@@ -196,6 +204,37 @@ public class Level5Rooms extends AbstractFactory {
         };
     }
 
+
+
+    public ArenaGen room8Lazerus() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
+                arena.roomType = Arena.RoomType.TRAP;
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)));
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room9TwoLazerus() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
+                arena.roomType = Arena.RoomType.TRAP;
+
+                boolean startsRight = random.nextBoolean();
+                boolean startsUp = random.nextBoolean();
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4, Measure.units(40f), startsRight, startsUp));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4 * 3, Measure.units(40f), !startsRight, startsUp));
+                return arena;
+            }
+        };
+    }
 
 
 
