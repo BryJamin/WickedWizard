@@ -7,21 +7,21 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  * Created by Home on 29/04/2017.
  */
 
-public class FreedomSkin extends AbstractSkin {
+public class DarkPurpleAndBrown extends AbstractSkin {
 
-    public FreedomSkin(TextureAtlas atlas) {
+    public DarkPurpleAndBrown(TextureAtlas atlas) {
         super(atlas);
     }
 
 
     @Override
     public Color getBackgroundTint() {
-        return new Color(0.5f,0.5f,1,0.5f);
+        return new Color(160f / 255f, 158f / 255f, 135f / 255f, 1f);
     }
 
     @Override
     public Color getWallTint() {
-        return new Color(0.8f,0.8f,1,0.5f);
+        return new Color(89f / 255f, 72f / 255f, 85f / 255f, 1f);
     }
 
 

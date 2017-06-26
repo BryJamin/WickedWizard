@@ -6,7 +6,6 @@ package com.byrjamin.wickedwizard.factories.arenas.skins;
 
 import com.badlogic.gdx.graphics.Color;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 /**
@@ -15,8 +14,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class ItemRoomSkin extends  AbstractSkin{
 
-    private Color gold = new Color(232f/255f, 207/255f, 118/255f, 1);
-    private Color azu = new Color(56f/255f, 63/255f, 112/ 255f, 1);
+    private Color background = new Color(216f/255f, 222/255f, 222/255f, 1);
+    private Color wall = new Color(252f/255f, 251f/255f, 249/ 255f, 1);
 
     public ItemRoomSkin(TextureAtlas atlas) {
         super(atlas);
@@ -24,14 +23,14 @@ public class ItemRoomSkin extends  AbstractSkin{
 
     @Override
     public Color getBackgroundTint() {
-        return gold;
+        return background;
     }
 
     //999999
 
     @Override
     public Color getWallTint() {
-        return azu;
+        return wall;
     }
 
 
