@@ -13,7 +13,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 
 import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FOUR;
 import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.TWO;
-import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FREEDOMRUN;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FIVE;
 import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.THREE;
 import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.ONE;
 
@@ -28,7 +28,7 @@ public class ChangeLevelSystem extends BaseSystem {
 
 
     public enum Level {
-        ONE, TWO, THREE, FOUR, FREEDOMRUN;
+        ONE, TWO, THREE, FOUR, FIVE;
 
         private ArenaSkin arenaSkin;
 
@@ -52,7 +52,7 @@ public class ChangeLevelSystem extends BaseSystem {
         TWO.setArenaSkin(new FoundarySkin(atlas));
         THREE.setArenaSkin(new PrisonSkin(atlas));
         FOUR.setArenaSkin(new CBlockSkin(atlas));
-        FREEDOMRUN.setArenaSkin(new FreedomSkin(atlas));
+        FIVE.setArenaSkin(new FreedomSkin(atlas));
         this.jigsawGenerator = jigsawGenerator;
 
         level = ONE;
@@ -77,11 +77,11 @@ public class ChangeLevelSystem extends BaseSystem {
                 jigsawGenerator.setNoBattleRooms(12);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 4", "");
                 break;
-            case FOUR: level = FREEDOMRUN;
+            case FOUR: level = FIVE;
                 jigsawGenerator.setNoBattleRooms(14);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 5", "");
                 break;
-            case FREEDOMRUN:
+            case FIVE:
                 //TODO world.endGame
                 break;
         }

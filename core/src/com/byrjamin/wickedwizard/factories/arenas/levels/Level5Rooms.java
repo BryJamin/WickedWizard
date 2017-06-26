@@ -61,6 +61,7 @@ public class Level5Rooms extends AbstractFactory {
         ag.add(room10SwitchsAndDoubleLasers());
         ag.add(room11GhostPylonWidth3PossibleTreasure());
         ag.add(room12Height3GrappleLaser());
+        ag.add(room13DoubleLaserArenaWithBouncersAndLaserus());
         return ag;
     }
 
@@ -408,6 +409,52 @@ public class Level5Rooms extends AbstractFactory {
                 arena.addEntity(chestFactory.chestBag(Measure.units(55f), Measure.units(10f)));
 
 
+
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaGen room13DoubleLaserArenaWithBouncersAndLaserus(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
+                        .orbitalSize(Measure.units(2.5f))
+                        .chargeTime(0.5f)
+                        .numberOfOrbitals(10)
+                        .angles(270)
+                        .expiryTime(1.5f)
+                        .orbitalAndIntervalSize(Measure.units(5f));
+
+                arena.addEntity(decorFactory.inCombatTimedLaserChain(Measure.units(20f), Measure.units(52.5f), 1, 3f,
+                        lb.build()));
+
+                arena.addEntity(decorFactory.inCombatTimedLaserChain(arena.getWidth() - Measure.units(25f), Measure.units(52.5f), 1, 3f,
+                        lb.build()));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 2, Measure.units(40f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)));
+
+                return arena;
+            }
+        };
+    }
+
+
+
+    public ArenaGen room14(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
 
                 return arena;
             }

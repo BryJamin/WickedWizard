@@ -133,9 +133,13 @@ public class BouncerFactory extends EnemyFactory {
 
         //BagSearch.removeObjectOfTypeClass(VelocityComponent.class, bag);
 
-        MultiPistol multiPistol = new MultiPistol(assetManager, 1.5f);
-        multiPistol.setAngles(new int[] {0,30,60,90,120,150,180,210,240,270,300,330});
-        multiPistol.setScale(2);
+        MultiPistol multiPistol = new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(1.5f)
+                .angles(0,30,60,90,120,150,180,210,240,270,300,330)
+                .shotScale(2)
+                .expire(true)
+                .expireRange(Measure.units(50f))
+                .build();
 
         bag.add(new WeaponComponent(multiPistol, 0f));
 

@@ -53,7 +53,7 @@ public class RoomTypeSystem extends BaseSystem {
 
 
 /*                    if(current.roomType == Arena.RoomType.BOSS) {
-                        if (!nextLevelDoor && world.getSystem(ChangeLevelSystem.class).getLevel() != ChangeLevelSystem.Level.FREEDOMRUN) {
+                        if (!nextLevelDoor && world.getSystem(ChangeLevelSystem.class).getLevel() != ChangeLevelSystem.Level.FIVE) {
                             Entity e = world.createEntity();
                             for (Component c : new DeathFactory(world.getSystem(RenderingSystem.class).getAssetManager()).worldPortal(current.getWidth() / 2, current.getHeight() / 2)) {
                                 e.edit().add(c);
