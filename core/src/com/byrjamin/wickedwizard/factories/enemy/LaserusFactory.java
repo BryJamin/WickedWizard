@@ -74,6 +74,7 @@ public class LaserusFactory extends EnemyFactory{
                 .orbitalAndIntervalSize(Measure.units(5f))
                 .expiryTime(0.25f)
                 .disperseTime(0.5f)
+                .layer(TextureRegionComponent.FOREGROUND_LAYER_NEAR)
                 .build();
 
         WeaponComponent wc = new WeaponComponent(

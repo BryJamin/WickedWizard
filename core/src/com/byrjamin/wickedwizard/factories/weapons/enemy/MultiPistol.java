@@ -147,6 +147,7 @@ public class MultiPistol extends Pistol{
             double angleOfTravel = angleInRadians + Math.toRadians(i);
             for (Component c : bulletFactory.basicBulletBag(x, y, shotScale, color)) {
                 bullet.edit().add(c);
+            }
 
                 bullet.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeed, angleOfTravel),
                         BulletMath.velocityY(shotSpeed, angleOfTravel)));
@@ -168,7 +169,6 @@ public class MultiPistol extends Pistol{
                 bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
                         Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED))));
                 //bullet.edit().remove(CollisionBoundComponent.class);
-            }
         }
     }
 

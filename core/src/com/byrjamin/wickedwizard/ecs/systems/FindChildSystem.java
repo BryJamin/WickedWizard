@@ -43,6 +43,11 @@ public class FindChildSystem extends EntitySystem {
         IntBag parents = world.getAspectSubscriptionManager().get(Aspect.all(ParentComponent.class)).getEntities();
         for(int i = 0; i < parents.size(); i++){
             ParentComponent pc = world.getEntity(parents.get(i)).getComponent(ParentComponent.class);
+
+            //TODO if you kill two parents in the exact same game loop the Aspect does not update yet.
+            //TODO it may be better to link children to parents to avoid the null pointer exception that can occur
+            if(pc == null) return null;
+
             if(pc.children.contains(c, true)){
                 return world.getEntity(parents.get(i));
             }

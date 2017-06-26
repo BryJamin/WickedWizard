@@ -21,6 +21,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
@@ -45,6 +46,7 @@ public class LaserOrbitalTask implements Task {
     private float expiryTime;
 
     private int numberOfOrbitals;
+    private int layer;
 
     private Color color;
 
@@ -68,6 +70,8 @@ public class LaserOrbitalTask implements Task {
         private float expiryTime;
 
         private int numberOfOrbitals;
+
+        private int layer = TextureRegionComponent.ENEMY_LAYER_FAR;
 
         private int[] angles = new int[]{0};
 
@@ -102,6 +106,8 @@ public class LaserOrbitalTask implements Task {
         public LaserBuilder numberOfOrbitals(int val)
         { numberOfOrbitals = val; return this; }
 
+        public LaserBuilder layer(int val)
+        { layer = val; return this; }
 
         public LaserBuilder angles(int... val)
         { angles = val; return this; }
@@ -120,6 +126,7 @@ public class LaserOrbitalTask implements Task {
         this.speedInDegrees = lb.speedInDegrees;
         this.chargeTime = lb.chargeTime;
         this.numberOfOrbitals = lb.numberOfOrbitals;
+        this.layer = lb.layer;
         this.angles = lb.angles;
         this.color = lb.color;
         this.expire = lb.expire;
@@ -184,7 +191,7 @@ public class LaserOrbitalTask implements Task {
                 //TODO was Enemy Layer Far
 
                 orbital.edit().add(new TextureRegionComponent(atlas.findRegion("block"),
-                        orbitalSize, orbitalSize, TextureRegionComponent.FOREGROUND_LAYER_NEAR, color));
+                        orbitalSize, orbitalSize, layer, color));
 
                 orbital.edit().add(new FadeComponent(true, chargeTime, false));
                 orbital.edit().add(new IntangibleComponent());

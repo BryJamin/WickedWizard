@@ -43,7 +43,10 @@ public class ChestFactory extends AbstractFactory {
     }
 
     public final float width = Measure.units(10f);
-    public final float height = Measure.units(10f);
+    public final float height = Measure.units(7f);
+
+    public final float texWidth = Measure.units(10f);
+    public final float texHeight = Measure.units(10f);
 
 
     public ComponentBag chestBag(float x, float y){
@@ -64,7 +67,7 @@ public class ChestFactory extends AbstractFactory {
         animMap.put(1, new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions("chest"), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), texWidth, texHeight,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
         bag.add(new OnDeathActionComponent(gibletFactory.giblets(5,0.4f,
                 Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE))));
@@ -74,14 +77,14 @@ public class ChestFactory extends AbstractFactory {
 
     public ComponentBag centeredChestBag(float x, float y, OnDeathActionComponent odac){
         x = x - width / 2;
-        y = y- width / 2;
+        y = y- height / 2;
         return chestBag(x,y,odac);
     }
 
 
     public ComponentBag centeredChestBag(float x, float y) {
         x = x - width / 2;
-        y = y- width / 2;
+        y = y- height / 2;
         return chestBag(x, y);
     }
 
@@ -92,6 +95,9 @@ public class ChestFactory extends AbstractFactory {
 
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
+
+
+
         bag.add(new VelocityComponent());
         bag.add(new LootComponent(5, 2));
         bag.add(new GravityComponent());
@@ -104,7 +110,7 @@ public class ChestFactory extends AbstractFactory {
         animMap.put(1, new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions("chest"), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), texWidth, texHeight,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
         bag.add(odac);
 
