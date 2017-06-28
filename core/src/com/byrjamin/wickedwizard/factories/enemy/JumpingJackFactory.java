@@ -44,6 +44,9 @@ public class JumpingJackFactory extends EnemyFactory{
     private static final float jumpSpeed = Measure.units(100);
     private static final float airTime = 0.4f;
 
+    private static final float tiredPhaseTime = 3.0f;
+    private static final float awakePhaseTime = 6.0f;
+
 
     private static final int JUMPINGJACKANIMATION = 0;
     private static final int JUMPINGJACKTIREDANIMATION = 1;
@@ -76,8 +79,8 @@ public class JumpingJackFactory extends EnemyFactory{
 
 
     PhaseComponent phaseComponent = new PhaseComponent();
-        phaseComponent.addPhase(6.0f, new JumpJackPhase());
-        phaseComponent.addPhase(2.0f, new JumpJackTiredPhase());
+        phaseComponent.addPhase(awakePhaseTime, new JumpJackPhase());
+        phaseComponent.addPhase(tiredPhaseTime, new JumpJackTiredPhase());
 
         phaseComponent.addPhaseSequence(0,1);
 
