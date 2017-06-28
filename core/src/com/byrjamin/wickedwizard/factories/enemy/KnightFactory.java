@@ -61,8 +61,8 @@ public class KnightFactory extends EnemyFactory {
 
     private static final float health = 20;
 
-    private static final float vSpeed = Measure.units(5f);
-    private static final float hSpeed = Measure.units(10f);
+    private static final float vSpeed = Measure.units(10f);
+    private static final float hSpeed = Measure.units(20f);
 
     private final GibletFactory gibletFactory;
 

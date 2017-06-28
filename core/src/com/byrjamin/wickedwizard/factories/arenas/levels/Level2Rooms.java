@@ -80,7 +80,7 @@ public class Level2Rooms extends AbstractFactory{
         ag.add(room13GoatWizardAndBlobs());
         ag.add(room14WalkingThroughRoom());
         ag.add(room15JigAndTurretWithGuard());
-        ag.add(room16Width2SpikeTreasure());
+        ag.add(room16TreasureGoatTrap());
         ag.add(room17ChestInCenterTwoTurretsOnWalls());
         ag.add(room18TwoSilverheadsOnPlatforms());
         ag.add(room19MultiWaveRoomEndsInGoat());
@@ -686,7 +686,7 @@ public class Level2Rooms extends AbstractFactory{
 
 
 
-    public ArenaGen room16Width2SpikeTreasure() {
+    public ArenaGen room16TreasureGoatTrap() {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {

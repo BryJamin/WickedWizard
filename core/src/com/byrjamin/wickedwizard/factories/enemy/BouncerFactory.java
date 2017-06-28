@@ -66,8 +66,6 @@ public class BouncerFactory extends EnemyFactory {
 
     public ComponentBag largeBouncer(float x, float y){
 
-        x = x - width * 2 / 2;
-        y = y - height * 2 / 2;
         ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, random.nextBoolean());
         BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
 

@@ -135,6 +135,16 @@ public class TextureStrings {
     //SWITCH
     public static final String SWITCH = "enemy/switch";
 
+
+    //JUMPING JACK
+    public static final String JUMPING_JACK = "enemy/jumping_jack";
+    public static final String JUMPING_JACK_TIRED = "enemy/jumping_jack_tired";
+
+    //SNAKE
+    public static final String SNAKE_WHITE = "enemy/snake";
+    public static final String SNAKE_BLACK = "enemy/snake_black";
+    public static final String SNAKE_GREENISH = "enemy/snake_greenish";
+
     //PLAYER
 
 

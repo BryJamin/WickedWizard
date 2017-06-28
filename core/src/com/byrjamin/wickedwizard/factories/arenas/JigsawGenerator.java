@@ -317,14 +317,6 @@ public class JigsawGenerator {
 
         startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
 
-        //startingArena = level2Rooms.room9SpikeWallJump().createArena(new MapCoords());
-
-        //startingArena = level1Rooms.room21Width2TopBottomSeperation().createArena(new MapCoords(0,0));
-
-       // startingArena.addEntity(decorFactory.lockBox(Measure.units(20f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
-        //startingArena = level1Rooms.room9deadEndW2().createArena(new MapCoords(0,0));
-    //    startingArena.addEntity(new ChestFactory(assetManager).centeredChestBag(startingArena.getWidth() / 2, startingArena.getHeight() / 2));
-
         placedArenas.add(startingArena);
         placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(4,0)));
@@ -375,7 +367,7 @@ public class JigsawGenerator {
 
         //startingArena = tutorialFactory.grappleTutorial(new MapCoords());
 
-        //startingArena = level5Rooms.room13DoubleLaserArenaWithBouncersAndLaserus().createArena(new MapCoords());
+        startingArena = level5Rooms.room23JumpingJack().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 
