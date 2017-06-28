@@ -9,6 +9,7 @@ import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
@@ -19,6 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
@@ -32,6 +34,7 @@ public class CollisionSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<PlayerComponent> playerm;
+    ComponentMapper<EnemyComponent> enemym;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WallComponent> wm;
@@ -48,11 +51,13 @@ public class CollisionSystem extends EntityProcessingSystem {
     private Aspect.Builder wall;
     private Aspect.Builder playerWalls;
     private Aspect.Builder platforms;
+    private Aspect.Builder enemyOnlyWalls;
 
     @SuppressWarnings("unchecked")
     public  CollisionSystem() {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
         wall = Aspect.all(WallComponent.class);
+        enemyOnlyWalls = Aspect.all(CollisionBoundComponent.class, EnemyOnlyWallComponent.class);
         playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class, GrappleableComponent.class);
         platforms = Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class);
     }
@@ -82,6 +87,10 @@ public class CollisionSystem extends EntityProcessingSystem {
 
         if(!playerm.has(e) && !bulletm.has(e) && !grapplem.has(e)) {
             addNearByCollidableObjects(cbc.bound, collidableobjects, platforms);
+        }
+
+        if(enemym.has(e)) {
+            addNearByCollidableObjects(cbc.bound, collidableobjects, enemyOnlyWalls);
         }
 
 

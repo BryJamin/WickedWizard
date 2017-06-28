@@ -24,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -195,8 +196,10 @@ public class DecorFactory extends AbstractFactory {
 
         bag.add(new InCombatActionComponent(new Task() {
             @Override
+
             public void performAction(World world, Entity e) {
 
+                e.edit().add(new EnemyOnlyWallComponent());
                 e.edit().add(new ProximityTriggerAIComponent(new Task() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -222,6 +225,7 @@ public class DecorFactory extends AbstractFactory {
             @Override
             public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(new ProximityTriggerAIComponent());
+                e.edit().remove(EnemyOnlyWallComponent.class);
                 FadeComponent fc = new FadeComponent(false, 0.5f, false);
                 fc.minAlpha = 0;
                 fc.maxAlpha = 0.5f;

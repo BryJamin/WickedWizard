@@ -367,7 +367,7 @@ public class JigsawGenerator {
 
         //startingArena = tutorialFactory.grappleTutorial(new MapCoords());
 
-        //startingArena = level5Rooms.room23JumpingJack().createArena(new MapCoords());
+        startingArena = level5Rooms.room27Height3TreasureRoom().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 
