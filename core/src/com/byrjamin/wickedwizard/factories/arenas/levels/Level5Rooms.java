@@ -838,7 +838,6 @@ public class Level5Rooms extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-
                 Arena arena = new Arena(arenaSkin, defaultCoords,
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2));
@@ -884,12 +883,6 @@ public class Level5Rooms extends AbstractFactory {
 
                 arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(17.5f), Measure.units(65f)));
 
-
-
-                
-
-
-
                 arena.addEntity(decorFactory.wallBag(Measure.units(60f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(110f)));
@@ -899,17 +892,49 @@ public class Level5Rooms extends AbstractFactory {
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(110f), Measure.units(20f), Measure.units(20f)));
 
 
-                BombFactory bf = new BombFactory(assetManager);
+                return arena;
+            }
+        };
+    }
 
-/*
-                arena.addEntity(bf.seaMine(Measure.units(50f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.seaMine(Measure.units(50f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.seaMine(Measure.units(20f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
 
-                arena.addEntity(bf.seaMine(Measure.units(20f), Measure.units(100f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.seaMine(arena.getWidth() / 4 , Measure.units(140f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.seaMine(arena.getWidth() / 4 * 3, Measure.units(140f), random.nextBoolean(), random.nextBoolean()));
-*/
+
+
+
+    public ArenaGen room28OmniTreasureRoom(){
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords);
+
+                arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR))
+                        .buildArena(arena);
+
+
+
+                arena.addEntity(decorFactory.lockWall(Measure.units(5f), Measure.units(35f), Measure.units(30f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(25f)));
+
+
+                arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(40f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(40f)));
+
+
+                arena.addEntity(chestFactory.chestBag(Measure.units(65f), Measure.units(10f), chestFactory.trapODAC()));
+
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(Measure.units(70f), Measure.units(45f)));
+
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(5f), Measure.units(10f), Measure.units(35f), Measure.units(25f), 0));
+
+
+
 
                 return arena;
             }

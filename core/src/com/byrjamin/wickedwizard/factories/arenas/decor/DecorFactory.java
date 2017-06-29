@@ -184,13 +184,12 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
 
-        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
-                arenaSkin.getWallTexture(),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), width, height,
                 PLAYER_LAYER_FAR);
-        trbc.color = arenaSkin.getWallTint();
-        trbc.color.a = 0;
-        trbc.DEFAULT = arenaSkin.getWallTint();
-        bag.add(trbc);
+        trc.color = arenaSkin.getWallTint();
+        trc.color.a = 0;
+        trc.DEFAULT = arenaSkin.getWallTint();
+        bag.add(trc);
 
 
 
@@ -200,20 +199,28 @@ public class DecorFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
 
                 e.edit().add(new EnemyOnlyWallComponent());
-                e.edit().add(new ProximityTriggerAIComponent(new Task() {
+                e.edit().add(new ConditionalActionComponent(new Condition() {
+                    @Override
+                    public boolean condition(World world, Entity entity) {
+
+                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
+
+                    }
+
+
+                }, new Task() {
                     @Override
                     public void performAction(World world, Entity e) {
                         VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
                         vc.velocity.x = BulletMath.velocityX(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
                         vc.velocity.y = BulletMath.velocityY(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
-                        e.getComponent(ProximityTriggerAIComponent.class).triggered = false;
                     }
 
                     @Override
                     public void cleanUpAction(World world, Entity e) {
 
                     }
-                }, new HitBox(new Rectangle(x,y, width, height))));
+                }));
 
 
                 FadeComponent fc = new FadeComponent(true, 0.5f, false);
@@ -224,7 +231,7 @@ public class DecorFactory extends AbstractFactory {
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(new ProximityTriggerAIComponent());
+                e.edit().remove(ConditionalActionComponent.class);
                 e.edit().remove(EnemyOnlyWallComponent.class);
                 FadeComponent fc = new FadeComponent(false, 0.5f, false);
                 fc.minAlpha = 0;
