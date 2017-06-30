@@ -181,12 +181,11 @@ public class BlobFactory extends EnemyFactory {
 
 
 
-    public Bag<Component> BiggaBlobbaBag(float x, float y){
+    public Bag<Component> biggaBlobbaBag(float x, float y){
 
 
         x = x - width / 2;
         y = y - height / 2;
-
 
 
         Bag<Component> bag = new Bag<Component>();

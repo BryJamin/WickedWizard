@@ -297,6 +297,9 @@ public class JigsawGenerator {
             arenas = generateJigsaw();
         }
 
+        this.startingMap = level1BossMaps.blobbaMap(new BossTeleporterComponent());
+        this.startingArena = startingMap.getCurrentArena();
+
         this.cleanArenas(arenas);
     }
 
