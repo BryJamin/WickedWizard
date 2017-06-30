@@ -72,6 +72,14 @@ public class Level5Rooms extends AbstractFactory {
         ag.add(room20TwoGhostsOppositeDirectionSteppingStone());
         ag.add(room21RightSnake());
         ag.add(room22LeftSnake());
+        ag.add(room23JumpingJack());
+        ag.add(room24SmallVerticalRoomSnake());
+        ag.add(room25SmallRoomHorizontalSnake());
+        ag.add(room26Width3MiddleArena());
+        ag.add(room27Height3TreasureRoom());
+        ag.add(room28OmniTreasureRoom());
+        ag.add(room29JackLaserAndSnake());
+        ag.add(room30Height3ThroughRoomWithHorizontalLasers());
         return ag;
     }
 
@@ -916,22 +924,26 @@ public class Level5Rooms extends AbstractFactory {
                                 ArenaBuilder.wall.DOOR))
                         .buildArena(arena);
 
+                boolean lockedChestsAreLeft = random.nextBoolean();
 
 
-                arena.addEntity(decorFactory.lockWall(Measure.units(5f), Measure.units(35f), Measure.units(30f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(25f)));
+                arena.addEntity(decorFactory.lockWall(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(lockedChestsAreLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(25f)));
 
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(40f)));
-                arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(40f)));
+                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(40f)));
+                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(40f)));
 
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(65f), Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(65f) : arena.getWidth() - Measure.units(75f), Measure.units(10f), chestFactory.trapODAC()));
 
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(Measure.units(70f), Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(lockedChestsAreLeft ? Measure.units(70f) : arena.getWidth() - Measure.units(70f), Measure.units(45f)));
 
-                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(5f), Measure.units(10f), Measure.units(35f), Measure.units(25f), 0));
+                arena.addEntity(decorFactory.appearInCombatWallPush(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(40f),
+                        Measure.units(10f), Measure.units(35f),
+                        Measure.units(25f),
+                        lockedChestsAreLeft ? 0 : 180));
 
 
 
@@ -943,7 +955,125 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
+    public ArenaGen room29JackLaserAndSnake() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
 
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+
+                arena.roomType = Arena.RoomType.TRAP;
+
+                boolean bool = random.nextBoolean();
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)),
+                        bool ? arenaEnemyPlacementFactory.spawnRightSnake(Measure.units(20f), Measure.units(35f), Direction.LEFT,4)
+                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - Measure.units(20f), Measure.units(35f), Direction.RIGHT, 4));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)),
+                        !bool ? arenaEnemyPlacementFactory.spawnRightSnake(Measure.units(20f), Measure.units(35f), Direction.LEFT,4)
+                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - Measure.units(20f), Measure.units(35f), Direction.RIGHT, 4));
+
+                arena.addWave();
+
+                return arena;
+
+            }
+
+        };
+
+    }
+
+
+
+
+    public ArenaGen room30Height3ThroughRoomWithHorizontalLasers() {
+        return new ArenaGen() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                Arena arena = new Arena(arenaSkin, defaultCoords,
+                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2));
+
+                arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addSection(new ArenaBuilder.Section(defaultCoords,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.MANDATORYDOOR,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.NONE))
+                        .buildArena(arena);
+
+
+                boolean bool = random.nextBoolean();
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)),
+                        bool ? arenaEnemyPlacementFactory.spawnRightSnake(Measure.units(20f), Measure.units(35f), Direction.LEFT,4)
+                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - Measure.units(20f), Measure.units(35f), Direction.RIGHT, 4));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)),
+                        !bool ? arenaEnemyPlacementFactory.spawnRightSnake(Measure.units(20f), Measure.units(35f), Direction.LEFT,4)
+                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - Measure.units(20f), Measure.units(35f), Direction.RIGHT, 4));
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
+                        new SpawnerFactory.Spawner() {
+                            public Bag<Component> spawnBag(float x, float y) {
+                                return chestFactory.centeredChestBag(x,y);
+                            }
+                        }));
+
+
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
+                        .orbitalAndIntervalSize(Measure.units(5f))
+                        .numberOfOrbitals(6)
+                        .angles(0);
+
+                LaserOrbitalTask.LaserBuilder empty = new LaserOrbitalTask.LaserBuilder(assetManager)
+                        .orbitalAndIntervalSize(Measure.units(5f));
+
+                for(int i = 0; i < 5; i++) {
+
+                    float y = Measure.units(40f + (i * 40f));
+
+                    arena.addEntity(decorFactory.laserChain(Measure.units(60f), y, 2,
+                            lb.build()));
+                    arena.addEntity(decorFactory.laserChain(Measure.units(85f), y, 2,
+                            empty.build()));
+
+                    arena.addEntity(decorFactory.laserChain(Measure.units(5f), y, 2,
+                            lb.build()));
+                    arena.addEntity(decorFactory.laserChain(Measure.units(30f), y, 2,
+                            empty.build()));
+
+                }
+
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(45f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(85f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(125f)));
+
+                arena.addEntity(decorFactory.platform(Measure.units(15), Measure.units(125f), Measure.units(15f)));
+                arena.addEntity(decorFactory.platform(Measure.units(70), Measure.units(125f), Measure.units(15f)));
+
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(5), Measure.units(90f)));
+
+
+                return arena;
+
+            }
+
+        };
+
+    }
 
 
 }
