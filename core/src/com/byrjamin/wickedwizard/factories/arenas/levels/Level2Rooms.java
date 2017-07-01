@@ -106,9 +106,6 @@ public class Level2Rooms extends AbstractFactory{
 
                 Arena arena = new Arena(arenaSkin, defaultCoords);
 
-                arena.setWidth(SECTION_WIDTH);
-                arena.setHeight(SECTION_HEIGHT);
-
                 arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,

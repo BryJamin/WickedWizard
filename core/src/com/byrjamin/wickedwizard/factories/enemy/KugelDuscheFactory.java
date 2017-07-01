@@ -108,10 +108,9 @@ public class KugelDuscheFactory extends EnemyFactory {
             }
         };
 
+        //TODO maybe just make this a timed action?
         PhaseComponent pc = new PhaseComponent();
         pc.addPhase(phaseTime, p);
-        pc.addPhaseSequence(0,0);
-
         bag.add(pc);
        // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 
@@ -161,8 +160,6 @@ public class KugelDuscheFactory extends EnemyFactory {
         PhaseComponent pc = new PhaseComponent();
         pc.addPhase(8f, new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}));
         pc.addPhase(8f, new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? -1.25f : 1.25f, 10,1f, new int[]{0,180}));
-        pc.addPhaseSequence(1,0);
-
         bag.add(pc);
 
 

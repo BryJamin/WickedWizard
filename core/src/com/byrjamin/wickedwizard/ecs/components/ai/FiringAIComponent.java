@@ -11,12 +11,15 @@ public class FiringAIComponent extends Component{
         TARGETED, UNTARGETED
     }
 
-    public AI ai = AI.TARGETED;
+    public AI ai;
 
     //uses radians
     public double firingAngleInRadians;
 
     public float firingDelay;
+
+    public float offsetX;
+    public float offsetY;
 
     public FiringAIComponent(){
         ai = AI.TARGETED;

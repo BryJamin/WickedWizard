@@ -17,18 +17,6 @@ public class RoomTransitionAnim {
     private float WIDTH;
     private float HEIGHT;
 
-    private float slideInTime;
-    private float slideOutTime;
-
-    private float SPEED = Measure.units(50f);
-
-    private float transitionTime = 20;
-
-    private float pauseTime;
-    private float delayTime;
-
-    private boolean isPaused;
-
     private boolean finished;
     private boolean started;
 

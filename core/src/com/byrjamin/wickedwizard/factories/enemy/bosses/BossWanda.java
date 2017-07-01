@@ -108,13 +108,18 @@ public class BossWanda extends EnemyFactory {
 
 
         PhaseComponent pc = new PhaseComponent();
-        pc.addPhase(2.5f, new Phase1());
-        pc.addPhase(0.5f, new Phase2());
-        pc.addPhase(2f, new Phase3(Direction.LEFT));
-/*        pc.addPhase(15f, new BossGurner.Orbitals(Measure.units(50f), left));
-        pc.addPhase(15f, new BossGurner.Orbitals(Measure.units(50f), !left));*/
+        Phase1AOE p1 = new Phase1AOE();
+        PhaseFadeDash p2 = new PhaseFadeDash();
+        Phase3 p3 = new Phase3(Direction.LEFT);
 
-        pc.addPhaseSequence(0,1,2,1,2,1,2,1);
+        pc.addPhase(0.5f, p2);
+        pc.addPhase(2.5f, p3);
+        pc.addPhase(0.5f, p2);
+        pc.addPhase(2.5f, p3);
+        pc.addPhase(0.5f, p2);
+        pc.addPhase(2.5f, p3);
+        pc.addPhase(0.5f, p2);
+        pc.addPhase(2.5f, p1);
 
         bag.add(pc);
 
@@ -125,7 +130,7 @@ public class BossWanda extends EnemyFactory {
 
 
 
-    private class Phase1 implements Task {
+    private class Phase1AOE implements Task {
         @Override
         public void performAction(World world, Entity e) {
             e.edit().add(new FadeComponent(true, 0.5f, false));
@@ -171,7 +176,7 @@ public class BossWanda extends EnemyFactory {
         }
     }
 
-    private class Phase2 implements Task {
+    private class PhaseFadeDash implements Task {
         Random random = new Random();
 
         @Override

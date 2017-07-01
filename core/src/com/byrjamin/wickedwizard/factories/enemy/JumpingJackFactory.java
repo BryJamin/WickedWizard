@@ -78,13 +78,9 @@ public class JumpingJackFactory extends EnemyFactory{
         bag.add(new VelocityComponent(startsRight ? speed : -speed, 0));
 
 
-    PhaseComponent phaseComponent = new PhaseComponent();
-        phaseComponent.addPhase(awakePhaseTime, new JumpJackPhase());
+        PhaseComponent phaseComponent = new PhaseComponent();
         phaseComponent.addPhase(tiredPhaseTime, new JumpJackTiredPhase());
-
-        phaseComponent.addPhaseSequence(0,1);
-
-
+        phaseComponent.addPhase(awakePhaseTime, new JumpJackPhase());
         bag.add(phaseComponent);
 
 

@@ -17,6 +17,7 @@ import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
@@ -27,15 +28,16 @@ import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
-import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.Pair;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
@@ -44,10 +46,34 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 public class BiggaBlobbaBoss extends EnemyFactory {
 
-    private final float width = Measure.units(25);
-    private final float height = Measure.units(25);
+    private final float width = Measure.units(27);
+    private final float height = Measure.units(30);
+
+
+    private final float bottomWidth = Measure.units(27);
+    private final float bottomHeight = Measure.units(10);
+
+    private final float bottomMidWidth = Measure.units(23);
+    private final float bottomMidHeight = Measure.units(8);
+
+    private final float bottomTopWidth = Measure.units(12f);
+    private final float bottomTopHeight = Measure.units(5);
+
+    private final float crownWidth = Measure.units(5f);
+    private final float crownHeight = Measure.units(5);
+
+    private final float gunOffsetY = Measure.units(12.5f);
+
 
     private final float speed = Measure.units(60f);
+
+    private final float jumpTransitionVly = Measure.units(40f);
+    private final float jumpVlx = Measure.units(45f);
+    private final float jumpVly = Measure.units(75f);
+
+    private final float textureSize = Measure.units(35f);
+
+    private final int CHARGINGANIMATION = 5;
 
 
     public BiggaBlobbaBoss(AssetManager assetManager) {
@@ -71,7 +97,15 @@ public class BiggaBlobbaBoss extends EnemyFactory {
         Rectangle collision = new Rectangle(x, y, Measure.units(33), Measure.units(38));
 
         CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x, y, width, height));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, width, height)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, bottomWidth, bottomHeight)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, bottomMidWidth, bottomMidHeight),
+                CenterMath.offsetX(width, bottomMidWidth), bottomHeight));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, bottomTopWidth, bottomTopHeight),
+                CenterMath.offsetX(width, bottomTopWidth), bottomHeight + bottomMidHeight));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, crownWidth, crownHeight),
+                CenterMath.offsetX(width, crownWidth), bottomHeight + bottomMidHeight + bottomTopHeight));
+
+
 /*        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(29), Measure.units(5)),
                 Measure.units(2), Measure.units(17)));
         cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(23), Measure.units(5)),
@@ -91,11 +125,14 @@ public class BiggaBlobbaBoss extends EnemyFactory {
         bag.add(new BlinkComponent());
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(1f / 20f, atlas.findRegions("block"), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(1f / 20f, atlas.findRegions(TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(CHARGINGANIMATION, new Animation<TextureRegion>(1f / 40f, atlas.findRegions(TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"),
-                width,
-                height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BIGGABLOBBA_STANDING),
+                CenterMath.offsetX(width, textureSize),
+                0,
+                textureSize,
+                textureSize,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         //TODO fix biggablobba
@@ -109,33 +146,19 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
 
         WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
-                .angles(20,50,60,80)
-                .shotSpeed(Measure.units(100f))
+                .angles(20,40,60,80, 100, 120, 140, 160)
+                .shotSpeed(Measure.units(75f))
                 .gravity(true)
                 .build(),  1.5f);
         bag.add(wc);
 
-        //TODO Add a spawner to biggablobba
-        SpawnerFactory.Spawner s = new SpawnerFactory.Spawner() {
-            @Override
-            public Bag<Component> spawnBag(float x, float y) {
-                //Bag<Component> b = smallblobBag(x,y);
-                //b.add(new MinionComponent());
-                //return b;
-                return null;
-            }
-        };
-
-        final SpawnerComponent sc2 = new SpawnerComponent(2.0f, s);
-        sc2.isEndless = true;
-
-        PhaseComponent pc = new PhaseComponent();
-
-
         Task task1 = new Task(){
-            FiringAIComponent f = new FiringAIComponent(0);
             @Override
             public void performAction(World world, Entity e) {
+
+                FiringAIComponent f = new FiringAIComponent(0);
+                f.offsetY = gunOffsetY;
+
                 e.edit().add(f);
             }
             @Override
@@ -144,26 +167,15 @@ public class BiggaBlobbaBoss extends EnemyFactory {
             }
         };
 
-        Task task2 = new Task(){
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(sc2);
-                e.edit().add(new BounceComponent());
-                e.getComponent(VelocityComponent.class).velocity.y = Measure.units(40f);
-            }
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(sc2);
-                e.edit().remove(BounceComponent.class);
-            }
-        };
 
-
-
-        pc.addPhase(7.0f, task1);
-        pc.addPhase(5.0f, movementPhase());
-        pc.addPhase(5.0f, jumpingPhase());
-        pc.addPhaseSequence(1,0, 2);
+        PhaseComponent pc = new PhaseComponent();
+        pc.addPhase(5.0f, task1);
+        pc.addPhase(new Pair<Task, Condition>(phaseChangeJump(), landingCondition(1f)));
+        pc.addPhase(jumpingPhase(5.0f));
+        pc.addPhase(new Pair<Task, Condition>(phaseChangeJump(), landingCondition(1f)));
+        pc.addPhase(6.0f, movementPhase());
+        pc.addPhase(new Pair<Task, Condition>(phaseChangeJump(), landingCondition(1f)));
+        //pc.addPhaseSequence(1,0, 2);
 
         bag.add(pc);
 
@@ -196,11 +208,37 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
     }
 
-
-
-    private Task jumpingPhase(){
-
+    private Task phaseChangeJump(){
         return new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new BounceComponent());
+                e.getComponent(VelocityComponent.class).velocity.y = jumpTransitionVly;
+                e.getComponent(VelocityComponent.class).velocity.x = 0;
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.getComponent(VelocityComponent.class).velocity.y = 0;
+                e.edit().remove(BounceComponent.class);
+            }
+        };
+    }
+
+    private Condition landingCondition(final float time){
+        return new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return entity.getComponent(PhaseComponent.class).currentPhaseTime > time &&
+                        entity.getComponent(CollisionBoundComponent.class).getRecentCollisions().contains(Collider.Collision.BOTTOM, true);
+            }
+        };
+    }
+
+
+    private Pair<Task, Condition> jumpingPhase(final float time){
+
+        Task task =  new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -212,15 +250,15 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
                         boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
 
-                        e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
-                        e.getComponent(VelocityComponent.class).velocity.y = Measure.units(85);
+                        e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? jumpVlx : -jumpVlx;
+                        e.getComponent(VelocityComponent.class).velocity.y = jumpVly;
 
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
 
 
                     }
 
-                }, 1.5f, true));
+                }, 0, 1.5f, true));
 
 
                 FrictionComponent fc = new FrictionComponent(true, false);
@@ -236,6 +274,7 @@ public class BiggaBlobbaBoss extends EnemyFactory {
             }
         };
 
+        return new Pair<Task, Condition>(task, landingCondition(time    ));
 
     }
 

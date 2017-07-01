@@ -114,10 +114,8 @@ public class BossGurner extends EnemyFactory{
         PhaseComponent pc = new PhaseComponent();
         pc.addPhase(10f, p);
         pc.addPhase(15f, new Orbitals(Measure.units(50f), left));
+        pc.addPhase(10f, p);
         pc.addPhase(15f, new Orbitals(Measure.units(50f), !left));
-
-        pc.addPhaseSequence(1,0,2,0);
-
         bag.add(pc);
         // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 

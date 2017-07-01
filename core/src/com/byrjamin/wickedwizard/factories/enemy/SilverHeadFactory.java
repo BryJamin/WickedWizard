@@ -150,13 +150,10 @@ public class SilverHeadFactory extends EnemyFactory {
 
         PhaseComponent pc = new PhaseComponent();
 
+        pc.addPhase(2.0f, task4);
         pc.addPhase(animMap.get(CLOSING).getAnimationDuration(), task1);
         pc.addPhase(animMap.get(CHARING).getAnimationDuration(), task2);
         pc.addPhase(animMap.get(OPENING).getAnimationDuration(), task3);
-        pc.addPhase(2.0f, task4);
-        pc.addPhaseSequence(2,3,0,1);
-
-
         bag.add(pc);
 
         return bag;
