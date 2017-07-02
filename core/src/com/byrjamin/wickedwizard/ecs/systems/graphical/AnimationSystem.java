@@ -57,13 +57,6 @@ public class AnimationSystem extends EntityProcessingSystem {
             sc.setCurrentState(key);
         }
 
-        if(world.getMapper(LootComponent.class).has(e)){
-            System.out.println("Animation");
-            System.out.println(ac.animations.containsKey(sc.getCurrentState()));
-            System.out.println(ac.animations.get(sc.getCurrentState()).getKeyFrameIndex(sc.stateTime));
-        }
-
-
         if(ac.animations.containsKey(sc.getCurrentState())){
             trc.region = ac.animations.get(sc.getCurrentState()).getKeyFrame(sc.stateTime);
         }

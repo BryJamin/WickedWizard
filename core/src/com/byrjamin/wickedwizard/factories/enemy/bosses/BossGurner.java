@@ -73,7 +73,7 @@ public class BossGurner extends EnemyFactory{
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 90);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 90);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
@@ -114,10 +114,8 @@ public class BossGurner extends EnemyFactory{
         PhaseComponent pc = new PhaseComponent();
         pc.addPhase(10f, p);
         pc.addPhase(15f, new Orbitals(Measure.units(50f), left));
+        pc.addPhase(10f, p);
         pc.addPhase(15f, new Orbitals(Measure.units(50f), !left));
-
-        pc.addPhaseSequence(1,0,2,0);
-
         bag.add(pc);
         // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 
@@ -144,11 +142,8 @@ public class BossGurner extends EnemyFactory{
         @Override
         public void performAction(World world, Entity e) {
 
-
             PositionComponent current = e.getComponent(PositionComponent.class);
-
             ParentComponent pc = new ParentComponent();
-
 
             float bulletSize = Measure.units(7.5f);
             float angleSpeed = isLeft ? 0.5f : -0.5f;
@@ -235,9 +230,9 @@ public class BossGurner extends EnemyFactory{
         }
 
         @Override
-        public void fire(World world, Entity e, float x, float y, double angle) {
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
             for(int i : angles){
-                double angleOfTravel = angle + Math.toRadians(i);
+                double angleOfTravel = angleInRadians + Math.toRadians(i);
                 Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4f);
                 bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
                 BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;

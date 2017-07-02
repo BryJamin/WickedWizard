@@ -63,11 +63,6 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-
-
-        //arena.addEntity(SilverHeadFactory.spawnSilverHead(1000, 600));
-        //arena.addEntity(KugelDuscheFactory.kugelDusche(arena.getWidth() / 2,arena.getHeight() / 2));
-
         arena.setWidth(SECTION_WIDTH);
         arena.setHeight(SECTION_HEIGHT);
 
@@ -96,35 +91,8 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         arena.addEntity(bag);
 
 
-        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), -90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
+        for(int i = 0; i < 3; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90));
 
-/*        ComponentBag cb = new ComponentBag();
-        cb.add(new PositionComponent(arena.getWidth() / 2, arena.getHeight() / 2));
-        cb.add(new CollisionBoundComponent(new Rectangle(arena.getWidth() / 2, arena.getHeight() / 2, Measure.units(10f), Measure.units(10f))));
-        cb.add(new OrbitComponent(new Vector3(arena.getWidth() / 2, arena.getHeight() / 2, 0), Measure.units(20f), 4, 0));
-
-        arena.addEntity(cb);*/
-/*
-        arena.addEntity(new KugelDuscheFactory(assetManager).kugelDusche(arena.getWidth() / 2, arena.getHeight() / 2));*/
-
-/*        cb = new ComponentBag();
-        cb.add(new PositionComponent(arena.getWidth() / 2, arena.getHeight() / 2));
-        cb.add(new CollisionBoundComponent(new Rectangle(arena.getWidth() / 2, arena.getHeight() / 2, Measure.units(10f), Measure.units(10f))));
-        cb.add(new OrbitComponent(new Vector3(arena.getWidth() / 2, arena.getHeight() / 2, 0), Measure.units(10f), 4, 0));
-
-        arena.addEntity(cb);*/
-
-
-/*        bag = new Bag<Component>();
-        createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, Color.BLACK);
-
-
-        bag.add(new PositionComponent(0, 0));
-        ShapeComponent sc = new ShapeComponent(WIDTH, WALLWIDTH * 2, FOREGROUND_LAYER_NEAR);
-        bag.add(sc);
-        bag.add(new FadeComponent());*/
         arena.addEntity(createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, new Color(Color.BLACK)));
 
         return arena;
@@ -166,12 +134,11 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(55f), Measure.units(35f)));
 
         //Arrows
-        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), 180));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(55f), 180));
+        for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(arena.getWidth() - Measure.units(27.5f), Measure.units(17.5f + (i * 25f)), 180));
+
         //arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), 0));
         //arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(27f), Measure.units(22.5f), 0));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(27f), Measure.units(52.5f), 0));
+        for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(17.5f), Measure.units(17.5f + (i * 25f)), 0));
 
         TextureFontComponent tfc = new TextureFontComponent(platformString);
         ComponentBag bag = new ComponentBag();
@@ -274,8 +241,8 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         arena.addEntity(createTutorialHighlight(WIDTH - WALLWIDTH / 2, WALLWIDTH * 2, WALLWIDTH / 2, HEIGHT));
         arena.addEntity(createTutorialHighlight(0, HEIGHT - WALLWIDTH / 2, WIDTH, WALLWIDTH / 2));
 
-        bag = new BlobFactory(assetManager).blobBag(arena.getWidth() - Measure.units(12), WALLWIDTH * 4);
-        BagSearch.getObjectOfTypeClass(AccelerantComponent.class, bag).maxX = Measure.units(0);
+        bag = new BlobFactory(assetManager).blobBag(arena.getWidth() - Measure.units(12), WALLWIDTH * 4, true);
+        //BagSearch.getObjectOfTypeClass(AccelerantComponent.class, bag).maxX = Measure.units(0);
         arena.addEntity(bag);
 
 
@@ -361,7 +328,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Bag<Component> bag = new Bag<Component>();
 
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 700));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 900));
         bag.add(new TextureFontComponent(endString));
         arena.addEntity(bag);
 
@@ -372,10 +339,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         arena.addEntity(decorFactory.chevronBag(Measure.units(54f), Measure.units(23f), 0));
 */
 
-        arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), -90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(25f), Measure.units(22.5f), -90));
-
+        for(int i = 0; i < 3; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90));
         return arena;
 
     }

@@ -31,17 +31,32 @@ public class SpawnerFactory extends EnemyFactory {
         this.arenaSkin = arenaSkin;
     }
 
-    private static float width = Measure.units(10f);
-    private static float height = Measure.units(10f);
+
+
+    private final float width = Measure.units(10f);
+    private final float height = Measure.units(10f);
 
     public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners) {
-        return spawnerBag(x,y,spawners,1);
+        return spawnerBag(x,y, 1, 1.0f, 1.0f, 1, spawners);
     }
 
-    public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners, int life){
+    public ComponentBag spawnerBag(float x, float y,int life, float spawnTime, Array<Spawner> spawners) {
+        return spawnerBag(x,y,life,spawnTime,spawnTime, 1, spawners);
+    }
 
-        x = x - width / 2;
-        y = y - height / 2;
+    public ComponentBag spawnerBag(float x, float y,int life, float spawnTime,float scale,  Array<Spawner> spawners) {
+        return spawnerBag(x,y,life,spawnTime,spawnTime, scale, spawners);
+    }
+
+
+    public ComponentBag spawnerBag(float x, float y,int life,float spawnTime,float resetTime, float scale, Array<Spawner> spawners){
+
+        float width = this.width * scale;
+        float height = this.height * scale;
+
+
+        x = x - width  / 2;
+        y = y - height  / 2;
 
 
         ComponentBag bag = new ComponentBag();
@@ -57,10 +72,11 @@ public class SpawnerFactory extends EnemyFactory {
         bag.add(new TextureRegionComponent(a.getKeyFrame(sc.stateTime), width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
 
-        SpawnerComponent spawn = new SpawnerComponent(spawners, 1.0f);
+        SpawnerComponent spawn = new SpawnerComponent(spawners, spawnTime);
         spawn.offsetX = width / 2;
         spawn.offsetY = height / 2;
         spawn.life = life;
+        spawn.resetTime = resetTime;
 
         bag.add(spawn);
         return bag;
@@ -75,7 +91,7 @@ public class SpawnerFactory extends EnemyFactory {
     public ComponentBag spawnerBag(float x, float y, Spawner spawner, int life){
         Array<Spawner> s = new Array<Spawner>();
         s.add(spawner);
-        return spawnerBag(x,y, s, life);
+        return spawnerBag(x,y, life,1.0f,1.0f, 1, s);
     }
 
 

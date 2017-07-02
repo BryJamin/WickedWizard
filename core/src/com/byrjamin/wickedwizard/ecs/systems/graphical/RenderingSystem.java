@@ -14,11 +14,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -48,6 +50,7 @@ public class RenderingSystem extends EntitySystem {
     private ComponentMapper<TextureRegionBatchComponent> trbm;
     private ComponentMapper<TextureFontComponent> trfm;
     private ComponentMapper<ShapeComponent> sm;
+    private ComponentMapper<CollisionBoundComponent> cbm;
 
     private ArrayList<Entity> orderedEntities;
 
@@ -66,8 +69,7 @@ public class RenderingSystem extends EntitySystem {
         super(Aspect.all(PositionComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
-                TextureFontComponent.class,
-                ShapeComponent.class
+                TextureFontComponent.class
         ));
         this.batch = batch;
         this.gamecam = gamecam;
@@ -104,18 +106,18 @@ public class RenderingSystem extends EntitySystem {
 
     protected void process(Entity e) {
 
+
         //System.out.println("INSIDE");
 
         PositionComponent pc = pm.get(e);
 
+
         if(trm.has(e)) {
             TextureRegionComponent trc = trm.get(e);
-
 
             boolean shaderOn = false;
 
             if(bm.has(e)){
-
                 shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT;
             }
 
@@ -127,46 +129,6 @@ public class RenderingSystem extends EntitySystem {
 
             float originX = trc.width * 0.5f;
             float originY = trc.height * 0.5f;
-
-
-            if(hm.has(e)){
-
-/*                batch.end();
-                whiteShaderProgram.begin();
-                whiteShaderProgram.setUniformf("u_viewportInverse", new Vector2(1f / trc.width, 1f / trc.height));
-                whiteShaderProgram.setUniformf("u_offset", 1f);
-                whiteShaderProgram.setUniformf("u_step", trc.width / 1000f);
-                whiteShaderProgram.setUniformf("u_color", new Vector3(255, 255, 255));
-                whiteShaderProgram.end();
-                batch.setShader(whiteShaderProgram);
-                batch.begin();*/
-/*
-
-                batch.end();
-                batch.setShader(shaderOutline);
-                batch.begin();
-                batch.draw(textureRegion, x, y, width, height, width, height, 1f, 1f, angle);
-                batch.end();
-                batch.setShader(null);
-                batch.begin();
-*/
-
-
-
-/*                batch.draw(trc.region,
-                        pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
-                        trc.width, trc.height,
-                        trc.width, trc.height,
-                        trc.scaleX * rendDirection(e), trc.scaleY,
-                        trc.rotation);
-
-                batch.end();
-                batch.setShader(null);
-                batch.begin();*/
-
-
-            }
-
 
             batch.setColor(trc.color);
 

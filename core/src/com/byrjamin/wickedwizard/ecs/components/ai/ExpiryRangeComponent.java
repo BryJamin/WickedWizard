@@ -27,11 +27,6 @@ public class ExpiryRangeComponent extends Component {
         this.range = range;
     }
 
-    public ExpiryRangeComponent(Vector3 startingPosition, Vector3 endPosition){
-        this.startingPosition = startingPosition;
-        this.endPosition = endPosition;
-    }
-
 
 
 

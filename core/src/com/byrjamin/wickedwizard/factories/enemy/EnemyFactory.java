@@ -31,7 +31,7 @@ public class EnemyFactory extends AbstractFactory {
         this.gibletFactory = new GibletFactory(assetManager);
     }
 
-    protected ComponentBag defaultEnemyBag (ComponentBag fillbag, float x, float y, float width, float height, float health) {
+    protected ComponentBag defaultEnemyBag (ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new LootComponent());
         fillbag.add(new HealthComponent(health));
@@ -55,7 +55,7 @@ public class EnemyFactory extends AbstractFactory {
 
     }
 
-    protected ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float width, float height, float health) {
+    protected ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new HealthComponent(health));
         fillbag.add(new BlinkComponent());

@@ -43,13 +43,16 @@ public class FiringAISystem extends EntityProcessingSystem {
 
         wc.timer.update(world.delta);
 
+        float x = cbc.getCenterX() + fc.offsetX;
+        float y = cbc.getCenterY() + fc.offsetY;
+
         switch(fc.ai){
             case TARGETED:
                 if(wc.timer.isFinishedAndReset()){
 
                     CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                    double angleOfTravel = (Math.atan2(pcbc.getCenterY() - cbc.getCenterY(), pcbc.getCenterX() - cbc.getCenterX()));
-                    wc.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), angleOfTravel);
+                    double angleOfTravel = (Math.atan2(pcbc.getCenterY() - y, pcbc.getCenterX() - x));
+                    wc.weapon.fire(world, e, x, y, angleOfTravel);
                     world.getSystem(SoundSystem.class).playSound(SoundStrings.enemyFireMix);
 
                     if(world.getMapper(AnimationStateComponent.class).has(e)){
@@ -59,7 +62,7 @@ public class FiringAISystem extends EntityProcessingSystem {
                 break;
             case UNTARGETED:
                 if(wc.timer.isFinishedAndReset()){
-                    wc.weapon.fire(world,e, cbc.getCenterX(), cbc.getCenterY(), fc.firingAngleInRadians);
+                    wc.weapon.fire(world,e, x, y, fc.firingAngleInRadians);
                     world.getSystem(SoundSystem.class).playSound(SoundStrings.enemyFireMix);
                     if(world.getMapper(AnimationStateComponent.class).has(e)){
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);

@@ -62,7 +62,7 @@ public class SilverHeadFactory extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y,health);
         bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new GravityComponent());
@@ -150,13 +150,10 @@ public class SilverHeadFactory extends EnemyFactory {
 
         PhaseComponent pc = new PhaseComponent();
 
+        pc.addPhase(2.0f, task4);
         pc.addPhase(animMap.get(CLOSING).getAnimationDuration(), task1);
         pc.addPhase(animMap.get(CHARING).getAnimationDuration(), task2);
         pc.addPhase(animMap.get(OPENING).getAnimationDuration(), task3);
-        pc.addPhase(2.0f, task4);
-        pc.addPhaseSequence(2,3,0,1);
-
-
         bag.add(pc);
 
         return bag;

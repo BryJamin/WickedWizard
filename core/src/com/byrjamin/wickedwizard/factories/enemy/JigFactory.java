@@ -44,7 +44,7 @@ public class JigFactory extends EnemyFactory{
         y = y - height / 2;
 
         ComponentBag bag = new ComponentBag();
-        this.defaultEnemyBag(bag, x,y,width,height,15);
+        this.defaultEnemyBag(bag, x,y,15);
 
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
@@ -83,6 +83,20 @@ public class JigFactory extends EnemyFactory{
 
     }
 
+
+    public ComponentBag movingJig(float x, float y){
+
+
+        ComponentBag bag = stationaryJig(x,y);
+        bag.add(new VelocityComponent(Measure.units(10f), 0));
+        bag.add(new BounceComponent());
+
+        return bag;
+
+
+
+
+    }
 
 
 

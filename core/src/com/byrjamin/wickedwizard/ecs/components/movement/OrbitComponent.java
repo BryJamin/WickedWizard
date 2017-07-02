@@ -16,7 +16,7 @@ public class OrbitComponent extends Component {
 
     public float speedInDegrees;
 
-    public float angleInDegrees;
+    public float currentAngleInDegrees;
 
     public float offsetX;
     public float offsetY;
@@ -27,15 +27,15 @@ public class OrbitComponent extends Component {
         speedInDegrees = 1;
     }
 
-    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float angleInDegrees){
-        this(centerOfOrbit, radius, speedInDegrees, angleInDegrees, 0, 0);
+    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float currentAngleInDegrees){
+        this(centerOfOrbit, radius, speedInDegrees, currentAngleInDegrees, 0, 0);
     }
 
-    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float angleInDegrees, float offsetX, float offsetY){
+    public OrbitComponent(Vector3 centerOfOrbit, float radius, float speedInDegrees, float currentAngleInDegrees, float offsetX, float offsetY){
         this.centerOfOrbit = centerOfOrbit;
         this.radius = radius;
         this.speedInDegrees = speedInDegrees;
-        this.angleInDegrees = angleInDegrees;
+        this.currentAngleInDegrees = currentAngleInDegrees;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }

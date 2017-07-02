@@ -18,6 +18,16 @@ public class WeaponComponent extends Component{
         this.weapon = weapon;
     }
 
+    public WeaponComponent(Weapon weapon){
+        //this.reloadTime = reloadTime;
+        timer = new StateTimer(weapon.getBaseFireRate(), 0);
+        this.weapon = weapon;
+    }
+
+    public void addChargeTime(float chargeTime){
+        timer.timeRemaining = chargeTime;
+    }
+
     public WeaponComponent(){}
 
 }

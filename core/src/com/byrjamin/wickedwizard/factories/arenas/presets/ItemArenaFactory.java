@@ -4,7 +4,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ItemRoomSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.Anger;
@@ -24,6 +27,8 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
     public ItemArenaFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager, arenaSkin);
         this.itemFactory = new ItemFactory(assetManager);
+        this.arenaSkin = new ItemRoomSkin(atlas);
+        this.decorFactory = new DecorFactory(assetManager, this.arenaSkin);
     }
 
     //TODO actually make the rareItem rare.
@@ -47,13 +52,13 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
         arena.addEntity(decorFactory.lockWall(arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(20f)));
 
 
-        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(Measure.units(7.5f),
-                Measure.units(40), item)) {
+        for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(Measure.units(10f),
+                Measure.units(35f), item)) {
             arena.addEntity(b);
         }
 
         for(ComponentBag b : new ItemFactory(assetManager).createItemAltarBag(Measure.units(75f),
-                Measure.units(40), rareItem)) {
+                Measure.units(35f), rareItem)) {
             arena.addEntity(b);
         }
 

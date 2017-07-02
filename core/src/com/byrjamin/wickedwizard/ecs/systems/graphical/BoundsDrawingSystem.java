@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -24,6 +25,7 @@ public class BoundsDrawingSystem extends EntitySystem {
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ProximityTriggerAIComponent> ptam;
+    ComponentMapper<WallComponent> wm;
 
     ComponentMapper<BlinkComponent> bm;
 
@@ -31,7 +33,7 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public BoundsDrawingSystem() {
-        super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class));
+        super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class, WallComponent.class));
     }
 
     public BoundsDrawingSystem(boolean isDrawing) {
@@ -60,6 +62,11 @@ public class BoundsDrawingSystem extends EntitySystem {
                     hitboxes.add(hb.hitbox);
                 }
             }
+
+            if(wm.has(e)) {
+                bounds.add(wm.get(e).bound);
+            }
+
             if(ptam.has(e)) {
                 for (HitBox hb : ptam.get(e).proximityHitBoxes) {
                     proxhitboxes.add(hb.hitbox);
