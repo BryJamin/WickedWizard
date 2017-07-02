@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
@@ -22,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
@@ -67,7 +69,7 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
         ComponentBag bag = new ComponentBag();
-        bag = defaultEnemyBag(bag, x, y, width, height, 15);
+        bag = defaultEnemyBag(bag, x, y, 15);
 
         bag.add(new VelocityComponent(Measure.units(10f), Measure.units(5f)));
         bag.add(new BounceComponent());
@@ -95,7 +97,7 @@ public class GoatWizardFactory extends EnemyFactory {
         bag.add(trc);
 
 
-        bag.add(new WeaponComponent(new GoatWeapon(), 0));
+        bag.add(new WeaponComponent(new GoatWeapon(Measure.units(10f)), 0));
         bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
@@ -109,12 +111,85 @@ public class GoatWizardFactory extends EnemyFactory {
         }, true));
         bag.add(new ParentComponent());
 
+        return bag;
+
+    }
 
 
 
+    public ComponentBag goatSorcerer(float x, float y){
+
+        float boundx = x;
+        float boundy = y;
+
+        x = x - width / 2;
+        y = y - height / 2;
 
 
+        ComponentBag bag = new ComponentBag();
+        bag = defaultEnemyBag(bag, x, y, 15);
 
+        bag.add(new VelocityComponent(Measure.units(10f), Measure.units(5f)));
+        bag.add(new BounceComponent());
+
+
+        CollisionBoundComponent cbc = new CollisionBoundComponent();
+
+        cbc.bound = new Rectangle(x , y , width, height);
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(7), Measure.units(7)), Measure.units(6.5f), Measure.units(7.5f)));
+
+        bag.add(cbc);
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f,
+                atlas.findRegions(TextureStrings.GOATWIZARD), Animation.PlayMode.LOOP_RANDOM));
+        bag.add(new AnimationComponent(animMap));
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOATWIZARD),
+                (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+
+        trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
+        trc.DEFAULT = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
+
+        bag.add(trc);
+
+
+        bag.add(new WeaponComponent(new Weapon() {
+
+            GoatWeapon first = new GoatWeapon(Measure.units(7.5f));
+            GoatWeapon second = new GoatWeapon(Measure.units(12.5f));
+
+            @Override
+            public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+                first.fire(world, e, x, y, angleInRadians);
+                second.fire(world, e, x,y,angleInRadians);
+            }
+
+            @Override
+            public float getBaseFireRate() {
+                return 2;
+            }
+
+            @Override
+            public float getBaseDamage() {
+                return 0;
+            }
+        }, 0));
+
+
+        bag.add(new ProximityTriggerAIComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new FiringAIComponent());
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FiringAIComponent.class);
+            }
+        }, true));
+        bag.add(new ParentComponent());
 
         return bag;
 
@@ -129,23 +204,29 @@ public class GoatWizardFactory extends EnemyFactory {
     private class GoatWeapon implements Weapon {
 
 
+
         float [] angles = new float[] {0,45,90,135,180,225,270,315};
 
         private boolean isShield = true;
+        private float radius;
+
+        public GoatWeapon(float radius){
+            this.radius = radius;
+        }
 
         //TODO somehow track if any balls have been killed and re-summon after a count down period
 
         @Override
-        public void fire(World world, Entity e, float x, float y, double angle) {
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
             if(isShield) {
                 for (float f : angles) {
-                    createBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, f, new Color(Color.BLACK));
+                    createBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, radius, f, new Color(Color.BLACK));
                 }
                 isShield = false;
             } else {
 
-                VelocityComponent vc = new VelocityComponent((float) (Measure.units(40) * Math.cos(angle)), (float) (Measure.units(40) * Math.sin(angle)));
+                VelocityComponent vc = new VelocityComponent((float) (Measure.units(40) * Math.cos(angleInRadians)), (float) (Measure.units(40) * Math.sin(angleInRadians)));
 
                 PositionComponent pc = e.getComponent(PositionComponent.class);
 
@@ -161,7 +242,8 @@ public class GoatWizardFactory extends EnemyFactory {
 
                     child.edit().add(new VelocityComponent(vc));
                     child.edit().add(new BulletComponent());
-                    //child.edit().add(new IntangibleComponent());
+                    child.edit().add(new IntangibleComponent());
+                    child.edit().add(new ExpiryRangeComponent(child.getComponent(PositionComponent.class).position, Measure.units(200f)));
 
                     child.getComponent(OrbitComponent.class).centerOfOrbit = newOrbitCenter.getComponent(PositionComponent.class).position;
 
@@ -174,10 +256,8 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
 
-            public void createBlock(World world, ParentComponent pc, Vector3 centerOfOrbit, float startAngle, Color color){
+            public void createBlock(World world, ParentComponent pc, Vector3 centerOfOrbit, float radius, float startAngle, Color color){
 
-
-            float radius = Measure.units(10);
 
 
 

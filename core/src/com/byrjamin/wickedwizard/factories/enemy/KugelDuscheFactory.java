@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -35,8 +36,8 @@ import java.util.Random;
 
 public class KugelDuscheFactory extends EnemyFactory {
 
-    private final float width = Measure.units(9);
-    private final float height = Measure.units(9f);
+    private final float width = Measure.units(10f);
+    private final float height = Measure.units(10f);
 
     private final float health = 11f;
 
@@ -70,7 +71,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, width, height, 25);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 25);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
@@ -98,7 +99,7 @@ public class KugelDuscheFactory extends EnemyFactory {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((left) ? 7.5 : -7.5);
+                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((left) ? 11 : -11);
             }
 
             @Override
@@ -107,10 +108,9 @@ public class KugelDuscheFactory extends EnemyFactory {
             }
         };
 
+        //TODO maybe just make this a timed action?
         PhaseComponent pc = new PhaseComponent();
         pc.addPhase(phaseTime, p);
-        pc.addPhaseSequence(0,0);
-
         bag.add(pc);
        // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 
@@ -122,6 +122,54 @@ public class KugelDuscheFactory extends EnemyFactory {
     }
 
 
+
+    //TODO since this changes this should be a different animation
+    public ComponentBag laserKugel(float x, float y, boolean isLeft){
+
+
+        final boolean left = isLeft;
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 25);
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
+
+
+        bag.add(new AnimationStateComponent(0));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.KUGELDUSCHE_LASER),
+                (left) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
+
+
+        bag.add(new AnimationComponent(animMap));
+
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.KUGELDUSCHE_LASER),
+                width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+
+        trc.color = new Color(Color.BLACK);
+        trc.DEFAULT = new Color(Color.BLACK);
+
+        bag.add(trc);
+
+       // bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}), 0));
+        // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
+
+
+        PhaseComponent pc = new PhaseComponent();
+        pc.addPhase(8f, new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? 1.25f : - 1.25f, 10,1f, new int[]{0,180}));
+        pc.addPhase(8f, new LaserOrbitalTask(assetManager, Measure.units(5f), isLeft ? -1.25f : 1.25f, 10,1f, new int[]{0,180}));
+        bag.add(pc);
+
+
+        return bag;
+
+
+    }
+
+
+
     public Weapon kugelWeapon(){
 
         return new Weapon() {
@@ -129,10 +177,10 @@ public class KugelDuscheFactory extends EnemyFactory {
             int[] angles = new int[] {0,180};
 
             @Override
-            public void fire(World world,Entity e, float x, float y, double angle) {
+            public void fire(World world,Entity e, float x, float y, double angleInRadians) {
                 //Math.toRadians()
                 for(int i : angles){
-                    double angleOfTravel = angle + Math.toRadians(i);
+                    double angleOfTravel = angleInRadians + Math.toRadians(i);
                     Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4);
                     bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
                     BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;

@@ -41,7 +41,7 @@ public class Pistol implements Weapon{
     }
 
     @Override
-    public void fire(World world, Entity e, float x, float y, double angle) {
+    public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
         if(e.getComponent(StatComponent.class) == null) return;
 
@@ -53,7 +53,7 @@ public class Pistol implements Weapon{
             bullet.edit().add(c);
         }
         bullet.edit().add(new FriendlyComponent());
-        bullet.edit().add(new VelocityComponent((float) (Measure.units(100) * Math.cos(angle)), (float) (Measure.units(100) * Math.sin(angle))));
+        bullet.edit().add(new VelocityComponent((float) (Measure.units(100) * Math.cos(angleInRadians)), (float) (Measure.units(100) * Math.sin(angleInRadians))));
 
         bullet.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0),
                 getRange() + (sc.range * Measure.units(5f))));

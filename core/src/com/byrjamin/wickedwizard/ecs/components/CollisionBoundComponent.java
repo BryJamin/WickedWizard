@@ -28,6 +28,14 @@ public class CollisionBoundComponent extends Component{
         }
     }
 
+
+    public CollisionBoundComponent(Rectangle bound, HitBox... hitBoxes){
+        this.bound = bound;
+        for(HitBox hb : hitBoxes) {
+            this.hitBoxes.add(hb);
+        }
+    }
+
     public CollisionBoundComponent(){
         this(new Rectangle(0,0, Measure.units(5), Measure.units(5)));
     }

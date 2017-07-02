@@ -34,7 +34,7 @@ public class FrictionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public FrictionSystem() {
-        super(Aspect.all(FrictionComponent.class));
+        super(Aspect.all(FrictionComponent.class, VelocityComponent.class));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class FrictionSystem extends EntityProcessingSystem {
             float minSpeed = Measure.units(0f);
 
             if(pm.has(e) && glidem.has(e)) {
-                    if (!cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) && !glidem.get(e).gliding) {
+                    if (!cbm.get(e).recentCollisions.contains(Collider.Collision.BOTTOM, false) && !glidem.get(e).gliding) {
                         minSpeed = Measure.units(20f);
                     }
             }
@@ -84,12 +84,12 @@ public class FrictionSystem extends EntityProcessingSystem {
             }
         }
 
-        if(pickUpm.has(e) && cbm.has(e) && gravm.has(e)){
-            return cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false);
+        if(pickUpm.has(e) && cbm.has(e) && gravm.has(e) || !fm.get(e).airFriction){
+            return cbm.get(e).recentCollisions.contains(Collider.Collision.BOTTOM, false);
         }
 
         if(glidem.has(e) && cbm.has(e)){
-            return cbm.get(e).recentCollisions.contains(Collider.Collision.TOP, false) ||
+            return cbm.get(e).recentCollisions.contains(Collider.Collision.BOTTOM, false) ||
                     glidem.get(e).gliding;
         }
 

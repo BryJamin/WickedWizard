@@ -12,7 +12,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
@@ -22,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -39,7 +42,10 @@ import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
+import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -65,13 +71,20 @@ public class DecorFactory extends AbstractFactory {
     }
 
 
-    public Bag<Component> wallBag(float x, float y, float width, float height){
+    public ComponentBag wallBag(float x, float y, float width, float height){
         return wallBag(x,y,width,height,arenaSkin);
     }
 
+    public ArenaSkin getArenaSkin() {
+        return arenaSkin;
+    }
 
-    public Bag<Component> wallBag(float x, float y, float width, float height, ArenaSkin arenaSkin){
-        Bag<Component> bag = new Bag<Component>();
+    public void setArenaSkin(ArenaSkin arenaSkin) {
+        this.arenaSkin = arenaSkin;
+    }
+
+    public ComponentBag wallBag(float x, float y, float width, float height, ArenaSkin arenaSkin){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
@@ -79,13 +92,14 @@ public class DecorFactory extends AbstractFactory {
                 arenaSkin.getWallTexture(),
                 PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
+        trbc.DEFAULT = arenaSkin.getWallTint();
         bag.add(trbc);
 
         return bag;
     }
 
-    public Bag<Component> wallBag(float x, float y, float width, float height, Color color){
-        Bag<Component> bag = new Bag<Component>();
+    public ComponentBag wallBag(float x, float y, float width, float height, Color color){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
@@ -99,16 +113,24 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
+    public ComponentBag destructibleBlock(float x, float y, float width, float height, Color color){
+
+        ComponentBag bag = new ComponentBag();
+
+        bag.add(new PositionComponent(x,y));
+        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), x,y,width,height, PLAYER_LAYER_FAR, color));
+        bag.add(new HealthComponent(2));
+        return bag;
+    }
+
 
 
     public ComponentBag chevronBag(float x, float y, float rotationInDegrees){
 
-        float width = Measure.units(8);
-        float height = Measure.units(8);
-
-        x = x - width;
-        y = y - height;
-
+        float width = Measure.units(10);
+        float height = Measure.units(10);
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -133,9 +155,121 @@ public class DecorFactory extends AbstractFactory {
 
     }
 
+    public ComponentBag appearInCombatWall(final float x, final float y, final float width, final float height){
+        ComponentBag bag = wallBag(x,y,width,height);
+        BagSearch.removeObjectOfTypeClass(WallComponent.class, bag);
+        BagSearch.getObjectOfTypeClass(TextureRegionBatchComponent.class, bag).color.a = 0;
 
-    public Bag<Component> platform(float x, float y, float width){
-        Bag<Component> bag = new Bag<Component>();
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new WallComponent(new Rectangle(x,y,width,height)));
+                e.edit().add(new FadeComponent(true, 1.0f, false));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(new WallComponent());
+                e.edit().add(new FadeComponent(false, 1.0f, false));
+            }
+        }));
+
+        return bag;
+    }
+
+
+    public ComponentBag appearInCombatWallPush(final float x, final float y, final float width, final float height, final float angleOfPushInDegrees){
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), width, height,
+                PLAYER_LAYER_FAR);
+        trc.color = arenaSkin.getWallTint();
+        trc.color.a = 0;
+        trc.DEFAULT = arenaSkin.getWallTint();
+        bag.add(trc);
+
+
+
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+
+            public void performAction(World world, Entity e) {
+
+                e.edit().add(new EnemyOnlyWallComponent());
+                e.edit().add(new ConditionalActionComponent(new Condition() {
+                    @Override
+                    public boolean condition(World world, Entity entity) {
+
+                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
+
+                    }
+
+
+                }, new Task() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                        vc.velocity.x = BulletMath.velocityX(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
+                        vc.velocity.y = BulletMath.velocityY(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
+                    }
+
+                    @Override
+                    public void cleanUpAction(World world, Entity e) {
+
+                    }
+                }));
+
+
+                FadeComponent fc = new FadeComponent(true, 0.5f, false);
+                fc.minAlpha = 0;
+                fc.maxAlpha = 0.5f;
+                e.edit().add(fc);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(ConditionalActionComponent.class);
+                e.edit().remove(EnemyOnlyWallComponent.class);
+                FadeComponent fc = new FadeComponent(false, 0.5f, false);
+                fc.minAlpha = 0;
+                fc.maxAlpha = 0.5f;
+                e.edit().add(fc);
+            }
+        }));
+
+
+
+        return bag;
+    }
+
+
+    public ComponentBag outOfCombatPlatform(float x, float y, float width){
+        ComponentBag bag = platform(x,y,width);
+
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().remove(PlatformComponent.class);
+                e.edit().add(new FadeComponent(false, 1.0f, false));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().add(new PlatformComponent());
+                e.edit().add(new FadeComponent(true, 1.0f, false));
+            }
+        }));
+
+        return bag;
+
+    }
+
+
+    public ComponentBag platform(float x, float y, float width){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y + Measure.units(2.5f),width,Measure.units(5f))));
         bag.add(new PlatformComponent());
@@ -152,26 +286,6 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-/*
-    public Bag<Component> wallBag(float x, float y, float width, float height){
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new WallComponent(new Rectangle(x,y, width, height)));
-
-        TextureRegionBatchComponent trbc = BackgroundFactory.generateTRBC(width, height, Measure.units(5),
-                atlas.findRegions("brick"), TextureRegionComponent.PLAYER_LAYER_FAR);
-        trbc.setColor(0.7f, 0, 0f, 1);
-        bag.add(trbc);
-
-        return bag;
-    }
-*/
-
-/*
-    public Bag<Component> wallBag(Rectangle r){
-        return wallBag(r.x, r.y, r.width, r.height);
-    }
-*/
 
     public Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
         return doorBag(x,y,true,current,leaveCoords,exit);
@@ -322,7 +436,8 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WALLTURRET), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
-        trc.rotation = angleInDegrees + 90;
+
+        trc.rotation = angleInDegrees;
         trc.DEFAULT = arenaSkin.getWallTint();
         trc.color = arenaSkin.getWallTint();
 
@@ -347,7 +462,8 @@ public class DecorFactory extends AbstractFactory {
 
         WeaponComponent wc = new WeaponComponent(new Pistol(assetManager, fireRate), fireDelay);
         bag.add(wc);
-        bag.add(new FiringAIComponent(angleInDegrees));
+        //In order to match firing angle with direction of texture add 90 degrees
+        bag.add(new FiringAIComponent(angleInDegrees + 90));
 
         return bag;
     }
@@ -480,6 +596,24 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
+    public ComponentBag laserWall(float x, float y, float width, float height){
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
+
+        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
+                atlas.findRegions("block"),
+                PLAYER_LAYER_NEAR);
+        trbc.color = new Color(Color.RED);
+        bag.add(trbc);
+
+        bag.add(new HazardComponent());
+
+        return bag;
+    }
+
+
+
 
 
 
@@ -503,26 +637,29 @@ public class DecorFactory extends AbstractFactory {
 
     public ConditionalActionComponent lockBlockConditionalActionComponent(){
 
-
         return new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
 
                 VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent wallCbc = entity.getComponent(CollisionBoundComponent.class);
                 CurrencyComponent cc = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
 
-                Rectangle futureRectangle = new Rectangle(cbc.bound);
+                Rectangle futureRectangle = new Rectangle(playerCbc.bound);
                 futureRectangle.x += (vc.velocity.x * world.delta);
                 futureRectangle.y += (vc.velocity.y * world.delta);
 
 
-                Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, entity.getComponent(CollisionBoundComponent.class).bound);
+                Collider.Collision c = Collider.collision(playerCbc.bound, futureRectangle, entity.getComponent(CollisionBoundComponent.class).bound);
                 //cbc.getRecentCollisions().add(c);
                 //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
-                //TODO this is so you can unlock lock boxes from the bottom
-                boolean nextToBottom = cbc.bound.y + cbc.bound.getHeight() == entity.getComponent(CollisionBoundComponent.class).bound.y;
+                //TODO this is so you can unlock lock boxes from the bottom (Although this may need to be improved
+                boolean nextToBottom = playerCbc.bound.y + playerCbc.bound.getHeight() == wallCbc.bound.y &&
+                        playerCbc.bound.getX() > wallCbc.bound.x &&
+                        playerCbc.bound.getX() + playerCbc.bound.getWidth() < wallCbc.bound.x + wallCbc.bound.getWidth();
+
 
 
                 boolean canUnlock = (c != Collider.Collision.NONE || nextToBottom) && cc.keys >= 0;
@@ -544,6 +681,103 @@ public class DecorFactory extends AbstractFactory {
         });
 
     }
+
+
+
+
+
+
+    public ComponentBag laserChain(float x, float y){
+
+        float width = Measure.units(5f);
+        float height = Measure.units(5f);
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(Color.BLACK)));
+        bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask(assetManager, Measure.units(5f), 1f, 10, 0, new int[]{0,180}), 0));
+
+        return bag;
+    }
+
+    public ComponentBag laserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new ActionAfterTimeComponent(laserOrbitalTask, 0));
+        return bag;
+    }
+
+
+
+    public ComponentBag inCombatLaserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new InCombatActionComponent(laserOrbitalTask));
+        return bag;
+    }
+
+
+
+    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat, boolean isInstant, LaserOrbitalTask laserOrbitalTask){
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new ActionAfterTimeComponent(laserOrbitalTask, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
+        return bag;
+    }
+
+
+    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat,  LaserOrbitalTask laserOrbitalTask){
+        return timedLaserChain(x,y,scale,timeTillReapeat, true, laserOrbitalTask);
+    }
+
+
+    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final boolean isInstant, final LaserOrbitalTask laserOrbitalTask){
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new ActionAfterTimeComponent(laserOrbitalTask, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                laserOrbitalTask.cleanUpAction(world, e);
+                e.edit().remove(ActionAfterTimeComponent.class);
+            }
+        }));
+        return bag;
+    }
+
+    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final LaserOrbitalTask laserOrbitalTask){
+        return inCombatTimedLaserChain(x,y,scale,timeTillReapeat,true, laserOrbitalTask);
+    }
+
+
+
+
 
 
 }

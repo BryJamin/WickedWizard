@@ -5,17 +5,17 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.CBlockSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.Bourbon;
+import com.byrjamin.wickedwizard.factories.arenas.skins.DarkPurpleAndBrown;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.FreedomSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.PrisonSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 
-import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.CBLOCK;
-import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FOUNDARY;
-import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FREEDOMRUN;
-import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.PRISON;
-import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.SOLITARY;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FOUR;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.TWO;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FIVE;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.THREE;
+import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.ONE;
 
 /**
  * Created by Home on 29/04/2017.
@@ -28,7 +28,7 @@ public class ChangeLevelSystem extends BaseSystem {
 
 
     public enum Level {
-        SOLITARY, FOUNDARY, PRISON, CBLOCK, FREEDOMRUN;
+        ONE, TWO, THREE, FOUR, FIVE;
 
         private ArenaSkin arenaSkin;
 
@@ -48,14 +48,14 @@ public class ChangeLevelSystem extends BaseSystem {
     private JigsawGenerator jigsawGenerator;
 
     public ChangeLevelSystem(JigsawGenerator jigsawGenerator, TextureAtlas atlas){
-        SOLITARY.setArenaSkin(new SolitarySkin(atlas));
-        FOUNDARY.setArenaSkin(new FoundarySkin(atlas));
-        PRISON.setArenaSkin(new PrisonSkin(atlas));
-        CBLOCK.setArenaSkin(new CBlockSkin(atlas));
-        FREEDOMRUN.setArenaSkin(new FreedomSkin(atlas));
+        ONE.setArenaSkin(new SolitarySkin(atlas));
+        TWO.setArenaSkin(new FoundarySkin(atlas));
+        THREE.setArenaSkin(new DarkPurpleAndBrown(atlas));
+        FOUR.setArenaSkin(new Bourbon(atlas));
+        FIVE.setArenaSkin(new PrisonSkin(atlas));
         this.jigsawGenerator = jigsawGenerator;
 
-        level = SOLITARY;
+        level = ONE;
     }
 
     public void setLevel(Level level) {
@@ -64,26 +64,24 @@ public class ChangeLevelSystem extends BaseSystem {
 
     public JigsawGenerator incrementLevel(){
 
-        //Current level sequence. SOLITARY -> PRISON -> FOUNDARY -> CBLOCK -> FREEDOM
-
         switch (level) {
-            case SOLITARY: level = PRISON;
-                jigsawGenerator.setNoBattleRooms(13);
+            case ONE: level = TWO;
+                jigsawGenerator.setNoBattleRooms(8);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 2", "");
                 break;
-            case PRISON: level = FOUNDARY;
-                jigsawGenerator.setNoBattleRooms(15);
+            case TWO: level = THREE;
+                jigsawGenerator.setNoBattleRooms(10);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 3", "");
                 break;
-            case FOUNDARY: level = CBLOCK;
-                jigsawGenerator.setNoBattleRooms(15);
+            case THREE: level = FOUR;
+                jigsawGenerator.setNoBattleRooms(12);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 4", "");
                 break;
-            case CBLOCK: level = FREEDOMRUN;
-                jigsawGenerator.setNoBattleRooms(18);
+            case FOUR: level = FIVE;
+                jigsawGenerator.setNoBattleRooms(14);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 5", "");
                 break;
-            case FREEDOMRUN:
+            case FIVE:
                 //TODO world.endGame
                 break;
         }

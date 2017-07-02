@@ -8,9 +8,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -48,11 +50,17 @@ public class BulletFactory extends AbstractFactory {
     }
 
     public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        for(Component c : basicEnemyBulletBag(x,y,4)){
+        return enemyBulletBag(fill,x,y,4,angleOfTravel);
+    }
+
+
+
+    public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, float scale, double angleOfTravel) {
+        for(Component c : basicEnemyBulletBag(x,y,scale)){
             fill.add(c);
         }
         fill.add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
-
+        //fill.add(new ExpiryRangeComponent(new Vector3(BagSearch.getObjectOfTypeClass(PositionComponent.class, fill).position), Measure.units(1f)));
 
         return fill;
     }
@@ -62,14 +70,17 @@ public class BulletFactory extends AbstractFactory {
 
 
 
-
-    public Bag<Component> basicBulletBag(float x, float y, float scale) {
+    public ComponentBag basicBulletBag(float x, float y, float scale) {
         return basicBulletBag(x ,y ,scale ,atlas.findRegion("block"), new Color(1,1,1,1));
     }
 
-    public Bag<Component> basicEnemyBulletBag(float x, float y, float scale) {
+    public ComponentBag basicBulletBag(float x, float y, float scale, Color color) {
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion("block"), color);
+    }
 
-        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
+    public ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
+
+        ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
         bag.add(new EnemyComponent());
 
 
@@ -87,8 +98,8 @@ public class BulletFactory extends AbstractFactory {
     }
 
 
-    public Bag<Component> basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
-        Bag<Component> bag = new Bag<Component>();
+    public ComponentBag basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
+        ComponentBag bag = new ComponentBag();
 
         float width = this.width * scale;
         float height = this.height * scale;

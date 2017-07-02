@@ -28,7 +28,7 @@ public class JumpSystem extends EntityProcessingSystem {
         JumpComponent jc = jm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
-        if(cbc.getRecentCollisions().contains(Collider.Collision.TOP, false)){
+        if(cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false)){
             jc.jumps = jc.maxJumps;
         }
     }

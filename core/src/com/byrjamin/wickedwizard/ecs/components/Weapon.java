@@ -12,7 +12,7 @@ public interface Weapon {
     public float baseDamage = 1;
     public float baseFireRate = 1;
 
-    void fire(World world, Entity e, float x, float y, double angle);
+    void fire(World world, Entity e, float x, float y, double angleInRadians);
 
     float getBaseFireRate();
 

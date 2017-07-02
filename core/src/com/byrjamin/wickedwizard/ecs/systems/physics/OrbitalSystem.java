@@ -31,10 +31,10 @@ public class OrbitalSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
         OrbitComponent oc = om.get(e);
 
-        oc.angleInDegrees += oc.speedInDegrees;
+        oc.currentAngleInDegrees += oc.speedInDegrees;
 
-        float x = (float) (oc.centerOfOrbit.x + (oc.radius * Math.cos(Math.toRadians(oc.angleInDegrees))));
-        float y = (float) (oc.centerOfOrbit.y + (oc.radius * Math.sin(Math.toRadians(oc.angleInDegrees))));
+        float x = (float) (oc.centerOfOrbit.x + (oc.radius * Math.cos(Math.toRadians(oc.currentAngleInDegrees))));
+        float y = (float) (oc.centerOfOrbit.y + (oc.radius * Math.sin(Math.toRadians(oc.currentAngleInDegrees))));
 
         if(cbm.has(e)){
             CollisionBoundComponent cbc = cbm.get(e);

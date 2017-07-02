@@ -5,8 +5,11 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 30/03/2017.
@@ -27,21 +30,19 @@ public class PhaseSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
         PhaseComponent pc = pm.get(e);
+        pc.currentPhaseTime += world.delta;
 
-        pc.currentPhaseTime -= world.delta;
+        if(!pc.hasActionBeenPerformed) {
+            pc.phaseQueue.first().getLeft().performAction(world, e);
+            pc.hasActionBeenPerformed = true;
+        }
 
-        if(pc.currentPhaseTime < 0){
-            pc.getCurrentPhase(pc.currentPhase).cleanUpAction(world, e);
-
-            pc.getPhaseSequence().add(pc.getPhaseSequence().first());
-            pc.getPhaseSequence().removeIndex(0);
-
-            pc.currentPhase = pc.getPhaseSequence().first();
-            pc.currentPhaseTime = pc.getCurrentPhaseTimer(pc.currentPhase);
-
-
-            pc.getCurrentPhase(pc.currentPhase).performAction(world, e);
-
+        if(pc.phaseQueue.first().getRight().condition(world, e)){
+            Pair<Task, Condition> taskConditionPair = pc.phaseQueue.removeFirst();
+            pc.phaseQueue.addLast(taskConditionPair);
+            taskConditionPair.getLeft().cleanUpAction(world, e);
+            pc.hasActionBeenPerformed = false;
+            pc.currentPhaseTime = 0;
         }
 
     }

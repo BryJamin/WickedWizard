@@ -1,8 +1,6 @@
 package com.byrjamin.wickedwizard.utils.collider;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * A class used for checking collision between dynamic and static bodies and returning the type
@@ -11,7 +9,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
 public class Collider {
 
     public enum Collision {
-        LEFT, RIGHT, TOP, BOTTOM, NONE
+        LEFT, RIGHT, BOTTOM, TOP, NONE
     }
 
     /**
@@ -30,9 +28,9 @@ public class Collider {
                 break;
             case LEFT: currentBound.setX(wall.x + wall.getWidth());
                 break;
-            case TOP: currentBound.setY(wall.y + wall.getHeight());
+            case BOTTOM: currentBound.setY(wall.y + wall.getHeight());
                 break;
-            case BOTTOM: currentBound.setY(wall.y - currentBound.height);
+            case TOP: currentBound.setY(wall.y - currentBound.height);
         }
 
         return c;
@@ -61,9 +59,9 @@ public class Collider {
             }
         } else if (wall.overlaps(futureBound)) { //Hit was on top
             if (currentBound.getY() > wall.y + wall.getHeight() / 2) {
-                return Collision.TOP;
-            } else if (currentBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
                 return Collision.BOTTOM;
+            } else if (currentBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
+                return Collision.TOP;
             }
         }
 

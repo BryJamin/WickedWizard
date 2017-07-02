@@ -20,7 +20,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
 public class CircleBlast implements Weapon {
 
 
-    int[] angles = new int[] {0,45,90,135,180,225,270,315};
+    private int[] angles = new int[] {0,45,90,135,180,225,270,315};
     private boolean left;
     private float firerate;
     private BulletFactory bf;
@@ -40,11 +40,9 @@ public class CircleBlast implements Weapon {
     }
 
     @Override
-    public void fire(World world, Entity e, float x, float y, double angle) {
+    public void fire(World world, Entity e, float x, float y, double angleInRadians) {
         for(int i : angles){
-            double angleOfTravel = angle + Math.toRadians(i);
-
-            System.out.println(angle);
+            double angleOfTravel = angleInRadians + Math.toRadians(i);
 
             Bag<Component> bag = bf.basicEnemyBulletBag(x, y, size);
             bag.add(new VelocityComponent((float) (speed * Math.cos(angleOfTravel)), (float) (speed * Math.sin(angleOfTravel))));

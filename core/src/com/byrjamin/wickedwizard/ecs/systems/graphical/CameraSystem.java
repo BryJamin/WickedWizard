@@ -51,13 +51,13 @@ public class CameraSystem extends EntitySystem {
 
     //TODO add acceleration?
 
-    private static final float fixedAcceleration = Measure.units(5f);
-    private static final float centerFollowAcceleration = Measure.units(15f);
+    private static final float fixedAcceleration = Measure.units(2.5f);
+    private static final float centerFollowAcceleration = Measure.units(10f);
 
 
     private float acceleration = Measure.units(5f);
     private float cameramaxVelocity = Measure.units(30f);
-    private float cameradefaultMaxVelocity = Measure.units(130f);
+    private float cameradefaultMaxVelocity = Measure.units(100f);
     private Vector2 cameraVelocity;
 
     private Rectangle left = new Rectangle();
@@ -107,21 +107,18 @@ public class CameraSystem extends EntitySystem {
         VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
 
 
-        Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+        Arena currentArena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
 
         //sets camera on room transfer
-        if(currentArena != a){
-            currentArena = a;
-            int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
-            gamecam.position.set(cbc.getCenterX(), offsetY * gamecam.viewportHeight + Measure.units(30f), 0);
+        if(this.currentArena != currentArena){
+            this.currentArena = currentArena;
+            int offsetY = (int) cbc.bound.getY() / (int) ArenaShellFactory.SECTION_HEIGHT;
+            gamecam.position.set(cbc.getCenterX(), offsetY * ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f), 0);
         }
 
 
-
-        gamecam.position.x = cbc.getCenterX();
-
-        if(cameraMode == CameraMode.CENTER_FOLLOW && cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)){
-            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
+        if(cameraMode == CameraMode.CENTER_FOLLOW){
+            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= this.currentArena.getHeight()
                     || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
                 cameraMode = CameraMode.FIXED;
                 acceleration = fixedAcceleration;
@@ -129,10 +126,11 @@ public class CameraSystem extends EntitySystem {
         }
 
         if(cameraMode == CameraMode.FIXED) {
-            if (cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= currentArena.getHeight()
+            if (cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= this.currentArena.getHeight()
                     || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
-                int offsetY = (int) cbc.bound.getY() / (int) gamecam.viewportHeight;
-                targetY = offsetY * gamecam.viewportHeight + Measure.units(30f);
+
+                int offsetY = (int) cbc.bound.getY() / (int) ArenaShellFactory.SECTION_HEIGHT;
+                targetY = offsetY * ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f);
             } else {
                 cameraMode = CameraMode.CENTER_FOLLOW;
                 acceleration = centerFollowAcceleration;
@@ -143,7 +141,6 @@ public class CameraSystem extends EntitySystem {
         if(cameraMode == CameraMode.CENTER_FOLLOW){
             targetY = cbc.getCenterY();
         }
-        //}
 
 
         //TODO transitioning boolean goes here.
@@ -155,6 +152,11 @@ public class CameraSystem extends EntitySystem {
                         -cameradefaultMaxVelocity : cameraVelocity.y - acceleration;
 
                 boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
+/*
+                System.out.println("Upper on target " + onTarget);
+                System.out.println(cameraVelocity.y);
+                System.out.println(targetY);*/
+
                 gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
 
                 if(onTarget) transitioning = false;
@@ -176,42 +178,47 @@ public class CameraSystem extends EntitySystem {
 /*        System.out.println("Transitioning is currenty " + transitioning);
         System.out.println("Target Y is " + targetY);*/
 
+        //System.out.println(transitioning);
 
         if(cameraMode == CameraMode.CENTER_FOLLOW && !transitioning) {
             gamecam.position.y = cbc.getCenterY();
+
         }
 
 
         //Camera max height and minium height bounds.
         if(gamecam.position.y <= Measure.units(30f)) {
             gamecam.position.y = Measure.units(30f);
-        } else if (gamecam.position.y >= currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f)) {
-            gamecam.position.y = currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f);
-            cameraMode = CameraMode.FIXED;
+        } else if (gamecam.position.y + MainGame.GAME_BORDER >= this.currentArena.getHeight() - MainGame.GAME_HEIGHT -MainGame.GAME_UNITS+ Measure.units(30f)) {
+            //System.out.println("INSIDE IF");
+            if(!transitioning) {
+                //gamecam.position.y = this.currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f) -MainGame.GAME_UNITS;
+                cameraMode = CameraMode.FIXED;
+            }
         }
 
+
+
+
+        // calculating the X position of the camera
+        gamecam.position.x = cbc.getCenterX();
         //Camera max width and minium width bounds
-        if(gamecam.position.x <= gamePort.getWorldWidth() / 2){
-            gamecam.position.x = gamePort.getWorldWidth() / 2;
-        } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= a.getWidth()){
-            gamecam.position.x = a.getWidth() - gamecam.viewportWidth / 2;
+        if(gamecam.position.x <= gamePort.getWorldWidth() / 2 - MainGame.GAME_BORDER){
+            gamecam.position.x = gamePort.getWorldWidth() / 2 - MainGame.GAME_BORDER;
+        } else if(gamecam.position.x + gamecam.viewportWidth / 2 >= currentArena.getWidth() +  MainGame.GAME_BORDER){
+            gamecam.position.x = currentArena.getWidth() - gamecam.viewportWidth / 2 +  MainGame.GAME_BORDER;
         }
-
-
-/*        if(gamecam.position.y + ArenaShellFactory.SECTION_HEIGHT >= currentArena.getHeight()) {
-            gamecam.position.y = currentArena.getHeight() - ArenaShellFactory.SECTION_HEIGHT;
-        }*/
-
-/*
-        System.out.println(cameraMode);
-        System.out.println(transitioning);
-*/
 
         gamecam.update();
 
 
-        world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2,
-                gamecam.position.y - gamePort.getWorldHeight() / 2);
+        world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2  +  MainGame.GAME_BORDER,
+                gamecam.position.y - gamePort.getWorldHeight() / 2 +  MainGame.GAME_BORDER);
+    }
+
+
+    public void setHorizontal(OrthographicCamera gamecam) {
+
     }
 
 
@@ -283,10 +290,11 @@ public class CameraSystem extends EntitySystem {
     }
 
 
+    //TODO may ned to factor in the border
     public boolean isOnCamera(Rectangle r){
         System.out.println(r.getX());
-        boolean isOnX = r.getX() >= getCameraX() && r.getX() - r.getWidth() <= getCameraX() + gamecam.viewportWidth;
-        boolean isOnY = r.getY() >= getCameraY() && r.getY() - r.getHeight() <= getCameraY() + gamecam.viewportHeight;
+        boolean isOnX = r.getX() + r.getWidth() >= getCameraX() + MainGame.GAME_BORDER && r.getX() - r.getWidth() <= getCameraX() + gamecam.viewportWidth - MainGame.GAME_BORDER;
+        boolean isOnY = r.getY() >= getCameraY() + MainGame.GAME_BORDER && r.getY() - r.getHeight() <= getCameraY() + ArenaShellFactory.SECTION_HEIGHT - MainGame.GAME_BORDER;
         return isOnX && isOnY;
     }
 }

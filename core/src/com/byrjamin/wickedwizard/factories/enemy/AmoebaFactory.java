@@ -18,6 +18,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -40,21 +41,27 @@ public class AmoebaFactory extends EnemyFactory {
     private float textureoffsetY = (height / 2) - (textureHeight / 2);
 
 
-    public ComponentBag amoeba(float x, float y) {
-
+    public ComponentBag fastamoeba(float x , float y){
         x = x - width / 2;
         y = y - height / 2;
+        return amoebaBag(x,y, Measure.units(10f), new Color(Color.RED));
+    }
 
+
+
+    public ComponentBag amoebaBag(float x, float y, float speed, Color color){
 
         ComponentBag bag = new ComponentBag();
         //bag.add(new PositionComponent(x,y));
-        this.defaultEnemyBagNoLoot(bag, x, y, width, height, 1);
+        this.defaultEnemyBagNoLoot(bag, x, y, 1);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
         bag.add(new MoveToPlayerComponent());
-        bag.add(new AccelerantComponent(Measure.units(5f), Measure.units(5f)));
+        bag.add(new AccelerantComponent(speed, speed));
         bag.add(new ExploderComponent());
+
+        bag.add(new FadeComponent(true, 0.5f, false));
 
         bag.add(new IntangibleComponent());
         //bag.add(new DirectionalComponent());
@@ -68,7 +75,7 @@ public class AmoebaFactory extends EnemyFactory {
 
         TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AMOEBA),
                 textureoffsetX, textureoffsetY, textureWidth, textureHeight,
-                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(238f / 255f, 187f / 255f, 240f / 255f, 1));
+                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, color);
 
         tfc.scaleX = -1;
 
@@ -79,6 +86,17 @@ public class AmoebaFactory extends EnemyFactory {
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, new Color(Color.CHARTREUSE)));*/
 
         return bag;
+
+
+    }
+
+    public ComponentBag amoeba(float x, float y) {
+
+        x = x - width / 2;
+        y = y - height / 2;
+
+        return amoebaBag(x,y, Measure.units(5f), new Color(238f / 255f, 187f / 255f, 240f / 255f, 1));
+
     }
 
 

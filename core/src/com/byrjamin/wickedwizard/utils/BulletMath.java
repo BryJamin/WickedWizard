@@ -6,8 +6,6 @@ package com.byrjamin.wickedwizard.utils;
 
 public class BulletMath {
 
-
-
     public static double angleOfTravel(float startX, float startY, float endX, float endY) {
         return (Math.atan2(endY - startY, endX - startX));
     }
@@ -20,5 +18,7 @@ public class BulletMath {
     public static float velocityY(float speed, double angleInRadians){
         return (float) (speed * Math.sin(angleInRadians));
     }
+
+
 
 }

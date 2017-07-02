@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
@@ -12,11 +11,8 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
-import com.byrjamin.wickedwizard.utils.collider.HitBox;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 29/04/2017.
@@ -48,7 +44,7 @@ public class PlatformSystem extends EntitySystem {
 
             if(platform.canPassThrough){
 
-                if(playerBound.bound.getY() > cbc.bound.getY() + cbc.bound.getHeight() && !playerBound.bound.overlaps(cbc.bound)) {
+                if(playerBound.bound.getY() >= cbc.bound.getY() + cbc.bound.getHeight() - Measure.units(1) && !playerBound.bound.overlaps(cbc.bound)) {
                     platform.canPassThrough = false;
                 }
 
@@ -69,7 +65,7 @@ public class PlatformSystem extends EntitySystem {
 
                 Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
 
-                if(c == Collider.Collision.TOP) {
+                if(c == Collider.Collision.BOTTOM) {
                     playerBound.getRecentCollisions().add(c);
                     playerVelocity.velocity.y = 0;
                     playerBound.bound.y = cbc.bound.y + cbc.bound.getHeight();
@@ -104,7 +100,7 @@ public class PlatformSystem extends EntitySystem {
 
                 Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
 
-                if(c == Collider.Collision.TOP) {
+                if(c == Collider.Collision.BOTTOM) {
                     platform.canPassThrough = true;
                     return true;
                     //PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);

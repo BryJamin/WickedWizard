@@ -29,8 +29,8 @@ public class WeaponFactory extends AbstractFactory {
     public Weapon enemyWeapon(){
         return new Weapon() {
             @Override
-            public void fire(World world, Entity e, float x, float y, double angle) {
-                bf.createEnemyBullet(world, x, y, angle);
+            public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+                bf.createEnemyBullet(world, x, y, angleInRadians);
             }
 
             @Override
@@ -49,12 +49,12 @@ public class WeaponFactory extends AbstractFactory {
     public Weapon SilverHeadWeapon(){
         return new Weapon() {
             @Override
-            public void fire(World world, Entity e, float x, float y, double angle) {
+            public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
                 int[] angles = new int[] {0,30,60,80,100,120,150,180};
                 //Math.toRadians()
                 for(int i : angles){
-                    double angleOfTravel = angle + Math.toRadians(i);
+                    double angleOfTravel = angleInRadians + Math.toRadians(i);
                     Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4);
                     bag.add(new VelocityComponent((float) (Measure.units(75) * Math.cos(angleOfTravel)), (float) (Measure.units(75) * Math.sin(angleOfTravel))));
                     bag.add(new GravityComponent());
