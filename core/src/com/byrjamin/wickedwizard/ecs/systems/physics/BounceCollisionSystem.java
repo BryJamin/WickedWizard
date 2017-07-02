@@ -22,6 +22,7 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
     ComponentMapper<PlayerComponent> playerm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<BounceComponent> bouncecm;
     ComponentMapper<WallComponent> wm;
     ComponentMapper<BulletComponent> bm;
 
@@ -41,6 +42,7 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
         CollisionBoundComponent cbc = cbm.get(e);
+        BounceComponent bc = bouncecm.get(e);
         VelocityComponent vc = vm.get(e);
         PositionComponent pc = pm.get(e);
 
@@ -49,16 +51,16 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
             if(c != Collider.Collision.NONE) {
                 switch (c) {
                     case BOTTOM:
-                        vc.velocity.y = Math.abs(vc.velocity.y);
+                        if(bc.vertical) vc.velocity.y = Math.abs(vc.velocity.y);
                         break;
                     case TOP:
-                        vc.velocity.y = -Math.abs(vc.velocity.y);
+                        if(bc.vertical) vc.velocity.y = -Math.abs(vc.velocity.y);
                         break;
                     case LEFT:
-                        vc.velocity.x = Math.abs(vc.velocity.x);
+                        if(bc.horizontal) vc.velocity.x = Math.abs(vc.velocity.x);
                         break;
                     case RIGHT:
-                        vc.velocity.x = -Math.abs(vc.velocity.x);
+                        if(bc.horizontal) vc.velocity.x = -Math.abs(vc.velocity.x);
                         break;
                 }
                 pc.position.x = cbc.bound.getX();

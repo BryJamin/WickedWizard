@@ -119,16 +119,6 @@ public class TextureStrings {
 
     public static final String CIRCLE = "circle";
 
-    //BOSSES
-
-    //BIGGABLOBBA
-    public static final String BIGGABLOBBA_STANDING = "biggablobba";
-
-    //WANDA
-    public static final String WANDA_STANDING = "enemy/wanda_standing";
-    public static final String WANDA_FIRING = "enemy/wanda_firing";
-
-
     public static final String GRAPPLE = "grapple";
 
 
@@ -146,6 +136,21 @@ public class TextureStrings {
     public static final String SNAKE_GREENISH = "enemy/snake_greenish";
 
     //PLAYER
+
+
+    //BOSSES
+
+    //BIGGABLOBBA
+    public static final String BIGGABLOBBA_STANDING = "biggablobba";
+
+    //WANDA
+    public static final String WANDA_STANDING = "enemy/wanda_standing";
+    public static final String WANDA_FIRING = "enemy/wanda_firing";
+
+    //MR BOOMY
+    public static final String MR_BOOMY_FACING = "enemy/mr_boomy_forward";
+    public static final String MR_BOOMY_SIDE = "enemy/mr_boomy_side";
+    public static final String MR_BOOMY_DETONATE = "enemy/mr_boomy_detonate";
 
 
 

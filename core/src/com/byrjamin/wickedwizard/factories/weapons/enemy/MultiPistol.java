@@ -22,7 +22,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 16/06/2017.
  */
 
-public class MultiPistol extends Pistol{
+public class MultiPistol extends Pistol {
 
     private float shotScale = 4;
     private float fireRate = 1.5f;

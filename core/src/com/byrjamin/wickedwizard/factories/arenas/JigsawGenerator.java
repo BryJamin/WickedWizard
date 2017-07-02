@@ -54,8 +54,6 @@ public class JigsawGenerator {
 
     private ArenaMap startingMap;
 
-    private Arena bossArena;
-
     private AssetManager assetManager;
     private Level1Rooms level1Rooms;
     private Level2Rooms level2Rooms;
@@ -71,7 +69,6 @@ public class JigsawGenerator {
 
 
     private HashMap<BossTeleporterComponent, ArenaMap> mapTracker = new HashMap<BossTeleporterComponent, ArenaMap>();
-
 
     private Array<Item> itemPool;
 
@@ -297,17 +294,32 @@ public class JigsawGenerator {
             arenas = generateJigsaw();
         }
 
-        this.startingMap = level1BossMaps.blobbaMap(new BossTeleporterComponent());
+        //this.startingMap = level1BossMaps.boomyMap(new BossTeleporterComponent());
 
-        //this.cleanArenas(arenas);
+        this.cleanArenas(arenas);
     }
 
 
 
     public ArenaMap generateBossMap(BossTeleporterComponent btc){
         WeightedRoll<ArenaMap> roll = new WeightedRoll<ArenaMap>(rand);
-        roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));
-        roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.giantKugelMap(btc), 20));
+        switch (currentLevel){
+            case ONE: roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.blobbaMap(btc), 20));
+            default:
+                break;
+            case TWO:  roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.giantKugelMap(btc), 20));
+                break;
+            case THREE: roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.boomyMap(btc), 20));
+                break;
+            case FOUR: roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));
+                break;
+            case FIVE:
+                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));
+                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.blobbaMap(btc), 20));
+                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.giantKugelMap(btc), 20));
+                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));
+                break;
+        }
         ArenaMap map = roll.roll();
         cleanArenas(map.getRoomArray());
         return map;
@@ -369,7 +381,7 @@ public class JigsawGenerator {
 
         //startingArena = tutorialFactory.grappleTutorial(new MapCoords());
 
-        startingArena = level5Rooms.room30Height3ThroughRoomWithHorizontalLasers().createArena(new MapCoords());
+        //startingArena = level5Rooms.room30Height3ThroughRoomWithHorizontalLasers().createArena(new MapCoords());
 
         placedArenas.add(startingArena);
 

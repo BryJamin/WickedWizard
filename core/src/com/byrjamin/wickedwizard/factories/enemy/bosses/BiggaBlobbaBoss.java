@@ -196,12 +196,14 @@ public class BiggaBlobbaBoss extends EnemyFactory {
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
                 VelocityComponent vc = e.getComponent(VelocityComponent.class);
                 vc.velocity.x = cbc.getCenterX() > playerCbc.getCenterX() ? vc.velocity.x = -speed : speed;
+                e.getComponent(AnimationStateComponent.class).setDefaultState(CHARGINGANIMATION);
                 e.edit().add(blobOCAC(speed));
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(OnCollisionActionComponent.class);
+                e.getComponent(AnimationStateComponent.class).setDefaultState(0);
             }
         };
 

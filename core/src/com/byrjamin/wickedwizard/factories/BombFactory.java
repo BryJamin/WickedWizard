@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -86,6 +87,13 @@ public class BombFactory extends  AbstractFactory{
 
     }
 
+    public ComponentBag gravMine(float x, float y){
+        ComponentBag bag = mine(x , y, 0);
+        bag.add(new GravityComponent());
+        bag.add(new FrictionComponent(true, false, false));
+        return bag;
+    }
+
 
     public ComponentBag seaMine(float x, float y, boolean startsLeft, boolean startsUp){
 
@@ -147,6 +155,7 @@ public class BombFactory extends  AbstractFactory{
         bag.add(new GravityComponent());
         bag.add(new VelocityComponent());
         bag.add(new ExpireComponent(life));
+        bag.add(new FrictionComponent(true, false, false));
 
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOMB),
                 width, height,
