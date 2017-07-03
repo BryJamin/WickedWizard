@@ -109,7 +109,7 @@ public class ArenaGUI {
         drawMapContainer(batch);
         drawMapSquares(batch);
         drawMapLines(batch);
-        
+
         if(batch.isDrawing()) {
             batch.end();
         }

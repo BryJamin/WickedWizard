@@ -97,13 +97,11 @@ public class MapTeleportationSystem extends EntitySystem {
                 rts.packRoom(world, rts.getCurrentArena());
                 rts.setCurrentMap(map);
                 rts.unpackRoom(rts.getCurrentArena());
-                rts.getVisitedArenas().add(rts.getCurrentArena());
-                rts.getUnvisitedButAdjacentArenas().addAll(rts.getAdjacentArenas(rts.getCurrentArena()));
 
-                for(Arena a : rts.getAdjacentArenas(rts.getCurrentArena())) {
-                    if(!rts.getVisitedArenas().contains(a)) {
-                        rts.getUnvisitedButAdjacentArenas().add(a);
-                    }
+                //This is so when you enter a new map it updates itself.
+                if(rts.getVisitedArenas().size == 0){
+                    rts.getVisitedArenas().add(rts.getCurrentArena());
+                    rts.getUnvisitedButAdjacentArenas().addAll(rts.getAdjacentArenas(rts.getCurrentArena()));
                 }
 
                 PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
