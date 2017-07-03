@@ -208,7 +208,7 @@ public class PlayScreen extends AbstractScreen {
 
                             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
 
-                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getRoomArray(), rts.getCurrentArena());
+                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getRoomArray(), rts.getCurrentArena(), atlas);
 
                             isPaused = true;
                         } else {
@@ -391,7 +391,7 @@ public class PlayScreen extends AbstractScreen {
 
 
         currencyComponent = entity.getComponent(CurrencyComponent.class);
-        arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena);
+        arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena, atlas);
     }
 
     @Override
