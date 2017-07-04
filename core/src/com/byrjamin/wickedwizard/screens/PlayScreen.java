@@ -36,6 +36,7 @@ import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.MoveToSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
@@ -312,7 +313,7 @@ public class PlayScreen extends AbstractScreen {
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkSystem(),
-                        new BulletSystem(),
+                        //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
                         new MessageBannerSystem(),
                         new FindPlayerSystem(player),
@@ -329,6 +330,7 @@ public class PlayScreen extends AbstractScreen {
                         new LuckSystem(random),
                         new ShoppingSystem(),
                         new RoomTypeSystem(),
+                        new MoveToSystem(),
                         new MoveToPlayerAISystem(),
                         new PlatformSystem(),
                         new JumpSystem(),
@@ -345,6 +347,7 @@ public class PlayScreen extends AbstractScreen {
                         new FollowPositionSystem(),
                         new CameraSystem(gamecam, gameport),
                         new RenderingSystem(game.batch, manager, gamecam),
+                        new BulletSystem(),
                         new ScreenWipeSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),

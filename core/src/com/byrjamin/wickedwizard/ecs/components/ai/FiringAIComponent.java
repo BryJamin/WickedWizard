@@ -25,6 +25,12 @@ public class FiringAIComponent extends Component{
         ai = AI.TARGETED;
     }
 
+    public FiringAIComponent(AI ai, float offsetX, float offsetY){
+        this.ai = ai;
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+    }
+
     public FiringAIComponent(double firingAngleInDegrees) {
         this.ai = AI.UNTARGETED;
         this.firingAngleInRadians = Math.toRadians(firingAngleInDegrees);

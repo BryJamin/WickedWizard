@@ -22,7 +22,7 @@ public class AnimationStateComponent extends Component {
             return state;
         }
     }
-
+    public static final int DEFAULT = 0;
     public static final int FIRING = 10;
 
 
@@ -36,7 +36,7 @@ public class AnimationStateComponent extends Component {
 
 
     public AnimationStateComponent(){
-        defaultState = State.DEFAULT.getState();
+        defaultState = DEFAULT;
     }
 
     public AnimationStateComponent(int startState){

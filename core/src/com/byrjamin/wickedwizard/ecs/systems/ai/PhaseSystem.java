@@ -30,6 +30,7 @@ public class PhaseSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
         PhaseComponent pc = pm.get(e);
+        if(pc.phaseQueue.size <= 0) return;
         pc.currentPhaseTime += world.delta;
 
         if(!pc.hasActionBeenPerformed) {
@@ -46,5 +47,17 @@ public class PhaseSystem extends EntityProcessingSystem {
         }
 
     }
+
+
+
+    public void startNextPhase(Entity e){
+        PhaseComponent pc = pm.get(e);
+        Pair<Task, Condition> taskConditionPair = pc.phaseQueue.removeFirst();
+        pc.phaseQueue.addLast(taskConditionPair);
+        taskConditionPair.getLeft().cleanUpAction(world, e);
+        pc.hasActionBeenPerformed = false;
+        pc.currentPhaseTime = 0;
+    }
+
 
 }

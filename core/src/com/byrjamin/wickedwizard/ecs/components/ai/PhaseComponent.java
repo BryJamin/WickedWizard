@@ -37,6 +37,10 @@ public class PhaseComponent extends Component {
         phaseQueue.addLast(taskConditionPair);
     }
 
+    public void addPhase(Task task, Condition condition){
+        phaseQueue.addLast(new Pair<Task, Condition>(task, condition));
+    }
+
     private Condition phaseTimeCondition(final float time) {
         return new Condition() {
             @Override

@@ -156,5 +156,10 @@ public class TextureStrings {
     public static final String MR_BOOMY_DETONATE = "enemy/mr_boomy_detonate";
 
 
+    //MR BOOMY
+    public static final String ADOJ = "enemy/adoj";
+    public static final String ADOJ_FIRING = "enemy/adoj_firing";
+
+
 
 }
