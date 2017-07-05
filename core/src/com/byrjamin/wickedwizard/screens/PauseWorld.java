@@ -8,12 +8,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
@@ -21,7 +22,6 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Locale;
@@ -37,6 +37,7 @@ public class PauseWorld {
 
     private SpriteBatch batch;
     private AssetManager manager;
+    private TextureAtlas atlas;
     private OrthographicCamera gamecam;
 
     private MenuButton menuButton;
@@ -49,9 +50,10 @@ public class PauseWorld {
 
         this.batch = batch;
         this.manager = manager;
+        this.atlas = manager.get(FileLocationStrings.spriteAtlas);
         this.gamecam = gamecam;
 
-        menuButton = new MenuButton(Assets.medium);
+        menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
 
 
     }
@@ -83,7 +85,7 @@ public class PauseWorld {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(camX,camY));
-        e.edit().add(new ShapeComponent(0,0, gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0,0, gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));
 
 
 

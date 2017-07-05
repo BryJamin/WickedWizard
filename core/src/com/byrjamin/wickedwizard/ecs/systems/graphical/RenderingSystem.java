@@ -7,16 +7,12 @@ import com.artemis.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
@@ -24,13 +20,10 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.ArrayList;
@@ -49,7 +42,6 @@ public class RenderingSystem extends EntitySystem {
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<TextureRegionBatchComponent> trbm;
     private ComponentMapper<TextureFontComponent> trfm;
-    private ComponentMapper<ShapeComponent> sm;
     private ComponentMapper<CollisionBoundComponent> cbm;
 
     private ArrayList<Entity> orderedEntities;
@@ -189,20 +181,6 @@ public class RenderingSystem extends EntitySystem {
             bmf.setColor(Color.WHITE);
         }
 
-        if(sm.has(e)) {
-
-            batch.end();
-            ShapeComponent sc = sm.get(e);
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            shapeRenderer.setProjectionMatrix(gamecam.combined);
-            shapeRenderer.begin(sc.shapeType);
-            shapeRenderer.setColor(sc.color);
-            shapeRenderer.rect(pc.getX(),pc.getY(), sc.width, sc.height);
-            shapeRenderer.setColor(batchColor);
-            shapeRenderer.end();
-            batch.begin();
-        }
-
         batch.setColor(batchColor);
 
 
@@ -244,8 +222,6 @@ public class RenderingSystem extends EntitySystem {
                     layer1 = trbm.get(e1).layer;
                 } else if(trfm.has(e1)){
                     layer1 = trfm.get(e1).layer;
-                } else if(sm.has(e1)){
-                    layer1 = sm.get(e1).layer;
                 }
 
                 if(trm.has(e2)) {
@@ -254,8 +230,6 @@ public class RenderingSystem extends EntitySystem {
                     layer2 = trbm.get(e2).layer;
                 } else if(trfm.has(e2)){
                     layer2 = trfm.get(e2).layer;
-                } else if(sm.has(e2)){
-                    layer2 = sm.get(e2).layer;
                 }
 
                 return ((Integer)layer1).compareTo(layer2);

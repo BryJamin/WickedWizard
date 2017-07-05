@@ -5,14 +5,13 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -28,12 +27,13 @@ public class MessageBannerSystem extends BaseSystem {
 
     TextureFontComponent titleFC;
     TextureFontComponent messageFC;
+    TextureRegion bannerTexture;
 
-    public MessageBannerSystem() {
+    public MessageBannerSystem(TextureRegion bannerTexture) {
         titleFC = new TextureFontComponent("Default");
         titleFC.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;;
 
-
+        this.bannerTexture = bannerTexture;
         messageFC = new TextureFontComponent("Default");
         messageFC.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
     }
@@ -86,11 +86,10 @@ public class MessageBannerSystem extends BaseSystem {
         blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + Measure.units(5)));
         blackBackingBox.edit().add(new FollowPositionComponent(gamecam.position, - MainGame.GAME_WIDTH / 2, Measure.units(5)));
 
-        ShapeComponent sc = new ShapeComponent(0,0, MainGame.GAME_WIDTH, Measure.units(10f), TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        sc.color = new Color(Color.BLACK);
-        sc.color.a = 0;
-        sc.shapeType = ShapeRenderer.ShapeType.Filled;
-        blackBackingBox.edit().add(sc);
+        TextureRegionComponent trc = new TextureRegionComponent(bannerTexture, 0,0, MainGame.GAME_WIDTH, Measure.units(10f), TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+        trc.color = new Color(Color.BLACK);
+        trc.color.a = 0;
+        blackBackingBox.edit().add(trc);
         blackBackingBox.edit().add(ec);
         blackBackingBox.edit().add(fc);
 

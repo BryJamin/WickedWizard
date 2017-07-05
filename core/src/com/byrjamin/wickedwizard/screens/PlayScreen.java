@@ -1,6 +1,5 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
@@ -25,11 +24,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
@@ -55,7 +54,6 @@ import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
@@ -264,12 +262,12 @@ public class PlayScreen extends AbstractScreen {
         e = deathWorld.createEntity();
         e.edit().add(new PositionComponent(gamecam.position.x - gameport.getWorldWidth() / 2,
                 gamecam.position.y - gameport.getWorldHeight() / 2));
-        ShapeComponent sc = new ShapeComponent(gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
-        sc.color = new Color(Color.BLACK);
-        sc.color.a = 0.5f;
-        sc.layer = -1;
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        trc.color = new Color(Color.BLACK);
+        trc.color.a = 0.5f;
+        trc.layer = -1;
 
-        e.edit().add(sc);
+        e.edit().add(trc);
         e.edit().add(fc);
 
     }
@@ -315,7 +313,7 @@ public class PlayScreen extends AbstractScreen {
                         new BlinkSystem(),
                         //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
-                        new MessageBannerSystem(),
+                        new MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK)),
                         new FindPlayerSystem(player),
                         new FiringAISystem(),
                         new GrapplePointSystem(),

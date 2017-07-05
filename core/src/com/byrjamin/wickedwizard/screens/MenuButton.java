@@ -3,15 +3,12 @@ package com.byrjamin.wickedwizard.screens;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -22,9 +19,11 @@ public class MenuButton {
 
 
     private String font;
+    private TextureRegion buttonTexture;
 
-    public MenuButton(String font) {
+    public MenuButton(String font, TextureRegion buttonTexture) {
         this.font = font;
+        this.buttonTexture = buttonTexture;
     }
 
 
@@ -50,11 +49,9 @@ public class MenuButton {
         Entity shape = world.createEntity();
         shape.edit().add(new PositionComponent(x, y));
 
-        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        sc.color = background;
-        sc.DEFAULT = background;
+        TextureRegionComponent trc = new TextureRegionComponent(buttonTexture, width, height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, background);
 
-        shape.edit().add(sc);
+        shape.edit().add(trc);
 
         return e;
 

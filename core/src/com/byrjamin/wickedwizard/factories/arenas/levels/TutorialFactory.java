@@ -5,22 +5,17 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
-import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
-import com.byrjamin.wickedwizard.factories.enemy.KugelDuscheFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -349,20 +344,15 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
     }
 
     public ComponentBag createTutorialHighlight(float x, float y, float width, float height) {
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x, y));
-        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR);
-        bag.add(sc);
-        bag.add(new FadeComponent());
+        ComponentBag bag = createTutorialHighlight(x, y, width, height, new Color(Color.WHITE));
         return bag;
     }
 
     public ComponentBag createTutorialHighlight(float x, float y, float width, float height, Color c) {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
-        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR);
-        sc.color = c;
-        bag.add(sc);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR, c);
+        bag.add(trc);
         bag.add(new FadeComponent());
         return bag;
     }

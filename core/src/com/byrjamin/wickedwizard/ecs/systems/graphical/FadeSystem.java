@@ -5,7 +5,6 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -21,7 +20,6 @@ public class FadeSystem extends EntityProcessingSystem {
     ComponentMapper<TextureFontComponent> tfm;
     ComponentMapper<TextureRegionComponent> trm;
     ComponentMapper<TextureRegionBatchComponent> trbm;
-    ComponentMapper<ShapeComponent> sm;
 
     @SuppressWarnings("unchecked")
     public FadeSystem() {
@@ -55,7 +53,6 @@ public class FadeSystem extends EntityProcessingSystem {
         if(trm.has(e)) trm.get(e).color.a = fc.alpha;
         if(trbm.has(e)) trbm.get(e).color.a = fc.alpha;
         if(tfm.has(e)) tfm.get(e).color.a = fc.alpha;
-        if(sm.has(e)) sm.get(e).color.a = fc.alpha;
 
 
 
