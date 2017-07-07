@@ -47,6 +47,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
@@ -275,11 +276,12 @@ public class PlayScreen extends AbstractScreen {
 
     public void createWorld(){
 
-        LevelItemSystem lis = new LevelItemSystem(random);
         SoundSystem soundSystem = new SoundSystem(manager);
         soundSystem.playMusic(MusicStrings.song8);
 
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 ,lis.getItemPool(), random);
+        ItemStore itemStore = new ItemStore(random);
+
+        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 , itemStore, random);
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
         //jg.setCurrentLevel(ChangeLevelSystem.Level.TWO);
@@ -349,7 +351,7 @@ public class PlayScreen extends AbstractScreen {
                         new ScreenWipeSystem(game.batch, gamecam),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
-                        lis,
+                        new LevelItemSystem(itemStore, random),
                         soundSystem,
                         new ChangeLevelSystem(jg, atlas),
                         new MapTeleportationSystem(jg.getMapTracker()),
@@ -436,16 +438,14 @@ public class PlayScreen extends AbstractScreen {
         }
 
 
-        drawHUD(world, gamecam);
 
-
-
+        if(!game.batch.isDrawing()) {
+            game.batch.begin();
+        }
 
         if(!gameOver) {
             if(!isPaused) {
-
                 RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
-
                 arenaGUI.update(world.delta,
                         gamecam.position.x + Measure.units(45),
                         gamecam.position.y + Measure.units(25),
@@ -453,17 +453,19 @@ public class PlayScreen extends AbstractScreen {
                         rts.getUnvisitedButAdjacentArenas(),
                         rts.getCurrentArena(),
                         rts.getCurrentPlayerLocation());
-
             }
 
-            //Map of the world
 
+
+            //Map of the world
+            drawHUD(world, gamecam);
             arenaGUI.draw(game.batch);
 
             //HUD
 
         }
 
+        game.batch.end();
 
 
         if(isPaused){
@@ -479,8 +481,6 @@ public class PlayScreen extends AbstractScreen {
 
             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
 
-
-
             float camX = gamecam.position.x - gamecam.viewportWidth / 2;
             float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
@@ -492,8 +492,16 @@ public class PlayScreen extends AbstractScreen {
                     rts.getCurrentArena(),
                     rts.getCurrentPlayerLocation());
 
+            if(!game.batch.isDrawing()) {
+                game.batch.begin();
+            }
+
             pauseArenaGUI.draw(game.batch);
+
+            game.batch.end();
         }
+
+
 
 
         if(gameOver){
@@ -507,6 +515,7 @@ public class PlayScreen extends AbstractScreen {
 
             deathWorld.process();
         }
+
 
 /*
 
@@ -541,10 +550,6 @@ public class PlayScreen extends AbstractScreen {
 
 
     public void drawHUD(World world, OrthographicCamera gamecam){
-
-        if (!game.batch.isDrawing()) {
-            game.batch.begin();
-        }
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
@@ -619,8 +624,6 @@ public class PlayScreen extends AbstractScreen {
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
                 Measure.units(5f), Align.center, true);
-
-
     }
 
     @Override

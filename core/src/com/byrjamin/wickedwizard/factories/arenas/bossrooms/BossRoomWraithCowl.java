@@ -10,28 +10,27 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossAdoj;
+import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWanda;
+import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWraithCowl;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.utils.Measure;
 
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
 
 /**
- * Created by Home on 03/07/2017.
+ * Created by Home on 06/07/2017.
  */
 
-public class BossRoomAdoj extends AbstractFactory {
+public class BossRoomWraithCowl extends AbstractFactory{
+
+    private ArenaShellFactory arenaShellFactory;
+    private ChestFactory chestFactory;
+    private DecorFactory decorFactory;
+    private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
+    private ArenaSkin arenaSkin;
 
 
-    ArenaShellFactory arenaShellFactory;
-    ChestFactory chestFactory;
-    DecorFactory decorFactory;
-    ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
-    ArenaSkin arenaSkin;
-
-
-    public BossRoomAdoj(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public BossRoomWraithCowl(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
 
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
@@ -43,7 +42,7 @@ public class BossRoomAdoj extends AbstractFactory {
     }
 
 
-    public ArenaGen adojArena() {
+    public ArenaGen wraithcowlArena() {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -61,13 +60,13 @@ public class BossRoomAdoj extends AbstractFactory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
 
-                arena.addEntity(new BossAdoj(assetManager).bossAdoj(Measure.units(70f), arena.getHeight() / 2));
+                arena.addEntity(new BossWraithCowl(assetManager).wraithCowl(arena.getWidth() / 2, arena.getHeight() / 2));
 
                 return arena;
             }
         };
     }
+    
 
 
 }
-

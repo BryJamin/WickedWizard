@@ -24,7 +24,7 @@ public class DesktopLauncher {
 		Settings settings = new Settings();
 		settings.maxWidth = 2048;
 		settings.maxHeight = 2048;
-		settings.filterMin = Texture.TextureFilter.Nearest;
+		settings.filterMin = Texture.TextureFilter.Linear;
 		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 

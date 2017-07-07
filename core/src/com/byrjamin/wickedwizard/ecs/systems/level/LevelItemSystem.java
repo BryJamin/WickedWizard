@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.ecs.systems.level;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.passives.ChangeColor;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
@@ -34,64 +35,16 @@ import java.util.Random;
  * Created by Home on 13/05/2017.
  */
 
+//TODO currently not relevant but may be depending on if items can drop randomly from certain areas
 public class LevelItemSystem extends BaseSystem {
 
 
-    private Array<Item> itemPool = new Array<Item>();
+    private ItemStore itemStore;
     private Random random;
 
-    public LevelItemSystem(Random random){
+    public LevelItemSystem(ItemStore itemStore, Random random){
         this.random = random;
-
-        //Accuracy
-        itemPool.add(new ItemAce());
-        itemPool.add(new ItemKeenEye());
-
-
-        //Armor
-        itemPool.addAll(
-                new ItemIronBody(),
-                new ItemSlimeCoat(),
-                new ItemSquareBuckler(),
-                new ItemVitaminC());
-
-        //Damage
-        itemPool.addAll(
-                new Anger(),
-                new ItemLuckyShot(),
-                new ItemMiniCatapult(),
-                new ItemSmoulderingEmber(),
-                new ItemStability());
-
-        //Firerate
-        itemPool.addAll(
-                new ItemElasticity(),
-                new ItemMinorAccelerant(),
-                new ItemSwiftShot(),
-                new ItemTacticalKnitwear());
-
-        //Health
-        itemPool.addAll(new ItemHyperTrophy(), new Medicine());
-
-
-        //Luck
-        itemPool.addAll(
-                new ItemForgottenScarab(),
-                new ItemGoldenScarab(),
-                new ItemJadeScarab(),
-                new ItemThreeLeafClover()
-        );
-
-
-        //Range
-        itemPool.addAll(new ItemScope());
-
-        //Speed
-        itemPool.addAll(new ItemQuickness());
-
-        //Other
-        itemPool.add(new ChangeColor());
-
+        this.itemStore = itemStore;
     }
 
     @Override
@@ -100,19 +53,4 @@ public class LevelItemSystem extends BaseSystem {
 
     }
 
-
-    public Item getItem(){
-        if(itemPool.size > 0) {
-            int i = random.nextInt(itemPool.size);
-            Item item = itemPool.get(i);
-            itemPool.removeValue(item, true);
-            return item;
-        } else {
-            return new ItemVitaminC();
-        }
-    }
-
-    public Array<Item> getItemPool() {
-        return itemPool;
-    }
 }

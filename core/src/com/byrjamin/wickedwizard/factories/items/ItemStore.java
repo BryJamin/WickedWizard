@@ -37,85 +37,126 @@ public class ItemStore {
 
 
     //TODO the general idea of this class is to create a tagging system for all items
-    //TODO by this I mean I'll create an array with Pair<WeightedObject<Item>, Array<Avaliable>>
+    //TODO by this I mean I'll create an array with Pair<WeightedObject<Item>, Array<Available>>
     //TODO when you get an item you go through the pair array and see if the avaliable is relevant to
     //TODO what you're after. e.g. You need a boss item (it only grabs boss items
     //TODO you then roll for an item and return it. You then remove the
 
-    private enum Avaliable {
+    public enum Available {
         SHOP, BOSS, ITEM
     }
 
-    private Array<Item> itemPool = new Array<Item>();
+
+    private Array<ItemOptions> itemOptions = new Array<ItemOptions>();
+
     private Random random;
 
     public ItemStore(Random random){
         this.random = random;
 
         //Accuracy
-        itemPool.add(new ItemAce());
-        itemPool.add(new ItemKeenEye());
-
+        createItem(new ItemAce());
+        createItem(new ItemKeenEye());
 
         //Armor
-        itemPool.addAll(
-                new ItemIronBody(),
-                new ItemSlimeCoat(),
-                new ItemSquareBuckler(),
-                new ItemVitaminC());
+        createItem(new ItemIronBody());
+        createItem(new ItemSlimeCoat());
+        createItem(new ItemSquareBuckler());
+        createItem(new ItemVitaminC());
 
         //Damage
-        itemPool.addAll(
-                new Anger(),
-                new ItemLuckyShot(),
-                new ItemMiniCatapult(),
-                new ItemSmoulderingEmber(),
-                new ItemStability());
+        createItem(new Anger(), Available.BOSS);
+        createItem(new ItemLuckyShot());
+        createItem(new ItemMiniCatapult());
+        createItem(new ItemSmoulderingEmber());
+        createItem(new ItemStability());
 
         //Firerate
-        itemPool.addAll(
-                new ItemElasticity(),
-                new ItemMinorAccelerant(),
-                new ItemSwiftShot(),
-                new ItemTacticalKnitwear());
+        createItem(new ItemElasticity());
+        createItem(new ItemMinorAccelerant());
+        createItem(new ItemSwiftShot());
+        createItem(new ItemTacticalKnitwear());
 
         //Health
-        itemPool.addAll(new ItemHyperTrophy(), new Medicine());
-
+        createItem(new ItemHyperTrophy());
+        createItem(new Medicine());
 
         //Luck
-        itemPool.addAll(
-                new ItemForgottenScarab(),
-                new ItemGoldenScarab(),
-                new ItemJadeScarab(),
-                new ItemThreeLeafClover()
-        );
-
+        createItem(new ItemForgottenScarab());
+        createItem(new ItemGoldenScarab());
+        createItem(new ItemJadeScarab());
+        createItem(new ItemThreeLeafClover());
 
         //Range
-        itemPool.addAll(new ItemScope());
+        createItem(new ItemScope());
 
         //Speed
-        itemPool.addAll(new ItemQuickness());
+        createItem(new ItemQuickness());
 
         //Other
-        itemPool.add(new ChangeColor());
+        createItem(new ChangeColor());
+
+    }
+
+    private void createItem(Item item){
+        itemOptions.add(new ItemOptions(item, Available.SHOP, Available.ITEM));
+    }
+
+
+    private void createItem(Item item, Available... avability){
+        itemOptions.add(new ItemOptions(item, avability));
+    }
+
+
+    public Item generateItemRoomItem(){
+
+        Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
+
+        for(ItemOptions io : itemOptions){
+            if(io.availables.contains(Available.ITEM, true)) itemOptionsArray.add(io);
+        }
+
+        Item item;
+        if(itemOptionsArray.size > 0) {
+            int i = random.nextInt(itemOptionsArray.size);
+            item = itemOptionsArray.get(i).item;
+            if(!itemOptionsArray.get(i).repeatable) {
+                itemOptions.removeValue(itemOptionsArray.get(i), true);
+            }
+        } else {
+            item = new ItemVitaminC();
+        }
+        return item;
+    }
+
+
+    public class ItemOptions {
+
+        public Item item;
+
+        private boolean repeatable = false;
+
+        public Array<Available> availables = new Array<Available>();
+
+        ItemOptions(Item item){
+            this(item, false, Available.SHOP, Available.ITEM, Available.BOSS);
+        }
+
+        ItemOptions(Item item, Available... avaliability){
+            this(item, false, avaliability);
+        }
+
+        ItemOptions(Item item, boolean repeatable, Available... avaliability){
+            this.item = item;
+            this.repeatable = repeatable;
+
+            for(Available a : avaliability) this.availables.add(a);
+        }
 
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public Array<ItemOptions> getItemOptions() {
+        return itemOptions;
+    }
 }

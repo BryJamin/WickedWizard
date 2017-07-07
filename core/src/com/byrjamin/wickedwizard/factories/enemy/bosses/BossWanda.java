@@ -53,16 +53,16 @@ public class BossWanda extends EnemyFactory {
     private DeathFactory df;
     private BulletFactory bf;
 
-    private final float width = Measure.units(7.5f);
-    private final float height = Measure.units(7.5f);
+    private static final float width = Measure.units(7.5f);
+    private static final float height = Measure.units(7.5f);
 
-    private final float textureWidth = Measure.units(10);
-    private final float textureHeight = Measure.units(10);
+    private static final float textureWidth = Measure.units(10);
+    private static final float textureHeight = Measure.units(10);
 
-    private final float textureOffsetX = -Measure.units(1.25f);
-    private final float textureOffsetY = 0;
+    private static final float textureOffsetX = -Measure.units(1.25f);
+    private static final float textureOffsetY = 0;
 
-    private final GibletFactory gibletFactory;
+    private GibletFactory gibletFactory;
 
 
     public BossWanda(AssetManager assetManager) {

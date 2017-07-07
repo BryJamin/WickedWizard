@@ -44,23 +44,23 @@ import java.util.Random;
 
 public class MrBoomyBoss extends EnemyFactory {
 
-    private float height = Measure.units(12f);
-    private final float width = Measure.units(12f);
+    private static float height = Measure.units(12f);
+    private static final float width = Measure.units(12f);
 
-    private final float hitBoxWidth = Measure.units(9f);
-    private final float hitBoxHeight = Measure.units(10f);
+    private static final float hitBoxWidth = Measure.units(9f);
+    private static final float hitBoxHeight = Measure.units(10f);
 
 
-    private final float jumpSpeed = Measure.units(100f);
-    private final float speed = Measure.units(45f);
-    private final float airTime = 0.5f;
-    private final float dropTime = 0.5f;
+    private static final float jumpSpeed = Measure.units(100f);
+    private static final float speed = Measure.units(45f);
+    private static final float airTime = 0.5f;
+    private static final float dropTime = 0.5f;
 
-    private final float health = 80;
+    private static final float health = 80;
 
-    private final int DEFAULT_ANIMATION = 0;
-    private final int EXPLODING_ANIMATION = 2;
-    private final int SIDEVIEW_ANIMATION = 3;
+    private static final int DEFAULT_ANIMATION = 0;
+    private static final int EXPLODING_ANIMATION = 2;
+    private static final int SIDEVIEW_ANIMATION = 3;
 
     private BombFactory bombFactory;
 

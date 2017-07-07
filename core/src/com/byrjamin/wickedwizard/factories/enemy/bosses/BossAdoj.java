@@ -46,25 +46,25 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
 public class BossAdoj extends EnemyFactory {
 
 
-    private float height = Measure.units(24f);
-    private final float width = Measure.units(24f);
+    private static float height = Measure.units(24f);
+    private static final float width = Measure.units(24f);
 
-    private final float mainBodyHitBoxWidth = Measure.units(18f);
-    private final float mainBodyHitBoxHeight = Measure.units(14f);
-    private final float mainBodyHitBoxOffsetY = Measure.units(4f);
+    private static final float mainBodyHitBoxWidth = Measure.units(18f);
+    private static final float mainBodyHitBoxHeight = Measure.units(14f);
+    private static final float mainBodyHitBoxOffsetY = Measure.units(4f);
 
-    private final float hornHitBoxWidth = Measure.units(2f);
-    private final float hornHitBoxHeight = Measure.units(5f);
-    private final float hornHitBoxOffsetX = Measure.units(1f);
-    private final float hornHitBoxOffsetY = Measure.units(15.5f);
+    private static final float hornHitBoxWidth = Measure.units(2f);
+    private static final float hornHitBoxHeight = Measure.units(5f);
+    private static final float hornHitBoxOffsetX = Measure.units(1f);
+    private static final float hornHitBoxOffsetY = Measure.units(15.5f);
 
-    private final float rightHornHitBoxOffsetX = Measure.units(21f);
+    private static final float rightHornHitBoxOffsetX = Measure.units(21f);
 
-    private float health = 70;
+    private static float health = 70;
 
-    private final float firingAiOffsetY = Measure.units(5f);
-    private final float fastPistolFireRate = 0.1f;
-    private final float speed = Measure.units(40f);
+    private static final float firingAiOffsetY = Measure.units(5f);
+    private static final float fastPistolFireRate = 0.1f;
+    private static final float speed = Measure.units(40f);
 
 
 
@@ -96,7 +96,6 @@ public class BossAdoj extends EnemyFactory {
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(TextureStrings.ADOJ), Animation.PlayMode.LOOP));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.025f / 1f, atlas.findRegions(TextureStrings.ADOJ_FIRING)));
-
         bag.add(new AnimationComponent(animMap));
 
         bag.add(new VelocityComponent());

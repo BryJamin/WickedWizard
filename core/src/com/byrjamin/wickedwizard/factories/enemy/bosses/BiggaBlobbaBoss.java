@@ -46,34 +46,34 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 public class BiggaBlobbaBoss extends EnemyFactory {
 
-    private final float width = Measure.units(27);
-    private final float height = Measure.units(30);
+    private static final float width = Measure.units(27);
+    private static final float height = Measure.units(30);
 
 
-    private final float bottomWidth = Measure.units(27);
-    private final float bottomHeight = Measure.units(10);
+    private static final float bottomWidth = Measure.units(27);
+    private static final float bottomHeight = Measure.units(10);
 
-    private final float bottomMidWidth = Measure.units(23);
-    private final float bottomMidHeight = Measure.units(8);
+    private static final float bottomMidWidth = Measure.units(23);
+    private static final float bottomMidHeight = Measure.units(8);
 
-    private final float bottomTopWidth = Measure.units(12f);
-    private final float bottomTopHeight = Measure.units(5);
+    private static final float bottomTopWidth = Measure.units(12f);
+    private static final float bottomTopHeight = Measure.units(5);
 
-    private final float crownWidth = Measure.units(5f);
-    private final float crownHeight = Measure.units(5);
+    private static final float crownWidth = Measure.units(5f);
+    private static final float crownHeight = Measure.units(5);
 
-    private final float gunOffsetY = Measure.units(12.5f);
+    private static final float gunOffsetY = Measure.units(12.5f);
 
 
-    private final float speed = Measure.units(60f);
+    private static final float speed = Measure.units(60f);
 
-    private final float jumpTransitionVly = Measure.units(40f);
-    private final float jumpVlx = Measure.units(45f);
-    private final float jumpVly = Measure.units(75f);
+    private static final float jumpTransitionVly = Measure.units(40f);
+    private static final float jumpVlx = Measure.units(45f);
+    private static final float jumpVly = Measure.units(75f);
 
-    private final float textureSize = Measure.units(35f);
+    private static final float textureSize = Measure.units(35f);
 
-    private final int CHARGINGANIMATION = 5;
+    private static final int CHARGINGANIMATION = 5;
 
 
     public BiggaBlobbaBoss(AssetManager assetManager) {

@@ -167,7 +167,7 @@ public class MultiPistol extends Pistol {
 
 
                 bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
-                        Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED))));
+                        Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(color))));
                 //bullet.edit().remove(CollisionBoundComponent.class);
         }
     }

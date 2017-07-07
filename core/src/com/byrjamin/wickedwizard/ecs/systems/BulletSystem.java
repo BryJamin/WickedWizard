@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -58,14 +59,13 @@ public class BulletSystem extends EntityProcessingSystem {
             }
 
         } else if(fm.has(e)){
-            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
-                    EnemyComponent.class, CollisionBoundComponent.class, HealthComponent.class));
+            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, HealthComponent.class).one(EnemyComponent.class,OnlyPlayerBulletsComponent.class) );
             IntBag entityIds = subscription.getEntities();
             bulletScan(e, entityIds);
         }
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
-                CollisionBoundComponent.class, HealthComponent.class).exclude(EnemyComponent.class, PlayerComponent.class));
+                CollisionBoundComponent.class, HealthComponent.class).exclude(EnemyComponent.class, PlayerComponent.class, OnlyPlayerBulletsComponent.class));
         IntBag entityIds = subscription.getEntities();
         bulletScan(e, entityIds);
 

@@ -51,8 +51,8 @@ public class BossGurner extends EnemyFactory{
     private DeathFactory df;
     private BulletFactory bf;
 
-    private final float width = Measure.units(30f);
-    private final float height = Measure.units(30f);
+    private static final float width = Measure.units(30f);
+    private static final float height = Measure.units(30f);
 
 
     public BossGurner(AssetManager assetManager) {

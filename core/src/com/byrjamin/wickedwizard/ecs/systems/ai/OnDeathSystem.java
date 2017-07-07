@@ -82,4 +82,36 @@ public class OnDeathSystem  extends BaseSystem {
     }
 
 
+
+    public void killChildComponents(ParentComponent parentComponent){
+
+        Array<ChildComponent> children = new Array<ChildComponent>();
+        children.addAll(parentComponent.children);
+
+        for(ChildComponent c : children){
+            Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
+            if(child != null) {
+                kill(child);
+            }
+            parentComponent.children.removeValue(c, true);
+        }
+
+    }
+
+
+    public void killChildComponentsIgnoreOnDeath(ParentComponent parentComponent){
+
+        Array<ChildComponent> children = new Array<ChildComponent>();
+        children.addAll(parentComponent.children);
+
+        for(ChildComponent c : children){
+            Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
+            if(child != null) {
+                child.deleteFromWorld();
+            }
+            parentComponent.children.removeValue(c, true);
+        }
+
+    }
+
 }

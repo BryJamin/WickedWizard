@@ -23,7 +23,7 @@ public class AnimationStateComponent extends Component {
         }
     }
     public static final int DEFAULT = 0;
-    public static final int FIRING = 10;
+    public static final int FIRING = 1028;
 
 
     private int defaultState = 0;

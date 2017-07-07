@@ -101,18 +101,9 @@ public class ArenaGUI {
 
 
     public void draw(SpriteBatch batch) {
-
-
-        if(!batch.isDrawing()) {
-            batch.begin();
-        }
         drawMapContainer(batch);
         drawMapSquares(batch);
         drawMapLines(batch);
-
-        if(batch.isDrawing()) {
-            batch.end();
-        }
     }
 
     public void drawMapContainer(SpriteBatch batch){

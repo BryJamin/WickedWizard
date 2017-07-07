@@ -202,7 +202,6 @@ public class DecorFactory extends AbstractFactory {
                 e.edit().add(new ConditionalActionComponent(new Condition() {
                     @Override
                     public boolean condition(World world, Entity entity) {
-
                         return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
 
                     }
