@@ -318,6 +318,7 @@ public class JigsawGenerator {
             case THREE: roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.boomyMap(btc), 20));
                 break;
             case FOUR: roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));
+                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wraithMap(btc), 20));
                 break;
             case FIVE:
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));

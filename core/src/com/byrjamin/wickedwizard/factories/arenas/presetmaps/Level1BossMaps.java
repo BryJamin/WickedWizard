@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
@@ -161,7 +162,7 @@ public class Level1BossMaps extends AbstractFactory {
                 btc));
 
         placedArenas.add(startingArena);
-        placedArenas.add(new BossRoomAdoj(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1, 0)));
+        placedArenas.add(new BossRoomWraithCowl(assetManager, arenaSkin).wraithcowlArena().createArena(new MapCoords(1, 0)));
 
         Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(2, 0));
         exitArena.addEntity(decorFactory.levelPortal(exitArena.getWidth() / 2, exitArena.getHeight() / 2 + Measure.units(5f)));

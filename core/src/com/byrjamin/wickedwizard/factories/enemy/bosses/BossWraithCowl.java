@@ -1,14 +1,15 @@
 package com.byrjamin.wickedwizard.factories.enemy.bosses;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -26,8 +27,10 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
@@ -47,9 +50,9 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BulletMath;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
@@ -64,13 +67,26 @@ public class BossWraithCowl extends EnemyFactory {
     private static final float width = Measure.units(20f);
     private static final float height = Measure.units(20f);
 
-    private static final float speed = Measure.units(20f);
+    private static final float hitBoxwidth = Measure.units(20f);
+    private static final float hitBoxheight = Measure.units(20f);
+
+    private static final float sadSpeed = Measure.units(20f);
+    private static final float madSpeed = Measure.units(40f);
+
+    private static final float sadFireRate = Measure.units(20f);
+    private static final float madFireRate = Measure.units(40f);
+
+    private static final float sadFireRateLarge = Measure.units(20f);
+    private static final float madFireRateLarge = Measure.units(40f);
 
     private static final float health = 80;
 
 
     private static final int SAD_STATE = 0;
     private static final int MAD_STATE = 2;
+
+    private static final float SAD_STATE_FRAME_DURATION = 1f / 8f;
+    private static final float MAD_STATE_FRAME_DURATION = 1f / 14f;
 
 
     //Flash Positions
@@ -88,7 +104,7 @@ public class BossWraithCowl extends EnemyFactory {
 
 
     //Orbit Phase
-    private static final float orbitCenterWidth = Measure.units(40f);
+    private static final float orbitCenterWidth = Measure.units(30f);
     private static final float orbitCenterHeight = Measure.units(5f);
     private static final float speedOfInvisibleCenter = Measure.units(30f);
     private static final float changeInDegrees = 1.5f;
@@ -130,10 +146,10 @@ public class BossWraithCowl extends EnemyFactory {
         bag.add(new ParentComponent());
 
 
-        bag.add(new AnimationStateComponent());
+        bag.add(new AnimationStateComponent(SAD_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(SAD_STATE, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(TextureStrings.ADOJ), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.025f / 1f, atlas.findRegions(TextureStrings.ADOJ_FIRING)));
+        animMap.put(SAD_STATE, new Animation<TextureRegion>(SAD_STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.WRAITH_COWL_SAD), Animation.PlayMode.LOOP));
+        animMap.put(MAD_STATE, new Animation<TextureRegion>(MAD_STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.WRAITH_COWL_MAD), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
 
@@ -148,10 +164,10 @@ public class BossWraithCowl extends EnemyFactory {
                 FadeInPhaseLeft fadeInPhaseLeft = new FadeInPhaseLeft(random);
 
                 e.getComponent(CollisionBoundComponent.class)
-                        .hitBoxes.add(new HitBox(new Rectangle(e.getComponent(CollisionBoundComponent.class).bound)));
-
+                        .hitBoxes.add(new HitBox(new Rectangle(0,0,hitBoxwidth, hitBoxheight),
+                        CenterMath.offsetX(width, hitBoxwidth),
+                        CenterMath.offsetY(height, hitBoxheight)));
                 PhaseComponent phaseComponent = new PhaseComponent();
-                phaseComponent.addPhase(6f, fadeInPhaseLeft);
                 phaseComponent.addPhase(6f, fadeInPhaseLeft);
                 phaseComponent.addPhase(6f, fadeInPhaseLeft);
                 phaseComponent.addPhase(6f, fadeInPhaseLeft);
@@ -160,7 +176,7 @@ public class BossWraithCowl extends EnemyFactory {
                 e.edit().add(phaseComponent);
 
             }
-        }, 0.7f));
+        }, 1f));
 
         return bag;
 
@@ -190,6 +206,8 @@ public class BossWraithCowl extends EnemyFactory {
         private Weapon higherWeapon;
         private Random random;
 
+
+
         private Direction positionInRoom;
 
         public FadeInPhaseLeft(Direction direction, Random random){
@@ -208,7 +226,7 @@ public class BossWraithCowl extends EnemyFactory {
                     .fireRate(2f)
                     .angles(0)
                     .shotScale(8)
-                    .shotSpeed(Measure.units(30f))
+                    .shotSpeed(Measure.units(50f))
                     .intangible(true)
                     .color(ColorResource.GHOST_BULLET_COLOR)
                     .enemy(true)
@@ -236,6 +254,14 @@ public class BossWraithCowl extends EnemyFactory {
 
             PositionComponent pc = e.getComponent(PositionComponent.class);
 
+            AnimationStateComponent animationStateComponent = e.getComponent(AnimationStateComponent.class);
+            animationStateComponent.setDefaultState(
+                    animationStateComponent.getCurrentState() == SAD_STATE ? MAD_STATE : SAD_STATE);
+
+            int state = animationStateComponent.getCurrentState();
+            float speed = state == SAD_STATE ? madSpeed : sadSpeed;
+
+
             switch (positionInRoom){
 
                 case LEFT:
@@ -262,7 +288,7 @@ public class BossWraithCowl extends EnemyFactory {
                     world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position.set(playerRightPosition, 0);
                     e.edit().add(new VelocityComponent(0, random.nextBoolean() ? speed : -speed));
                     e.edit().add(new FiringAIComponent(180));
-                    e.edit().add(new WeaponComponent(ghostMeapon, 0.5f));
+                    e.edit().add(new WeaponComponent(ghostMeapon, 1f));
 
                     break;
                 case UP:
@@ -295,6 +321,12 @@ public class BossWraithCowl extends EnemyFactory {
             e.edit().remove(FiringAIComponent.class);
             e.edit().remove(WeaponComponent.class);
             e.edit().remove(VelocityComponent.class);
+
+            IntBag bag = world.getAspectSubscriptionManager().get(Aspect.all(BulletComponent.class)).getEntities();
+
+            for(int i = 0; i < bag.size(); i++){
+                world.getEntity(bag.get(i)).deleteFromWorld();
+            }
         }
 
 
@@ -332,7 +364,7 @@ public class BossWraithCowl extends EnemyFactory {
         //e.edit().add(new EnemyComponent());
         e.edit().add(new OnlyPlayerBulletsComponent());
         e.edit().add(new BlinkComponent());
-        e.edit().add(new HealthComponent(3));
+        e.edit().add(new HealthComponent(1));
         e.edit().add(new FadeComponent(true, 1, false));
        e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.BLACK))));
 
@@ -408,14 +440,21 @@ public class BossWraithCowl extends EnemyFactory {
 
             //Wraith
             e.edit().add(new FadeComponent(true, 0.5f, false));
+            e.edit().add(new IntangibleComponent());
             e.edit().add(new OrbitComponent(centerPosition.position, radius, changeInDegrees, startAngleInDegrees, orbitOffsetX, orbitOffsetY));
 
 
             //Fake Wraiths
             for(int i = 40; i < 360; i+=40) {
+
+
                 Entity fakeWraith = world.createEntity();
                 fakeWraith.edit().add(new PositionComponent());
-                fakeWraith.edit().add(new CollisionBoundComponent(new Rectangle(0,0, width, height), true));
+                fakeWraith.edit().add(new CollisionBoundComponent(new Rectangle(-100, -100, width, height),
+                        new HitBox(new Rectangle(-100,-100,hitBoxwidth, hitBoxheight),
+                                CenterMath.offsetX(width, hitBoxwidth),
+                                CenterMath.offsetY(height, hitBoxheight))));
+                fakeWraith.edit().add(new EnemyComponent());
                 fakeWraith.edit().add(new EnemyComponent());
                 fakeWraith.edit().add(new OrbitComponent(centerPosition.position, radius, changeInDegrees, startAngleInDegrees + i, orbitOffsetX, orbitOffsetY));
                 TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.COWL), width, height,
@@ -429,6 +468,10 @@ public class BossWraithCowl extends EnemyFactory {
                 fakeWraith.edit().add(fadeComponent);
                 fakeWraith.edit().add(new ChildComponent(parentComponent));
 
+                fakeWraith.edit().add(new AnimationStateComponent(MAD_STATE));
+                IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+                animMap.put(MAD_STATE, new Animation<TextureRegion>(MAD_STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.WRAITH_COWL_MAD), Animation.PlayMode.LOOP));
+                fakeWraith.edit().add(new AnimationComponent(animMap));
 
             }
 
@@ -453,7 +496,8 @@ public class BossWraithCowl extends EnemyFactory {
         public void cleanUpAction(World world, Entity e) {
             world.getSystem(OnDeathSystem.class).killChildComponents(e.getComponent(ParentComponent.class));
             e.edit().remove(OrbitComponent.class);
-
+            e.edit().remove(IntangibleComponent.class);
+            e.edit().remove(FadeComponent.class);
         }
     }
 
