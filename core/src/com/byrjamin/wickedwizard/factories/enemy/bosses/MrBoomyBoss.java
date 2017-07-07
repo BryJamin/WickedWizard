@@ -60,7 +60,7 @@ public class MrBoomyBoss extends EnemyFactory {
 
     private static final int DEFAULT_ANIMATION = 0;
     private static final int EXPLODING_ANIMATION = 2;
-    private static final int SIDEVIEW_ANIMATION = 3;
+    private static final int SIDEVIEW_ANIMATION = 4;
 
     private BombFactory bombFactory;
 

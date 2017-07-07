@@ -165,6 +165,11 @@ public class TextureStrings {
     public static final String WRAITH_COWL_SAD = "enemy/boss/wraith_cowl_sad";
     public static final String WRAITH_COWL_MAD = "enemy/boss/wraith_cowl_mad";
 
+    //AJIR
+    public static final String AJIR = "enemy/boss/ajir";
+    public static final String AJIR_FIRING = "enemy/boss/ajir_firing";
+
+
 
 
 }
