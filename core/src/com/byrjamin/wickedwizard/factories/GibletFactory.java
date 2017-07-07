@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
@@ -49,7 +50,7 @@ public class GibletFactory extends AbstractFactory {
         return g;
     }
 
-    public class Giblets implements Task {
+    public class Giblets implements Action {
 
         private int numberOfGiblets;
         private final float life;
@@ -77,11 +78,6 @@ public class GibletFactory extends AbstractFactory {
             } else {
                 BagToEntity.bagsToEntities(world, giblets(cbc.getCenterX(), cbc.getCenterY(), numberOfGiblets, life, minSpeed, maxSpeed, size, color));
             }
-        }
-
-        @Override
-        public void cleanUpAction(World world, Entity e) {
-
         }
     }
 

@@ -10,25 +10,20 @@ import com.artemis.World;
 
 public class OnDeathActionComponent extends Component {
 
-    public Task task;
+    public Action action;
 
     public OnDeathActionComponent() {
-        task = new Task() {
+        action = new Action() {
             @Override
             public void performAction(World world, Entity e) {
-
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
 
             }
         };
     }
 
 
-    public OnDeathActionComponent(Task task){
-        this.task = task;
+    public OnDeathActionComponent(Action action){
+        this.action = action;
     }
 
 }

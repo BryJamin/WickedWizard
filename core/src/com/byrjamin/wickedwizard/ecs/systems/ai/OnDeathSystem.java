@@ -43,7 +43,7 @@ public class OnDeathSystem  extends BaseSystem {
     public void kill(Entity deadEntity) {
 
         if(odam.has(deadEntity)){
-            odam.get(deadEntity).task.performAction(world, deadEntity);
+            odam.get(deadEntity).action.performAction(world, deadEntity);
         }
 
 

@@ -79,21 +79,9 @@ public class BulletFactory extends AbstractFactory {
     }
 
     public ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
-
         ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
         bag.add(new EnemyComponent());
-
-
-        OnDeathActionComponent odc = BagSearch.getObjectOfTypeClass(OnDeathActionComponent.class, bag);
-        odc.task = new GibletFactory(assetManager).giblets(5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED));
-
-        return bag;
-    }
-
-    public Bag<Component> basicEnemyBulletBagNoGibs(float x, float y, float scale) {
-
-        Bag<Component> bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
-        bag.add(new EnemyComponent());
+        bag.add(new OnDeathActionComponent(new GibletFactory(assetManager).giblets(5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED))));
         return bag;
     }
 
@@ -116,7 +104,6 @@ public class BulletFactory extends AbstractFactory {
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion, width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
         trc.color = color;
-        bag.add(new OnDeathActionComponent());
 
         bag.add(trc);
         return bag;

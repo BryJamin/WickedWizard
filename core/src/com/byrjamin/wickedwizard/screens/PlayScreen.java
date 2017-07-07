@@ -304,6 +304,7 @@ public class PlayScreen extends AbstractScreen {
                         new OnCollisionActionSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
+                        new PhaseSystem(),
                         new ExpireSystem(),
                         new ActionAfterTimeSystem(),
                         new ExplosionSystem(),
@@ -323,7 +324,6 @@ public class PlayScreen extends AbstractScreen {
                         new HealthSystem(),
                         new OnDeathSystem(),
                         new FadeSystem(),
-                        new PhaseSystem(),
                         new ProximitySystem(),
                         new FindChildSystem(),
                         new PickUpSystem(),
