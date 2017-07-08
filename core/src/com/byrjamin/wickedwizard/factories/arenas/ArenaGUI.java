@@ -48,7 +48,7 @@ public class ArenaGUI {
 
     private float mapBlinker;
 
-    private float lineThickness = 5;
+    private float lineThickness = 2;
 
     private boolean blink;
 
@@ -137,19 +137,25 @@ public class ArenaGUI {
     }
 
     private void drawLeftLine(SpriteBatch batch, float x, float y, float thickness, float height){
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y, thickness, height);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y - thickness, thickness, height + (thickness * 2));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness, thickness, height + (thickness * 2));
+
     }
 
     private void drawRightLine(SpriteBatch batch, float x, float y, float thickness, float height){
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y, thickness, height);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness, thickness, height + (thickness * 2));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y - thickness, thickness, height + (thickness * 2));
     }
 
     private void drawBottomLine(SpriteBatch batch, float x, float y, float width, float thickness){
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y, width, thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness, width + (thickness * 2), thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y, width + (thickness * 2), thickness);
+
     }
 
     private void drawTopLine(SpriteBatch batch, float x, float y, float width, float thickness){
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y - thickness, width, thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness,  width + (thickness * 2), thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y, width + (thickness * 2), thickness);
     }
 
 
