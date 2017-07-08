@@ -33,9 +33,10 @@ import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BulletMath;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
 
@@ -46,11 +47,19 @@ import java.util.Random;
 public class BossAjir extends EnemyFactory{
 
 
-    private static final float width = Measure.units(15f);
+    private static final float width = Measure.units(25f);
     private static final float height = Measure.units(25f);
 
+    private static final float textureWidth = Measure.units(25);
+    private static final float textureHeight = Measure.units(25f);
 
 
+    private static final float bodyHitBoxWidth = Measure.units(7f);
+    private static final float bodyHitBoxHeight = Measure.units(20f);
+
+    private static final float armsHitBoxWidth = Measure.units(14);
+    private static final float armsHitBoxHeight = Measure.units(5);
+    private static final float armsHitBoxOffsetY = Measure.units(12.5f);
 
     private static final float chargingLaserWidth = Measure.units(5f);
     private static final float chargingLaserHeight = Measure.units(50f);
@@ -66,10 +75,10 @@ public class BossAjir extends EnemyFactory{
 
     private static final float health = 80;
 
-    private static final float timeBetweenSplitAction = 2.5f;
+    private static final float timeBetweenSplitAction = 1.25f;
     private static final float timeBetweenLasers = 1.0f;
 
-    private static final float shotSpeed = Measure.units(50f);
+    private static final float shotSpeed = Measure.units(25f);
 
 
     private static final int NORMAL_STATE = 0;
@@ -87,14 +96,22 @@ public class BossAjir extends EnemyFactory{
     public ComponentBag ajir(float x, float y){
 
         x = x - width / 2;
-        y = y - width / 2;
+        y = y - height / 2;
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
-        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
+                new HitBox(new Rectangle(x, y, bodyHitBoxWidth, bodyHitBoxHeight),
+                        CenterMath.offsetX(width, bodyHitBoxWidth),
+                        CenterMath.offsetY(height, bodyHitBoxHeight)),
+                new HitBox(new Rectangle(x, y, armsHitBoxWidth, armsHitBoxHeight),
+                        CenterMath.offsetX(width, armsHitBoxWidth),
+                        armsHitBoxOffsetY)));
 
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
-                width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+                CenterMath.offsetX(width, textureWidth),
+                CenterMath.offsetY(height, textureHeight),
+                textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         bag.add(new AnimationStateComponent(NORMAL_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -124,7 +141,7 @@ public class BossAjir extends EnemyFactory{
         private AjirSplitterWeapon ajirSplitterWeapon;
 
         //TODO change these to different angles once the art is finalized (Directly below is not fair)
-        private int[] possibleAngles = new int[]{0, 45, 90, 135, 180, 215,325};
+        private int[] possibleAngles = new int[]{0, 45, 90, 135, 180, 270};
 
         public AjirSplitterWeaponPhase(Random random){
             this.random = random;
@@ -140,6 +157,7 @@ public class BossAjir extends EnemyFactory{
                 public void performAction(World world, Entity e) {
 
                     CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                    e.getComponent(AnimationStateComponent.class).queueAnimationState(FIRING_STATE);
                     ajirSplitterWeapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), Math.toRadians(possibleAngles[random.nextInt(possibleAngles.length)]));
                 }
             }, timeBetweenSplitAction, true));
@@ -184,6 +202,8 @@ public class BossAjir extends EnemyFactory{
                 @Override
                 public void performAction(World world, Entity e) {
 
+                    //TODO this might not work actually. Needs to be tested
+
                     //Picks the first position of the laser duo beam.
                     //Does not pick last first position
 
@@ -219,6 +239,9 @@ public class BossAjir extends EnemyFactory{
                     positions.clear();
                     possiblePositions.clear();
                     firstChoice.clear();
+
+
+                    e.getComponent(AnimationStateComponent.class).queueAnimationState(FIRING_STATE);
 
                 }
             }, timeBetweenLasers, true));

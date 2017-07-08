@@ -62,7 +62,7 @@ public class BossRoomAjir extends AbstractFactory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
 
-                arena.addEntity(new BossAjir(assetManager).ajir(arena.getWidth() / 2, arena.getHeight() / 2));
+                arena.addEntity(new BossAjir(assetManager).ajir(arena.getWidth() / 2, Measure.units(35f)));
 
 
                 return arena;
