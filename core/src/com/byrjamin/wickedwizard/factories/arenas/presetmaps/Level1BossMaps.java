@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
@@ -187,6 +188,28 @@ public class Level1BossMaps extends AbstractFactory {
         placedArenas.add(new BossRoomAjir(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1, 0)));
 
         Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(2, 0));
+        exitArena.addEntity(decorFactory.levelPortal(exitArena.getWidth() / 2, exitArena.getHeight() / 2 + Measure.units(5f)));
+
+        placedArenas.add(exitArena);
+
+        return new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
+
+    }
+
+
+
+    public ArenaMap amalgamaMap(BossTeleporterComponent btc) {
+
+        Array<Arena> placedArenas = new Array<Arena>();
+
+        Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0));
+        startingArena.addEntity(decorFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f),
+                btc));
+
+        placedArenas.add(startingArena);
+        placedArenas.add(new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords(1, 0)));
+
+        Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(7, 0));
         exitArena.addEntity(decorFactory.levelPortal(exitArena.getWidth() / 2, exitArena.getHeight() / 2 + Measure.units(5f)));
 
         placedArenas.add(exitArena);

@@ -169,6 +169,12 @@ public class TextureStrings {
     public static final String AJIR = "enemy/boss/ajir";
     public static final String AJIR_FIRING = "enemy/boss/ajir_firing";
 
+    //AMALGAMA
+    public static final String AMALGAMA_RED_EYE = "enemy/boss/amalgama_red";
+    public static final String AMALGAMA_BLUE_EYE = "enemy/boss/amalgama_blue";
+    public static final String AMALGAMA_GREEN_EYE = "enemy/boss/amalgama_green";
+    public static final String AMALGAMA_YELLOW_EYE = "enemy/boss/amalgama_yellow";
+
 
 
 

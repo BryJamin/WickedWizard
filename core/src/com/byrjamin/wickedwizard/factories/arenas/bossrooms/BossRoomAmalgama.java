@@ -6,12 +6,10 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
-import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossAjir;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossArchnoid;
+import com.byrjamin.wickedwizard.factories.enemy.bosses.BossAmalgama;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -22,7 +20,7 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
  * Created by Home on 08/07/2017.
  */
 
-public class BossRoomArchnoid extends AbstractFactory {
+public class BossRoomAmalgama extends AbstractFactory {
 
     private ChestFactory chestFactory;
     private DecorFactory decorFactory;
@@ -30,7 +28,7 @@ public class BossRoomArchnoid extends AbstractFactory {
     private ArenaSkin arenaSkin;
 
 
-    public BossRoomArchnoid(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public BossRoomAmalgama(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
 
         this.chestFactory = new ChestFactory(assetManager);
@@ -41,7 +39,7 @@ public class BossRoomArchnoid extends AbstractFactory {
     }
 
 
-    public ArenaGen archnoid() {
+    public ArenaGen amalgamaArena() {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -50,7 +48,8 @@ public class BossRoomArchnoid extends AbstractFactory {
                         new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                         new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 4, defaultCoords.getY()));
+                        new MapCoords(defaultCoords.getX() + 4, defaultCoords.getY()),
+                        new MapCoords(defaultCoords.getX() + 5, defaultCoords.getY()));
                 arena.roomType = Arena.RoomType.TRAP;
 
                 arena.setWidth(SECTION_WIDTH);
@@ -88,7 +87,7 @@ public class BossRoomArchnoid extends AbstractFactory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
 
-                arena.addEntity(new BossArchnoid(assetManager).archnoid(-Measure.units(50f), 0));
+                arena.addEntity(new BossAmalgama(assetManager).amalgama(-Measure.units(80f), 0));
 
 
                 return arena;

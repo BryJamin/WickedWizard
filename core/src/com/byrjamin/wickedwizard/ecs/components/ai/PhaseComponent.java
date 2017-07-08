@@ -18,10 +18,6 @@ public class PhaseComponent extends Component {
 
     public boolean hasActionBeenPerformed = false;
 
-    private Array<Float> phaseTimers = new Array<Float>();
-
-    private Array<Task> phaseArray = new Array<Task>();
-
 
     public Queue<Pair<Task, Condition>> phaseQueue = new Queue<Pair<Task, Condition>>();
 
@@ -70,16 +66,9 @@ public class PhaseComponent extends Component {
     }
 
     public Task getCurrentPhase(){
-        return phaseArray.get(currentPhase);
+        return phaseQueue.first().getLeft();
     }
 
-    public float getCurrentPhaseTimer(int phaseNo){
-        return phaseTimers.get(phaseNo);
-    }
-
-    public void setCurrentPhase(int currentPhase) {
-        this.currentPhase = currentPhase;
-    }
 
 
     public Array<Integer> getPhaseSequence() {

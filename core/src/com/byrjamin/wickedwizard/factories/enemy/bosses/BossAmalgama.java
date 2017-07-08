@@ -4,8 +4,11 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -26,6 +29,8 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsCom
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
@@ -45,15 +50,16 @@ import com.byrjamin.wickedwizard.utils.Pair;
  * Created by Home on 08/07/2017.
  */
 
-public class BossArchnoid extends EnemyFactory {
+public class BossAmalgama extends EnemyFactory {
 
     private static final float health = 100;
 
     private static final float bodyWidth = Measure.units(70f);
     private static final float bodyHeight = Measure.units(60f);
 
-    private static final float bodyTextureWidth = Measure.units(70f);
-    private static final float bodyTextureHeight = Measure.units(60f);
+    private static final float bodyTextureWidth = Measure.units(85f);
+    private static final float bodyTextureOffsetX = Measure.units(0f);
+    private static final float bodyTextureHeight = Measure.units(85f);
 
     private static final float enrageDistance = Measure.units(550f);
 
@@ -87,18 +93,18 @@ public class BossArchnoid extends EnemyFactory {
     private static final float timeTillWall = 0.5f;
     private static final float wallPhasetime = 6.5f;
 
-    private static final float legHeight = Measure.units(60f);
-    private static final float legWidth = Measure.units(20f);
-    private static final float legHealth = 20;
+    //States
+    private static int RED_EYE_STATE = 0;
+    private static int BLUE_EYE_STATE = 2;
+    private static int GREEN_EYE_STATE = 4;
+    private static int YELLOW_EYE_STATE = 8;
 
-    private static final float legOffSetX = -Measure.units(40f);
-    private static final float rightlegOffSetX = Measure.units(60f);
-
+    private static float STATE_FRAME_DURATION = 1 / 10f;
 
     private GibletFactory gibletFactory;
 
 
-    public BossArchnoid(AssetManager assetManager) {
+    public BossAmalgama(AssetManager assetManager) {
         super(assetManager);
 
         this.gibletFactory = new GibletFactory(assetManager);
@@ -108,7 +114,7 @@ public class BossArchnoid extends EnemyFactory {
 
 
 
-    public ComponentBag archnoid(final float x, final float y){
+    public ComponentBag amalgama(final float x, final float y){
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
@@ -121,20 +127,44 @@ public class BossArchnoid extends EnemyFactory {
         bag.add(new ParentComponent());
 
 
+
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.AMALGAMA_RED_EYE),
+                CenterMath.offsetX(bodyWidth, bodyTextureWidth) + bodyTextureOffsetX,
+                CenterMath.offsetY(bodyHeight, bodyTextureHeight),
+                bodyTextureWidth,
+                bodyTextureHeight,
+                TextureRegionComponent.PLAYER_LAYER_MIDDLE));
+
+
+        bag.add(new AnimationStateComponent(RED_EYE_STATE));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(RED_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_RED_EYE), Animation.PlayMode.LOOP));
+        animMap.put(BLUE_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_BLUE_EYE), Animation.PlayMode.LOOP));
+        animMap.put(GREEN_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_GREEN_EYE), Animation.PlayMode.LOOP));
+        animMap.put(YELLOW_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_YELLOW_EYE), Animation.PlayMode.LOOP));
+        bag.add(new AnimationComponent(animMap));
+
+
+
+
+
+
         PhaseComponent phaseComponent = new PhaseComponent();
+        phaseComponent.addPhase(laserPhasetime, new LaserPhase());
+        phaseComponent.addPhase(spreadPhasetime, new BulletSpreadPhase());
+        phaseComponent.addPhase(wallPhasetime, new BlockingWallPhase());
         phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(true));
         //empty phase to add some time between hurdles
         phaseComponent.addPhase(quadShotGap, emptyTask());
         phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(false));
         //empty phase to add some time between hurdles
         //phaseComponent.addPhase(0.2f,emptyTask());
-        phaseComponent.addPhase(laserPhasetime, new LaserPhase());
-        phaseComponent.addPhase(spreadPhasetime, new BulletSpreadPhase());
-        phaseComponent.addPhase(wallPhasetime, new BlockingWallPhase());
         bag.add(phaseComponent);
 
 
         ConditionalActionComponent cac = new ConditionalActionComponent();
+
+        cac.add(bouceBackTaskConditionPair(0));
 
         cac.add(new Condition() {
 
@@ -154,35 +184,41 @@ public class BossArchnoid extends EnemyFactory {
                 distanceTravelled += Math.abs(distance);
                 startPosition.set(positionComponent.position);
 
-                if(distanceTravelled > enrageDistance){
+                //TODO A tiny bit not clean maybe add option to remove conditions upon fufillment
+                if(distanceTravelled > enrageDistance && entity.getComponent(VelocityComponent.class).velocity.x != 0){
                     return true;
                 }
 
                 return false;
             }
-        }, new Task() {
+        }, new Action() {
+
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(VelocityComponent.class).velocity.x = 0;
-                world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health = 1;
-                world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).applyDamage(2);
-            }
 
-            @Override
-            public void cleanUpAction(World world, Entity e) {
+                e.getComponent(PhaseComponent.class).getCurrentPhase().cleanUpAction(world , e);
+                e.edit().remove(PhaseComponent.class);
 
+                PhaseComponent phaseComponent = new PhaseComponent();
+                phaseComponent.addPhase(laserPhasetime, new LaserPhase());
+                phaseComponent.addPhase(spreadPhasetime, new BulletSpreadPhase());
+                //phaseComponent.addPhase(wallPhasetime, new BlockingWallPhase());
+                phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(true));
+                //empty phase to add some time between hurdles
+                phaseComponent.addPhase(quadShotGap, emptyTask());
+                phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(false));
+
+                e.edit().add(phaseComponent);
+                //phaseComponent.addPhase(wallPhasetime, new BlockingWallPhase());
+
+             //   world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health = 1;
+             //   world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).applyDamage(2);
             }
         });
 
 
         bag.add(cac);
-
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
-                CenterMath.offsetX(bodyWidth, bodyTextureWidth),
-                CenterMath.offsetY(bodyHeight, bodyTextureHeight),
-                bodyTextureWidth,
-                bodyTextureHeight,
-                TextureRegionComponent.PLAYER_LAYER_MIDDLE));
 
 
 
@@ -249,6 +285,9 @@ public class BossArchnoid extends EnemyFactory {
 
         @Override
         public void performAction(World world, Entity e) {
+
+            e.getComponent(AnimationStateComponent.class).setDefaultState(RED_EYE_STATE);
+
             e.edit().add(new WeaponComponent(weapon));
             e.edit().add(new FiringAIComponent(FiringAIComponent.AI.UNTARGETED, 0, 0 , isLower ? -Measure.units(7.5f) : Measure.units(10f)));
         }
@@ -267,6 +306,9 @@ public class BossArchnoid extends EnemyFactory {
 
         @Override
         public void performAction(World world, Entity e) {
+
+            e.getComponent(AnimationStateComponent.class).setDefaultState(BLUE_EYE_STATE);
+
 
             e.edit().add(new ActionAfterTimeComponent(new Action() {
                 @Override
@@ -356,6 +398,8 @@ public class BossArchnoid extends EnemyFactory {
     public class LaserPhase implements Task{
 
 
+
+
         private LaserBeam sideLasers;
         private LaserBeam centerLasers;
 
@@ -380,6 +424,9 @@ public class BossArchnoid extends EnemyFactory {
 
         @Override
         public void performAction(World world, Entity e) {
+
+
+            e.getComponent(AnimationStateComponent.class).setDefaultState(YELLOW_EYE_STATE);
 
             e.edit().add(new ActionAfterTimeComponent(new Action() {
 
@@ -429,6 +476,8 @@ public class BossArchnoid extends EnemyFactory {
         @Override
         public void performAction(World world, Entity e) {
 
+            e.getComponent(AnimationStateComponent.class).setDefaultState(GREEN_EYE_STATE);
+
 
             e.edit().add(new ActionAfterTimeComponent(new Action() {
 
@@ -440,10 +489,10 @@ public class BossArchnoid extends EnemyFactory {
                     CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                     if(switchbool) {
-                        spreadWeapon.fire(world, e, cbc.bound.x + cbc.bound.width, cbc.getCenterY() - Measure.units(7.5f), 0);
+                        spreadWeapon.fire(world, e, cbc.bound.x + cbc.bound.width - Measure.units(5f), cbc.getCenterY() - Measure.units(7.5f), 0);
                         switchbool = !switchbool;
                     } else {
-                        spreadWeapon.fire(world, e,  cbc.bound.x + cbc.bound.width, cbc.getCenterY() + Measure.units(7.5f), 0);
+                        spreadWeapon.fire(world, e,  cbc.bound.x + cbc.bound.width - Measure.units(5f), cbc.getCenterY() + Measure.units(7.5f), 0);
                         switchbool = !switchbool;
                     }
                 }
