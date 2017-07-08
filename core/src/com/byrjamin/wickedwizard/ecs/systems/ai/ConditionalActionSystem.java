@@ -6,9 +6,9 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
@@ -30,7 +30,7 @@ public class ConditionalActionSystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
         ConditionalActionComponent conditionalActionComponent = cac.get(e);
-        for(Pair<Task, Condition> taskConditionPair : conditionalActionComponent.taskConditionPairArray){
+        for(Pair<Action, Condition> taskConditionPair : conditionalActionComponent.actionConditionPairArray){
             if(taskConditionPair.getRight().condition(world, e)){
                 taskConditionPair.getLeft().performAction(world, e);
             }

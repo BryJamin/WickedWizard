@@ -47,7 +47,10 @@ public class BossRoomArchnoid extends AbstractFactory {
             public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
+                        new MapCoords(defaultCoords.getX() + 4, defaultCoords.getY()));
                 arena.roomType = Arena.RoomType.TRAP;
 
                 arena.setWidth(SECTION_WIDTH);
@@ -61,11 +64,31 @@ public class BossRoomArchnoid extends AbstractFactory {
                                 ArenaBuilder.wall.FULL))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 4, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 5, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
 
-                arena.addEntity(new BossArchnoid(assetManager).archnoid(-Measure.units(40f), 0));
+                arena.addEntity(new BossArchnoid(assetManager).archnoid(-Measure.units(50f), 0));
 
 
                 return arena;

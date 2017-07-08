@@ -1,8 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.components.ai;
 
 import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.World;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -13,23 +11,29 @@ import com.byrjamin.wickedwizard.utils.Pair;
 public class ConditionalActionComponent extends Component {
 
 
-    public Array<Pair<Task, Condition>> taskConditionPairArray = new Array<Pair<Task, Condition>>();
+    public Array<Pair<Action, Condition>> actionConditionPairArray = new Array<Pair<Action, Condition>>();
 
 
-    public ConditionalActionComponent(Condition condition, Task task) {
-        taskConditionPairArray.add(new Pair<Task, Condition>(task, condition));
+    public ConditionalActionComponent(Condition condition, Action action) {
+        actionConditionPairArray.add(new Pair<Action, Condition>(action, condition));
     }
 
 
-    public ConditionalActionComponent(Pair<Task, Condition>... taskConditionPairs) {
-        for(Pair<Task, Condition> taskConditionPair : taskConditionPairs){
-            taskConditionPairArray.add(taskConditionPair);
+    public ConditionalActionComponent(Pair<Action, Condition>... actionConditionPairs) {
+        for(Pair<Action, Condition> actionConditionPair : actionConditionPairs){
+            actionConditionPairArray.add(actionConditionPair);
         }
     }
 
 
-    public void add(Condition condition, Task task){
-        taskConditionPairArray.add(new Pair<Task, Condition>(task, condition));
+    public void add(Condition condition, Action action){
+        actionConditionPairArray.add(new Pair<Action, Condition>(action, condition));
+    }
+
+    public void add(Pair<Action, Condition>... actionConditionPairs){
+        for(Pair<Action, Condition> actionConditionPair : actionConditionPairs){
+            actionConditionPairArray.add(actionConditionPair);
+        }
     }
 
 

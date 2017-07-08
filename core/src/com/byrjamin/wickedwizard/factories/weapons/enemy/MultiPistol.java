@@ -35,6 +35,7 @@ public class MultiPistol extends Pistol {
     private boolean enemy = true;
 
     private int[] angles = new int[] {0,25,-25};
+    private float[] bulletOffsets = new float[]{0};
 
     private Color color = new Color(Color.RED);
 
@@ -58,6 +59,8 @@ public class MultiPistol extends Pistol {
         private boolean enemy = true;
 
         private int[] angles = new int[]{0};
+
+        private float[] bulletOffsets = new float[]{0};
 
         private Color color = new Color(Color.RED);
 
@@ -92,6 +95,9 @@ public class MultiPistol extends Pistol {
         public PistolBuilder angles(int... val)
         { angles = val; return this; }
 
+        public PistolBuilder bulletOffsets(float... val)
+        { bulletOffsets = val; return this; }
+
         public PistolBuilder color(Color val)
         { color = val; return this; }
 
@@ -116,6 +122,7 @@ public class MultiPistol extends Pistol {
         this.enemy = pb.enemy;
 
         this.angles = pb.angles;
+        this.bulletOffsets = pb.bulletOffsets;
 
         this.color = pb.color;
 
@@ -142,23 +149,40 @@ public class MultiPistol extends Pistol {
 
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-        for(int i : angles) {
-            Entity bullet = world.createEntity();
-            double angleOfTravel = angleInRadians + Math.toRadians(i);
-            for (Component c : bulletFactory.basicBulletBag(x, y, shotScale, color)) {
-                bullet.edit().add(c);
-            }
+
+
+        for (float f : bulletOffsets) {
+
+            for (int i : angles) {
+                Entity bullet = world.createEntity();
+                double angleOfTravel = angleInRadians + Math.toRadians(i);
+
+                System.out.println(angleInRadians);
+
+                for (Component c : bulletFactory.basicBulletBag(
+                        x + (BulletMath.velocityX(f, angleInRadians + (Math.PI / 2))),
+                        y + (BulletMath.velocityY(f, angleInRadians + (Math.PI / 2))),
+                        shotScale,
+                        color)) {
+                    bullet.edit().add(c);
+                }
+
+
+                /*
+                + (BulletMath.velocityX(f, angleInRadians + (Math.PI / 2))),
+                        y + (BulletMath.velocityY(f, angleInRadians + (Math.PI / 2))),
+                 */
 
                 bullet.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeed, angleOfTravel),
                         BulletMath.velocityY(shotSpeed, angleOfTravel)));
 
-                if(enemy) bullet.edit().add(new EnemyComponent());
+                if (enemy) bullet.edit().add(new EnemyComponent());
 
-                if(gravity) bullet.edit().add(new GravityComponent());
+                if (gravity) bullet.edit().add(new GravityComponent());
 
-                if(intangible) bullet.edit().add(new IntangibleComponent());
+                if (intangible) bullet.edit().add(new IntangibleComponent());
 
-                if(expire) {
+                if (expire) {
 
                     CollisionBoundComponent cbc = bullet.getComponent(CollisionBoundComponent.class);
                     bullet.edit().add(new ExpiryRangeComponent(
@@ -167,8 +191,9 @@ public class MultiPistol extends Pistol {
 
 
                 bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
-                        Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(color))));
+                        Measure.units(10f), (int) Measure.units(20f), Measure.units(0.5f), new Color(color))));
                 //bullet.edit().remove(CollisionBoundComponent.class);
+            }
         }
     }
 
