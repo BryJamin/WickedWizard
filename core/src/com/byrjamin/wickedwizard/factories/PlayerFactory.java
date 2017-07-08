@@ -181,13 +181,12 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new GrappleComponent());
 
 
-        ConditionalActionComponent cac = new ConditionalActionComponent();
-        cac.condition = new Condition() {
+        ConditionalActionComponent cac = new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
 
                 Rectangle r = world.getSystem(GrapplePointSystem.class).returnTouchedGrapple(entity.getComponent(CollisionBoundComponent.class).getCenterX(),
-                entity.getComponent(CollisionBoundComponent.class).getCenterY());
+                        entity.getComponent(CollisionBoundComponent.class).getCenterY());
 
                 if(r != null && r.contains(targetX, targetY)) {
 
@@ -203,10 +202,7 @@ public class PlayerFactory extends AbstractFactory {
 
                 return false;
             }
-        };
-
-
-        cac.task = new Task() {
+        },  new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
@@ -242,8 +238,7 @@ public class PlayerFactory extends AbstractFactory {
             public void cleanUpAction(World world, Entity e) {
 
             }
-        };
-
+        });
 
         bag.add(cac);
 

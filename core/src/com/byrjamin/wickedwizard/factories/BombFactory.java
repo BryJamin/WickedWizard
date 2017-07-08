@@ -167,16 +167,12 @@ public class BombFactory extends  AbstractFactory{
         animMap.put(0, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BOMB), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        ConditionalActionComponent cac = new ConditionalActionComponent();
-        cac.condition = new Condition() {
+        ConditionalActionComponent cac = new ConditionalActionComponent( new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(ExpireComponent.class).expiryTime < 0.75f;
             }
-        };
-
-
-        cac.task = new Task() {
+        }, new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(AnimationComponent.class).animations.get(0).setFrameDuration(0.05f / 1f);
@@ -186,7 +182,7 @@ public class BombFactory extends  AbstractFactory{
             public void cleanUpAction(World world, Entity e) {
 
             }
-        };
+        });
 
         bag.add(cac);
 

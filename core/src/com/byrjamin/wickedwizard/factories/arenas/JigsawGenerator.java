@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomArchnoid;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -321,6 +322,7 @@ public class JigsawGenerator {
                 break;
             case THREE:
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.boomyMap(btc), 20));
+                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.ajirMap(btc), 20));
                 break;
             case FOUR:
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wraithMap(btc), 20));
@@ -391,7 +393,7 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-        startingArena = new BossRoomAjir(assetManager, arenaSkin).adojArena().createArena(new MapCoords());
+        startingArena = new BossRoomArchnoid(assetManager, arenaSkin).archnoid().createArena(new MapCoords());
 
         //startingArena = level5Rooms.room30Height3ThroughRoomWithHorizontalLasers().createArena(new MapCoords());
 
