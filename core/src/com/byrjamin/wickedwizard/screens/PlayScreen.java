@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -147,7 +148,6 @@ public class PlayScreen extends AbstractScreen {
     private Random random;
     private JigsawGenerator jg;
     private Array<Arena> arenaArray;
-    private ShapeRenderer borderRenderer;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -161,7 +161,6 @@ public class PlayScreen extends AbstractScreen {
         Assets.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        borderRenderer = new ShapeRenderer();
 
 
         gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
@@ -443,6 +442,8 @@ public class PlayScreen extends AbstractScreen {
             game.batch.begin();
         }
 
+        drawScreenBorder(game.batch, atlas);
+
         if(!gameOver) {
             if(!isPaused) {
                 RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
@@ -547,6 +548,17 @@ public class PlayScreen extends AbstractScreen {
 
     }
 
+    public void drawScreenBorder(SpriteBatch batch, TextureAtlas atlas){
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+        batch.setColor(new Color(Color.BLACK));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY + gamecam.viewportHeight - Measure.units(5f), gamecam.viewportWidth, Measure.units(5f));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY, gamecam.viewportWidth, Measure.units(5f));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY, Measure.units(5f), gamecam.viewportHeight);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX + gamecam.viewportWidth - Measure.units(5f), camY, Measure.units(5f), gamecam.viewportHeight);
+        batch.setColor(new Color(Color.WHITE));
+    }
 
 
     public void drawHUD(World world, OrthographicCamera gamecam){
@@ -554,12 +566,8 @@ public class PlayScreen extends AbstractScreen {
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
-        game.batch.setColor(new Color(Color.BLACK));
-        game.batch.draw(atlas.findRegion("block"), camX, camY + gamecam.viewportHeight - Measure.units(5f), gamecam.viewportWidth, Measure.units(5f));
-        game.batch.draw(atlas.findRegion("block"), camX, camY, gamecam.viewportWidth, Measure.units(5f));
-        game.batch.draw(atlas.findRegion("block"), camX, camY, Measure.units(5f), gamecam.viewportHeight);
-        game.batch.draw(atlas.findRegion("block"), camX + gamecam.viewportWidth - Measure.units(5f), camY, Measure.units(5f), gamecam.viewportHeight);
-        game.batch.setColor(new Color(Color.WHITE));
+
+        //BORDER
 
 
         Array<TextureRegion> healthRegions = new Array<TextureRegion>();

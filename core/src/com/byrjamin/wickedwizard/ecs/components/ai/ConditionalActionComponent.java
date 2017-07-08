@@ -21,6 +21,18 @@ public class ConditionalActionComponent extends Component {
     }
 
 
+    public ConditionalActionComponent(Pair<Task, Condition>... taskConditionPairs) {
+        for(Pair<Task, Condition> taskConditionPair : taskConditionPairs){
+            taskConditionPairArray.add(taskConditionPair);
+        }
+    }
+
+
+    public void add(Condition condition, Task task){
+        taskConditionPairArray.add(new Pair<Task, Condition>(task, condition));
+    }
+
+
     public ConditionalActionComponent(){
     }
 

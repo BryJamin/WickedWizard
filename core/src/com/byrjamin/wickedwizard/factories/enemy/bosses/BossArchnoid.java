@@ -5,8 +5,11 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
@@ -20,11 +23,13 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.Pair;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
@@ -40,6 +45,8 @@ public class BossArchnoid extends EnemyFactory {
 
     private static final float bodyTextureWidth = Measure.units(70f);
     private static final float bodyTextureHeight = Measure.units(90f);
+
+    private static final float enrageDistance = Measure.units(140f);
 
 
     private static final float speed = Measure.units(10f);
@@ -59,7 +66,7 @@ public class BossArchnoid extends EnemyFactory {
 
 
 
-    public ComponentBag archnoid(float x, float y){
+    public ComponentBag archnoid(final float x, final float y){
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
@@ -70,7 +77,69 @@ public class BossArchnoid extends EnemyFactory {
 
         bag.add(new IntangibleComponent());
 
-        bag.add(pushBackCondition(0));
+        ConditionalActionComponent cac = new ConditionalActionComponent();
+        cac.add(new Condition() {
+                    @Override
+                    public boolean condition(World world, Entity entity) {
+                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
+
+                    }
+                }, new Task() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                        vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(0));
+                        vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(0));
+                    }
+
+                    @Override
+                    public void cleanUpAction(World world, Entity e) {
+
+                    }
+                });
+
+
+
+        cac.add(new Condition() {
+
+            private Vector3 startPosition = new Vector3(x, y, 0);
+
+            private float distanceTravelled;
+
+
+            @Override
+            public boolean condition(World world, Entity entity) {
+
+                PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
+
+
+                float distance = startPosition.dst(positionComponent.position);
+
+                distanceTravelled += Math.abs(distance);
+                startPosition.set(positionComponent.position);
+
+                if(distanceTravelled > enrageDistance){
+                    return true;
+                }
+
+                return false;
+            }
+        }, new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(VelocityComponent.class).velocity.x = 0;
+                world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health = 1;
+                world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).applyDamage(2);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        });
+
+
+        bag.add(cac);
 
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 CenterMath.offsetX(bodyWidth, bodyTextureWidth),
@@ -82,33 +151,6 @@ public class BossArchnoid extends EnemyFactory {
 
 
         return bag;
-    }
-
-
-
-
-    public ConditionalActionComponent pushBackCondition(final float pushAngleInDegrees){
-        return (new ConditionalActionComponent(new Condition() {
-            @Override
-            public boolean condition(World world, Entity entity) {
-                return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
-
-            }
-
-
-        }, new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
-                vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }));
     }
 
 
