@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomEnd;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
@@ -310,7 +311,7 @@ public class JigsawGenerator {
         WeightedRoll<ArenaMap> roll = new WeightedRoll<ArenaMap>(rand);
         switch (currentLevel){
             case ONE:
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.amalgamaMap(btc), 20));
+              //  roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.amalgamaMap(btc), 20));
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.blobbaMap(btc), 20));
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.adojMap(btc), 20));
             default:
@@ -393,7 +394,7 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-        //startingArena = new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords());
+        startingArena = new BossRoomEnd(assetManager, arenaSkin).endArena().createArena(new MapCoords());
 
         //startingArena = level5Rooms.room30Height3ThroughRoomWithHorizontalLasers().createArena(new MapCoords());
 

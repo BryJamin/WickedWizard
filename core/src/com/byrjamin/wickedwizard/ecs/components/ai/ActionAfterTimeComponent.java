@@ -35,6 +35,10 @@ public class ActionAfterTimeComponent extends Component {
         timeUntilAction = 0;
     }
 
+    public ActionAfterTimeComponent(Action task){
+        this(task, 0, false);
+    }
+
     public ActionAfterTimeComponent(Action task, float timeUntilAction){
         this(task, timeUntilAction, false);
     }

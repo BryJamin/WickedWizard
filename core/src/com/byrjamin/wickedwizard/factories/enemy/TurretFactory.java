@@ -140,7 +140,10 @@ public class TurretFactory extends EnemyFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-        WeaponComponent wc = new WeaponComponent(new MultiPistol(assetManager, 2f), 2f);
+        WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(2f)
+                .angles(0,25,-25)
+                .build(), 2f);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -271,7 +274,11 @@ public class TurretFactory extends EnemyFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-        WeaponComponent wc = new WeaponComponent(new MultiPistol(assetManager, 2f, 0,25,50,-25,-50), 2f);
+        WeaponComponent wc = new WeaponComponent(
+                new MultiPistol.PistolBuilder(assetManager)
+                        .angles(0,25,50,-25,-50)
+                        .fireRate(2f)
+                        .build(), 2f);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());

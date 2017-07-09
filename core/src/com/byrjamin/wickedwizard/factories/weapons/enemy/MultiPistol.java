@@ -7,12 +7,14 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BulletMath;
@@ -22,22 +24,30 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 16/06/2017.
  */
 
-public class MultiPistol extends Pistol {
+public class MultiPistol implements Weapon {
 
-    private float shotScale = 4;
-    private float fireRate = 1.5f;
-    private float shotSpeed = Measure.units(50);
-    private float expireRange;
 
-    private boolean gravity = false;
-    private boolean expire = false;
-    private boolean intangible = false;
-    private boolean enemy = true;
+    private final AssetManager assetManager;
 
-    private int[] angles = new int[] {0,25,-25};
-    private float[] bulletOffsets = new float[]{0};
+    private final BulletFactory bulletFactory;
+    private final GibletFactory gibletFactory;
 
-    private Color color = new Color(Color.RED);
+    private final float shotScale;
+    private final float fireRate;
+    private final float shotSpeed;
+    private final float expireRange;
+
+    private final boolean gravity;
+    private final boolean expire;
+    private final boolean intangible;
+    private final boolean enemy;
+
+    private final int[] angles;
+    private final float[] bulletOffsets;
+
+    private final Color color;
+
+    private final OnDeathActionComponent customOnDeathAction;
 
 
 
@@ -62,6 +72,8 @@ public class MultiPistol extends Pistol {
 
         private float[] bulletOffsets = new float[]{0};
 
+        private OnDeathActionComponent customOnDeathAction = null;
+
         private Color color = new Color(Color.RED);
 
         public PistolBuilder(AssetManager assetManager) {
@@ -78,7 +90,7 @@ public class MultiPistol extends Pistol {
         { shotSpeed = val; return this; }
 
         public PistolBuilder expireRange(float val)
-        { expireRange = val; return this; }
+        { expireRange = val; expire(true); return this; }
 
         public PistolBuilder gravity(boolean val)
         { gravity = val; return this; }
@@ -101,6 +113,9 @@ public class MultiPistol extends Pistol {
         public PistolBuilder color(Color val)
         { color = val; return this; }
 
+        public PistolBuilder customOnDeathAction(OnDeathActionComponent val)
+        { customOnDeathAction = val; return this; }
+
         public MultiPistol build() {
             return new MultiPistol(this);
         }
@@ -109,7 +124,11 @@ public class MultiPistol extends Pistol {
     }
 
     public MultiPistol(PistolBuilder pb){
-        super(pb.assetManager, pb.fireRate);
+
+        this.assetManager = pb.assetManager;
+
+        this.bulletFactory = new BulletFactory(assetManager);
+        this.gibletFactory = new GibletFactory(assetManager);
 
         this.shotScale = pb.shotScale;
         this.fireRate = pb.fireRate;
@@ -124,27 +143,10 @@ public class MultiPistol extends Pistol {
         this.angles = pb.angles;
         this.bulletOffsets = pb.bulletOffsets;
 
+        this.customOnDeathAction = pb.customOnDeathAction;
+
         this.color = pb.color;
 
-    }
-
-
-    public MultiPistol(AssetManager assetManager, float fireRate) {
-        super(assetManager, fireRate);
-    }
-
-    public MultiPistol(AssetManager assetManager, float fireRate, int... angles) {
-        super(assetManager, fireRate);
-        setAngles(angles);
-    }
-
-
-    public void setAngles(int[] angles) {
-        this.angles = angles;
-    }
-
-    public void setScale(float scale) {
-        this.shotScale = scale;
     }
 
     @Override
@@ -167,12 +169,6 @@ public class MultiPistol extends Pistol {
                     bullet.edit().add(c);
                 }
 
-
-                /*
-                + (BulletMath.velocityX(f, angleInRadians + (Math.PI / 2))),
-                        y + (BulletMath.velocityY(f, angleInRadians + (Math.PI / 2))),
-                 */
-
                 bullet.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeed, angleOfTravel),
                         BulletMath.velocityY(shotSpeed, angleOfTravel)));
 
@@ -189,12 +185,25 @@ public class MultiPistol extends Pistol {
                             new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0), expireRange));
                 }
 
-
-                bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
-                        Measure.units(10f), (int) Measure.units(20f), Measure.units(0.5f), new Color(color))));
+                if(customOnDeathAction == null) {
+                    bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
+                            Measure.units(10f), (int) Measure.units(20f), Measure.units(0.5f), new Color(color))));
+                } else {
+                    bullet.edit().add(customOnDeathAction);
+                }
                 //bullet.edit().remove(CollisionBoundComponent.class);
             }
         }
+    }
+
+    @Override
+    public float getBaseFireRate() {
+        return fireRate;
+    }
+
+    @Override
+    public float getBaseDamage() {
+        return 0;
     }
 
 }

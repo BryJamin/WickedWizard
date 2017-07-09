@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -37,17 +38,12 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new HealthComponent(health));
         fillbag.add(new BlinkComponent());
         fillbag.add(new EnemyComponent());
-        fillbag.add(new OnDeathActionComponent(new Task() {
+        fillbag.add(new OnDeathActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 gibletFactory.giblets(5, 0.4f,
                         Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
                 world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix);
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
             }
         }));
 

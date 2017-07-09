@@ -57,6 +57,7 @@ public class LaserBeam {
         private float activeLaserTime = 0.4f;
         private float chargingLaserTime = 0.8f;
 
+        //Determines when creating the larger laser to center the new laser by the width or by the height
         private boolean useWidthAsCenter = true;
 
         private Color color = new Color(Color.RED);

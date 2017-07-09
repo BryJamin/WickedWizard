@@ -351,7 +351,6 @@ public class BossAjir extends EnemyFactory{
             bullet.edit().add(new OnDeathActionComponent(new Action() {
                 @Override
                 public void performAction(World world, Entity e) {
-
                     CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
                     gibletFactory.defaultGiblets(Color.RED).performAction(world, e);
                     weapoonFiredOnBulletDeath.fire(world, e , cbc.getCenterX(), cbc.getCenterY(), 0);

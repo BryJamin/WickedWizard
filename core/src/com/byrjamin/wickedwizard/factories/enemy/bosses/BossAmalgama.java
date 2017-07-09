@@ -343,7 +343,7 @@ public class BossAmalgama extends EnemyFactory {
             e.edit().add(new OnlyPlayerBulletsComponent());
             e.edit().add(new BlinkComponent());
             e.edit().add(new HealthComponent(1));
-            e.edit().add(new FadeComponent(true, 1, false));
+            e.edit().add(new FadeComponent(true, 0.5f, false));
             e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.BLACK))));
 
             ChildComponent c = new ChildComponent();

@@ -76,13 +76,15 @@ public class PylonFactory extends EnemyFactory {
 
         bag.add(tfc);
 
-        MultiPistol mp = new MultiPistol(assetManager, 1.5f);
 
         int[] ints = new int[] {0,45,90,135,180};
         for(int i = 0; i < ints.length; i++) ints[i] = ints[i] + (int) rotationInDegrees;
 
-        mp.setAngles(ints);
-        mp.setScale(3);
+        MultiPistol mp = new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(1.5f)
+                .angles(ints)
+                .shotScale(3)
+                .build();
 
         bag.add(spawningCondition(0, mp));
 
@@ -126,12 +128,6 @@ public class PylonFactory extends EnemyFactory {
                 .expire(true)
                 .expireRange(Measure.units(100f))
                 .build();
-
-
-
-
-        mp.setAngles(ints);
-        mp.setScale(3);
 
         bag.add(spawningCondition(0, mp));
 

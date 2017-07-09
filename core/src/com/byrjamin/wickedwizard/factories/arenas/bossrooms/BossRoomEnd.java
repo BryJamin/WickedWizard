@@ -10,8 +10,8 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossAdoj;
 import com.byrjamin.wickedwizard.factories.enemy.bosses.BossAjir;
+import com.byrjamin.wickedwizard.factories.enemy.bosses.BossEnd;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -19,10 +19,10 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
 
 /**
- * Created by Home on 07/07/2017.
+ * Created by Home on 09/07/2017.
  */
 
-public class BossRoomAjir extends AbstractFactory {
+public class BossRoomEnd extends AbstractFactory {
 
 
     private ArenaShellFactory arenaShellFactory;
@@ -32,7 +32,7 @@ public class BossRoomAjir extends AbstractFactory {
     private ArenaSkin arenaSkin;
 
 
-    public BossRoomAjir(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public BossRoomEnd(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
 
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
@@ -44,7 +44,7 @@ public class BossRoomAjir extends AbstractFactory {
     }
 
 
-    public ArenaGen adojArena() {
+    public ArenaGen endArena() {
         return new ArenaGen() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -62,7 +62,7 @@ public class BossRoomAjir extends AbstractFactory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
 
-                arena.addEntity(new BossAjir(assetManager).ajir(arena.getWidth() / 2, Measure.units(35f)));
+                arena.addEntity(new BossEnd(assetManager).end(arena.getWidth() / 2, Measure.units(35f)));
 
 
                 return arena;
