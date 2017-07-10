@@ -48,7 +48,7 @@ public class JigsawGenerator {
 
     private ChangeLevelSystem.Level currentLevel;
 
-    private Random rand;
+    private Random random;
 
     private ArenaMap startingMap;
 
@@ -65,6 +65,8 @@ public class JigsawGenerator {
     private ShopFactory shopFactory;
     private ArenaSkin arenaSkin;
 
+    private Array<ArenaGen> arenaGens;
+
 
     private HashMap<BossTeleporterComponent, ArenaMap> mapTracker = new HashMap<BossTeleporterComponent, ArenaMap>();
 
@@ -72,40 +74,52 @@ public class JigsawGenerator {
 
     private com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
 
-    public boolean generateTutorial = true;
 
-    public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, ItemStore itemStore, Random rand){
+    public JigsawGenerator(JigsawGeneratorConfig jigsawGeneratorConfig){
+        this.assetManager = jigsawGeneratorConfig.assetManager;
+        this.random = jigsawGeneratorConfig.random;
+        this.setSkin(jigsawGeneratorConfig.arenaSkin);
+        this.noBattleRooms = jigsawGeneratorConfig.noBattleRooms;
+        this.setCurrentLevel(jigsawGeneratorConfig.currentLevel);
+        this.itemStore = new ItemStore(random);
+        this.setStartingMap(jigsawGeneratorConfig.startingMap);
+    }
+
+
+    public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, ItemStore itemStore, Random random){
         this.assetManager = assetManager;
-        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, rand);
-        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, rand);
-        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, rand);
-        this.level4Rooms = new Level4Rooms(assetManager, arenaSkin, rand);
-        this.level5Rooms = new Level5Rooms(assetManager, arenaSkin, rand);
+        this.arenaSkin = arenaSkin;
+        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, random);
+        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, random);
+        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, random);
+        this.level4Rooms = new Level4Rooms(assetManager, arenaSkin, random);
+        this.level5Rooms = new Level5Rooms(assetManager, arenaSkin, random);
+        this.bossMaps = new BossMaps(assetManager, arenaSkin);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
         this.shopFactory = new ShopFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
-        this.bossMaps = new BossMaps(assetManager, arenaSkin);
+
         this.noBattleRooms = noBattleRooms;
-        this.arenaSkin = arenaSkin;
         this.itemStore = itemStore;
-        this.rand = rand;
+        this.random = random;
         this.currentLevel = ChangeLevelSystem.Level.ONE;
     }
 
     public void setSkin(ArenaSkin arenaSkin) {
         this.arenaSkin = arenaSkin;
-        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, rand);
-        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, rand);
-        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, rand);
-        this.level4Rooms = new Level4Rooms(assetManager, arenaSkin, rand);
-        this.level5Rooms = new Level5Rooms(assetManager, arenaSkin, rand);
+        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, random);
+        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, random);
+        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, random);
+        this.level4Rooms = new Level4Rooms(assetManager, arenaSkin, random);
+        this.level5Rooms = new Level5Rooms(assetManager, arenaSkin, random);
         this.bossMaps = new BossMaps(assetManager, arenaSkin);
         this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
         this.shopFactory = new ShopFactory(assetManager, arenaSkin);
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
     }
 
     public void setCurrentLevel(ChangeLevelSystem.Level currentLevel){
@@ -153,7 +167,7 @@ public class JigsawGenerator {
         ObjectSet<MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(presetRooms);
 
 
-        WeightedRoll<ArenaGen> roll = new WeightedRoll<ArenaGen>(rand);
+        WeightedRoll<ArenaGen> roll = new WeightedRoll<ArenaGen>(random);
         for(ArenaGen ag : arenaGenArray) roll.addWeightedObject(new WeightedObject<ArenaGen>(ag, 20));
 
         int placedRooms = 0;
@@ -164,7 +178,7 @@ public class JigsawGenerator {
 
             WeightedObject<ArenaGen> weightedObject = roll.rollForWeight();
             Arena nextRoomToBePlaced = weightedObject.obj().createArena(new MapCoords());
-            if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, rand)){
+            if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, random)){
 
                 //TODO make this it's own method for mandatory doors within rooms.
                 if(nextRoomToBePlaced.mandatoryDoors.size > 0) {
@@ -250,7 +264,7 @@ public class JigsawGenerator {
         int tries = 0;
         while(tries < 15) {
 
-            if (placeRoomUsingDoors(arena, doors, unavaliableMapCoords, rand)) {
+            if (placeRoomUsingDoors(arena, doors, unavaliableMapCoords, random)) {
                 addArenaToMap(arena, placedArenas, unavaliableMapCoords, avaliableDoors);
                 return true;
             }
@@ -286,19 +300,16 @@ public class JigsawGenerator {
 
 
     public void generate(){
-
         mapTracker.clear();
-
-        if(generateTutorial){
-            generateTutorialJigsaw();
-        } else {
-            generate(new ArenaMap(arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords())));
-        }
+        generate(new ArenaMap(arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords())));
     }
 
 
 
     public void generate(ArenaMap arenaMap){
+
+        mapTracker.clear();
+        //if(noBattleRooms <= 0) return;
 
         Array<Arena> placedArenas = new Array<Arena>();
 
@@ -331,7 +342,7 @@ public class JigsawGenerator {
 
 
     public ArenaMap generateBossMap(BossTeleporterComponent btc){
-        WeightedRoll<ArenaMap> roll = new WeightedRoll<ArenaMap>(rand);
+        WeightedRoll<ArenaMap> roll = new WeightedRoll<ArenaMap>(random);
         switch (currentLevel){
             case ONE:
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.blobbaMap(btc), 20));
@@ -359,25 +370,7 @@ public class JigsawGenerator {
         return map;
     }
 
-    public Array<Arena> generateTutorialJigsaw(){
 
-        Array<Arena> placedArenas = new Array<Arena>();
-
-        Arena startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
-        placedArenas.add(startingArena);
-        placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
-        placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(4,0)));
-        placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
-        placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
-        placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
-        placedArenas.add(arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(7,3)));
-
-        ArenaMap arenaMap = new ArenaMap(startingArena, placedArenas);
-        generate(arenaMap);
-
-        return arenaMap.getRoomArray();
-
-    }
 
     public void setStartingMap(ArenaMap startingMap) {
         this.startingMap = startingMap;
@@ -411,7 +404,7 @@ public class JigsawGenerator {
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
         Arena itemRoom = itemArenaFactory.createItemRoom(new MapCoords(), itemStore.generateItemRoomItem(), itemStore.generateItemRoomItem());
-        if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), rand)){
+        if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(itemRoom);
             return true;
         }
@@ -424,7 +417,7 @@ public class JigsawGenerator {
         Item item2 = itemStore.generateItemRoomItem();
 
         Arena shopRoom = shopFactory.createShop(item1, item2);
-        if(placeRoomUsingDoors(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), rand)){
+        if(placeRoomUsingDoors(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(shopRoom);
             return true;
         }
@@ -434,7 +427,7 @@ public class JigsawGenerator {
     public boolean placeBossRoom(Arena bossRoom, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors, int range) {
 
         if (placeRoomAtRangeWithDoors(bossRoom,
-                avaliableDoors,createUnavaliableMapCoords(placedArenas), rand, range)) {
+                avaliableDoors,createUnavaliableMapCoords(placedArenas), random, range)) {
             placedArenas.add(bossRoom);
             return true;
         }
@@ -657,6 +650,9 @@ public class JigsawGenerator {
         }
     }
 
+    public void cleanArenas(){
+       cleanArenas(startingMap.getRoomArray());
+    }
 
     /**
      * Uses a given door component to see if it links to a room that exists with the array of rooms

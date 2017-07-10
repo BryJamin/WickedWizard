@@ -148,7 +148,6 @@ public class MapTeleportationSystem extends EntitySystem {
         rts.packRoom(world, rts.getCurrentArena());
 
         JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).incrementLevel();
-        jg.generateTutorial = false;
         jg.generate();
 
         mapTracker = jg.getMapTracker();

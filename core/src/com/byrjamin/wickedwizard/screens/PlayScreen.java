@@ -31,12 +31,14 @@ import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
@@ -47,7 +49,13 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
+import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
+import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
+import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
+import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
@@ -104,6 +112,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 
@@ -125,7 +134,7 @@ public class PlayScreen extends AbstractScreen {
 
 
 
-    public final TextureAtlas atlas;
+    public TextureAtlas atlas;
     public AssetManager manager;
 
     private BitmapFont currencyFont;
@@ -154,30 +163,114 @@ public class PlayScreen extends AbstractScreen {
 
     //TODO IF you ever click in the deck area don't cast any spells
 
-    public PlayScreen(MainGame game, boolean isTutorial) {
+
+    public PlayScreen(MainGame game, PlayScreenConfig playScreenConfig) {
         super(game);
-        this.isTutorial = isTutorial;
+        setUpGlobals();
+
+
+        ArenaSkin arenaSkin = new SolitarySkin(atlas);
+
+
+        switch (playScreenConfig.spawn){
+            case TUTORIAL:
+            default:
+                Array<Arena> placedArenas = new Array<Arena>();
+
+                TutorialFactory tutorialFactory = new TutorialFactory(game.manager, new SolitarySkin(atlas));
+
+                Arena startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
+                placedArenas.add(startingArena);
+                placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
+                placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(4,0)));
+                placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
+                placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
+                placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
+                placedArenas.add(new ArenaShellFactory(game.manager, new SolitarySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
+
+                ArenaMap arenaMap = new ArenaMap(startingArena, placedArenas);
+
+
+                jg = new JigsawGeneratorConfig(game.manager, random)
+                        .noBattleRooms(5)
+                        .currentLevel(ChangeLevelSystem.Level.ONE)
+                        .startingMap(arenaMap)
+                        .build();
+                jg.generate(jg.getStartingMap());
+                jg.cleanArenas();
+                break;
+            case BOSS:
+                switch (playScreenConfig.id){
+                    case 0:
+                    default:
+                        jg = new JigsawGeneratorConfig(game.manager, random)
+                                .startingMap(new BossMaps(game.manager, arenaSkin).adojMap(new BossTeleporterComponent()))
+                                .build();
+                        break;
+                    case 1:
+                        jg = new JigsawGeneratorConfig(game.manager, random)
+                                .startingMap(new BossMaps(game.manager, arenaSkin).ajirMap(new BossTeleporterComponent()))
+                                .build();
+                        jg.cleanArenas();
+                        break;
+                }
+
+                jg.cleanArenas();
+
+
+                break;
+
+
+
+        }
+
+
+
+
+        createWorld();
+        Gdx.input.setCatchBackKey(true);
+    }
+
+
+
+
+    public PlayScreen(MainGame game) {
+        super(game);
+        setUpGlobals();
+
+         /*       jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 , itemStore, random);
+        jg.generateTutorial = isTutorial;
+        jg.generate();
+*/
+        jg = new JigsawGeneratorConfig(game.manager, random)
+                .noBattleRooms(5)
+                .currentLevel(ChangeLevelSystem.Level.ONE)
+                .startingMap(new ArenaMap(new ArenaShellFactory(game.manager, new SolitarySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
+                .build();
+        jg.generate();
+        jg.cleanArenas();
+
+        createWorld();
+        Gdx.input.setCatchBackKey(true);
+    }
+
+
+    public void setUpGlobals(){
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
         atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
         Assets.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
-
         gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
         //gameport.setScreenPosition(-(int)MainGame.GAME_BORDER, -(int)MainGame.GAME_BORDER);
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-       // gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
         random = new Random();
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
-        createWorld();
 
-
-        Gdx.input.setCatchBackKey(true);
     }
 
 
@@ -278,12 +371,7 @@ public class PlayScreen extends AbstractScreen {
     public void createWorld(){
         ItemStore itemStore = new ItemStore(random);
 
-        jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 , itemStore, random);
-        jg.generateTutorial = isTutorial;
-        jg.generate();
         Arena startingArena = jg.getStartingRoom();
-
-
         AdventureWorld adventureWorld = new AdventureWorld(game.manager, game.batch, gameport, random);
         adventureWorld.setJigsawGenerator(jg);
         adventureWorld.setPlayer(new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
@@ -340,7 +428,6 @@ public class PlayScreen extends AbstractScreen {
 
         if(stats.health <= 0 && !gameOver){
             gameOver = true;
-            jg.generateTutorial = false;
             createDeathScreenWorld();
         }
 

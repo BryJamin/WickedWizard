@@ -9,25 +9,20 @@ import com.artemis.World;
  */
 
 public class ActionOnTouchComponent extends Component {
-    public Task task;
+    public Action action;
 
     public ActionOnTouchComponent() {
-        task = new Task() {
+        action = new Action() {
             @Override
             public void performAction(World world, Entity e) {
-
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
 
             }
         };
     }
 
 
-    public ActionOnTouchComponent(Task task){
-        this.task = task;
+    public ActionOnTouchComponent(Action action){
+        this.action = action;
     }
 
 }

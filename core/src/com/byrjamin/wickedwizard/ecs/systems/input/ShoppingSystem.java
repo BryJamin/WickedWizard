@@ -42,7 +42,7 @@ public class ShoppingSystem extends EntitySystem {
     public boolean activeOnTouchTrigger(float inputX, float inputY) {
         for (Entity e : this.getEntities()) {
             if(cbm.get(e).bound.contains(inputX, inputY)){
-                aotm.get(e).task.performAction(world, e);
+                aotm.get(e).action.performAction(world, e);
                 return true;
             }
         }

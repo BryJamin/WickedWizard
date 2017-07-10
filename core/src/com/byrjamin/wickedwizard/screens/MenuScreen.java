@@ -29,10 +29,13 @@ import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
@@ -81,6 +84,14 @@ public class MenuScreen extends AbstractScreen {
     private Entity musicSetting;
 
     private Entity soundSetting;
+
+
+
+
+    private Entity bossSelecterbutton;
+    private Entity bossStartbutton;
+
+
 
     GestureDetector gestureDetector;
     private boolean gameOver = false;
@@ -132,6 +143,7 @@ public class MenuScreen extends AbstractScreen {
                         new AnimationSystem(),
                         new StateSystem(),
                         new CollisionSystem(),
+                        new ActionOnTouchSystem(),
                         //new FindPlayerSystem(player),
                         new GravitySystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
@@ -192,57 +204,40 @@ public class MenuScreen extends AbstractScreen {
         animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, soundOn ? atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
         soundSetting.edit().add(new AnimationComponent(animMap));
         //Player
+        MenuButton mb = new MenuButton(Assets.small, atlas.findRegion(TextureStrings.BLOCK));
 
-/*        Entity player = world.createEntity();
-        player.edit().add(new PositionComponent(Measure.units(80f),Measure.units(18f)));
-        player.edit().add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
-        player.edit().add(new VelocityComponent(0,0));
-        player.edit().add(new GravityComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(0);
-        player.edit().add(sc);
+        bossStartbutton = mb.createButton(world, "0", Measure.units(25f), Measure.units(40f), Measure.units(10f), Measure.units(20f), new Color(Color.WHITE), new Color(Color.BLACK));
+        bossStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.BOSS, Integer.parseInt(e.getComponent(TextureFontComponent.class).text))));
+                world.getSystem(SoundSystem.class).stopMusic();
+            }
+        }));
 
-        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions("block_walk"), Animation.PlayMode.LOOP));
 
-        player.edit().add(new AnimationComponent(k));
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),0, 0,
-                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
-        trc.color = new Color(Color.WHITE);
-        trc.DEFAULT = new Color(Color.WHITE);
-        player.edit().add(trc);*/
+        bossSelecterbutton = mb.createButton(world, "", Measure.units(10f), Measure.units(40f), Measure.units(10f), Measure.units(10f), new Color(Color.WHITE), new Color(Color.WHITE));
+        bossSelecterbutton.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
+                bossStartbutton.getComponent(TextureFontComponent.class).text = Integer.toString(i + 1);
+            }
+        }));
+
+
+
+
+
+
+
 
 
         SolitarySkin ss = new SolitarySkin(atlas);
 
         DecorFactory df = new DecorFactory(manager, ss);
         BackgroundFactory bf = new BackgroundFactory();
-
-
-/*
-        Bag<Bag<Component>> bags = new Bag<Bag<Component>>();
-        bags.add(df.wallBag(0, 0, Measure.units(5), gameport.getWorldHeight(), new Color(Color.BLACK)));
-        bags.add(df.wallBag(0, 0, gameport.getWorldWidth(), Measure.units(10f), new Color(Color.BLACK)));
-        bags.add(df.wallBag(0, gameport.getWorldHeight() - Measure.units(5f), gameport.getWorldWidth(), Measure.units(5), new Color(Color.BLACK)));
-
-        bags.add(bf.backgroundBags(0,0, gameport.getWorldWidth(), gameport.getWorldHeight(), Measure.units(20),
-                atlas.findRegions("block"), new Color(Color.BLACK)));
-
-        for(Bag<Component> b  : bags) {
-            Entity e = world.createEntity();
-            for(Component c : b){
-                e.edit().add(c);
-            }
-        }
-*/
-
-     /*   Entity e = world.createEntity();
-        e.edit().add(new PositionComponent(gamecam.viewportWidth / 2
-                ,gamecam.position.y - gamePort.getWorldHeight() / 2 + 800));
-        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, "Start", gamecam.viewportWidth, 0, TextureRegionComponent.BACKGROUND_LAYER_FAR);
-        e.edit().add(tfc);
-        e.edit().add(new CollisionBoundComponent(new Rectangle(gamecam.viewportWidth / 2,
-                gamecam.position.y - gamePort.getWorldHeight() / 2 + 700, gamecam.viewportWidth, Measure.units(10f))));*/
 
     }
 
@@ -364,13 +359,15 @@ public class MenuScreen extends AbstractScreen {
             Vector3 touchInput = new Vector3(x, y, 0);
             gameport.unproject(touchInput);
 
+            world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+
             if (startGame.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-                game.setScreen(new PlayScreen(game, false));
+                game.setScreen(new PlayScreen(game));
                 world.getSystem(SoundSystem.class).stopMusic();
             }
 
             if (startTutorial.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-                game.setScreen(new PlayScreen(game, true));
+                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
                 world.getSystem(SoundSystem.class).stopMusic();
             }
 
