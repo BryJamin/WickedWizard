@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
+import com.byrjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.bosses.BossAjir;
@@ -39,7 +40,7 @@ public class BossRoomEnd extends AbstractFactory {
         this.chestFactory = new ChestFactory(assetManager);
         //this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
         this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
-        this.arenaSkin = arenaSkin;
+        this.arenaSkin = new AllBlackSkin(atlas); //arenaSkin;
 
     }
 
@@ -59,7 +60,7 @@ public class BossRoomEnd extends AbstractFactory {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
 
                 arena.addEntity(new BossEnd(assetManager).end(arena.getWidth() / 2, Measure.units(35f)));

@@ -382,9 +382,6 @@ public class JigsawGenerator {
         mapTracker.put(btc, generateBossMap(btc));
 
 
-
-
-
         return placedArenas;
 
     }
@@ -395,6 +392,8 @@ public class JigsawGenerator {
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
         startingArena = new BossRoomEnd(assetManager, arenaSkin).endArena().createArena(new MapCoords());
+
+        //startingArena = new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords());
 
         //startingArena = level5Rooms.room30Height3ThroughRoomWithHorizontalLasers().createArena(new MapCoords());
 

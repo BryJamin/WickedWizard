@@ -14,16 +14,10 @@ import com.byrjamin.wickedwizard.utils.Pair;
 public class PhaseComponent extends Component {
 
     public float currentPhaseTime = 0;
-    public int currentPhase;
 
     public boolean hasActionBeenPerformed = false;
 
-
     public Queue<Pair<Task, Condition>> phaseQueue = new Queue<Pair<Task, Condition>>();
-
-    public Array<Integer> phaseSequence = new Array<Integer>();
-    public Array<Integer> stateSequence = new Array<Integer>();
-
 
     public void addPhase(Float time, Task task){
         phaseQueue.addLast(new Pair<Task, Condition>(task, phaseTimeCondition(time)));
@@ -46,18 +40,6 @@ public class PhaseComponent extends Component {
         };
     }
 
-    //TODO maybe add an error handle
-
-    /**
-     * Add sequence in which the Phases are called (May need to add something in relation to health
-     * later)
-     * @param sequence
-     */
-    public void addPhaseSequence(int... sequence){
-        for(int i : sequence){
-            phaseSequence.add(i);
-        }
-    }
 
     public void addPhaseSequence(Pair<Task, Condition>... sequence){
         for(Pair<Task, Condition> taskConditionPair : sequence){
@@ -69,9 +51,4 @@ public class PhaseComponent extends Component {
         return phaseQueue.first().getLeft();
     }
 
-
-
-    public Array<Integer> getPhaseSequence() {
-        return phaseSequence;
-    }
 }

@@ -5,36 +5,45 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
+import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
+import com.byrjamin.wickedwizard.factories.enemy.MaceFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
-import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
 
@@ -54,21 +63,52 @@ public class BossEnd extends EnemyFactory {
     private static final float handsHeight = Measure.units(12f);
     private static final float handsWidth = Measure.units(12f);
 
+    private static final float handsTextureWidth = Measure.units(15f);
+    private static final float handsTextureHeight = Measure.units(15f);
 
     private static final float bottomHandOffsetX = Measure.units(30f);
-    private static final float bottomHandOffsetY = -Measure.units(10f);
+    private static final float bottomHandOffsetY = -Measure.units(5);
 
     private static final float upperHandOffsetX = Measure.units(20f);
-    private static final float upperHandOffsetY = Measure.units(15f);
+    private static final float upperHandOffsetY = Measure.units(20f);
+
+
+    private static final float handCharingTime = 2.0f;
+
+
+    //Hand States
+    private static final int FLOATING_STATE = 0;
+    private static final int CHARGING_STATE = 2;
+    private static final int FIRING_STATE = 3;
 
 
 
     //SplitterWeapon
     private static final float firstSplitterSpeed = Measure.units(20f);
-    private static final float firstSplitterRange = Measure.units(35f);
+    private static final float firstSplitterRange = Measure.units(25f);
     private static final float secondSplitterSpeed = Measure.units(20f);
-    private static final float secondSplitterRange = Measure.units(25f);
+    private static final float secondSplitterRange = Measure.units(15f);
     private static final float finalSplitterSpeed = Measure.units(50f);;
+
+
+    private static final float fauxPhaseTime = 100f;
+
+    private static final float timeBetweenLaserFiredForDeathFromAbove = 0.25f;
+
+
+    //LaserDancePhase
+    private static final float numberOfLasersFired = 4;
+    private static final float timeBetweenLaserFiredForDance = 1.25f;
+
+
+    //PhaseTimers
+    private static final float splitterPhase = 5.0f;
+    private static final float deathFromAbovePhase = 7.5f;
+    private static final float laserDancePhase = (numberOfLasersFired + 1) * timeBetweenLaserFiredForDance;
+    private static final float gatlingPhase = 7.5f;
+
+
+
 
     private static final Random random = new Random();
 
@@ -90,33 +130,138 @@ public class BossEnd extends EnemyFactory {
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 mainBodyWidth,
                 mainBodyHeight,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE,
-                new Color(Color.WHITE.r, Color.WHITE.g, Color.WHITE.b, 0.5f)));
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         bag.add(new IntangibleComponent());
         bag.add(new ParentComponent());
 
 
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                createLowerLeftHand(world, e);
-                createLowerRightHand(world, e);
-                createUpperLeftHand(world, e);
-                createUpperRightHand(world, e);
-            }
-        }));
-
-
-
+        bag.add(new ActionAfterTimeComponent(new SummonArms(), 0.2f));
 
         return bag;
 
+    }
+
+    private ConditionalActionComponent summonArmsConditional() {
+
+        return new ConditionalActionComponent(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return entity.getComponent(ParentComponent.class).children.size <= 0;
+            }
+        }, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().remove(PhaseComponent.class);
+
+                e.edit().add(new FadeComponent(true, 0.5f, false, e.getComponent(TextureRegionComponent.class).color.a, 1));
+
+                e.getComponent(CollisionBoundComponent.class).hitBoxes.add(new HitBox(new Rectangle(0,0, mainBodyWidth, mainBodyHeight)));
+                e.edit().remove(ConditionalActionComponent.class);
+                e.edit().add(new ActionAfterTimeComponent(new SummonArms(), 10f));
+            }
+        });
+    }
+
+
+    private class SummonArms implements Action {
+        @Override
+        public void performAction(World world, Entity e) {
+
+            createLowerLeftHand(world, e);
+            createLowerRightHand(world, e);
+            createUpperLeftHand(world, e);
+            createUpperRightHand(world, e);
+
+            e.edit().add(new FadeComponent(false, 0.5f, false, 0.5f, 1));
+
+
+            PhaseComponent phaseComponent = new PhaseComponent();
+            phaseComponent.addPhase(fauxPhaseTime, new NextHand(random));
+            e.edit().add(phaseComponent);
+
+            e.getComponent(CollisionBoundComponent.class).hitBoxes.clear();
+
+            e.edit().add(summonArmsConditional());
+
+        }
+    }
+
+
+
+    private class NextHand implements Task {
+
+        private Random random;
+
+        Array<ChildComponent> previouslySelectedHands = new Array<ChildComponent>();
+        Array<ChildComponent> currentlySelectedHands = new Array<ChildComponent>();
+
+
+        public NextHand(Random random){
+            this.random = random;
+        }
+
+        @Override
+        public void performAction(World world, Entity e) {
+
+            ParentComponent parentComponent = e.getComponent(ParentComponent.class);
+            if(parentComponent.children.size <= 0) return;
+            Array<ChildComponent> childComponents = parentComponent.children;
+
+            currentlySelectedHands.clear();
+            boolean reset = true;
+            for(ChildComponent c : childComponents){
+                if(!previouslySelectedHands.contains(c, true)){
+                    currentlySelectedHands.add(c);
+                    reset = false;
+                }
+            }
+
+            if(reset){
+                currentlySelectedHands.addAll(childComponents);
+                previouslySelectedHands.clear();
+            }
+
+            ChildComponent cc = currentlySelectedHands.removeIndex(random.nextInt(currentlySelectedHands.size));
+            previouslySelectedHands.add(cc);
+
+            Entity child = world.getSystem(FindChildSystem.class).findChildEntity(cc);
+
+            HandAction handAction =  (HandAction) (child.getComponent(WeaponComponent.class).weapon);
+            handAction.performHandAction(world, child);
+            e.getComponent(PhaseComponent.class).currentPhaseTime = fauxPhaseTime - handAction.getHandPhaseTime();
+            //TODO select next hand
+            //if hand has no firing component, fire weapon
+            //if hadn has firing componenet add firing component and remove it after some time
+            //get class of weapon and decidew what to do?
+        }
+
+        @Override
+        public void cleanUpAction(World world, Entity e) {
+
+        }
 
 
     }
 
 
+
+
+
+
+    private Task chargingAnimationTask(){
+        return new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(AnimationStateComponent.class).setDefaultState(CHARGING_STATE);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.getComponent(AnimationStateComponent.class).setDefaultState(FLOATING_STATE);
+            }
+        };
+    }
 
 
 
@@ -126,6 +271,7 @@ public class BossEnd extends EnemyFactory {
         PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, true);
         hand.edit().add(new FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) - upperHandOffsetX, upperHandOffsetY));
+        hand.edit().add(new WeaponComponent(new EndDeathFromAboveLasers(assetManager, random)));
         return hand;
     }
 
@@ -134,9 +280,9 @@ public class BossEnd extends EnemyFactory {
         PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, true);
         hand.edit().add(new FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) - bottomHandOffsetX, bottomHandOffsetY));
-        //hand.edit().add(new WeaponComponent(new EndSplitterWeapon(assetManager)));
-        hand.edit().add(new WeaponComponent(new EndDeathFromAboveLasers(assetManager, random)));
-        hand.edit().add(new FiringAIComponent(90));
+        hand.edit().add(new WeaponComponent(new LeftHandEndSplitterWeapon(assetManager)));
+       //
+       //  hand.edit().add(new FiringAIComponent(90));
         return hand;
     }
 
@@ -144,6 +290,8 @@ public class BossEnd extends EnemyFactory {
         PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, false);
         hand.edit().add(new FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) + upperHandOffsetX, upperHandOffsetY));
+        hand.edit().add(new WeaponComponent(new EndGatlingGun(assetManager, random)));
+        //hand.edit().add(new FiringAIComponent());
         return hand;
     }
 
@@ -151,6 +299,7 @@ public class BossEnd extends EnemyFactory {
         PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, false);
         hand.edit().add(new FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) + bottomHandOffsetX, bottomHandOffsetY));
+        hand.edit().add(new WeaponComponent(new EndLaserDance(assetManager, random)));
         return hand;
 
     }
@@ -158,7 +307,7 @@ public class BossEnd extends EnemyFactory {
 
     private Entity createBaseHand(World world, Entity parent, boolean isLeft){
 
-        float tempPos = -10000f;
+        final float tempPos = -10000f;
 
         Entity hand = world.createEntity();
 
@@ -166,19 +315,51 @@ public class BossEnd extends EnemyFactory {
             hand.edit().add(c);
         }
 
-        hand.edit().add(new CollisionBoundComponent(new Rectangle(tempPos, tempPos, handsWidth, handsHeight), true));
-        hand.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), handsWidth, handsHeight,
-                TextureRegionComponent.ENEMY_LAYER_NEAR));
+        hand.edit().add(new CollisionBoundComponent(new Rectangle(tempPos, tempPos, handsWidth, handsHeight)));
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                CenterMath.offsetX(handsWidth, handsTextureWidth),
+                CenterMath.offsetY(handsHeight, handsTextureHeight),
+                handsTextureWidth, handsTextureHeight,
+                TextureRegionComponent.ENEMY_LAYER_NEAR);
+
+        trc.scaleX = isLeft ? 1 : -1;
+
+        hand.edit().add(trc);
+
+
+
+        hand.edit().add(new FadeComponent(true, 1f, false));
+
+        hand.edit().add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(CollisionBoundComponent.class).hitBoxes.add(new HitBox(new Rectangle(tempPos, tempPos, handsWidth, handsHeight)));
+            }
+        }, 1f));
 
         hand.edit().add(new ChildComponent(parent.getComponent(ParentComponent.class)));
+
+
+        hand.edit().add(new AnimationStateComponent(FLOATING_STATE));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(FLOATING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(TextureStrings.END_HAND), Animation.PlayMode.LOOP));
+        animMap.put(CHARGING_STATE, new Animation<TextureRegion>(1f / 18f, atlas.findRegions(TextureStrings.END_HAND_CHARGING), Animation.PlayMode.LOOP));
+        animMap.put(FIRING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(TextureStrings.END_HAND_FIRING), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 10f, atlas.findRegions(TextureStrings.END_HAND_FIRING)));
+        hand.edit().add(new AnimationComponent(animMap));
+
 
         return hand;
 
     }
 
+    private interface HandAction {
+        void performHandAction(World world, Entity hand);
+        float getHandPhaseTime();
+    }
 
 
-    private class EndSplitterWeapon implements Weapon {
+    private class LeftHandEndSplitterWeapon implements Weapon, HandAction {
 
         private BulletFactory bulletFactory;
         private GibletFactory gibletFactory;
@@ -190,7 +371,7 @@ public class BossEnd extends EnemyFactory {
 
         int[] firstSplitAngles = new int[]{90, -35, 215};
 
-        public EndSplitterWeapon(AssetManager assetManager){
+        public LeftHandEndSplitterWeapon(AssetManager assetManager){
             this.bulletFactory = new BulletFactory(assetManager);
             this.gibletFactory = new GibletFactory(assetManager);
             this.weapoonFiredOnBulletDeath = new MultiPistol.PistolBuilder(assetManager)
@@ -208,7 +389,7 @@ public class BossEnd extends EnemyFactory {
                     .intangible(true)
                     .expireRange(secondSplitterRange)
                     .shotSpeed(secondSplitterSpeed)
-                    .shotScale(10f)
+                    .shotScale(4)
                     .customOnDeathAction(new OnDeathActionComponent(new Action() {
                         @Override
                         public void performAction(World world, Entity e) {
@@ -225,7 +406,7 @@ public class BossEnd extends EnemyFactory {
                     .intangible(true)
                     .expireRange(firstSplitterRange)
                     .shotSpeed(firstSplitterSpeed)
-                    .shotScale(15f)
+                    .shotScale(8)
                     .customOnDeathAction(new OnDeathActionComponent(new Action() {
                         @Override
                         public void performAction(World world, Entity e) {
@@ -255,6 +436,31 @@ public class BossEnd extends EnemyFactory {
         public float getBaseDamage() {
             return 0;
         }
+
+        @Override
+        public void performHandAction(World world, Entity hand) {
+            PhaseComponent phaseComponent = new PhaseComponent();
+            phaseComponent.addPhase(handCharingTime, chargingAnimationTask());
+            phaseComponent.addPhase(getHandPhaseTime(), new Task() {
+                @Override
+                public void performAction(World world, Entity e) {
+                    CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                    e.getComponent(WeaponComponent.class).weapon.fire(world,e ,cbc.getCenterX(),cbc.getCenterY(), Math.toRadians(90));
+                }
+
+                @Override
+                public void cleanUpAction(World world, Entity e) {
+                    e.edit().remove(PhaseComponent.class);
+                }
+            });
+
+            hand.edit().add(phaseComponent);
+        }
+
+        @Override
+        public float getHandPhaseTime() {
+            return splitterPhase;
+        }
     }
 
 
@@ -266,13 +472,13 @@ public class BossEnd extends EnemyFactory {
      *
      *
      */
-    private class EndDeathFromAboveLasers implements Weapon {
+    private class EndDeathFromAboveLasers implements Weapon, HandAction {
 
         private LaserBeam laserBeam;
         private Random random;
 
 
-        private float offSetFromBoss;
+        private float offSetFromBoss = Measure.units(10f);
 
         //TODO this weapon should take in the bosses position and then use it when centering the lasers
         //TODO as the player should be stuck in the middle of the boss
@@ -294,8 +500,13 @@ public class BossEnd extends EnemyFactory {
 
         }
 
+        //TODO maybe add two safe spots but they can not be adjacent
+
         @Override
         public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+
+
+            //e.getComponent(AnimationStateComponent.class).queueAnimationState(FIRING_STATE);
 
             positionIndentifierArray.shuffle();
             Entity entityForLaserAction = world.createEntity();
@@ -311,7 +522,7 @@ public class BossEnd extends EnemyFactory {
                         count++;
                     }
                 }
-            }, 0.2f, true));
+            }, timeBetweenLaserFiredForDeathFromAbove, true));
 /*            for(Integer positionIndentifier : positionIndentifierArray){
             }*/
         }
@@ -325,7 +536,259 @@ public class BossEnd extends EnemyFactory {
         public float getBaseDamage() {
             return 0;
         }
+
+        @Override
+        public void performHandAction(World world, Entity hand) {
+
+            PhaseComponent phaseComponent = new PhaseComponent();
+            phaseComponent.addPhase(handCharingTime, chargingAnimationTask());
+            phaseComponent.addPhase(getHandPhaseTime(), new Task() {
+                @Override
+                public void performAction(World world, Entity e) {
+                    CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                    e.getComponent(AnimationStateComponent.class).setDefaultState(FIRING_STATE);
+                    e.getComponent(WeaponComponent.class).weapon.fire(world,e ,cbc.getCenterX(),cbc.getCenterY(), 0);
+                }
+
+                @Override
+                public void cleanUpAction(World world, Entity e) {
+                    e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.DEFAULT);
+                    e.edit().remove(PhaseComponent.class);
+                }
+            });
+
+            hand.edit().add(phaseComponent);
+
+        }
+
+        @Override
+        public float getHandPhaseTime() {
+            return deathFromAbovePhase;
+        }
     }
+
+
+
+
+
+    private class EndLaserDance implements Weapon, HandAction {
+
+        private LaserBeam sideBeam;
+        private LaserBeam verticalBeam;
+        private Random random;
+
+        private boolean isTopHorizontalBeam = false;
+        private boolean isHorizontalBeamPhase = false;
+
+
+        private float offSetFromBoss;
+
+
+        public EndLaserDance(AssetManager assetManager, Random random){
+
+            verticalBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                    .chargingLaserWidth(Measure.units(7.5f))
+                    .chargingLaserHeight(Measure.units(100f))
+                    .activeLaserWidth(Measure.units(12.5f))
+                    .activeLaserHeight(Measure.units(100f))
+                    .useWidthAsCenter(true)
+                    .chargingLaserTime(1f)
+                    .build();
+
+            sideBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                    .chargingLaserWidth(Measure.units(100f))
+                    .chargingLaserHeight(Measure.units(7.5f))
+                    .activeLaserWidth(Measure.units(100f))
+                    .activeLaserHeight(Measure.units(12.5f))
+                    .useWidthAsCenter(false)
+                    .chargingLaserTime(1f)
+                    .build();
+
+            this.random = random;
+
+        }
+
+        @Override
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+
+            Entity entityForLaserAction = world.createEntity();
+
+            entityForLaserAction.edit().add(new ExpireComponent(20f));
+            entityForLaserAction.edit().add(new ActionAfterTimeComponent(new Action() {
+
+                int count = 0;
+                @Override
+                public void performAction(World world, Entity e) {
+                    if(count < numberOfLasersFired) {
+
+
+                        //sideBeam.createBeam(world, 0, Measure.units(15f));
+
+                        if(isTopHorizontalBeam){
+                            sideBeam.createBeam(world, 0, Measure.units(35f));
+                            isTopHorizontalBeam = !isTopHorizontalBeam;
+
+                            if(random.nextBoolean()){
+                                verticalBeam.createBeam(world, Measure.units(35f), 0);
+                            } else {
+                                verticalBeam.createBeam(world, Measure.units(50f), 0);
+                            }
+
+                        } else {
+                            sideBeam.createBeam(world, 0, Measure.units(15f));
+                            isTopHorizontalBeam = !isTopHorizontalBeam;
+                        }
+
+                        //laserBeam.createBeam(world, , 0);
+                    }
+                    count++;
+                }
+            }, 0, timeBetweenLaserFiredForDance, true));
+/*            for(Integer positionIndentifier : positionIndentifierArray){
+            }*/
+        }
+
+        @Override
+        public float getBaseFireRate() {
+            return 70;
+        }
+
+        @Override
+        public float getBaseDamage() {
+            return 0;
+        }
+
+
+        @Override
+        public void performHandAction(World world, Entity hand) {
+
+
+
+            PhaseComponent phaseComponent = new PhaseComponent();
+            phaseComponent.addPhase(handCharingTime, chargingAnimationTask());
+            phaseComponent.addPhase(getHandPhaseTime(), new Task() {
+                @Override
+                public void performAction(World world, Entity e) {
+                    CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                    e.getComponent(AnimationStateComponent.class).setDefaultState(FIRING_STATE);
+                    e.getComponent(WeaponComponent.class).weapon.fire(world,e ,cbc.getCenterX(),cbc.getCenterY(), 0);
+                }
+
+                @Override
+                public void cleanUpAction(World world, Entity e) {
+                    e.getComponent(AnimationStateComponent.class).setDefaultState(FLOATING_STATE);
+                    e.edit().remove(PhaseComponent.class);
+                }
+            });
+
+
+            hand.edit().add(phaseComponent);
+        }
+
+        @Override
+        public float getHandPhaseTime() {
+            return laserDancePhase;
+        }
+    }
+
+
+
+
+
+
+
+
+    private class EndGatlingGun implements Weapon, HandAction {
+
+        private Weapon pistol;
+        private Random random;
+
+        int count = 0;
+
+
+        public EndGatlingGun(AssetManager assetManager, Random random){
+            pistol = new MultiPistol.PistolBuilder(assetManager)
+                    .shotScale(1.5f)
+                    .shotSpeed(Measure.units(30f))
+                    .intangible(true)
+                    .bulletOffsets(Measure.units(2.5f))
+                    .expireRange(Measure.units(100f))
+                    .build();
+            this.random = random;
+        }
+
+        @Override
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+            double varianace = Math.toRadians(random.nextInt(30) - 15);
+
+
+            if(count % 3 == 0) {
+                pistol.fire(world, e, x, y, angleInRadians + varianace);
+            } else {
+
+
+
+                varianace = Math.toRadians(random.nextInt(20) + 20);
+
+                if(count % 2 == 0){
+                    pistol.fire(world, e, x, y, angleInRadians + varianace);
+                } else {
+
+                    pistol.fire(world, e, x, y, angleInRadians - varianace);
+
+                }
+
+
+            }
+
+
+
+            count++;
+        }
+
+        @Override
+        public float getBaseFireRate() {
+            return 0.25f;
+        }
+
+        @Override
+        public float getBaseDamage() {
+            return 0;
+        }
+
+
+        @Override
+        public void performHandAction(World world, Entity hand) {
+            CollisionBoundComponent cbc = hand.getComponent(CollisionBoundComponent.class);
+
+
+            PhaseComponent phaseComponent = new PhaseComponent();
+            phaseComponent.addPhase(handCharingTime, chargingAnimationTask());
+            phaseComponent.addPhase(gatlingPhase, new Task() {
+                @Override
+                public void performAction(World world, Entity e) {
+                    e.edit().add(new FiringAIComponent());
+                }
+
+                @Override
+                public void cleanUpAction(World world, Entity e) {
+                    e.edit().remove(FiringAIComponent.class);
+                    e.edit().remove(PhaseComponent.class);
+                }
+            });
+
+
+            hand.edit().add(phaseComponent);
+
+        }
+
+        @Override
+        public float getHandPhaseTime() {
+            return gatlingPhase;
+        }
+    }
+
+
 
 
 

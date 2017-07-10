@@ -28,7 +28,7 @@ public class ActionAfterTimeSystem extends EntityProcessingSystem {
             if(aatc.repeat){
                 aatc.timeUntilAction = aatc.resetTime;
             } else {
-                e.edit().remove(ActionAfterTimeComponent.class);
+                e.edit().remove(aatc);
             }
 
         }
