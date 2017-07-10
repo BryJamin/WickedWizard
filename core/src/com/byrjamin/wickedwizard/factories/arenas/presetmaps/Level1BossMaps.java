@@ -7,10 +7,12 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomEnd;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
@@ -217,6 +219,33 @@ public class Level1BossMaps extends AbstractFactory {
         return new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
 
     }
+
+
+
+
+    public ArenaMap endMap(BossTeleporterComponent btc) {
+
+        Array<Arena> placedArenas = new Array<Arena>();
+
+        Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0));
+        startingArena.addEntity(decorFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f),
+                btc));
+
+        placedArenas.add(startingArena);
+
+
+        placedArenas.add(new BossRoomEnd(assetManager, arenaSkin).endArena().createArena(new MapCoords(1, -20)));
+
+        Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(7, 0));
+        exitArena.addEntity(decorFactory.levelPortal(exitArena.getWidth() / 2, exitArena.getHeight() / 2 + Measure.units(5f)));
+
+        placedArenas.add(exitArena);
+
+        return new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
+
+    }
+
+
 
 
 }

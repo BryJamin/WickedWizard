@@ -40,6 +40,8 @@ public class LaserBeam {
 
     private final boolean useWidthAsCenter;
 
+    private final int layer;
+
     private final Color color;
 
     public static class LaserBeamBuilder{
@@ -59,6 +61,8 @@ public class LaserBeam {
 
         //Determines when creating the larger laser to center the new laser by the width or by the height
         private boolean useWidthAsCenter = true;
+
+        private int layer = TextureRegionComponent.PLAYER_LAYER_MIDDLE;
 
         private Color color = new Color(Color.RED);
 
@@ -84,6 +88,9 @@ public class LaserBeam {
         public LaserBeamBuilder useWidthAsCenter(boolean val)
         { useWidthAsCenter = val; return this;}
 
+        public LaserBeamBuilder layer(int val)
+        { layer = val; return this;}
+
         public LaserBeamBuilder chargingLaserTime(float val)
         { chargingLaserTime = val; return this; }
 
@@ -108,6 +115,7 @@ public class LaserBeam {
         this.activeLaserTime = lbb.activeLaserTime;
         this.chargingLaserTime = lbb.chargingLaserTime;
         this.useWidthAsCenter = lbb.useWidthAsCenter;
+        this.layer = lbb.layer;
         this.color = lbb.color;
     }
 
@@ -121,12 +129,14 @@ public class LaserBeam {
         beam.edit().add(new CollisionBoundComponent(new Rectangle(x, y, chargingLaserWidth, chargingLaserHeight), true));
         //beam.edit().add(new HazardComponent());
         beam.edit().add(new FadeComponent(true, 0.5f, false, 0, 0.3f));
-        beam.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), chargingLaserWidth, chargingLaserHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
-                new Color(color.r, color.g, color.b, 0)));
 
-        System.out.println("On creation x " + x);
-        System.out.println("On creation y " + y);;
 
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), chargingLaserWidth, chargingLaserHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
+                new Color(color.r, color.g, color.b, 0));
+
+        trc.layer = layer;
+
+        beam.edit().add(trc);
 
         beam.edit().add(new ActionAfterTimeComponent(new Action() {
             @Override
@@ -138,26 +148,18 @@ public class LaserBeam {
 
                 PositionComponent pc = e.getComponent(PositionComponent.class);
 
-
-                System.out.println(pc.position.x);
-                System.out.println(pc.position.y);
-
                 pc.position.set(useWidthAsCenter ? pc.getX() - (activeLaserWidth / 2 - chargingLaserWidth / 2) : pc.getX(),
                         useWidthAsCenter ? pc.getY() : pc.getY() - (activeLaserHeight / 2 - chargingLaserHeight / 2), 0);
 
-                System.out.println(pc.position.x);
-                System.out.println(pc.position.y);
-
 
                 e.edit().remove(CollisionBoundComponent.class);
-                System.out.println("WIDTH" + activeLaserWidth);
-                System.out.println("height" + activeLaserHeight);
                 e.edit().add(new CollisionBoundComponent(new Rectangle(pc.getX(), pc.getY(), activeLaserWidth, activeLaserHeight), true));
 
 
                 TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
                 trc.width = activeLaserWidth;
                 trc.height = activeLaserHeight;
+                trc.layer = layer;
                 //TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
                 trc.color.a = 1;
 

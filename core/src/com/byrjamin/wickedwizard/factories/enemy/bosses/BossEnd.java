@@ -33,8 +33,11 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.enemy.MaceFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
@@ -136,11 +139,50 @@ public class BossEnd extends EnemyFactory {
         bag.add(new ParentComponent());
 
 
-        bag.add(new ActionAfterTimeComponent(new SummonArms(), 0.2f));
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+
+                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                PositionComponent playerPosition = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+
+                CollisionBoundComponent endCbc = e.getComponent(CollisionBoundComponent.class);
+
+
+                playerCbc.setCenter(endCbc.getCenterX(), endCbc.getCenterY());
+                playerPosition.position.set(playerCbc.bound.x, playerCbc.bound.y, playerPosition.position.z);
+
+                e.edit().remove(ActionAfterTimeComponent.class);
+                e.edit().add(new ActionAfterTimeComponent(new SummonArms(), 0.5f));
+
+
+                world.getSystem(CameraSystem.class).snapCameraUpdate(playerCbc);
+
+
+                createWhiteFlash(world);
+
+            }
+        }, 2f, true));
 
         return bag;
 
     }
+
+
+    public Entity createWhiteFlash(World world){
+        float width = ArenaShellFactory.SECTION_WIDTH * 3;
+        float height = ArenaShellFactory.SECTION_HEIGHT * 3;
+
+        Entity e = world.createEntity();
+        e.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position, -width / 2, -height / 2));
+        e.edit().add(new PositionComponent(0, 0));
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
+                new Color(Color.WHITE)));
+        e.edit().add(new ExpireComponent(0.2f));
+        return e;
+    }
+
 
     private ConditionalActionComponent summonArmsConditional() {
 
@@ -490,10 +532,11 @@ public class BossEnd extends EnemyFactory {
 
             laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
                     .chargingLaserWidth(Measure.units(5f))
-                    .chargingLaserHeight(Measure.units(100f))
+                    .chargingLaserHeight(Measure.units(200f))
                     .activeLaserWidth(Measure.units(7.5f))
-                    .activeLaserHeight(Measure.units(100f))
+                    .activeLaserHeight(Measure.units(200f))
                     .chargingLaserTime(4f)
+                    .layer(TextureRegionComponent.FOREGROUND_LAYER_NEAR)
                     .build();
             this.random = random;
             positionIndentifierArray.addAll(0,1,2,3,4,5,6,7,8,9,10);
@@ -518,7 +561,7 @@ public class BossEnd extends EnemyFactory {
                 @Override
                 public void performAction(World world, Entity e) {
                     if(count < 10) {
-                        laserBeam.createBeam(world, offSetFromBoss + Measure.units(positionIndentifierArray.get(count) * 7.5f), 0);
+                        laserBeam.createBeam(world, offSetFromBoss + Measure.units(positionIndentifierArray.get(count) * 7.5f), -Measure.units(50f));
                         count++;
                     }
                 }

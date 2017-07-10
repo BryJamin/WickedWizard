@@ -100,6 +100,13 @@ public class CameraSystem extends EntitySystem {
 
     }
 
+
+
+    public void snapCameraUpdate(CollisionBoundComponent cbc){
+        int offsetY = (int) cbc.bound.getY() / (int) ArenaShellFactory.SECTION_HEIGHT;
+        gamecam.position.set(cbc.getCenterX(), offsetY * ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f), 0);
+    }
+
     //TODO need to break this method up. It is too large and confusing.
     public void updateGamecam() {
         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);

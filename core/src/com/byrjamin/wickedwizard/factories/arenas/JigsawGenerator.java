@@ -311,6 +311,7 @@ public class JigsawGenerator {
         WeightedRoll<ArenaMap> roll = new WeightedRoll<ArenaMap>(rand);
         switch (currentLevel){
             case ONE:
+              //  roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.endMap(btc), 20));
               //  roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.amalgamaMap(btc), 20));
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.blobbaMap(btc), 20));
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.adojMap(btc), 20));
@@ -329,10 +330,7 @@ public class JigsawGenerator {
                 roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.amalgamaMap(btc), 20));
                 break;
             case FIVE:
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.blobbaMap(btc), 20));
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.giantKugelMap(btc), 20));
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.wandaMap(btc), 20));
+                roll.addWeightedObject(new WeightedObject<ArenaMap>(level1BossMaps.endMap(btc), 20));
                 break;
         }
         ArenaMap map = roll.roll();
@@ -391,7 +389,7 @@ public class JigsawGenerator {
 
         startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
 
-        startingArena = new BossRoomEnd(assetManager, arenaSkin).endArena().createArena(new MapCoords());
+        //startingArena = new BossRoomEnd(assetManager, arenaSkin).endArena().createArena(new MapCoords());
 
         //startingArena = new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords());
 

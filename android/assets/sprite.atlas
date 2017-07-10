@@ -220,14 +220,14 @@ enemy/switch
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 7
+  index: 6
 enemy/switch
   rotate: false
   xy: 199, 431
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 6
+  index: 7
 enemy/switch
   rotate: false
   xy: 199, 431
@@ -269,14 +269,14 @@ enemy/pylon_spawning
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 1
 enemy/pylon_spawning
   rotate: false
   xy: 595, 827
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 0
 block_door
   rotate: false
   xy: 661, 893
@@ -843,14 +843,14 @@ enemy/alurm
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
+  index: 1
 enemy/alurm
   rotate: false
   xy: 463, 959
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 2
 enemy/alurm
   rotate: false
   xy: 1, 431
@@ -2180,14 +2180,14 @@ enemy/wanda_standing
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 3
 enemy/wanda_standing
   rotate: false
   xy: 1651, 629
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
+  index: 0
 enemy/wanda_firing
   rotate: false
   xy: 1717, 695
@@ -2642,14 +2642,14 @@ sentry
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 8
+  index: 7
 sentry
   rotate: false
   xy: 1321, 695
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 7
+  index: 8
 sentry_firing
   rotate: false
   xy: 1387, 761
@@ -2838,14 +2838,14 @@ silverhead_standing
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
+  index: 0
 silverhead_standing
   rotate: false
   xy: 859, 101
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 2
 silverhead_hiding
   rotate: false
   xy: 925, 167
@@ -3062,14 +3062,14 @@ squ_walk
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 4
+  index: 0
 squ_walk
   rotate: false
   xy: 783, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
+  index: 4
 squ_firing
   rotate: false
   xy: 817, 1
