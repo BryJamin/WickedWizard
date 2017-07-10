@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.ecs.systems.graphical;
 import com.artemis.BaseSystem;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -62,7 +63,7 @@ public class MessageBannerSystem extends BaseSystem {
 
 
 
-        OrthographicCamera gamecam = world.getSystem(CameraSystem.class).getGamecam();
+        Camera gamecam = world.getSystem(CameraSystem.class).getGamecam();
 
         FadeComponent fc = new FadeComponent();
         fc.alpha = 0f;

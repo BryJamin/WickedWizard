@@ -5,10 +5,12 @@ import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -38,7 +40,7 @@ public class PauseWorld {
     private SpriteBatch batch;
     private AssetManager manager;
     private TextureAtlas atlas;
-    private OrthographicCamera gamecam;
+    private Viewport gameport;
 
     private MenuButton menuButton;
 
@@ -46,12 +48,12 @@ public class PauseWorld {
 
     private Entity test;
 
-    public PauseWorld(SpriteBatch batch, AssetManager manager, OrthographicCamera gamecam){
+    public PauseWorld(SpriteBatch batch, AssetManager manager, Viewport gameport){
 
         this.batch = batch;
         this.manager = manager;
         this.atlas = manager.get(FileLocationStrings.spriteAtlas);
-        this.gamecam = gamecam;
+        this.gameport = gameport;
 
         menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
 
@@ -69,12 +71,14 @@ public class PauseWorld {
                         //new FindPlayerSystem(player),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(batch, manager, gamecam),
+                        new RenderingSystem(batch, manager, gameport),
                         new BoundsDrawingSystem()
                 )
                 .build();
 
         world = new World(config);
+
+        Camera gamecam = gameport.getCamera();
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;

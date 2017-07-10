@@ -61,28 +61,12 @@ public class RoomTransitionSystem extends EntitySystem {
     private float doorEntryPercentage;
 
 
-    public RoomTransition entryTransition;
-    public RoomTransition exitTransition;
-
-    private boolean canNowExitTransition = false;
-
-    private MoveToComponent blackScreenTarget;
-
-
     @SuppressWarnings("unchecked")
     public RoomTransitionSystem(ArenaMap arenaMap) {
         super(Aspect.all().exclude(PlayerComponent.class));
         this.currentMap = arenaMap;
         currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
         currentMap.getUnvisitedButAdjacentArenas().addAll(getAdjacentArenas(currentMap.getCurrentArena()));
-    }
-
-    public RoomTransition getEntryTransition() {
-        return entryTransition;
-    }
-
-    public RoomTransition getExitTransition() {
-        return exitTransition;
     }
 
     @Override

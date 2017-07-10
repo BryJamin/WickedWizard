@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
@@ -48,7 +49,7 @@ public class RenderingSystem extends EntitySystem {
 
     public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
-    public OrthographicCamera gamecam;
+    public Viewport gameport;
     public AssetManager assetManager;
     public TextureAtlas atlas;
 
@@ -57,14 +58,14 @@ public class RenderingSystem extends EntitySystem {
     public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, OrthographicCamera gamecam) {
+    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, Viewport gameport) {
         super(Aspect.all(PositionComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
                 TextureFontComponent.class
         ));
         this.batch = batch;
-        this.gamecam = gamecam;
+        this.gameport = gameport;
         this.assetManager = assetManager;
         this.atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
 
@@ -83,7 +84,7 @@ public class RenderingSystem extends EntitySystem {
 
     @Override
     protected void begin() {
-        batch.setProjectionMatrix(gamecam.combined);
+        batch.setProjectionMatrix(gameport.getCamera().combined);
         if(!batch.isDrawing()) {
             batch.begin();
         }

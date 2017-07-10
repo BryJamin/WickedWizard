@@ -51,6 +51,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
+import com.byrjamin.wickedwizard.screens.world.AdventureWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -101,6 +102,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -202,7 +204,7 @@ public class PlayScreen extends AbstractScreen {
                         if(!isPaused) {
                             endGame(world);
 
-                            pauseWorld = new PauseWorld(game.batch, game.manager, gamecam);
+                            pauseWorld = new PauseWorld(game.batch, game.manager, gameport);
                             pauseWorld.startWorld(world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class));
 
                             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
@@ -241,7 +243,7 @@ public class PlayScreen extends AbstractScreen {
                         //new FindPlayerSystem(player),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, manager, gamecam),
+                        new RenderingSystem(game.batch, manager, gameport),
                         new BoundsDrawingSystem()
                 )
                 .build();
@@ -274,115 +276,22 @@ public class PlayScreen extends AbstractScreen {
 
 
     public void createWorld(){
-
-        SoundSystem soundSystem = new SoundSystem(manager);
-        soundSystem.playMusic(MusicStrings.song8);
-
         ItemStore itemStore = new ItemStore(random);
 
         jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 , itemStore, random);
-        currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
-
-        //jg.setCurrentLevel(ChangeLevelSystem.Level.TWO);
-
         jg.generateTutorial = isTutorial;
-
         jg.generate();
         Arena startingArena = jg.getStartingRoom();
 
-        ComponentBag player = new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f));
 
-        WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new MovementSystem(),
-                        //TODO this is here because lock boxes check for a collision but ground collision sets vertical velocity to 0.
-                        //TODO either change lock to except next Tos or
-                        new CollisionSystem(),
-                        new BounceCollisionSystem(),
-                        new GroundCollisionSystem(),
-                        new OnCollisionActionSystem()
-                )
-                .with(WorldConfigurationBuilder.Priority.HIGH,
-                        new PhaseSystem(),
-                        new ExpireSystem(),
-                        new ActionAfterTimeSystem(),
-                        new ExplosionSystem(),
-                        new OrbitalSystem(),
-                        new InCombatSystem(),
-                        new ExpiryRangeSystem(),
-                        new ActiveOnTouchSystem(),
-                        new AnimationSystem(),
-                        new BlinkSystem(),
-                        //TODO where bullet system used to be
-                        new EnemyCollisionSystem(),
-                        new MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK)),
-                        new FindPlayerSystem(player),
-                        new FiringAISystem(),
-                        new GrapplePointSystem(),
-                        new LockSystem(),
-                        new HealthSystem(),
-                        new OnDeathSystem(),
-                        new FadeSystem(),
-                        new ProximitySystem(),
-                        new FindChildSystem(),
-                        new PickUpSystem(),
-                        new LuckSystem(random),
-                        new ShoppingSystem(),
-                        new RoomTypeSystem(),
-                        new MoveToSystem(),
-                        new MoveToPlayerAISystem(),
-                        new PlatformSystem(),
-                        new JumpSystem(),
-                        new PlayerInputSystem(gamecam, gameport),
-                        new StateSystem(),
-                        new SpawnerSystem(),
-                        new GravitySystem(),
-                        new GrappleSystem(),
-                        new FrictionSystem(),
-                        new ConditionalActionSystem()
-                        )
-                .with(WorldConfigurationBuilder.Priority.LOW,
-                        new DirectionalSystem(),
-                        new FollowPositionSystem(),
-                        new CameraSystem(gamecam, gameport),
-                        new RenderingSystem(game.batch, manager, gamecam),
-                        new BulletSystem(),
-                        new ScreenWipeSystem(game.batch, gamecam),
-                        new BoundsDrawingSystem(),
-                        new DoorSystem(),
-                        new LevelItemSystem(itemStore, random),
-                        soundSystem,
-                        new ChangeLevelSystem(jg, atlas),
-                        new MapTeleportationSystem(jg.getMapTracker()),
-                        new RoomTransitionSystem(jg.getStartingMap())
-                )
-                .build();
+        AdventureWorld adventureWorld = new AdventureWorld(game.manager, game.batch, gameport, random);
+        adventureWorld.setJigsawGenerator(jg);
+        adventureWorld.setPlayer(new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
+        world = adventureWorld.createAdventureWorld();
 
+        world.getSystem(SoundSystem.class).playMusic(MusicStrings.song8);
 
-
-        world = new World(config);
-        world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
-
-
-        world.getSystem(BoundsDrawingSystem.class).isDrawing =
-                Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
-
-        for (Bag<Component> bag : startingArena.getBagOfEntities()) {
-            Entity entity = world.createEntity();
-            for (Component comp : bag) {
-                entity.edit().add(comp);
-
-            }
-        }
-
-        Entity entity = world.createEntity();
-        for (Component comp : player) {
-            entity.edit().add(comp);
-        }
-
-
-        stats = entity.getComponent(StatComponent.class);
-
+        stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
 
         if(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false)) {
             stats.damage = 10f;
@@ -391,9 +300,8 @@ public class PlayScreen extends AbstractScreen {
             stats.speed = 1.5f;
         }
 
-
-        currencyComponent = entity.getComponent(CurrencyComponent.class);
-        arenaGUI = new ArenaGUI(0, 0, arenaArray, startingArena, atlas);
+        currencyComponent = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, adventureWorld.getPlayer());
+        arenaGUI = new ArenaGUI(0, 0, jg.getStartingMap().getRoomArray(), startingArena, atlas);
     }
 
     @Override

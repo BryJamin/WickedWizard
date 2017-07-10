@@ -22,7 +22,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 14/04/2017.
  */
 
-public class PlayerInput extends InputAdapter{
+public class PlayerInput extends InputAdapter {
 
     private World world;
     private Rectangle movementArea;

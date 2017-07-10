@@ -30,7 +30,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 29/05/2017.
  */
 
-public class Level1BossMaps extends AbstractFactory {
+public class BossMaps extends AbstractFactory {
 
     ArenaShellFactory arenaShellFactory;
     ChestFactory chestFactory;
@@ -40,7 +40,7 @@ public class Level1BossMaps extends AbstractFactory {
 
     ArenaSkin arenaSkin;
 
-    public Level1BossMaps(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public BossMaps(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
         this.chestFactory = new ChestFactory(assetManager);
@@ -49,6 +49,13 @@ public class Level1BossMaps extends AbstractFactory {
         this.turretFactory = new TurretFactory(assetManager);
         this.arenaSkin = arenaSkin;
     }
+
+
+
+
+
+
+
 
 
     public ArenaMap wandaMap(BossTeleporterComponent btc) {

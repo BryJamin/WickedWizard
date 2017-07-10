@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.ecs.systems.graphical;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.EntitySystem;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -34,7 +35,7 @@ public class CameraSystem extends EntitySystem {
 
     PositionComponent playerPosition;
 
-    private OrthographicCamera gamecam;
+    private Camera gamecam;
     private Viewport gamePort;
 
     private Arena currentArena;
@@ -78,9 +79,9 @@ public class CameraSystem extends EntitySystem {
 
 
     @SuppressWarnings("unchecked")
-    public CameraSystem(OrthographicCamera gamecam, Viewport gamePort) {
+    public CameraSystem(Camera gamecam, Viewport gamePort) {
         super(Aspect.all(PlayerComponent.class));
-        this.gamecam = gamecam;
+        this.gamecam = gamePort.getCamera();
         this.gamePort = gamePort;
         this.cameraVelocity = new Vector2();
         this.cameraMode = CameraMode.FIXED;
@@ -230,7 +231,7 @@ public class CameraSystem extends EntitySystem {
 
 
 
-    public OrthographicCamera getGamecam() {
+    public Camera getGamecam() {
         return gamecam;
     }
 

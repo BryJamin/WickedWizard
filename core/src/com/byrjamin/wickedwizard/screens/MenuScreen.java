@@ -135,7 +135,7 @@ public class MenuScreen extends AbstractScreen {
                         //new FindPlayerSystem(player),
                         new GravitySystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, manager, gamecam),
+                        new RenderingSystem(game.batch, manager, gameport),
                         new BoundsDrawingSystem(true),
                         soundSystem
 
@@ -219,6 +219,7 @@ public class MenuScreen extends AbstractScreen {
         BackgroundFactory bf = new BackgroundFactory();
 
 
+/*
         Bag<Bag<Component>> bags = new Bag<Bag<Component>>();
         bags.add(df.wallBag(0, 0, Measure.units(5), gameport.getWorldHeight(), new Color(Color.BLACK)));
         bags.add(df.wallBag(0, 0, gameport.getWorldWidth(), Measure.units(10f), new Color(Color.BLACK)));
@@ -233,6 +234,7 @@ public class MenuScreen extends AbstractScreen {
                 e.edit().add(c);
             }
         }
+*/
 
      /*   Entity e = world.createEntity();
         e.edit().add(new PositionComponent(gamecam.viewportWidth / 2

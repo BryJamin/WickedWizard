@@ -68,23 +68,19 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     ComponentMapper<TextureRegionComponent> trm;
     ComponentMapper<JumpComponent> jm;
 
-    OrthographicCamera gamecam;
     Viewport gameport;
 
     private PlayerInput playerInput;
-
-    private Array<ChildComponent> wingChildren = new Array<ChildComponent>();
 
     public Rectangle movementArea;
 
 
     @SuppressWarnings("unchecked")
-    public PlayerInputSystem(OrthographicCamera gamecam, Viewport gameport) {
+    public PlayerInputSystem(Viewport gameport) {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
-        this.gamecam = gamecam;
         this.gameport = gameport;
-        movementArea = new Rectangle(gamecam.position.x - gameport.getWorldWidth() / 2,
-                gamecam.position.y - gameport.getWorldHeight() / 2,
+        movementArea = new Rectangle(gameport.getCamera().position.x - gameport.getWorldWidth() / 2,
+                gameport.getCamera().position.y - gameport.getWorldHeight() / 2,
                 MainGame.GAME_WIDTH, Measure.units(10f));
 
         playerInput = new PlayerInput(world, gameport, movementArea);

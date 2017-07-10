@@ -37,7 +37,7 @@ public class BoundsDrawingSystem extends EntitySystem {
     }
 
     public BoundsDrawingSystem(boolean isDrawing) {
-        super(Aspect.all(CollisionBoundComponent.class));
+        super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class, WallComponent.class));
         this.isDrawing = isDrawing;
     }
 
