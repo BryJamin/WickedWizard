@@ -108,7 +108,7 @@ public class BossAjir extends EnemyFactory{
                         CenterMath.offsetX(width, armsHitBoxWidth),
                         armsHitBoxOffsetY)));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.AJIR),
                 CenterMath.offsetX(width, textureWidth),
                 CenterMath.offsetY(height, textureHeight),
                 textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
