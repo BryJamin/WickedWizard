@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  * Created by Home on 29/04/2017.
  */
 
-public class PrisonSkin extends AbstractSkin{
+public class DarkGraySkin extends AbstractSkin{
 
-    public PrisonSkin(TextureAtlas atlas) {
+    public DarkGraySkin(TextureAtlas atlas) {
         super(atlas);
     }
 /*

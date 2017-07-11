@@ -133,7 +133,7 @@ public class BossAmalgama extends EnemyFactory {
                 CenterMath.offsetY(bodyHeight, bodyTextureHeight),
                 bodyTextureWidth,
                 bodyTextureHeight,
-                TextureRegionComponent.PLAYER_LAYER_MIDDLE));
+                TextureRegionComponent.PLAYER_LAYER_NEAR));
 
 
         bag.add(new AnimationStateComponent(RED_EYE_STATE));

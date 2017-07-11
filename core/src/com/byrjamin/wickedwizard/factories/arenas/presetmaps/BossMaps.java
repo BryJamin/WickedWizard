@@ -55,6 +55,21 @@ public class BossMaps extends AbstractFactory {
 
 
 
+    public Array<ArenaMap> getBossMapsArray(){
+
+        Array<ArenaMap> arenaMaps = new Array<ArenaMap>();
+        arenaMaps.insert(0, blobbaMap(new BossTeleporterComponent()));
+        arenaMaps.insert(1, adojMap(new BossTeleporterComponent()));
+        arenaMaps.insert(2, giantKugelMap(new BossTeleporterComponent()));
+        arenaMaps.insert(3, wandaMap(new BossTeleporterComponent()));
+        arenaMaps.insert(4, boomyMap(new BossTeleporterComponent()));
+        arenaMaps.insert(5, ajirMap(new BossTeleporterComponent()));
+        arenaMaps.insert(6, wraithMap(new BossTeleporterComponent()));
+        arenaMaps.insert(7, amalgamaMap(new BossTeleporterComponent()));
+        arenaMaps.insert(8, endMap(new BossTeleporterComponent()));
+        return  arenaMaps;
+    }
+
 
 
 

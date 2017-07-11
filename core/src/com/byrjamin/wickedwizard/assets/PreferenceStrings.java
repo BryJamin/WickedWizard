@@ -19,4 +19,12 @@ public class PreferenceStrings {
 
 
 
+    public final static String DEV_MODE = "com.benjamin.wickedwizard.dev";
+    public final static String BOSS_NUMBER = "boss_number";
+    public final static String ROOM_NUMBER = "room_number";
+
+
+
+
+
 }

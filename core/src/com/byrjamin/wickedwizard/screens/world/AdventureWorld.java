@@ -71,7 +71,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -101,7 +101,7 @@ public class AdventureWorld {
         this.gameport = gameport;
         this.random = random;
         this.player = new PlayerFactory(assetManager).playerBag(Measure.units(50f), Measure.units(45f));
-        this.jigsawGenerator = new JigsawGenerator(assetManager, new SolitarySkin(atlas), 10, new ItemStore(random), random);
+        this.jigsawGenerator = new JigsawGenerator(assetManager, new LightGraySkin(atlas), 10, new ItemStore(random), random);
     }
 
     public ComponentBag getPlayer() {

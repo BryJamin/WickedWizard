@@ -6,20 +6,10 @@ import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level2Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level3Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level4Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level5Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
-import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
-import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
-import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
-import java.io.File;
 import java.util.Random;
 
 /**
@@ -42,8 +32,8 @@ public class JigsawGeneratorConfig {
     public JigsawGeneratorConfig(AssetManager assetManager, Random random){
         this.assetManager = assetManager;
         this.random = random;
-        this.arenaSkin = new SolitarySkin(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class));
-        this.startingMap = new ArenaMap(new Arena(arenaSkin, new MapCoords()));
+        this.arenaSkin = new LightGraySkin(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class));
+        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords()));
     }
 
     public JigsawGeneratorConfig noBattleRooms(int val)

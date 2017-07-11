@@ -1,11 +1,9 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
@@ -40,7 +38,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -88,7 +86,8 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-    private Entity bossSelecterbutton;
+    private Entity bossSelecterButtonDown;
+    private Entity bossSelecterButtonUp;
     private Entity bossStartbutton;
 
 
@@ -97,6 +96,7 @@ public class MenuScreen extends AbstractScreen {
     private boolean gameOver = false;
 
     private Preferences settings;
+    private Preferences devToolPrefs;
 
     //TODO IF you ever click in the deck area don't cast any spells
 
@@ -104,6 +104,7 @@ public class MenuScreen extends AbstractScreen {
         super(game);
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
+        devToolPrefs = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE);
 
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
@@ -206,7 +207,7 @@ public class MenuScreen extends AbstractScreen {
         //Player
         MenuButton mb = new MenuButton(Assets.small, atlas.findRegion(TextureStrings.BLOCK));
 
-        bossStartbutton = mb.createButton(world, "0", Measure.units(25f), Measure.units(40f), Measure.units(10f), Measure.units(20f), new Color(Color.WHITE), new Color(Color.BLACK));
+        bossStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.BOSS_NUMBER, "0"), Measure.units(20f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
         bossStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -216,13 +217,29 @@ public class MenuScreen extends AbstractScreen {
         }));
 
 
-        bossSelecterbutton = mb.createButton(world, "", Measure.units(10f), Measure.units(40f), Measure.units(10f), Measure.units(10f), new Color(Color.WHITE), new Color(Color.WHITE));
-        bossSelecterbutton.edit().add(new ActionOnTouchComponent(new Action() {
+        bossSelecterButtonUp = mb.createButton(world, "", Measure.units(10f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        bossSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
                 int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
-                bossStartbutton.getComponent(TextureFontComponent.class).text = Integer.toString(i + 1);
+                String bossSetting = Integer.toString(i < 9 ? i + 1 : i);
+                devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
+                bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
+            }
+        }));
+
+
+
+        bossSelecterButtonDown = mb.createButton(world, "", Measure.units(10f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        bossSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
+                String bossSetting = Integer.toString(i > 0 ? i - 1 : i);
+                devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
+                bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
             }
         }));
 
@@ -234,7 +251,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        SolitarySkin ss = new SolitarySkin(atlas);
+        LightGraySkin ss = new LightGraySkin(atlas);
 
         DecorFactory df = new DecorFactory(manager, ss);
         BackgroundFactory bf = new BackgroundFactory();
@@ -245,7 +262,7 @@ public class MenuScreen extends AbstractScreen {
 
     public Entity createButton(World world, String text, float x, float y){
 
-        SolitarySkin ss = new SolitarySkin(atlas);
+        LightGraySkin ss = new LightGraySkin(atlas);
 
         float width = Measure.units(30f);
         float height = Measure.units(10f);

@@ -1,12 +1,10 @@
 package com.byrjamin.wickedwizard.screens;
 
 import com.artemis.BaseSystem;
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -19,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
@@ -32,30 +29,16 @@ import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
-import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.MoveToSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
-import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
-import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
+import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
@@ -67,51 +50,20 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.ProximitySystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.ExpireSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.JumpSystem;
-import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
-import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.RoomTypeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.ShoppingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.FrictionSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.BounceCollisionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.BulletSystem;
-import com.byrjamin.wickedwizard.ecs.systems.DoorSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.EnemyCollisionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.FiringAISystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
-import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.MoveToPlayerAISystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.BagSearch;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -169,7 +121,7 @@ public class PlayScreen extends AbstractScreen {
         setUpGlobals();
 
 
-        ArenaSkin arenaSkin = new SolitarySkin(atlas);
+        ArenaSkin arenaSkin = new LightGraySkin(atlas);
 
 
         switch (playScreenConfig.spawn){
@@ -177,7 +129,7 @@ public class PlayScreen extends AbstractScreen {
             default:
                 Array<Arena> placedArenas = new Array<Arena>();
 
-                TutorialFactory tutorialFactory = new TutorialFactory(game.manager, new SolitarySkin(atlas));
+                TutorialFactory tutorialFactory = new TutorialFactory(game.manager, new LightGraySkin(atlas));
 
                 Arena startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
                 placedArenas.add(startingArena);
@@ -186,7 +138,7 @@ public class PlayScreen extends AbstractScreen {
                 placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
                 placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
                 placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
-                placedArenas.add(new ArenaShellFactory(game.manager, new SolitarySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
+                placedArenas.add(new ArenaShellFactory(game.manager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
 
                 ArenaMap arenaMap = new ArenaMap(startingArena, placedArenas);
 
@@ -200,20 +152,23 @@ public class PlayScreen extends AbstractScreen {
                 jg.cleanArenas();
                 break;
             case BOSS:
-                switch (playScreenConfig.id){
-                    case 0:
-                    default:
-                        jg = new JigsawGeneratorConfig(game.manager, random)
-                                .startingMap(new BossMaps(game.manager, arenaSkin).adojMap(new BossTeleporterComponent()))
-                                .build();
-                        break;
-                    case 1:
-                        jg = new JigsawGeneratorConfig(game.manager, random)
-                                .startingMap(new BossMaps(game.manager, arenaSkin).ajirMap(new BossTeleporterComponent()))
-                                .build();
-                        jg.cleanArenas();
-                        break;
+
+
+                ArenaMap bossMap;
+
+                try{
+
+                    bossMap = new BossMaps(game.manager, playScreenConfig.id != 8 ? new LightGraySkin(atlas) : new DarkGraySkin(atlas)).getBossMapsArray().get(playScreenConfig.id);
+
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                    bossMap = new BossMaps(game.manager, arenaSkin).blobbaMap(new BossTeleporterComponent());
+
                 }
+
+                jg = new JigsawGeneratorConfig(game.manager, random)
+                        .startingMap(bossMap)
+                        .build();
 
                 jg.cleanArenas();
 
@@ -238,14 +193,14 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         setUpGlobals();
 
-         /*       jg =new JigsawGenerator(game.manager,new SolitarySkin(atlas), 5 , itemStore, random);
+         /*       jg =new JigsawGenerator(game.manager,new LightGraySkin(atlas), 5 , itemStore, random);
         jg.generateTutorial = isTutorial;
         jg.generate();
 */
         jg = new JigsawGeneratorConfig(game.manager, random)
                 .noBattleRooms(5)
                 .currentLevel(ChangeLevelSystem.Level.ONE)
-                .startingMap(new ArenaMap(new ArenaShellFactory(game.manager, new SolitarySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
+                .startingMap(new ArenaMap(new ArenaShellFactory(game.manager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
                 .build();
         jg.generate();
         jg.cleanArenas();

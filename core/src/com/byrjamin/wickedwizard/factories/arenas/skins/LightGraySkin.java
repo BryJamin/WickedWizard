@@ -9,9 +9,9 @@ import com.badlogic.gdx.utils.Array;
  * Created by Home on 28/04/2017.
  */
 
-public class SolitarySkin extends AbstractSkin {
+public class LightGraySkin extends AbstractSkin {
 
-    public SolitarySkin(TextureAtlas atlas) {
+    public LightGraySkin(TextureAtlas atlas) {
         super(atlas);
     }
 

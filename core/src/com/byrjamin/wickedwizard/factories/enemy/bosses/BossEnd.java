@@ -79,10 +79,13 @@ public class BossEnd extends EnemyFactory {
     private static final float handCharingTime = 2.0f;
 
 
+    private static final float playerSummonTime = 2f;
+
+
     //Hand States
     private static final int FLOATING_STATE = 0;
     private static final int CHARGING_STATE = 2;
-    private static final int FIRING_STATE = 3;
+    private static final int FIRING_STATE = 4;
 
 
 
@@ -163,7 +166,7 @@ public class BossEnd extends EnemyFactory {
                 createWhiteFlash(world);
 
             }
-        }, 2f, true));
+        }, playerSummonTime, true));
 
         return bag;
 

@@ -8,8 +8,8 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.Bourbon;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkPurpleAndBrown;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.PrisonSkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 
 import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.FOUR;
 import static com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.Level.TWO;
@@ -48,11 +48,11 @@ public class ChangeLevelSystem extends BaseSystem {
     private JigsawGenerator jigsawGenerator;
 
     public ChangeLevelSystem(JigsawGenerator jigsawGenerator, TextureAtlas atlas){
-        ONE.setArenaSkin(new SolitarySkin(atlas));
+        ONE.setArenaSkin(new LightGraySkin(atlas));
         TWO.setArenaSkin(new FoundarySkin(atlas));
         THREE.setArenaSkin(new DarkPurpleAndBrown(atlas));
         FOUR.setArenaSkin(new Bourbon(atlas));
-        FIVE.setArenaSkin(new PrisonSkin(atlas));
+        FIVE.setArenaSkin(new DarkGraySkin(atlas));
         this.jigsawGenerator = jigsawGenerator;
 
         level = ONE;
