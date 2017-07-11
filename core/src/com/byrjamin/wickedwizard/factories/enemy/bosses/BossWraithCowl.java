@@ -116,7 +116,7 @@ public class BossWraithCowl extends EnemyFactory {
 
 
 
-    private static int texturelayer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
+    private static int texturelayer = TextureRegionComponent.FOREGROUND_LAYER_MIDDLE;
 
 
     private static final float radius = Measure.units(45f);
@@ -140,7 +140,9 @@ public class BossWraithCowl extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
-        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
+                new HitBox(new Rectangle(x, y, hitBoxheight, hitBoxwidth), CenterMath.offsetX(width, hitBoxwidth),
+                        CenterMath.offsetY(height, hitBoxheight))));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.COWL), width, height,
                 texturelayer));
         bag.add(new ParentComponent());
@@ -163,10 +165,6 @@ public class BossWraithCowl extends EnemyFactory {
 
                 FadeInPhaseLeft fadeInPhaseLeft = new FadeInPhaseLeft(random);
 
-                e.getComponent(CollisionBoundComponent.class)
-                        .hitBoxes.add(new HitBox(new Rectangle(0,0,hitBoxwidth, hitBoxheight),
-                        CenterMath.offsetX(width, hitBoxwidth),
-                        CenterMath.offsetY(height, hitBoxheight)));
                 PhaseComponent phaseComponent = new PhaseComponent();
                 phaseComponent.addPhase(6f, fadeInPhaseLeft);
                 phaseComponent.addPhase(6f, fadeInPhaseLeft);
@@ -268,7 +266,7 @@ public class BossWraithCowl extends EnemyFactory {
                     pc.position.set(wraithLeftPosition, 0);
 
                     for(int i = 0; i < 9; i++){
-                        createBlock(world, e.getComponent(ParentComponent.class), wallLeftPosition.x, wallLeftPosition.y + Measure.units(i * 5), 0, new Color(0,0,0,0));
+                        createBlock(world, e.getComponent(ParentComponent.class), wallLeftPosition.x, wallLeftPosition.y + Measure.units(i * 5), 0, new Color(Color.BLACK));
                     }
 
                     world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position.set(playerLeftPosition, 0);
@@ -282,7 +280,7 @@ public class BossWraithCowl extends EnemyFactory {
 
 
                     for(int i = 0; i < 9; i++){
-                        createBlock(world, e.getComponent(ParentComponent.class), wallRightPosition.x, wallRightPosition.y + Measure.units(i * 5), 180, new Color(0,0,0,0));
+                        createBlock(world, e.getComponent(ParentComponent.class), wallRightPosition.x, wallRightPosition.y + Measure.units(i * 5), 180, new Color(Color.BLACK));
                     }
 
                     world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position.set(playerRightPosition, 0);
@@ -296,7 +294,7 @@ public class BossWraithCowl extends EnemyFactory {
                     pc.position.set(wraithUpPosition, 0);
 
                     for(int i = 0; i < 18; i++){
-                        createBlock(world, e.getComponent(ParentComponent.class), wallUpPosition.x + Measure.units((i * 5)), wallUpPosition.y, 270, new Color(0,0,0,0));
+                        createBlock(world, e.getComponent(ParentComponent.class), wallUpPosition.x + Measure.units((i * 5)), wallUpPosition.y, 270, new Color(Color.BLACK));
                     }
 
                     world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position.set(playerUpPosition, 0);
@@ -365,7 +363,7 @@ public class BossWraithCowl extends EnemyFactory {
         e.edit().add(new OnlyPlayerBulletsComponent());
         e.edit().add(new BlinkComponent());
         e.edit().add(new HealthComponent(1));
-        e.edit().add(new FadeComponent(true, 1, false));
+        //e.edit().add(new FadeComponent(true, 1, false));
        e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.BLACK))));
 
         ChildComponent c = new ChildComponent();
@@ -464,6 +462,7 @@ public class BossWraithCowl extends EnemyFactory {
 
                 FadeComponent fadeComponent = new FadeComponent(true, 0.5f, true);
                 fadeComponent.maxAlpha = 0.5f;
+                fadeComponent.minAlpha = 0.1f;
 
                 fakeWraith.edit().add(fadeComponent);
                 fakeWraith.edit().add(new ChildComponent(parentComponent));
@@ -507,7 +506,7 @@ public class BossWraithCowl extends EnemyFactory {
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(0, 0));
         e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), ArenaShellFactory.SECTION_WIDTH, ArenaShellFactory.SECTION_HEIGHT, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
-                new Color(Color.WHITE)));
+                new Color(Color.BLACK)));
         e.edit().add(new ExpireComponent(0.2f));
         return e;
     }

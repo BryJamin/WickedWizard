@@ -26,6 +26,7 @@ public class PlayScreenConfig {
     public PlayScreenConfig(Spawn spawn, int id, int roomid){
         this.spawn = spawn;
         this.id = id;
+        this.roomid = roomid;
     };
 
 }

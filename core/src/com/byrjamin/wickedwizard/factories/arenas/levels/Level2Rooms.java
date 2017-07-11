@@ -74,7 +74,6 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.add(room4width2RoomOnlyVerticalExits());
         ag.add(room5grappleTreasureRoom());
         ag.add(room6largeRoomWithSentries());
-        ag.add(room6trapAmoeba());
         ag.add(room7Height2BlobPatrol());
         ag.add(room8TreasureLockedCenter());
         ag.add(room9SpikeWallJump());
@@ -99,6 +98,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.add(room28SmallGurnerAndAmoeba());
         ag.add(room29Height3GrappleTreasureAndGurner());
         ag.add(room30BlobsAndAmoebasAndTurrets());
+        ag.add(room31trapAmoeba());
         return ag;
     }
 
@@ -347,7 +347,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public ArenaCreate room6trapAmoeba(){
+    public ArenaCreate room31trapAmoeba(){
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {

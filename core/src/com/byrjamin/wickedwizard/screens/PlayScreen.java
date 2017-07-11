@@ -185,6 +185,11 @@ public class PlayScreen extends AbstractScreen {
                 AllArenaStore allArenaStore = new AllArenaStore(game.manager, arenaSkin, random);
 
                 Array<ArenaCreate> arenaCreates = new Array<ArenaCreate>();
+
+
+                System.out.println(playScreenConfig.roomid);
+
+
                 arenaCreates.add(allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid));
 
                 jg = new JigsawGeneratorConfig(game.manager, random)
