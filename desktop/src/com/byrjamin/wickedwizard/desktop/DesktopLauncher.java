@@ -28,7 +28,7 @@ public class DesktopLauncher {
 		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 
-		TexturePacker.process(settings, inputDir,outputDir,packFileName);
+//		TexturePacker.process(settings, inputDir,outputDir,packFileName);
 
 /*		 settings = new Settings();
 		settings.maxWidth = 1024;

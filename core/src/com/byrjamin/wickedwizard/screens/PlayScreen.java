@@ -186,14 +186,14 @@ public class PlayScreen extends AbstractScreen {
 
                 Array<ArenaCreate> arenaCreates = new Array<ArenaCreate>();
 
-
-                System.out.println(playScreenConfig.roomid);
-
-
                 arenaCreates.add(allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid));
 
+                boolean hasMandatory = allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid).createArena(new MapCoords()).mandatoryDoors.size > 0;
+
+                if(hasMandatory) arenaCreates.add(allArenaStore.blank);
+
                 jg = new JigsawGeneratorConfig(game.manager, random)
-                        .noBattleRooms(10)
+                        .noBattleRooms(20)
                         .arenaCreates(arenaCreates)
                         .build();
                 jg.generate();

@@ -434,7 +434,7 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WALLTURRET), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegions(TextureStrings.WALLTURRET).peek(), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.rotation = angleInDegrees;
         trc.DEFAULT = arenaSkin.getWallTint();

@@ -46,9 +46,6 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
         arena = new ArenaBuilder(assetManager, arena.getArenaSkin())
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
@@ -69,9 +66,6 @@ public class  ArenaShellFactory extends AbstractFactory {
         containingCorrds.add(defaultCoords);
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
 
         arena = new ArenaBuilder(assetManager, arena.getArenaSkin())
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -106,9 +100,6 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
         arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
@@ -134,9 +125,6 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
         arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         doorToNotSpawn != 0 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
@@ -153,9 +141,6 @@ public class  ArenaShellFactory extends AbstractFactory {
     public Arena createSmallArena(MapCoords defaultCoords, boolean leftDoor, boolean rightDoor, boolean ceilingDoor, boolean topDoor) {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
 
         arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -178,9 +163,6 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
-        arena.setWidth(SECTION_WIDTH * 2);
-        arena.setHeight(SECTION_HEIGHT);
-
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
@@ -199,9 +181,6 @@ public class  ArenaShellFactory extends AbstractFactory {
     public Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 
         Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-
-        arena.setWidth(SECTION_WIDTH * 2);
-        arena.setHeight(SECTION_HEIGHT);
 
         ArenaBuilder.Section left;
         ArenaBuilder.Section right;
@@ -243,9 +222,6 @@ public class  ArenaShellFactory extends AbstractFactory {
     public Arena createEitherNoLeftOrNoRightArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
 
         ArenaBuilder.wall left;
         ArenaBuilder.wall right;
@@ -273,9 +249,6 @@ public class  ArenaShellFactory extends AbstractFactory {
     public Arena createWidth2WithAllDoorsArena(MapCoords defaultCoords){
 
         Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-
-        arena.setWidth(SECTION_WIDTH * 2);
-        arena.setHeight(SECTION_HEIGHT);
 
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,

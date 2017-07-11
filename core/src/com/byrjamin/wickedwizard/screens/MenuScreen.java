@@ -273,7 +273,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        levelSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(50), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        levelSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         levelSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -290,7 +290,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        levelSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(40f), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        levelSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         levelSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -311,7 +311,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(25f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(12.5f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
         roomStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -327,7 +327,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        roomSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(30), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        roomSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(15f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         roomSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -335,7 +335,6 @@ public class MenuScreen extends AbstractScreen {
                 int i = Integer.parseInt(roomStartbutton.getComponent(TextureFontComponent.class).text);
                 String levelSetting = Integer.toString(i < 30 ? i + 1 : i);
 
-                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
 
                 devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
                 roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
@@ -344,14 +343,13 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        roomSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(20f), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        roomSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(5f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         roomSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 int i = Integer.parseInt(roomStartbutton.getComponent(TextureFontComponent.class).text);
                 String levelSetting = Integer.toString(i > -1 ? i - 1 : i);
 
-                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
 
                 devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
                 roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
