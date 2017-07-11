@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -24,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Locale;
@@ -80,16 +82,19 @@ public class PauseWorld {
 
         Camera gamecam = gameport.getCamera();
 
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2 + MainGame.GAME_BORDER;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2 + MainGame.GAME_BORDER;
 
-        returntoMainMenu = menuButton.createButton(world, "Main Menu", camX + Measure.units(55f)
-                ,camY + Measure.units(5f), Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
+        returntoMainMenu = menuButton.createButton(world, "Main Menu", camX + Measure.units(50f)
+                ,camY, Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
 
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(camX,camY));
-        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0,0, gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                CenterMath.offsetX(gamecam.viewportWidth, gamecam.viewportWidth * 2),
+                CenterMath.offsetX(gamecam.viewportHeight, gamecam.viewportHeight * 2),
+                gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));
 
 
 
