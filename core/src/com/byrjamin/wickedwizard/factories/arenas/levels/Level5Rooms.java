@@ -8,7 +8,7 @@ import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -26,7 +26,7 @@ import java.util.Random;
  * Created by Home on 24/06/2017.
  */
 
-public class Level5Rooms extends AbstractFactory {
+public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
     private ArenaShellFactory arenaShellFactory;
     private ChestFactory chestFactory;
@@ -48,8 +48,13 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public Array<ArenaGen> getLevel5RoomArray() {
-        Array<ArenaGen> ag = new Array<ArenaGen>();
+    @Override
+    public Array<ArenaCreate> getAllArenas() {
+        return  getLevel5RoomArray();
+    }
+
+    public Array<ArenaCreate> getLevel5RoomArray() {
+        Array<ArenaCreate> ag = new Array<ArenaCreate>();
         ag.add(room1PentaSentry());
         ag.add(room2DoubleFlyBy());
         ag.add(room3Width2DoubleFlyByAndPentaSentryMoving());
@@ -84,8 +89,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room1PentaSentry() {
-        return new ArenaGen() {
+    public ArenaCreate room1PentaSentry() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords);
@@ -103,8 +108,8 @@ public class Level5Rooms extends AbstractFactory {
         };
     }
 
-    public ArenaGen room2DoubleFlyBy() {
-        return new ArenaGen() {
+    public ArenaCreate room2DoubleFlyBy() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords);
@@ -123,8 +128,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room3Width2DoubleFlyByAndPentaSentryMoving() {
-        return new ArenaGen() {
+    public ArenaCreate room3Width2DoubleFlyByAndPentaSentryMoving() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords,
@@ -156,8 +161,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room4TrapRoomPentaAndDoubleFlyBy() {
-        return new ArenaGen() {
+    public ArenaCreate room4TrapRoomPentaAndDoubleFlyBy() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
@@ -182,8 +187,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room5HeavyModon() {
-        return new ArenaGen() {
+    public ArenaCreate room5HeavyModon() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
@@ -197,8 +202,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room6GhostlyEncounter() {
-        return new ArenaGen() {
+    public ArenaCreate room6GhostlyEncounter() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
@@ -214,8 +219,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room7SingularGhostlyEncounterWithACenter() {
-        return new ArenaGen() {
+    public ArenaCreate room7SingularGhostlyEncounterWithACenter() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
@@ -229,8 +234,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room8Lazerus() {
-        return new ArenaGen() {
+    public ArenaCreate room8Lazerus() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
@@ -242,8 +247,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room9TwoLazerus() {
-        return new ArenaGen() {
+    public ArenaCreate room9TwoLazerus() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
@@ -260,8 +265,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room10SwitchsAndDoubleLasers(){
-        return new ArenaGen() {
+    public ArenaCreate room10SwitchsAndDoubleLasers(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -294,8 +299,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room11GhostPylonWidth3PossibleTreasure(){
-        return new ArenaGen() {
+    public ArenaCreate room11GhostPylonWidth3PossibleTreasure(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -363,8 +368,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room12Height3GrappleLaserChests(){
-        return new ArenaGen() {
+    public ArenaCreate room12Height3GrappleLaserChests(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -434,8 +439,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room13DoubleLaserArenaWithBouncersAndLaserus(){
-        return new ArenaGen() {
+    public ArenaCreate room13DoubleLaserArenaWithBouncersAndLaserus(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -467,8 +472,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room14Width2KnightsAndGoats(){
-        return new ArenaGen() {
+    public ArenaCreate room14Width2KnightsAndGoats(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -504,8 +509,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room15LaserModonAndAFlyBy(){
-        return new ArenaGen() {
+    public ArenaCreate room15LaserModonAndAFlyBy(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -525,8 +530,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room16Width2LasersAndBlobs(){
-        return new ArenaGen() {
+    public ArenaCreate room16Width2LasersAndBlobs(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -572,8 +577,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room17BlobAndLaserus(){
-        return new ArenaGen() {
+    public ArenaCreate room17BlobAndLaserus(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -589,8 +594,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room18TwoLaserusAndAPenta(){
-        return new ArenaGen() {
+    public ArenaCreate room18TwoLaserusAndAPenta(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -623,8 +628,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room19TwoGhostPylons(){
-        return new ArenaGen() {
+    public ArenaCreate room19TwoGhostPylons(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -645,8 +650,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room20TwoGhostsOppositeDirectionSteppingStone(){
-        return new ArenaGen() {
+    public ArenaCreate room20TwoGhostsOppositeDirectionSteppingStone(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -678,8 +683,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room21RightSnake(){
-        return new ArenaGen() {
+    public ArenaCreate room21RightSnake(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
@@ -696,8 +701,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room22LeftSnake(){
-        return new ArenaGen() {
+    public ArenaCreate room22LeftSnake(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
@@ -714,8 +719,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room23JumpingJack(){
-        return new ArenaGen() {
+    public ArenaCreate room23JumpingJack(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
@@ -729,8 +734,8 @@ public class Level5Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room24SmallVerticalRoomSnake(){
-        return new ArenaGen() {
+    public ArenaCreate room24SmallVerticalRoomSnake(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords);
@@ -757,8 +762,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room25SmallRoomHorizontalSnake(){
-        return new ArenaGen() {
+    public ArenaCreate room25SmallRoomHorizontalSnake(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords);
@@ -785,8 +790,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room26Width3MiddleArena(){
-        return new ArenaGen() {
+    public ArenaCreate room26Width3MiddleArena(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -841,8 +846,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room27Height3TreasureRoom(){
-        return new ArenaGen() {
+    public ArenaCreate room27Height3TreasureRoom(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -909,8 +914,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room28OmniTreasureRoom(){
-        return new ArenaGen() {
+    public ArenaCreate room28OmniTreasureRoom(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -955,8 +960,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room29JackLaserAndSnake() {
-        return new ArenaGen() {
+    public ArenaCreate room29JackLaserAndSnake() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -987,8 +992,8 @@ public class Level5Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room30Height3ThroughRoomWithHorizontalLasers() {
-        return new ArenaGen() {
+    public ArenaCreate room30Height3ThroughRoomWithHorizontalLasers() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

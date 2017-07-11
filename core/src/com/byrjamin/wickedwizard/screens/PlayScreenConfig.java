@@ -8,15 +8,22 @@ public class PlayScreenConfig {
 
 
     public enum Spawn {
-        BOSS, ROOM, TUTORIAL
+        BOSS, ARENA, TUTORIAL
     }
 
     public Spawn spawn;
 
     public int id;
 
+    public int roomid;
+
 
     public PlayScreenConfig(Spawn spawn, int id){
+        this.spawn = spawn;
+        this.id = id;
+    };
+
+    public PlayScreenConfig(Spawn spawn, int id, int roomid){
         this.spawn = spawn;
         this.id = id;
     };

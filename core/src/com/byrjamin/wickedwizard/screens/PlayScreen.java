@@ -32,8 +32,10 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.levels.AllArenaStore;
 import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -176,7 +178,22 @@ public class PlayScreen extends AbstractScreen {
                 break;
 
 
+            case ARENA:
 
+                //TODO if id is negative one get all areans in that level
+
+                AllArenaStore allArenaStore = new AllArenaStore(game.manager, arenaSkin, random);
+
+                Array<ArenaCreate> arenaCreates = new Array<ArenaCreate>();
+                arenaCreates.add(allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid));
+
+                jg = new JigsawGeneratorConfig(game.manager, random)
+                        .noBattleRooms(10)
+                        .arenaCreates(arenaCreates)
+                        .build();
+                jg.generate();
+                jg.cleanArenas();
+                break;
         }
 
 

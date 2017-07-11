@@ -4,13 +4,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BiggaBlobbaBoss;
 import com.byrjamin.wickedwizard.factories.enemy.bosses.MrBoomyBoss;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
@@ -43,8 +42,8 @@ public class BoomyMap extends AbstractFactory{
     }
 
 
-    public ArenaGen boomyArena() {
-        return new ArenaGen() {
+    public ArenaCreate boomyArena() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

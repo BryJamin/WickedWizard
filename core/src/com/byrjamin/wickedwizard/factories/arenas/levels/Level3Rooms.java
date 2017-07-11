@@ -8,7 +8,7 @@ import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -25,7 +25,7 @@ import java.util.Random;
  * Created by Home on 16/06/2017.
  */
 
-public class Level3Rooms extends AbstractFactory {
+public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
     private ArenaShellFactory arenaShellFactory;
     private ChestFactory chestFactory;
@@ -47,8 +47,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public Array<ArenaGen> getLevel3RoomArray() {
-        Array<ArenaGen> ag = new Array<ArenaGen>();
+    public Array<ArenaCreate> getLevel3RoomArray() {
+        Array<ArenaCreate> ag = new Array<ArenaCreate>();
         ag.add(room1MultiShot());
         ag.add(room2FlyBy());
         ag.add(room3LaserKugel());
@@ -82,9 +82,14 @@ public class Level3Rooms extends AbstractFactory {
         return ag;
     }
 
+    @Override
+    public Array<ArenaCreate> getAllArenas() {
+        return  getLevel3RoomArray();
+    }
 
-    public ArenaGen room1MultiShot() {
-        return new ArenaGen() {
+
+    public ArenaCreate room1MultiShot() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -97,8 +102,8 @@ public class Level3Rooms extends AbstractFactory {
         };
     }
 
-    public ArenaGen room2FlyBy() {
-        return new ArenaGen() {
+    public ArenaCreate room2FlyBy() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
@@ -109,8 +114,8 @@ public class Level3Rooms extends AbstractFactory {
         };
     }
 
-    public ArenaGen room3LaserKugel() {
-        return new ArenaGen() {
+    public ArenaCreate room3LaserKugel() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
@@ -122,8 +127,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room4MineRun() {
-        return new ArenaGen() {
+    public ArenaCreate room4MineRun() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords);
@@ -169,8 +174,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room5Modon() {
-        return new ArenaGen() {
+    public ArenaCreate room5Modon() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
@@ -181,8 +186,8 @@ public class Level3Rooms extends AbstractFactory {
         };
     }
 
-    public ArenaGen room6WidthTwoTwoModonOneTri() {
-        return new ArenaGen() {
+    public ArenaCreate room6WidthTwoTwoModonOneTri() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords,
@@ -214,8 +219,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room7DoubleFlyBy() {
-        return new ArenaGen() {
+    public ArenaCreate room7DoubleFlyBy() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
@@ -237,8 +242,8 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room8Width3CenterTreaureTrapTriAndFlyBy() {
-        return new ArenaGen() {
+    public ArenaCreate room8Width3CenterTreaureTrapTriAndFlyBy() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords,
@@ -294,8 +299,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room9Width3LaserCenterThing() {
-        return new ArenaGen() {
+    public ArenaCreate room9Width3LaserCenterThing() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords,
@@ -339,8 +344,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room10AmoebaSpawns() {
-        return new ArenaGen() {
+    public ArenaCreate room10AmoebaSpawns() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 final Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
@@ -375,8 +380,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room11Height3TripMine() {
-        return new ArenaGen() {
+    public ArenaCreate room11Height3TripMine() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -436,8 +441,8 @@ public class Level3Rooms extends AbstractFactory {
 
 
     //TODO too easy?
-    public ArenaGen room12FloatyMinesAndBombs() {
-        return new ArenaGen() {
+    public ArenaCreate room12FloatyMinesAndBombs() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -465,8 +470,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room13FlyByMinesAndBouncers() {
-        return new ArenaGen() {
+    public ArenaCreate room13FlyByMinesAndBouncers() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -497,8 +502,8 @@ public class Level3Rooms extends AbstractFactory {
 
 
     //TODO change to 2?
-    public ArenaGen room14TrapRoomTriAndOneBouncers() {
-        return new ArenaGen() {
+    public ArenaCreate room14TrapRoomTriAndOneBouncers() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -524,8 +529,8 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room15TreasureRoomWhichIsLikeAnItemRoom() {
-        return new ArenaGen() {
+    public ArenaCreate room15TreasureRoomWhichIsLikeAnItemRoom() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -555,8 +560,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room16Width2RedBlobs() {
-        return new ArenaGen() {
+    public ArenaCreate room16Width2RedBlobs() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -601,8 +606,8 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room17SpikesOnBothSideMultiArenaWithTreasure() {
-        return new ArenaGen() {
+    public ArenaCreate room17SpikesOnBothSideMultiArenaWithTreasure() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -645,8 +650,8 @@ public class Level3Rooms extends AbstractFactory {
 
 
     //TODO make a mirror version?
-    public ArenaGen room18LeftToRightMineGauntlet() {
-        return new ArenaGen() {
+    public ArenaCreate room18LeftToRightMineGauntlet() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -686,9 +691,9 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room19TwoTreasureAndTriTurretORFlyByTurret() {
+    public ArenaCreate room19TwoTreasureAndTriTurretORFlyByTurret() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -713,9 +718,9 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room20GoatWizardTwoBouncers() {
+    public ArenaCreate room20GoatWizardTwoBouncers() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -739,9 +744,9 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room21GoatWizardsStompersAndSmallBlobs() {
+    public ArenaCreate room21GoatWizardsStompersAndSmallBlobs() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -795,9 +800,9 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room22HorizontalThroughRoomLaserCenter() {
+    public ArenaCreate room22HorizontalThroughRoomLaserCenter() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -829,9 +834,9 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room23VerticalMovingTurretsAndAGapInTheMiddleToHide() {
+    public ArenaCreate room23VerticalMovingTurretsAndAGapInTheMiddleToHide() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -862,9 +867,9 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room24MultiWaveRoomWithMines() {
+    public ArenaCreate room24MultiWaveRoomWithMines() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -908,9 +913,9 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room25Width3WithArenaInTheCenter() {
+    public ArenaCreate room25Width3WithArenaInTheCenter() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -973,9 +978,9 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room26Height3GrapplesAndMines() {
+    public ArenaCreate room26Height3GrapplesAndMines() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -1022,9 +1027,9 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room27DBlobs() {
+    public ArenaCreate room27DBlobs() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -1050,9 +1055,9 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room28SilverHeadAndAmoebas() {
+    public ArenaCreate room28SilverHeadAndAmoebas() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -1084,9 +1089,9 @@ public class Level3Rooms extends AbstractFactory {
     }
 
 
-    public ArenaGen room29JigAndTurrets() {
+    public ArenaCreate room29JigAndTurrets() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -1109,9 +1114,9 @@ public class Level3Rooms extends AbstractFactory {
 
 
 
-    public ArenaGen room30LargeRoomWithTreasureInTheCenter() {
+    public ArenaCreate room30LargeRoomWithTreasureInTheCenter() {
 
-        return new ArenaGen() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

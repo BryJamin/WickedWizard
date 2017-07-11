@@ -91,6 +91,18 @@ public class MenuScreen extends AbstractScreen {
     private Entity bossStartbutton;
 
 
+    private Entity levelStartbutton;
+    private Entity levelSelecterButtonDown;
+    private Entity levelSelecterButtonUp;
+
+
+
+
+    private Entity roomStartbutton;
+    private Entity roomSelecterButtonDown;
+    private Entity roomSelecterButtonUp;
+
+
 
     GestureDetector gestureDetector;
     private boolean gameOver = false;
@@ -176,7 +188,7 @@ public class MenuScreen extends AbstractScreen {
         boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", Measure.units(20f), Measure.units(30));
         godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", Measure.units(20f), Measure.units(20));
 
-        float x = Measure.units(50f);
+        float x = Measure.units(40f);
         float y = Measure.units(10f);
 
         musicSetting = world.createEntity();
@@ -191,7 +203,7 @@ public class MenuScreen extends AbstractScreen {
         musicSetting.edit().add(new AnimationComponent(animMap));
 
 
-        x = Measure.units(60f);
+        x = Measure.units(50f);
         y = Measure.units(10f);
 
         soundSetting = world.createEntity();
@@ -223,7 +235,7 @@ public class MenuScreen extends AbstractScreen {
             public void performAction(World world, Entity e) {
 
                 int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
-                String bossSetting = Integer.toString(i < 9 ? i + 1 : i);
+                String bossSetting = Integer.toString(i < 8 ? i + 1 : i);
                 devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
                 bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
             }
@@ -235,13 +247,145 @@ public class MenuScreen extends AbstractScreen {
         bossSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-
                 int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
                 String bossSetting = Integer.toString(i > 0 ? i - 1 : i);
                 devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
                 bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
             }
         }));
+
+
+
+
+        levelStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        levelStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game,
+                        new PlayScreenConfig(
+                                PlayScreenConfig.Spawn.ARENA,
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
+
+                world.getSystem(SoundSystem.class).stopMusic();
+            }
+        }));
+
+
+
+        levelSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(50), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        levelSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                int i = Integer.parseInt(levelStartbutton.getComponent(TextureFontComponent.class).text);
+                String levelSetting = Integer.toString(i < 5 ? i + 1 : i);
+
+                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
+
+                devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
+                levelStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+            }
+        }));
+
+
+
+        levelSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(40f), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        levelSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                int i = Integer.parseInt(levelStartbutton.getComponent(TextureFontComponent.class).text);
+                String levelSetting = Integer.toString(i > 0 ? i - 1 : i);
+
+                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
+
+                devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
+                levelStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+            }
+        }));
+
+
+
+
+
+
+
+
+        roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(25f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        roomStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game,
+                        new PlayScreenConfig(
+                                PlayScreenConfig.Spawn.ARENA,
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
+
+                world.getSystem(SoundSystem.class).stopMusic();
+            }
+        }));
+
+
+
+        roomSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(30), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        roomSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                int i = Integer.parseInt(roomStartbutton.getComponent(TextureFontComponent.class).text);
+                String levelSetting = Integer.toString(i < 30 ? i + 1 : i);
+
+                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
+
+                devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
+                roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+            }
+        }));
+
+
+
+        roomSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(20f), Measure.units(5f), Measure.units(5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        roomSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                int i = Integer.parseInt(roomStartbutton.getComponent(TextureFontComponent.class).text);
+                String levelSetting = Integer.toString(i > -1 ? i - 1 : i);
+
+                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
+
+                devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
+                roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+            }
+        }));
+
+
+
+
+
+
+/*
+        roomStartbutton = mb.createButton(world,  devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        roomStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game,
+                        new PlayScreenConfig(
+                                PlayScreenConfig.Spawn.ARENA,
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
+
+                world.getSystem(SoundSystem.class).stopMusic();
+            }
+        }));
+*/
+
+
+
+
+
+
+
+
 
 
 

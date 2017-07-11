@@ -65,7 +65,7 @@ public class JigsawGenerator {
     private ShopFactory shopFactory;
     private ArenaSkin arenaSkin;
 
-    private Array<ArenaGen> arenaGens;
+    private Array<ArenaCreate> arenaGens;
 
 
     private HashMap<BossTeleporterComponent, ArenaMap> mapTracker = new HashMap<BossTeleporterComponent, ArenaMap>();
@@ -83,28 +83,7 @@ public class JigsawGenerator {
         this.setCurrentLevel(jigsawGeneratorConfig.currentLevel);
         this.itemStore = new ItemStore(random);
         this.setStartingMap(jigsawGeneratorConfig.startingMap);
-    }
-
-
-    public JigsawGenerator(AssetManager assetManager, ArenaSkin arenaSkin, int noBattleRooms, ItemStore itemStore, Random random){
-        this.assetManager = assetManager;
-        this.arenaSkin = arenaSkin;
-        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, random);
-        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, random);
-        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, random);
-        this.level4Rooms = new Level4Rooms(assetManager, arenaSkin, random);
-        this.level5Rooms = new Level5Rooms(assetManager, arenaSkin, random);
-        this.bossMaps = new BossMaps(assetManager, arenaSkin);
-        this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
-        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
-        this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
-        this.shopFactory = new ShopFactory(assetManager, arenaSkin);
-        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
-
-        this.noBattleRooms = noBattleRooms;
-        this.itemStore = itemStore;
-        this.random = random;
-        this.currentLevel = ChangeLevelSystem.Level.ONE;
+        this.arenaGens = jigsawGeneratorConfig.arenaGens;
     }
 
     public void setSkin(ArenaSkin arenaSkin) {
@@ -122,8 +101,28 @@ public class JigsawGenerator {
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
     }
 
+
+    //TODO move this out of the jigsawgenerator
     public void setCurrentLevel(ChangeLevelSystem.Level currentLevel){
         this.currentLevel = currentLevel;
+
+
+        switch(currentLevel){
+            case ONE: arenaGens = level1Rooms.getLevel1RoomArray(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
+                break;
+            case TWO: arenaGens = level2Rooms.getLevel2RoomArray();
+                break;
+            case THREE: arenaGens = level3Rooms.getLevel3RoomArray();
+                break;
+            case FOUR: arenaGens = level4Rooms.getLevel4RoomArray();
+                break;
+            case FIVE: arenaGens = level5Rooms.getLevel5RoomArray();
+                break;
+            default: arenaGens = level1Rooms.getLevel1RoomArray();
+                break;
+        }
+
+
     }
 
     public void setNoBattleRooms(int noBattleRooms){
@@ -159,7 +158,7 @@ public class JigsawGenerator {
     }
 
 
-    public Array<Arena> generateMapAroundPresetPoints(Array<Arena> presetRooms, Array<ArenaGen> arenaGenArray,
+    public Array<Arena> generateMapAroundPresetPoints(Array<Arena> presetRooms, Array<ArenaCreate> arenaGenArray,
                                                       OrderedSet<DoorComponent> avaliableDoorsSet, int noOfRoomsPlaced){
 
         Array<Arena> placedArenas = new Array<Arena>();
@@ -167,8 +166,8 @@ public class JigsawGenerator {
         ObjectSet<MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(presetRooms);
 
 
-        WeightedRoll<ArenaGen> roll = new WeightedRoll<ArenaGen>(random);
-        for(ArenaGen ag : arenaGenArray) roll.addWeightedObject(new WeightedObject<ArenaGen>(ag, 20));
+        WeightedRoll<ArenaCreate> roll = new WeightedRoll<ArenaCreate>(random);
+        for(ArenaCreate ag : arenaGenArray) roll.addWeightedObject(new WeightedObject<ArenaCreate>(ag, 20));
 
         int placedRooms = 0;
         int loops = 0;
@@ -176,7 +175,7 @@ public class JigsawGenerator {
         //TODO I changed this to < and equal to, not sure of the ramifications
         while(placedRooms <= noOfRoomsPlaced && loops <= noOfRoomsPlaced * 3) {
 
-            WeightedObject<ArenaGen> weightedObject = roll.rollForWeight();
+            WeightedObject<ArenaCreate> weightedObject = roll.rollForWeight();
             Arena nextRoomToBePlaced = weightedObject.obj().createArena(new MapCoords());
             if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, random)){
 
@@ -199,7 +198,7 @@ public class JigsawGenerator {
                         int tries = 0;
                         boolean placedRoom = false;
                         while(tries <= 10){
-                            WeightedObject<ArenaGen> weightedArenaGen = roll.rollForWeight();
+                            WeightedObject<ArenaCreate> weightedArenaGen = roll.rollForWeight();
                             Arena nextInnerRoomToBePlaced = weightedArenaGen.obj().createArena(new MapCoords());
                             if(nextInnerRoomToBePlaced.mandatoryDoors.size == 0) {
                                 if (fillMandatoryDoor(nextInnerRoomToBePlaced, dc, mockPlacedArenas, mockAvaliableDoorSet)) {
@@ -314,7 +313,7 @@ public class JigsawGenerator {
         Array<Arena> placedArenas = new Array<Arena>();
 
         placedArenas.addAll(arenaMap.getRoomArray());
-        placedArenas = generateMapAroundPresetPoints(placedArenas, arenaGenerators(), createAvaliableDoorSet(arenaMap.getRoomArray()), noBattleRooms);
+        placedArenas = generateMapAroundPresetPoints(placedArenas, arenaGens, createAvaliableDoorSet(arenaMap.getRoomArray()), noBattleRooms);
         OrderedSet<DoorComponent> avaliableDoorsSet = createAvaliableDoorSet(placedArenas);
         placeItemRoom(placedArenas, avaliableDoorsSet);
         placeShopRoom(placedArenas, avaliableDoorsSet);
@@ -375,31 +374,6 @@ public class JigsawGenerator {
     public void setStartingMap(ArenaMap startingMap) {
         this.startingMap = startingMap;
     }
-
-    public Array<ArenaGen> arenaGenerators(){
-
-        Array<ArenaGen> arenaGens;
-
-        switch(currentLevel){
-            case ONE: arenaGens = level1Rooms.getLevel1RoomArray(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
-                break;
-            case TWO: arenaGens = level2Rooms.getLevel2RoomArray();
-                break;
-            case THREE: arenaGens = level3Rooms.getLevel3RoomArray();
-                break;
-            case FOUR: arenaGens = level4Rooms.getLevel4RoomArray();
-                break;
-            case FIVE: arenaGens = level5Rooms.getLevel5RoomArray();
-                break;
-            default: arenaGens = level1Rooms.getLevel1RoomArray();
-                break;
-        }
-
-
-        return arenaGens;
-
-    }
-
 
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {

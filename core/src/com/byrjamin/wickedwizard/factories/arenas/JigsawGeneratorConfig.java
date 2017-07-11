@@ -2,10 +2,12 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -28,13 +30,26 @@ public class JigsawGeneratorConfig {
 
     public ChangeLevelSystem.Level currentLevel = ChangeLevelSystem.Level.ONE;
 
+    public Array<ArenaCreate> arenaGens;
+
 
     public JigsawGeneratorConfig(AssetManager assetManager, Random random){
         this.assetManager = assetManager;
         this.random = random;
         this.arenaSkin = new LightGraySkin(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class));
         this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords()));
+        this.arenaGens = new Level1Rooms(assetManager, arenaSkin, random).getLevel1RoomArray();
     }
+
+
+    public JigsawGeneratorConfig(AssetManager assetManager, ArenaSkin arenaSkin, Random random){
+        this.assetManager = assetManager;
+        this.random = random;
+        this.arenaSkin = arenaSkin;
+        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords()));
+        this.arenaGens = new Level1Rooms(assetManager, arenaSkin, random).getLevel1RoomArray();
+    }
+
 
     public JigsawGeneratorConfig noBattleRooms(int val)
     { noBattleRooms = val; return this; }
@@ -47,6 +62,10 @@ public class JigsawGeneratorConfig {
 
     public JigsawGeneratorConfig currentLevel(ChangeLevelSystem.Level val)
     { currentLevel = val; return this; }
+
+
+    public JigsawGeneratorConfig arenaCreates(Array<ArenaCreate> val)
+    { arenaGens = val; return this; }
 
 
     public JigsawGenerator build(){

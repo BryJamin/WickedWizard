@@ -4,13 +4,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWanda;
 import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWraithCowl;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
@@ -42,8 +41,8 @@ public class BossRoomWraithCowl extends AbstractFactory{
     }
 
 
-    public ArenaGen wraithcowlArena() {
-        return new ArenaGen() {
+    public ArenaCreate wraithcowlArena() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
