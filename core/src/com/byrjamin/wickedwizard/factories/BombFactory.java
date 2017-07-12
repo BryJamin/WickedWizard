@@ -94,13 +94,18 @@ public class BombFactory extends  AbstractFactory{
         return bag;
     }
 
+    public ComponentBag fadeInSeaMine(float x, float y, boolean startsLeft, boolean starsUp){
+        ComponentBag bag = seaMine(x, y, startsLeft, starsUp);
+        bag.add(new FadeComponent(true, 0.5f, false));
+        return bag;
+    }
 
     public ComponentBag seaMine(float x, float y, boolean startsLeft, boolean startsUp){
 
         float width = Measure.units(10);
         float height = Measure.units(10);
 
-        float speed = Measure.units(5f);
+        float speed = Measure.units(10f);
 
 
         ComponentBag bag = new ComponentBag();
@@ -111,8 +116,6 @@ public class BombFactory extends  AbstractFactory{
 
         //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-
-        bag.add(new FadeComponent(true, 0.5f, false));
 
         bag.add(new BounceComponent());
         bag.add(new VelocityComponent(startsLeft ? speed : - speed, startsUp ? speed : -speed));

@@ -184,13 +184,25 @@ public class PlayScreen extends AbstractScreen {
 
                 AllArenaStore allArenaStore = new AllArenaStore(game.manager, arenaSkin, random);
 
+
                 Array<ArenaCreate> arenaCreates = new Array<ArenaCreate>();
 
-                arenaCreates.add(allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid));
+                try {
 
-                boolean hasMandatory = allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid).createArena(new MapCoords()).mandatoryDoors.size > 0;
 
-                if(hasMandatory) arenaCreates.add(allArenaStore.blank);
+                    if (playScreenConfig.roomid >= 0) {
+                        arenaCreates.add(allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid));
+                        boolean hasMandatory = allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid).createArena(new MapCoords()).mandatoryDoors.size > 0;
+                        if (hasMandatory) arenaCreates.add(allArenaStore.blank);
+                    } else {
+                        arenaCreates.addAll(allArenaStore.allLevels.get(playScreenConfig.id).getAllArenas());
+                    }
+
+                } catch(IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                    game.setScreen(new MenuScreen(game));
+
+                }
 
                 jg = new JigsawGeneratorConfig(game.manager, random)
                         .noBattleRooms(20)

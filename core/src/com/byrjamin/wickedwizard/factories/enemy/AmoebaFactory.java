@@ -41,11 +41,12 @@ public class AmoebaFactory extends EnemyFactory {
     private float textureoffsetX = (width / 2) - (textureWidth / 2);
     private float textureoffsetY = (height / 2) - (textureHeight / 2);
 
+    private static final float fastSpeed = Measure.units(20f);
 
     public ComponentBag fastamoeba(float x , float y){
         x = x - width / 2;
         y = y - height / 2;
-        return amoebaBag(x,y, Measure.units(10f), new Color(Color.RED));
+        return amoebaBag(x,y, fastSpeed, new Color(Color.RED));
     }
 
 

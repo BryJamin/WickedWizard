@@ -1,9 +1,14 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
 import com.artemis.Component;
+import com.artemis.Entity;
+import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -17,6 +22,7 @@ import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -49,37 +55,46 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     public Array<ArenaCreate> getLevel3RoomArray() {
+
+
+
+
+
         Array<ArenaCreate> ag = new Array<ArenaCreate>();
-        ag.add(room1MultiShot());
-        ag.add(room2FlyBy());
-        ag.add(room3LaserKugel()); //Here
-        ag.add(room4MineRun());
-        ag.add(room5Modon()); //Update modon design
-        ag.add(room6WidthTwoTwoModonOneTri()); //Reached here
-        ag.add(room7DoubleFlyBy());
-        ag.add(room8Width3CenterTreaureTrapTriAndFlyBy());
-        ag.add(room9Width3LaserCenterThing());
-        ag.add(room10AmoebaSpawns());
-        ag.add(room11Height3TripMine());
-        ag.add(room12FloatyMinesAndBombs());
-        ag.add(room13FlyByMinesAndBouncers());
-        ag.add(room14TrapRoomTriAndOneBouncers());
-        ag.add(room15TreasureRoomWhichIsLikeAnItemRoom());
-        ag.add(room16Width2RedBlobs());
-        ag.add(room17SpikesOnBothSideMultiArenaWithTreasure());
-        ag.add(room18LeftToRightMineGauntlet());
-        ag.add(room19TwoTreasureAndTriTurretORFlyByTurret());
-        ag.add(room20GoatWizardTwoBouncers());
-        ag.add(room21GoatWizardsStompersAndSmallBlobs());
-        ag.add(room22HorizontalThroughRoomLaserCenter());
-        ag.add(room23VerticalMovingTurretsAndAGapInTheMiddleToHide());
-        ag.add(room24MultiWaveRoomWithMines());
-        ag.add(room25Width3WithArenaInTheCenter());
-        ag.add(room26Height3GrapplesAndMines());
-        ag.add(room27DBlobs());
-        ag.add(room28SilverHeadAndAmoebas());
-        ag.add(room29JigAndTurrets());
-        ag.add(room30LargeRoomWithTreasureInTheCenter());
+
+
+        ag.insert(0, room1MultiShot());
+        ag.insert(1, room2FlyBy());
+        ag.insert(2, room3LaserKugel()); //Here
+        ag.insert(3, room4MineRun());
+        ag.insert(4, room5Modon()); //Update modon designnever use maces again
+        ag.insert(5, room6WidthTwoTwoModonOneTri()); //Reached here
+        ag.insert(6, room7DoubleFlyBy());
+        ag.insert(7, room8Width3CenterTreaureTrapTriAndFlyBy());
+        ag.insert(8, room9Width3LaserCenterThing());
+        ag.insert(9, room10AmoebaSpawns());
+        ag.insert(10,room11Height3TripMine());
+        ag.insert(11, room12MinesTriSentryAndBouncers());
+        ag.insert(12,room13FlyByMinesAndBouncers());
+        ag.insert(13, room14TrapRoomTriAndTwoBouncers());
+        ag.insert(14, room15TreasureTrapRoomWithPotentialOfFiveChests()); //Nerfed it has the potential for 5 but not all the time
+        ag.insert(15,room16Width2RedBlobs());
+        ag.insert(16,room17SpikesOnBothSideMultiArenaWithTreasure());
+        ag.insert(17,room18LeftToRightMineGauntlet());
+        ag.insert(18,room19TwoTreasureAndTriTurretORFlyByTurret());
+        ag.insert(19,room20GoatWizardTwoBouncers());
+        ag.insert(20,room21GoatWizardsStompersAndSmallBlobs());
+        ag.insert(21,room22HorizontalThroughRoomLaserCenter());
+        ag.insert(22,room23VerticalMovingTurretsAndAGapInTheMiddleToHide());
+        ag.insert(23,room24MultiWaveRoomWithMines());
+        ag.insert(24,room25Width3WithArenaInTheCenter());
+        ag.insert(25,room26Height3GrapplesAndMines());
+        ag.insert(26,room27DBlobs());
+        ag.insert(27,room28SilverHeadAndAmoebas());
+        ag.insert(28,room29JigAndTurrets());
+        ag.insert(29,room30LargeRoomWithTreasureInTheCenter());
+
+
         return ag;
     }
 
@@ -220,7 +235,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
 
                 arena.roomType = Arena.RoomType.TRAP;
 
@@ -274,6 +289,9 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(100f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(195f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
+
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(100f), Measure.units(10f), Measure.units(5f), Measure.units(35f), 0));
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(195f), Measure.units(10f), Measure.units(5f), Measure.units(35f), 180));
                 //arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(35f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
 
      /*           arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 4, Measure.units(17.5f)));
@@ -283,7 +301,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(Measure.units(120), Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() - Measure.units(110), Measure.units(45f)));
+                        arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() - Measure.units(120), Measure.units(45f)));
 
 
 
@@ -432,7 +450,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 BombFactory bf = new BombFactory(assetManager);
 
-                arena.addEntity(bf.seaMine(Measure.units(50f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.seaMine(Measure.units(20f), Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.seaMine(arena.getWidth() - Measure.units(20f), Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.seaMine(Measure.units(50f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.seaMine(Measure.units(20f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
 
@@ -447,7 +466,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     //TODO too easy?
-    public ArenaCreate room12FloatyMinesAndBombs() {
+    public ArenaCreate room12MinesTriSentryAndBouncers() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -457,13 +476,9 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.roomType = Arena.RoomType.TRAP;
 
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
-
-
                 BombFactory bf = new BombFactory(assetManager);
-                arena.addEntity(bf.seaMine(Measure.units(15f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.seaMine(arena.getWidth() - Measure.units(15f),Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.seaMine(Measure.units(20f), Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.seaMine(arena.getWidth() - Measure.units(20f),Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, arena.getHeight() / 2));
@@ -486,13 +501,13 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.roomType = Arena.RoomType.TRAP;
 
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
 
 
                 BombFactory bf = new BombFactory(assetManager);
-                arena.addEntity(bf.seaMine(Measure.units(15f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.seaMine(arena.getWidth() - Measure.units(15f),Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.seaMine(Measure.units(20f), Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.seaMine(arena.getWidth() - Measure.units(20f),Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
@@ -508,21 +523,13 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     //TODO change to 2?
-    public ArenaCreate room14TrapRoomTriAndOneBouncers() {
+    public ArenaCreate room14TrapRoomTriAndTwoBouncers() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-/*
-
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));*/
-
                 arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
-
-
-
                 arena.addWave(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15), Measure.units(50f)),
                         arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, arena.getHeight() / 2),
                         arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(15), Measure.units(50f)));
@@ -535,30 +542,47 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public ArenaCreate room15TreasureRoomWhichIsLikeAnItemRoom() {
+    public ArenaCreate room15TreasureTrapRoomWithPotentialOfFiveChests() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-                arena.addEntity(decorFactory.lockWall(Measure.units(5), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
-                arena.addEntity(decorFactory.lockWall(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
 
+                //Right
+                if(random.nextBoolean()) {
+                    arena.addEntity(decorFactory.lockWall(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(67.5f), Measure.units(35f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(82.5f), Measure.units(35f)));
+                } else {
+                    arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(arena.getWidth() - Measure.units(20f), Measure.units(45f)));
+                }
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(30f), Measure.units(5f), Measure.units(25f)));
+
+
+                //Left
+                if(random.nextBoolean()) {
+                    arena.addEntity(decorFactory.lockWall(Measure.units(5), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(35f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(35f)));
+                } else {
+                    arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(Measure.units(20f), Measure.units(45f)));
+                }
                 arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(30f), Measure.units(5f), Measure.units(25f)));
 
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(35f)));
-                arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(35f)));
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(67.5f), Measure.units(35f)));
-                arena.addEntity(chestFactory.chestBag(Measure.units(82.5f), Measure.units(35f)));
-
-
-                //TODO trap chest. could hold a bomb or a mimic or something the rest are actual chests.
-                arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(30f)));
+                if(true) {
+                    //TODO trap chest. could hold a bomb or a mimic or something the rest are actual chests.
+                    arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), new OnDeathActionComponent(new Action() {
+                        @Override
+                        public void performAction(World world, Entity e) {
+                            Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+                            arena.roomType = Arena.RoomType.TRAP;
+                            BagToEntity.bagToEntity(world.createEntity(), arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(30f)));
+                        }
+                    })));
+                }
 
                 return arena;
             }

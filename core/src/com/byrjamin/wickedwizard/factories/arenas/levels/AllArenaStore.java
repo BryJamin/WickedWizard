@@ -20,7 +20,7 @@ public class AllArenaStore extends AbstractFactory {
 
     private ArenaSkin arenaSkin;
 
-    private Array<ArenaRepostiory> allLevels = new Array<ArenaRepostiory>();
+    public Array<ArenaRepostiory> allLevels = new Array<ArenaRepostiory>();
 
     public ArenaCreate blank;
 

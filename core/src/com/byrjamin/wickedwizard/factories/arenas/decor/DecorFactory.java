@@ -211,8 +211,8 @@ public class DecorFactory extends AbstractFactory {
                     @Override
                     public void performAction(World world, Entity e) {
                         VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                        vc.velocity.x = BulletMath.velocityX(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
-                        vc.velocity.y = BulletMath.velocityY(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
+                        vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(angleOfPushInDegrees));
+                        vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(angleOfPushInDegrees));
                     }
 
                     @Override
