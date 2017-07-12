@@ -1130,12 +1130,10 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.roomType = Arena.RoomType.TRAP;
 
-
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, Measure.units(40f)));
 
-
-                arena.addEntity(decorFactory.fixedWallTurret(Measure.units(20f), Measure.units(50f), 180, 1.5f, 1.5f));
-                arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(25f), Measure.units(50f), 180, 1.5f, 1.5f));
+                arena.addEntity(decorFactory.inCombatfixedWallTurret(Measure.units(20f), Measure.units(50f), 180, 1.5f, 1.5f));
+                arena.addEntity(decorFactory.inCombatfixedWallTurret(arena.getWidth() - Measure.units(25f), Measure.units(50f), 180, 1.5f, 1.5f));
 
 
                 return arena;
@@ -1218,8 +1216,10 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(65f), Measure.units(10f)));
 
 
-                arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(55f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - Measure.units(55f), Measure.units(20f), random.nextBoolean(), random.nextBoolean()));
+                boolean bool = random.nextBoolean();
+
+                arena.addEntity(bf.horizontalSeaMine(Measure.units(55f), Measure.units(20f), bool));
+                arena.addEntity(bf.horizontalSeaMine(arena.getWidth() - Measure.units(55f), Measure.units(30f), bool));
 
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(40f)));
