@@ -13,35 +13,23 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
-import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 26/03/2017.
@@ -62,7 +50,6 @@ public class BlobFactory extends EnemyFactory {
     private float speed = Measure.units(15f);
 
     private ItemFactory itemf;
-    private WeaponFactory wf;
     private DeathFactory df;
 
     private Color defaultBlobColor = new Color(75f / 255f, 232f / 255f, 14f / 255f, 1f);
@@ -72,7 +59,6 @@ public class BlobFactory extends EnemyFactory {
         super(assetManager);
         this.df = new DeathFactory(assetManager);
         this.itemf = new ItemFactory(assetManager);
-        this.wf = new WeaponFactory(assetManager);
     }
 
 

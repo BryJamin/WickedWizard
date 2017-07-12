@@ -302,7 +302,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 for(int i = 0; i < 5; i++) arena.addEntity(decorFactory.grapplePointBag(Measure.units(50 + (i * 50)), Measure.units(35f)));
 
                 for(int i = 0; i <= 5; i++) {
-                    arena.addEntity(arenaEnemyPlacementFactory.bombFactory.seaMine(Measure.units(30) + Measure.units(i * 48f), Measure.units(32.5f), random.nextBoolean(), random.nextBoolean()));
+                    arena.addEntity(arenaEnemyPlacementFactory.bombFactory.multiDirectionalSeaMine(Measure.units(30) + Measure.units(i * 48f), Measure.units(32.5f), random.nextBoolean(), random.nextBoolean()));
                 }
 
 

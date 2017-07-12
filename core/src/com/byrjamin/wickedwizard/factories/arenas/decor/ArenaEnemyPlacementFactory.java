@@ -212,10 +212,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
     public ComponentBag spawnMovingTriSentry(float x, float y){
+        return spawnMovingTriSentry(x, y, random.nextBoolean());
+    }
+
+    public ComponentBag spawnMovingTriSentry(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingHorizontalMultiSentry(x,y);
+                return turretFactory.movingHorizontalMultiSentry(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
@@ -262,14 +266,29 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
     public ComponentBag spawnMovingFlyByBombSentry(float x, float y){
+        return spawnMovingFlyByBombSentry(x, y, random.nextBoolean());
+    }
+
+    public ComponentBag spawnMovingFlyByBombSentry(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingFlyByBombSentry(x,y);
+                return turretFactory.movingFlyByBombSentry(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
     }
+
+    public ComponentBag spawnVertivalMovingFlyByBombSentry(float x, float y, final boolean startsUp){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.movingVerticalFlyByBombSentry(x,y, startsUp);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
 
     public ComponentBag spawnFixedFlyByDoubleBombSentry(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();

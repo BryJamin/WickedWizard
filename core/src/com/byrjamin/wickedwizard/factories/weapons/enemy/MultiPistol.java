@@ -6,6 +6,7 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
@@ -74,7 +75,7 @@ public class MultiPistol implements Weapon {
 
         private OnDeathActionComponent customOnDeathAction = null;
 
-        private Color color = new Color(Color.RED);
+        private Color color = new Color(ColorResource.ENEMY_BULLET_COLOR);
 
         public PistolBuilder(AssetManager assetManager) {
             this.assetManager = assetManager;

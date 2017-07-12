@@ -105,6 +105,17 @@ public class Arena {
         waves.addLast(bags);
     }
 
+    public void shuffleWaves(){
+        Array<Bag<Bag<Component>>> arrayOfWaves = new Array<Bag<Bag<Component>>>();
+        for(Bag<Bag<Component>> wave : waves) arrayOfWaves.add(wave);
+
+        waves.clear();
+        arrayOfWaves.shuffle();
+
+        for(Bag<Bag<Component>> wave : arrayOfWaves) waves.addLast(wave);
+    }
+
+
     public Queue<Bag<Bag<Component>>> getWaves() {
         return waves;
     }

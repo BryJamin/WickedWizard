@@ -27,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -40,6 +41,8 @@ public class BombFactory extends  AbstractFactory{
 
 
     private GibletFactory gf;
+
+    private static final float mineSpeed = Measure.units(10f);
 
     public BombFactory(AssetManager assetManager) {
         super(assetManager);
@@ -95,18 +98,19 @@ public class BombFactory extends  AbstractFactory{
     }
 
     public ComponentBag fadeInSeaMine(float x, float y, boolean startsLeft, boolean starsUp){
-        ComponentBag bag = seaMine(x, y, startsLeft, starsUp);
+        ComponentBag bag = multiDirectionalSeaMine(x, y, startsLeft, starsUp);
         bag.add(new FadeComponent(true, 0.5f, false));
+        TextureRegionComponent trc = BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag);
+        if(trc != null) trc.color.a = 0f;
+
         return bag;
     }
 
-    public ComponentBag seaMine(float x, float y, boolean startsLeft, boolean startsUp){
+
+    public ComponentBag stationarySeaMine(float x, float y){
 
         float width = Measure.units(10);
         float height = Measure.units(10);
-
-        float speed = Measure.units(10f);
-
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -114,12 +118,7 @@ public class BombFactory extends  AbstractFactory{
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AIR_MINE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
         bag.add(trc);
 
-        //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-
-        bag.add(new BounceComponent());
-        bag.add(new VelocityComponent(startsLeft ? speed : - speed, startsUp ? speed : -speed));
-
 
         bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
@@ -137,6 +136,36 @@ public class BombFactory extends  AbstractFactory{
 
             }
         }, new HitBox(new Rectangle(x,y,width,height))));
+
+        return bag;
+    }
+
+
+    public ComponentBag horizontalSeaMine(float x, float y, boolean startsRight){
+
+        ComponentBag bag = stationarySeaMine(x, y);
+        bag.add(new BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? mineSpeed : -mineSpeed, 0));
+
+        return bag;
+
+    }
+
+    public ComponentBag verticalSeaMine(float x, float y, boolean startsUp){
+
+        ComponentBag bag = stationarySeaMine(x, y);
+        bag.add(new BounceComponent());
+        bag.add(new VelocityComponent(0, startsUp ? mineSpeed : -mineSpeed));
+
+        return bag;
+
+    }
+
+    public ComponentBag multiDirectionalSeaMine(float x, float y, boolean startsLeft, boolean startsUp){
+
+        ComponentBag bag = stationarySeaMine(x, y);
+        bag.add(new BounceComponent());
+        bag.add(new VelocityComponent(startsLeft ? mineSpeed : - mineSpeed, startsUp ? mineSpeed : -mineSpeed));
 
         return bag;
 

@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -18,7 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -28,33 +26,38 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class SilverHeadFactory extends EnemyFactory {
 
-    private final int STANDING = 0;
-    private final int CLOSING = 1;
-    private final int OPENING = 2;
-    private final int CHARING = 3;
+    private final static int STANDING = 0;
+    private final static int CLOSING = 2;
+    private final static int OPENING = 4;
+    private final static int CHARING = 8;
 
-    private final float width = Measure.units(9);
-    private final float height = Measure.units(9f);
+    private final static float width = Measure.units(9);
+    private final static float height = Measure.units(9f);
 
-    private final float health = 11f;
+    private final static float health = 11f;
 
-    private final float textureWidth = Measure.units(9);
-    private final float textureHeight = Measure.units(9);
+    private final static float textureWidth = Measure.units(9);
+    private final static float textureHeight = Measure.units(9);
 
-    private final float textureOffsetX = 0;
-    private final float textureOffsetY = 0;
+    private final static float textureOffsetX = 0;
+    private final static float textureOffsetY = 0;
 
-    private final float accelX = Measure.units(5f);
-    private final float maxX = Measure.units(20f);
+    private final static float accelX = Measure.units(5f);
+    private final static float maxX = Measure.units(20f);
 
-    private final float chargeAccelX = Measure.units(5f);
-    private final float chargeMaxX = Measure.units(5f);
+    private final static float chargeAccelX = Measure.units(5f);
+    private final static float chargeMaxX = Measure.units(5f);
 
-    private WeaponFactory wf;
+    private MultiPistol silverHeadWeapon;
 
     public SilverHeadFactory(AssetManager assetManager) {
         super(assetManager);
-        wf = new WeaponFactory(assetManager);
+        silverHeadWeapon = new MultiPistol.PistolBuilder(assetManager)
+                .angles(0,30,60,80,100,120,150,180)
+                .shotSpeed(Measure.units(75f))
+                .shotScale(3)
+                .gravity(true)
+                .build();
     }
 
     public ComponentBag silverHead(float x, float y){
@@ -111,40 +114,26 @@ public class SilverHeadFactory extends EnemyFactory {
 
         Task task3 = new Task(){
 
-            WeaponComponent wc = new WeaponComponent(wf.SilverHeadWeapon(), 2.0f);
-            FiringAIComponent fc = new FiringAIComponent(Math.toRadians(0));
-
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setDefaultState(OPENING);
-                wc.timer.skip();
-                e.edit().add(wc);
-                e.edit().add(fc);
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                silverHeadWeapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), 0);
             }
-
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(wc);
-                e.edit().remove(fc);
             }
         };
 
         Task task4 = new Task(){
-
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(AnimationStateComponent.class).setDefaultState(STANDING);
-/*                AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
-                ac.accelX = accelX;
-                ac.maxX = maxX;*/
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-         /*       AccelerantComponent ac = e.getComponent(AccelerantComponent.class);
-                ac.accelX = chargeAccelX;
-                ac.maxX = chargeMaxX;*/
             }
         };
 
