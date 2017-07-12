@@ -63,15 +63,15 @@ public class PylonFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.05f / 1f,
-                atlas.findRegions(TextureStrings.PYLON_SPAWNING), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.PYLON_SPAWNING)));
         animMap.put(PYLONCHARGE, new Animation<TextureRegion>(0.15f / 1f,
                 atlas.findRegions(TextureStrings.PYLON_CHARGING), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AMOEBA),
+        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.PYLON_SPAWNING),
                 width, height,
-                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(ColorResource.ENEMY_BULLET_COLOR));
         tfc.rotation = rotationInDegrees;
 
         bag.add(tfc);
@@ -104,7 +104,7 @@ public class PylonFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.05f / 1f,
-                atlas.findRegions(TextureStrings.PYLON_SPAWNING), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.PYLON_SPAWNING)));
         animMap.put(PYLONCHARGE, new Animation<TextureRegion>(0.15f / 1f,
                 atlas.findRegions(TextureStrings.PYLON_CHARGING), Animation.PlayMode.LOOP));
 

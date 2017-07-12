@@ -703,25 +703,6 @@ public class DecorFactory extends AbstractFactory {
     }
 
 
-
-
-
-
-    public ComponentBag laserChain(float x, float y){
-
-        float width = Measure.units(5f);
-        float height = Measure.units(5f);
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(Color.BLACK)));
-        bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask(assetManager, Measure.units(5f), 1f, 10, 0, new int[]{0,180}), 0));
-
-        return bag;
-    }
-
     public ComponentBag laserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
         float width = Measure.units(5f) * scale;
         float height = Measure.units(5f) * scale;

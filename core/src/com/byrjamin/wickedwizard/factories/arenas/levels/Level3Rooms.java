@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -51,10 +52,10 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         Array<ArenaCreate> ag = new Array<ArenaCreate>();
         ag.add(room1MultiShot());
         ag.add(room2FlyBy());
-        ag.add(room3LaserKugel());
+        ag.add(room3LaserKugel()); //Here
         ag.add(room4MineRun());
-        ag.add(room5Modon());
-        ag.add(room6WidthTwoTwoModonOneTri());
+        ag.add(room5Modon()); //Update modon design
+        ag.add(room6WidthTwoTwoModonOneTri()); //Reached here
         ag.add(room7DoubleFlyBy());
         ag.add(room8Width3CenterTreaureTrapTriAndFlyBy());
         ag.add(room9Width3LaserCenterThing());
@@ -161,11 +162,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(bf.mine(Measure.units(70f), Measure.units(40f), 0));
 
 
-                arena.addEntity(decorFactory.spikeWall(Measure.units(90f), Measure.units(35f), Measure.units(5f), Measure.units(5f), 90));
-                arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(20f), Measure.units(5f), Measure.units(5f), -90));
-
-
-                arena.addEntity(chestFactory.chestBag(Measure.units(15f), Measure.units(40f)));
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(15f), Measure.units(40f)));
 
 
                 return arena;
@@ -333,7 +330,16 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(195f), Measure.units(10f), Measure.units(5f), Measure.units(10f)));
 
 
-                arena.addEntity(decorFactory.laserChain(Measure.units(147.5f), Measure.units(30f)));
+                arena.addEntity(decorFactory.laserChain(
+                        Measure.units(145f),
+                        Measure.units(25f),
+                        2,
+                        new LaserOrbitalTask.LaserBuilder(assetManager)
+                        .orbitalAndIntervalSize(Measure.units(5f))
+                        .speedInDegrees(random.nextBoolean() ? 1f : -1f)
+                        .numberOfOrbitals(10)
+                        .chargeTime(0)
+                        .angles(0, 180).build()));
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(145f), Measure.units(10f)));
 
