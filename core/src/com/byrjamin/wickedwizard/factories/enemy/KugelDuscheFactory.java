@@ -59,10 +59,6 @@ public class KugelDuscheFactory extends EnemyFactory {
     }
 
 
-    public ComponentBag kugelDusche(float x, float y) {
-        return kugelDusche(x, y, new Random().nextBoolean());
-    };
-
     public ComponentBag kugelDusche(float x, float y, boolean isLeft){
 
 
@@ -91,7 +87,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         trc.DEFAULT = new Color(Color.BLACK);
 
         bag.add(trc);
-        bag.add(new FiringAIComponent(0));
+        bag.add(new FiringAIComponent(90));
         bag.add(new WeaponComponent(kugelWeapon(), 0.1f));
 
 

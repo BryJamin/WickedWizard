@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
@@ -95,7 +96,7 @@ public class AmoebaFactory extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        return amoebaBag(x,y, Measure.units(5f), new Color(238f / 255f, 187f / 255f, 240f / 255f, 1));
+        return amoebaBag(x,y, Measure.units(5f), ColorResource.AMOEBA_BLUE);//some kind of blue
 
     }
 

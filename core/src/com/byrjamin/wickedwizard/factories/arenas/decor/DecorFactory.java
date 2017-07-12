@@ -449,12 +449,10 @@ public class DecorFactory extends AbstractFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-
-
         bag.add(trc);
 
         //Hazard?
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
 /*        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
                 -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));*/
@@ -466,6 +464,29 @@ public class DecorFactory extends AbstractFactory {
 
         return bag;
     }
+
+
+
+    public ComponentBag inCombatfixedWallTurret(float x, float y, final float angleInDegrees, float fireRate, float fireDelay){
+
+        ComponentBag bag = fixedWallTurret(x, y, angleInDegrees, fireRate, fireDelay);
+        BagSearch.removeObjectOfTypeClass(FiringAIComponent.class, bag);
+
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new FiringAIComponent(angleInDegrees + 90));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                e.edit().remove(FiringAIComponent.class);
+            }
+        }));
+        return bag;
+    }
+
+
 
 
 

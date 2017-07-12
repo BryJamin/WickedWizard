@@ -52,6 +52,8 @@ public class GoatWizardFactory extends EnemyFactory {
     private static final float texheight = Measure.units(15f);
     private static final float texwidth = Measure.units(15f);
 
+    private static final float fireRate = 3f;
+
     private final GibletFactory gibletFactory;
 
     public GoatWizardFactory(AssetManager assetManager) {
@@ -59,10 +61,7 @@ public class GoatWizardFactory extends EnemyFactory {
         this.gibletFactory = new GibletFactory(assetManager);
     }
 
-    public ComponentBag goatWizard(float x, float y){
-
-        float boundx = x;
-        float boundy = y;
+    public ComponentBag goatWizard(float x, float y, boolean startsRight, boolean startsUp){
 
         x = x - width / 2;
         y = y - height / 2;
@@ -71,7 +70,7 @@ public class GoatWizardFactory extends EnemyFactory {
         ComponentBag bag = new ComponentBag();
         bag = defaultEnemyBag(bag, x, y, 15);
 
-        bag.add(new VelocityComponent(Measure.units(10f), Measure.units(5f)));
+        bag.add(new VelocityComponent(startsRight ? Measure.units(10f) : -Measure.units(10f), startsUp ? Measure.units(5f) : -Measure.units(5f)));
         bag.add(new BounceComponent());
 
 
@@ -220,8 +219,14 @@ public class GoatWizardFactory extends EnemyFactory {
         public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
             if(isShield) {
+                int count = 0;
                 for (float f : angles) {
-                    createBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, radius, f, new Color(Color.BLACK));
+                    if(count % 2 == 0) {
+                        createHealthyBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, radius, f, new Color(Color.BLACK));
+                    } else {
+                        createBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, radius, f, new Color(Color.RED));
+                    }
+                    count++;
                 }
                 isShield = false;
             } else {
@@ -242,8 +247,8 @@ public class GoatWizardFactory extends EnemyFactory {
 
                     child.edit().add(new VelocityComponent(vc));
                     child.edit().add(new BulletComponent());
-                    child.edit().add(new IntangibleComponent());
-                    child.edit().add(new ExpiryRangeComponent(child.getComponent(PositionComponent.class).position, Measure.units(200f)));
+                    //child.edit().add(new IntangibleComponent());
+                    //child.edit().add(new ExpiryRangeComponent(child.getComponent(PositionComponent.class).position, Measure.units(200f)));
 
                     child.getComponent(OrbitComponent.class).centerOfOrbit = newOrbitCenter.getComponent(PositionComponent.class).position;
 
@@ -256,29 +261,51 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
 
-            public void createBlock(World world, ParentComponent pc, Vector3 centerOfOrbit, float radius, float startAngle, Color color){
-
-
-
+        public void createHealthyBlock(World world, ParentComponent pc, Vector3 centerOfOrbit, float radius, float startAngle, Color color) {
 
             float x = (float) (centerOfOrbit.x + (radius * Math.cos(Math.toRadians(startAngle))));
             float y = (float) (centerOfOrbit.y + (radius * Math.sin(Math.toRadians(startAngle))));
 
             Entity e = world.createEntity();
-            e.edit().add(new PositionComponent(x,y));
-            e.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5)), true));
+            e.edit().add(new PositionComponent(x, y));
+            e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, Measure.units(5), Measure.units(5)), true));
             e.edit().add(new EnemyComponent());
             e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new BlinkComponent());
             e.edit().add(new HealthComponent(3));
             e.edit().add(new FadeComponent(true, 1, false));
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.BLACK))));
+            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(color))));
 
             ChildComponent c = new ChildComponent();
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            trc.DEFAULT = color;
+            trc.color = color;
+            e.edit().add(trc);
+
+        }
+
+
+        public void createBlock(World world, ParentComponent pc, Vector3 centerOfOrbit, float radius, float startAngle, Color color) {
+
+            float x = (float) (centerOfOrbit.x + (radius * Math.cos(Math.toRadians(startAngle))));
+            float y = (float) (centerOfOrbit.y + (radius * Math.sin(Math.toRadians(startAngle))));
+
+            Entity e = world.createEntity();
+            e.edit().add(new PositionComponent(x, y));
+            e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, Measure.units(5), Measure.units(5)), true));
+            e.edit().add(new EnemyComponent());
+            e.edit().add(new OrbitComponent(centerOfOrbit, radius, 6, startAngle, width / 2, height / 2));
+            e.edit().add(new FadeComponent(true, 1, false));
+            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(color))));
+
+            ChildComponent c = new ChildComponent();
+            pc.children.add(c);
+            e.edit().add(c);
+
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
@@ -287,7 +314,7 @@ public class GoatWizardFactory extends EnemyFactory {
 
         @Override
         public float getBaseFireRate() {
-            return 4;
+            return fireRate;
         }
 
         @Override
