@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
@@ -213,7 +214,7 @@ public class KnightFactory extends EnemyFactory {
 
             Entity e = world.createEntity();
             e.edit().add(new PositionComponent(x,y));
-            e.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5)), true));
+            e.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(3), Measure.units(3)), true));
             e.edit().add(new EnemyComponent());
             e.edit().add(new OrbitComponent(centerOfOrbit, radius, 4, startAngle, width / 2, height / 2));
             e.edit().add(new BlinkComponent());
@@ -227,21 +228,16 @@ public class KnightFactory extends EnemyFactory {
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0,  Measure.units(3), Measure.units(3), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
 
 
-            e.edit().add(new ActionAfterTimeComponent(new Task() {
+            e.edit().add(new ActionAfterTimeComponent(new Action() {
                 @Override
                 public void performAction(World world, Entity e) {
                     e.getComponent(OrbitComponent.class).radius += e.getComponent(OrbitComponent.class).radius >= Measure.units(10f) ? 0 :  Measure.units(0.1f);
-                }
-
-                @Override
-                public void cleanUpAction(World world, Entity e) {
-
                 }
             }, 0f, true));
 

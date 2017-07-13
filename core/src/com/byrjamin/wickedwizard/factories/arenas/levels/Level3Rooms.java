@@ -56,12 +56,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
     public Array<ArenaCreate> getLevel3RoomArray() {
 
-
-
-
-
         Array<ArenaCreate> ag = new Array<ArenaCreate>();
-
 
         ag.insert(0, room1MultiShot());
         ag.insert(1, room2FlyBy());
@@ -93,7 +88,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(27,room28SilverHeadAndAmoebas());
         ag.insert(28,room29JigAndTurrets());
         ag.insert(29,room30LargeRoomWithTreasureInTheCenter());
-
 
         return ag;
     }

@@ -54,36 +54,37 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
     public Array<ArenaCreate> getLevel4RoomArray() {
         Array<ArenaCreate> ag = new Array<ArenaCreate>();
-        ag.add(room1LaserBouncers());
-        ag.add(room2FlyByAndPylons());
-        ag.add(room3BouncersAndVerticalPylons());
-        ag.add(room4FixedTriAndVerticalPylons());
-        ag.add(room5Alurm());
-        ag.add(room6Knight());
-        ag.add(room72KnightsWidth2());
-        ag.add(room82LaserBouncersAndAWall());
-        ag.add(room9TrappedLaserBouncer());
-        ag.add(room10Width3GrappleChallenge());
-        ag.add(room11Width2STrapTwoKnights());
-        ag.add(room12TwoAlurmsOneChestOneKnight());
-        ag.add(room13largeBattleRoomWithArenaOnTopAndSpikeTreasureOnBottom());
-        ag.add(room14largeBattleRoomWithEnemiesOnTopAndAMassiveLaser());
-        ag.add(room15SmallBattleRoomBlobAndLaser());
-        ag.add(room16SwitchAndLasers());
-        ag.add(room17Height2SwitchAndLasers());
-        ag.add(room18SwitchsAndLasersAgain());
-        ag.add(room19GoatWizardAndKnight());
-        ag.add(room20AlurmAndFlyBy());
-        ag.add(room21LaserArenaWithIntermittantLasters());
-        ag.add(room22HorizontalThroughRoomActualLaserCenter());
-        ag.add(room23TreasureLockedCenter());
-        ag.add(room24LaserBouncerLaserTrapTreasure());
-        ag.add(room25TreasureLaserFloorAndLockedChestMirror());
-        ag.add(room26DoubleAlurmWithASqaureCenter());
-        ag.add(room27Width2SwitchInTheCenter());
-        ag.add(room28Height3TwoLasersSwitchInTheCenter());
-        ag.add(room29BoringHeight2TreasureRoom());
-        ag.add(room30WidthTwoPylonsAlurmsAndKnight());
+
+        ag.insert(0, room1LaserBouncers());
+        ag.insert(1, room2FlyByAndPylons());
+        ag.insert(2, room3BouncersAndVerticalPylons());
+        ag.insert(3, room4FixedTriAndVerticalPylons());
+        ag.insert(4, room5Alurm());
+        ag.insert(5, room6Knight());
+        ag.insert(6, room72KnightsWidth2());
+        ag.insert(7, room8LaserBouncersAndAWall());
+        ag.insert(8, room9TrappedLaserBouncer());
+        ag.insert(9, room10Width3GrappleChallenge());
+        ag.insert(10,room11Width2STrapTwoKnights());
+        ag.insert(11,room12TwoAlurmsOneChestOneKnight());
+        ag.insert(12,room13largeBattleRoomWithArenaOnTopAndSpikeTreasureOnBottom());
+        ag.insert(13, room14LargeBattleRoomWithEnemiesOnTopAndAMassiveLaser());
+        ag.insert(14,room15SmallBattleRoomBlobAndLaser());
+        ag.insert(15,room16SwitchAndLasers());
+        ag.insert(16,room17Height2SwitchAndLasers());
+        ag.insert(17,room18SwitchsAndLasersAgain());
+        ag.insert(18,room19GoatWizardAndKnight());
+        ag.insert(19,room20AlurmAndFlyBy());
+        ag.insert(20,room21LaserArenaWithIntermittantLasters());
+        ag.insert(21,room22HorizontalThroughRoomActualLaserCenter());
+        ag.insert(22,room23TreasureLockedCenter());
+        ag.insert(23,room24LaserBouncerLaserTrapTreasure());
+        ag.insert(24,room25TreasureLaserFloorAndLockedChestMirror());
+        ag.insert(25,room26DoubleAlurmWithASqaureCenter());
+        ag.insert(26,room27Width2SwitchInTheCenter());
+        ag.insert(27,room28Height3TwoLasersSwitchInTheCenter());
+        ag.insert(28,room29BoringHeight2TreasureRoom());
+        ag.insert(29,room30WidthTwoPylonsAlurmsAndKnight());
 
         return ag;
     }
@@ -194,12 +195,12 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.MANDATORYDOOR,
+                                ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL))
+                                ArenaBuilder.wall.GRAPPLE,
+                                ArenaBuilder.wall.DOOR))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                                ArenaBuilder.wall.NONE ,
+                                ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
@@ -216,7 +217,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public ArenaCreate room82LaserBouncersAndAWall() {
+    public ArenaCreate room8LaserBouncersAndAWall() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -277,7 +278,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.NONE,
-                                upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.DOOR, //upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE ,
@@ -287,7 +288,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE ,
                                 ArenaBuilder.wall.MANDATORYDOOR,
-                                !upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.DOOR,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
                         .buildArena(arena);
 
@@ -301,13 +302,13 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 for(int i = 0; i < 5; i++) arena.addEntity(decorFactory.grapplePointBag(Measure.units(50 + (i * 50)), Measure.units(35f)));
 
+                int mod  = random.nextBoolean() ? 0 : 1;
+
                 for(int i = 0; i <= 5; i++) {
-                    arena.addEntity(arenaEnemyPlacementFactory.bombFactory.multiDirectionalSeaMine(Measure.units(30) + Measure.units(i * 48f), Measure.units(32.5f), random.nextBoolean(), random.nextBoolean()));
+                    arena.addEntity(arenaEnemyPlacementFactory.bombFactory.verticalSeaMine(Measure.units(20) + Measure.units(i * 50f), Measure.units(25f), i % 2 == mod));
                 }
 
 
-                //arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4  , arena.getHeight() / 2));
-                //arena.roomType = Arena.RoomType.TRAP;
                 return arena;
             }
         };
@@ -319,33 +320,40 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
+
                 Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
+
+
+                boolean chestsAreLeft = random.nextBoolean();
 
                 arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.DOOR))
+                                chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.DOOR,
+                                chestsAreLeft ? ArenaBuilder.wall.NONE : ArenaBuilder.wall.NONE,
+                                chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.GRAPPLE,
+                                chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.DOOR))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                                ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL)).buildArena(arena);
+                                chestsAreLeft ? ArenaBuilder.wall.NONE : ArenaBuilder.wall.NONE,
+                                chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                                chestsAreLeft ? ArenaBuilder.wall.GRAPPLE : ArenaBuilder.wall.FULL,
+                                chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL)).buildArena(arena);
 
 
                 arena.addWave(
-                        arenaEnemyPlacementFactory.spawnKnight(Measure.units(20f), Measure.units(50f), true, true),
-                        arenaEnemyPlacementFactory.spawnKnight(Measure.units(20f), Measure.units(20f), true, true)
+                        arenaEnemyPlacementFactory.spawnKnight(chestsAreLeft ? arena.getWidth() - Measure.units(20f) : Measure.units(20f),
+                                Measure.units(50f), chestsAreLeft, true),
+                        arenaEnemyPlacementFactory.spawnKnight(chestsAreLeft ? arena.getWidth() - Measure.units(20f) : Measure.units(20f), Measure.units(20f), chestsAreLeft, true)
                 );
 
-                arena.addEntity(new ChestFactory(assetManager).chestBag(Measure.units(150f), Measure.units(10f),
+
+                arena.addEntity(new ChestFactory(assetManager).chestBag(chestsAreLeft ? Measure.units(40f) : Measure.units(150f), Measure.units(10f),
                         chestFactory.trapODAC()));
 
-                arena.addEntity(new ChestFactory(assetManager).chestBag(Measure.units(165f), Measure.units(10f),
+                arena.addEntity(new ChestFactory(assetManager).chestBag(chestsAreLeft ? Measure.units(25f) : Measure.units(165f), Measure.units(10f),
                         chestFactory.trapODAC()));
 
                 return arena;
+
             }
 
         };
@@ -456,7 +464,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public ArenaCreate room14largeBattleRoomWithEnemiesOnTopAndAMassiveLaser(){
+    public ArenaCreate room14LargeBattleRoomWithEnemiesOnTopAndAMassiveLaser(){
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -496,15 +504,16 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(50f)));
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(95f)));
                 //arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(110f)));
-                arena.addEntity(decorFactory.platform(0, Measure.units(75f), arena.getWidth()));
+                arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
 
                 arena.addEntity(decorFactory.inCombatLaserChain(Measure.units(90f), Measure.units(50f),4,
                         new LaserOrbitalTask.LaserBuilder(assetManager)
                                 .orbitalAndIntervalSize(Measure.units(15f))
-                                .speedInDegrees(random.nextBoolean() ? 0.325f : -0.325f)
+                                .speedInDegrees(random.nextBoolean() ? 0.225f : -0.225f)
                                 .numberOfOrbitals(10)
                                 .chargeTime(0.5f)
-                                .angles(0, 180)
+                                .disperseTime(1f)
+                                .angles(90, 270)
                                 .build()));
 
 
@@ -513,8 +522,12 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(35f)));
 
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnSmallAngryBlob(Measure.units(20f), Measure.units(95f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnSmallAngryBlob(arena.getWidth() - Measure.units(20f), Measure.units(95f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(100f)));
+
+                boolean bool = random.nextBoolean();
+
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(Measure.units(20f), Measure.units(95f), bool));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() - Measure.units(20f), Measure.units(95f), !bool));
 
 
                 return arena;

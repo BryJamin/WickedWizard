@@ -148,8 +148,8 @@ public class LaserOrbitalTask implements Task {
 
             for (int angle : angles) {
                 Entity orbital = world.createEntity();
-                orbital.edit().add(new PositionComponent());
-                orbital.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, orbitalSize, orbitalSize), true));
+                orbital.edit().add(new PositionComponent(current.getX(), current.getY()));
+                orbital.edit().add(new CollisionBoundComponent(new Rectangle(current.getX(), current.getY(), orbitalSize, orbitalSize), true));
                 orbital.edit().add(new OrbitComponent(
                         new Vector3(current.getX(), current.getY(), 0f), i * orbitalIntervalSize,
                         angleSpeed, angle, cbc.bound.width / 2, cbc.bound.height / 2

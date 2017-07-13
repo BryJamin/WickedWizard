@@ -51,7 +51,7 @@ public class AlurmFactory extends EnemyFactory {
 
     private final float health = 10;
 
-    private final float Vspeed = Measure.units(15f);
+    private final float Vspeed = Measure.units(15);
     private final float speed = Measure.units(10f);
 
     private final float textureWidth = Measure.units(20);

@@ -76,7 +76,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(12, room13GoatWizardAndBlobs());
         ag.insert(13, room14WalkingThroughRoom());
         ag.insert(14, room15JigAndTurretWithGuard());
-        ag.insert(15, room16TreasureGoatTrap()); //Added a mirrored version
+        ag.insert(15, room16TrapTreasureTwoGoatWizards()); //Added a mirrored version
         ag.insert(16, room17ChestInCenterTwoTurretsOnWalls());
         ag.insert(17, room18TwoSilverheadsOnPlatforms());
         ag.insert(18, room19MultiWaveRoomEndsInGoatAndChest());
@@ -651,7 +651,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public ArenaCreate room16TreasureGoatTrap() {
+    public ArenaCreate room16TrapTreasureTwoGoatWizards() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
