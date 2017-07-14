@@ -1056,8 +1056,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 //Barriers //TODO add this into builder?
                 arena.addEntity(decorFactory.wallBag(0, Measure.units(70f), arena.getWidth(), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(0, 0, Measure.units(5), Measure.units(70f)));
-                arena.addEntity(decorFactory.wallBag(0, arena.getWidth(), Measure.units(5), Measure.units(70f)));
+                arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5), Measure.units(70f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5), Measure.units(70f)));
 
 
                 arena.roomType = Arena.RoomType.TRAP;
@@ -1078,9 +1078,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(97.5f), Measure.units(50f), 180));
 
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - Measure.units(10f), Measure.units(35f), -90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - Measure.units(10f), Measure.units(35f), 90));
 
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(5f), Measure.units(35f), 90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(5f), Measure.units(35f), -90));
                 //RoomDecorationFactory.spawnBlob(a);
                 return arena;
             }

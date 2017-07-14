@@ -741,7 +741,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
                         .buildArena(arena);
 

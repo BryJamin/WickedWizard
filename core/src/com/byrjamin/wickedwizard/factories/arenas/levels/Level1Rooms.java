@@ -788,7 +788,7 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX() + 14, defaultCoords.getY()));
+                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
 
                 arena =  new ArenaBuilder(assetManager, arenaSkin)

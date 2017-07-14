@@ -335,7 +335,8 @@ public class JigsawGenerator {
         btc = new BossTeleporterComponent(teleportLink);
         mapTracker.put(btc, generateBossMap(btc));
 
-        //this.cleanArenas(startingMap.getRoomArray());
+
+        this.cleanArenas(startingMap.getRoomArray());
 
     }
 

@@ -7,6 +7,7 @@ import com.artemis.Component;
  */
 
 public class CurrencyComponent extends Component {
+
     public int money = 0;
     public int keys = 0;
 
