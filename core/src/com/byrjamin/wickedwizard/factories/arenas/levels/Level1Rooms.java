@@ -89,7 +89,7 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     public ArenaCreate room1blobLeft(){
-        return new ArenaCreate() {
+        return new ArenaCreate () {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
@@ -97,6 +97,9 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
                 a.roomType = Arena.RoomType.TRAP;
                 return a;
             }
+
+
+
         };
     }
 

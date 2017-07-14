@@ -175,6 +175,7 @@ public class JigsawGenerator {
         //TODO I changed this to < and equal to, not sure of the ramifications
         while(placedRooms <= noOfRoomsPlaced && loops <= noOfRoomsPlaced * 3) {
 
+
             WeightedObject<ArenaCreate> weightedObject = roll.rollForWeight();
             Arena nextRoomToBePlaced = weightedObject.obj().createArena(new MapCoords());
             if(placeRoomUsingDoors(nextRoomToBePlaced, avaliableDoorsSet, unavaliableMapCoords, random)){
@@ -314,9 +315,9 @@ public class JigsawGenerator {
 
         placedArenas.addAll(arenaMap.getRoomArray());
         placedArenas = generateMapAroundPresetPoints(placedArenas, arenaGens, createAvaliableDoorSet(arenaMap.getRoomArray()), noBattleRooms);
-        OrderedSet<DoorComponent> avaliableDoorsSet = createAvaliableDoorSet(placedArenas);
-        placeItemRoom(placedArenas, avaliableDoorsSet);
-        placeShopRoom(placedArenas, avaliableDoorsSet);
+
+        placeItemRoom(placedArenas, createAvaliableDoorSet(placedArenas));
+        placeShopRoom(placedArenas, createAvaliableDoorSet(placedArenas));
 
         LinkComponent teleportLink = new LinkComponent();
         BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
@@ -326,7 +327,7 @@ public class JigsawGenerator {
         bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2 + Measure.units(5f), btc));
 
         int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
-        placeBossRoom(bossRoom, placedArenas, avaliableDoorsSet, range);
+        placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas), range);
 
         startingMap = new ArenaMap(arenaMap.getCurrentArena(), placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
         mapTracker.put(btc, startingMap);
@@ -334,7 +335,7 @@ public class JigsawGenerator {
         btc = new BossTeleporterComponent(teleportLink);
         mapTracker.put(btc, generateBossMap(btc));
 
-        this.cleanArenas(startingMap.getRoomArray());
+        //this.cleanArenas(startingMap.getRoomArray());
 
     }
 

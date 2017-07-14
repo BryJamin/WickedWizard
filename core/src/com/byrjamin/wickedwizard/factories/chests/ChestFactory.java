@@ -24,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -92,6 +93,7 @@ public class ChestFactory extends AbstractFactory {
 
     public ComponentBag chestBag(float x, float y, OnDeathActionComponent odac) {
         ComponentBag bag = chestBag(x, y);
+        BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
         bag.add(odac);
         return bag;
     }

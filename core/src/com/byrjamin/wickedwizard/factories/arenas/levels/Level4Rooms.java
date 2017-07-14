@@ -761,17 +761,6 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.roomType = Arena.RoomType.TRAP;
 
-
-                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalSize(Measure.units(2.5f))
-                        .chargeTime(0.5f)
-                        .numberOfOrbitals(10)
-                        .angles(270)
-                        .chargeTime(1f)
-                        .expiryTime(1.5f)
-                        .orbitalAndIntervalSize(Measure.units(5f));
-
-
                 LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
                         .chargingLaserHeight(Measure.units(50f))
                         .chargingLaserWidth(Measure.units(3.5f))
