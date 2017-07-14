@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -15,6 +16,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -71,20 +73,20 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(13, room14LargeBattleRoomWithEnemiesOnTopAndAMassiveLaser());
         ag.insert(14,room15SmallBattleRoomBlobAndLaser());
         ag.insert(15,room16SwitchAndLasers());
-        ag.insert(16,room17Height2SwitchAndLasers());
+        ag.insert(16,room17Height2SwitchAndLasers()); // Might need to refactor this one
         ag.insert(17,room18SwitchsAndLasersAgain());
         ag.insert(18,room19GoatWizardAndKnight());
         ag.insert(19,room20AlurmAndFlyBy());
-        ag.insert(20,room21LaserArenaWithIntermittantLasters());
-        ag.insert(21,room22HorizontalThroughRoomActualLaserCenter());
-        ag.insert(22,room23TreasureLockedCenter());
+        ag.insert(20,room21LaserArenaWithIntermittantLasters()); //I'll come back to this
+        ag.insert(21,room22HorizontalThroughRoomActualLaserCenter()); //Also this one
+        ag.insert(22,room23TreasureLockedCenter()); //Also this one
         ag.insert(23,room24LaserBouncerLaserTrapTreasure());
-        ag.insert(24,room25TreasureLaserFloorAndLockedChestMirror());
+        ag.insert(24,room25TreasureLaserFloorAndLockedChestMirror()); //This could be a place for rain. Or a bit backdrop
         ag.insert(25,room26DoubleAlurmWithASqaureCenter());
-        ag.insert(26,room27Width2SwitchInTheCenter());
-        ag.insert(27,room28Height3TwoLasersSwitchInTheCenter());
-        ag.insert(28,room29BoringHeight2TreasureRoom());
-        ag.insert(29,room30WidthTwoPylonsAlurmsAndKnight());
+        ag.insert(26, room27Width2GiantLaserSwitchInTheCenter());
+        ag.insert(27, room28Height3TwoGiantScenicLasers());
+        ag.insert(28, room29BoringHeight2TreasureRoomWithLasers());
+        ag.insert(29, room30WidthTwoPylonsAndAlurms());
 
         return ag;
     }
@@ -545,16 +547,20 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.roomType = Arena.RoomType.TRAP;
 
 
+
+                boolean isLeft = random.nextBoolean();
+
+
                 arena.addEntity(decorFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f),2,
                         new LaserOrbitalTask.LaserBuilder(assetManager)
-                                .orbitalAndIntervalSize(Measure.units(2.5f))
-                                .speedInDegrees(random.nextBoolean() ? 0.325f : -0.325f)
-                                .numberOfOrbitals(25)
-                                .chargeTime(0.5f)
-                                .angles(0, 180)
+                                .orbitalAndIntervalSize(Measure.units(3f))
+                                .speedInDegrees(isLeft ? 0.6f : -0.6f)
+                                .numberOfOrbitals(20)
+                                .chargeTime(1f)
+                                .angles(isLeft ? 0 : 180)
                                 .build()));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(Measure.units(20f), Measure.units(15f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(Measure.units(50f), Measure.units(45f), !isLeft));
 
                 return arena;
             }
@@ -627,7 +633,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .orbitalAndIntervalSize(Measure.units(2.5f))
                         .speedInDegrees(0)
                         .numberOfOrbitals(numberOfParts)
-                        .chargeTime(0.5f);
+                        .chargeTime(0.25f);
 
                 arena.addEntity(decorFactory.inCombatLaserChain(Measure.units(30f), Measure.units(65f),2,
                         laserBuilder.angles(180).build()));
@@ -692,8 +698,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addWave(arenaEnemyPlacementFactory.switchFactory.fadeInswitchBag(Measure.units(20f), Measure.units(50f), 180));
                 arena.addWave(arenaEnemyPlacementFactory.switchFactory.fadeInswitchBag(arena.getWidth() - Measure.units(25f), Measure.units(50f), 180));
                 arena.addWave(arenaEnemyPlacementFactory.switchFactory.fadeInswitchBag(arena.getWidth() - Measure.units(10f), Measure.units(20f), 90));
+                arena.shuffleWaves();
 
-                arena.addWave(chestFactory.centeredChestBag(arena.getWidth() / 2, arena.getHeight() / 2));
+                arena.addWave(chestFactory.centeredChestBag(arena.getWidth() / 2, Measure.units(45f)));
 
                 return arena;
             }
@@ -710,9 +717,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
                 //arena.roomType = Arena.RoomType.TRAP;
 
+                boolean bool = random.nextBoolean() ;
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnKnight(arena.getWidth() / 4, Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 4 * 3, Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnKnight(bool ? arena.getWidth() / 4 : arena.getWidth() / 4 * 3, Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnGoatWizard(bool ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4, Measure.units(45f)));
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
 
@@ -759,17 +767,28 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .chargeTime(0.5f)
                         .numberOfOrbitals(10)
                         .angles(270)
+                        .chargeTime(1f)
                         .expiryTime(1.5f)
                         .orbitalAndIntervalSize(Measure.units(5f));
 
-                arena.addEntity(decorFactory.inCombatTimedLaserChain(Measure.units(20f), Measure.units(52.5f), 1, 3f,
-                        lb.build()));
 
-                arena.addEntity(decorFactory.inCombatTimedLaserChain(arena.getWidth() - Measure.units(25f), Measure.units(52.5f), 1, 3f,
-                        lb.build()));
+                LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                        .chargingLaserHeight(Measure.units(50f))
+                        .chargingLaserWidth(Measure.units(3.5f))
+                        .activeLaserHeight(Measure.units(50f))
+                        .activeLaserWidth(Measure.units(5f))
+                        .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
+                        .build();
+
+
+                arena.addEntity(decorFactory.inCombatTimedLaserBeam(Measure.units(20f), Measure.units(52.5f), 1, -Measure.units(50f), 3f,
+                        laserBeam));
+
+                arena.addEntity(decorFactory.inCombatTimedLaserBeam(arena.getWidth() - Measure.units(25f), Measure.units(52.5f), 1,-Measure.units(50f), 3f,
+                        laserBeam));
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, Measure.units(45f)));
+                //arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, Measure.units(45f)));
 
                 return arena;
             }
@@ -793,17 +812,17 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL))
                         .buildArena(arena);
 
-                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalSize(Measure.units(2.5f))
-                        .chargeTime(1f)
-                        .numberOfOrbitals(10)
-                        .angles(270)
-                        .expiryTime(3f)
-                        .orbitalAndIntervalSize(Measure.units(5f));
+                LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                        .chargingLaserHeight(Measure.units(50f))
+                        .chargingLaserWidth(Measure.units(3.5f))
+                        .activeLaserHeight(Measure.units(50f))
+                        .activeLaserWidth(Measure.units(5f))
+                        .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
+                        .build();
 
 
-                for(int i = 0; i < 4; i++) arena.addEntity(decorFactory.inCombatTimedLaserChain(Measure.units(35f + (i * 7.5f)), Measure.units(52.5f), 1, 6f,
-                        lb.build()));
+                for(int i = 0; i < 4; i++) arena.addEntity(decorFactory.inCombatTimedLaserBeam(Measure.units(35f + (i * 7.5f)), Measure.units(52.5f), 1, -Measure.units(50f), 4f, true,
+                        laserBeam));
 
                 boolean isLeft = random.nextBoolean();
 
@@ -833,7 +852,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(40f), Measure.units(60f), Measure.units(5)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(75f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
-                arena.addEntity(decorFactory.lockWall(Measure.units(25f), Measure.units(25f), Measure.units(50f), Measure.units(5f)));
+
+                arena.addEntity(decorFactory.lockWall(Measure.units(25f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(25f), Measure.units(35f), Measure.units(5f)));
+               // arena.addEntity(decorFactory.lockWall(Measure.units(60f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
 
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(30f), Measure.units(30f)));
@@ -844,21 +866,21 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 //arena.roomType = Arena.RoomType.TRAP;
 
 
-                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalSize(Measure.units(2.5f))
-                        .chargeTime(0.5f)
-                        .numberOfOrbitals(4)
-                        .angles(180)
-                        .expiryTime(1.5f)
-                        .orbitalAndIntervalSize(Measure.units(5f));
-
-                arena.addEntity(decorFactory.timedLaserChain(Measure.units(17.5f), Measure.units(35f), 1, 3f,
-                        lb.build()));
-
-                arena.addEntity(decorFactory.timedLaserChain(Measure.units(77.5f), Measure.units(35f), 1, 3f,
-                        lb.angles(0).build()));
+                LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                        .chargingLaserHeight(Measure.units(3.5f))
+                        .chargingLaserWidth(Measure.units(15f))
+                        .activeLaserHeight(Measure.units(5f))
+                        .activeLaserWidth(Measure.units(15f))
+                        .useWidthAsCenter(false)
+                        .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
+                        .build();
 
 
+                arena.addEntity(decorFactory.timedLaserBeam(Measure.units(17.5f), Measure.units(35f), 1, -Measure.units(15f), 3f,
+                        laserBeam));
+
+                arena.addEntity(decorFactory.timedLaserBeam(Measure.units(77.5f), Measure.units(35f), 1, Measure.units(5), 3f,
+                        laserBeam));
 
 
                 return arena;
@@ -884,8 +906,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.MANDATORYDOOR,
-                                ArenaBuilder.wall.MANDATORYDOOR,
+                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
                         .buildArena(arena);
@@ -893,11 +915,6 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 2, Measure.units(45f)));
-                //arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(30f)));
-
-                //arena.addEntity(chestFactory.chestBag(Measure.units(60f), Measure.units(30f)));
-                //arena.roomType = Arena.RoomType.TRAP;
-
 
                 LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .chargeTime(0.5f)
@@ -906,13 +923,22 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .expiryTime(1.5f)
                         .orbitalAndIntervalSize(Measure.units(5f));
 
+                LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                        .chargingLaserHeight(Measure.units(30f))
+                        .chargingLaserWidth(Measure.units(3.5f))
+                        .activeLaserHeight(Measure.units(30f))
+                        .activeLaserWidth(Measure.units(5f))
+                        .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
+                        .build();
+
+
                 boolean mirror = random.nextBoolean();
 
-                arena.addEntity(decorFactory.timedLaserChain(mirror ? Measure.units(25f) : arena.getWidth() - Measure.units(35f), Measure.units(30f), 2, 3,
-                        lb.build()));
+                arena.addEntity(decorFactory.timedLaserBeam(mirror ? Measure.units(25f) : arena.getWidth() - Measure.units(35f), Measure.units(30f), 2, Measure.units(0f), 3f,
+                        laserBeam));
 
-                arena.addEntity(decorFactory.timedLaserChain(mirror ? arena.getWidth() - Measure.units(35f) : Measure.units(25f), Measure.units(25f), 2, 3,
-                        lb.angles(90).build()));
+                arena.addEntity(decorFactory.timedLaserBeam(mirror ? arena.getWidth() - Measure.units(35f) : Measure.units(25f), Measure.units(25f), 2, -Measure.units(30f), 3f,
+                        laserBeam));
 
                 return arena;
 
@@ -963,6 +989,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .angles(chestsAreLeft ? 180 : 0)
                         .orbitalAndIntervalSize(Measure.units(2.5f));
 
+
+
+
                 arena.addEntity(decorFactory.laserChain(!chestsAreLeft ? Measure.units(17.5f) : arena.getWidth() - Measure.units(22.5f), Measure.units(2.5f), 1,
                         lb.build()));
 
@@ -1012,7 +1041,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public ArenaCreate room27Width2SwitchInTheCenter() {
+    public ArenaCreate room27Width2GiantLaserSwitchInTheCenter() {
 
 
         return new ArenaCreate() {
@@ -1070,7 +1099,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
     }
 
-    public ArenaCreate room28Height3TwoLasersSwitchInTheCenter() {
+    public ArenaCreate room28Height3TwoGiantScenicLasers() {
 
 
         return new ArenaCreate() {
@@ -1114,17 +1143,27 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .chargeTime(0.5f)
                         .numberOfOrbitals(20)
                         .angles(90)
-                        //.orbitalSize(Measure.units(10f))
                         .orbitalAndIntervalSize(Measure.units(20f));
 
-                arena.addEntity(decorFactory.laserChain(Measure.units(10f), -Measure.units(10f), 6,
-                        lb.build()));
+                LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                        .chargingLaserHeight(Measure.units(200f))
+                        .chargingLaserWidth(Measure.units(18.5f))
+                        .chargingLaserTime(1f)
+                        .activeLaserHeight(Measure.units(200f))
+                        .activeLaserWidth(Measure.units(20f))
+                        .activeLaserTime(5f)
+                        .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
+                        .build();
+
+
+                arena.addEntity(decorFactory.timedLaserBeam(Measure.units(10f), -Measure.units(10f), 6, 0, 3f, true,
+                        laserBeam));
+
+                arena.addEntity(decorFactory.timedLaserBeam(arena.getWidth() - Measure.units(40f), -Measure.units(10f), 6, 0, 3f, true,
+                        laserBeam));
 
                 arena.addEntity(decorFactory.laserChain(Measure.units(10f), arena.getHeight() - Measure.units(15f), 6,
                         new LaserOrbitalTask.LaserBuilder(assetManager).build()));
-
-                arena.addEntity(decorFactory.laserChain(arena.getWidth() - Measure.units(40f), -Measure.units(10f), 6,
-                        lb.build()));
 
                 arena.addEntity(decorFactory.laserChain(arena.getWidth() - Measure.units(40f), arena.getHeight() - Measure.units(15f), 6,
                         new LaserOrbitalTask.LaserBuilder(assetManager).build()));
@@ -1141,7 +1180,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public ArenaCreate room29BoringHeight2TreasureRoom() {
+    public ArenaCreate room29BoringHeight2TreasureRoomWithLasers() {
 
         return new ArenaCreate() {
             @Override
@@ -1164,22 +1203,21 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE)).buildArena(arena);
 
-
                 //for(int i = 0; i < 2; i++){
 
                     //float y = Measure.units(30f + (i * 35f));
-                    float width = Measure.units(30f);
+                float width = Measure.units(30f);
 
-                    arena.addEntity(decorFactory.wallBag(arena.getWidth() - width - Measure.units(5f), Measure.units(30f),
-                            width, Measure.units(40f), arenaSkin));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - width - Measure.units(5f), Measure.units(30f),
+                        width, Measure.units(40f), arenaSkin));
 
-                    arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f),
-                            width, Measure.units(40f), arenaSkin));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f),
+                        width, Measure.units(40f), arenaSkin));
 
                 //}
 
 
-                boolean isBottomLeftLock = false;
+                boolean isBottomLeftLock = random.nextBoolean();
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(55f)));
 
@@ -1192,22 +1230,23 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(chestFactory.chestBag(isBottomLeftLock ? Measure.units(18.5f) : arena.getWidth() - Measure.units(28.5f), Measure.units(10f)));
 
 
-
-
-                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
-                        .chargeTime(0.5f)
-                        .numberOfOrbitals(50)
-                        .expiryTime(1.5f)
-                        .angles(0)
-                        //.orbitalSize(Measure.units(10f))
-                        .orbitalAndIntervalSize(Measure.units(2.5f));
-
                 LaserOrbitalTask.LaserBuilder empty = new LaserOrbitalTask.LaserBuilder(assetManager);
 
 
+                LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                        .chargingLaserHeight(Measure.units(2f))
+                        .chargingLaserWidth(Measure.units(30f))
+                        .activeLaserHeight(Measure.units(2.5f))
+                        .activeLaserWidth(Measure.units(30f))
+                        .useWidthAsCenter(false)
+                        .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
+                        .build();
+
+
+
                 for(int i = 0; i < 5; i++) {
-                    arena.addEntity(decorFactory.timedLaserChain(Measure.units(32.5f), Measure.units(32.5f + (i * 7.5f)), 1, 3,
-                            lb.build()));
+                    arena.addEntity(decorFactory.timedLaserBeam(Measure.units(32.5f), Measure.units(32.5f + (i * 7.5f)), 1, 0, 3,
+                            laserBeam));
 
                     arena.addEntity(decorFactory.laserChain(Measure.units(62.5f), Measure.units(32.5f + (i * 7.5f)), 1,
                             empty.build()));
@@ -1227,7 +1266,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public ArenaCreate room30WidthTwoPylonsAlurmsAndKnight() {
+    public ArenaCreate room30WidthTwoPylonsAndAlurms() {
 
         return new ArenaCreate() {
             @Override

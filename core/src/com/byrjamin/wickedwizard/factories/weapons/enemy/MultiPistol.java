@@ -160,8 +160,6 @@ public class MultiPistol implements Weapon {
                 Entity bullet = world.createEntity();
                 double angleOfTravel = angleInRadians + Math.toRadians(i);
 
-                System.out.println(angleInRadians);
-
                 for (Component c : bulletFactory.basicBulletBag(
                         x + (BulletMath.velocityX(f, angleInRadians + (Math.PI / 2))),
                         y + (BulletMath.velocityY(f, angleInRadians + (Math.PI / 2))),

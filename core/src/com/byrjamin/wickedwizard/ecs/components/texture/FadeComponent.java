@@ -17,6 +17,7 @@ public class FadeComponent extends Component {
     public float alpha;
 
     public  boolean fadeIn;
+    public boolean flicker;
     public boolean isEndless = true;
 
     public FadeComponent(){

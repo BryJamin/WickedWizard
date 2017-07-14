@@ -58,7 +58,7 @@ public class TurretFactory extends EnemyFactory {
     final float upgradeWidth = Measure.units(15f);
     final float upgradeHeight = Measure.units(15f);
 
-    private float upgradeSpeed = Measure.units(5f);
+    private float upgradeSpeed = Measure.units(10f);
 
     public Bag<Component> fixedLockOnTurret(float x, float y){
         x = x - width / 2;

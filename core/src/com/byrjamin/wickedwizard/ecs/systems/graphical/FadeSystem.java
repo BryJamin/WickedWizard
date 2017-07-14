@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.math.Interpolation;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
@@ -31,13 +32,26 @@ public class FadeSystem extends EntityProcessingSystem {
 
         FadeComponent fc = fm.get(e);
 
+        if(fc.flicker){
+            if(trm.has(e)) trm.get(e).color.a = fc.maxAlpha;
+            if(trbm.has(e)) trbm.get(e).color.a = fc.maxAlpha;
+            if(tfm.has(e)) tfm.get(e).color.a = fc.maxAlpha;
+            fc.flicker = false;
+            return;
+        }
+
         fc.alphaTimer = fc.fadeIn ? fc.alphaTimer + world.delta : fc.alphaTimer - world.delta;
 
         //TODO Currently converted this to use the maxAlpha and time so this may have affected a bunch
         //TODO of fades in the game. Need to review them.
         //TODO note: code previously was: fc.alpha = (fc.alphaTimer / fc.alphaTimeLimit)
         //TODO note: if it was also using the min value it'd be (fc.maxAlpha - fc.minAlpha) + fc.minAlpha
-        fc.alpha = ((fc.alphaTimer / fc.alphaTimeLimit) * (fc.maxAlpha - fc.minAlpha)) + fc.minAlpha;
+
+        //Interpolation.fade.apply((fadeElapsed-SUBTITLE_FADE_DELAY) / FADE_IN_TIME);
+
+       // fc.alpha = ((fc.alphaTimer / fc.alphaTimeLimit) * (fc.maxAlpha - fc.minAlpha)) + fc.minAlpha;
+        //Can't really tell the difference but apparently interpolation is better?
+        fc.alpha = Interpolation.fade.apply(((fc.alphaTimer / fc.alphaTimeLimit) * (fc.maxAlpha - fc.minAlpha)) + fc.minAlpha);
         if(fc.alpha <= fc.minAlpha){
             if(fc.isEndless) {
                 fc.fadeIn = true;
@@ -54,15 +68,14 @@ public class FadeSystem extends EntityProcessingSystem {
             }
         }
 
+        applyFade(e, fc);
+
+    }
+
+    public void applyFade(Entity e, FadeComponent fc){
         if(trm.has(e)) trm.get(e).color.a = fc.alpha;
         if(trbm.has(e)) trbm.get(e).color.a = fc.alpha;
         if(tfm.has(e)) tfm.get(e).color.a = fc.alpha;
-
-
-
-
-
-
     }
 
 }

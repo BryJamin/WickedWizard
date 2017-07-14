@@ -120,6 +120,17 @@ public class LaserBeam {
     }
 
 
+    public float getChargingLaserWidth() {
+        return chargingLaserWidth;
+    }
+
+    public float getChargingLaserHeight() {
+        return chargingLaserHeight;
+    }
+
+    public boolean isUseWidthAsCenter() {
+        return useWidthAsCenter;
+    }
 
     public void createBeam(World world, float x, float y){
 
@@ -174,8 +185,10 @@ public class LaserBeam {
 
                         PositionComponent pc = e.getComponent(PositionComponent.class);
 
-                        System.out.println(pc.position.x);
-                        System.out.println(pc.position.y);
+                        System.out.println("LaserBeam x: " + pc.position.x);
+                        System.out.println("LaserBeam y: " + pc.position.y);
+                        System.out.println("LaserBeam width: " + activeLaserWidth);
+                        System.out.println("LaserBeam height: " + + activeLaserHeight);
 
                         Entity fadingBeam = world.createEntity();
                         fadingBeam.edit().add(e.getComponent(PositionComponent.class));
@@ -185,6 +198,9 @@ public class LaserBeam {
                 }));
             }
         }, chargingLaserTime));
+
+
+
 
 
 

@@ -69,7 +69,11 @@ public class SwitchFactory extends EnemyFactory{
         ComponentBag bag = switchBag(x,y,rotation);
         final CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
         BagSearch.removeObjectOfTypeClass(CollisionBoundComponent.class, bag);
-        bag.add(new FadeComponent(true, 0.5f, false));
+
+        FadeComponent fc = new FadeComponent(true, 0.5f, false);
+        fc.flicker = true;
+
+        bag.add(fc);
 
         bag.add(new ActionAfterTimeComponent(new Task() {
             @Override

@@ -54,37 +54,48 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
     }
 
     public Array<ArenaCreate> getLevel5RoomArray() {
+
+
+
+
+
+
+
         Array<ArenaCreate> ag = new Array<ArenaCreate>();
-        ag.add(room1PentaSentry());
-        ag.add(room2DoubleFlyBy());
-        ag.add(room3Width2DoubleFlyByAndPentaSentryMoving());
-        ag.add(room4TrapRoomPentaAndDoubleFlyBy());
-        ag.add(room5HeavyModon());
-        ag.add(room6GhostlyEncounter());
-        ag.add(room7SingularGhostlyEncounterWithACenter());
-        ag.add(room8Lazerus());
-        ag.add(room9TwoLazerus());
-        ag.add(room10SwitchsAndDoubleLasers());
-        ag.add(room11GhostPylonWidth3PossibleTreasure());
-        ag.add(room12Height3GrappleLaserChests());
-        ag.add(room13DoubleLaserArenaWithBouncersAndLaserus());
-        ag.add(room14Width2KnightsAndGoats());
-        ag.add(room15LaserModonAndAFlyBy());
-        ag.add(room16Width2LasersAndBlobs());
-        ag.add(room17BlobAndLaserus());
-        ag.add(room18TwoLaserusAndAPenta());
-        ag.add(room19TwoGhostPylons());
-        ag.add(room20TwoGhostsOppositeDirectionSteppingStone());
-        ag.add(room21RightSnake());
-        ag.add(room22LeftSnake());
-        ag.add(room23JumpingJack());
-        ag.add(room24SmallVerticalRoomSnake());
-        ag.add(room25SmallRoomHorizontalSnake());
-        ag.add(room26Width3MiddleArena());
-        ag.add(room27Height3TreasureRoom());
-        ag.add(room28OmniTreasureRoom());
-        ag.add(room29JackLaserAndSnake());
-        ag.add(room30Height3ThroughRoomWithHorizontalLasers());
+
+
+
+        ag.insert(0, room1PentaSentry());
+        ag.insert(1, room2DoubleFlyBy());
+        ag.insert(2, room3Width2DoubleFlyByAndPentaSentryMoving());
+        ag.insert(3, room4TrapRoomPentaAndDoubleFlyBy());
+        ag.insert(4, room5HeavyModon());
+        ag.insert(5, room6GhostlyEncounter());
+        ag.insert(6, room7SingularGhostlyEncounterWithACenter());
+        ag.insert(7, room8Lazerus());
+        ag.insert(8, room9TwoLazerus());
+        ag.insert(9, room10SwitchsAndDoubleLasers());
+        ag.insert(10,room11GhostPylonWidth3PossibleTreasure());
+        ag.insert(11,room12Height3GrappleLaserChests());
+        ag.insert(12,room13DoubleLaserArenaWithBouncersAndLaserus());
+        ag.insert(13,room14Width2KnightsAndGoats());
+        ag.insert(14,room15LaserModonAndAFlyBy());
+        ag.insert(15,room16Width2LasersAndBlobs());
+        ag.insert(16,room17BlobAndLaserus());
+        ag.insert(17,room18TwoLaserusAndAPenta());
+        ag.insert(18,room19TwoGhostPylons());
+        ag.insert(19,room20TwoGhostsOppositeDirectionSteppingStone());
+        ag.insert(20,room21RightSnake());
+        ag.insert(21,room22LeftSnake());
+        ag.insert(22,room23JumpingJack());
+        ag.insert(23,room24SmallVerticalRoomSnake());
+        ag.insert(24,room25SmallRoomHorizontalSnake());
+        ag.insert(25,room26Width3MiddleArena());
+        ag.insert(26,room27Height3TreasureRoom());
+        ag.insert(27,room28OmniTreasureRoom());
+        ag.insert(28,room29JackLaserAndSnake());
+        ag.insert(29,room30Height3ThroughRoomWithHorizontalLasers());
+
         return ag;
     }
 
@@ -171,6 +182,8 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnMovingPentaSentry(arena.getWidth() / 2, Measure.units(45f)));
                 arena.addWave(arenaEnemyPlacementFactory.spawnMovingFlyByDoubleBombSentry(arena.getWidth() / 2, Measure.units(45f)));
+
+                arena.shuffleWaves();
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {

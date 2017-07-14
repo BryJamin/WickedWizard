@@ -153,7 +153,6 @@ public class AdventureWorld {
                         new LockSystem(),
                         new HealthSystem(),
                         new OnDeathSystem(),
-                        new FadeSystem(),
                         new ProximitySystem(),
                         new FindChildSystem(),
                         new PickUpSystem(),
@@ -176,6 +175,7 @@ public class AdventureWorld {
                         new DirectionalSystem(),
                         new FollowPositionSystem(),
                         new CameraSystem(gameport.getCamera(), gameport),
+                        new FadeSystem(), //Applies any fade before render
                         new RenderingSystem(batch, assetManager, gameport),
                         new BulletSystem(),
                         new ScreenWipeSystem(batch, (OrthographicCamera) gameport.getCamera()),
