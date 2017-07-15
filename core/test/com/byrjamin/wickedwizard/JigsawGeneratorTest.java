@@ -18,6 +18,7 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -292,13 +293,15 @@ public class JigsawGeneratorTest extends GameTest {
         TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
 
 
+
+
         //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
 
         for(int i = 0; i < 20000; i++) {
 
             Random random = new Random();
 
-            int numberOfRooms = random.nextInt(100);
+            int numberOfRooms = random.nextInt(95) + 5;
 
             JigsawGenerator jg = new JigsawGeneratorConfig(assetManager, random)
                     .noBattleRooms(numberOfRooms)
@@ -310,6 +313,10 @@ public class JigsawGeneratorTest extends GameTest {
 
 
             Array<Arena> arenas = jg.getStartingMap().getRoomArray();
+
+
+            System.out.println("Number of rooms is " + numberOfRooms);
+
 
             boolean bossRoom = false;
 
@@ -370,13 +377,15 @@ public class JigsawGeneratorTest extends GameTest {
         TextureAtlas atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
 
 
+
+
         //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
 
         for(int i = 0; i < 20000; i++) {
 
             Random random = new Random();
 
-            int numberOfRooms = random.nextInt(100);
+            int numberOfRooms = 69; //random.nextInt(95) + 5;
 
             JigsawGenerator jg = new JigsawGeneratorConfig(assetManager, random)
                     .noBattleRooms(numberOfRooms)
@@ -386,6 +395,7 @@ public class JigsawGeneratorTest extends GameTest {
             jg.generate();
             jg.cleanArenas();
 
+            System.out.println("Number of rooms is " + numberOfRooms);
 
             Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 

@@ -4,6 +4,8 @@ import com.artemis.Component;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
+import java.util.Comparator;
+
 /**
  * Created by Home on 12/03/2017.
  */
@@ -48,4 +50,20 @@ public class DoorComponent extends Component {
         result = 31 * result + leaveCoords.hashCode();
         return result;
     }
+
+
+    public static final Comparator<DoorComponent> NAME_COMPARATOR = new Comparator<DoorComponent>() {
+        @Override
+        public int compare(DoorComponent doorComponent, DoorComponent t1) {
+            return 0;
+        }
+    };
+
+
+
+
+
+
+
+
 }

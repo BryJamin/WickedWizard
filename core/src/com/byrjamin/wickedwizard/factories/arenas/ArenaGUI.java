@@ -48,7 +48,7 @@ public class ArenaGUI {
 
     private float mapBlinker;
 
-    private float lineThickness = 2;
+    private float lineThickness = 4;
 
     private boolean blink;
 

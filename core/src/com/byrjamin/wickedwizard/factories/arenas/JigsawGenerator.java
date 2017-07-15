@@ -148,10 +148,17 @@ public class JigsawGenerator {
         protectionFromIteratorError.addAll(arenas);
 
         for(Arena a : arenas){
-            for(DoorComponent dc : a.doors){
-                if(findRoom(dc.leaveCoords, protectionFromIteratorError) == null){
-                    avaliableDoors.add(dc);
+
+            if(a.roomType != Arena.RoomType.BOSS &&
+                    a.roomType != Arena.RoomType.ITEM &&
+                    a.roomType != Arena.RoomType.SHOP) {
+
+                for (DoorComponent dc : a.doors) {
+                    if (findRoom(dc.leaveCoords, protectionFromIteratorError) == null) {
+                        avaliableDoors.add(dc);
+                    }
                 }
+
             }
         }
         return avaliableDoors;
@@ -382,6 +389,7 @@ public class JigsawGenerator {
         Arena itemRoom = itemArenaFactory.createItemRoom(new MapCoords(), itemStore.generateItemRoomItem(), itemStore.generateItemRoomItem());
         if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(itemRoom);
+            cleanArena(itemRoom, placedArenas);
             return true;
         }
         return false;
@@ -395,8 +403,10 @@ public class JigsawGenerator {
         Arena shopRoom = shopFactory.createShop(item1, item2);
         if(placeRoomUsingDoors(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(shopRoom);
+            cleanArena(shopRoom, placedArenas);
             return true;
         }
+
         return false;
     }
 
@@ -606,24 +616,30 @@ public class JigsawGenerator {
     public void cleanArenas(Array<Arena> arenas){
         for(int i = 0; i < arenas.size; i++) {
             Arena a = arenas.get(i);
-            for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
-                DoorComponent dc = a.getDoors().get(j);
-                if (!findDoorWithinFoundRoom(dc, arenas)) {
-                    Bag<Component> bag = a.findBag(dc);
-                    if (BagSearch.contains(ActiveOnTouchComponent.class, bag) || BagSearch.contains(InCombatActionComponent.class, bag)) {
+            cleanArena(a, arenas);
+        }
+    }
+
+    public void cleanArena(Arena a, Array<Arena> arenas){
+
+        for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
+            DoorComponent dc = a.getDoors().get(j);
+            if (!findDoorWithinFoundRoom(dc, arenas)) {
+                Bag<Component> bag = a.findBag(dc);
+                if (BagSearch.contains(ActiveOnTouchComponent.class, bag) || BagSearch.contains(InCombatActionComponent.class, bag)) {
+                    a.getBagOfEntities().remove(bag);
+                } else {
+                    CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
+                    if(cbc != null) {
                         a.getBagOfEntities().remove(bag);
-                    } else {
-                        CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
-                        if(cbc != null) {
-                            a.getBagOfEntities().remove(bag);
-                            a.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), a.getArenaSkin()));
-                        }
+                        a.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), a.getArenaSkin()));
                     }
-                    a.adjacentCoords.removeValue(dc.leaveCoords, false);
-                    a.doors.removeValue(dc, true);
                 }
+                a.adjacentCoords.removeValue(dc.leaveCoords, false);
+                a.doors.removeValue(dc, true);
             }
         }
+
     }
 
     public void cleanArenas(){
