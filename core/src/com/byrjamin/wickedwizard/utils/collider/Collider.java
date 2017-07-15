@@ -12,6 +12,8 @@ public class Collider {
         LEFT, RIGHT, BOTTOM, TOP, NONE
     }
 
+    private static final float buffer = 50f;
+
     /**
      * Checks to see if there is a collision between A static and a dynamic body using Rectangles
      * Updates bound position based on Collision
@@ -45,28 +47,57 @@ public class Collider {
      */
     public static Collision cleanCollision(Rectangle currentBound, Rectangle futureBound, Rectangle wall) {
 
+
+        //TODO split it into two to see which one takes precedence left/right or top/bottom
+
+/*        boolean leftOrRightPrecedence = (currentBound.getX() + currentBound.getWidth() <= wall.getX() + buffer ||
+                currentBound.getX() >= wall.getX() + wall.getWidth() - buffer) &&
+                (currentBound.getY() >= wall.getY() + wall.getHeight() - buffer ||
+                        currentBound.getY() + currentBound.getHeight() <= wall.getY() + buffer);*/
+
         //TODO With the variance being +15 or -15 the possiblility of breaking through walls might be possible
-        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() + 15
-                && currentBound.getY() < wall.getY() + wall.getHeight() - 15;
-        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + 15
-                && currentBound.getX() < wall.getX() + wall.getWidth() - 15;
+        boolean isBetweenY = currentBound.getY() + currentBound.getHeight() > wall.getY() + buffer
+                && currentBound.getY() < wall.getY() + wall.getHeight() - buffer;
+        boolean isBetweenX = currentBound.getX() + currentBound.getWidth() > wall.getX() + buffer
+                && currentBound.getX() < wall.getX() + wall.getWidth() - buffer;
 
         if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
-            if (currentBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
-                return Collision.RIGHT;
-            } else if (currentBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
-                return Collision.LEFT;
-            }
-        } else if (wall.overlaps(futureBound)) { //Hit was on top
-            if (currentBound.getY() > wall.y + wall.getHeight() / 2) {
-                return Collision.BOTTOM;
-            } else if (currentBound.getY() < wall.y + wall.getHeight() / 2) { //Hit was on bottom
-                return Collision.TOP;
-            }
+            return leftOrRightCollision(currentBound, wall);
+        } else if (wall.overlaps(futureBound) && !isBetweenY && isBetweenX ) { //Hit was on top
+            return topOrBottomCollision(currentBound, wall);
+        } else if(wall.overlaps(futureBound)){
+/*            if(leftOrRightPrecedence){
+                return leftOrRightCollision(currentBound, wall);
+            } else {
+                return topOrBottomCollision(currentBound, wall);
+            }*/
+
         }
 
         return Collision.NONE;
 
     }
+
+    private static Collision leftOrRightCollision(Rectangle currentBound, Rectangle wall){
+/*        if (currentBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
+            return Collision.RIGHT;
+        } else if (currentBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
+            return Collision.LEFT;
+        }*/
+        return currentBound.getX() <= wall.x + wall.getWidth() / 2 ? Collision.RIGHT : Collision.LEFT;
+    }
+
+    private static Collision topOrBottomCollision(Rectangle currentBound, Rectangle wall){
+/*        if (currentBound.getX() < wall.x + wall.getWidth() / 2) {//Hit was on left
+            return Collision.RIGHT;
+        } else if (currentBound.getX() > wall.x + wall.getWidth() / 2) {//Hit was on right
+            return Collision.LEFT;
+        }*/
+        return currentBound.getY() >= wall.y + wall.getHeight() / 2 ? Collision.BOTTOM : Collision.TOP;
+    }
+
+
+
+    //private Collision leftOrRightPrecedenceCollision()
 
 }
