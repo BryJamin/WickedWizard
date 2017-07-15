@@ -33,10 +33,13 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
+import com.byrjamin.wickedwizard.utils.comparator.FarSort;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.SortedSet;
 
 /**
  * Created by Home on 22/03/2017.
@@ -51,6 +54,8 @@ public class JigsawGenerator {
     private Random random;
 
     private ArenaMap startingMap;
+
+    private FarSort farSort;
 
     private AssetManager assetManager;
     private Level1Rooms level1Rooms;
@@ -84,6 +89,7 @@ public class JigsawGenerator {
         this.itemStore = new ItemStore(random);
         this.setStartingMap(jigsawGeneratorConfig.startingMap);
         this.arenaGens = jigsawGeneratorConfig.arenaGens;
+        this.farSort = new FarSort(getStartingMap().getCurrentArena().getStartingCoords());
     }
 
     public void setSkin(ArenaSkin arenaSkin) {
@@ -332,9 +338,7 @@ public class JigsawGenerator {
         Arena bossRoom = arenaShellFactory.createSmallArena(new MapCoords(), true, true, false ,true);
         bossRoom.roomType = Arena.RoomType.BOSS;
         bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2 + Measure.units(5f), btc));
-
-        int range = (int) ((Math.sqrt(placedArenas.size) - 1) / 2);
-        placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas), range);
+        placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas));
 
         startingMap = new ArenaMap(arenaMap.getCurrentArena(), placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
         mapTracker.put(btc, startingMap);
@@ -410,11 +414,21 @@ public class JigsawGenerator {
         return false;
     }
 
-    public boolean placeBossRoom(Arena bossRoom, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors, int range) {
+    public boolean placeBossRoom(Arena bossRoom, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
-        if (placeRoomAtRangeWithDoors(bossRoom,
-                avaliableDoors,createUnavaliableMapCoords(placedArenas), random, range)) {
+
+        Array<DoorComponent> doorComponentArray = avaliableDoors.orderedItems();
+        doorComponentArray.sort(farSort.DOOR_FAR_MAPCOORDS);
+
+        for(DoorComponent dc : doorComponentArray){
+            System.out.println(dc.leaveCoords);
+        }
+
+
+        if (placeRoomUsingDoorsInOrder(bossRoom,
+                doorComponentArray ,createUnavaliableMapCoords(placedArenas), random)) {
             placedArenas.add(bossRoom);
+            System.out.println("Boss room coord is " + bossRoom.cotainingCoords.first());
             return true;
         }
         return false;
@@ -422,43 +436,34 @@ public class JigsawGenerator {
 
 
     public boolean placeRoomUsingDoors(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+        Array<DoorComponent> adc = avaliableDoorsSet.orderedItems();
+        adc.shuffle();
+        return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
+
+    }
 
 
-        Array<DoorComponent> avaliableDoorsArray = new Array<DoorComponent>();
-        avaliableDoorsArray.addAll(avaliableDoorsSet.orderedItems());
+    public boolean placeRoomUsingDoorsInOrder(Arena room, Array<DoorComponent> availableDoorsArray, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+
+        Array<DoorComponent> temporaryDoorsArray = new Array<DoorComponent>();
+        temporaryDoorsArray.addAll(availableDoorsArray);
 
         boolean roomPlaced = false;
 
         while(!roomPlaced) {
 
-            if(avaliableDoorsArray.size <= 0){
+            if(temporaryDoorsArray.size <= 0){
                 break;
             }
 
-            int avaliableDoorSelector = rand.nextInt(avaliableDoorsArray.size);
             //The available co-ordinates we can shift to.
-            DoorComponent selectedAvaliableDoor = avaliableDoorsArray.get(avaliableDoorSelector);
+            DoorComponent selectedAvaliableDoor = temporaryDoorsArray.first();
+            System.out.println("Array size is " + temporaryDoorsArray.size);
+            temporaryDoorsArray.removeValue(selectedAvaliableDoor, false);
 
-            avaliableDoorsArray.removeIndex(avaliableDoorSelector);
+            System.out.println("Array size is " + temporaryDoorsArray.size);
 
-            Array<DoorComponent> linkableDoorsArray = new Array<DoorComponent>();
-
-            for(DoorComponent dc : room.getDoors()) {
-                switch (selectedAvaliableDoor.exit){
-                    case LEFT: if(dc.exit == Direction.RIGHT)
-                        linkableDoorsArray.add(dc);
-                        break;
-                    case RIGHT: if(dc.exit == Direction.LEFT)
-                        linkableDoorsArray.add(dc);
-                        break;
-                    case UP: if(dc.exit == Direction.DOWN)
-                        linkableDoorsArray.add(dc);
-                        break;
-                    case DOWN: if(dc.exit == Direction.UP)
-                        linkableDoorsArray.add(dc);
-                        break;
-                }
-            }
+            Array<DoorComponent> linkableDoorsArray = createLinkableDoorsArray(selectedAvaliableDoor, room);
 
             while(!roomPlaced && linkableDoorsArray.size > 0) {
                 if(linkableDoorsArray.size <= 0){
@@ -471,17 +476,15 @@ public class JigsawGenerator {
 
                 linkableDoorsArray.removeIndex(linkableExitsSelector);
 
-
-
                 MapCoords shiftCoords = generateShiftCoords(selectedAvaliableDoor.leaveCoords, selectedLinkableDoor.currentCoords);
 
                 //Mocks moving the room
                 Array<MapCoords> mockCoords = mockShiftCoordinatePosition(room, shiftCoords);
 
+                roomPlaced = true;
+
                 for (int j = 0; j < mockCoords.size; j++) {
-                    if (!unavaliableMapCoords.contains(mockCoords.get(j))) {
-                        roomPlaced = true;
-                    } else {
+                    if (unavaliableMapCoords.contains(mockCoords.get(j))) {
                         roomPlaced = false;
                         break;
                     }
@@ -489,7 +492,7 @@ public class JigsawGenerator {
 
                 if (roomPlaced) {
                     shiftCoordinatePosition(room, shiftCoords);
-                    avaliableDoorsSet.remove(selectedAvaliableDoor);
+                    availableDoorsArray.removeValue(selectedAvaliableDoor, false);
                 }
 
             }
@@ -501,33 +504,31 @@ public class JigsawGenerator {
     }
 
 
-    public boolean placeRoomAtRangeWithDoors(Arena arena, OrderedSet<DoorComponent> avaliableDoorsSet,
-                                             ObjectSet<MapCoords> unavaliableMapCoords,
-                                             Random rand, int minRange){
+    private Array<DoorComponent> createLinkableDoorsArray(DoorComponent selectedDoor, Arena arena){
 
-        Array<DoorComponent> avaliableDoorsArray = new Array<DoorComponent>();
-        avaliableDoorsArray.addAll(avaliableDoorsSet.orderedItems());
+        Array<DoorComponent> linkableDoorsArray = new Array<DoorComponent>();
 
-        OrderedSet<DoorComponent> newavaliableDoorsSet = new OrderedSet<DoorComponent>();
-
-        for(int i = avaliableDoorsArray.size - 1; i >= 0; i--) {
-            DoorComponent dc = avaliableDoorsArray.get(i);
-            if(dc.leaveCoords.getX() <= minRange && dc.leaveCoords.getY() <= minRange &&
-                    dc.leaveCoords.getX() >= -minRange && dc.leaveCoords.getY() >= -minRange ) {
-                avaliableDoorsArray.removeValue(dc, false);
+        for(DoorComponent dc : arena.getDoors()) {
+            switch (selectedDoor.exit){
+                case LEFT: if(dc.exit == Direction.RIGHT)
+                    linkableDoorsArray.add(dc);
+                    break;
+                case RIGHT: if(dc.exit == Direction.LEFT)
+                    linkableDoorsArray.add(dc);
+                    break;
+                case UP: if(dc.exit == Direction.DOWN)
+                    linkableDoorsArray.add(dc);
+                    break;
+                case DOWN: if(dc.exit == Direction.UP)
+                    linkableDoorsArray.add(dc);
+                    break;
             }
         }
 
-
-        newavaliableDoorsSet.addAll(avaliableDoorsArray);
-
-        if(newavaliableDoorsSet.size != 0) {
-            return placeRoomUsingDoors(arena, newavaliableDoorsSet, unavaliableMapCoords, rand);
-        }
-
-        return false;
+        return linkableDoorsArray;
 
     }
+
 
     /**
      * Generates the co-ordinates that will be used to mock the moving of a room into a different position

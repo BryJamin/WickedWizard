@@ -295,7 +295,6 @@ public class MrBoomyBoss extends EnemyFactory {
             if(isLeft) {
                 int i = random.nextInt(90) + 90;
                 e.getComponent(TextureRegionComponent.class).scaleX = 1;
-                System.out.println(i);
                 bombWeapon.fire(world, e, x, y, Math.toRadians(i));
                 isLeft = !isLeft;
             } else {

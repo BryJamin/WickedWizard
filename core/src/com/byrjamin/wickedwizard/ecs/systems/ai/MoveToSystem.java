@@ -113,13 +113,4 @@ public class MoveToSystem extends EntityProcessingSystem {
     }
 
 
-    public boolean isOnTargetX(MoveToPositionComponent mtpc, CollisionBoundComponent cbc){
-
-        System.out.println(mtpc.moveToPosition.x);
-        System.out.println(cbc.getCenterX());
-
-
-        return mtpc.moveToPosition.x == cbc.getCenterX();
-    }
-
 }
