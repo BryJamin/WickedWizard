@@ -7,6 +7,9 @@ public class TextureStrings {
 
     public static final  String BLOCK = "block";
 
+    //DECOR
+    public static final String DECOR_BLOCK_DOOR = "decor/block_door";
+
 
     //PLAYER
     public static final  String SQU_WALK = "squ_walk";

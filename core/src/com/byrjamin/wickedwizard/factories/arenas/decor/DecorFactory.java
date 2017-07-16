@@ -288,22 +288,23 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-
-    public Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
-        return doorBag(x,y,true,current,leaveCoords,exit);
-    }
-
-
-    public Bag<Component> doorBag(float x, float y, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exit){
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
+    public ComponentBag defaultDoorBag(float x, float y, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
 
         float width = isVertical ? Measure.units(5) : Measure.units(20);
         float height = isVertical ? Measure.units(20) : Measure.units(5);
 
+        return doorBag(x, y, width, height, isVertical, current, leaveCoords, exitDirection);
+
+    }
+
+
+    public ComponentBag doorBag(float x, float y, float width, float height, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
-        bag.add(new DoorComponent(current, leaveCoords, exit));
+        bag.add(new DoorComponent(current, leaveCoords, exitDirection));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
@@ -313,20 +314,24 @@ public class DecorFactory extends AbstractFactory {
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
         aniMap.put(AnimationStateComponent.State.LOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door")));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions(TextureStrings.DECOR_BLOCK_DOOR)));
         aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door"), Animation.PlayMode.REVERSED));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions(TextureStrings.DECOR_BLOCK_DOOR), Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(aniMap));
         //TODO explains the giant blob
 
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
-                0, 0, Measure.units(27), Measure.units(22),
+                isVertical ? 0 : CenterMath.offsetX(width, height),
+                isVertical ? 0 : CenterMath.offsetX(height, width),
+                isVertical ? width : height,
+                isVertical ? height : width,
                 PLAYER_LAYER_FAR);
 
         trc.color = arenaSkin.getWallTint();
         trc.DEFAULT = arenaSkin.getWallTint();
 
         trc.rotation = isVertical ? 0 : 90;
+
         //trc.setColor(0.7f, 0, 0f, 1);
         bag.add(trc);
         //bag.add(new GrappleableComponent());
@@ -335,45 +340,15 @@ public class DecorFactory extends AbstractFactory {
     }
 
 
-    public Bag<Component> horizontalDoorBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
-
-        Bag<Component> bag = new Bag<Component>();
+    public ComponentBag unTexturedDoorBag(float x, float y, float width, float height, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
-
-        float width = Measure.units(20);
-        float height = Measure.units(5);
-
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
-        bag.add(new DoorComponent(current, leaveCoords, exit));
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
-        sc.setCurrentState(AnimationStateComponent.State.UNLOCKED.getState());
-        sc.stateTime = 100f;
-        bag.add(sc);
-
-        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(AnimationStateComponent.State.LOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door")));
-        aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door"), Animation.PlayMode.REVERSED));
-        bag.add(new AnimationComponent(aniMap));
-        //TODO explains the giant blob
-
-        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
-                -Measure.units(2.5f), Measure.units(2.5f), Measure.units(27), Measure.units(22),
-                PLAYER_LAYER_FAR);
-
-        trc.color = arenaSkin.getWallTint();
-        trc.DEFAULT = arenaSkin.getWallTint();
-
-        trc.rotation = 90;
-        //trc.setColor(0.7f, 0, 0f, 1);
-        bag.add(trc);
-        //bag.add(new GrappleableComponent());
+        bag.add(new DoorComponent(current, leaveCoords, exitDirection));
         bag.add(new LockComponent());
         return bag;
     }
+
 
     public ComponentBag grapplePointBag(float x, float y){
 
