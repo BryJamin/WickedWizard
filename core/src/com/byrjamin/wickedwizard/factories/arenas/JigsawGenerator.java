@@ -64,7 +64,6 @@ public class JigsawGenerator {
     private Level4Rooms level4Rooms;
     private Level5Rooms level5Rooms;
     private BossMaps bossMaps;
-    private TutorialFactory tutorialFactory;
     private ArenaShellFactory arenaShellFactory;
     private ItemArenaFactory itemArenaFactory;
     private ShopFactory shopFactory;
@@ -100,7 +99,6 @@ public class JigsawGenerator {
         this.level4Rooms = new Level4Rooms(assetManager, arenaSkin, random);
         this.level5Rooms = new Level5Rooms(assetManager, arenaSkin, random);
         this.bossMaps = new BossMaps(assetManager, arenaSkin);
-        this.tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
         this.shopFactory = new ShopFactory(assetManager, arenaSkin);
@@ -111,7 +109,6 @@ public class JigsawGenerator {
     //TODO move this out of the jigsawgenerator
     public void setCurrentLevel(ChangeLevelSystem.Level currentLevel){
         this.currentLevel = currentLevel;
-
 
         switch(currentLevel){
             case ONE: arenaGens = level1Rooms.getLevel1RoomArray(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
@@ -335,9 +332,10 @@ public class JigsawGenerator {
         LinkComponent teleportLink = new LinkComponent();
         BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
 
-        Arena bossRoom = arenaShellFactory.createSmallArena(new MapCoords(), true, true, false ,true);
+        Arena bossRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
+        bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
         bossRoom.roomType = Arena.RoomType.BOSS;
-        bossRoom.addEntity(decorFactory.mapPortal(bossRoom.getWidth() / 2, bossRoom.getHeight() / 2 + Measure.units(5f), btc));
+        bossRoom.addEntity(decorFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
         placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas));
 
         startingMap = new ArenaMap(arenaMap.getCurrentArena(), placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
@@ -420,15 +418,10 @@ public class JigsawGenerator {
         Array<DoorComponent> doorComponentArray = avaliableDoors.orderedItems();
         doorComponentArray.sort(farSort.DOOR_FAR_MAPCOORDS);
 
-        for(DoorComponent dc : doorComponentArray){
-            System.out.println(dc.leaveCoords);
-        }
-
-
         if (placeRoomUsingDoorsInOrder(bossRoom,
                 doorComponentArray ,createUnavaliableMapCoords(placedArenas), random)) {
             placedArenas.add(bossRoom);
-            System.out.println("Boss room coord is " + bossRoom.cotainingCoords.first());
+            //System.out.println("Boss room coord is " + bossRoom.cotainingCoords.first());
             return true;
         }
         return false;
@@ -458,10 +451,10 @@ public class JigsawGenerator {
 
             //The available co-ordinates we can shift to.
             DoorComponent selectedAvaliableDoor = temporaryDoorsArray.first();
-            System.out.println("Array size is " + temporaryDoorsArray.size);
+           // System.out.println("Array size is " + temporaryDoorsArray.size);
             temporaryDoorsArray.removeValue(selectedAvaliableDoor, false);
 
-            System.out.println("Array size is " + temporaryDoorsArray.size);
+           // System.out.println("Array size is " + temporaryDoorsArray.size);
 
             Array<DoorComponent> linkableDoorsArray = createLinkableDoorsArray(selectedAvaliableDoor, room);
 

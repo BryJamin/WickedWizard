@@ -258,7 +258,7 @@ public class PlayScreen extends AbstractScreen {
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
-        random = new Random(2);
+        random = new Random();
         MathUtils.random = random;
         currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
