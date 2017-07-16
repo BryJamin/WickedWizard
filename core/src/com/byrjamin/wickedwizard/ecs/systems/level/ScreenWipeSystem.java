@@ -6,6 +6,7 @@ import com.artemis.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.utils.RoomTransition;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
@@ -104,7 +105,7 @@ public class ScreenWipeSystem extends BaseSystem {
             @Override
             public void performAction(World world, Entity e) {
                 for(BaseSystem s: world.getSystems()){
-                    if(!(s instanceof RenderingSystem) && !(s instanceof ScreenWipeSystem)) {
+                    if(!(s instanceof RenderingSystem) && !(s instanceof ScreenWipeSystem) && !(s instanceof FollowPositionSystem)) {
                         s.setEnabled(false);
                     }
                 }
