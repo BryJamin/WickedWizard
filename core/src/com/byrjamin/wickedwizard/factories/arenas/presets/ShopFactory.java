@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -22,24 +23,28 @@ import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
 import com.byrjamin.wickedwizard.utils.Measure;
 
+import static com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder.SECTION_HEIGHT;
+import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
+
 /**
  * Created by Home on 18/04/2017.
  */
 
-public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
+public class ShopFactory extends AbstractFactory {
 
     //TODO Shop Tutorial Popup reads: Oh look a shop, buy items by believing in yourself
 
 
     private ItemFactory itemFactory;
+    private ArenaSkin arenaSkin;
 
 /*    public ShopFactory(AssetManager assetManager) {
         super(assetManager);
         itemFactory = new ItemFactory(assetManager);
     }*/
 
-    public ShopFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
-        super(assetManager, arenaSkin);
+    public ShopFactory(AssetManager assetManager) {
+        super(assetManager);
         itemFactory = new ItemFactory(assetManager);
         this.arenaSkin = new ShopSkin(atlas);
 
@@ -62,12 +67,6 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.GRAPPLE,
                         ArenaBuilder.wall.DOOR)).buildArena(arena);
-        
-
-/*        MapCoords[] locations = new MapCoords[]{ new MapCoords((int) Measure.units(20), (int) Measure.units(40)),
-                new MapCoords((int) Measure.units(40), (int) Measure.units(40)),
-                new MapCoords((int) Measure.units(60), (int) Measure.units(40)),
-                new MapCoords((int) Measure.units(80), (int) Measure.units(40))};*/
 
         for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(37.5f), new HealthUp(), 5)) {
             arena.addEntity(b);
@@ -84,10 +83,6 @@ public class ShopFactory extends com.byrjamin.wickedwizard.factories.arenas.deco
         for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(37.5f), item2, 10)) {
             arena.addEntity(b);
         }
-
-
-
-
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(Measure.units(67.5f), Measure.units(10f)));

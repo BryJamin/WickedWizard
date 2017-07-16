@@ -83,8 +83,8 @@ public class Collider {
                     || currentBound.getX() == wall.getX() + wall.getHeight();*/
 
 
-            //TODO maybe turn this into top of bottom 
-            return leftOrRightCollision(futureBound, wall);
+            //TODO maybe turn this into top of bottom
+            return topOrBottomCollision(currentBound, wall);
 
 /*
             System.out.println(currentBound.getX());

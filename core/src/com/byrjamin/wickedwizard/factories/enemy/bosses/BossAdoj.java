@@ -76,7 +76,7 @@ public class BossAdoj extends EnemyFactory {
 
     public ComponentBag bossAdoj(float x, float y){
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y,health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y,health);
 
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),

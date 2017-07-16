@@ -7,7 +7,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.byrjamin.wickedwizard.factories.arenas.BossMapCreate;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
+import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -51,8 +52,15 @@ public class BossMaps extends AbstractFactory {
     }
 
 
+    public Arena bossTeleportArena(MapCoords mapCoords, BossTeleporterComponent btc){
 
+        Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords());
+        bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
+        bossRoom.roomType = Arena.RoomType.BOSS;
+        bossRoom.addEntity(decorFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
 
+        return bossRoom;
+    }
 
 
     public Array<ArenaMap> getBossMapsArray(){
@@ -70,6 +78,87 @@ public class BossMaps extends AbstractFactory {
         return  arenaMaps;
     }
 
+
+    public BossMapCreate blobbaMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return blobbaMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate adojMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return adojMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate giantSpinnerMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return giantKugelMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate wandaMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return wandaMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate boomyMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return boomyMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate ajirMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return ajirMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate wraithMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return wraithMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate amalgamaMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return amalgamaMap(btc);
+            }
+        };
+    }
+
+    public BossMapCreate endMapCreate(){
+        return new BossMapCreate() {
+            @Override
+            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+                return endMap(btc);
+            }
+        };
+    }
 
 
 
@@ -94,14 +183,23 @@ public class BossMaps extends AbstractFactory {
     }
 
 
+    public Arena startingArena(MapCoords mapCoords, BossTeleporterComponent btc){
+        Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords);
+        startingArena.addEntity(decorFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f),
+                btc));
+        return startingArena;
+    }
+
+
+  //  public Arena finalRoom
+
+
+
     public ArenaMap giantKugelMap(BossTeleporterComponent btc) {
 
         Array<Arena> placedArenas = new Array<Arena>();
 
-        Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0));
-        startingArena.addEntity(decorFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f),
-                btc));
-
+        Arena startingArena = startingArena(new MapCoords(0,0), btc);
         placedArenas.add(startingArena);
         placedArenas.add(new GiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, -1)));
 

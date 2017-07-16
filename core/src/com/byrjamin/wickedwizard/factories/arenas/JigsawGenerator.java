@@ -13,15 +13,8 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level2Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level3Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level4Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level5Rooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
@@ -30,16 +23,13 @@ import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
 import com.byrjamin.wickedwizard.utils.comparator.FarSort;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.SortedSet;
 
 /**
  * Created by Home on 22/03/2017.
@@ -47,86 +37,42 @@ import java.util.SortedSet;
 
 public class JigsawGenerator {
 
-    private int noBattleRooms;
+    private AssetManager assetManager;
+    private ArenaMap startingMap;
 
-    private ChangeLevelSystem.Level currentLevel;
+    private int noBattleRooms;
 
     private Random random;
 
-    private ArenaMap startingMap;
-
     private FarSort farSort;
 
-    private AssetManager assetManager;
-    private Level1Rooms level1Rooms;
-    private Level2Rooms level2Rooms;
-    private Level3Rooms level3Rooms;
-    private Level4Rooms level4Rooms;
-    private Level5Rooms level5Rooms;
-    private BossMaps bossMaps;
-    private ArenaShellFactory arenaShellFactory;
-    private ItemArenaFactory itemArenaFactory;
     private ShopFactory shopFactory;
     private ArenaSkin arenaSkin;
 
     private Array<ArenaCreate> arenaGens;
-
+    private Array<BossMapCreate> bossMapGens;
 
     private HashMap<BossTeleporterComponent, ArenaMap> mapTracker = new HashMap<BossTeleporterComponent, ArenaMap>();
 
     private ItemStore itemStore;
 
-    private com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
+    private DecorFactory decorFactory;
 
 
     public JigsawGenerator(JigsawGeneratorConfig jigsawGeneratorConfig){
         this.assetManager = jigsawGeneratorConfig.assetManager;
         this.random = jigsawGeneratorConfig.random;
-        this.setSkin(jigsawGeneratorConfig.arenaSkin);
         this.noBattleRooms = jigsawGeneratorConfig.noBattleRooms;
-        this.setCurrentLevel(jigsawGeneratorConfig.currentLevel);
         this.itemStore = new ItemStore(random);
+        this.shopFactory = new ShopFactory(assetManager);
         this.setStartingMap(jigsawGeneratorConfig.startingMap);
         this.arenaGens = jigsawGeneratorConfig.arenaGens;
         this.farSort = new FarSort(getStartingMap().getCurrentArena().getStartingCoords());
-    }
-
-    public void setSkin(ArenaSkin arenaSkin) {
-        this.arenaSkin = arenaSkin;
-        this.level1Rooms = new Level1Rooms(assetManager, arenaSkin, random);
-        this.level2Rooms = new Level2Rooms(assetManager, arenaSkin, random);
-        this.level3Rooms = new Level3Rooms(assetManager, arenaSkin, random);
-        this.level4Rooms = new Level4Rooms(assetManager, arenaSkin, random);
-        this.level5Rooms = new Level5Rooms(assetManager, arenaSkin, random);
-        this.bossMaps = new BossMaps(assetManager, arenaSkin);
-        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
-        this.itemArenaFactory = new ItemArenaFactory(assetManager, arenaSkin);
-        this.shopFactory = new ShopFactory(assetManager, arenaSkin);
+        this.bossMapGens = jigsawGeneratorConfig.bossMapGens;
+        this.arenaSkin = jigsawGeneratorConfig.arenaSkin;
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
     }
 
-
-    //TODO move this out of the jigsawgenerator
-    public void setCurrentLevel(ChangeLevelSystem.Level currentLevel){
-        this.currentLevel = currentLevel;
-
-        switch(currentLevel){
-            case ONE: arenaGens = level1Rooms.getLevel1RoomArray(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
-                break;
-            case TWO: arenaGens = level2Rooms.getLevel2RoomArray();
-                break;
-            case THREE: arenaGens = level3Rooms.getLevel3RoomArray();
-                break;
-            case FOUR: arenaGens = level4Rooms.getLevel4RoomArray();
-                break;
-            case FIVE: arenaGens = level5Rooms.getLevel5RoomArray();
-                break;
-            default: arenaGens = level1Rooms.getLevel1RoomArray();
-                break;
-        }
-
-
-    }
 
     public void setNoBattleRooms(int noBattleRooms){
         this.noBattleRooms = noBattleRooms;
@@ -311,7 +257,7 @@ public class JigsawGenerator {
 
     public void generate(){
         mapTracker.clear();
-        generate(new ArenaMap(arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords())));
+        generate(new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords())));
     }
 
 
@@ -331,55 +277,21 @@ public class JigsawGenerator {
 
         LinkComponent teleportLink = new LinkComponent();
         BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
-
-        Arena bossRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords());
-        bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
-        bossRoom.roomType = Arena.RoomType.BOSS;
-        bossRoom.addEntity(decorFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
-        placeBossRoom(bossRoom, placedArenas, createAvaliableDoorSet(placedArenas));
+        placeBossRoom(new BossMaps(assetManager, arenaSkin).bossTeleportArena(new MapCoords(), btc), placedArenas, createAvaliableDoorSet(placedArenas));
 
         startingMap = new ArenaMap(arenaMap.getCurrentArena(), placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
         mapTracker.put(btc, startingMap);
 
         btc = new BossTeleporterComponent(teleportLink);
-        mapTracker.put(btc, generateBossMap(btc));
+        ArenaMap bossMap = bossMapGens.get(random.nextInt(bossMapGens.size)).createBossMap(btc, itemStore.generateItemRoomItem());
+        cleanArenas(bossMap.getRoomArray());
+
+        mapTracker.put(btc, bossMap);
 
 
         this.cleanArenas(startingMap.getRoomArray());
 
     }
-
-
-
-    public ArenaMap generateBossMap(BossTeleporterComponent btc){
-        WeightedRoll<ArenaMap> roll = new WeightedRoll<ArenaMap>(random);
-        switch (currentLevel){
-            case ONE:
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.blobbaMap(btc), 20));
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.adojMap(btc), 20));
-            default:
-                break;
-            case TWO:
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.giantKugelMap(btc), 20));
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.wandaMap(btc), 20));
-                break;
-            case THREE:
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.boomyMap(btc), 20));
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.ajirMap(btc), 20));
-                break;
-            case FOUR:
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.wraithMap(btc), 20));
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.amalgamaMap(btc), 20));
-                break;
-            case FIVE:
-                roll.addWeightedObject(new WeightedObject<ArenaMap>(bossMaps.endMap(btc), 20));
-                break;
-        }
-        ArenaMap map = roll.roll();
-        cleanArenas(map.getRoomArray());
-        return map;
-    }
-
 
 
     public void setStartingMap(ArenaMap startingMap) {
@@ -388,7 +300,7 @@ public class JigsawGenerator {
 
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
-        Arena itemRoom = itemArenaFactory.createItemRoom(new MapCoords(), itemStore.generateItemRoomItem(), itemStore.generateItemRoomItem());
+        Arena itemRoom = new ItemArenaFactory(assetManager, arenaSkin).createItemRoom(new MapCoords(), itemStore.generateItemRoomItem(), itemStore.generateItemRoomItem());
         if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(itemRoom);
             cleanArena(itemRoom, placedArenas);

@@ -183,7 +183,7 @@ public class AdventureWorld {
                         new DoorSystem(),
                         new LevelItemSystem(new ItemStore(random), random),
                         new SoundSystem(assetManager),
-                        new ChangeLevelSystem(jigsawGenerator, atlas),
+                        new ChangeLevelSystem(jigsawGenerator, assetManager, random),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap())
                 )

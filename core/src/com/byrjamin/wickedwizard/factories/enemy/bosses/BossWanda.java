@@ -80,8 +80,7 @@ public class BossWanda extends EnemyFactory {
         y = y - height / 2;
 
 
-        ComponentBag bag = new ComponentBag();
-        defaultEnemyBag(bag, x , y, 75);
+        ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, 75);
 
         bag.add(new VelocityComponent());
        // bag.add(new GravityComponent());

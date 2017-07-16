@@ -129,7 +129,7 @@ public class BossEnd extends EnemyFactory {
         x = x - mainBodyWidth / 2;
         y = y - mainBodyHeight / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, mainBodyHealth);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, mainBodyHealth);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, mainBodyWidth, mainBodyHeight)));
 

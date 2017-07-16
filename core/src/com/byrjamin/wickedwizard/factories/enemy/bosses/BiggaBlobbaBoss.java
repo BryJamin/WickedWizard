@@ -35,6 +35,7 @@ import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.CenterMath;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.Pair;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
@@ -64,6 +65,7 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
     private static final float gunOffsetY = Measure.units(12.5f);
 
+    private static final float health = 65;
 
     private static final float speed = Measure.units(60f);
 
@@ -89,12 +91,8 @@ public class BiggaBlobbaBoss extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
+        Bag<Component> bag = this.defaultBossBag(new ComponentBag(), x, y, health);
         bag.add(new VelocityComponent(0, 0));
-
-        Rectangle collision = new Rectangle(x, y, Measure.units(33), Measure.units(38));
 
         CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x, y, width, height));
         cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, bottomWidth, bottomHeight)));
@@ -106,23 +104,10 @@ public class BiggaBlobbaBoss extends EnemyFactory {
                 CenterMath.offsetX(width, crownWidth), bottomHeight + bottomMidHeight + bottomTopHeight));
 
 
-/*        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(29), Measure.units(5)),
-                Measure.units(2), Measure.units(17)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(23), Measure.units(5)),
-                Measure.units(5), Measure.units(22)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(15), Measure.units(3)),
-                Measure.units(9), Measure.units(27)));
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(9), Measure.units(7)),
-                Measure.units(12), Measure.units(30)));*/
-
         bag.add(cbc);
         bag.add(new GravityComponent());
-        bag.add(new LootComponent(5));
         // bag.add(new AccelerantComponent(Measure.units(10), Measure.units(20f)));
         // bag.add(new MoveToPlayerComponent());
-        bag.add(new EnemyComponent());
-        bag.add(new HealthComponent(65));
-        bag.add(new BlinkComponent());
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(1f / 20f, atlas.findRegions(TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
@@ -134,16 +119,6 @@ public class BiggaBlobbaBoss extends EnemyFactory {
                 textureSize,
                 textureSize,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-
-        //TODO fix biggablobba
-/*        OnDeathComponent odc = new OnDeathComponent();
-        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        odc.getComponentBags().addAll(itemf.createIntangibleFollowingPickUpBag(0,0, new MoneyPlus1()));
-        df.giblets(odc, 10, Color.GREEN);
-        bag.add(odc);*/
-
 
         WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
                 .angles(20,40,60,80, 100, 120, 140, 160)

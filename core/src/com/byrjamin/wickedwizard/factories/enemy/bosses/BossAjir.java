@@ -98,7 +98,7 @@ public class BossAjir extends EnemyFactory{
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
                 new HitBox(new Rectangle(x, y, bodyHitBoxWidth, bodyHitBoxHeight),

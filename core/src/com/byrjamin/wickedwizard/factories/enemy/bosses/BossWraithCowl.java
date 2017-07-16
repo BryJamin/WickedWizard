@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntMap;
@@ -125,7 +126,7 @@ public class BossWraithCowl extends EnemyFactory {
     private GibletFactory gibletFactory;
 
 
-    private Random random = new Random(); //TODO pull in the global random
+    private Random random = MathUtils.random; //TODO pull in the global random
 
     public BossWraithCowl(AssetManager assetManager) {
         super(assetManager);
@@ -138,7 +139,7 @@ public class BossWraithCowl extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
                 new HitBox(new Rectangle(x, y, hitBoxheight, hitBoxwidth), CenterMath.offsetX(width, hitBoxwidth),

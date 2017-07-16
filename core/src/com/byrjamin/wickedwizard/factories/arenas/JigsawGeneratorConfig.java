@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
+import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -31,14 +32,10 @@ public class JigsawGeneratorConfig {
     public ChangeLevelSystem.Level currentLevel = ChangeLevelSystem.Level.ONE;
 
     public Array<ArenaCreate> arenaGens;
-
+    public Array<BossMapCreate> bossMapGens;
 
     public JigsawGeneratorConfig(AssetManager assetManager, Random random){
-        this.assetManager = assetManager;
-        this.random = random;
-        this.arenaSkin = new LightGraySkin(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class));
-        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords()));
-        this.arenaGens = new Level1Rooms(assetManager, arenaSkin, random).getLevel1RoomArray();
+        this(assetManager, new LightGraySkin(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class)), random);
     }
 
 
@@ -48,6 +45,11 @@ public class JigsawGeneratorConfig {
         this.arenaSkin = arenaSkin;
         this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords()));
         this.arenaGens = new Level1Rooms(assetManager, arenaSkin, random).getLevel1RoomArray();
+
+        bossMapGens = new Array<BossMapCreate>();
+        bossMapGens.add(new BossMaps(assetManager, arenaSkin).blobbaMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, arenaSkin).adojMapCreate());
+
     }
 
 
@@ -66,6 +68,9 @@ public class JigsawGeneratorConfig {
 
     public JigsawGeneratorConfig arenaCreates(Array<ArenaCreate> val)
     { arenaGens = val; return this; }
+
+    public JigsawGeneratorConfig bossMapCreates(Array<BossMapCreate> val)
+    { bossMapGens = val; return this; }
 
 
     public JigsawGenerator build(){

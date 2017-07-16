@@ -116,7 +116,7 @@ public class BossAmalgama extends EnemyFactory {
 
     public ComponentBag amalgama(final float x, final float y){
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, bodyWidth, bodyHeight), true));
 

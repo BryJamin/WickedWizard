@@ -44,7 +44,7 @@ import java.util.Random;
 
 public class MrBoomyBoss extends EnemyFactory {
 
-    private static float height = Measure.units(12f);
+    private static final float height = Measure.units(12f);
     private static final float width = Measure.units(12f);
 
     private static final float hitBoxWidth = Measure.units(9f);
@@ -76,7 +76,7 @@ public class MrBoomyBoss extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBagNoLoot(new ComponentBag(), x , y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x , y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
                 new HitBox(new Rectangle(x,y,hitBoxWidth,hitBoxHeight),
