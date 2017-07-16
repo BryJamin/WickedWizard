@@ -152,6 +152,12 @@ public class Arena {
         }
     }
 
+    public void addEntity(Array<? extends Bag<Component>> entityBags){
+        for(Bag<Component> bag : entityBags) {
+            bagOfEntities.add(bag);
+        }
+    }
+
     public Bag<Component> findBag(Component c){
         for(Bag<Component> bc : bagOfEntities){
             if(bc.contains(c)){

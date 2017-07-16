@@ -29,8 +29,6 @@ public class JigsawGeneratorConfig {
     public final AssetManager assetManager;
     public ArenaSkin arenaSkin;
 
-    public ChangeLevelSystem.Level currentLevel = ChangeLevelSystem.Level.ONE;
-
     public Array<ArenaCreate> arenaGens;
     public Array<BossMapCreate> bossMapGens;
 
@@ -61,10 +59,6 @@ public class JigsawGeneratorConfig {
 
     public JigsawGeneratorConfig startingMap(ArenaMap val)
     { startingMap = val; return this; }
-
-    public JigsawGeneratorConfig currentLevel(ChangeLevelSystem.Level val)
-    { currentLevel = val; return this; }
-
 
     public JigsawGeneratorConfig arenaCreates(Array<ArenaCreate> val)
     { arenaGens = val; return this; }

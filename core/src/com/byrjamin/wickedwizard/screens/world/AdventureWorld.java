@@ -104,7 +104,6 @@ public class AdventureWorld {
         this.player = new PlayerFactory(assetManager).playerBag(Measure.units(50f), Measure.units(45f));
         this.jigsawGenerator = new JigsawGeneratorConfig(assetManager, random)
                 .noBattleRooms(5)
-                .currentLevel(ChangeLevelSystem.Level.ONE)
                 .build();
     }
 

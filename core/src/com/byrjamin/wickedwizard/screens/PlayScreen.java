@@ -45,6 +45,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.DarkPurpleAndBrown;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.screens.world.AdventureWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
@@ -149,7 +150,6 @@ public class PlayScreen extends AbstractScreen {
 
                 jg = new JigsawGeneratorConfig(game.manager, random)
                         .noBattleRooms(5)
-                        .currentLevel(ChangeLevelSystem.Level.ONE)
                         .startingMap(arenaMap)
                         .build();
                 jg.generate(jg.getStartingMap());
@@ -166,7 +166,7 @@ public class PlayScreen extends AbstractScreen {
 
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
-                    bossMap = new BossMaps(game.manager, arenaSkin).blobbaMap(new BossTeleporterComponent());
+                    bossMap = new BossMaps(game.manager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent(),new ItemVitaminC());
 
                 }
 
@@ -235,7 +235,6 @@ public class PlayScreen extends AbstractScreen {
 */
         jg = new JigsawGeneratorConfig(game.manager,new DarkPurpleAndBrown(atlas), random)
                 .noBattleRooms(5)
-                .currentLevel(ChangeLevelSystem.Level.ONE)
                 .build();
         jg.generate();
         jg.cleanArenas();
