@@ -45,9 +45,6 @@ public class BoundsDrawingSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        //System.out.println(enabled);
-
-
         Array<Rectangle> bounds = new Array<Rectangle>();
         Array<Rectangle> hitboxes = new Array<Rectangle>();
         Array<Rectangle> proxhitboxes = new Array<Rectangle>();

@@ -57,13 +57,13 @@ public class MapTeleportationSystem extends EntitySystem {
         if(mapTracker.containsKey(btc)){
             processingFlag = true;
 
-            final BossTeleporterComponent hmm = btc;
+            final BossTeleporterComponent bossTeleporterComponent = btc;
 
 
             world.getSystem(ScreenWipeSystem.class).startScreenWipe(Direction.DOWN, new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
-                    switchMap(hmm);
+                    switchMap(bossTeleporterComponent);
                     for(BaseSystem s: world.getSystems()){
                         if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
                             s.setEnabled(true);
@@ -117,6 +117,7 @@ public class MapTeleportationSystem extends EntitySystem {
                         cbc.setCenterX(cbm.get(e).getCenterX());
                         cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight() * 2;
                         vc.velocity.y = 0;
+                        vc.velocity.x = 0;
 
                         pc.setX(cbc.bound.x);
                         pc.setY(cbc.bound.y);

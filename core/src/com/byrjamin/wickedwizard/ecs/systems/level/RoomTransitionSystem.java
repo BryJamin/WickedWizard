@@ -12,11 +12,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -31,7 +33,6 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.RoomTransition;
 
 /**
  * Created by Home on 13/03/2017.
@@ -48,8 +49,12 @@ public class RoomTransitionSystem extends EntitySystem {
     private ComponentMapper<DoorComponent> dm;
     private ComponentMapper<MoveToComponent> mtm;
     private ComponentMapper<ParentComponent> parm;
-    private ComponentMapper<ExpireComponent> em;
+    private ComponentMapper<ExpireComponent> expireM;
     private ComponentMapper<ChildComponent> cm;
+
+    private ComponentMapper<OffScreenPickUpComponent> offScreenPickUpM;
+
+    private ComponentMapper<CurrencyComponent> currencyComponentComponentMapper;
 
     private ArenaMap currentMap;
 
@@ -228,7 +233,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
         for(Entity e : this.getEntities()){
 
-            if(!bm.has(e) && !em.has(e)) {
+            if(!bm.has(e) && !expireM.has(e) && !offScreenPickUpM.has(e)) {
 
                 if(cm.has(e)){
                     if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
@@ -241,6 +246,14 @@ public class RoomTransitionSystem extends EntitySystem {
                 e.getComponents(new Bag<Component>());
                 arena.getBagOfEntities().add(e.getComponents(b));
             }
+
+            if(offScreenPickUpM.has(e)){
+                if(world.getSystem(FindPlayerSystem.class).getPlayerEntity() != null) {
+                    offScreenPickUpM.get(e).getPickUp().applyEffect(world, world.getSystem(FindPlayerSystem.class).getPlayerEntity());
+                }
+            }
+
+
 
             e.deleteFromWorld();
         }
