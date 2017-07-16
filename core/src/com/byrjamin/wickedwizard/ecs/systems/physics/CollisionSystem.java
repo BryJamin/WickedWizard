@@ -47,6 +47,7 @@ public class CollisionSystem extends EntityProcessingSystem {
     private Rectangle futureRectangle = new Rectangle();
     private Rectangle nearByCheckRectangle = new Rectangle();
     private Array<Rectangle> collidableobjects = new Array<Rectangle>();
+    private Array<Rectangle> temporarayCollidableObjects = new Array<Rectangle>();
 
     private Aspect.Builder wall;
     private Aspect.Builder playerWalls;
@@ -94,6 +95,11 @@ public class CollisionSystem extends EntityProcessingSystem {
         }
 
 
+        if(collidableobjects.size >= 2){
+
+        }
+
+
 
         futureRectangle.set(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight());
         //System.out.println(futureRectangle.getX());
@@ -112,15 +118,6 @@ public class CollisionSystem extends EntityProcessingSystem {
 
             if(c != Collider.Collision.NONE){
 
-                switch(c){
-                    case BOTTOM: //vc.velocity.y = 0;
-                    case TOP: //vc.velocity.y = 0;
-                        break;
-                    //TODO When grappling if you collide with something the target destination should be removed
-                    case LEFT:
-                    case RIGHT:
-                        break;
-                }
                 pc.position.x = cbc.bound.getX();
                 pc.position.y = cbc.bound.getY();
 
@@ -138,20 +135,51 @@ public class CollisionSystem extends EntityProcessingSystem {
 
     }
 
+    /**
+     * Takes in an array of colliable objects and links together
+     */
+    public void createLinkedRectangles(Array<Rectangle> collidableobjects){
+
+        temporarayCollidableObjects.clear();
+        temporarayCollidableObjects.addAll(collidableobjects);
 
 
-    public void addCollidableObjects(Array<Rectangle> collidableObjects, Aspect.Builder aspect){
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(aspect);
-        IntBag entityIds = subscription.getEntities();
+        while(temporarayCollidableObjects.size >= 0) {
 
-        for(int i = 0; i < entityIds.size(); i++){
-            if(wm.has(entityIds.get(i))) {
-                collidableObjects.add(wm.get(entityIds.get(i)).bound);
-            } else if(cbm.has(entityIds.get(i))) {
-                collidableObjects.add(cbm.get(entityIds.get(i)).bound);
+            Rectangle r = temporarayCollidableObjects.pop();
+
+            for (int i = 0; i < collidableobjects.size; i++) {
+
+                Rectangle temp = collidableobjects.get(i);
+
+                if(!r.equals(temp)) {
+
+                    if (r.x == collidableobjects.get(i).getX()){
+
+
+
+
+                    }
+
+                }
             }
+
         }
+
+
+
+
+
+
+
+
+
+
     }
+
+
+
+
 
 
     public void addNearByCollidableObjects(Rectangle r, Array<Rectangle> collidableObjects, Aspect.Builder aspect){
@@ -167,6 +195,13 @@ public class CollisionSystem extends EntityProcessingSystem {
         }
     }
 
+    /**
+     * Checks if two Rectangles are nearby each other. 'Nearby' is if the dynamic rectangles width/height mulitplied by 3
+     * overlap the stationary rectangle
+     * @param dynamic - In context the dynamic rectangle are characters in the game (players/enemies/items)
+     * @param stationary - In context stationary are the walls they collide with
+     * @return - Returns true if the two rectangles are nearby each other
+     */
     public boolean isNearBy(Rectangle dynamic, Rectangle stationary){
 
         float minX = dynamic.getX() - (dynamic.getWidth() * 3 / 2 - dynamic.getWidth() / 2);

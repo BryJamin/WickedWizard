@@ -62,15 +62,46 @@ public class Collider {
                 && currentBound.getX() < wall.getX() + wall.getWidth() - buffer;
 
         if (wall.overlaps(futureBound) && isBetweenY && !isBetweenX) {
-            return leftOrRightCollision(currentBound, wall);
+            return leftOrRightCollision(futureBound, wall);
         } else if (wall.overlaps(futureBound) && !isBetweenY && isBetweenX ) { //Hit was on top
-            return topOrBottomCollision(currentBound, wall);
-        } else if(wall.overlaps(futureBound)){
-/*            if(leftOrRightPrecedence){
-                return leftOrRightCollision(currentBound, wall);
+            return topOrBottomCollision(futureBound, wall);
+        } else if(wall.contains(currentBound)){
+/*
+            System.out.println("current x" + currentBound.getX());
+            System.out.println("current x" + currentBound.getX() + currentBound.getWidth());
+            System.out.println("wall x " + wall.getX());
+            System.out.println("YYY");
+            System.out.println(currentBound.getY());
+            System.out.println(wall.getY());
+
+
+            boolean isGoingDown = futureBound.getY() < currentBound.getY();
+
+            boolean isOnTop = isGoingDown && currentBound.getY() == wall.getY() + wall.getHeight();
+
+            boolean leftOrRightPrecedence = currentBound.getX() + currentBound.getWidth() == wall.getX()
+                    || currentBound.getX() == wall.getX() + wall.getHeight();*/
+
+
+            //TODO maybe turn this into top of bottom 
+            return leftOrRightCollision(futureBound, wall);
+
+/*
+            System.out.println(currentBound.getX());
+            System.out.println(wall.getX());
+            System.out.println("YYY");
+            System.out.println(currentBound.getY());
+            System.out.println(wall.getY());
+            boolean leftOrRightPrecedence = (currentBound.getX() <=  wall.getX()
+                    || currentBound.getX() + currentBound.getHeight() >= wall.getX() + wall.getHeight())
+                    && ;
+            System.out.println("INSIDE ELSE");
+            if(leftOrRightPrecedence){
+                return leftOrRightCollision(futureBound, wall);
             } else {
-                return topOrBottomCollision(currentBound, wall);
-            }*/
+                return topOrBottomCollision(futureBound, wall);
+            }
+*/
 
         }
 

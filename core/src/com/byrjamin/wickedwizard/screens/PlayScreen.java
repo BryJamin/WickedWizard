@@ -41,6 +41,7 @@ import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.DarkPurpleAndBrown;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
@@ -232,10 +233,9 @@ public class PlayScreen extends AbstractScreen {
         jg.generateTutorial = isTutorial;
         jg.generate();
 */
-        jg = new JigsawGeneratorConfig(game.manager, random)
+        jg = new JigsawGeneratorConfig(game.manager,new DarkPurpleAndBrown(atlas), random)
                 .noBattleRooms(5)
                 .currentLevel(ChangeLevelSystem.Level.ONE)
-                .startingMap(new ArenaMap(new ArenaShellFactory(game.manager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
                 .build();
         jg.generate();
         jg.cleanArenas();
