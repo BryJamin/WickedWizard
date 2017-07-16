@@ -233,9 +233,7 @@ public class PlayScreen extends AbstractScreen {
         jg.generateTutorial = isTutorial;
         jg.generate();
 */
-        jg = new JigsawGeneratorConfig(game.manager,new DarkPurpleAndBrown(atlas), random)
-                .noBattleRooms(5)
-                .build();
+        jg = new ChangeLevelSystem(game.manager, random).getJigsawGenerator(ChangeLevelSystem.Level.ONE);
         jg.generate();
         jg.cleanArenas();
 
