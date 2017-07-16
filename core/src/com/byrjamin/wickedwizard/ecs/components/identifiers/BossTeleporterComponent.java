@@ -11,8 +11,8 @@ public class BossTeleporterComponent extends Component{
 
     public LinkComponent link;
 
-    public ArenaMap From;
-    public ArenaMap To;
+    public float offsetX;
+    public float offsetY;
 
 
     public BossTeleporterComponent(){

@@ -12,6 +12,8 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.levels.ArenaRepostiory;
+import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -57,13 +59,10 @@ public class JigsawGeneratorTest extends GameTest {
 
             //LevelItemSystem lis = new LevelItemSystem(new Random());
 
-            JigsawGenerator jg = new JigsawGeneratorConfig(assetManager, random)
-                    .noBattleRooms(numberOfRooms)
-                    .currentLevel(ChangeLevelSystem.Level.ONE)
-                    .startingMap(new ArenaMap(new ArenaShellFactory(assetManager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
-                    .build();
+            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.ONE);
+            jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
-            //jg.cleanArenas();
+            jg.cleanArenas();
 
 
             Array<Arena> arenas = jg.getStartingMap().getRoomArray();
@@ -146,11 +145,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             System.out.println("Generating for a room size of " + numberOfRooms);
 
-            JigsawGenerator jg = new JigsawGeneratorConfig(assetManager, random)
-                    .noBattleRooms(numberOfRooms)
-                    .currentLevel(ChangeLevelSystem.Level.TWO)
-                    .startingMap(new ArenaMap(new ArenaShellFactory(assetManager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
-                    .build();
+            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.TWO);
+            jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
             jg.cleanArenas();
 
@@ -224,11 +220,9 @@ public class JigsawGeneratorTest extends GameTest {
 
             System.out.println("Generating for a room size of " + numberOfRooms);
 
-            JigsawGenerator jg = new JigsawGeneratorConfig(assetManager, random)
-                    .noBattleRooms(numberOfRooms)
-                    .currentLevel(ChangeLevelSystem.Level.THREE)
-                    .startingMap(new ArenaMap(new ArenaShellFactory(assetManager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
-                    .build();
+
+            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.THREE);
+            jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
             jg.cleanArenas();
 
@@ -303,11 +297,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             int numberOfRooms = random.nextInt(95) + 5;
 
-            JigsawGenerator jg = new JigsawGeneratorConfig(assetManager, random)
-                    .noBattleRooms(numberOfRooms)
-                    .currentLevel(ChangeLevelSystem.Level.FOUR)
-                    .startingMap(new ArenaMap(new ArenaShellFactory(assetManager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
-                    .build();
+            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.FOUR);
+            jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
             jg.cleanArenas();
 
@@ -387,11 +378,11 @@ public class JigsawGeneratorTest extends GameTest {
 
             int numberOfRooms = 69; //random.nextInt(95) + 5;
 
-            JigsawGenerator jg = new JigsawGeneratorConfig(assetManager, random)
-                    .noBattleRooms(numberOfRooms)
-                    .currentLevel(ChangeLevelSystem.Level.FIVE)
-                    .startingMap(new ArenaMap(new ArenaShellFactory(assetManager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords())))
-                    .build();
+
+
+
+            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.FIVE);
+            jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
             jg.cleanArenas();
 

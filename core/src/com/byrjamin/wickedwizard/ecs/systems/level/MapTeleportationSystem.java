@@ -2,10 +2,13 @@ package com.byrjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
+import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
+import com.artemis.utils.Bag;
+import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
@@ -18,6 +21,8 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.HashMap;
@@ -84,15 +89,15 @@ public class MapTeleportationSystem extends EntitySystem {
         }
     }
 
-    public void switchMap(BossTeleporterComponent from){
+    public void switchMap(BossTeleporterComponent source){
 
-        BossTeleporterComponent to = isTeleportAvaliable(from);
+        BossTeleporterComponent destination = isTeleportAvaliable(source);
 
-        if(to != null) {
+        if(destination != null) {
 
-            if (mapTracker.containsKey(to)) {
+            if (mapTracker.containsKey(destination)) {
 
-                ArenaMap map = mapTracker.get(to);
+                ArenaMap map = mapTracker.get(destination);
                 RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
                 rts.packRoom(world, rts.getCurrentArena());
                 rts.setCurrentMap(map);
@@ -110,12 +115,22 @@ public class MapTeleportationSystem extends EntitySystem {
                 MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
                 world.getSystem(PlayerInputSystem.class).turnOffGlide();
 
+               // this.process();
+               // world.process();
                 //System.out.println("size of entites" + this.getEntities().size());
-                for (Entity e : this.getEntities()) {
-                    if (btm.get(e).link == to.link) {
+                IntBag bag = world.getAspectSubscriptionManager().get(Aspect.all(BossTeleporterComponent.class)).getEntities();
 
-                        cbc.setCenterX(cbm.get(e).getCenterX());
-                        cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight() * 2;
+                System.out.println(bag.size());
+
+                for(Bag<Component> b : rts.getCurrentArena().getBagOfEntities()) {
+                    if (BagSearch.contains(BossTeleporterComponent.class, b)) {
+
+                        BossTeleporterComponent btc = BagSearch.getObjectOfTypeClass(BossTeleporterComponent.class, b);
+                        CollisionBoundComponent teleporterBound = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, b);
+                        cbc.bound.setCenter(
+                                teleporterBound.getCenterX() + btc.offsetX,
+                                teleporterBound.getCenterY() + btc.offsetY);
+
                         vc.velocity.y = 0;
                         vc.velocity.x = 0;
 
@@ -124,6 +139,7 @@ public class MapTeleportationSystem extends EntitySystem {
 
                         mtc.reset();
                     }
+
                 }
             }
         }

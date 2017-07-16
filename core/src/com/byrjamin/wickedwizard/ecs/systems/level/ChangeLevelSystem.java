@@ -67,10 +67,7 @@ public class ChangeLevelSystem extends BaseSystem {
 
     private Level level;
 
-
-    private JigsawGenerator jigsawGenerator;
-
-    public ChangeLevelSystem(JigsawGenerator jigsawGenerator, AssetManager assetManager, Random random){
+    public ChangeLevelSystem(AssetManager assetManager, Random random){
         this.assetManager = assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         ONE.setArenaSkin(new LightGraySkin(atlas));
@@ -78,7 +75,6 @@ public class ChangeLevelSystem extends BaseSystem {
         THREE.setArenaSkin(new DarkPurpleAndBrown(atlas));
         FOUR.setArenaSkin(new Bourbon(atlas));
         FIVE.setArenaSkin(new DarkGraySkin(atlas));
-        this.jigsawGenerator = jigsawGenerator;
         this.random = random;
         level = ONE;
     }
@@ -89,8 +85,12 @@ public class ChangeLevelSystem extends BaseSystem {
 
     public JigsawGenerator incrementLevel(){
 
+        JigsawGenerator jigsawGenerator;
+
         switch (level) {
-            case ONE: level = TWO;
+            case ONE:
+            default:
+                level = TWO;
                 jigsawGenerator = getJigsawGenerator(TWO);
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 2", "");
                 break;
@@ -107,6 +107,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 world.getSystem(MessageBannerSystem.class).createBanner("Chapter 5", "");
                 break;
             case FIVE:
+                jigsawGenerator = getJigsawGenerator(ONE);
                 //TODO world.endGame
                 break;
         }

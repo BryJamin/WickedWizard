@@ -75,7 +75,9 @@ public class BossMaps extends AbstractFactory {
      */
     public final Arena bossTeleportArena(MapCoords mapCoords, BossTeleporterComponent btc){
 
-        Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createSmallArena(mapCoords, false, true, false, false);
+        btc.offsetX = Measure.units(25f);
+
+        Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords);
         bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
         bossRoom.roomType = Arena.RoomType.BOSS;
         bossRoom.addEntity(decorFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
@@ -91,7 +93,10 @@ public class BossMaps extends AbstractFactory {
      * @return - Returns the arena
      */
     public Arena bossMapStartingArena(MapCoords mapCoords, BossTeleporterComponent btc){
-        Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords);
+
+        btc.offsetY = -Measure.units(15f);
+
+        Arena startingArena = arenaShellFactory.createSmallArena(mapCoords, false, true, false, false);
         startingArena.addEntity(decorFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f), btc));
         return startingArena;
     }

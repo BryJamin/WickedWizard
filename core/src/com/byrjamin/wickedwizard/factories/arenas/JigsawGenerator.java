@@ -277,6 +277,11 @@ public class JigsawGenerator {
 
         LinkComponent teleportLink = new LinkComponent();
         BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
+
+/*        for(DoorComponent dc : createAvaliableDoorSet(placedArenas)){
+            System.out.println(findRoom(dc.leaveCoords, placedArenas));
+        }*/
+
         placeBossRoom(new BossMaps(assetManager, arenaSkin).bossTeleportArena(new MapCoords(), btc), placedArenas, createAvaliableDoorSet(placedArenas));
 
         startingMap = new ArenaMap(arenaMap.getCurrentArena(), placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
@@ -333,7 +338,7 @@ public class JigsawGenerator {
         if (placeRoomUsingDoorsInOrder(bossRoom,
                 doorComponentArray ,createUnavaliableMapCoords(placedArenas), random)) {
             placedArenas.add(bossRoom);
-            //System.out.println("Boss room coord is " + bossRoom.cotainingCoords.first());
+
             return true;
         }
         return false;
@@ -368,6 +373,8 @@ public class JigsawGenerator {
 
            // System.out.println("Array size is " + temporaryDoorsArray.size);
 
+
+
             Array<DoorComponent> linkableDoorsArray = createLinkableDoorsArray(selectedAvaliableDoor, room);
 
             while(!roomPlaced && linkableDoorsArray.size > 0) {
@@ -389,6 +396,7 @@ public class JigsawGenerator {
                 roomPlaced = true;
 
                 for (int j = 0; j < mockCoords.size; j++) {
+
                     if (unavaliableMapCoords.contains(mockCoords.get(j))) {
                         roomPlaced = false;
                         break;
@@ -398,12 +406,12 @@ public class JigsawGenerator {
                 if (roomPlaced) {
                     shiftCoordinatePosition(room, shiftCoords);
                     availableDoorsArray.removeValue(selectedAvaliableDoor, false);
+                    //break;
                 }
 
             }
 
         }
-
         return roomPlaced;
 
     }
@@ -414,6 +422,9 @@ public class JigsawGenerator {
         Array<DoorComponent> linkableDoorsArray = new Array<DoorComponent>();
 
         for(DoorComponent dc : arena.getDoors()) {
+
+
+
             switch (selectedDoor.exit){
                 case LEFT: if(dc.exit == Direction.RIGHT)
                     linkableDoorsArray.add(dc);

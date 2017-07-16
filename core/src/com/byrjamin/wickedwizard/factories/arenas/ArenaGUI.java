@@ -34,14 +34,14 @@ public class ArenaGUI {
     private Arena currentRoom;
     private MapCoords currentCoords;
 
-    private Color currentRoomColor = new Color(1, 1, 1, 0.8f);
+    private Color currentRoomColor = new Color(0.5f, 0.5f, 0.5f, 0.6f);
     private Color roomColor = new Color(0.5f, 0.5f, 0.5f, 0.6f);
     private Color undiscoveredRoomColor = new Color(0.1f, 0.1f, 0.1f, 0.6f);
     private Color mapBackGroundColor = new Color(0.1f, 0.1f, 0.1f, 0.2f);
     private Color mapBorderColor = new Color(Color.WHITE);
-    private Color borderColor = new Color(0, 1, 1, 1);
+    private Color borderColor = new Color(0.8f, 0.8f, 0.8f, 1);
     private Color doorColor = new Color(1f, 0f, 0f, 1f);
-    private Color locationBlinkColor = new Color (0,0,1,0.5f);
+    private Color locationBlinkColor = new Color (1,1,1,1f);
     private Color bossRoomColor = new Color(0, 1, 1, 0.5f);
     private Color itemRoomColor = new Color (1, 0, 1, 0.5f);
     private Color shopRoomColor = new Color (234f / 255f, 185f / 255f, 157f / 255f, 1);
@@ -171,8 +171,8 @@ public class ArenaGUI {
         }
 
         if(blink) {
-            batch.setColor(bossRoomColor);
-            batch.draw(block, mapx + SIZE / 4, mapy + SIZE / 4, SIZE / 2, SIZE / 2);
+            batch.setColor(locationBlinkColor);
+            batch.draw(block, mapx, mapy, SIZE, SIZE);
         }
 
     }
@@ -189,17 +189,17 @@ public class ArenaGUI {
 
                 if (arena.roomType == Arena.RoomType.BOSS) {
                     batch.setColor(bossRoomColor);
-                    batch.draw(block, mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                    batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
                 if (arena.roomType == Arena.RoomType.ITEM) {
                     batch.setColor(itemRoomColor);
-                    batch.draw(block, mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                    batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
                 if (arena.roomType == Arena.RoomType.SHOP) {
                     batch.setColor(shopRoomColor);
-                    batch.draw(block, mapx + (SIZE * diffX) + SIZE / 4, mapy + (SIZE * diffY) + SIZE / 4, SIZE / 2, SIZE / 2);
+                    batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
             }
