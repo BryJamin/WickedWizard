@@ -76,7 +76,7 @@ public class BoundsDrawingSystem extends EntitySystem {
 
 
         if(world.getSystem(PlayerInputSystem.class) != null) {
-            bounds.add(world.getSystem(PlayerInputSystem.class).movementArea);
+          //  bounds.add(world.getSystem(PlayerInputSystem.class).movementArea);
         }
 
 

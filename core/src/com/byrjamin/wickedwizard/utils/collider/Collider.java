@@ -12,7 +12,7 @@ public class Collider {
         LEFT, RIGHT, BOTTOM, TOP, NONE
     }
 
-    private static final float buffer = 50f;
+    private static final float buffer = 40f;
 
     /**
      * Checks to see if there is a collision between A static and a dynamic body using Rectangles
@@ -47,6 +47,8 @@ public class Collider {
      */
     public static Collision cleanCollision(Rectangle currentBound, Rectangle futureBound, Rectangle wall) {
 
+
+        //TODO increase buffer based on where you are?
 
         //TODO split it into two to see which one takes precedence left/right or top/bottom
 

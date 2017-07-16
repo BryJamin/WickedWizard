@@ -42,14 +42,14 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
 
 
         if((cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true ) ||
-                cbc.getRecentCollisions().contains(Collider.Collision.TOP, true)) &&
-                !( cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) ||
-                        cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true))) {
+                cbc.getRecentCollisions().contains(Collider.Collision.TOP, true))) {
             vc.velocity.y = 0;
 
         //} else if (true){
 
-        } else if(cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) || cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true)){
+        }
+
+        if(cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) || cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true)){
             vc.velocity.x = 0;
         }
 
