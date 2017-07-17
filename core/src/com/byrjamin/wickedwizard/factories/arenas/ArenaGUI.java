@@ -1,17 +1,14 @@
 package com.byrjamin.wickedwizard.factories.arenas;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
@@ -34,21 +31,23 @@ public class ArenaGUI {
     private Arena currentRoom;
     private MapCoords currentCoords;
 
-    private Color currentRoomColor = new Color(0.5f, 0.5f, 0.5f, 0.6f);
-    private Color roomColor = new Color(0.5f, 0.5f, 0.5f, 0.6f);
+    private Color currentRoomColor = new Color(0.7f, 0.7f, 0.7f, 0.8f);
+    private Color roomColor = new Color(0.7f, 0.7f, 0.7f, 0.8f);
     private Color undiscoveredRoomColor = new Color(0.1f, 0.1f, 0.1f, 0.6f);
     private Color mapBackGroundColor = new Color(0.1f, 0.1f, 0.1f, 0.2f);
     private Color mapBorderColor = new Color(Color.WHITE);
-    private Color borderColor = new Color(0.8f, 0.8f, 0.8f, 1);
-    private Color doorColor = new Color(1f, 0f, 0f, 1f);
+    private Color borderColor = ColorResource.RGBtoColor(82, 142, 168, 1);
+
+           // new Color(88f / 255f, 219f / 255f, 245f / 255f, 1f); //new Color(Color.WHITE);
+    private Color doorColor = new Color(17f / 255f, 35f / 255f, 45f / 255f, 1f);
     private Color locationBlinkColor = new Color (1,1,1,1f);
-    private Color bossRoomColor = new Color(0, 1, 1, 0.5f);
-    private Color itemRoomColor = new Color (1, 0, 1, 0.5f);
+    private Color bossRoomColor = new Color(238f / 255f, 53f / 255f , 50f / 255f, 1f);
+    private Color itemRoomColor = new Color (101 / 255f, 88f / 255f, 245 / 255f, 1f);
     private Color shopRoomColor = new Color (234f / 255f, 185f / 255f, 157f / 255f, 1);
 
     private float mapBlinker;
 
-    private float lineThickness = 4;
+    private static final float LINE_THICKNESS = 4;
 
     private boolean blink;
 
@@ -59,12 +58,7 @@ public class ArenaGUI {
 
 
     public ArenaGUI(float x, float y, Array<Arena> arenas, Arena currentRoom, TextureAtlas atlas) {
-        this.mapx = x;
-        this.mapy = y;
-        this.arenas = arenas;
-        this.currentRoom = currentRoom;
-        this.atlas = atlas;
-        this.block = atlas.findRegion(TextureStrings.BLOCK);
+        this(x, y, Measure.units(3f), 3, arenas, currentRoom, atlas);
     }
 
     public ArenaGUI(float x, float y, float size, int range, Array<Arena> arenas, Arena currentRoom, TextureAtlas atlas) {
@@ -79,19 +73,16 @@ public class ArenaGUI {
     }
 
 
-    public void update(float dt, float x, float y, OrderedSet<Arena> visitedArenas, OrderedSet<Arena> undiscoveredArenas, Arena currentRoom, MapCoords currentCoords){
+    public void update(float dt, float x, float y, ArenaMap arenaMap, MapCoords currentCoords){
 
-        this.currentRoom = currentRoom;
+        this.currentRoom = arenaMap.getCurrentArena();
         this.currentCoords = currentCoords;
 
-        //System.out.println(currentCoords);
+        this.arenas = arenaMap.getVisitedArenas().orderedItems();
+        this.undiscoveredArenas = arenaMap.getUnvisitedButAdjacentArenas().orderedItems();
 
-        this.arenas = visitedArenas.orderedItems();
-        this.undiscoveredArenas = undiscoveredArenas.orderedItems();
 
-        mapBlinker += dt;
-
-        if(mapBlinker > 1.0){
+        if((mapBlinker += dt) > 1.0){
             blink = !blink;
             mapBlinker = 0;
         }
@@ -108,21 +99,16 @@ public class ArenaGUI {
 
     public void drawMapContainer(SpriteBatch batch){
 
-        batch.setColor(mapBackGroundColor);
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx - SIZE * (range - 1), mapy - SIZE * (range - 1), SIZE * (range * 2 - 1), SIZE * (range * 2 - 1));
-        //TODO used to be         mapRenderer.rect(mapx - SIZE * 2, mapy - SIZE * 2, SIZE * 5, SIZE * 5); which I guess could allow a rectangl
-        batch.setColor(mapBorderColor);
 
         float x = mapx - SIZE * (range - 1);
         float y = mapy - SIZE * (range - 1);
-        float width = SIZE * (range * 2 - 1);
+        float width = SIZE * (range * 2 - 1); //This is to calculate a width that is centered
         float height = SIZE * (range * 2 - 1);
 
-
-        float x2 = x + width;
-        float y2 = y + height;
-
-        drawLineSquare(batch, x, y, width, height, lineThickness);
+        batch.setColor(mapBackGroundColor);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y, width, height);
+        batch.setColor(mapBorderColor);
+        drawLineSquare(batch, x, y, width, height, LINE_THICKNESS);
     }
 
     private void drawLineSquare(SpriteBatch batch, float x, float y, float width, float height, float thickness){
@@ -241,34 +227,34 @@ public class ArenaGUI {
                 float y = mapy + (SIZE * diffY);
 
 /*                if(diffX > 0){
-                  x -= lineThickness * diffX;
+                  x -= LINE_THICKNESS * diffX;
                 } else if(diffX < 0){
-                    x += lineThickness * Math.abs(diffX);
+                    x += LINE_THICKNESS * Math.abs(diffX);
                 }
 
                 if(diffY > 0){
-                    y -= lineThickness * diffX;
+                    y -= LINE_THICKNESS * diffX;
                 } else if(diffY < 0){
-                    y += lineThickness * Math.abs(diffX);
+                    y += LINE_THICKNESS * Math.abs(diffX);
                 }*/
 
                 //Left Line
                 if (!arena.cotainingCoords.contains(new MapCoords(m.getX() - 1, m.getY()), false)) {
-                    drawLeftLine(batch, x, y, lineThickness, SIZE);
+                    drawLeftLine(batch, x, y, LINE_THICKNESS, SIZE);
                 }
                 //Right Line
                 if (!arena.cotainingCoords.contains(new MapCoords(m.getX() + 1, m.getY()), false)) {
-                    drawRightLine(batch, x + SIZE, y, lineThickness, SIZE);
+                    drawRightLine(batch, x + SIZE, y, LINE_THICKNESS, SIZE);
                 }
 
                 //Top Line
                 if (!arena.cotainingCoords.contains(new MapCoords(m.getX(), m.getY() + 1), false)) {
-                    drawTopLine(batch, x, y + SIZE, SIZE, lineThickness);
+                    drawTopLine(batch, x, y + SIZE, SIZE, LINE_THICKNESS);
                 }
 
                 //Bottom Line
                 if (!arena.cotainingCoords.contains(new MapCoords(m.getX(), m.getY() - 1), false)) {
-                    drawBottomLine(batch, x, y, SIZE, lineThickness);
+                    drawBottomLine(batch, x, y, SIZE, LINE_THICKNESS);
                 }
             }
         }
@@ -292,22 +278,22 @@ public class ArenaGUI {
 
                 //Left Line
                 if (dc.exit == Direction.LEFT) {
-                    drawLeftLine(batch, x, y + MINI_SIZE, lineThickness, SIZE / 2);
+                    drawLeftLine(batch, x, y + MINI_SIZE, LINE_THICKNESS, SIZE / 2);
                 }
 
                 //Right Line
                 if (dc.exit == Direction.RIGHT) {
-                    drawRightLine(batch, x + SIZE, y + MINI_SIZE, lineThickness, SIZE / 2);
+                    drawRightLine(batch, x + SIZE, y + MINI_SIZE, LINE_THICKNESS, SIZE / 2);
                 }
 
                 //Top Line
                 if (dc.exit == Direction.UP) {
-                    drawTopLine(batch, x + MINI_SIZE, y + SIZE, SIZE / 2, lineThickness);
+                    drawTopLine(batch, x + MINI_SIZE, y + SIZE, SIZE / 2, LINE_THICKNESS);
                 }
 
                 //Bottom Line
                 if (dc.exit == Direction.DOWN) {
-                    drawBottomLine(batch, x + MINI_SIZE, y, SIZE / 2, lineThickness);
+                    drawBottomLine(batch, x + MINI_SIZE, y, SIZE / 2, LINE_THICKNESS);
                 }
             }
         }

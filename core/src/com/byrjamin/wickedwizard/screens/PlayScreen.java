@@ -229,10 +229,6 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         setUpGlobals();
 
-         /*       jg =new JigsawGenerator(game.manager,new LightGraySkin(atlas), 5 , itemStore, random);
-        jg.generateTutorial = isTutorial;
-        jg.generate();
-*/
         jg = new ChangeLevelSystem(game.manager, random).getJigsawGenerator(ChangeLevelSystem.Level.ONE);
         jg.generate();
         jg.cleanArenas();
@@ -291,6 +287,8 @@ public class PlayScreen extends AbstractScreen {
                             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
 
                             pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getRoomArray(), rts.getCurrentArena(), atlas);
+
+
 
                             isPaused = true;
                         } else {
@@ -433,15 +431,10 @@ public class PlayScreen extends AbstractScreen {
                 arenaGUI.update(world.delta,
                         gamecam.position.x + Measure.units(45),
                         gamecam.position.y + Measure.units(25),
-                        rts.getVisitedArenas(),
-                        rts.getUnvisitedButAdjacentArenas(),
-                        rts.getCurrentArena(),
+                        rts.getCurrentMap(),
                         rts.getCurrentPlayerLocation());
             }
 
-
-
-            //Map of the world
             drawHUD(world, gamecam);
             arenaGUI.draw(game.batch);
 
@@ -471,9 +464,7 @@ public class PlayScreen extends AbstractScreen {
             pauseArenaGUI.update(pauseWorld.getWorld().delta,
                     camX + Measure.units(75f),
                     camY + Measure.units(35f),
-                    rts.getVisitedArenas(),
-                    rts.getUnvisitedButAdjacentArenas(),
-                    rts.getCurrentArena(),
+                    rts.getCurrentMap(),
                     rts.getCurrentPlayerLocation());
 
             if(!game.batch.isDrawing()) {
@@ -489,14 +480,7 @@ public class PlayScreen extends AbstractScreen {
 
 
         if(gameOver){
-
-            if (delta < 0.030f) {
-                deathWorld.setDelta(delta);
-            } else {
-                deathWorld.setDelta(0.030f);
-            }
-
-
+            deathWorld.setDelta(delta < 0.030f ? delta : 0.030f);
             deathWorld.process();
         }
 
@@ -631,8 +615,6 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void resume() {
-
-
 
 
     }

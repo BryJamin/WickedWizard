@@ -117,7 +117,9 @@ public class BouncerFactory extends EnemyFactory {
 
 
         ComponentBag bag = basicBouncer(x,y,width,height,speed, isLeft);
-
+        BagSearch.removeObjectOfTypeClass(TextureRegionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(AnimationStateComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(AnimationComponent.class, bag);
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

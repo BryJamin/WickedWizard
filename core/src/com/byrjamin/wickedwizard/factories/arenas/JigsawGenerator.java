@@ -314,6 +314,12 @@ public class JigsawGenerator {
         return false;
     }
 
+
+    public void removeAdditionalDoorsFromArena(Arena arena){
+        
+    }
+
+
     public boolean placeShopRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
         Item item1 = itemStore.generateItemRoomItem();
@@ -542,20 +548,26 @@ public class JigsawGenerator {
         for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
             DoorComponent dc = a.getDoors().get(j);
             if (!findDoorWithinFoundRoom(dc, arenas)) {
-                Bag<Component> bag = a.findBag(dc);
-                if (BagSearch.contains(ActiveOnTouchComponent.class, bag) || BagSearch.contains(InCombatActionComponent.class, bag)) {
-                    a.getBagOfEntities().remove(bag);
-                } else {
-                    CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
-                    if(cbc != null) {
-                        a.getBagOfEntities().remove(bag);
-                        a.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), a.getArenaSkin()));
-                    }
-                }
-                a.adjacentCoords.removeValue(dc.leaveCoords, false);
-                a.doors.removeValue(dc, true);
+                replaceDoorWithWall(dc, a);
             }
         }
+
+    }
+
+    private void replaceDoorWithWall(DoorComponent dc, Arena arena){
+
+        Bag<Component> bag = arena.findBag(dc);
+        if (BagSearch.contains(ActiveOnTouchComponent.class, bag) || BagSearch.contains(InCombatActionComponent.class, bag)) {
+            arena.getBagOfEntities().remove(bag);
+        } else {
+            CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
+            if(cbc != null) {
+                arena.getBagOfEntities().remove(bag);
+                arena.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), arena.getArenaSkin()));
+            }
+        }
+        arena.adjacentCoords.removeValue(dc.leaveCoords, false);
+        arena.doors.removeValue(dc, true);
 
     }
 
