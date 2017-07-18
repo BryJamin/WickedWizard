@@ -67,7 +67,11 @@ public class Collider {
             return leftOrRightCollision(futureBound, wall);
         } else if (wall.overlaps(futureBound) && !isBetweenY && isBetweenX ) { //Hit was on top
             return topOrBottomCollision(futureBound, wall);
-        } else if(wall.contains(currentBound)){
+        } else if(wall.overlaps(currentBound)){
+
+
+
+
 /*
             System.out.println("current x" + currentBound.getX());
             System.out.println("current x" + currentBound.getX() + currentBound.getWidth());
