@@ -53,7 +53,7 @@ public class FiringAISystem extends EntityProcessingSystem {
                     CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
                     double angleOfTravel = (Math.atan2(pcbc.getCenterY() - y, pcbc.getCenterX() - x));
                     wc.weapon.fire(world, e, x, y, angleOfTravel);
-                    world.getSystem(SoundSystem.class).playSound(SoundStrings.enemyFireMix);
+
 
                     if(world.getMapper(AnimationStateComponent.class).has(e)){
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);

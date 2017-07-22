@@ -6,6 +6,8 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Queue;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
@@ -20,6 +22,13 @@ public class SoundSystem extends BaseSystem {
 
     private Music currentMusic;
     private Sound sound;
+
+
+    private Array<Sound> upcomingSounds = new Array<Sound>();
+
+    private Array<Mix> upcomingMixes = new Array<Mix>();
+
+
 
     public SoundSystem(AssetManager assetManager){
         this.assetManager = assetManager;
@@ -38,6 +47,28 @@ public class SoundSystem extends BaseSystem {
         if(musicOn && !currentMusic.isPlaying()) {
             currentMusic.play();
         }
+
+        boolean soundOn = preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
+
+        if(soundOn){
+            for(Sound s : upcomingSounds){
+                s.play();
+            }
+
+            for(Mix m : upcomingMixes){
+                Sound s = assetManager.get(m.getFileName(), Sound.class);
+                s.play(m.getVolume());
+            }
+
+        }
+
+        if(upcomingMixes.size > 0) {
+            System.out.println(upcomingMixes.size);
+        }
+
+        upcomingMixes.clear();
+        upcomingSounds.clear();
+
     }
 
     //TODO idea track sounds played within the same game frame. If it is the same sound then do not play is.
@@ -73,10 +104,12 @@ public class SoundSystem extends BaseSystem {
     }
 
     public void playSound(Mix mix){
+
         if(assetManager.isLoaded(mix.getFileName(), Sound.class) &&
                 Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_SOUND, true)){
-            Sound s = assetManager.get(mix.getFileName(), Sound.class);
-            s.play(mix.getVolume());
+            if(!upcomingMixes.contains(mix, true)) {
+                upcomingMixes.add(mix);
+            }
         }
     }
 

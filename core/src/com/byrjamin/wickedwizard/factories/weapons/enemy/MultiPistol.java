@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
@@ -15,6 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
@@ -184,6 +186,8 @@ public class MultiPistol implements Weapon {
                             new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0), expireRange));
                 }
 
+
+
                 if(customOnDeathAction == null) {
                     bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
                             Measure.units(10f), (int) Measure.units(20f), Measure.units(0.5f), new Color(color))));
@@ -192,7 +196,14 @@ public class MultiPistol implements Weapon {
                 }
                 //bullet.edit().remove(CollisionBoundComponent.class);
             }
+
+
         }
+
+
+        world.getSystem(SoundSystem.class).playSound(SoundStrings.enemyFireMix);
+
+
     }
 
     @Override
