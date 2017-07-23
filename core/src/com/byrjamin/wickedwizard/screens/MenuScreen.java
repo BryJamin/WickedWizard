@@ -31,7 +31,8 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
-import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
@@ -145,9 +146,6 @@ public class MenuScreen extends AbstractScreen {
 
 
     public void createMenu(){
-
-        SoundSystem soundSystem = new SoundSystem(manager);
-
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem()
@@ -162,14 +160,15 @@ public class MenuScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RenderingSystem(game.batch, manager, gameport),
                         new BoundsDrawingSystem(true),
-                        soundSystem
+                        new MusicSystem(manager)
 
                 )
                 .build();
 
-        soundSystem.playMusic(MusicStrings.high_c);
-
         world = new World(config);
+        world.getSystem(MusicSystem.class).playMainMenuMusic();
+
+
 
         startGame = createButton(world, "Start", gameport.getWorldWidth() / 2
                 ,gameport.getWorldHeight() / 2 + Measure.units(25f));
@@ -224,7 +223,7 @@ public class MenuScreen extends AbstractScreen {
             @Override
             public void performAction(World world, Entity e) {
                 game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.BOSS, Integer.parseInt(e.getComponent(TextureFontComponent.class).text))));
-                world.getSystem(SoundSystem.class).stopMusic();
+                world.getSystem(MusicSystem.class).stopMusic();
             }
         }));
 
@@ -267,7 +266,7 @@ public class MenuScreen extends AbstractScreen {
                                 Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
                                 Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
 
-                world.getSystem(SoundSystem.class).stopMusic();
+                world.getSystem(MusicSystem.class).stopMusic();
             }
         }));
 
@@ -321,7 +320,7 @@ public class MenuScreen extends AbstractScreen {
                                 Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
                                 Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
 
-                world.getSystem(SoundSystem.class).stopMusic();
+                world.getSystem(MusicSystem.class).stopMusic();
             }
         }));
 
@@ -522,12 +521,12 @@ public class MenuScreen extends AbstractScreen {
 
             if (startGame.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
                 game.setScreen(new PlayScreen(game));
-                world.getSystem(SoundSystem.class).stopMusic();
+                world.getSystem(MusicSystem.class).stopMusic();
             }
 
             if (startTutorial.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
                 game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
-                world.getSystem(SoundSystem.class).stopMusic();
+                world.getSystem(MusicSystem.class).stopMusic();
             }
 
             if (boundOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {

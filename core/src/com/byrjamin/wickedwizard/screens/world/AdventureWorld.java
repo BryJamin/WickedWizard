@@ -24,7 +24,8 @@ import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
-import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.EnemyCollisionSystem;
@@ -72,7 +73,6 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
-import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -181,6 +181,7 @@ public class AdventureWorld {
                         new BoundsDrawingSystem(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_BOUND, false)),
                         new DoorSystem(),
                         new LevelItemSystem(new ItemStore(random), random),
+                        new MusicSystem(assetManager),
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(assetManager, random),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),

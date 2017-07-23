@@ -19,6 +19,37 @@ public class Mix {
         this.volume = volume;
     }
 
+
+    public Mix(MixMaker  mixMaker) {
+        this.fileName = mixMaker.file;
+        this.volume = mixMaker.volume;
+    }
+
+    public static class MixMaker {
+
+        //Mandatory
+        private final String file;
+
+        //Optional
+        private float volume = 1.0f;
+        private float pitch;
+
+        public MixMaker(String file){
+            this.file = file;
+        }
+
+        public MixMaker volume(float val)
+        { volume = val; return this; }
+
+        public MixMaker pitch(float val)
+        { pitch = val; return this; }
+
+        public Mix build(){
+            return new Mix(this);
+        }
+    }
+
+
     public String getFileName() {
         return fileName;
     }

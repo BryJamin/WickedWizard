@@ -6,9 +6,16 @@ package com.byrjamin.wickedwizard.assets;
 
 public class MusicStrings {
 
-    public static final String high_c = "audio/music/bg_beginner_high_c_04.ogg";
-    public static final String song8 = "audio/music/bg_slightly_harder_song8_03.ogg";
+    public static final Mix BG_MAIN_MENU = new Mix.MixMaker("audio/music/Contemplation-03.ogg").build();
 
+    public static final Mix BG_LEVEL_ONE = new Mix.MixMaker("audio/music/Uno.ogg").build();
 
+    public static final Mix BG_LEVEL_TWO = new Mix.MixMaker("audio/music/L_March.ogg").build();
+
+    public static final Mix BG_LEVEL_THREE = new Mix.MixMaker("audio/music/Shanty.ogg").build();
+
+    public static final Mix BG_LEVEL_FOUR = new Mix.MixMaker("audio/music/Underground.ogg").build();
+
+    public static final Mix BG_LEVEL_FIVE = new Mix.MixMaker("audio/music/Forward-01.ogg").build();
 
 }

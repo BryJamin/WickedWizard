@@ -150,6 +150,10 @@ public class RoomTransitionSystem extends EntitySystem {
         velocity.x = velocity.x / 2 ;
 
         world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).getPlayerInput().activeGrapple = false;
+
+
+
+
         //System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
 
