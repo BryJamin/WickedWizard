@@ -85,6 +85,10 @@ public class MusicSystem extends BaseSystem {
 
     public void changeTrack(Mix mix){
 
+        if(currentMusic != null){
+            if(currentMusic.isPlaying()) currentMusic.stop();
+        }
+
         if(mix.getFileName().equals(currentMix.getFileName())) return;
 
         currentMix = mix;

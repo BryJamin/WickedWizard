@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.arenas.BossMapCreate;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
@@ -13,6 +14,7 @@ import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level2Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level3Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level4Rooms;
+import com.byrjamin.wickedwizard.factories.arenas.levels.Level5Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.Bourbon;
@@ -112,6 +114,9 @@ public class ChangeLevelSystem extends BaseSystem {
                 break;
         }
 
+
+        world.getSystem(MusicSystem.class).playLevelMusic(level);
+
         return jigsawGenerator;
     }
 
@@ -177,7 +182,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 bossMapGens.add(new BossMaps(assetManager, arenaSkin).endMapCreate());
 
                 jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
-                        .arenaCreates(new Level4Rooms(assetManager, arenaSkin, random).getAllArenas())
+                        .arenaCreates(new Level5Rooms(assetManager, arenaSkin, random).getAllArenas())
                         .bossMapCreates(bossMapGens)
                         .noBattleRooms(numberOfLevel5Rooms)
                         .build();
