@@ -61,8 +61,12 @@ public class MainGame extends Game {
 
         manager.load(SoundStrings.playerFire, Sound.class);
         manager.load(SoundStrings.enemyFire, Sound.class);
-        manager.load(SoundStrings.explosion, Sound.class);
+        manager.load(SoundStrings.explosionMix1.getFileName(), Sound.class);
+        manager.load(SoundStrings.explosionMix2.getFileName(), Sound.class);
+		manager.load(SoundStrings.explosionMix3.getFileName(), Sound.class);
+		manager.load(SoundStrings.explosionMix4.getFileName(), Sound.class);
         manager.load(SoundStrings.coinPickUp, Sound.class);
+		manager.load(SoundStrings.jumpMix.getFileName(), Sound.class);
 
 
         System.out.println(Gdx.files.getLocalStoragePath());

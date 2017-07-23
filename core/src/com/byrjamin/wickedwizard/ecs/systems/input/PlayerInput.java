@@ -3,11 +3,13 @@ package com.byrjamin.wickedwizard.ecs.systems.input;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -15,6 +17,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -147,6 +150,7 @@ public class PlayerInput extends InputAdapter {
                                 jc.jumps--;
                                 world.getSystem(PlayerInputSystem.class).turnOffGlide();
                                 world.getSystem(PlayerInputSystem.class).turnOnGlide();
+                                world.getSystem(SoundSystem.class).playSound(SoundStrings.jumpMix);
                             }
 
                         } else if (tapCount == 2) {

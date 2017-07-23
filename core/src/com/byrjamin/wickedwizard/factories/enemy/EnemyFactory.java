@@ -52,7 +52,7 @@ public class EnemyFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 gibletFactory.giblets(5, 0.4f,
                         Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
-                world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix);
+                world.getSystem(SoundSystem.class).playRandomSound(SoundStrings.explosionMegaMix);
             }
         }));
 
@@ -102,7 +102,7 @@ public class EnemyFactory extends AbstractFactory {
 
 /*                gibletFactory.giblets(5, 0.4f,
                         Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);*/
-               // world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix);
+               // world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix1);
             }
         }));
 
@@ -120,7 +120,7 @@ public class EnemyFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 gibletFactory.giblets(5, 0.4f,
                         Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
-                world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix);
+                world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix1);
             }
 
             @Override

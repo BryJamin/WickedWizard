@@ -8,7 +8,7 @@ public class Mix {
 
     private String fileName;
     private float volume;
-    private float pitch;
+    private float pitch = 1.0f;
 
     public Mix(String fileName) {
         this.fileName = fileName;
@@ -23,6 +23,7 @@ public class Mix {
     public Mix(MixMaker  mixMaker) {
         this.fileName = mixMaker.file;
         this.volume = mixMaker.volume;
+        this.pitch = mixMaker.pitch;
     }
 
     public static class MixMaker {
@@ -32,7 +33,7 @@ public class Mix {
 
         //Optional
         private float volume = 1.0f;
-        private float pitch;
+        private float pitch = 1.0f;
 
         public MixMaker(String file){
             this.file = file;

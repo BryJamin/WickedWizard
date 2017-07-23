@@ -6,6 +6,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.byrjamin.wickedwizard.assets.Mix;
@@ -45,7 +46,7 @@ public class SoundSystem extends BaseSystem {
 
             for(Mix m : upcomingMixes){
                 Sound s = assetManager.get(m.getFileName(), Sound.class);
-                s.play(m.getVolume());
+                s.play(m.getVolume(), m.getPitch(), 0);
             }
 
         }
@@ -84,12 +85,18 @@ public class SoundSystem extends BaseSystem {
 
     public void playSound(Mix mix){
 
+        System.out.println(mix.getFileName());
+
         if(assetManager.isLoaded(mix.getFileName(), Sound.class) &&
                 Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_SOUND, true)){
             if(!upcomingMixes.contains(mix, true)) {
                 upcomingMixes.add(mix);
             }
         }
+    }
+
+    public void playRandomSound(Mix... mixes){
+        playSound(mixes[MathUtils.random.nextInt(mixes.length)]);
     }
 
     @Override
