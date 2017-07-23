@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -50,8 +51,21 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new OnDeathActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
+
+                new Giblets.GibletBuilder(assetManager)
+                        .intangible(false)
+                        .minSpeed(Measure.units(10f))
+                        .maxSpeed(Measure.units(50f))
+                        .expiryTime(0.6f)
+                        .fadeRate(0.75f)
+                        .intangible(true)
+                        .numberOfGibletPairs(5)
+                        .size(Measure.units(1f))
+                        .build().performAction(world, e);
+/*
+
                 gibletFactory.giblets(5, 0.4f,
-                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
+                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);*/
                 world.getSystem(SoundSystem.class).playRandomSound(SoundStrings.explosionMegaMix);
             }
         }));
@@ -79,15 +93,24 @@ public class EnemyFactory extends AbstractFactory {
                 deathClone.edit().add(new EnemyComponent());
 
                 deathClone.edit().add(new ActionAfterTimeComponent(new Action() {
+
+                    Giblets giblets = new Giblets.GibletBuilder(assetManager)
+                            .intangible(false)
+                            .minSpeed(Measure.units(10f))
+                            .maxSpeed(Measure.units(100f))
+                            .expiryTime(0.6f)
+                            .fadeRate(0.75f)
+                            .intangible(true)
+                            .numberOfGibletPairs(10)
+                            .size(Measure.units(1f))
+                            .color(new Color(Color.RED))
+                            .build();
+
                     @Override
                     public void performAction(World world, Entity e) {
-
-
-                        System.out.println("PERFORM ACTION");
-                        gibletFactory.bombGiblets(20, 0.4f,
-                                Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.RED)).performAction(world, e);
+                        giblets.performAction(world, e);
                     }
-                }, 0.2f, true));
+                }, 0.1f, true));
 
                 float width = ArenaShellFactory.SECTION_WIDTH * 3;
                 float height = ArenaShellFactory.SECTION_HEIGHT * 3;
