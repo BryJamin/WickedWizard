@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -32,12 +33,13 @@ public class MultiPistol implements Weapon {
     private final AssetManager assetManager;
 
     private final BulletFactory bulletFactory;
-    private final GibletFactory gibletFactory;
 
     private final float shotScale;
     private final float fireRate;
     private final float shotSpeed;
     private final float expireRange;
+    private final float damage;
+
 
     private final boolean gravity;
     private final boolean expire;
@@ -52,6 +54,10 @@ public class MultiPistol implements Weapon {
     private final OnDeathActionComponent customOnDeathAction;
 
 
+    private final Giblets giblets;
+
+    private static final float gibletScaleModifier = 0.125f;
+
 
 
     public static class PistolBuilder{
@@ -64,6 +70,7 @@ public class MultiPistol implements Weapon {
         private float fireRate = 1.5f;
         private float shotSpeed = Measure.units(50);
         private float expireRange = Measure.units(100f);
+        private float damage = 0f;
 
         private boolean gravity = false;
         private boolean expire = false;
@@ -92,6 +99,9 @@ public class MultiPistol implements Weapon {
         { shotSpeed = val; return this; }
 
         public PistolBuilder expireRange(float val)
+        { expireRange = val; expire(true); return this; }
+
+        public PistolBuilder damage(float val)
         { expireRange = val; expire(true); return this; }
 
         public PistolBuilder gravity(boolean val)
@@ -130,11 +140,12 @@ public class MultiPistol implements Weapon {
         this.assetManager = pb.assetManager;
 
         this.bulletFactory = new BulletFactory(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
+
 
         this.shotScale = pb.shotScale;
         this.fireRate = pb.fireRate;
         this.shotSpeed = pb.shotSpeed;
+        this.damage = pb.damage;
 
         this.expireRange = pb.expireRange;
         this.gravity = pb.gravity;
@@ -148,6 +159,18 @@ public class MultiPistol implements Weapon {
         this.customOnDeathAction = pb.customOnDeathAction;
 
         this.color = pb.color;
+
+
+        this.giblets = new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .fadeRate(0.0f)
+                .size(Measure.units(gibletScaleModifier * shotScale)) //Was just a flat 0.5f, but this is an experiment
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
+                .colors(color)
+                .intangible(false)
+                .expiryTime(0.2f)
+                .build();
 
 
     }
@@ -189,12 +212,10 @@ public class MultiPistol implements Weapon {
 
 
                 if(customOnDeathAction == null) {
-                    bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
-                            Measure.units(10f), (int) Measure.units(20f), Measure.units(0.5f), new Color(color))));
+                    bullet.edit().add(new OnDeathActionComponent(giblets));
                 } else {
                     bullet.edit().add(customOnDeathAction);
                 }
-                //bullet.edit().remove(CollisionBoundComponent.class);
             }
 
 
@@ -213,7 +234,7 @@ public class MultiPistol implements Weapon {
 
     @Override
     public float getBaseDamage() {
-        return 0;
+        return damage;
     }
 
 }

@@ -35,6 +35,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -65,17 +66,9 @@ public class KnightFactory extends EnemyFactory {
     private static final float vSpeed = Measure.units(10f);
     private static final float hSpeed = Measure.units(20f);
 
-    private final GibletFactory gibletFactory;
-
 
     public KnightFactory(AssetManager assetManager) {
         super(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
-
-
-
-
-
     }
 
 
@@ -222,7 +215,15 @@ public class KnightFactory extends EnemyFactory {
             e.edit().add(new FadeComponent(true, 1, false));
             //e.edit().add(new VelocityComponent());
             //e.edit().add(new BulletComponent());
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(color))));
+            e.edit().add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
+                    .numberOfGibletPairs(3)
+                    .size(Measure.units(0.5f))
+                    .minSpeed(Measure.units(10f))
+                    .maxSpeed(Measure.units(20f))
+                    .colors(new Color(color))
+                    .intangible(false)
+                    .expiryTime(0.2f).build()));
+
 
             ChildComponent c = new ChildComponent();
             pc.children.add(c);

@@ -35,6 +35,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -54,11 +55,11 @@ public class GoatWizardFactory extends EnemyFactory {
 
     private static final float fireRate = 3f;
 
-    private final GibletFactory gibletFactory;
+    private final Giblets.GibletBuilder gibletBuilder;
 
     public GoatWizardFactory(AssetManager assetManager) {
         super(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
+        this.gibletBuilder = new Giblets.GibletBuilder(assetManager);
     }
 
     public ComponentBag goatWizard(float x, float y, boolean startsRight, boolean startsUp){
@@ -274,13 +275,21 @@ public class GoatWizardFactory extends EnemyFactory {
             e.edit().add(new BlinkComponent());
             e.edit().add(new HealthComponent(3));
             e.edit().add(new FadeComponent(true, 1, false));
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(color))));
+            e.edit().add(new OnDeathActionComponent(
+                    new Giblets.GibletBuilder(assetManager)
+                            .numberOfGibletPairs(3)
+                            .size(Measure.units(0.5f))
+                            .minSpeed(Measure.units(10f))
+                            .maxSpeed(Measure.units(20f))
+                            .colors(color)
+                            .intangible(false)
+                            .expiryTime(0.2f).build()));
 
             ChildComponent c = new ChildComponent();
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
@@ -299,13 +308,20 @@ public class GoatWizardFactory extends EnemyFactory {
             e.edit().add(new EnemyComponent());
             e.edit().add(new OrbitComponent(centerOfOrbit, radius, 6, startAngle, width / 2, height / 2));
             e.edit().add(new FadeComponent(true, 1, false));
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(color))));
+            e.edit().add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
+                    .numberOfGibletPairs(3)
+                    .size(Measure.units(0.5f))
+                    .minSpeed(Measure.units(10f))
+                    .maxSpeed(Measure.units(20f))
+                    .colors(color)
+                    .intangible(false)
+                    .expiryTime(0.2f).build()));
 
             ChildComponent c = new ChildComponent();
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);

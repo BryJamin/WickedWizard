@@ -35,11 +35,8 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class EnemyFactory extends AbstractFactory {
 
-    private GibletFactory gibletFactory;
-
     public EnemyFactory(AssetManager assetManager) {
         super(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
     }
 
     protected ComponentBag defaultEnemyBag (ComponentBag fillbag, float x, float y, float health) {
@@ -103,7 +100,7 @@ public class EnemyFactory extends AbstractFactory {
                             .intangible(true)
                             .numberOfGibletPairs(10)
                             .size(Measure.units(1f))
-                            .color(new Color(Color.RED))
+                            .colors(new Color(Color.RED))
                             .build();
 
                     @Override
@@ -141,8 +138,18 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                gibletFactory.giblets(5, 0.4f,
-                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
+
+                new Giblets.GibletBuilder(assetManager)
+                        .intangible(false)
+                        .minSpeed(Measure.units(10f))
+                        .maxSpeed(Measure.units(50f))
+                        .expiryTime(0.6f)
+                        .fadeRate(0.75f)
+                        .intangible(true)
+                        .numberOfGibletPairs(5)
+                        .size(Measure.units(1f))
+                        .build().performAction(world, e);
+
                 world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix1);
             }
 

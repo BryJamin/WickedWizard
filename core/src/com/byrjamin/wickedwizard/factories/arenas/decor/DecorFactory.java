@@ -45,7 +45,7 @@ import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
-import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -435,7 +435,9 @@ public class DecorFactory extends AbstractFactory {
                 -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));*/
 
-        WeaponComponent wc = new WeaponComponent(new Pistol(assetManager, fireRate), fireDelay);
+        WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(fireRate)
+                .build());
         bag.add(wc);
         //In order to match firing angle with direction of texture add 90 degrees
         bag.add(new FiringAIComponent(angleInDegrees + 90));

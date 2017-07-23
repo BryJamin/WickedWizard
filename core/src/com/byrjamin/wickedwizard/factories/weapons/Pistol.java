@@ -31,12 +31,12 @@ public class Pistol implements Weapon{
     private float baseDamage = 1;
     private float baseFireRate = 1;
     private BulletFactory bulletFactory;
-    private GibletFactory gibletFactory;
+    private Giblets.GibletBuilder gibletBuilder;
     private CritCalculator critCalculator;
 
     public Pistol(AssetManager assetManager) {
         bulletFactory = new BulletFactory(assetManager);
-        gibletFactory = new GibletFactory(assetManager);
+        gibletBuilder = new Giblets.GibletBuilder(assetManager);
         critCalculator = new CritCalculator(new Random());
     }
 
@@ -61,9 +61,23 @@ public class Pistol implements Weapon{
         if(isCrit) bullet.getComponent(TextureRegionComponent.class).color.set(0,0,0,1);
 
         if(isCrit) {
-            bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(10,0.4f, 0, (int) Measure.units(40f),Measure.units(0.5f), new Color(0, 0, 0, 1))));
+            bullet.edit().add(new OnDeathActionComponent(gibletBuilder
+                    .numberOfGibletPairs(5)
+                    .expiryTime(0.4f)
+                    .maxSpeed(Measure.units(40f))
+                    .size(Measure.units(0.5f))
+                    .intangible(false)
+                    .colors(new Color(Color.BLACK), new Color(Color.DARK_GRAY), new Color(Color.WHITE))
+                    .build()));
         } else {
-            bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int) 0, (int) Measure.units(20f),Measure.units(0.5f), new Color(1, 1, 1, 1))));
+            bullet.edit().add(new OnDeathActionComponent(gibletBuilder
+                    .numberOfGibletPairs(3)
+                    .expiryTime(0.2f)
+                    .maxSpeed(Measure.units(20f))
+                    .size(Measure.units(0.5f))
+                    .intangible(false)
+                    .colors(new Color(Color.WHITE))
+                    .build()));
         }
         if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?

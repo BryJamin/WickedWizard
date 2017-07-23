@@ -101,15 +101,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
-                        .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.DOOR))
-                        .buildArena(arena);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2,Measure.units(27.5f)));
                 arena.roomType = Arena.RoomType.TRAP;
@@ -123,16 +115,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
-                        .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.DOOR))
-                        .buildArena(arena);
-
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2,(arena.getHeight() / 2)));
                 arena.roomType = Arena.RoomType.TRAP;
                 return arena;

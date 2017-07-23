@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -24,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -34,13 +36,21 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class ChestFactory extends AbstractFactory {
 
-
-    private GibletFactory gibletFactory;
+    private Giblets giblets;
 
     public ChestFactory(AssetManager assetManager) {
-
         super(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
+
+        this.giblets = new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .expiryTime(0.4f)
+                .minSpeed(20f)
+                .maxSpeed(Measure.units(100f))
+                .size(Measure.units(1f))
+                .colors(new Color(Color.BROWN)) //Maybe change the color of this?
+                .build();
+
+
     }
 
     public final float width = Measure.units(10f);
@@ -70,8 +80,8 @@ public class ChestFactory extends AbstractFactory {
 
         bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), texWidth, texHeight,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR));
-        bag.add(new OnDeathActionComponent(gibletFactory.giblets(5,0.4f,
-                Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE))));
+
+        bag.add(new OnDeathActionComponent(giblets));
 
         return bag;
     }
@@ -103,9 +113,7 @@ public class ChestFactory extends AbstractFactory {
         return new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                new GibletFactory(assetManager).giblets(5,0.4f,
-                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);
-
+                giblets.performAction(world, e);
                 Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
                 arena.roomType = Arena.RoomType.TRAP;
 

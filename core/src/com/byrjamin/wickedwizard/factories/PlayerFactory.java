@@ -41,6 +41,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.Pistol;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -169,7 +170,15 @@ public class PlayerFactory extends AbstractFactory {
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"),
                 width, height, TextureRegionComponent.PLAYER_LAYER_NEAR, new Color(Color.BLACK));
 
-        bag.add(new OnDeathActionComponent(new GibletFactory(assetManager).defaultGiblets(new Color(Color.BLACK))));
+        bag.add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
+                .colors(new Color(Color.BLACK))
+                .intangible(false)
+                .expiryTime(0.2f)
+                .build()));
 
         bag.add(trc);
 

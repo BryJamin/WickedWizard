@@ -49,6 +49,7 @@ import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -122,15 +123,10 @@ public class BossWraithCowl extends EnemyFactory {
 
     private static final float radius = Measure.units(45f);
 
-
-    private GibletFactory gibletFactory;
-
-
     private Random random = MathUtils.random; //TODO pull in the global random
 
     public BossWraithCowl(AssetManager assetManager) {
         super(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
     }
 
 
@@ -365,7 +361,14 @@ public class BossWraithCowl extends EnemyFactory {
         e.edit().add(new BlinkComponent());
         e.edit().add(new HealthComponent(1));
         //e.edit().add(new FadeComponent(true, 1, false));
-       e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.BLACK))));
+       e.edit().add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
+               .numberOfGibletPairs(3)
+               .size(Measure.units(0.5f))
+               .minSpeed(Measure.units(10f))
+               .maxSpeed(Measure.units(20f))
+               .colors(color)
+               .intangible(false)
+               .expiryTime(0.2f).build()));
 
         ChildComponent c = new ChildComponent();
         pc.children.add(c);

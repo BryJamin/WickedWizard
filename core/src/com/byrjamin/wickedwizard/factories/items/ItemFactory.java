@@ -9,6 +9,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -42,6 +43,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -103,7 +105,17 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)).performAction(world, e);
+
+                new Giblets.GibletBuilder(assetManager)
+                        .numberOfGibletPairs(5)
+                        .expiryTime(0.2f)
+                        .maxSpeed(Measure.units(50f))
+                        .fadeRate(0.25f)
+                        .size(Measure.units(1f))
+                        .colors(new Color(ColorResource.MONEY_YELLOW))
+                        .build()
+                .performAction(world, e);
+
                 world.getSystem(SoundSystem.class).playSound(SoundStrings.coinPickUpMix);
             }
 

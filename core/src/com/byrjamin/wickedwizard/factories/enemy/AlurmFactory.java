@@ -30,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWanda;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -60,11 +61,8 @@ public class AlurmFactory extends EnemyFactory {
     private final float textureOffsetX = -Measure.units(1f);
     private final float textureOffsetY = 0;
 
-    private final GibletFactory gibletFactory;
-
     public AlurmFactory(AssetManager assetManager) {
         super(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
     }
 
 
@@ -166,7 +164,16 @@ public class AlurmFactory extends EnemyFactory {
             e.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0), Measure.units(20f)));
             //e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new FadeComponent(true, 0.2f, false));
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.RED))));
+            e.edit().add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
+                    .numberOfGibletPairs(3)
+                    .fadeRate(0.0f)
+                    .size(Measure.units(0.5f))
+                    .minSpeed(Measure.units(10f))
+                    .maxSpeed(Measure.units(20f))
+                    .colors(color)
+                    .intangible(false)
+                    .expiryTime(0.2f)
+                    .build()));
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;

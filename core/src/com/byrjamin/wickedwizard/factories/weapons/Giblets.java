@@ -41,7 +41,7 @@ public class Giblets extends AbstractFactory implements Action {
     private final float minSpeed;
     private final float maxSpeed;
     private final float size;
-    private final Color color;
+    private final Color[] colors;
     private final boolean intangible;
 
     private final Random random = MathUtils.random;
@@ -57,7 +57,7 @@ public class Giblets extends AbstractFactory implements Action {
         this.minSpeed = gb.minSpeed;
         this.maxSpeed = gb.maxSpeed;
         this.size = gb.size;
-        this.color = gb.color;
+        this.colors = gb.colors;
         this.intangible = gb.intangible;
     }
 
@@ -87,11 +87,11 @@ public class Giblets extends AbstractFactory implements Action {
         //Chance to fade (ROll beteween 1 and 100
         private float fadeChance = 0;
 
-        private float minSpeed = Measure.units(10f);
+        private float minSpeed = 0;
         private float maxSpeed = Measure.units(20f);
         private float size = Measure.units(0.5f);
 
-        private Color color = new Color(Color.WHITE);
+        private Color[] colors = new Color[] {new Color(Color.WHITE)};
         private boolean intangible = true;
 
         public GibletBuilder(AssetManager assetManager){
@@ -120,8 +120,8 @@ public class Giblets extends AbstractFactory implements Action {
         public GibletBuilder size(float val)
         { size = val; return this; }
 
-        public GibletBuilder color(Color val)
-        { color = val; return this; }
+        public GibletBuilder colors(Color... val)
+        { colors = val; return this; }
 
         public GibletBuilder intangible(boolean val)
         { intangible = val; return this; }
@@ -173,13 +173,14 @@ public class Giblets extends AbstractFactory implements Action {
             float vy = random.nextFloat() * (maxSpeed - minSpeed) + minSpeed;
             vx = random.nextBoolean() ? vx : -vx;
             vy = random.nextBoolean() ? vy : -vy;
-            bags.add(createGiblet(x, y, new VelocityComponent(vx, vy), expiryTime, size, color));
-            bags.add(createGiblet(x, y, new VelocityComponent(-vx, -vy), expiryTime, size, color));
+            bags.add(createGiblet(x, y, new VelocityComponent(vx, vy), expiryTime, size, colors[random.nextInt(colors.length)]));
+            bags.add(createGiblet(x, y, new VelocityComponent(-vx, -vy), expiryTime, size, colors[random.nextInt(colors.length)]));
         }
 
         return bags;
 
     }
+
 
 
 

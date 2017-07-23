@@ -31,6 +31,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -319,13 +320,22 @@ public class BossAjir extends EnemyFactory{
     private class AjirSplitterWeapon implements Weapon {
 
         private BulletFactory bulletFactory;
-        private GibletFactory gibletFactory;
+        private Giblets.GibletBuilder gibletBuilder;
 
         private Weapon weapoonFiredOnBulletDeath;
 
         public AjirSplitterWeapon(AssetManager assetManager){
             this.bulletFactory = new BulletFactory(assetManager);
-            this.gibletFactory = new GibletFactory(assetManager);
+
+            this.gibletBuilder = new Giblets.GibletBuilder(assetManager)
+                    .numberOfGibletPairs(3)
+                    .size(Measure.units(0.5f))
+                    .minSpeed(Measure.units(10f))
+                    .maxSpeed(Measure.units(20f))
+                    .colors(new Color(Color.RED))
+                    .intangible(false)
+                    .expiryTime(0.2f);
+
             this.weapoonFiredOnBulletDeath = new MultiPistol.PistolBuilder(assetManager)
                     .angles(0,30,60,90,120,150,180,210,240,270,300,330)
                     .shotScale(2)
@@ -352,7 +362,9 @@ public class BossAjir extends EnemyFactory{
                 @Override
                 public void performAction(World world, Entity e) {
                     CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                    gibletFactory.defaultGiblets(Color.RED).performAction(world, e);
+
+                    gibletBuilder.build().performAction(world, e);
+
                     weapoonFiredOnBulletDeath.fire(world, e , cbc.getCenterX(), cbc.getCenterY(), 0);
                 }
             }));

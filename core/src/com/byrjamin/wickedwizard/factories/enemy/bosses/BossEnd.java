@@ -40,6 +40,7 @@ import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.enemy.MaceFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -406,9 +407,6 @@ public class BossEnd extends EnemyFactory {
 
     private class LeftHandEndSplitterWeapon implements Weapon, HandAction {
 
-        private BulletFactory bulletFactory;
-        private GibletFactory gibletFactory;
-
         private Weapon weapoonFiredOnBulletDeath;
 
         private Weapon firstSplitter;
@@ -417,8 +415,6 @@ public class BossEnd extends EnemyFactory {
         int[] firstSplitAngles = new int[]{90, -35, 215};
 
         public LeftHandEndSplitterWeapon(AssetManager assetManager){
-            this.bulletFactory = new BulletFactory(assetManager);
-            this.gibletFactory = new GibletFactory(assetManager);
             this.weapoonFiredOnBulletDeath = new MultiPistol.PistolBuilder(assetManager)
                     .angles(0,30,60,90,120,150,180,210,240,270,300,330)
                     .shotScale(2)
@@ -439,7 +435,6 @@ public class BossEnd extends EnemyFactory {
                         @Override
                         public void performAction(World world, Entity e) {
                             CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                            gibletFactory.defaultGiblets(new Color(Color.RED));
                             weapoonFiredOnBulletDeath.fire(world,e ,cbc.getCenterX(),cbc.getCenterY(),0);
                         }
                     }))

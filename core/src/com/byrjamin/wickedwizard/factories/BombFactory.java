@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ExplosionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
@@ -27,6 +29,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -40,13 +43,15 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 public class BombFactory extends  AbstractFactory{
 
 
-    private GibletFactory gf;
+    private Giblets.GibletBuilder gibletBuilder;
 
     private static final float mineSpeed = Measure.units(10f);
 
+    private static final float defaultExplosionSize = Measure.units(20f);
+
     public BombFactory(AssetManager assetManager) {
         super(assetManager);
-        this.gf = new GibletFactory(assetManager);
+        this.gibletBuilder = new Giblets.GibletBuilder(assetManager);
     }
 
 
@@ -220,35 +225,25 @@ public class BombFactory extends  AbstractFactory{
 
         //TODO bombs do not have explosion component at the moment
 
-        OnDeathActionComponent onDeathActionComponent = new OnDeathActionComponent(new Task() {
+        OnDeathActionComponent onDeathActionComponent = new OnDeathActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                 BagToEntity.bagToEntity(world.createEntity(),
-                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), Measure.units(20f), Measure.units(20f)));
+                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), defaultExplosionSize, defaultExplosionSize));
 
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(246/ 255f, 45f/255f, 45f/255f, 1f)).performAction(world, e);
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(255f/ 255f, 124f/255f, 0f/255f, 1f)).performAction(world, e);
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(249f/ 255f, 188f/255f, 4f/255f, 1f)).performAction(world, e);
+                gibletBuilder.numberOfGibletPairs(15)
+                        .expiryTime(0.35f)
+                        .fadeRate(0.25f)
+                        .size(Measure.units(1.5f))
+                        .minSpeed(Measure.units(0f))
+                        .maxSpeed(Measure.units(75f))
+                        .colors(new Color(ColorResource.BOMB_ORANGE), new Color(ColorResource.BOMB_RED), new Color(ColorResource.BOMB_YELLOW))
+                        .build().performAction(world, e);
             }
 
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
         });
 
         bag.add(onDeathActionComponent);
@@ -266,22 +261,17 @@ public class BombFactory extends  AbstractFactory{
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                 BagToEntity.bagToEntity(world.createEntity(),
-                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), Measure.units(20f), Measure.units(20f)));
+                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), defaultExplosionSize, defaultExplosionSize));
 
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(246 / 255f, 45f / 255f, 45f / 255f, 1f)).performAction(world, e);
+                gibletBuilder.numberOfGibletPairs(15)
+                        .expiryTime(0.35f)
+                        .fadeRate(0.25f)
+                        .size(Measure.units(1.5f))
+                        .minSpeed(Measure.units(0f))
+                        .maxSpeed(Measure.units(75f))
+                        .colors(new Color(ColorResource.BOMB_ORANGE), new Color(ColorResource.BOMB_RED), new Color(ColorResource.BOMB_YELLOW))
+                        .build().performAction(world, e);
 
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(255f / 255f, 124f / 255f, 0f / 255f, 1f)).performAction(world, e);
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(249f / 255f, 188f / 255f, 4f / 255f, 1f)).performAction(world, e);
             }
 
             @Override

@@ -38,6 +38,7 @@ import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BulletMath;
@@ -101,13 +102,20 @@ public class BossAmalgama extends EnemyFactory {
 
     private static float STATE_FRAME_DURATION = 1 / 10f;
 
-    private GibletFactory gibletFactory;
+    private Giblets.GibletBuilder gibletBuilder;
 
 
     public BossAmalgama(AssetManager assetManager) {
         super(assetManager);
 
-        this.gibletFactory = new GibletFactory(assetManager);
+        this.gibletBuilder = new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
+                .colors(new Color(Color.BLACK))
+                .intangible(false)
+                .expiryTime(0.2f);
 
     }
 
@@ -344,7 +352,7 @@ public class BossAmalgama extends EnemyFactory {
             e.edit().add(new BlinkComponent());
             e.edit().add(new HealthComponent(1));
             e.edit().add(new FadeComponent(true, 0.5f, false));
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.BLACK))));
+            e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
             ChildComponent c = new ChildComponent();
             pc.children.add(c);

@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -81,7 +82,14 @@ public class BulletFactory extends AbstractFactory {
     public ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
         ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
         bag.add(new EnemyComponent());
-        bag.add(new OnDeathActionComponent(new GibletFactory(assetManager).giblets(5, 0.2f, (int) Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED))));
+        bag.add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
+                .colors(new Color(Color.RED))
+                .intangible(false)
+                .expiryTime(0.2f).build()));
         return bag;
     }
 
