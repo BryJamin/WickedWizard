@@ -65,6 +65,7 @@ public class Pistol implements Weapon{
                     .numberOfGibletPairs(5)
                     .expiryTime(0.4f)
                     .maxSpeed(Measure.units(40f))
+                    .mixes(SoundStrings.queitExplosionMegaMix)
                     .size(Measure.units(0.5f))
                     .intangible(false)
                     .colors(new Color(Color.BLACK), new Color(Color.DARK_GRAY), new Color(Color.WHITE))
@@ -75,6 +76,7 @@ public class Pistol implements Weapon{
                     .expiryTime(0.2f)
                     .maxSpeed(Measure.units(20f))
                     .size(Measure.units(0.5f))
+                    .mixes(SoundStrings.queitExplosionMegaMix)
                     .intangible(false)
                     .colors(new Color(Color.WHITE))
                     .build()));

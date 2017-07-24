@@ -9,8 +9,10 @@ import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 
 /**
@@ -21,6 +23,7 @@ public class HealthSystem extends EntityProcessingSystem {
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<StatComponent> sm;
+    ComponentMapper<HitSoundComponent> hitSoundComponent;
     ComponentMapper<PlayerComponent> pm;
 
     ComponentMapper<BlinkComponent> bm;
@@ -54,12 +57,12 @@ public class HealthSystem extends EntityProcessingSystem {
 
                 }
 
-
-
-
-
             } else {
                 hc.health = hc.health - hc.getAccumulatedDamage();
+                if(hitSoundComponent.has(e)){
+                    world.getSystem(SoundSystem.class).playRandomSound(hitSoundComponent.get(e).hitSounds);
+                }
+
             }
         }
 

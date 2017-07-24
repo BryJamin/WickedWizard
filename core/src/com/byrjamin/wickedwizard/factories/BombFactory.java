@@ -131,9 +131,9 @@ public class BombFactory extends  AbstractFactory{
             @Override
             public void performAction(World world, Entity e) {
                 e.edit().add(new ExpireComponent(1f));
-                e.edit().add(new AnimationStateComponent(0));
+                e.edit().add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
                 IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-                animMap.put(0, new Animation<TextureRegion>(0.125f / 1f, atlas.findRegions(TextureStrings.AIR_MINE), Animation.PlayMode.LOOP));
+                animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.125f / 1f, atlas.findRegions(TextureStrings.AIR_MINE), Animation.PlayMode.LOOP));
                 e.edit().add(new AnimationComponent(animMap));
                 e.edit().add(new OnDeathActionComponent(explosionTask()));
             }
@@ -201,9 +201,9 @@ public class BombFactory extends  AbstractFactory{
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BOMB), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BOMB), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
         ConditionalActionComponent cac = new ConditionalActionComponent( new Condition() {
@@ -211,52 +211,24 @@ public class BombFactory extends  AbstractFactory{
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(ExpireComponent.class).expiryTime < 0.75f;
             }
-        }, new Task() {
+        }, new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(AnimationComponent.class).animations.get(0).setFrameDuration(0.05f / 1f);
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
             }
         });
 
         bag.add(cac);
 
-        //TODO bombs do not have explosion component at the moment
-
-        OnDeathActionComponent onDeathActionComponent = new OnDeathActionComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-
-                BagToEntity.bagToEntity(world.createEntity(),
-                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), defaultExplosionSize, defaultExplosionSize));
-
-                gibletBuilder.numberOfGibletPairs(15)
-                        .expiryTime(0.35f)
-                        .fadeRate(0.25f)
-                        .size(Measure.units(1.5f))
-                        .minSpeed(Measure.units(0f))
-                        .maxSpeed(Measure.units(75f))
-                        .colors(new Color(ColorResource.BOMB_ORANGE), new Color(ColorResource.BOMB_RED), new Color(ColorResource.BOMB_YELLOW))
-                        .build().performAction(world, e);
-            }
-
-        });
-
-        bag.add(onDeathActionComponent);
+        bag.add(new OnDeathActionComponent(explosionTask()));
 
         return bag;
 
     }
 
 
-    public Task explosionTask(){
-        return new Task() {
+    public Action explosionTask(){
+        return new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -271,19 +243,11 @@ public class BombFactory extends  AbstractFactory{
                         .size(Measure.units(1.5f))
                         .minSpeed(Measure.units(0f))
                         .maxSpeed(Measure.units(75f))
+                        .mixes(SoundStrings.explosionMegaMix)
                         .colors(new Color(ColorResource.BOMB_ORANGE), new Color(ColorResource.BOMB_RED), new Color(ColorResource.BOMB_YELLOW))
                         .build().performAction(world, e);
 
-
-                world.getSystem(SoundSystem.class).playRandomSound(SoundStrings.explosionMegaMix);
-
             }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-
         };
     }
 

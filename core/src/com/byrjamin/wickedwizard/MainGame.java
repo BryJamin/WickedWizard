@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.SoundStrings;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
@@ -61,10 +62,10 @@ public class MainGame extends Game {
 
         manager.load(SoundStrings.playerFire, Sound.class);
         manager.load(SoundStrings.enemyFire, Sound.class);
-        manager.load(SoundStrings.explosionMix1.getFileName(), Sound.class);
-        manager.load(SoundStrings.explosionMix2.getFileName(), Sound.class);
-		manager.load(SoundStrings.explosionMix3.getFileName(), Sound.class);
-		manager.load(SoundStrings.explosionMix4.getFileName(), Sound.class);
+
+		for(String s : SoundStrings.explosionStrings) manager.load(s, Sound.class);
+		for(Mix m : SoundStrings.hitMegaMix) manager.load(m.getFileName(), Sound.class);
+
         manager.load(SoundStrings.coinPickUp, Sound.class);
 		manager.load(SoundStrings.jumpMix.getFileName(), Sound.class);
 

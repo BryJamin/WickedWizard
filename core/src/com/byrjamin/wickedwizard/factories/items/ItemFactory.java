@@ -112,11 +112,11 @@ public class ItemFactory extends AbstractFactory {
                         .maxSpeed(Measure.units(50f))
                         .fadeRate(0.25f)
                         .size(Measure.units(1f))
+                        .mixes(SoundStrings.coinPickUpMix)
                         .colors(new Color(ColorResource.MONEY_YELLOW))
                         .build()
                 .performAction(world, e);
-
-                world.getSystem(SoundSystem.class).playSound(SoundStrings.coinPickUpMix);
+                
             }
 
             @Override

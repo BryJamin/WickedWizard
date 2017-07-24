@@ -51,10 +51,6 @@ public class SoundSystem extends BaseSystem {
 
         }
 
-        if(upcomingMixes.size > 0) {
-            System.out.println(upcomingMixes.size);
-        }
-
         upcomingMixes.clear();
         upcomingSounds.clear();
 

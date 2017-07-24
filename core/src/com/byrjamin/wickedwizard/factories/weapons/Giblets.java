@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -16,6 +17,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -42,6 +44,7 @@ public class Giblets extends AbstractFactory implements Action {
     private final float maxSpeed;
     private final float size;
     private final Color[] colors;
+    private final Mix[] mixes;
     private final boolean intangible;
 
     private final Random random = MathUtils.random;
@@ -58,6 +61,7 @@ public class Giblets extends AbstractFactory implements Action {
         this.maxSpeed = gb.maxSpeed;
         this.size = gb.size;
         this.colors = gb.colors;
+        this.mixes = gb.mixes;
         this.intangible = gb.intangible;
     }
 
@@ -66,6 +70,12 @@ public class Giblets extends AbstractFactory implements Action {
         CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
         if(cbc == null) return;
         BagToEntity.bagsToEntities(world, giblets(cbc.getCenterX(), cbc.getCenterY()));
+
+        if(mixes.length > 0) {
+            world.getSystem(SoundSystem.class).playRandomSound(mixes);
+        }
+
+
     }
 
 
@@ -92,6 +102,7 @@ public class Giblets extends AbstractFactory implements Action {
         private float size = Measure.units(0.5f);
 
         private Color[] colors = new Color[] {new Color(Color.WHITE)};
+        private Mix[] mixes = new Mix[]{};
         private boolean intangible = true;
 
         public GibletBuilder(AssetManager assetManager){
@@ -122,6 +133,9 @@ public class Giblets extends AbstractFactory implements Action {
 
         public GibletBuilder colors(Color... val)
         { colors = val; return this; }
+
+        public GibletBuilder mixes(Mix... val)
+        { mixes = val; return this; }
 
         public GibletBuilder intangible(boolean val)
         { intangible = val; return this; }

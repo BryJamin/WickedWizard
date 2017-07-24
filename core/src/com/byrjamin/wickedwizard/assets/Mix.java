@@ -26,6 +26,13 @@ public class Mix {
         this.pitch = mixMaker.pitch;
     }
 
+
+    public Mix(Mix  mix) {
+        this.fileName = mix.getFileName();
+        this.volume = mix.getVolume();
+        this.pitch = mix.getPitch();
+    }
+
     public static class MixMaker {
 
         //Mandatory
@@ -50,6 +57,14 @@ public class Mix {
         }
     }
 
+
+    public void setVolume(float volume) {
+        this.volume = volume;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
 
     public String getFileName() {
         return fileName;

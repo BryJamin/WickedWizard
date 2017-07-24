@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -66,6 +67,8 @@ public class EnemyFactory extends AbstractFactory {
                 world.getSystem(SoundSystem.class).playRandomSound(SoundStrings.explosionMegaMix);
             }
         }));
+
+      //  fillbag.add(new HitSoundComponent(SoundStrings.hitMegaMix));
 
         return fillbag;
 
