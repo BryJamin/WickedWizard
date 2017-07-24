@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -49,16 +50,9 @@ public class BlobFactory extends EnemyFactory {
 
     private float speed = Measure.units(15f);
 
-    private ItemFactory itemf;
-    private DeathFactory df;
-
-    private Color defaultBlobColor = new Color(75f / 255f, 232f / 255f, 14f / 255f, 1f);
-    private Color fastBlobColor = new Color(241f / 255f,53f / 255f,53f / 255f, 1f);
 
     public BlobFactory(AssetManager assetManager) {
         super(assetManager);
-        this.df = new DeathFactory(assetManager);
-        this.itemf = new ItemFactory(assetManager);
     }
 
 
@@ -98,22 +92,22 @@ public class BlobFactory extends EnemyFactory {
 
 
     public ComponentBag blobBag(float x, float y, boolean startsRight){
-        return blob(x,y,1,Measure.units(15f), 10, startsRight, defaultBlobColor);
+        return blob(x,y,1,Measure.units(15f), 10, startsRight, ColorResource.BLOB_GREEN);
     }
 
     public ComponentBag angryBlobBag(float x, float y,  boolean startsRight){
-        return blob(x,y,1,Measure.units(30f), 15, startsRight, fastBlobColor);
+        return blob(x,y,1,Measure.units(30f), 15, startsRight, ColorResource.BLOB_RED);
     }
 
     public Bag<Component> smallblobBag(float x, float y,  boolean startsRight){
-        ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, startsRight, defaultBlobColor);
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, startsRight, ColorResource.BLOB_GREEN);
         BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new ExploderComponent());
         return bag;
     }
 
     public ComponentBag angrySmallBag(float x, float y,  boolean startsRight){
-        ComponentBag bag = blob(x,y,0.5f,Measure.units(45f), 3, startsRight, fastBlobColor);
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(45f), 3, startsRight, ColorResource.BLOB_RED);
         BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new ExploderComponent());
         return bag;

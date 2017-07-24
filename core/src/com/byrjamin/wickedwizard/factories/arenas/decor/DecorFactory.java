@@ -67,6 +67,9 @@ public class DecorFactory extends AbstractFactory {
     private ArenaSkin arenaSkin;
     private BackgroundFactory bf;
 
+    private static final float wallTurretFiringOffset = Measure.units(2.5f);
+
+
     public DecorFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
         this.arenaSkin = arenaSkin;
@@ -412,42 +415,48 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegions(TextureStrings.WALLTURRET).peek(), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
-        trc.rotation = angleInDegrees;
-        trc.DEFAULT = arenaSkin.getWallTint();
-        trc.color = arenaSkin.getWallTint();
-
-
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(fireRate / atlas.findRegions(TextureStrings.WALLTURRET).size, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.REVERSED));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(fireRate / atlas.findRegions(TextureStrings.WALLTURRET).size, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.REVERSED));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.005f / 1f, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.NORMAL));
 
 
         bag.add(new AnimationComponent(animMap));
 
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegions(TextureStrings.WALLTURRET).peek(), width, height, TextureRegionComponent.ENEMY_LAYER_NEAR);
+
+        trc.rotation = angleInDegrees;
+        trc.DEFAULT = arenaSkin.getWallTint();
+        trc.color = arenaSkin.getWallTint();
+
         bag.add(trc);
 
         //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-/*        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
-                -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
-        ));*/
 
         WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
                 .fireRate(fireRate)
                 .build());
         bag.add(wc);
         //In order to match firing angle with direction of texture add 90 degrees
-        bag.add(new FiringAIComponent(angleInDegrees + 90));
+
+        double firingAngle = Math.toRadians(angleInDegrees + 90);
+
+        FiringAIComponent firingAIComponent = new FiringAIComponent();
+        firingAIComponent.ai = FiringAIComponent.AI.UNTARGETED;
+        firingAIComponent.firingAngleInRadians = firingAngle;
+        firingAIComponent.offsetX = BulletMath.velocityX(wallTurretFiringOffset, firingAngle);
+        firingAIComponent.offsetY = BulletMath.velocityY(wallTurretFiringOffset, firingAngle);
+
+        bag.add(firingAIComponent);
 
         return bag;
     }
 
 
 
-    public ComponentBag inCombatfixedWallTurret(float x, float y, final float angleInDegrees, float fireRate, float fireDelay){
+    public ComponentBag inCombatfixedWallTurret(float x, float y, final float angleInDegrees, float fireRate, final float fireDelay){
 
         ComponentBag bag = fixedWallTurret(x, y, angleInDegrees, fireRate, fireDelay);
         BagSearch.removeObjectOfTypeClass(FiringAIComponent.class, bag);
@@ -455,7 +464,16 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new InCombatActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                e.edit().add(new FiringAIComponent(angleInDegrees + 90));
+
+                double firingAngle = Math.toRadians(angleInDegrees + 90);
+
+                FiringAIComponent firingAIComponent = new FiringAIComponent();
+                firingAIComponent.ai = FiringAIComponent.AI.UNTARGETED;
+                firingAIComponent.firingAngleInRadians = firingAngle;
+                firingAIComponent.offsetX = BulletMath.velocityX(wallTurretFiringOffset, firingAngle);
+                firingAIComponent.offsetY = BulletMath.velocityY(wallTurretFiringOffset, firingAngle);
+
+                e.edit().add(firingAIComponent);
             }
 
             @Override

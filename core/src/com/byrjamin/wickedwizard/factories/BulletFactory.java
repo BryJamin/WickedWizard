@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
@@ -72,15 +73,15 @@ public class BulletFactory extends AbstractFactory {
 
 
     public ComponentBag basicBulletBag(float x, float y, float scale) {
-        return basicBulletBag(x ,y ,scale ,atlas.findRegion("block"), new Color(1,1,1,1));
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion(TextureStrings.BLOCK), new Color(1,1,1,1));
     }
 
     public ComponentBag basicBulletBag(float x, float y, float scale, Color color) {
-        return basicBulletBag(x ,y ,scale ,atlas.findRegion("block"), color);
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion(TextureStrings.BLOCK), color);
     }
 
     public ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
-        ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion("block") , new Color(Color.RED));
+        ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion(TextureStrings.BLOCK) , new Color(Color.RED));
         bag.add(new EnemyComponent());
         bag.add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(3)
@@ -116,49 +117,6 @@ public class BulletFactory extends AbstractFactory {
         bag.add(trc);
         return bag;
     }
-
-
-
-    public Bag<Component> basicBulletBlockBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
-        Bag<Component> bag = new Bag<Component>();
-
-        float width = this.width * scale;
-        float height = this.height * scale;
-
-        float cX = x - width / 2;
-        float cY = y - height / 2;
-
-        bag.add(new PositionComponent(cX, cY));
-        bag.add(new BulletComponent());
-        bag.add(new ExpireComponent(10f));//TODO Probably doesn't have to be this long (or delete bullets if they leave the room bounds)
-        bag.add(new HealthComponent(3));
-        bag.add(new BlinkComponent());
-        bag.add(new CollisionBoundComponent(new Rectangle
-                (cX,cY, width, height), true));
-
-
-
-        TextureRegionComponent trc = new TextureRegionComponent(textureRegion, 0, 0,  width, height, TextureRegionComponent.PLAYER_LAYER_FAR);
-        trc.DEFAULT = color;
-        trc.color = color;
-        bag.add(trc);
-        return bag;
-    }
-
-
-    public ComponentBag enemyBlockBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        for(Component c : basicBulletBlockBag(x,y,4, atlas.findRegion("block") , new Color(Color.BLACK))){
-            fill.add(c);
-        }
-        fill.add(new VelocityComponent((float) (Measure.units(20) * Math.cos(angleOfTravel)), (float) (Measure.units(20) * Math.sin(angleOfTravel))));
-        fill.add(new EnemyComponent());
-        return fill;
-    }
-
-
-
-
-
 
 
 }
