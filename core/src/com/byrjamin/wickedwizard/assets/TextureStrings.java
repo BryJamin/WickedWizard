@@ -9,6 +9,7 @@ public class TextureStrings {
 
     //DECOR
     public static final String DECOR_BLOCK_DOOR = "decor/block_door";
+    public static final String CHEST = "chest";
 
 
     //PLAYER

@@ -47,6 +47,8 @@ public class TurretFactory extends EnemyFactory {
 
     private final static float turretSpeed = Measure.units(15f);
 
+    private final static float turretWeaponFireRate = 2.0f;
+
     public TurretFactory(AssetManager assetManager) {
         super(assetManager);
         bombFactory = new BombFactory(assetManager);
@@ -78,7 +80,9 @@ public class TurretFactory extends EnemyFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-        WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager).angles(0).build(), 2f);
+        WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(turretWeaponFireRate)
+                .angles(0).build(), turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -140,9 +144,9 @@ public class TurretFactory extends EnemyFactory {
         bag.add(new AnimationComponent(animMap));
 
         WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
-                .fireRate(2f)
+                .fireRate(turretWeaponFireRate)
                 .angles(0,25,-25)
-                .build(), 2f);
+                .build(), turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -205,14 +209,14 @@ public class TurretFactory extends EnemyFactory {
 
             @Override
             public float getBaseFireRate() {
-                return 2;
+                return turretWeaponFireRate;
             }
 
             @Override
             public float getBaseDamage() {
                 return 0;
             }
-        }, 2f);
+        }, turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -262,8 +266,8 @@ public class TurretFactory extends EnemyFactory {
         WeaponComponent wc = new WeaponComponent(
                 new MultiPistol.PistolBuilder(assetManager)
                         .angles(0,25,50,-25,-50)
-                        .fireRate(2f)
-                        .build(), 2f);
+                        .fireRate(turretWeaponFireRate)
+                        .build(), turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -320,14 +324,14 @@ public class TurretFactory extends EnemyFactory {
 
             @Override
             public float getBaseFireRate() {
-                return 2;
+                return turretWeaponFireRate;
             }
 
             @Override
             public float getBaseDamage() {
                 return 0;
             }
-        }, 2f);
+        }, turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());

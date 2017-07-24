@@ -9,9 +9,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
@@ -21,6 +24,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
@@ -31,9 +35,11 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
- * Created by Home on 22/04/2017.
+ * Created on 22/04/2017.
+ *
+ * Class used to created chest Entities within the game.
+ *
  */
-
 public class ChestFactory extends AbstractFactory {
 
     private Giblets giblets;
@@ -42,12 +48,12 @@ public class ChestFactory extends AbstractFactory {
         super(assetManager);
 
         this.giblets = new Giblets.GibletBuilder(assetManager)
-                .numberOfGibletPairs(3)
+                .numberOfGibletPairs(5)
                 .expiryTime(0.4f)
-                .minSpeed(20f)
-                .maxSpeed(Measure.units(100f))
+                .minSpeed(5f)
+                .maxSpeed(Measure.units(40))
                 .size(Measure.units(1f))
-                .colors(new Color(Color.BROWN)) //Maybe change the color of this?
+                .colors(new Color(Color.BROWN), new Color(ColorResource.BOMB_YELLOW)) //Maybe change the color of this?
                 .build();
 
 
@@ -72,16 +78,16 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new HealthComponent(3));
         bag.add(new BlinkComponent());
 
-        bag.add(new AnimationStateComponent(1));
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
 
-        animMap.put(1, new Animation<TextureRegion>(1f / 7.5f, atlas.findRegions("chest"), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1f / 7.5f, atlas.findRegions(TextureStrings.CHEST), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion("chest", 0), texWidth, texHeight,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.CHEST), texWidth, texHeight,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
-        bag.add(new OnDeathActionComponent(giblets));
+        bag.add(new OnDeathActionComponent(chestDeathAction()));
 
         return bag;
     }
@@ -109,18 +115,26 @@ public class ChestFactory extends AbstractFactory {
     }
 
 
-    public OnDeathActionComponent trapODAC(){
-        return new OnDeathActionComponent(new Task() {
+
+    public Action chestDeathAction(){
+        return new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 giblets.performAction(world, e);
+                world.getSystem(SoundSystem.class).playRandomSound(SoundStrings.explosionMegaMix);
+            }
+        };
+    }
+
+
+    public OnDeathActionComponent trapODAC(){
+        return new OnDeathActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                chestDeathAction().performAction(world, e);
+
                 Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
                 arena.roomType = Arena.RoomType.TRAP;
-
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
 
             }
         });
