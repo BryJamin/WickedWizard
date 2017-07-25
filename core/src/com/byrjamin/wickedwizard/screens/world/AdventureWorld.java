@@ -172,8 +172,8 @@ public class AdventureWorld {
                 )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
-                        new FollowPositionSystem(),
                         new CameraSystem(gameport.getCamera(), gameport),
+                        new FollowPositionSystem(),
                         new FadeSystem(), //Applies any fade before render
                         new RenderingSystem(batch, assetManager, gameport),
                         new BulletSystem(),

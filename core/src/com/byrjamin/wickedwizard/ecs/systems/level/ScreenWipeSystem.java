@@ -35,8 +35,8 @@ public class ScreenWipeSystem extends BaseSystem {
     public Action taskAfter;
 
 
-    private float screenWipeSpeedX = Measure.units(50f);
-    private float screenWipeSpeedY = Measure.units(50f);;
+    private float screenWipeSpeedX = Measure.units(200f);
+    private float screenWipeSpeedY = Measure.units(200f); //TODO mutiply by somethign to get the correct timings
     private float durationInSeconds = 2f;
 
     private boolean isEntry = false;
@@ -88,6 +88,7 @@ public class ScreenWipeSystem extends BaseSystem {
             System.out.println(bool);
             if(bool){
                 taskToPerformInbetweenTransition.performAction(world, null);
+                //world.getSystem(CameraSystem.class).updateGamecam();
                 isEntry = false;
                 return;
             }
