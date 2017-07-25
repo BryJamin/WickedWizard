@@ -53,16 +53,24 @@ public class FadeSystem extends EntityProcessingSystem {
         //Can't really tell the difference but apparently interpolation is better?
         fc.alpha = Interpolation.fade.apply(((fc.alphaTimer / fc.alphaTimeLimit) * (fc.maxAlpha - fc.minAlpha)) + fc.minAlpha);
         if(fc.alpha <= fc.minAlpha){
-            if(fc.isEndless) {
+            if(fc.isEndless || fc.count > 0) {
                 fc.fadeIn = true;
                 fc.alpha = fc.minAlpha;
+                fc.count--;
+
+                System.out.println("FADE COUNT " + fc.count);
+
             } else {
                 fc.alpha = fc.minAlpha;
             }
         } else if (fc.alpha >= fc.maxAlpha) {
-            if(fc.isEndless) {
+            if(fc.isEndless || fc.count > 0) {
                 fc.fadeIn = false;
                 fc.alpha = fc.maxAlpha;
+                fc.count--;
+
+                System.out.println("FADE COUNT " + fc.count);
+
             } else {
                 fc.alpha = fc.maxAlpha;
             }

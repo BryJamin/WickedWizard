@@ -38,10 +38,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
-import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
@@ -351,7 +349,7 @@ public class ItemFactory extends AbstractFactory {
                             Entity player = world.getEntity(entityIds.get(i));
                             ac.pickUp.applyEffect(world, player);
                             world.getSystem(PickUpSystem.class).itemOverHead(player, item.getRegionName());
-                            world.getSystem(MessageBannerSystem.class).createBanner(item.getName(), item.getDescription());
+                            world.getSystem(MessageBannerSystem.class).createItemBanner(item.getName(), item.getDescription());
 
                         }
 

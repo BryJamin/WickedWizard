@@ -145,7 +145,7 @@ public class AdventureWorld {
                         new BlinkSystem(),
                         //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
-                        new MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK)),
+                        new MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
                         new FindPlayerSystem(player),
                         new FiringAISystem(),
                         new GrapplePointSystem(),

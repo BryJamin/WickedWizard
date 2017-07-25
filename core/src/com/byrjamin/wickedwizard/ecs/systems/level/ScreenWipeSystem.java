@@ -39,6 +39,7 @@ public class ScreenWipeSystem extends BaseSystem {
 
     private static final float durationInSeconds = 0.25f;
     private static final float fadeDurationInSeconds = 0.25f;
+    private static final float fadeOutDurationInSeconds = 0.25f;
 
     private float fadeElapsed = 0;
 
@@ -87,27 +88,24 @@ public class ScreenWipeSystem extends BaseSystem {
     protected void processSystem() {
 
 
-        System.out.println("POSITION X" + transitionEntity.getComponent(PositionComponent.class).position.x);
-
         if(isEntry) {
-
-            System.out.println(transition);
-            boolean bool = performFirstTransition(transitionEntity);
-            System.out.println(bool);
-            if(bool){
+            if(performFirstTransition(transitionEntity)){
                 taskToPerformInbetweenTransition.performAction(world, null);
-                //world.getSystem(CameraSystem.class).updateGamecam();
+                fadeElapsed = fadeOutDurationInSeconds;
                 isEntry = false;
+                isExit = true;
                 return;
             }
 
         }
 
-        if(!isEntry && !isExit) {
+/*        if(!isEntry && !isExit) {
            // exitAnimation(direction, gamecam);
             //exitAnimation(transitionEntity, transition, gamecam);
-            isExit = true; return;
-        }
+            fadeElapsed = fadeOutDurationInSeconds;
+
+            isExit = true; //return;
+        }*/
 
         if(isExit) {
 
@@ -137,14 +135,10 @@ public class ScreenWipeSystem extends BaseSystem {
         transitionEntity.edit().add(new MoveToPositionComponent());
         transitionEntity.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
 
-        System.out.println(gamecam.position.x);
-
         transitionEntity.edit().add(new UnpackableComponent());
         transitionEntity.edit().add(new TextureRegionComponent(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
                 gamecam.viewportWidth, gamecam.viewportHeight,
                 TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK)));
-
-        System.out.println("WIDTH " + gamecam.viewportWidth);
 
 
         entryAnimation(transitionEntity, transition ,gamecam);
@@ -273,8 +267,10 @@ public class ScreenWipeSystem extends BaseSystem {
 
             case FADE:
                 fadeElapsed -= world.getDelta();
-                e.getComponent(TextureRegionComponent.class).color.a = Interpolation.fade.apply(fadeElapsed / fadeDurationInSeconds);
+
+                e.getComponent(TextureRegionComponent.class).color.a = Interpolation.fade.apply(fadeElapsed / fadeOutDurationInSeconds);
                 if(fadeElapsed <= 0) return true;
+                break;
             default: return true;
         }
 

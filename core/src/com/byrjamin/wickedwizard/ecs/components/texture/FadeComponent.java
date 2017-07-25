@@ -18,6 +18,10 @@ public class FadeComponent extends Component {
 
     public  boolean fadeIn;
     public boolean flicker;
+
+
+    public int count;
+
     public boolean isEndless = true;
 
     public FadeComponent(){

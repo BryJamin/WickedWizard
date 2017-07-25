@@ -70,9 +70,10 @@ public class MapTeleportationSystem extends EntitySystem {
                 public void performAction(World world, Entity e) {
                     switchMap(bossTeleporterComponent);
                     for(BaseSystem s: world.getSystems()){
-                        if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
+                        s.setEnabled(true);
+        /*                if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
                             s.setEnabled(true);
-                        }
+                        }*/
                     }
                 }
 

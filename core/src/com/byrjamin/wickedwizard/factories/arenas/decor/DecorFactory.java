@@ -40,6 +40,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -564,7 +565,14 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(MapTeleportationSystem.class).recreateWorld();
+
+                world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(MapTeleportationSystem.class).recreateWorld();
+                    }
+                });
+
             }
 
             @Override
