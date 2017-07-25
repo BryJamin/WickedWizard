@@ -40,7 +40,7 @@ public class ChangeLevelSystem extends BaseSystem {
 
     private int currentLevel = 1;
 
-    private static final int numberOfLevel1Rooms = 5;
+    private static final int numberOfLevel1Rooms = 1;
     private static final int numberOfLevel2Rooms = 8;
     private static final int numberOfLevel3Rooms = 10;
     private static final int numberOfLevel4Rooms = 12;

@@ -68,6 +68,10 @@ public class TextureRegionComponent extends Component{
     public TextureRegionComponent(){
     }
 
+    public TextureRegionComponent(TextureRegion region, float width, float height){
+        this(region, 0,0, width, height, ENEMY_LAYER_MIDDLE);
+    }
+
     public TextureRegionComponent(TextureRegion region, float width, float height, int layer){
         this(region, 0,0, width, height, layer);
     }

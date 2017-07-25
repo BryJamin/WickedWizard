@@ -28,6 +28,8 @@ public class MoveToComponent extends Component {
         targetY = null;
     }
 
+
+
     public boolean hasTarget(){
         return targetX != null && targetY != null;
     }

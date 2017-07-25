@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -33,6 +34,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 13/03/2017.
@@ -51,6 +53,7 @@ public class RoomTransitionSystem extends EntitySystem {
     private ComponentMapper<ParentComponent> parm;
     private ComponentMapper<ExpireComponent> expireM;
     private ComponentMapper<ChildComponent> cm;
+    private ComponentMapper<UnpackableComponent> unpackableComponent;
 
     private ComponentMapper<OffScreenPickUpComponent> offScreenPickUpM;
 
@@ -77,7 +80,23 @@ public class RoomTransitionSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        world.getSystem(ScreenWipeSystem.class).startScreenWipe(currentDoor.exit, new Task() {
+        ScreenWipeSystem.Transition transition;
+
+        switch(currentDoor.exit){
+            case LEFT:
+            default:
+                transition = ScreenWipeSystem.Transition.LEFT_TO_RIGHT;
+                break;
+            case RIGHT: transition = ScreenWipeSystem.Transition.RIGHT_TO_LEFT;
+                break;
+            case UP: transition = ScreenWipeSystem.Transition.TOP_TO_BOTTOM;
+                break;
+            case DOWN: transition = ScreenWipeSystem.Transition.BOTTOM_TO_TOP;
+                break;
+        }
+
+
+        world.getSystem(ScreenWipeSystem.class).startScreenWipe(transition, new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -236,6 +255,8 @@ public class RoomTransitionSystem extends EntitySystem {
         arena.getBagOfEntities().clear();
 
         for(Entity e : this.getEntities()){
+
+            if(unpackableComponent.has(e)) continue;
 
             if(!bm.has(e) && !expireM.has(e) && !offScreenPickUpM.has(e)) {
 

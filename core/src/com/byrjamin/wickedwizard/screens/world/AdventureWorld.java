@@ -177,7 +177,7 @@ public class AdventureWorld {
                         new FadeSystem(), //Applies any fade before render
                         new RenderingSystem(batch, assetManager, gameport),
                         new BulletSystem(),
-                        new ScreenWipeSystem(batch, (OrthographicCamera) gameport.getCamera()),
+                        new ScreenWipeSystem(batch, assetManager, (OrthographicCamera) gameport.getCamera()),
                         new BoundsDrawingSystem(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_BOUND, false)),
                         new DoorSystem(),
                         new LevelItemSystem(new ItemStore(random), random),

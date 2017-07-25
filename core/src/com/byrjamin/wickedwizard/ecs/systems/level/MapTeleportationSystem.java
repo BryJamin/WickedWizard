@@ -65,7 +65,7 @@ public class MapTeleportationSystem extends EntitySystem {
             final BossTeleporterComponent bossTeleporterComponent = btc;
 
 
-            world.getSystem(ScreenWipeSystem.class).startScreenWipe(Direction.DOWN, new Task() {
+            world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.LEFT_TO_RIGHT, new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
                     switchMap(bossTeleporterComponent);
