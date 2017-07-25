@@ -86,12 +86,20 @@ public class RoomTransitionSystem extends EntitySystem {
             case LEFT:
             default:
                 transition = ScreenWipeSystem.Transition.LEFT_TO_RIGHT;
+                //transition = ScreenWipeSystem.Transition.FADE;
                 break;
-            case RIGHT: transition = ScreenWipeSystem.Transition.RIGHT_TO_LEFT;
+            case RIGHT:
+                transition = ScreenWipeSystem.Transition.RIGHT_TO_LEFT;
+                //transition = ScreenWipeSystem.Transition.FADE;
+
                 break;
-            case UP: transition = ScreenWipeSystem.Transition.TOP_TO_BOTTOM;
+            case UP:
+                transition = ScreenWipeSystem.Transition.TOP_TO_BOTTOM;
+                //transition = ScreenWipeSystem.Transition.FADE;
                 break;
-            case DOWN: transition = ScreenWipeSystem.Transition.BOTTOM_TO_TOP;
+            case DOWN:
+                transition = ScreenWipeSystem.Transition.BOTTOM_TO_TOP;
+              //transition = ScreenWipeSystem.Transition.FADE;
                 break;
         }
 

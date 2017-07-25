@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -16,6 +18,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
@@ -34,10 +37,13 @@ public class ScreenWipeSystem extends BaseSystem {
     public Action taskToPerformInbetweenTransition;
     public Action taskAfter;
 
+    private static final float durationInSeconds = 0.25f;
+    private static final float fadeDurationInSeconds = 0.25f;
 
-    private float screenWipeSpeedX = Measure.units(200f);
-    private float screenWipeSpeedY = Measure.units(200f); //TODO mutiply by somethign to get the correct timings
-    private float durationInSeconds = 2f;
+    private float fadeElapsed = 0;
+
+    private float screenWipeSpeedX = MainGame.GAME_WIDTH / durationInSeconds;
+    private float screenWipeSpeedY =  MainGame.GAME_HEIGHT / durationInSeconds; //TODO mutiply by somethign to get the correct timings
 
     private boolean isEntry = false;
     private boolean isExit = false;
@@ -81,6 +87,8 @@ public class ScreenWipeSystem extends BaseSystem {
     protected void processSystem() {
 
 
+        System.out.println("POSITION X" + transitionEntity.getComponent(PositionComponent.class).position.x);
+
         if(isEntry) {
 
             System.out.println(transition);
@@ -97,7 +105,7 @@ public class ScreenWipeSystem extends BaseSystem {
 
         if(!isEntry && !isExit) {
            // exitAnimation(direction, gamecam);
-            exitAnimation(transitionEntity, transition, gamecam);
+            //exitAnimation(transitionEntity, transition, gamecam);
             isExit = true; return;
         }
 
@@ -134,7 +142,9 @@ public class ScreenWipeSystem extends BaseSystem {
         transitionEntity.edit().add(new UnpackableComponent());
         transitionEntity.edit().add(new TextureRegionComponent(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
                 gamecam.viewportWidth, gamecam.viewportHeight,
-                TextureRegionComponent.FOREGROUND_LAYER_NEAR, Color.BLACK));
+                TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK)));
+
+        System.out.println("WIDTH " + gamecam.viewportWidth);
 
 
         entryAnimation(transitionEntity, transition ,gamecam);
@@ -165,86 +175,29 @@ public class ScreenWipeSystem extends BaseSystem {
 
     }
 
-
-/*
-    public Entity createStartingPositionAndTargetOfEntity(Entity e, float startX, float startY, float endX, float endY){
-        e.getComponent(PositionComponent.class).position.set(startX, startY, 0);
-        e.getComponent(MoveToPositionComponent.class).moveToPosition.set(endX, endY, 0);
-
-
-        float differenceX = startX - endX;
-        float differenceY = startY - endY;
-
-        if(startX < endX && differenceX < 0 || startX > endX && differenceX > 0){
-            differenceX *= -1;
-        }
-
-        if(startY < endY && differenceY < 0 || startY > endY && differenceY > 0){
-            differenceY *= -1;
-        }
-
-        screenWipeSpeedX = differenceX / durationInSeconds;
-        screenWipeSpeedY = differenceY / durationInSeconds;
-
-        return e;
-    }
-*/
-
-
     public void entryAnimation(Entity e, Transition transition, OrthographicCamera gamecam) {
 
 
         switch(transition){
             case LEFT_TO_RIGHT:
             default:
-                e.getComponent(FollowPositionComponent.class).offsetX = -gamecam.viewportWidth;
+                e.getComponent(FollowPositionComponent.class).offsetX = -gamecam.viewportWidth / 2 - gamecam.viewportWidth + MainGame.GAME_BORDER;
                 break;
             case RIGHT_TO_LEFT:
-                e.getComponent(FollowPositionComponent.class).offsetX = gamecam.viewportWidth;
+                e.getComponent(FollowPositionComponent.class).offsetX = -gamecam.viewportWidth / 2 + gamecam.viewportWidth - MainGame.GAME_BORDER;
                 break;
             case TOP_TO_BOTTOM:
-                e.getComponent(FollowPositionComponent.class).offsetY = gamecam.viewportHeight;
+                e.getComponent(FollowPositionComponent.class).offsetY = -gamecam.viewportHeight / 2 + gamecam.viewportHeight - MainGame.GAME_BORDER;
                 break;
             case BOTTOM_TO_TOP:
-                e.getComponent(FollowPositionComponent.class).offsetY = -gamecam.viewportHeight;
+                e.getComponent(FollowPositionComponent.class).offsetY = -gamecam.viewportHeight / 2 - gamecam.viewportHeight + MainGame.GAME_BORDER;
+                break;
+            case FADE: e.getComponent(TextureRegionComponent.class).color.a = 0f;
+                fadeElapsed = 0;
                 break;
         }
 
-
-        System.out.println(transition);
-        System.out.println("Offset X: " + e.getComponent(FollowPositionComponent.class).offsetX);
-        System.out.println("Offset Y: " + e.getComponent(FollowPositionComponent.class).offsetY);
-
     }
-
-
-    public void exitAnimation(Entity e, Transition transition, OrthographicCamera gamecam) {
-
-
-        float originX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float originY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        float WIDTH = gamecam.viewportWidth;
-        float HEIGHT = gamecam.viewportHeight;
-
-/*        switch(transition){
-            case LEFT_TO_RIGHT:
-            default:
-                createStartingPositionAndTargetOfEntity(e, originX, originY, originX + WIDTH, originY);
-                break;
-            case RIGHT_TO_LEFT:
-                createStartingPositionAndTargetOfEntity(e, originX, originY, originX - WIDTH, originY);
-                break;
-            case TOP_TO_BOTTOM:
-                createStartingPositionAndTargetOfEntity(e,originX, originY, originX, originY - HEIGHT);
-                break;
-            case BOTTOM_TO_TOP:
-                createStartingPositionAndTargetOfEntity(e, originX, originY, originX, originY + HEIGHT);
-                break;
-        }*/
-
-    }
-
 
 
     public boolean performFirstTransition (Entity e){
@@ -253,10 +206,6 @@ public class ScreenWipeSystem extends BaseSystem {
 
         float targetOffsetX = -gamecam.viewportWidth / 2;
         float targetOffsetY = -gamecam.viewportHeight / 2;
-
-        System.out.println("Offset Y: " + e.getComponent(FollowPositionComponent.class).offsetY);
-
-        System.out.println(screenWipeSpeedX);
 
         switch (transition){
             case LEFT_TO_RIGHT:
@@ -275,12 +224,13 @@ public class ScreenWipeSystem extends BaseSystem {
                 followPositionComponent.offsetY = (followPositionComponent.offsetY - screenWipeSpeedY * world.getDelta() <= targetOffsetY) ? targetOffsetY : followPositionComponent.offsetY - screenWipeSpeedY * world.getDelta();
                 if(followPositionComponent.offsetY <= targetOffsetY) return true;
                 break;
-
+            case FADE:
+                fadeElapsed += world.getDelta();
+                e.getComponent(TextureRegionComponent.class).color.a = Interpolation.fade.apply(fadeElapsed / fadeDurationInSeconds);
+                if(fadeElapsed >= fadeDurationInSeconds) return true;
+                break;
             default: return true;
         }
-
-        System.out.println("TRACKED POSITIONS X" + followPositionComponent.trackedPosition.x);
-        System.out.println("TRACKED POSITIONS Y" + followPositionComponent.trackedPosition.y);
 
         return false;
 
@@ -308,17 +258,9 @@ public class ScreenWipeSystem extends BaseSystem {
                 break;
             case BOTTOM_TO_TOP:
 
-                System.out.println("END OFFSET Y " + followPositionComponent.offsetY);
-                System.out.println(followPositionComponent.offsetY >= targetOffsetY + gamecam.viewportHeight);
-
                 followPositionComponent.offsetY =
                         (followPositionComponent.offsetY + screenWipeSpeedY * world.getDelta() >= targetOffsetY + gamecam.viewportHeight)
                                 ? targetOffsetY + gamecam.viewportHeight : followPositionComponent.offsetY + screenWipeSpeedY * world.getDelta();
-
-                System.out.println("END OFFSET Y " + followPositionComponent.offsetY);
-               // System.out.println("END OFFSET Y " + followPositionComponent.offsetY);
-
-                System.out.println(followPositionComponent.offsetY >= targetOffsetY + gamecam.viewportHeight);
 
                 if(followPositionComponent.offsetY >= targetOffsetY + gamecam.viewportHeight) return true;
                 break;
@@ -329,50 +271,15 @@ public class ScreenWipeSystem extends BaseSystem {
                 if(followPositionComponent.offsetY <= targetOffsetY - gamecam.viewportHeight) return true;
                 break;
 
+            case FADE:
+                fadeElapsed -= world.getDelta();
+                e.getComponent(TextureRegionComponent.class).color.a = Interpolation.fade.apply(fadeElapsed / fadeDurationInSeconds);
+                if(fadeElapsed <= 0) return true;
             default: return true;
         }
-
-        System.out.println(gamecam.position.x);
-
-        System.out.println("TRACKED POSITIONS X" + followPositionComponent.trackedPosition.x);
-        System.out.println("TRACKED POSITIONS Y" + followPositionComponent.trackedPosition.y);
 
         return false;
 
     }
-
-
-
-/*
-    public void exitAnimation(Direction start, OrthographicCamera gamecam) {
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        float width = gamecam.viewportWidth;
-        float height = gamecam.viewportHeight;
-
-        switch (start) {
-            case LEFT:
-            default:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToLeft();
-                break;
-            case RIGHT:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToRight();
-                break;
-            case UP:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToBottom();
-                break;
-            case DOWN:
-                exitTransition = new RoomTransition(camX, camY, width, height);
-                exitTransition.fromCenterToTop();
-                break;
-        }
-
-    }*/
-
 
 }
