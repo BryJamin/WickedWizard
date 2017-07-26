@@ -73,6 +73,17 @@ public class ArenaGUI {
     }
 
 
+    public ArenaGUI(float x, float y, float size, int range, ArenaMap arenaMap, TextureAtlas atlas) {
+        this.mapx = x;
+        this.mapy = y;
+        this.arenas = arenaMap.getRoomArray();
+        this.SIZE = size;
+        this.range = range;
+        this.currentRoom = arenaMap.getCurrentArena();
+        this.atlas = atlas;
+        this.block = atlas.findRegion(TextureStrings.BLOCK);
+    }
+
     public void update(float dt, float x, float y, ArenaMap arenaMap, MapCoords currentCoords){
 
         this.currentRoom = arenaMap.getCurrentArena();

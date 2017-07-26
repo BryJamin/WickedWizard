@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.screens;
+package com.byrjamin.wickedwizard.screens.world;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -24,7 +24,9 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -48,7 +50,6 @@ public class PauseWorld {
 
     private Entity returntoMainMenu;
 
-    private Entity test;
 
     public PauseWorld(SpriteBatch batch, AssetManager manager, Viewport gameport){
 
@@ -70,6 +71,7 @@ public class PauseWorld {
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new AnimationSystem(),
+                        new ActionOnTouchSystem(),
                         //new FindPlayerSystem(player),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
@@ -122,20 +124,6 @@ public class PauseWorld {
         Entity itemText = world.createEntity();
         itemText.edit().add(new PositionComponent(camX + Measure.units(30f), camY + Measure.units(55f)));
         itemText.edit().add(new TextureFontComponent(Assets.medium, "Items", Measure.units(15f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
-
-/*        statsText(world, stats[0], camX + Measure.units(5), camY + Measure.units(45f));
-        statsText(world, stats[1], camX + Measure.units(5), camY + Measure.units(40f));
-        statsText(world, stats[2], camX + Measure.units(5), camY + Measure.units(35f));
-        statsText(world, stats[3], camX + Measure.units(5), camY + Measure.units(30f));
-        statsText(world, stats[4], camX + Measure.units(5), camY + Measure.units(25f));
-        statsText(world, stats[5], camX + Measure.units(5), camY + Measure.units(20f));
-        statsText(world, stats[6], camX + Measure.units(5), camY + Measure.units(15f));*/
-
-
-
-
-        //e.edit().add(new PositionComponent())
-
 
 
         return world;

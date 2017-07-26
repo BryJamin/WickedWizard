@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.screens.world;
 
+import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
@@ -8,13 +9,22 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.byrjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
@@ -71,9 +81,14 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
+import com.byrjamin.wickedwizard.factories.items.PickUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -91,9 +106,18 @@ public class AdventureWorld {
     private final Random random;
     private final Viewport gameport;
 
+    private ArenaGUI arenaGUI;
+    public World world;
+
     private ComponentBag player;
+    private StatComponent playerStats;
+    private CurrencyComponent playerCurrency;
+
+
     private JigsawGenerator jigsawGenerator;
 
+
+    private BitmapFont currencyFont;
 
     public AdventureWorld(AssetManager assetManager, SpriteBatch batch, Viewport gameport, Random random){
         this.assetManager = assetManager;
@@ -105,6 +129,15 @@ public class AdventureWorld {
         this.jigsawGenerator = new JigsawGeneratorConfig(assetManager, random)
                 .noBattleRooms(5)
                 .build();
+
+
+        playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
+        playerCurrency = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
+
+        this.currencyFont = assetManager.get(Assets.small, BitmapFont.class);// font size 12 pixels
+
+        createAdventureWorld();
+
     }
 
     public ComponentBag getPlayer() {
@@ -113,6 +146,8 @@ public class AdventureWorld {
 
     public void setPlayer(ComponentBag player) {
         this.player = player;
+        playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
+        playerCurrency = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
     }
 
     public void setJigsawGenerator(JigsawGenerator jigsawGenerator){
@@ -190,7 +225,7 @@ public class AdventureWorld {
                 .build();
 
 
-        World world = new World(config);
+        world = new World(config);
         //TODO CLEAN THIS UP you shouldn'#t need to set the world of the input
         world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
 
@@ -207,15 +242,139 @@ public class AdventureWorld {
         }
 
 
+        arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas);
+
+
         return world;
 
     }
 
 
+    public World getWorld() {
+        return world;
+    }
+
+    public void process(float delta){
+
+        if (delta < 0.02f) {
+            world.setDelta(delta);
+        } else {
+            world.setDelta(0.017f);
+        }
+
+        world.process();
+
+    }
+
+
+    public void pauseWorld() {
+        for(BaseSystem s: world.getSystems()){
+            if(!(s instanceof RenderingSystem)) {
+                s.setEnabled(false);
+            }
+        }
+    }
+
+    public void unPauseWorld() {
+        for(BaseSystem s: world.getSystems()){
+            s.setEnabled(true);
+        }
+    }
 
 
 
 
+    public void drawMapAndHud(boolean isPaused){
+
+        if(!isPaused) {
+            RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+            arenaGUI.update(world.delta,
+                    gameport.getCamera().position.x + Measure.units(45),
+                    gameport.getCamera().position.y + Measure.units(25),
+                    rts.getCurrentMap(),
+                    rts.getCurrentPlayerLocation());
+        }
+
+        drawHUD(world, gameport.getCamera());
+        arenaGUI.draw(batch);
+
+        //HUD
+
+
+
+
+    }
+
+
+    public void drawHUD(World world, Camera gamecam){
+
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+        //BORDER
+
+        Array<TextureRegion> healthRegions = new Array<TextureRegion>();
+
+        for(int i = 1; i <= playerStats.health; i++){
+            if(i <= playerStats.health && i % 2 == 0) {
+                healthRegions.add(atlas.findRegion("item/heart", 0));
+            } else if(playerStats.health % 2 != 0 && i == playerStats.health){
+                healthRegions.add(atlas.findRegion("item/heart", 1));
+            }
+        }
+
+        int emptyHealth = playerStats.maxHealth - playerStats.health;
+        emptyHealth = (emptyHealth % 2 == 0) ? emptyHealth : emptyHealth - 1;
+
+        for(int i = 1; i <= emptyHealth; i++) {
+            if(i <= emptyHealth && i % 2 == 0) {
+                healthRegions.add(atlas.findRegion("item/heart", 2));
+            }
+        }
+
+        float screenoffset = Measure.units(0f);
+
+        int count = 0;
+
+        for(int i = 0; i < healthRegions.size; i++) {
+            batch.draw(healthRegions.get(i),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
+                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            count++;
+        }
+
+        for(int i = count; i < playerStats.armor + count; i++) {
+            batch.draw(atlas.findRegion("item/armor"),
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
+                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+            //count++;
+        }
+
+        PickUp p = new MoneyPlus1();
+
+        batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
+                Measure.units(2f), Measure.units(2f));
+
+        currencyFont.draw(batch, "" + playerCurrency.money,
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(9f),
+                Measure.units(7f), Align.left, true);
+
+        p = new KeyUp();
+
+        batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
+                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15f),
+                Measure.units(3f), Measure.units(3f));
+
+        currencyFont.draw(batch, "" + playerCurrency.keys,
+                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
+                Measure.units(5f), Align.center, true);
+    }
 
 
 

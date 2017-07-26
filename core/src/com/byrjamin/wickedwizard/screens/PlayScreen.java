@@ -45,7 +45,7 @@ import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
-import com.byrjamin.wickedwizard.screens.world.AdventureWorld;
+import com.byrjamin.wickedwizard.screens.world.*;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -94,11 +94,10 @@ public class PlayScreen extends AbstractScreen {
 
     private BitmapFont currencyFont;
 
-    private World world;
     private World deathWorld;
 
 
-    private PauseWorld pauseWorld;
+    private com.byrjamin.wickedwizard.screens.world.PauseWorld pauseWorld;
 
     private boolean isPaused = false;
 
@@ -114,6 +113,8 @@ public class PlayScreen extends AbstractScreen {
     private Random random;
     private JigsawGenerator jg;
     private Array<Arena> arenaArray;
+
+    private AdventureWorld adventureWorld;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -251,7 +252,6 @@ public class PlayScreen extends AbstractScreen {
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
         random = new Random();
         MathUtils.random = random;
-        currencyFont = game.manager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
     }
 
@@ -268,29 +268,29 @@ public class PlayScreen extends AbstractScreen {
         InputMultiplexer multiplexer = new InputMultiplexer();
 
         if (!gameOver) {
-            if(world.getSystem(PlayerInputSystem.class).isEnabled()) {
-                multiplexer.addProcessor(world.getSystem(PlayerInputSystem.class).getPlayerInput());
+            if(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).isEnabled()) {
+                multiplexer.addProcessor(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).getPlayerInput());
             }
+
             multiplexer.addProcessor(new InputAdapter() {
                 @Override
                 public boolean keyDown(int keycode) {
 
                     if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
                         if(!isPaused) {
-                            endGame(world);
 
-                            pauseWorld = new PauseWorld(game.batch, game.manager, gameport);
-                            pauseWorld.startWorld(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
+                            adventureWorld.pauseWorld();
 
-                            RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+                            pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game.batch, game.manager, gameport);
+                            pauseWorld.startWorld(adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
 
-                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getRoomArray(), rts.getCurrentArena(), atlas);
+                            RoomTransitionSystem rts = adventureWorld.getWorld().getSystem(RoomTransitionSystem.class);
 
-
-
+                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getCurrentMap(), atlas);
                             isPaused = true;
                         } else {
-                            unpauseWorld(world);
+
+                            adventureWorld.unPauseWorld();
                             isPaused = false;
                         }
                     }
@@ -353,15 +353,15 @@ public class PlayScreen extends AbstractScreen {
 
 
     public void createWorld(){
-        ItemStore itemStore = new ItemStore(random);
+        //ItemStore itemStore = new ItemStore(random);
 
         Arena startingArena = jg.getStartingRoom();
-        AdventureWorld adventureWorld = new AdventureWorld(game.manager, game.batch, gameport, random);
+        adventureWorld = new AdventureWorld(game.manager, game.batch, gameport, random);
         adventureWorld.setJigsawGenerator(jg);
         adventureWorld.setPlayer(new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
-        world = adventureWorld.createAdventureWorld();
+        adventureWorld.createAdventureWorld();
+        adventureWorld.getWorld().getSystem(MusicSystem.class).playLevelMusic(adventureWorld.getWorld().getSystem(ChangeLevelSystem.class).getLevel());
 
-        world.getSystem(MusicSystem.class).playLevelMusic(world.getSystem(ChangeLevelSystem.class).getLevel());
 
         stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
 
@@ -373,7 +373,7 @@ public class PlayScreen extends AbstractScreen {
         }
 
         currencyComponent = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, adventureWorld.getPlayer());
-        arenaGUI = new ArenaGUI(0, 0, jg.getStartingMap().getRoomArray(), startingArena, atlas);
+
     }
 
     @Override
@@ -391,23 +391,13 @@ public class PlayScreen extends AbstractScreen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
 
-        if (delta < 0.02f) {
-            world.setDelta(delta);
-        } else {
-            world.setDelta(0.017f);
-        }
-
-        //System.out.println(world.getAspectSubscriptionManager().get(Aspect.all()).getEntities().size());
-
-        //System.out.println(world.delta);
-
         if(gameOver){
-            endGame(world);
+            adventureWorld.pauseWorld();
         }
 
 
-        handleInput(world.delta);
-        world.process();
+        handleInput(delta);
+        adventureWorld.process(delta);
 
 
         if(stats.health <= 0 && !gameOver){
@@ -424,20 +414,7 @@ public class PlayScreen extends AbstractScreen {
         drawScreenBorder(game.batch, atlas);
 
         if(!gameOver) {
-            if(!isPaused) {
-                RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
-                arenaGUI.update(world.delta,
-                        gamecam.position.x + Measure.units(45),
-                        gamecam.position.y + Measure.units(25),
-                        rts.getCurrentMap(),
-                        rts.getCurrentPlayerLocation());
-            }
-
-            drawHUD(world, gamecam);
-            arenaGUI.draw(game.batch);
-
-            //HUD
-
+            adventureWorld.drawMapAndHud(isPaused);
         }
 
         game.batch.end();
@@ -451,10 +428,9 @@ public class PlayScreen extends AbstractScreen {
                 pauseWorld.getWorld().setDelta(0.02f);
             }
 
-
             pauseWorld.process();
 
-            RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+            RoomTransitionSystem rts =  adventureWorld.getWorld().getSystem(RoomTransitionSystem.class);
 
             float camX = gamecam.position.x - gamecam.viewportWidth / 2;
             float camY = gamecam.position.y - gamecam.viewportHeight / 2;
@@ -494,25 +470,6 @@ public class PlayScreen extends AbstractScreen {
 
     }
 
-
-
-
-    public void endGame(World world){
-        for(BaseSystem s: world.getSystems()){
-            if(!(s instanceof RenderingSystem)) {
-                s.setEnabled(false);
-            }
-        }
-    }
-
-    public void unpauseWorld(World world){
-
-        for(BaseSystem s: world.getSystems()){
-                s.setEnabled(true);
-        }
-
-    }
-
     public void drawScreenBorder(SpriteBatch batch, TextureAtlas atlas){
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
@@ -525,79 +482,6 @@ public class PlayScreen extends AbstractScreen {
         batch.setColor(new Color(Color.WHITE));
     }
 
-
-    public void drawHUD(World world, OrthographicCamera gamecam){
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-
-        //BORDER
-
-
-        Array<TextureRegion> healthRegions = new Array<TextureRegion>();
-
-        for(int i = 1; i <= stats.health; i++){
-            if(i <= stats.health && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion("item/heart", 0));
-            } else if(stats.health % 2 != 0 && i == stats.health){
-                healthRegions.add(atlas.findRegion("item/heart", 1));
-            }
-        }
-
-        int emptyHealth = stats.maxHealth - stats.health;
-        emptyHealth = (emptyHealth % 2 == 0) ? emptyHealth : emptyHealth - 1;
-
-        for(int i = 1; i <= emptyHealth; i++) {
-            if(i <= emptyHealth && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion("item/heart", 2));
-            }
-        }
-
-        float screenoffset = Measure.units(0f);
-
-        int count = 0;
-
-        for(int i = 0; i < healthRegions.size; i++) {
-            game.batch.draw(healthRegions.get(i),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
-                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-            count++;
-        }
-
-        for(int i = count; i < stats.armor + count; i++) {
-            game.batch.draw(atlas.findRegion("item/armor"),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
-                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-            //count++;
-        }
-
-        PickUp p = new MoneyPlus1();
-
-        game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
-                Measure.units(2f), Measure.units(2f));
-
-        currencyFont.draw(game.batch, "" + currencyComponent.money,
-                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(9f),
-                Measure.units(7f), Align.left, true);
-
-        p = new KeyUp();
-
-        game.batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15f),
-                Measure.units(3f), Measure.units(3f));
-
-        currencyFont.draw(game.batch, "" + currencyComponent.keys,
-                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
-                Measure.units(5f), Align.center, true);
-    }
 
     @Override
     public void resize(int width, int height) {
@@ -624,7 +508,7 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-        world.dispose();
+        adventureWorld.getWorld().dispose();
     }
 
     public class gestures extends AbstractGestureDectector {
@@ -634,7 +518,7 @@ public class PlayScreen extends AbstractScreen {
 
             if (gameOver) {
                 game.setScreen(new MenuScreen(game));
-                world.dispose();
+                adventureWorld.getWorld().dispose();
                 gameOver = false;
                 return true;
             }
@@ -646,11 +530,9 @@ public class PlayScreen extends AbstractScreen {
                 Vector3 touchInput = new Vector3(x, y, 0);
                 gameport.unproject(touchInput);
 
-                System.out.println(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y));
-
                 if(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y)){
                     game.setScreen(new MenuScreen(game));
-                    world.dispose();
+                    adventureWorld.getWorld().dispose();
                 }
 
             }
