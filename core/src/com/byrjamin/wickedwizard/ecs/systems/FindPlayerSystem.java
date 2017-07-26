@@ -31,7 +31,7 @@ public class FindPlayerSystem extends BaseSystem {
     }
 
 
-    public <T> T getPC(Class<T> cls){
+    public <T> T getPlayerComponent(Class<T> cls){
 
         try {
             T t = BagSearch.getObjectOfTypeClass(cls, playerBag);

@@ -30,7 +30,7 @@ public class ProximitySystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
         CollisionBoundComponent cbc = cbm.get(e);
         ProximityTriggerAIComponent ptac = ptam.get(e);

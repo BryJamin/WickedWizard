@@ -214,9 +214,9 @@ public class PlayerFactory extends AbstractFactory {
         },  new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
+                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
 
-                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
 
                 float x = e.getComponent(CollisionBoundComponent.class).getCenterX();
@@ -232,7 +232,7 @@ public class PlayerFactory extends AbstractFactory {
                 mtc.maxEndSpeedY = Measure.units(80f);//150f = MAXGRAPPLEMOVEMENT
 
 
-                world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = true;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = true;
 
                 e.edit().remove(VelocityComponent.class);
 

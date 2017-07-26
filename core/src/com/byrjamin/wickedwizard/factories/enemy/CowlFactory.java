@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -106,7 +105,7 @@ public class CowlFactory extends EnemyFactory{
             @Override
             public void performAction(World world, Entity e) {
 
-                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 e.edit().add(new OrbitComponent(pc.position, radius, startsLeft ? speedInDegrees : -speedInDegrees, startingAngleInDegrees));
 
             }

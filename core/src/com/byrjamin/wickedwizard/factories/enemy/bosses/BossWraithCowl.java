@@ -45,7 +45,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
@@ -266,7 +265,7 @@ public class BossWraithCowl extends EnemyFactory {
                         createBlock(world, e.getComponent(ParentComponent.class), wallLeftPosition.x, wallLeftPosition.y + Measure.units(i * 5), 0, new Color(Color.BLACK));
                     }
 
-                    world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position.set(playerLeftPosition, 0);
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.set(playerLeftPosition, 0);
                     e.edit().add(new VelocityComponent(0, random.nextBoolean() ? speed : -speed));
                     e.edit().add(new FiringAIComponent(0));
                     e.edit().add(new WeaponComponent(ghostMeapon, 0.5f));
@@ -280,7 +279,7 @@ public class BossWraithCowl extends EnemyFactory {
                         createBlock(world, e.getComponent(ParentComponent.class), wallRightPosition.x, wallRightPosition.y + Measure.units(i * 5), 180, new Color(Color.BLACK));
                     }
 
-                    world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position.set(playerRightPosition, 0);
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.set(playerRightPosition, 0);
                     e.edit().add(new VelocityComponent(0, random.nextBoolean() ? speed : -speed));
                     e.edit().add(new FiringAIComponent(180));
                     e.edit().add(new WeaponComponent(ghostMeapon, 1f));
@@ -294,7 +293,7 @@ public class BossWraithCowl extends EnemyFactory {
                         createBlock(world, e.getComponent(ParentComponent.class), wallUpPosition.x + Measure.units((i * 5)), wallUpPosition.y, 270, new Color(Color.BLACK));
                     }
 
-                    world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position.set(playerUpPosition, 0);
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.set(playerUpPosition, 0);
                     e.edit().add(new VelocityComponent(random.nextBoolean() ? speed : -speed, 0));
                     e.edit().add(new FiringAIComponent());
                     e.edit().add(new WeaponComponent(higherWeapon, 0.5f));
@@ -383,7 +382,7 @@ public class BossWraithCowl extends EnemyFactory {
         e.edit().add(new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
-                return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
+                return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class).bound);
 
             }
 
@@ -391,7 +390,7 @@ public class BossWraithCowl extends EnemyFactory {
         }, new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
                 vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(pushAngle));
                 vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(pushAngle));
             }
@@ -482,9 +481,9 @@ public class BossWraithCowl extends EnemyFactory {
             //player
 
             CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class)
-                    .getPC(CollisionBoundComponent.class);
+                    .getPlayerComponent(CollisionBoundComponent.class);
             playerCbc.setCenter(arena.getWidth() / 2, arena.getHeight() / 2);
-            world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class)
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class)
                     .position.set(playerCbc.bound.x, playerCbc.bound.y, 0);
 
 

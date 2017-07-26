@@ -8,23 +8,17 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
 import com.artemis.utils.Bag;
-import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.utils.BagSearch;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.HashMap;
 
@@ -115,10 +109,10 @@ public class MapTeleportationSystem extends EntitySystem {
      */
     private void placePlayerAfterTeleport(Arena currentArena){
 
-        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
-        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
+        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
+        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
         world.getSystem(PlayerInputSystem.class).turnOffGlide();
 
         for(Bag<Component> b : currentArena.getBagOfEntities()) {
@@ -183,11 +177,11 @@ public class MapTeleportationSystem extends EntitySystem {
         rts.setCurrentMap(jg.getStartingMap());
         rts.unpackRoom(rts.getCurrentArena());
 
-        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
         player.position.x = rts.getCurrentArena().getWidth() / 2;
         player.position.y = rts.getCurrentArena().getHeight() / 2;
-        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
         vc.velocity.x = 0;
         vc.velocity.y = 0;
         world.getSystem(PlayerInputSystem.class).turnOffGlide();

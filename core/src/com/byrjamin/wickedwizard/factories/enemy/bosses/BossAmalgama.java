@@ -36,7 +36,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
@@ -220,8 +219,8 @@ public class BossAmalgama extends EnemyFactory {
                 e.edit().add(phaseComponent);
                 //phaseComponent.addPhase(wallPhasetime, new BlockingWallPhase());
 
-             //   world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).health = 1;
-             //   world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class).applyDamage(2);
+             //   world.getSystem(FindPlayerSystem.class).getPlayerComponent(HealthComponent.class).health = 1;
+             //   world.getSystem(FindPlayerSystem.class).getPlayerComponent(HealthComponent.class).applyDamage(2);
             }
         });
 
@@ -257,7 +256,7 @@ public class BossAmalgama extends EnemyFactory {
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
                         vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
                         vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
                     }
@@ -265,7 +264,7 @@ public class BossAmalgama extends EnemyFactory {
                 new Condition() {
                     @Override
                     public boolean condition(World world, Entity entity) {
-                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
+                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class).bound);
 
                     }
                 }

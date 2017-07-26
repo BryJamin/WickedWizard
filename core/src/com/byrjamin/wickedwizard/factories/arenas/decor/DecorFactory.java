@@ -1,9 +1,7 @@
 package com.byrjamin.wickedwizard.factories.arenas.decor;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -21,8 +19,6 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
@@ -39,8 +35,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchCompon
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -54,7 +48,6 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
-import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
@@ -209,7 +202,7 @@ public class DecorFactory extends AbstractFactory {
                 e.edit().add(new ConditionalActionComponent(new Condition() {
                     @Override
                     public boolean condition(World world, Entity entity) {
-                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
+                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class).bound);
 
                     }
 
@@ -217,7 +210,7 @@ public class DecorFactory extends AbstractFactory {
                 }, new Task() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
                         vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(angleOfPushInDegrees));
                         vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(angleOfPushInDegrees));
                     }
@@ -566,10 +559,10 @@ public class DecorFactory extends AbstractFactory {
             @Override
             public boolean condition(World world, Entity entity) {
 
-                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
                 CollisionBoundComponent wallCbc = entity.getComponent(CollisionBoundComponent.class);
-                CurrencyComponent cc = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
+                CurrencyComponent cc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class);
 
                 Rectangle futureRectangle = new Rectangle(playerCbc.bound);
                 futureRectangle.x += (vc.velocity.x * world.delta);

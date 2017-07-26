@@ -48,7 +48,7 @@ public class LuckSystem extends BaseSystem {
 
     @Override
     protected void processSystem() {
-        luck = world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class).luck;
+        luck = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).luck;
     }
 
 

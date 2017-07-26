@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.ecs.systems.input;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -89,7 +88,7 @@ public class PlayerInput extends InputAdapter {
 
         if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
             movementInputPoll = pointer;
-            world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = false;
         } else if(firingInputPoll == null){
             firingInputPoll = pointer;
         }
@@ -140,9 +139,9 @@ public class PlayerInput extends InputAdapter {
                     };
 
                     if(!grapple) {
-                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                        JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
+                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+                        JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
 
                         if (input.y > cbc.getCenterY()) {
                             if (jc.jumps > 0) {
@@ -176,7 +175,7 @@ public class PlayerInput extends InputAdapter {
             firingInputPoll = (firingInputPoll == pointer) ? null : firingInputPoll;
 
             if(firingInputPoll == null){
-                world.getSystem(FindPlayerSystem.class).getPC(WeaponComponent.class).timer.reset();
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(WeaponComponent.class).timer.reset();
             }
 
         }

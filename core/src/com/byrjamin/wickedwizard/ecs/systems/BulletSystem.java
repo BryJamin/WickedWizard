@@ -7,7 +7,6 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
-import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -44,13 +43,13 @@ public class BulletSystem extends EntityProcessingSystem {
         CollisionBoundComponent cbc = cbm.get(e);
 
         if(em.has(e)){
-            CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+            CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
             if(pcbc.bound.overlaps(cbc.bound)){
 
-                BlinkComponent bc = world.getSystem(FindPlayerSystem.class).getPC(BlinkComponent.class);
+                BlinkComponent bc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(BlinkComponent.class);
 
                 if(!bc.isHit) {
-                    HealthComponent hc = world.getSystem(FindPlayerSystem.class).getPC(HealthComponent.class);
+                    HealthComponent hc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(HealthComponent.class);
                     hc.applyDamage(1);
                 }
 

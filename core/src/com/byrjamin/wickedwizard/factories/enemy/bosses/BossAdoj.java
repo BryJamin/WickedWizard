@@ -3,7 +3,6 @@ package com.byrjamin.wickedwizard.factories.enemy.bosses;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,17 +24,16 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.ai.MoveToSystem;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
@@ -66,6 +64,8 @@ public class BossAdoj extends EnemyFactory {
     private static final float fastPistolFireRate = 0.1f;
     private static final float speed = Measure.units(40f);
 
+    private static final float tommyReload = 0.6f;
+    private static final float tommyFiringTime = 0.3f;
 
 
     public BossAdoj(AssetManager assetManager) {
@@ -104,11 +104,11 @@ public class BossAdoj extends EnemyFactory {
         PhaseComponent pc = new PhaseComponent();
         OnTargetXCondition onTargetXCondition = new OnTargetXCondition();
 
-        pc.addPhase(6f, new TommyGunPhase(0.7f));
+        pc.addPhase(6f, new TommyGunPhase(tommyReload));
         pc.addPhase(new MoveToPhase(Direction.UP), onTargetXCondition);
         pc.addPhase(9f, new TommySpreadGunPhase(false));
         pc.addPhase(new MoveToPhase(Direction.LEFT), onTargetXCondition);
-        pc.addPhase(6f, new TommyGunPhase(0.7f));
+        pc.addPhase(6f, new TommyGunPhase(tommyReload));
         pc.addPhase(new MoveToPhase(Direction.UP), onTargetXCondition);
         pc.addPhase(9f, new TommySpreadGunPhase(true));
         pc.addPhase(new MoveToPhase(Direction.RIGHT), onTargetXCondition);
@@ -177,15 +177,35 @@ public class BossAdoj extends EnemyFactory {
 
         @Override
         public void performAction(World world, Entity e) {
-            e.edit().add(new WeaponComponent(tommyGun, reloadTime));
-            e.edit().add(new FiringAIComponent(FiringAIComponent.AI.TARGETED, 0, firingAiOffsetY));
 
+            e.edit().add(new WeaponComponent(tommyGun));
             e.edit().add(new ActionAfterTimeComponent(new Action() {
+
+                private boolean flip;
+
                 @Override
                 public void performAction(World world, Entity e) {
-                   e.getComponent(WeaponComponent.class).addChargeTime(reloadTime);
+                   // e.getComponent(WeaponComponent.class).addChargeTime(reloadTime);
+                    if(flip) {
+                        CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+
+                        e.edit().remove(FiringAIComponent.class);
+                        e.edit().add(new FiringAIComponent(FiringAIComponent.AI.UNTARGETED,
+                                BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY() + firingAiOffsetY, playerCbc.getCenterX(), playerCbc.getCenterY())
+                                , 0, firingAiOffsetY));
+                        e.getComponent(ActionAfterTimeComponent.class).resetTime = tommyFiringTime;
+
+
+                    } else {
+                        e.edit().remove(FiringAIComponent.class);
+                        e.getComponent(ActionAfterTimeComponent.class).resetTime = tommyReload;
+                    }
+
+                    flip = !flip;
+
                 }
-            }, 1f, true));
+            }, tommyReload, true));
         }
 
         @Override

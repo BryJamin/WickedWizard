@@ -1,6 +1,5 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
@@ -15,7 +14,6 @@ import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -103,7 +101,7 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new ActionAfterTimeComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                 boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
@@ -181,7 +179,7 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new ActionAfterTimeComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                 boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());

@@ -34,8 +34,8 @@ public class PlatformSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-        VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+        CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
 
         for(Entity e : this.getEntities()) {
 
@@ -70,7 +70,7 @@ public class PlatformSystem extends EntitySystem {
                     playerVelocity.velocity.y = 0;
                     playerBound.bound.y = cbc.bound.y + cbc.bound.getHeight();
 
-                    PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                    PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                     pc.position.x = playerBound.bound.getX();
                     pc.position.y = playerBound.bound.getY();
 
@@ -83,8 +83,8 @@ public class PlatformSystem extends EntitySystem {
 
     public boolean fallThoughPlatform() {
 
-        CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-        VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+        CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
 
         for(Entity e : this.getEntities()) {
 
@@ -103,7 +103,7 @@ public class PlatformSystem extends EntitySystem {
                 if(c == Collider.Collision.BOTTOM) {
                     platform.canPassThrough = true;
                     return true;
-                    //PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                    //PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 }
 
             }

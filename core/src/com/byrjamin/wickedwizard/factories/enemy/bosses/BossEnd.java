@@ -35,18 +35,13 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
-import com.byrjamin.wickedwizard.factories.BulletFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
-import com.byrjamin.wickedwizard.factories.enemy.MaceFactory;
-import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
@@ -148,8 +143,8 @@ public class BossEnd extends EnemyFactory {
             public void performAction(World world, Entity e) {
 
 
-                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                PositionComponent playerPosition = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                PositionComponent playerPosition = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
 
                 CollisionBoundComponent endCbc = e.getComponent(CollisionBoundComponent.class);
 
@@ -179,7 +174,7 @@ public class BossEnd extends EnemyFactory {
         float height = ArenaShellFactory.SECTION_HEIGHT * 3;
 
         Entity e = world.createEntity();
-        e.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position, -width / 2, -height / 2));
+        e.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
         e.edit().add(new PositionComponent(0, 0));
         e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                 new Color(Color.WHITE)));

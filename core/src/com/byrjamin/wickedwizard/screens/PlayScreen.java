@@ -25,13 +25,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
@@ -282,7 +280,7 @@ public class PlayScreen extends AbstractScreen {
                             endGame(world);
 
                             pauseWorld = new PauseWorld(game.batch, game.manager, gameport);
-                            pauseWorld.startWorld(world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class));
+                            pauseWorld.startWorld(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
 
                             RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
 

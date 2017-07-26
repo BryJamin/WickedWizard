@@ -266,7 +266,7 @@ public class ItemFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                CurrencyComponent playerMoney = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
+                CurrencyComponent playerMoney = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class);
                 CurrencyComponent itemPrice = e.getComponent(CurrencyComponent.class);
 
 

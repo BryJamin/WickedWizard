@@ -34,7 +34,6 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 13/03/2017.
@@ -153,9 +152,9 @@ public class RoomTransitionSystem extends EntitySystem {
             if(dm.has(e)){
                 placePlayerAfterTransition(dm.get(e),
                         cbm.get(e),
-                        world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class),
-                        world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class),
-                        world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class),
                         doorEntryPercentage);
             }
 
@@ -163,9 +162,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
         }
 
-        world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
-        world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class).reset();
-        Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity;
+        world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = false;
+        world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class).reset();
+        Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity;
 
         velocity.y = velocity.y / 2;
         velocity.x = velocity.x / 2 ;
@@ -263,7 +262,7 @@ public class RoomTransitionSystem extends EntitySystem {
             if(!bm.has(e) && !expireM.has(e) && !offScreenPickUpM.has(e)) {
 
                 if(cm.has(e)){
-                    if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
+                    if(world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class).
                             children.contains(cm.get(e), true)){
                         continue;
                     }
@@ -327,7 +326,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
 
     public MapCoords getCurrentPlayerLocation(){
-        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         playerLocation.setX(currentMap.getCurrentArena().getStartingCoords().getX() + (int) (pBound.getCenterX() / ArenaShellFactory.SECTION_WIDTH));
         playerLocation.setY(currentMap.getCurrentArena().getStartingCoords().getY() + (int) (pBound.getCenterY() / ArenaShellFactory.SECTION_HEIGHT));
         return playerLocation;

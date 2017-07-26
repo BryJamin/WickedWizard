@@ -15,7 +15,6 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -24,7 +23,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -116,7 +114,7 @@ public class EnemyFactory extends AbstractFactory {
                 float height = ArenaShellFactory.SECTION_HEIGHT * 3;
 
                 Entity flash = world.createEntity();
-                flash.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class).position, -width / 2, -height / 2));
+                flash.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
                 flash.edit().add(new PositionComponent(0, 0));
                 flash.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                         new Color(Color.WHITE)));
