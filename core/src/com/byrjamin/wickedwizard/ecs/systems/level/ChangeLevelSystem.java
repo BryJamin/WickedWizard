@@ -94,19 +94,19 @@ public class ChangeLevelSystem extends BaseSystem {
             default:
                 level = TWO;
                 jigsawGenerator = getJigsawGenerator(TWO);
-                world.getSystem(MessageBannerSystem.class).createItemBanner("Chapter 2", "");
+                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 2");
                 break;
             case TWO: level = THREE;
                 jigsawGenerator = getJigsawGenerator(THREE);
-                world.getSystem(MessageBannerSystem.class).createItemBanner("Chapter 3", "");
+                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 3");
                 break;
             case THREE: level = FOUR;
                 jigsawGenerator = getJigsawGenerator(FOUR);
-                world.getSystem(MessageBannerSystem.class).createItemBanner("Chapter 4", "");
+                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 4");
                 break;
             case FOUR: level = FIVE;
                 jigsawGenerator = getJigsawGenerator(FIVE);
-                world.getSystem(MessageBannerSystem.class).createItemBanner("Chapter 5", "");
+                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 5");
                 break;
             case FIVE:
                 jigsawGenerator = getJigsawGenerator(ONE);

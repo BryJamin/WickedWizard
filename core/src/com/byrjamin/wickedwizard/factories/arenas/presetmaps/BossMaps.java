@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.items.Item;
@@ -36,6 +37,7 @@ public class BossMaps extends AbstractFactory {
     private ArenaShellFactory arenaShellFactory;
     private ChestFactory chestFactory;
     private DecorFactory decorFactory;
+    private PortalFactory portalFactory;
     private ItemFactory itemFactory;
 
     ArenaSkin arenaSkin;
@@ -45,7 +47,8 @@ public class BossMaps extends AbstractFactory {
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.chestFactory = new ChestFactory(assetManager);
         //this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
-        this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+        this.portalFactory = new PortalFactory(assetManager);
         this.itemFactory = new ItemFactory(assetManager);
         this.arenaSkin = arenaSkin;
     }
@@ -80,7 +83,7 @@ public class BossMaps extends AbstractFactory {
         Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords);
         bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
         bossRoom.roomType = Arena.RoomType.BOSS;
-        bossRoom.addEntity(decorFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
+        bossRoom.addEntity(portalFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
 
         return bossRoom;
     }
@@ -97,7 +100,7 @@ public class BossMaps extends AbstractFactory {
         btc.offsetY = -Measure.units(15f);
 
         Arena startingArena = arenaShellFactory.createSmallArena(mapCoords, false, true, false, false);
-        startingArena.addEntity(decorFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f), btc));
+        startingArena.addEntity(portalFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f), btc));
         return startingArena;
     }
 
@@ -106,15 +109,14 @@ public class BossMaps extends AbstractFactory {
      * Creates the Exit Arena that leads to the next level of the game
      * This arena also holds an item
      * @param mapCoords - Map co-ordinates of the Arena
-     * @return
+     * @return - Returns the arena
      */
     public Arena bossMapExitArena(MapCoords mapCoords, Item item){
         Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords);
         exitArena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
-        exitArena.addEntity(decorFactory.wallBag(Measure.units(70f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
 
 
-        exitArena.addEntity(decorFactory.levelPortal(Measure.units(82.5f), Measure.units(45f)));
+        exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
         exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), item));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
 

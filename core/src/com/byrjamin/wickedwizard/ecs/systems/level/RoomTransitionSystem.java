@@ -72,9 +72,7 @@ public class RoomTransitionSystem extends EntitySystem {
     @SuppressWarnings("unchecked")
     public RoomTransitionSystem(ArenaMap arenaMap) {
         super(Aspect.all().exclude(PlayerComponent.class));
-        this.currentMap = arenaMap;
-        currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
-        currentMap.getUnvisitedButAdjacentArenas().addAll(getAdjacentArenas(currentMap.getCurrentArena()));
+        this.setCurrentMap(arenaMap);
     }
 
     @Override
@@ -306,7 +304,14 @@ public class RoomTransitionSystem extends EntitySystem {
 
     }
 
-    public boolean goFromTo(DoorComponent dc, float doorEntryPercentage){
+    /**
+     * Triggers the running of the RoomTransitionSystem if a door can be found in the map of existing arenas
+     *
+     * @param dc - The active door that has been touched by the player entity
+     * @param doorEntryHeightPercentage - The height the player was at when he touched the door
+     * @return - True if there is a matching door, False if there is not
+     */
+    public boolean goFromSourceDoorToDestinationDoor(DoorComponent dc, float doorEntryHeightPercentage){
 
         Arena next = findRoom(dc.leaveCoords);
         if(next != null) {
@@ -314,7 +319,7 @@ public class RoomTransitionSystem extends EntitySystem {
             this.currentDoor = dc;
             this.previousDestination = dc.currentCoords;
             this.destination = dc.leaveCoords;
-            this.doorEntryPercentage = doorEntryPercentage;
+            this.doorEntryPercentage = doorEntryHeightPercentage;
             return true;
         }
         return false;
@@ -328,8 +333,16 @@ public class RoomTransitionSystem extends EntitySystem {
         return playerLocation;
     }
 
+    /**
+     * Sets the current Map of the RoomTransitionSystem
+     *
+     * Also runs the update method on new Maps
+     *
+     * @param currentMap - The map that is going to be the current Arena Map of the game
+     */
     public void setCurrentMap(ArenaMap currentMap) {
         this.currentMap = currentMap;
+        this.updateNewMap(currentMap);
     }
 
     public ArenaMap getCurrentMap() {
@@ -342,6 +355,18 @@ public class RoomTransitionSystem extends EntitySystem {
 
     public Array<Arena> getRoomArray(){
         return currentMap.getRoomArray();
+    }
+
+
+    /**
+     * If the current map has just been added and does not have any visited or unvisited arenas,
+     * Use this is set them up.
+     */
+    public void updateNewMap(ArenaMap currentMap){
+        if(currentMap.getVisitedArenas().size == 0){
+            currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
+            currentMap.getUnvisitedButAdjacentArenas().addAll(this.getAdjacentArenas(currentMap.getCurrentArena()));
+        }
     }
 
 

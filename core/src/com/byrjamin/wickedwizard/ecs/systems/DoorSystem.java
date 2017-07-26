@@ -65,7 +65,7 @@ public class DoorSystem extends EntityProcessingSystem {
                             float doorEntryPercentage = ((cbm.get(e).bound.y - cbc.bound.getY()) /
                                     (cbc.bound.getHeight()));
 
-                            world.getSystem(RoomTransitionSystem.class).goFromTo(
+                            world.getSystem(RoomTransitionSystem.class).goFromSourceDoorToDestinationDoor(
                                     dm.get(doorEntity),
                                     doorEntryPercentage);
                         }

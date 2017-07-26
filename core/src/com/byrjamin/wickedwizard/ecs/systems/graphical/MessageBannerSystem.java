@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.BannerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
@@ -85,7 +86,7 @@ public class MessageBannerSystem extends EntitySystem {
         fc.count = 1;
 
         ExpireComponent ec = new ExpireComponent(10f);
-        
+
         titleFC.color.a = 0;
         titleFC.text = title;
         createBannerText(0,  Measure.units(14), titleFC, parentComponent, fc, ec);
@@ -105,6 +106,35 @@ public class MessageBannerSystem extends EntitySystem {
         whiteFlashingBox.getComponent(TextureRegionComponent.class).color.a = 1;
 
     }
+
+
+    public void createLevelBanner(String message){
+
+        for(Entity e : this.getEntities()){
+            world.getSystem(OnDeathSystem.class).kill(e);
+        }
+
+
+        Entity banner = world.createEntity();
+        banner.edit().add(new BannerComponent());
+        ParentComponent parentComponent = new ParentComponent();
+        banner.edit().add(new ParentComponent());
+
+        FadeComponent fc = new FadeComponent(true, 4f, false);
+        fc.count = 1;
+
+        ExpireComponent ec = new ExpireComponent(10f);
+
+
+        TextureFontComponent trc = new TextureFontComponent(Assets.medium, message);
+        trc.color.a = 0;
+        trc.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
+        createBannerText(0,  Measure.units(12), trc, parentComponent, fc, ec);
+
+        createBlackBackingBox(parentComponent, fc, ec, new Color(Color.BLACK));
+
+    }
+
 
 
     private Entity createBannerText(float offsetX, float offsetY, TextureFontComponent tfc, ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec){

@@ -12,6 +12,9 @@ public class TextureStrings {
     public static final String CHEST = "chest";
 
 
+    public static final String TELEPORTER = "teleporter";
+
+
     //PLAYER
     public static final  String SQU_WALK = "squ_walk";
     public static final String SQU_FIRING = "squ_firing";//AnimationPacker.genAnimation(0.15f / 10, "squ_firing");

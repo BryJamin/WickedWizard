@@ -35,17 +35,7 @@ public class Assets {
     public static Color currentbg;
 
 
-    public static BitmapFont smallFont;
-    public static BitmapFont mediumFont;
-    public static BitmapFont largeFont;
-
-
     public static void initialize(AssetManager am) {
-        smallFont = am.get(small, BitmapFont.class);
-        mediumFont = am.get(medium, BitmapFont.class);
-
-        currentbg = level1bg;
-        currentWall = level1Wall;
     }
 
 
