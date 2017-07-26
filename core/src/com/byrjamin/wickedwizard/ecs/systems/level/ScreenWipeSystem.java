@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -18,13 +17,10 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.RoomTransition;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -141,7 +137,7 @@ public class ScreenWipeSystem extends BaseSystem {
                 TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK)));
 
 
-        entryAnimation(transitionEntity, transition ,gamecam);
+        startingTransitionSetup(transitionEntity, transition ,gamecam);
 
         this.taskToPerformInbetweenTransition = taskToPerformInbetweenTransition;
 
@@ -169,7 +165,7 @@ public class ScreenWipeSystem extends BaseSystem {
 
     }
 
-    public void entryAnimation(Entity e, Transition transition, OrthographicCamera gamecam) {
+    public void startingTransitionSetup(Entity e, Transition transition, OrthographicCamera gamecam) {
 
 
         switch(transition){
@@ -194,7 +190,7 @@ public class ScreenWipeSystem extends BaseSystem {
     }
 
 
-    public boolean performFirstTransition (Entity e){
+    private boolean performFirstTransition (Entity e){
 
         FollowPositionComponent followPositionComponent = e.getComponent(FollowPositionComponent.class);
 
@@ -230,7 +226,7 @@ public class ScreenWipeSystem extends BaseSystem {
 
     }
 
-    public boolean performSecondTransition (Entity e){
+    private boolean performSecondTransition (Entity e){
 
         FollowPositionComponent followPositionComponent = e.getComponent(FollowPositionComponent.class);
 

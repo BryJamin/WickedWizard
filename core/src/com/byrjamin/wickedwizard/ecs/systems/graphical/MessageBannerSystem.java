@@ -85,7 +85,6 @@ public class MessageBannerSystem extends EntitySystem {
         fc.count = 1;
 
         ExpireComponent ec = new ExpireComponent(10f);
-
         
         titleFC.color.a = 0;
         titleFC.text = title;
@@ -96,25 +95,14 @@ public class MessageBannerSystem extends EntitySystem {
         messageFC.text = message;
         createBannerText(0, Measure.units(9f), messageFC, parentComponent, fc, ec);
 
-        createBlackBackingBox(parentComponent, fc, ec);
-
-
-
-        Entity whiteFlashingBox = world.createEntity();
-        whiteFlashingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + Measure.units(5)));
-        whiteFlashingBox.edit().add(new FollowPositionComponent(gamecam.position, - MainGame.GAME_WIDTH / 2, Measure.units(5)));
-
-        TextureRegionComponent trc = new TextureRegionComponent(bannerTexture, 0,0, MainGame.GAME_WIDTH, Measure.units(10f), TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        trc.color = new Color(Color.WHITE);
-        trc.color.a = 1;
-        whiteFlashingBox.edit().add(new ExpireComponent(0.9f));
-        whiteFlashingBox.edit().add(trc);
-        whiteFlashingBox.edit().add(new ChildComponent(parentComponent));
+        createBlackBackingBox(parentComponent, fc, ec, new Color(Color.BLACK));
 
         fc = new FadeComponent(true, 0.5f, false);
         fc.count = 1;
-        whiteFlashingBox.edit().add(fc);
 
+        Entity whiteFlashingBox = createBlackBackingBox(parentComponent, fc, new ExpireComponent(0.9f), new Color(Color.WHITE));
+        whiteFlashingBox.getComponent(TextureRegionComponent.class).layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
+        whiteFlashingBox.getComponent(TextureRegionComponent.class).color.a = 1;
 
     }
 
@@ -131,14 +119,14 @@ public class MessageBannerSystem extends EntitySystem {
     }
 
 
-    private Entity createBlackBackingBox(ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec){
+    private Entity createBlackBackingBox(ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec, Color color){
 
         Entity blackBackingBox = world.createEntity();
         blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + Measure.units(5)));
         blackBackingBox.edit().add(new FollowPositionComponent(gamecam.position, - MainGame.GAME_WIDTH / 2, Measure.units(5)));
 
         TextureRegionComponent trc = new TextureRegionComponent(bannerTexture, 0,0, MainGame.GAME_WIDTH, Measure.units(10f), TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        trc.color = new Color(Color.BLACK);
+        trc.color = color;
         trc.color.a = 0;
         blackBackingBox.edit().add(trc);
         blackBackingBox.edit().add(ec);
