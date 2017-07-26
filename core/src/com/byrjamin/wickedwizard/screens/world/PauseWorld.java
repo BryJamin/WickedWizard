@@ -17,6 +17,8 @@ import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -25,8 +27,11 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.screens.MenuButton;
+import com.byrjamin.wickedwizard.screens.MenuScreen;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -42,6 +47,7 @@ public class PauseWorld {
     private World world;
 
     private SpriteBatch batch;
+    private MainGame game;
     private AssetManager manager;
     private TextureAtlas atlas;
     private Viewport gameport;
@@ -50,15 +56,25 @@ public class PauseWorld {
 
     private Entity returntoMainMenu;
 
+    private RoomTransitionSystem roomTransitionSystem;
 
-    public PauseWorld(SpriteBatch batch, AssetManager manager, Viewport gameport){
 
-        this.batch = batch;
-        this.manager = manager;
-        this.atlas = manager.get(FileLocationStrings.spriteAtlas);
-        this.gameport = gameport;
+    private ArenaGUI pauseArenaGUI;
 
-        menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+
+        public PauseWorld(MainGame game, SpriteBatch batch, AssetManager manager, Viewport gameport, RoomTransitionSystem rts, StatComponent playerStats){
+
+            this.game = game;
+            this.batch = batch;
+            this.manager = manager;
+            this.atlas = manager.get(FileLocationStrings.spriteAtlas);
+            this.gameport = gameport;
+            this.roomTransitionSystem = rts;
+            this.pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getCurrentMap(), atlas);
+            menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+
+            world = startWorld(playerStats);
+
 
 
     }
@@ -80,15 +96,22 @@ public class PauseWorld {
                 )
                 .build();
 
-        world = new World(config);
+        World world = new World(config);
 
-        Camera gamecam = gameport.getCamera();
+        final Camera gamecam = gameport.getCamera();
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2 + MainGame.GAME_BORDER;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2 + MainGame.GAME_BORDER;
 
         returntoMainMenu = menuButton.createButton(world, "Main Menu", camX + Measure.units(50f)
                 ,camY, Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
+        returntoMainMenu.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.getScreen().dispose();
+                game.setScreen(new MenuScreen(game));
+            }
+        }));
 
 
         Entity e = world.createEntity();
@@ -125,8 +148,8 @@ public class PauseWorld {
         itemText.edit().add(new PositionComponent(camX + Measure.units(30f), camY + Measure.units(55f)));
         itemText.edit().add(new TextureFontComponent(Assets.medium, "Items", Measure.units(15f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
-
         return world;
+
     }
 
     public void statsText(World world, String text, float x, float y){
@@ -140,22 +163,39 @@ public class PauseWorld {
         return world;
     }
 
-    public Entity getReturntoMainMenu() {
-        return returntoMainMenu;
+    public void pauseWorldActionOnTouch(float x, float y){
+        world.getSystem(ActionOnTouchSystem.class).touch(x, y);
     }
 
 
-    public boolean isReturnToMainMenuTouched(float x, float y){
-        return returntoMainMenu.getComponent(CollisionBoundComponent.class).bound.contains(x,y);
-    }
+    public void process(float delta){
 
-    public void endWorld(){
-        //world.
-    }
+        if (delta < 0.02f) {
+            world.setDelta(delta);
+        } else {
+            world.setDelta(0.02f);
+        }
 
-
-    public void process(){
         world.process();
+
+        float camX = gameport.getCamera().position.x - gameport.getCamera().viewportWidth / 2;
+        float camY = gameport.getCamera().position.y - gameport.getCamera().viewportHeight / 2;
+
+        pauseArenaGUI.update(world.getDelta(),
+                camX + Measure.units(75f),
+                camY + Measure.units(35f),
+                roomTransitionSystem.getCurrentMap(),
+                roomTransitionSystem.getCurrentPlayerLocation());
+
+        if(!game.batch.isDrawing()) {
+            game.batch.begin();
+        }
+
+        pauseArenaGUI.draw(game.batch);
+
+        game.batch.end();
+
+
     }
 
 

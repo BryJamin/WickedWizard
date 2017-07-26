@@ -1,6 +1,5 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.BaseSystem;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
@@ -16,20 +15,20 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
@@ -41,14 +40,10 @@ import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
-import com.byrjamin.wickedwizard.factories.items.ItemStore;
-import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
-import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.screens.world.*;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
-import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
@@ -57,7 +52,6 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -65,7 +59,6 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -94,25 +87,16 @@ public class PlayScreen extends AbstractScreen {
 
     private BitmapFont currencyFont;
 
-    private World deathWorld;
-
-
+    private DeathScreenWorld deathScreenWorld;
     private com.byrjamin.wickedwizard.screens.world.PauseWorld pauseWorld;
 
     private boolean isPaused = false;
 
-    private CurrencyComponent currencyComponent;
-    private StatComponent stats;
+    private GestureDetector gestureDetector;
+    private boolean gameOver;
 
-    GestureDetector gestureDetector;
-    private boolean gameOver = false;
-    private boolean isTutorial;
-
-    private ArenaGUI arenaGUI;
-    private ArenaGUI pauseArenaGUI;
     private Random random;
     private JigsawGenerator jg;
-    private Array<Arena> arenaArray;
 
     private AdventureWorld adventureWorld;
 
@@ -217,7 +201,7 @@ public class PlayScreen extends AbstractScreen {
 
 
 
-        createWorld();
+        createWorlds();
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -232,15 +216,15 @@ public class PlayScreen extends AbstractScreen {
         jg.generate();
         jg.cleanArenas();
 
-        createWorld();
+        createWorlds();
         Gdx.input.setCatchBackKey(true);
     }
 
 
     public void setUpGlobals(){
-        gestureDetector = new GestureDetector(new gestures());
+        gestureDetector = new GestureDetector(new PlayScreenGestures());
         manager = game.manager;
-        atlas = game.manager.get("sprite.atlas", TextureAtlas.class);
+        atlas = game.manager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         Assets.initialize(game.manager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -250,6 +234,7 @@ public class PlayScreen extends AbstractScreen {
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
         //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
+        gamecam.update();
         random = new Random();
         MathUtils.random = random;
 
@@ -267,7 +252,7 @@ public class PlayScreen extends AbstractScreen {
 
         InputMultiplexer multiplexer = new InputMultiplexer();
 
-        if (!gameOver) {
+        if (!adventureWorld.isGameOver()) {
             if(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).isEnabled()) {
                 multiplexer.addProcessor(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).getPlayerInput());
             }
@@ -278,18 +263,11 @@ public class PlayScreen extends AbstractScreen {
 
                     if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
                         if(!isPaused) {
-
                             adventureWorld.pauseWorld();
-
-                            pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game.batch, game.manager, gameport);
-                            pauseWorld.startWorld(adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
-
-                            RoomTransitionSystem rts = adventureWorld.getWorld().getSystem(RoomTransitionSystem.class);
-
-                            pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getCurrentMap(), atlas);
                             isPaused = true;
+                            pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.manager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
+                                    adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
                         } else {
-
                             adventureWorld.unPauseWorld();
                             isPaused = false;
                         }
@@ -298,61 +276,14 @@ public class PlayScreen extends AbstractScreen {
                     return super.keyDown(keycode);
                 }
             });
-        } else {
-            multiplexer.addProcessor(gestureDetector);
         }
-
-
 
         multiplexer.addProcessor(gestureDetector);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
 
-
-    public void createDeathScreenWorld(){
-        WorldConfiguration config = new WorldConfigurationBuilder()
-                .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new MovementSystem()
-                )
-                .with(WorldConfigurationBuilder.Priority.HIGH,
-                        new AnimationSystem(),
-                        //new FindPlayerSystem(player),
-                        new FadeSystem())
-                .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, manager, gameport),
-                        new BoundsDrawingSystem()
-                )
-                .build();
-
-        deathWorld = new World(config);
-
-        FadeComponent fc = new FadeComponent(2.0f, false);
-        fc.fadeIn = true;
-
-        Entity e = deathWorld.createEntity();
-        e.edit().add(new PositionComponent(gamecam.position.x
-                ,gamecam.position.y - gameport.getWorldHeight() / 2 + 800));
-        TextureFontComponent tfc = new TextureFontComponent("Oh dear, you seem to have died \n\n Tap to restart");
-        e.edit().add(tfc);
-        e.edit().add(fc);
-
-
-        e = deathWorld.createEntity();
-        e.edit().add(new PositionComponent(gamecam.position.x - gameport.getWorldWidth() / 2,
-                gamecam.position.y - gameport.getWorldHeight() / 2));
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), gamecam.viewportWidth, gamecam.viewportHeight, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
-        trc.color = new Color(Color.BLACK);
-        trc.color.a = 0.5f;
-        trc.layer = -1;
-
-        e.edit().add(trc);
-        e.edit().add(fc);
-
-    }
-
-
-    public void createWorld(){
+    public void createWorlds(){
         //ItemStore itemStore = new ItemStore(random);
 
         Arena startingArena = jg.getStartingRoom();
@@ -363,7 +294,7 @@ public class PlayScreen extends AbstractScreen {
         adventureWorld.getWorld().getSystem(MusicSystem.class).playLevelMusic(adventureWorld.getWorld().getSystem(ChangeLevelSystem.class).getLevel());
 
 
-        stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
+        StatComponent stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
 
         if(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false)) {
             stats.damage = 10f;
@@ -371,8 +302,6 @@ public class PlayScreen extends AbstractScreen {
             stats.fireRate = 10f;
             stats.speed = 1.5f;
         }
-
-        currencyComponent = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, adventureWorld.getPlayer());
 
     }
 
@@ -385,92 +314,35 @@ public class PlayScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
 
-        //Sets the background color if nothing is on the screen.
-        Gdx.gl.glClearColor(0, 0, 0, 0.5f);
+        Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.setProjectionMatrix(gamecam.combined);
 
-        if(gameOver){
-            adventureWorld.pauseWorld();
-        }
-
+        if(adventureWorld.isGameOver()) adventureWorld.pauseWorld();
 
         handleInput(delta);
         adventureWorld.process(delta);
 
 
-        if(stats.health <= 0 && !gameOver){
-            gameOver = true;
-            createDeathScreenWorld();
-        }
+        if(adventureWorld.isGameOver() && deathScreenWorld == null) deathScreenWorld = new DeathScreenWorld(game, gameport);
 
 
-
-        if(!game.batch.isDrawing()) {
-            game.batch.begin();
-        }
+        if(!game.batch.isDrawing()) game.batch.begin();
 
         drawScreenBorder(game.batch, atlas);
 
-        if(!gameOver) {
-            adventureWorld.drawMapAndHud(isPaused);
-        }
+        if(!adventureWorld.isGameOver()) adventureWorld.drawMapAndHud(isPaused);
 
         game.batch.end();
 
-
-        if(isPaused){
-
-            if (delta < 0.02f) {
-                pauseWorld.getWorld().setDelta(delta);
-            } else {
-                pauseWorld.getWorld().setDelta(0.02f);
-            }
-
-            pauseWorld.process();
-
-            RoomTransitionSystem rts =  adventureWorld.getWorld().getSystem(RoomTransitionSystem.class);
-
-            float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-            float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-            pauseArenaGUI.update(pauseWorld.getWorld().delta,
-                    camX + Measure.units(75f),
-                    camY + Measure.units(35f),
-                    rts.getCurrentMap(),
-                    rts.getCurrentPlayerLocation());
-
-            if(!game.batch.isDrawing()) {
-                game.batch.begin();
-            }
-
-            pauseArenaGUI.draw(game.batch);
-
-            game.batch.end();
-        }
-
-
-
-
-        if(gameOver){
-            deathWorld.setDelta(delta < 0.030f ? delta : 0.030f);
-            deathWorld.process();
-        }
-
-
-/*
-
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all());
-        IntBag entityIds = subscription.getEntities();
-        System.out.println("Number of entities of screen is + " + entityIds.size());
-
-        System.out.println("Frame rate is : " + Gdx.graphics.getFramesPerSecond());*/
+        if(isPaused) pauseWorld.process(delta);
+        if(adventureWorld.isGameOver() && deathScreenWorld != null) deathScreenWorld.process(delta);
 
 
     }
 
-    public void drawScreenBorder(SpriteBatch batch, TextureAtlas atlas){
+    private void drawScreenBorder(SpriteBatch batch, TextureAtlas atlas){
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
@@ -485,9 +357,7 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void resize(int width, int height) {
-        //Updates the view port to the designated width and height.
         gameport.update(width, height);
-
     }
 
     @Override
@@ -511,30 +381,20 @@ public class PlayScreen extends AbstractScreen {
         adventureWorld.getWorld().dispose();
     }
 
-    public class gestures extends AbstractGestureDectector {
+    public class PlayScreenGestures extends AbstractGestureDectector {
 
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
-            if (gameOver) {
-                game.setScreen(new MenuScreen(game));
-                adventureWorld.getWorld().dispose();
-                gameOver = false;
+            if (adventureWorld.isGameOver() && deathScreenWorld != null) {
+                Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
+                deathScreenWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
                 return true;
             }
 
-
-
             if(isPaused) {
-
-                Vector3 touchInput = new Vector3(x, y, 0);
-                gameport.unproject(touchInput);
-
-                if(pauseWorld.isReturnToMainMenuTouched(touchInput.x, touchInput.y)){
-                    game.setScreen(new MenuScreen(game));
-                    adventureWorld.getWorld().dispose();
-                }
-
+                Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
+                pauseWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
             }
 
             return true;

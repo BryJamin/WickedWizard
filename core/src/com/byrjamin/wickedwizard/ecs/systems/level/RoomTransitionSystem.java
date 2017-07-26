@@ -216,6 +216,11 @@ public class RoomTransitionSystem extends EntitySystem {
         }
     }
 
+    /**
+     * Checks if an arena Exists via it's Map Co-ordinates
+     * @param destination
+     * @return
+     */
     public Arena findRoom(MapCoords destination){
         for(Arena a : currentMap.getRoomArray()) {
             if(a.cotainingCoords.contains(destination, false)){
@@ -226,6 +231,11 @@ public class RoomTransitionSystem extends EntitySystem {
         return null;
     }
 
+    /**
+     * Gets all Adjacent arenas of the current Arena (May store this in a seperate class as a static)
+     * @param a
+     * @return
+     */
     public Array<Arena> getAdjacentArenas(Arena a){
         Array<Arena> arenas = new Array<Arena>();
         for(DoorComponent dc : a.getDoors()){
@@ -251,6 +261,15 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
+    /**
+     * Gets all currently active entites and converted them into a Bag of COmponents that will be stored
+     * in the selected Arena.
+     *
+     * Certain entities are not stored such as those who are set to Expire. Or are picked up off screen.
+     *
+     * @param world - The current world
+     * @param arena - The target where all new Bags of Components will be stored
+     */
     public void packRoom(World world, Arena arena){
 
         arena.getBagOfEntities().clear();
@@ -287,6 +306,11 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
+    /**
+     * Unpacks the bags of bags of components stored in the selected Arena and turns them into
+     * Entities inside of the world
+     * @param arena - The arena who's Bags of Bags of Components will be unpacked
+     */
     public void unpackRoom(Arena arena) {
 
         for(Bag<Component> b : arena.getBagOfEntities()) {
@@ -325,6 +349,11 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
+    /**
+     * Calcuates the current player position in Map Co-ordinates using the position of the player
+     * This is to show in real time the player position in rooms of size larger than 1 square
+     * @return - The Player's position in map co-ordinates
+     */
     public MapCoords getCurrentPlayerLocation(){
         CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         playerLocation.setX(currentMap.getCurrentArena().getStartingCoords().getX() + (int) (pBound.getCenterX() / ArenaShellFactory.SECTION_WIDTH));
@@ -352,10 +381,6 @@ public class RoomTransitionSystem extends EntitySystem {
         return currentMap.getCurrentArena();
     }
 
-    public Array<Arena> getRoomArray(){
-        return currentMap.getRoomArray();
-    }
-
 
     /**
      * If the current map has just been added and does not have any visited or unvisited arenas,
@@ -366,15 +391,6 @@ public class RoomTransitionSystem extends EntitySystem {
             currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
             currentMap.getUnvisitedButAdjacentArenas().addAll(this.getAdjacentArenas(currentMap.getCurrentArena()));
         }
-    }
-
-
-    public OrderedSet<Arena> getVisitedArenas(){
-        return currentMap.getVisitedArenas();
-    }
-
-    public OrderedSet<Arena> getUnvisitedButAdjacentArenas(){
-        return currentMap.getUnvisitedButAdjacentArenas();
     }
 
 }

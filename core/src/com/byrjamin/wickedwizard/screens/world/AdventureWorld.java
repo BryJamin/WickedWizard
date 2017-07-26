@@ -282,6 +282,11 @@ public class AdventureWorld {
     }
 
 
+    public boolean isGameOver(){
+        return playerStats.health <= 0;
+    }
+
+
 
 
     public void drawMapAndHud(boolean isPaused){
@@ -304,6 +309,7 @@ public class AdventureWorld {
 
 
     }
+
 
 
     public void drawHUD(World world, Camera gamecam){
