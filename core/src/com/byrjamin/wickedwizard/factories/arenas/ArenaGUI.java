@@ -36,10 +36,11 @@ public class ArenaGUI {
     private Color undiscoveredRoomColor = new Color(0.1f, 0.1f, 0.1f, 0.6f);
     private Color mapBackGroundColor = new Color(0.1f, 0.1f, 0.1f, 0.2f);
     private Color mapBorderColor = new Color(Color.WHITE);
-    private Color borderColor = ColorResource.RGBtoColor(82, 142, 168, 1);
+
+    private Color borderColor = new Color(Color.WHITE);//ColorResource.RGBtoColor(82, 142, 168, 1);
 
            // new Color(88f / 255f, 219f / 255f, 245f / 255f, 1f); //new Color(Color.WHITE);
-    private Color doorColor = new Color(17f / 255f, 35f / 255f, 45f / 255f, 1f);
+    private Color doorColor = new Color(Color.RED); //new Color(17f / 255f, 35f / 255f, 45f / 255f, 1f);
     private Color locationBlinkColor = new Color (1,1,1,1f);
     private Color bossRoomColor = new Color(238f / 255f, 53f / 255f , 50f / 255f, 1f);
     private Color itemRoomColor = new Color (101 / 255f, 88f / 255f, 245 / 255f, 1f);

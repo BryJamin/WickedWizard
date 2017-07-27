@@ -63,18 +63,11 @@ public class MenuScreen extends AbstractScreen {
 
     private Viewport gameport;
 
-    public final TextureAtlas atlas;
-    public AssetManager manager;
-
-    private BitmapFont currencyFont;
+    private TextureAtlas atlas;
+    private AssetManager manager;
 
     private World world;
 
-    private Rectangle startGameButton;
-    private Rectangle tutorialGameButton;
-
-
-    private Entity startGame;
     private Entity startTutorial;
 
     private Entity boundOption;
@@ -83,30 +76,11 @@ public class MenuScreen extends AbstractScreen {
     private Entity musicSetting;
 
     private Entity soundSetting;
-
-
-
-
-    private Entity bossSelecterButtonDown;
-    private Entity bossSelecterButtonUp;
     private Entity bossStartbutton;
-
-
-    private Entity levelStartbutton;
-    private Entity levelSelecterButtonDown;
-    private Entity levelSelecterButtonUp;
-
-
-
-
-    private Entity roomStartbutton;
-    private Entity roomSelecterButtonDown;
-    private Entity roomSelecterButtonUp;
 
 
 
     GestureDetector gestureDetector;
-    private boolean gameOver = false;
 
     private Preferences settings;
     private Preferences devToolPrefs;
@@ -170,8 +144,16 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        startGame = createButton(world, "Start", gameport.getWorldWidth() / 2
+        Entity startGame = createButton(world, "Start", gameport.getWorldWidth() / 2
                 ,gameport.getWorldHeight() / 2 + Measure.units(25f));
+
+        startGame.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game));
+                world.getSystem(MusicSystem.class).stopMusic();
+            }
+        }));
 
 
         startTutorial = createButton(world, "Tutorial", gameport.getWorldWidth() / 2
@@ -184,13 +166,23 @@ public class MenuScreen extends AbstractScreen {
         boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
         boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
-        boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", Measure.units(20f), Measure.units(30));
+        Entity boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", Measure.units(20f), Measure.units(30));
+
+        boundOption.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
+                settings.putBoolean(PreferenceStrings.SETTINGS_BOUND, !isBound).flush();
+                e.getComponent(TextureFontComponent.class).text = !isBound ? "Bounds on" : "Bounds off";
+            }
+        }));
+
         godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", Measure.units(20f), Measure.units(20));
 
         float x = Measure.units(40f);
         float y = Measure.units(10f);
 
-        musicSetting = world.createEntity();
+        Entity musicSetting = world.createEntity();
         musicSetting.edit().add(new PositionComponent(x, y));
         musicSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
         TextureRegionComponent trc = new TextureRegionComponent(musicOn ? atlas.findRegion(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegion(TextureStrings.SETTINGS_MUSIC_OFF),
@@ -200,6 +192,14 @@ public class MenuScreen extends AbstractScreen {
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, musicOn ? atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
         musicSetting.edit().add(new AnimationComponent(animMap));
+        musicSetting.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+                settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, !musicOn).flush();
+                setUpMusicEntity(e, !musicOn);
+            }
+        }));
 
 
         x = Measure.units(50f);
@@ -228,7 +228,7 @@ public class MenuScreen extends AbstractScreen {
         }));
 
 
-        bossSelecterButtonUp = mb.createButton(world, "", Measure.units(10f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        Entity bossSelecterButtonUp = mb.createButton(world, "", Measure.units(10f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         bossSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -242,7 +242,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        bossSelecterButtonDown = mb.createButton(world, "", Measure.units(10f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        Entity bossSelecterButtonDown = mb.createButton(world, "", Measure.units(10f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         bossSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -256,7 +256,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        levelStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        Entity levelStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
         levelStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -272,34 +272,31 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        levelSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        Entity levelSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         levelSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
-                int i = Integer.parseInt(levelStartbutton.getComponent(TextureFontComponent.class).text);
+                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
                 String levelSetting = Integer.toString(i < 5 ? i + 1 : i);
 
-                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
-
                 devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
-                levelStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+                e.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));
 
 
 
-        levelSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        Entity levelSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         levelSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                int i = Integer.parseInt(levelStartbutton.getComponent(TextureFontComponent.class).text);
+                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
                 String levelSetting = Integer.toString(i > 0 ? i - 1 : i);
 
-                System.out.println(levelSetting + "dawdawdawdwdadawdawd");
 
                 devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
-                levelStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+                e.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));
 
@@ -310,7 +307,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(12.5f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        Entity roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(12.5f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
         roomStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -326,76 +323,37 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        roomSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(15f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        Entity roomSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(15f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         roomSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
-                int i = Integer.parseInt(roomStartbutton.getComponent(TextureFontComponent.class).text);
+                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
                 String levelSetting = Integer.toString(i < 30 ? i + 1 : i);
 
 
                 devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
-                roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+                e.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));
 
 
 
-        roomSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(5f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
+        Entity roomSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(5f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
         roomSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                int i = Integer.parseInt(roomStartbutton.getComponent(TextureFontComponent.class).text);
+                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
                 String levelSetting = Integer.toString(i > -1 ? i - 1 : i);
 
 
                 devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
-                roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
+                e.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));
-
-
-
-
-
-
-/*
-        roomStartbutton = mb.createButton(world,  devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
-        roomStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                game.setScreen(new PlayScreen(game,
-                        new PlayScreenConfig(
-                                PlayScreenConfig.Spawn.ARENA,
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
-
-                world.getSystem(SoundSystem.class).stopMusic();
-            }
-        }));
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         LightGraySkin ss = new LightGraySkin(atlas);
-
-        DecorFactory df = new DecorFactory(manager, ss);
-        BackgroundFactory bf = new BackgroundFactory();
 
     }
 
@@ -519,22 +477,9 @@ public class MenuScreen extends AbstractScreen {
 
             world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
 
-            if (startGame.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-                game.setScreen(new PlayScreen(game));
-                world.getSystem(MusicSystem.class).stopMusic();
-            }
-
             if (startTutorial.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
                 game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
                 world.getSystem(MusicSystem.class).stopMusic();
-            }
-
-            if (boundOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-
-                boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
-                settings.putBoolean(PreferenceStrings.SETTINGS_BOUND, !isBound).flush();
-                boundOption.getComponent(TextureFontComponent.class).text = !isBound ? "Bounds on" : "Bounds off";
-                //game.setScreen(new PlayScreen(game, true));
             }
 
             if (godOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
@@ -545,12 +490,6 @@ public class MenuScreen extends AbstractScreen {
 
 
                 //game.setScreen(new PlayScreen(game, true));
-            }
-
-            if(musicSetting.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x, touchInput.y)) {
-                boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
-                settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, !musicOn).flush();
-                setUpMusicEntity(musicSetting, !musicOn);
             }
 
             if(soundSetting.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x, touchInput.y)) {
