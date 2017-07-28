@@ -6,8 +6,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.ItemRoomSkin;
-import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.BrightWhiteSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.Anger;
@@ -27,7 +26,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
     public ItemArenaFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager, arenaSkin);
         this.itemFactory = new ItemFactory(assetManager);
-        this.arenaSkin = new ItemRoomSkin(atlas);
+        this.arenaSkin = new BrightWhiteSkin(atlas);
         this.decorFactory = new DecorFactory(assetManager, this.arenaSkin);
     }
 

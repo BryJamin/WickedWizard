@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -41,6 +42,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
+import com.byrjamin.wickedwizard.screens.world.DevModeMenuWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -50,7 +52,9 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 //TODO
 
@@ -69,22 +73,19 @@ public class MenuScreen extends AbstractScreen {
 
     private World world;
 
-    private Entity startTutorial;
+    private DevModeMenuWorld devModeMenuWorld;
 
-    private Entity boundOption;
-    private Entity godOption;
-
-    private Entity musicSetting;
-
-    private Entity soundSetting;
-    private Entity bossStartbutton;
-
-
-
-    GestureDetector gestureDetector;
+    private GestureDetector gestureDetector;
 
     private Preferences settings;
-    private Preferences devToolPrefs;
+
+
+    public enum MenuType {
+        MAIN, DEV, SETTING, DOWN;
+    }
+
+    private MenuType menuType;
+
 
     //TODO IF you ever click in the deck area don't cast any spells
 
@@ -92,7 +93,6 @@ public class MenuScreen extends AbstractScreen {
         super(game);
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
-        devToolPrefs = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE);
 
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
@@ -106,6 +106,11 @@ public class MenuScreen extends AbstractScreen {
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
         createMenu();
+
+        devModeMenuWorld = new DevModeMenuWorld(game, gameport);
+
+        menuType = MenuType.MAIN;
+
     }
 
     public TextureAtlas getAtlas() {
@@ -144,13 +149,25 @@ public class MenuScreen extends AbstractScreen {
         world.getSystem(MusicSystem.class).playMainMenuMusic();
 
 
+
+
         Entity backdrop = world.createEntity();
         backdrop.edit().add(new PositionComponent(0,0));
         backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
                 ColorResource.RGBtoColor(137, 207, 240, 1)));
 
-        Entity startGame = createButton(world, "Start", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(25f));
+        MenuButton mb = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+
+        Color foreGround = new Color(Color.BLACK);
+        Color backGround = new Color(0,0,0,0);
+
+
+        Entity startGame = mb.createButton(world, MenuStrings.START, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
+                ,MainGame.GAME_HEIGHT / 2 + Measure.units(5f),
+                Measure.units(30f),
+                Measure.units(10f),
+                foreGround,
+                backGround);
 
         startGame.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
@@ -160,32 +177,29 @@ public class MenuScreen extends AbstractScreen {
             }
         }));
 
+        Entity startTutorial = mb.createButton(world, "Tutorial", CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
+                ,MainGame.GAME_HEIGHT / 2 - Measure.units(10f),
+                Measure.units(30f),
+                Measure.units(10f),
+                foreGround,
+                backGround);
 
-        startTutorial = createButton(world, "Tutorial", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(10f));
+        startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
+                world.getSystem(MusicSystem.class).stopMusic();
 
+            }
+        }));
 
-        boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
-        boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
 
         boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
         boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
-        Entity boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", Measure.units(20f), Measure.units(30));
 
-        boundOption.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
-                settings.putBoolean(PreferenceStrings.SETTINGS_BOUND, !isBound).flush();
-                e.getComponent(TextureFontComponent.class).text = !isBound ? "Bounds on" : "Bounds off";
-            }
-        }));
-
-        godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", Measure.units(20f), Measure.units(20));
-
-        float x = Measure.units(40f);
-        float y = Measure.units(10f);
+        float x = Measure.units(5f);
+        float y = Measure.units(5);
 
         Entity musicSetting = world.createEntity();
         musicSetting.edit().add(new PositionComponent(x, y));
@@ -207,10 +221,10 @@ public class MenuScreen extends AbstractScreen {
         }));
 
 
-        x = Measure.units(50f);
-        y = Measure.units(10f);
+        x = Measure.units(17.5f);
+        y = Measure.units(5);
 
-        soundSetting = world.createEntity();
+        Entity soundSetting = world.createEntity();
         soundSetting.edit().add(new PositionComponent(x, y));
         soundSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
         trc = new TextureRegionComponent(soundOn ? atlas.findRegion(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegion(TextureStrings.SETTINGS_SOUND_OFF),
@@ -220,181 +234,14 @@ public class MenuScreen extends AbstractScreen {
         animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, soundOn ? atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
         soundSetting.edit().add(new AnimationComponent(animMap));
-        //Player
-        MenuButton mb = new MenuButton(Assets.small, atlas.findRegion(TextureStrings.BLOCK));
-
-        bossStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.BOSS_NUMBER, "0"), Measure.units(20f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
-        bossStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
+        soundSetting.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.BOSS, Integer.parseInt(e.getComponent(TextureFontComponent.class).text))));
-                world.getSystem(MusicSystem.class).stopMusic();
+                boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
+                settings.putBoolean(PreferenceStrings.SETTINGS_SOUND, !soundOn).flush();
+                setUpSoundEntity(e, !soundOn);
             }
         }));
-
-
-        Entity bossSelecterButtonUp = mb.createButton(world, "", Measure.units(10f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
-        bossSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
-                String bossSetting = Integer.toString(i < 8 ? i + 1 : i);
-                devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
-                bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
-            }
-        }));
-
-
-
-        Entity bossSelecterButtonDown = mb.createButton(world, "", Measure.units(10f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
-        bossSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
-                String bossSetting = Integer.toString(i > 0 ? i - 1 : i);
-                devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
-                bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
-            }
-        }));
-
-
-
-
-        Entity levelStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
-        levelStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                game.setScreen(new PlayScreen(game,
-                        new PlayScreenConfig(
-                                PlayScreenConfig.Spawn.ARENA,
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
-
-                world.getSystem(MusicSystem.class).stopMusic();
-            }
-        }));
-
-
-
-        Entity levelSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(50), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
-        levelSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
-                String levelSetting = Integer.toString(i < 5 ? i + 1 : i);
-
-                devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
-                e.getComponent(TextureFontComponent.class).text = levelSetting;
-            }
-        }));
-
-
-
-        Entity levelSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(40f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
-        levelSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
-                String levelSetting = Integer.toString(i > 0 ? i - 1 : i);
-
-
-                devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
-                e.getComponent(TextureFontComponent.class).text = levelSetting;
-            }
-        }));
-
-
-
-
-
-
-
-
-        Entity roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(12.5f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
-        roomStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                game.setScreen(new PlayScreen(game,
-                        new PlayScreenConfig(
-                                PlayScreenConfig.Spawn.ARENA,
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
-
-                world.getSystem(MusicSystem.class).stopMusic();
-            }
-        }));
-
-
-
-        Entity roomSelecterButtonUp = mb.createButton(world, "", Measure.units(70f), Measure.units(15f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
-        roomSelecterButtonUp.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
-                String levelSetting = Integer.toString(i < 30 ? i + 1 : i);
-
-
-                devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
-                e.getComponent(TextureFontComponent.class).text = levelSetting;
-            }
-        }));
-
-
-
-        Entity roomSelecterButtonDown = mb.createButton(world, "", Measure.units(70f), Measure.units(5f), Measure.units(7.5f), Measure.units(7.5f), new Color(Color.WHITE), new Color(Color.WHITE));
-        roomSelecterButtonDown.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                int i = Integer.parseInt(e.getComponent(TextureFontComponent.class).text);
-                String levelSetting = Integer.toString(i > -1 ? i - 1 : i);
-
-
-                devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
-                e.getComponent(TextureFontComponent.class).text = levelSetting;
-            }
-        }));
-
-
-        LightGraySkin ss = new LightGraySkin(atlas);
-
-    }
-
-
-
-    public Entity createButton(World world, String text, float x, float y){
-
-        float width = Measure.units(30f);
-        float height = Measure.units(10f);
-
-        x = x - width / 2;
-        y = y - width / 2;
-
-        Entity e = world.createEntity();
-        e.edit().add(new PositionComponent(x,y));
-        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width,
-                TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK));
-
-        e.edit().add(tfc);
-
-        Rectangle r = new Rectangle(x, y, width, height);
-
-        e.edit().add(new CollisionBoundComponent(r));
-
-/*
-        Entity shape = world.createEntity();
-        shape.edit().add(new PositionComponent(x,y));
-
-        ShapeComponent sc = new ShapeComponent(width,height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        sc.color = ss.getWallTint();
-        sc.DEFAULT = ss.getWallTint();
-
-
-        shape.edit().add(sc);*/
-
-        return e;
 
     }
 
@@ -422,11 +269,15 @@ public class MenuScreen extends AbstractScreen {
 
         handleInput(world.delta);
         world.process();
+        if(menuType == MenuType.MAIN) {
+          //  world.process();
+        } else if(menuType == MenuType.DEV){
+            devModeMenuWorld.process(delta);
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        //Updates the view port to the designated width and height.
         gameport.update(width, height);
 
     }
@@ -448,7 +299,7 @@ public class MenuScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
     }
 
     public void setUpMusicEntity(Entity musicEntity, boolean musicOn) {
@@ -456,7 +307,6 @@ public class MenuScreen extends AbstractScreen {
                     new Animation<TextureRegion>(0.15f / 1f, musicOn ?
                             atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) :
                             atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
-        System.out.println(musicOn);
     }
 
     public void setUpSoundEntity(Entity soundEntity, boolean soundOn) {
@@ -470,40 +320,30 @@ public class MenuScreen extends AbstractScreen {
 
         @Override
         public boolean tap(float x, float y, int count, int button) {
-
-
             Vector3 touchInput = new Vector3(x, y, 0);
             gameport.unproject(touchInput);
 
-            world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-
-            if (startTutorial.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
-                world.getSystem(MusicSystem.class).stopMusic();
+            if(menuType == MenuType.MAIN) {
+                world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+            } else if(menuType == MenuType.DEV){
+                devModeMenuWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
             }
-
-            if (godOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-
-                boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, true);
-                settings.putBoolean(PreferenceStrings.SETTINGS_GODMODE, !isGod).flush();
-                godOption.getComponent(TextureFontComponent.class).text = !isGod ? "GodMode on" : "GodMode off";
-
-
-                //game.setScreen(new PlayScreen(game, true));
-            }
-
-            if(soundSetting.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x, touchInput.y)) {
-                boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
-                settings.putBoolean(PreferenceStrings.SETTINGS_SOUND, !soundOn).flush();
-                setUpSoundEntity(soundSetting, !soundOn);
-            }
-
-
-           // boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
-
             return true;
         }
 
+
+        @Override
+        public boolean longPress(float x, float y) {
+
+            switch(menuType) {
+                case DEV: menuType = MenuType.MAIN;
+                    break;
+                case MAIN: menuType = MenuType.DEV;
+                    break;
+            }
+
+            return true;
+        }
     }
 
 }

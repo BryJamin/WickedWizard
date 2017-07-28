@@ -36,7 +36,10 @@ import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
+import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.presetmaps.EndGameMap;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
@@ -44,6 +47,7 @@ import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.RoomTransition;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
@@ -134,7 +138,20 @@ public class BossEnd extends EnemyFactory {
         bag.add(new OnDeathActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(EndGameSystem.class).startCredits();
+
+                RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
+                rts.packRoom(world, rts.getCurrentArena());
+                rts.setCurrentMap(new EndGameMap(assetManager).endGameMap());
+                rts.unpackRoom(rts.getCurrentArena());
+
+                Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+
+                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
+                pc.position.x = a.getWidth() / 2;
+                pc.position.y = a.getHeight() / 2;
+
+                //world.getSystem(EndGameSystem.class).startCredits();
             }
         }));
 
