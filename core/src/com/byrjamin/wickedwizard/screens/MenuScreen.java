@@ -78,6 +78,7 @@ public class MenuScreen extends AbstractScreen {
     private GestureDetector gestureDetector;
 
     private Preferences settings;
+    private Preferences devSettings;
 
 
     public enum MenuType {
@@ -93,6 +94,12 @@ public class MenuScreen extends AbstractScreen {
         super(game);
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
+        devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE);
+
+
+        String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE).getString(PreferenceStrings.MENU_IS_DEV, MenuType.DEV.name());
+
+        menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
 
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
@@ -108,8 +115,6 @@ public class MenuScreen extends AbstractScreen {
         createMenu();
 
         devModeMenuWorld = new DevModeMenuWorld(game, gameport);
-
-        menuType = MenuType.MAIN;
 
     }
 
@@ -337,8 +342,12 @@ public class MenuScreen extends AbstractScreen {
 
             switch(menuType) {
                 case DEV: menuType = MenuType.MAIN;
+                    devSettings.putString(PreferenceStrings.MENU_IS_DEV, menuType.name());
+                    devSettings.flush();
                     break;
                 case MAIN: menuType = MenuType.DEV;
+                    devSettings.putString(PreferenceStrings.MENU_IS_DEV, menuType.name());
+                    devSettings.flush();
                     break;
             }
 
