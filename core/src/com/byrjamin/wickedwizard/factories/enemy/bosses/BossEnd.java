@@ -35,10 +35,12 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -126,6 +128,15 @@ public class BossEnd extends EnemyFactory {
         y = y - mainBodyHeight / 2;
 
         ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, mainBodyHealth);
+        BagSearch.getObjectOfTypeClass(OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
+
+        bag.add(new OnDeathActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(EndGameSystem.class).startCredits();
+            }
+        }));
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, mainBodyWidth, mainBodyHeight)));
 

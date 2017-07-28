@@ -16,8 +16,13 @@ public class BagToEntity {
             bagToEntity(world.createEntity(), bag);
         }
     }*/
+/*    public static void bagsToEntities(World world, Bag<? extends T> bags){
+        for(Bag<Component> bag : bags){
+            bagToEntity(world.createEntity(), bag);
+        }
+    }*/
 
-    public static void bagsToEntities(World world, Bag<ComponentBag> bags){
+    public static void bagsToEntities(World world, Bag<? extends Bag<Component>> bags){
         for(Bag<Component> bag : bags){
             bagToEntity(world.createEntity(), bag);
         }

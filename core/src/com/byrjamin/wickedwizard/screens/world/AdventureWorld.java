@@ -65,6 +65,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ShoppingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
@@ -113,16 +114,18 @@ public class AdventureWorld {
     private StatComponent playerStats;
     private CurrencyComponent playerCurrency;
 
+    private MainGame game;
 
     private JigsawGenerator jigsawGenerator;
 
 
     private BitmapFont currencyFont;
 
-    public AdventureWorld(AssetManager assetManager, SpriteBatch batch, Viewport gameport, Random random){
-        this.assetManager = assetManager;
+    public AdventureWorld(MainGame game, Viewport gameport, Random random){
+        this.game = game;
+        this.assetManager = game.manager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas);
-        this.batch = batch;
+        this.batch = game.batch;
         this.gameport = gameport;
         this.random = random;
         this.player = new PlayerFactory(assetManager).playerBag(Measure.units(50f), Measure.units(45f));
@@ -220,7 +223,9 @@ public class AdventureWorld {
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(assetManager, random),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
-                        new RoomTransitionSystem(jigsawGenerator.getStartingMap())
+                        new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
+                        new EndGameSystem(game)
+
                 )
                 .build();
 

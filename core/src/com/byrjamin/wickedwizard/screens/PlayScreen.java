@@ -287,7 +287,7 @@ public class PlayScreen extends AbstractScreen {
         //ItemStore itemStore = new ItemStore(random);
 
         Arena startingArena = jg.getStartingRoom();
-        adventureWorld = new AdventureWorld(game.manager, game.batch, gameport, random);
+        adventureWorld = new AdventureWorld(game, gameport, random);
         adventureWorld.setJigsawGenerator(jg);
         adventureWorld.setPlayer(new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
         adventureWorld.createAdventureWorld();

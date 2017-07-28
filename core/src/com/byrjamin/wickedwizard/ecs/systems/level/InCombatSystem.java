@@ -7,9 +7,13 @@ import com.artemis.EntitySystem;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 
 /**
- * Created by ae164 on 20/05/17.
+ * Created by BB on 20/05/17.
+ *
+ * System used to track all Entities with the In Combat Action Component
+ *
+ * This System is called by the
+ *
  */
-
 public class InCombatSystem extends EntitySystem {
 
     private boolean isInCombat;
@@ -32,7 +36,9 @@ public class InCombatSystem extends EntitySystem {
     }
 
 
-
+    /**
+     * Goes through all entities with the InCombatActionComponent and Performs their InCombat Actions
+     */
     public void goInCombat(){
         if(!isInCombat) {
             isInCombat = true;
@@ -42,6 +48,10 @@ public class InCombatSystem extends EntitySystem {
         }
     }
 
+    /**
+     * Goes through all entities with the InCombatActionComponent and Performs their Out of Combat
+     * clean up Actions
+     */
     public void leaveCombat(){
         if(isInCombat) {
             isInCombat = false;
