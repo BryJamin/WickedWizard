@@ -3,23 +3,19 @@ package com.byrjamin.wickedwizard.factories.chests;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
-import com.byrjamin.wickedwizard.assets.Mix;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -31,7 +27,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BagSearch;
@@ -82,7 +77,7 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new HealthComponent(3));
         bag.add(new BlinkComponent());
 
-        bag.add(new HitSoundComponent(SoundStrings.hitMegaMix));
+        bag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
 
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -127,7 +122,7 @@ public class ChestFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 giblets.performAction(world, e);
-                world.getSystem(SoundSystem.class).playRandomSound(SoundStrings.hitMegaMix);
+                world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.hitMegaMix);
             }
         };
     }

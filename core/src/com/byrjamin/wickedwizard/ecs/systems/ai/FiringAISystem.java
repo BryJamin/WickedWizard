@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -63,7 +63,7 @@ public class FiringAISystem extends EntityProcessingSystem {
             case UNTARGETED:
                 if(wc.timer.isFinishedAndReset()){
                     wc.weapon.fire(world,e, x, y, fc.firingAngleInRadians);
-                    world.getSystem(SoundSystem.class).playSound(SoundStrings.enemyFireMix);
+                    world.getSystem(SoundSystem.class).playSound(SoundFileStrings.enemyFireMix);
                     if(world.getMapper(AnimationStateComponent.class).has(e)){
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
                     }

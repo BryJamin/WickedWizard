@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -149,7 +149,7 @@ public class PlayerInput extends InputAdapter {
                                 jc.jumps--;
                                 world.getSystem(PlayerInputSystem.class).turnOffGlide();
                                 world.getSystem(PlayerInputSystem.class).turnOnGlide();
-                                world.getSystem(SoundSystem.class).playSound(SoundStrings.jumpMix);
+                                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.jumpMix);
                             }
 
                         } else if (tapCount == 2) {

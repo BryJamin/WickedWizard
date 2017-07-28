@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.ColorResource;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
@@ -110,7 +110,7 @@ public class ItemFactory extends AbstractFactory {
                         .maxSpeed(Measure.units(50f))
                         .fadeRate(0.25f)
                         .size(Measure.units(1f))
-                        .mixes(SoundStrings.coinPickUpMix)
+                        .mixes(SoundFileStrings.coinPickUpMix)
                         .colors(new Color(ColorResource.MONEY_YELLOW))
                         .build()
                 .performAction(world, e);

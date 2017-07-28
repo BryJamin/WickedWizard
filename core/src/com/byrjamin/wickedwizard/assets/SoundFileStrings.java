@@ -4,7 +4,7 @@ package com.byrjamin.wickedwizard.assets;
  * Created by Home on 03/06/2017.
  */
 
-public class SoundStrings {
+public class SoundFileStrings {
 
 
     public static final String playerFire = "audio/sounds/laser.wav";

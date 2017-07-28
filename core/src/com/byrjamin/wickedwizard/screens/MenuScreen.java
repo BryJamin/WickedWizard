@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
@@ -143,6 +144,10 @@ public class MenuScreen extends AbstractScreen {
         world.getSystem(MusicSystem.class).playMainMenuMusic();
 
 
+        Entity backdrop = world.createEntity();
+        backdrop.edit().add(new PositionComponent(0,0));
+        backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
+                ColorResource.RGBtoColor(137, 207, 240, 1)));
 
         Entity startGame = createButton(world, "Start", gameport.getWorldWidth() / 2
                 ,gameport.getWorldHeight() / 2 + Measure.units(25f));
@@ -361,8 +366,6 @@ public class MenuScreen extends AbstractScreen {
 
     public Entity createButton(World world, String text, float x, float y){
 
-        LightGraySkin ss = new LightGraySkin(atlas);
-
         float width = Measure.units(30f);
         float height = Measure.units(10f);
 
@@ -372,11 +375,8 @@ public class MenuScreen extends AbstractScreen {
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x,y));
         TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width,
-                TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.WHITE));
+                TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK));
 
-
-        /*        tfc.color = ss.getBackgroundTint();
-        tfc.DEFAULT = ss.getBackgroundTint();*/
         e.edit().add(tfc);
 
         Rectangle r = new Rectangle(x, y, width, height);

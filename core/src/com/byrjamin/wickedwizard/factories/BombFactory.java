@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ExplosionComponent;
@@ -30,7 +30,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
@@ -243,7 +242,7 @@ public class BombFactory extends  AbstractFactory{
                         .size(Measure.units(1.5f))
                         .minSpeed(Measure.units(0f))
                         .maxSpeed(Measure.units(75f))
-                        .mixes(SoundStrings.explosionMegaMix)
+                        .mixes(SoundFileStrings.explosionMegaMix)
                         .colors(new Color(ColorResource.BOMB_ORANGE), new Color(ColorResource.BOMB_RED), new Color(ColorResource.BOMB_YELLOW))
                         .build().performAction(world, e);
 

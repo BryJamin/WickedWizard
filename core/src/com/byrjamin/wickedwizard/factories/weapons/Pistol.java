@@ -6,7 +6,7 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
@@ -17,7 +17,6 @@ import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -65,7 +64,7 @@ public class Pistol implements Weapon{
                     .numberOfGibletPairs(5)
                     .expiryTime(0.4f)
                     .maxSpeed(Measure.units(40f))
-                    .mixes(SoundStrings.queitExplosionMegaMix)
+                    .mixes(SoundFileStrings.queitExplosionMegaMix)
                     .size(Measure.units(0.5f))
                     .intangible(false)
                     .colors(new Color(Color.BLACK), new Color(Color.DARK_GRAY), new Color(Color.WHITE))
@@ -76,7 +75,7 @@ public class Pistol implements Weapon{
                     .expiryTime(0.2f)
                     .maxSpeed(Measure.units(20f))
                     .size(Measure.units(0.5f))
-                    .mixes(SoundStrings.queitExplosionMegaMix)
+                    .mixes(SoundFileStrings.queitExplosionMegaMix)
                     .intangible(false)
                     .colors(new Color(Color.WHITE))
                     .build()));
@@ -88,7 +87,7 @@ public class Pistol implements Weapon{
         }
 
 
-        world.getSystem(SoundSystem.class).playSound(SoundStrings.playerFireMix);
+        world.getSystem(SoundSystem.class).playSound(SoundFileStrings.playerFireMix);
         //world.getSystem(FindPlayerSystem.class)
     }
 

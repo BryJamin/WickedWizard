@@ -7,6 +7,9 @@ public class TextureStrings {
 
     public static final  String BLOCK = "block";
 
+
+    public static final String MAIN_MENU_BACKDROP = "backgrounds/menu_backdrop";
+
     //DECOR
     public static final String DECOR_BLOCK_DOOR = "decor/block_door";
     public static final String CHEST = "chest";

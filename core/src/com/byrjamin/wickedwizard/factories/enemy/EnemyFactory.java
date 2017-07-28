@@ -4,7 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -62,11 +62,11 @@ public class EnemyFactory extends AbstractFactory {
 
                 gibletFactory.giblets(5, 0.4f,
                         Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);*/
-                world.getSystem(SoundSystem.class).playRandomSound(SoundStrings.explosionMegaMix);
+                world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.explosionMegaMix);
             }
         }));
 
-      //  fillbag.add(new HitSoundComponent(SoundStrings.hitMegaMix));
+      //  fillbag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
 
         return fillbag;
 
@@ -123,7 +123,7 @@ public class EnemyFactory extends AbstractFactory {
 
 /*                gibletFactory.giblets(5, 0.4f,
                         Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);*/
-               // world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix1);
+               // world.getSystem(SoundSystem.class).playSound(SoundFileStrings.explosionMix1);
             }
         }));
 
@@ -151,7 +151,7 @@ public class EnemyFactory extends AbstractFactory {
                         .size(Measure.units(1f))
                         .build().performAction(world, e);
 
-                world.getSystem(SoundSystem.class).playSound(SoundStrings.explosionMix1);
+                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.explosionMix1);
             }
 
             @Override

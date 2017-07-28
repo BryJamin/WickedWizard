@@ -7,7 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.assets.ColorResource;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
@@ -18,7 +18,6 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -167,7 +166,7 @@ public class MultiPistol implements Weapon {
                 .size(Measure.units(gibletScaleModifier * shotScale)) //Was just a flat 0.5f, but this is an experiment
                 .minSpeed(Measure.units(10f))
                 .maxSpeed(Measure.units(20f))
-                .mixes(SoundStrings.queitExplosionMegaMix)
+                .mixes(SoundFileStrings.queitExplosionMegaMix)
                 .colors(color)
                 .intangible(false)
                 .expiryTime(0.2f)
@@ -223,7 +222,7 @@ public class MultiPistol implements Weapon {
         }
 
 
-        world.getSystem(SoundSystem.class).playSound(SoundStrings.enemyFireMix);
+        world.getSystem(SoundSystem.class).playSound(SoundFileStrings.enemyFireMix);
 
 
     }

@@ -85,15 +85,12 @@ public class PlayScreen extends AbstractScreen {
     public TextureAtlas atlas;
     public AssetManager manager;
 
-    private BitmapFont currencyFont;
-
     private DeathScreenWorld deathScreenWorld;
     private com.byrjamin.wickedwizard.screens.world.PauseWorld pauseWorld;
 
     private boolean isPaused = false;
 
     private GestureDetector gestureDetector;
-    private boolean gameOver;
 
     private Random random;
     private JigsawGenerator jg;

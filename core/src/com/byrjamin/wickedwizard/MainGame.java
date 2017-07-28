@@ -5,11 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -20,8 +18,7 @@ import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
-import com.byrjamin.wickedwizard.screens.CreditsScreen;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -57,14 +54,14 @@ public class MainGame extends Game {
 		manager.load(MusicStrings.BG_LEVEL_FOUR.getFileName(), Music.class);
 		manager.load(MusicStrings.BG_LEVEL_FIVE.getFileName(), Music.class);
 
-        manager.load(SoundStrings.playerFire, Sound.class);
-        manager.load(SoundStrings.enemyFire, Sound.class);
+        manager.load(SoundFileStrings.playerFire, Sound.class);
+        manager.load(SoundFileStrings.enemyFire, Sound.class);
 
-		for(String s : SoundStrings.explosionStrings) manager.load(s, Sound.class);
-		for(Mix m : SoundStrings.hitMegaMix) manager.load(m.getFileName(), Sound.class);
+		for(String s : SoundFileStrings.explosionStrings) manager.load(s, Sound.class);
+		for(Mix m : SoundFileStrings.hitMegaMix) manager.load(m.getFileName(), Sound.class);
 
-        manager.load(SoundStrings.coinPickUp, Sound.class);
-		manager.load(SoundStrings.jumpMix.getFileName(), Sound.class);
+        manager.load(SoundFileStrings.coinPickUp, Sound.class);
+		manager.load(SoundFileStrings.jumpMix.getFileName(), Sound.class);
 
 
         System.out.println(Gdx.files.getLocalStoragePath());
