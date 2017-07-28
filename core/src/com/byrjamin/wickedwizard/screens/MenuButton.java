@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -36,7 +38,7 @@ public class MenuButton {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x, y));
-        TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
         tfc.color = foreground;
         tfc.DEFAULT = foreground;
         e.edit().add(tfc);
@@ -56,5 +58,15 @@ public class MenuButton {
         return e;
 
     }
+
+
+    public Entity createButtonWithAction(World world, String text, float x, float y, float width, float height, Color foreground, Color background, Action action){
+
+        Entity e = createButton(world, text, x, y, width, height, foreground, background);
+        e.edit().add(new ActionOnTouchComponent(action));
+        return e;
+
+    }
+
 
 }

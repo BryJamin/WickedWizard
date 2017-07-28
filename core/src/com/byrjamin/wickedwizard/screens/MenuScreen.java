@@ -371,7 +371,7 @@ public class MenuScreen extends AbstractScreen {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x,y));
-        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width, height,
+        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width,
                 TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.WHITE));
 
 

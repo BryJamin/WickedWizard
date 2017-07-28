@@ -125,7 +125,7 @@ public class PauseWorld {
 
         Entity statText = world.createEntity();
         statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(55f)));
-        statText.edit().add(new TextureFontComponent(Assets.medium, "Stats", Measure.units(10f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        statText.edit().add(new TextureFontComponent(Assets.medium, "Stats", Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
         String[] stats = new String[]
                 {
@@ -146,7 +146,7 @@ public class PauseWorld {
 
         Entity itemText = world.createEntity();
         itemText.edit().add(new PositionComponent(camX + Measure.units(30f), camY + Measure.units(55f)));
-        itemText.edit().add(new TextureFontComponent(Assets.medium, "Items", Measure.units(15f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        itemText.edit().add(new TextureFontComponent(Assets.medium, "Items", Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
         return world;
 
@@ -155,7 +155,7 @@ public class PauseWorld {
     public void statsText(World world, String text, float x, float y){
         Entity damage = world.createEntity();
         damage.edit().add(new PositionComponent(x, y));
-        damage.edit().add(new TextureFontComponent(Assets.medium, text, Measure.units(20f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        damage.edit().add(new TextureFontComponent(Assets.medium, text, Measure.units(20f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
     }
 
 

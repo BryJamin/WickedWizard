@@ -21,6 +21,7 @@ import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.screens.CreditsScreen;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -41,10 +42,6 @@ public class MainGame extends Game {
 	public SpriteBatch batch;
 	public AssetManager manager = new AssetManager();
 
-	private boolean stop = true;
-
-
-	Texture img;
 
 	@Override
 	public void create () {
@@ -99,6 +96,7 @@ public class MainGame extends Game {
 
 
 		setScreen(new LoadingScreen(this));
+		//setScreen(new CreditsScreen(this));
 	}
 
 /*	@Override

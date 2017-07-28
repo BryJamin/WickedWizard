@@ -21,31 +21,28 @@ public class TextureFontComponent extends TextureRegionComponent {
         this.layer = FOREGROUND_LAYER_NEAR;
     }
 
-    public TextureFontComponent(String font, String text, float offsetX, float offsetY, float width, float height, int layer, Color color) {
+    public TextureFontComponent(String font, String text, float offsetX, float offsetY, float width, int layer, Color color) {
         this.font = font;
         this.text = text;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.width = width;
-        this.height = height;
         this.layer = layer;
         this.color = color;
         this.DEFAULT = color;
     }
 
-    public TextureFontComponent(String font, String text, float offsetX, float offsetY, float width, float height, int layer) {
-        this.font = font;
-        this.text = text;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.width = width;
-        this.height = height;
-        this.layer = layer;
+    public TextureFontComponent(String font, String text, float offsetX, float offsetY, float width, int layer) {
+        this(font, text, offsetX, offsetY, width, layer, new Color(Color.WHITE));
+    }
+
+    public TextureFontComponent(String font, String text, float width, int layer, Color color){
+        this(font, text, 0,0, width, layer, color);
     }
 
 
-    public TextureFontComponent(String font, String text, float width, float height, int layer){
-        this(font, text, 0,0, width, height, layer);
+    public TextureFontComponent(String font, String text, float width, int layer){
+        this(font, text, 0,0, width, layer);
     }
 
 
@@ -57,6 +54,14 @@ public class TextureFontComponent extends TextureRegionComponent {
         this.font = font;
         this.text = text;
     }
+
+    public TextureFontComponent(String font, String text, Color color){
+        this.font = font;
+        this.text = text;
+        this.color = color;
+        this.DEFAULT = color;
+    }
+
 
 
 }

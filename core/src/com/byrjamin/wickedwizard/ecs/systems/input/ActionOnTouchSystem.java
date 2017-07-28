@@ -28,6 +28,9 @@ public class ActionOnTouchSystem extends EntitySystem {
 
 
     public void touch(float x, float y){
+
+        System.out.println("TOuch " + x  +" y: " + y);
+
         for(Entity e : this.getEntities()) {
             if (e.getComponent(CollisionBoundComponent.class).bound.contains(x, y)) {
                 e.getComponent(ActionOnTouchComponent.class).action.performAction(world, e);

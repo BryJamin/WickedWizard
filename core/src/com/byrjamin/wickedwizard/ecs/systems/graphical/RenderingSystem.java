@@ -100,6 +100,7 @@ public class RenderingSystem extends EntitySystem {
     protected void process(Entity e) {
 
 
+
         //System.out.println("INSIDE");
 
         PositionComponent pc = pm.get(e);
