@@ -27,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
@@ -139,17 +140,37 @@ public class BossEnd extends EnemyFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+                Entity flash = bossEndFlash(world);
 
-                rts.packRoom(world, rts.getCurrentArena());
-                rts.setCurrentMap(new EndGameMap(assetManager).endGameMap());
-                rts.unpackRoom(rts.getCurrentArena());
+                flash.edit().add(new UnpackableComponent());
+                flash.edit().add(new ConditionalActionComponent(new Condition() {
+                    @Override
+                    public boolean condition(World world, Entity entity) {
+                        return entity.getComponent(FadeComponent.class).count <= 0;
+                    }
+                }, new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
 
-                Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+                        e.edit().remove(ConditionalActionComponent.class);
 
-                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
-                pc.position.x = a.getWidth() / 2;
-                pc.position.y = a.getHeight() / 2;
+                        RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+
+                        rts.packRoom(world, rts.getCurrentArena());
+                        rts.setCurrentMap(new EndGameMap(assetManager).endGameMap());
+                        rts.unpackRoom(rts.getCurrentArena());
+
+                        Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+
+                        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
+                        pc.position.x = a.getWidth() / 2;
+                        pc.position.y = a.getHeight() / 2;
+
+                    }
+                }));
+
+
+                Entity deathclone = deathClone(world, e);
 
                 //world.getSystem(EndGameSystem.class).startCredits();
             }

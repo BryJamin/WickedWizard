@@ -82,54 +82,66 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new OnDeathActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-
-                Entity deathClone = world.createEntity();
-                deathClone.edit().add(e.getComponent(PositionComponent.class));
-                deathClone.edit().add(e.getComponent(TextureRegionComponent.class));
-                deathClone.edit().add(e.getComponent(CollisionBoundComponent.class));
-                deathClone.edit().add(new ExpireComponent(1.45f));
-                deathClone.edit().add(new EnemyComponent());
-
-                deathClone.edit().add(new ActionAfterTimeComponent(new Action() {
-
-                    Giblets giblets = new Giblets.GibletBuilder(assetManager)
-                            .intangible(false)
-                            .minSpeed(Measure.units(10f))
-                            .maxSpeed(Measure.units(100f))
-                            .expiryTime(0.6f)
-                            .fadeRate(0.75f)
-                            .intangible(true)
-                            .numberOfGibletPairs(10)
-                            .size(Measure.units(1f))
-                            .colors(new Color(Color.RED))
-                            .build();
-
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        giblets.performAction(world, e);
-                    }
-                }, 0.1f, true));
-
-                float width = ArenaShellFactory.SECTION_WIDTH * 3;
-                float height = ArenaShellFactory.SECTION_HEIGHT * 3;
-
-                Entity flash = world.createEntity();
-                flash.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
-                flash.edit().add(new PositionComponent(0, 0));
-                flash.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
-                        new Color(Color.WHITE)));
-                flash.edit().add(new FadeComponent(true, 1.4f, true));
-                flash.edit().add(new ExpireComponent(2.8f));
-
-/*                gibletFactory.giblets(5, 0.4f,
-                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);*/
-               // world.getSystem(SoundSystem.class).playSound(SoundFileStrings.explosionMix1);
+                deathClone(world, e);
+                Entity flash = bossEndFlash(world);
             }
         }));
 
         return fillbag;
 
     }
+
+
+    protected Entity deathClone(World world, Entity e){
+
+        Entity deathClone = world.createEntity();
+        deathClone.edit().add(e.getComponent(PositionComponent.class));
+        deathClone.edit().add(e.getComponent(TextureRegionComponent.class));
+        deathClone.edit().add(e.getComponent(CollisionBoundComponent.class));
+        deathClone.edit().add(new ExpireComponent(1.45f));
+        deathClone.edit().add(new EnemyComponent());
+
+        deathClone.edit().add(new ActionAfterTimeComponent(new Action() {
+
+            Giblets giblets = new Giblets.GibletBuilder(assetManager)
+                    .intangible(false)
+                    .minSpeed(Measure.units(10f))
+                    .maxSpeed(Measure.units(100f))
+                    .expiryTime(0.6f)
+                    .fadeRate(0.75f)
+                    .intangible(true)
+                    .numberOfGibletPairs(10)
+                    .size(Measure.units(1f))
+                    .colors(new Color(Color.RED))
+                    .build();
+
+            @Override
+            public void performAction(World world, Entity e) {
+                giblets.performAction(world, e);
+            }
+        }, 0.1f, true));
+
+        return deathClone;
+
+    }
+
+    protected Entity bossEndFlash(World world){
+
+        float width = ArenaShellFactory.SECTION_WIDTH * 3;
+        float height = ArenaShellFactory.SECTION_HEIGHT * 3;
+
+        Entity flash = world.createEntity();
+        flash.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
+        flash.edit().add(new PositionComponent(0, 0));
+        flash.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
+                new Color(Color.WHITE)));
+        flash.edit().add(new FadeComponent(true, 1.4f, 1));
+        flash.edit().add(new ExpireComponent(4f));
+
+        return flash;
+    }
+
+
 
     protected ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new PositionComponent(x, y));

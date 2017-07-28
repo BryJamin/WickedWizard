@@ -31,17 +31,27 @@ public class FadeComponent extends Component {
 
 
     public FadeComponent(boolean fadeIn, float alphaTimeLimit, boolean isEndless, float minAlpha, float maxAlpha) {
-        this.fadeIn = fadeIn;
+        this(fadeIn, alphaTimeLimit, minAlpha, maxAlpha);
         this.isEndless = isEndless;
+    }
+
+
+    public FadeComponent(boolean fadeIn, float alphaTimeLimit,float minAlpha, float maxAlpha){
+        this.fadeIn = fadeIn;
         this.alphaTimeLimit = alphaTimeLimit;
         alphaTimer = fadeIn ? 0 : alphaTimeLimit;
         this.minAlpha = minAlpha;
         this.maxAlpha = maxAlpha;
     }
 
-
     public FadeComponent(boolean fadeIn, float alphaTimeLimit, boolean isEndless) {
         this(fadeIn, alphaTimeLimit, isEndless, 0, 1);
+    }
+
+    public FadeComponent(boolean fadeIn, float alphaTimeLimit, int count) {
+        this(fadeIn, alphaTimeLimit, 0, 1);
+        this.count = count;
+        this.isEndless = false;
     }
 
     public FadeComponent(float alphaTimeLimit, boolean isEndless) {

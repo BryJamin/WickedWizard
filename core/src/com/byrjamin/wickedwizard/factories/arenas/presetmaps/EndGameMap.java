@@ -93,7 +93,12 @@ public class EndGameMap extends AbstractFactory {
 
                         Entity fadeout = world.createEntity();
                         fadeout.edit().add(new PositionComponent(0,0));
-                        fadeout.edit().add(new FadeComponent(true, 2.0f, false));
+                        fadeout.edit().add(new ActionAfterTimeComponent(new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                e.edit().add(new FadeComponent(true, 3.0f, false));
+                            }
+                        }, 1.5f));
                         fadeout.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
                         fadeout.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(0,0,0,0)));
 
