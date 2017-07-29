@@ -9,7 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
 /**
- * Created by Home on 14/05/2017.
+ * Created by BB on 14/05/2017.
  */
 
 public class ExpiryRangeSystem extends EntityProcessingSystem {
@@ -31,8 +31,6 @@ public class ExpiryRangeSystem extends EntityProcessingSystem {
 
         erc.distanceTravelled += Math.abs(distanceTravelled);
         erc.currentPosition.set(pc.position);
-
-        //System.out.println(erc.distanceTravelled);
 
         if(erc.distanceTravelled > erc.range){
             world.getSystem(OnDeathSystem.class).kill(e);

@@ -4,23 +4,26 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
-import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 
 /**
- * Created by Home on 11/03/2017.
+ * Created by BB on 11/03/2017.
+ *
+ * System used for enemies who use a Weapon
+ *
+ * Calculates the angle to fire a weapon from based on the Firing AI of the Enemy
+ *
+ * Calculates when to fire the weapon by ticking down it's timer
+ *
  */
 public class FiringAISystem extends EntityProcessingSystem {
 
-    ComponentMapper<PositionComponent> pm;
-    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<WeaponComponent> wm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<FiringAIComponent> fm;
@@ -33,13 +36,11 @@ public class FiringAISystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
 
-        PositionComponent pc = pm.get(e);
+
         WeaponComponent wc = wm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
         FiringAIComponent fc = fm.get(e);
-/*
-        if((fc.firingDelay -= world.delta) > 0) return;*/
 
         wc.timer.update(world.delta);
 
@@ -47,33 +48,42 @@ public class FiringAISystem extends EntityProcessingSystem {
         float y = cbc.getCenterY() + fc.offsetY;
 
         switch(fc.ai){
-            case TARGETED:
+            case TARGET_PLAYER:
+
                 if(wc.timer.isFinishedAndReset()){
 
-                    CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-                    double angleOfTravel = (Math.atan2(pcbc.getCenterY() - y, pcbc.getCenterX() - x));
-                    wc.weapon.fire(world, e, x, y, angleOfTravel);
-
-
-                    if(world.getMapper(AnimationStateComponent.class).has(e)){
+                    wc.weapon.fire(world, e, x, y, firingAngleToPlayerInRadians(x, y));
+                    if(world.getMapper(AnimationStateComponent.class).has(e))
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
-                    }
                 }
+
                 break;
             case UNTARGETED:
+
                 if(wc.timer.isFinishedAndReset()){
+
                     wc.weapon.fire(world,e, x, y, fc.firingAngleInRadians);
-                    world.getSystem(SoundSystem.class).playSound(SoundFileStrings.enemyFireMix);
-                    if(world.getMapper(AnimationStateComponent.class).has(e)){
+                    if(world.getMapper(AnimationStateComponent.class).has(e))
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
-                    }
 
                 }
-
 
                 break;
         }
 
     }
+
+
+    /**
+     *
+     * @param x - Starting x position of the shot fired
+     * @param y - Starting y position of the shot fired
+     * @return - Angle in radians the player is from the starting position
+     */
+    private double firingAngleToPlayerInRadians(float x, float y){
+        CollisionBoundComponent playercbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        return BulletMath.angleOfTravel(x, y, playercbc.getCenterX(), playercbc.getCenterY());
+    }
+
 
 }

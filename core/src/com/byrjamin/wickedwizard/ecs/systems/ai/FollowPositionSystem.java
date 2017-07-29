@@ -8,7 +8,11 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
 /**
- * Created by Home on 06/04/2017.
+ * Created by BB on 06/04/2017.
+ *
+ * Set the position of all entities with a 'FollowPositionComponent' at the designated offset
+ * from the position they followings
+ *
  */
 
 public class FollowPositionSystem extends EntityProcessingSystem {

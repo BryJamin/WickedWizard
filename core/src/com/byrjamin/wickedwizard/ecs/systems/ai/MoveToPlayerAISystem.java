@@ -37,25 +37,18 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-            CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
-            PositionComponent pc = pm.get(e);
-            VelocityComponent vc = vm.get(e);
-            CollisionBoundComponent cbc = cbm.get(e);
-            AccelerantComponent ac = am.get(e);
+        PositionComponent pc = pm.get(e);
+        VelocityComponent vc = vm.get(e);
+        CollisionBoundComponent cbc = cbm.get(e);
+        AccelerantComponent ac = am.get(e);
 
             //TODO new if statements do not account for enemies with slow accelerations (they no longer slide)
 
-            if (!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && gm.has(e)) {
-                if (cbc.getCenterX() > pBound.getCenterX()) {
-                    vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
-                    if(cbc.getCenterX() - vc.velocity.x * world.delta < pBound.getCenterX()) vc.velocity.x = 0;
-                } else {
-                    vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
-                    if(cbc.getCenterX() + vc.velocity.x * world.delta > pBound.getCenterX()) vc.velocity.x = 0;
-                }
-
-            }
+        if (!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && gm.has(e)) {
+            moveToPlayerWithGravityComponent(cbc, pBound, vc, ac);
+        }
 
 
         if(!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && !gm.has(e)) {
@@ -82,6 +75,29 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
 
 
+    }
+
+
+    /**
+     * To entities that have gravity and want to move towards a player. This method is used as there is
+     * no need to use velocity y as that is being affected by gravity
+     *
+     * Based on the position of the player the entity's accelerant component is either applied negatively
+     * or positively
+     *
+     * @param cbc - Collision boundary of the entity moving towards the player
+     * @param playerCbc - Collision boundary of the player
+     * @param vc - The VelocityComponent of the enetity
+     * @param ac - The AccelerantComponent of the entity
+     */
+    private void moveToPlayerWithGravityComponent(CollisionBoundComponent cbc, CollisionBoundComponent playerCbc, VelocityComponent vc, AccelerantComponent ac){
+        if (cbc.getCenterX() > playerCbc.getCenterX()) {
+            vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
+            if(cbc.getCenterX() - vc.velocity.x * world.delta < playerCbc.getCenterX()) vc.velocity.x = 0;
+        } else {
+            vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
+            if(cbc.getCenterX() + vc.velocity.x * world.delta > playerCbc.getCenterX()) vc.velocity.x = 0;
+        }
     }
 
 }

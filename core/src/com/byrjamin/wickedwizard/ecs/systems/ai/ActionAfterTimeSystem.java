@@ -7,9 +7,15 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 
 /**
- * Created by Home on 27/05/2017.
+ * Created by BB on 27/05/2017.
+ *
+ * Performs Action after a period of time for all entities with an ActionAfterTimeComponent.
+ *
+ * Resets and repeats action if the repeat boolean is set.
+ *
+ * The entity is removed otherwise
+ *
  */
-
 public class ActionAfterTimeSystem extends EntityProcessingSystem {
 
     ComponentMapper<ActionAfterTimeComponent> aatm;
@@ -23,7 +29,7 @@ public class ActionAfterTimeSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         ActionAfterTimeComponent aatc = aatm.get(e);
         if ((aatc.timeUntilAction -= world.delta) <= 0) {
-            aatc.task.performAction(world, e);
+            aatc.action.performAction(world, e);
 
             if(aatc.repeat){
                 aatc.timeUntilAction = aatc.resetTime;

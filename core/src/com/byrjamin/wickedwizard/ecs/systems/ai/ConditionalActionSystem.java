@@ -12,14 +12,13 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
- * Created by ae164 on 20/05/17.
+ * Created by BB on 20/05/17.
+ *
+ * Performs actions within all entities with ConditionActionComponents if the condition has been met.
  */
-
 public class ConditionalActionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<HealthComponent> hm;
     ComponentMapper<ConditionalActionComponent> cac;
-    ComponentMapper<BlinkComponent> bm;
 
     @SuppressWarnings("unchecked")
     public ConditionalActionSystem() {
