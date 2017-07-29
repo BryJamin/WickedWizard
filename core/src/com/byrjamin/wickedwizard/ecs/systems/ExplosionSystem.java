@@ -6,16 +6,14 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ExplosionComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.PickUpComponent;
 
 /**
  * Created by Home on 23/05/2017.
@@ -28,7 +26,7 @@ public class ExplosionSystem extends EntityProcessingSystem {
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<ExplosionComponent> em;
     ComponentMapper<FriendlyComponent> fm;
-    ComponentMapper<BlinkComponent> bm;
+    ComponentMapper<BlinkOnHitComponent> bm;
     ComponentMapper<BulletComponent> bulm;
 
 

@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -75,7 +75,7 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new LootComponent(5, 2));
         bag.add(new GravityComponent());
         bag.add(new HealthComponent(3));
-        bag.add(new BlinkComponent());
+        bag.add(new BlinkOnHitComponent());
 
         bag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
 

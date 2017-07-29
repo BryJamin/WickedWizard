@@ -7,7 +7,6 @@ import com.artemis.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
@@ -37,7 +36,7 @@ import java.util.Comparator;
 public class RenderingSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm;
-    private ComponentMapper<BlinkComponent> bm;
+    private ComponentMapper<BlinkOnHitComponent> bm;
     private ComponentMapper<BulletComponent> bulletm;
     private ComponentMapper<HighlightComponent> hm;
     private ComponentMapper<TextureRegionComponent> trm;
@@ -112,7 +111,7 @@ public class RenderingSystem extends EntitySystem {
             boolean shaderOn = false;
 
             if(bm.has(e)){
-                shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT;
+                shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkOnHitComponent.BLINKTYPE.CONSTANT;
             }
 
             if(shaderOn){

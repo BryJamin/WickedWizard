@@ -78,7 +78,7 @@ public class PlayerInput extends InputAdapter {
         gameport.unproject(touchInput);
         //TimeUtils.nanoTime();
 
-        if(world.getSystem(ShoppingSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y)) return true;
+        if(world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y)) return true;
 
 
         tapStartTime = Gdx.input.getCurrentEventTime();

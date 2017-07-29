@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
@@ -357,7 +357,7 @@ public class BossWraithCowl extends EnemyFactory {
         e.edit().add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         //e.edit().add(new EnemyComponent());
         e.edit().add(new OnlyPlayerBulletsComponent());
-        e.edit().add(new BlinkComponent());
+        e.edit().add(new BlinkOnHitComponent());
         e.edit().add(new HealthComponent(1));
         //e.edit().add(new FadeComponent(true, 1, false));
        e.edit().add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)

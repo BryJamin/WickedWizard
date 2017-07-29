@@ -4,55 +4,58 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 
 /**
- * Created by Home on 09/03/2017.
+ * Created by BB on 09/03/2017.
+ *
+ * Update 29/07/2017
+ *
+ * This is system is incredibly legacy
+ *
+ * The main part of this system is tracking a players flash as unlike enemies they blink in and out when hit,
+ * whereas enemies just flash white
+ *
+ *
  */
-public class BlinkSystem extends EntityProcessingSystem {
+public class BlinkOnHitSystem extends EntityProcessingSystem {
 
-    ComponentMapper<BlinkComponent> bm;
+    ComponentMapper<BlinkOnHitComponent> bm;
     ComponentMapper<TextureRegionComponent> trm;
-    ComponentMapper<PlayerComponent> pm;
 
 
     @SuppressWarnings("unchecked")
-    public BlinkSystem() {
-        super(Aspect.all(BlinkComponent.class, TextureRegionComponent.class));
+    public BlinkOnHitSystem() {
+        super(Aspect.all(BlinkOnHitComponent.class, TextureRegionComponent.class));
     }
 
     @Override
     protected void process(Entity e) {
 
-        BlinkComponent bc = bm.get(e);
+        BlinkOnHitComponent bc = bm.get(e);
         TextureRegionComponent trc = trm.get(e);
 
         if(bc.isHit){
 
-            bc.blinkFrames -= world.delta;
-            if(bc.blinkFrames > 0){
+            bc.timeUntilNoLongerBlinking -= world.delta;
+            if(bc.timeUntilNoLongerBlinking > 0){
 
-                if(bc.blinktype == BlinkComponent.BLINKTYPE.CONSTANT){
-                    //trc.setColor(0.0f,0.0f,0.0f,0.95f);
-                } else {
+                if(bc.blinktype == BlinkOnHitComponent.BLINKTYPE.FLASHING){
                     bc.blinkTimer -= world.delta;;
                     if (bc.blinkTimer < 0) {
                         bc.blinkTimer = bc.resetTimer;
                         bc.isBlinking = !bc.isBlinking;
                     }
-                    if(bc.isBlinking) {
-                        trc.color.a = 0.1f;
-                    } else {
-                        trc.color.a = trc.DEFAULT.a;
-                    }
+
+                    trc.color.a = bc.isBlinking ? 0.1f : trc.DEFAULT.a;
+
                 }
 
 
             } else {
                 bc.isHit = false;
-                bc.blinkFrames = bc.resetFrames;
+                bc.timeUntilNoLongerBlinking = bc.resetTimeUntilNoLongerBlinking;
                 bc.blinkTimer = bc.resetTimer;
                 trc.color.set(trc.DEFAULT);
             }

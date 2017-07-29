@@ -6,7 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -42,7 +42,7 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new LootComponent());
         fillbag.add(new HealthComponent(health));
-        fillbag.add(new BlinkComponent());
+        fillbag.add(new BlinkOnHitComponent());
         fillbag.add(new EnemyComponent());
         fillbag.add(new OnDeathActionComponent(new Action() {
             @Override
@@ -77,7 +77,7 @@ public class EnemyFactory extends AbstractFactory {
         fillbag.add(new PositionComponent(x, y));
         //fillbag.add(new LootComponent());
         fillbag.add(new HealthComponent(health));
-        fillbag.add(new BlinkComponent());
+        fillbag.add(new BlinkOnHitComponent());
         fillbag.add(new EnemyComponent());
         fillbag.add(new OnDeathActionComponent(new Action() {
             @Override
@@ -146,7 +146,7 @@ public class EnemyFactory extends AbstractFactory {
     protected ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new HealthComponent(health));
-        fillbag.add(new BlinkComponent());
+        fillbag.add(new BlinkOnHitComponent());
         fillbag.add(new EnemyComponent());
         fillbag.add(new OnDeathActionComponent(new Task() {
             @Override

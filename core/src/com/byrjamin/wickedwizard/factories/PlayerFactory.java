@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
@@ -98,7 +98,7 @@ public class PlayerFactory extends AbstractFactory {
         WeaponComponent wc = new WeaponComponent(new Pistol(assetManager), 0.3f);
         bag.add(wc);
         bag.add(new HealthComponent(6));
-        bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
+        bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),

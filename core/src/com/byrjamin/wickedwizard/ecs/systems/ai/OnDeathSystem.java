@@ -17,8 +17,11 @@ import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 /**
  * Created by BB on 01/04/2017.
  *
- * OnDeathSystem 
- *
+ * OnDeathSystem is used to properly dispose of Entities within the world
+ * If an entity has an action to perform on death the 'kill' method runs said action.
+ * If it has loot to drop the LootSystem is called to create loot
+ * If the entity is a parent or child component a parent removes itself and it's children.
+ * A child removes itself and removes itself from it's parent
  */
 
 public class OnDeathSystem  extends BaseSystem {
@@ -36,9 +39,7 @@ public class OnDeathSystem  extends BaseSystem {
     private Array<ChildComponent> temporaryChildStore = new Array<ChildComponent>();
 
     @Override
-    protected void processSystem() {
-
-    }
+    protected void processSystem() {}
 
     @Override
     protected boolean checkProcessing() {
@@ -48,16 +49,12 @@ public class OnDeathSystem  extends BaseSystem {
 
     public void kill(Entity deadEntity) {
 
-        if(odam.has(deadEntity)){
-            odam.get(deadEntity).action.performAction(world, deadEntity);
-        }
+        if(odam.has(deadEntity)) odam.get(deadEntity).action.performAction(world, deadEntity);
 
 
         if(lm.has(deadEntity) && cbm.has(deadEntity) && !mm.has(deadEntity)) {
             CollisionBoundComponent cbc = cbm.get(deadEntity);
-            //for(int i = 0; i < lm.get(deadEntity).moneyDrops; i++) {
             world.getSystem(LuckSystem.class).rollForLoot(lm.get(deadEntity), cbc.getCenterX(), cbc.getCenterY());
-            //}
         }
 
         if(cm.has(deadEntity)){
@@ -67,26 +64,17 @@ public class OnDeathSystem  extends BaseSystem {
             }
         }
 
-        if(parentm.has(deadEntity)){
-            Array<ChildComponent> children = new Array<ChildComponent>();
-            children.addAll(parentm.get(deadEntity).children);
-
-            for(ChildComponent c : children){
-                Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
-                if(child != null) {
-                    kill(child);
-                }
-                parentm.get(deadEntity).children.removeValue(c, true);
-            }
-
-        }
+        if(parentm.has(deadEntity)) killChildComponents(parentm.get(deadEntity));
 
 
         deadEntity.deleteFromWorld();
     }
 
 
-
+    /**
+     * Runs the kill command on the child entities of a parent
+     * @param parentComponent - The parent component with child entities
+     */
     public void killChildComponents(ParentComponent parentComponent){
 
         temporaryChildStore.clear();
@@ -103,6 +91,11 @@ public class OnDeathSystem  extends BaseSystem {
     }
 
 
+    /**
+     * Deletes all child components from the parent component within running any 'death actions'
+     * the child entity might have
+     * @param parentComponent - The parent component with child entities
+     */
     public void killChildComponentsIgnoreOnDeath(ParentComponent parentComponent){
 
         temporaryChildStore.clear();

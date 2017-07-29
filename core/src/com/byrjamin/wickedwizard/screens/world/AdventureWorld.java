@@ -50,7 +50,7 @@ import com.byrjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ProximitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkOnHitSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
@@ -58,12 +58,12 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.ShoppingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.InCombatSystem;
@@ -180,7 +180,7 @@ public class AdventureWorld {
                         new ExpiryRangeSystem(),
                         new ActiveOnTouchSystem(),
                         new AnimationSystem(),
-                        new BlinkSystem(),
+                        new BlinkOnHitSystem(),
                         //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
                         new MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
@@ -194,7 +194,7 @@ public class AdventureWorld {
                         new FindChildSystem(),
                         new PickUpSystem(),
                         new LuckSystem(random),
-                        new ShoppingSystem(),
+                        new ActionOnTouchSystem(),
                         new RoomTypeSystem(),
                         new MoveToSystem(),
                         new MoveToPlayerAISystem(),
@@ -210,7 +210,7 @@ public class AdventureWorld {
                 )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
-                        new CameraSystem(gameport.getCamera(), gameport),
+                        new CameraSystem(gameport),
                         new FollowPositionSystem(),
                         new FadeSystem(), //Applies any fade before render
                         new RenderingSystem(batch, assetManager, gameport),

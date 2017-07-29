@@ -5,13 +5,8 @@ import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.byrjamin.wickedwizard.GameTest;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -11,7 +11,10 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchCompon
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 
 /**
- * Created by Home on 01/04/2017.
+ * Created by BB on 01/04/2017.
+ *
+ * Controls the Fade effect on all entities with the FadeComponent
+ *
  */
 
 public class FadeSystem extends EntityProcessingSystem {
@@ -33,9 +36,7 @@ public class FadeSystem extends EntityProcessingSystem {
         FadeComponent fc = fm.get(e);
 
         if(fc.flicker){
-            if(trm.has(e)) trm.get(e).color.a = fc.maxAlpha;
-            if(trbm.has(e)) trbm.get(e).color.a = fc.maxAlpha;
-            if(tfm.has(e)) tfm.get(e).color.a = fc.maxAlpha;
+            applyFade(e, fc.maxAlpha);
             fc.flicker = false;
             return;
         }
@@ -76,14 +77,14 @@ public class FadeSystem extends EntityProcessingSystem {
             }
         }
 
-        applyFade(e, fc);
+        applyFade(e, fc.alpha);
 
     }
 
-    public void applyFade(Entity e, FadeComponent fc){
-        if(trm.has(e)) trm.get(e).color.a = fc.alpha;
-        if(trbm.has(e)) trbm.get(e).color.a = fc.alpha;
-        if(tfm.has(e)) tfm.get(e).color.a = fc.alpha;
+    private void applyFade(Entity e, float alpha){
+        if(trm.has(e)) trm.get(e).color.a = alpha;
+        if(trbm.has(e)) trbm.get(e).color.a = alpha;
+        if(tfm.has(e)) tfm.get(e).color.a = alpha;
     }
 
 }

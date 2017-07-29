@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 /**
  * Created by Home on 09/03/2017.
  */
-public class BlinkComponent extends Component {
+public class BlinkOnHitComponent extends Component {
 
 
     public enum BLINKTYPE {
@@ -17,22 +17,22 @@ public class BlinkComponent extends Component {
 
     public float blinkTimer = 0.15f;
     public float resetTimer = 0.15f;
-    public float blinkFrames;
-    public float resetFrames;
+    public float timeUntilNoLongerBlinking;
+    public float resetTimeUntilNoLongerBlinking;
 
     public Color preBlinkColor;
     public Color blinkColor;
 
 
-    public BlinkComponent(){
-        blinkFrames = 0.04f;
-        resetFrames = 0.04f;
+    public BlinkOnHitComponent(){
+        timeUntilNoLongerBlinking = 0.04f;
+        resetTimeUntilNoLongerBlinking = 0.04f;
     }
 
-    public BlinkComponent(float blinkFrames, BLINKTYPE blinktype){
+    public BlinkOnHitComponent(float timeUntilNoLongerBlinking, BLINKTYPE blinktype){
         this();
-        this.blinkFrames = blinkFrames;
-        this.resetFrames = blinkFrames;
+        this.timeUntilNoLongerBlinking = timeUntilNoLongerBlinking;
+        this.resetTimeUntilNoLongerBlinking = timeUntilNoLongerBlinking;
         this.blinktype = blinktype;
     }
 
