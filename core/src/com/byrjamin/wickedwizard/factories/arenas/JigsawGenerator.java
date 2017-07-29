@@ -566,7 +566,7 @@ public class JigsawGenerator {
                 arena.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), arena.getArenaSkin()));
             }
         }
-        arena.adjacentCoords.removeValue(dc.leaveCoords, false);
+        //arena.adjacentCoords.removeValue(dc.leaveCoords, false);
         arena.doors.removeValue(dc, true);
 
     }
@@ -585,9 +585,22 @@ public class JigsawGenerator {
     public boolean findDoorWithinFoundRoom(DoorComponent dc, Array<Arena> arenas){
         Arena a = findRoom(dc.leaveCoords, arenas);
         if(a != null) {
-            return a.adjacentCoords.contains(dc.currentCoords, false);
+            return checkAdjacentDoorsContainCoordinates(a, dc.currentCoords);
         }
         return false;
+    }
+
+
+    private boolean checkAdjacentDoorsContainCoordinates(Arena arena, MapCoords mapCoords){
+
+        for(DoorComponent dc : arena.getDoors()){
+
+            if(dc.leaveCoords.equals(mapCoords)){
+                return true;
+            }
+        }
+
+       return false;
     }
 
     /**

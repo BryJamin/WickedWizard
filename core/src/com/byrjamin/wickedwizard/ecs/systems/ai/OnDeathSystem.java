@@ -15,7 +15,10 @@ import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 
 /**
- * Created by Home on 01/04/2017.
+ * Created by BB on 01/04/2017.
+ *
+ * OnDeathSystem 
+ *
  */
 
 public class OnDeathSystem  extends BaseSystem {
@@ -28,6 +31,9 @@ public class OnDeathSystem  extends BaseSystem {
     ComponentMapper<ChildComponent> cm;
 
     ComponentMapper<MinionComponent> mm;
+
+
+    private Array<ChildComponent> temporaryChildStore = new Array<ChildComponent>();
 
     @Override
     protected void processSystem() {
@@ -77,18 +83,16 @@ public class OnDeathSystem  extends BaseSystem {
 
 
         deadEntity.deleteFromWorld();
-
-     //   System.out.println(entityIds.size());
     }
 
 
 
     public void killChildComponents(ParentComponent parentComponent){
 
-        Array<ChildComponent> children = new Array<ChildComponent>();
-        children.addAll(parentComponent.children);
+        temporaryChildStore.clear();
+        temporaryChildStore.addAll(parentComponent.children);
 
-        for(ChildComponent c : children){
+        for(ChildComponent c : temporaryChildStore){
             Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
             if(child != null) {
                 kill(child);
@@ -101,10 +105,10 @@ public class OnDeathSystem  extends BaseSystem {
 
     public void killChildComponentsIgnoreOnDeath(ParentComponent parentComponent){
 
-        Array<ChildComponent> children = new Array<ChildComponent>();
-        children.addAll(parentComponent.children);
+        temporaryChildStore.clear();
+        temporaryChildStore.addAll(parentComponent.children);
 
-        for(ChildComponent c : children){
+        for(ChildComponent c : temporaryChildStore){
             Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
             if(child != null) {
                 child.deleteFromWorld();

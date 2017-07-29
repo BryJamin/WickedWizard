@@ -34,7 +34,6 @@ public class Arena {
     private ArenaSkin arenaSkin;
 
     public Array<MapCoords> cotainingCoords = new Array<MapCoords>();
-    public Array<MapCoords> adjacentCoords = new Array<MapCoords>();
 
     public Array<DoorComponent> doors = new Array<DoorComponent>();
     public Array<DoorComponent> mandatoryDoors = new Array<DoorComponent>();
@@ -84,11 +83,6 @@ public class Arena {
         return cotainingCoords;
     }
 
-    public Array<MapCoords> getAdjacentCoords() {
-        return adjacentCoords;
-    }
-
-
     private Queue<Bag<Bag<Component>>> waves = new Queue<Bag<Bag<Component>>>();
 
     public void addWave(Bag<Component>... bags){
@@ -123,7 +117,6 @@ public class Arena {
     public void addDoor(Bag<Component> door, boolean isMandatory){
         for(Component c : door){
             if(c instanceof DoorComponent){
-                adjacentCoords.add(((DoorComponent) c).leaveCoords);
                 doors.add((DoorComponent) c);
                 if(isMandatory) mandatoryDoors.add((DoorComponent) c);
                 bagOfEntities.add(door);
@@ -158,7 +151,7 @@ public class Arena {
         }
     }
 
-    public Bag<Component> findBag(Component c){
+    Bag<Component> findBag(Component c){
         for(Bag<Component> bc : bagOfEntities){
             if(bc.contains(c)){
                 return bc;

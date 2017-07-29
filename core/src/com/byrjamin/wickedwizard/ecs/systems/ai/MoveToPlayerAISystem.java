@@ -14,7 +14,12 @@ import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 
 /**
- * Created by Home on 06/03/2017.
+ * Created by BB on 06/03/2017.
+ *
+ * System for managing entities with the MoveToPlayerComponent.
+ *
+ * Based on whether they have gravity or not the way they move to a player is different
+ *
  */
 public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
@@ -44,29 +49,15 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
         CollisionBoundComponent cbc = cbm.get(e);
         AccelerantComponent ac = am.get(e);
 
-            //TODO new if statements do not account for enemies with slow accelerations (they no longer slide)
+        //TODO moveToPlayer method does not account for enemies with slow accelerations (they no longer slide) Update: Probably won't factor this in
 
         if (!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && gm.has(e)) {
+
             moveToPlayerWithGravityComponent(cbc, pBound, vc, ac);
-        }
 
+        } else if(!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && !gm.has(e)) {
 
-        if(!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && !gm.has(e)) {
-
-            double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), pBound.getCenterX(), pBound.getCenterY());
-
-            float vy = BulletMath.velocityY(vc.velocity.y, angleOfTravel);
-            float accelY = BulletMath.velocityY(ac.accelY, angleOfTravel);
-            float maxY = BulletMath.velocityY(ac.maxY, angleOfTravel);
-
-            vc.velocity.y = (Math.abs(vy) + Math.abs(accelY) >= Math.abs(maxY)) ? maxY : vc.velocity.y + accelY;
-
-
-            float vx = BulletMath.velocityX(vc.velocity.x, angleOfTravel);
-            float accelX = BulletMath.velocityX(ac.accelX, angleOfTravel);
-            float maxX = BulletMath.velocityX(ac.maxX, angleOfTravel);
-
-            vc.velocity.x = (Math.abs(vx) + Math.abs(accelX) >= Math.abs(maxX)) ? maxX : vc.velocity.x + accelX;
+            moveToPlayer(cbc, pBound, vc, ac);
 
         } else if(cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY())){
             vc.velocity.x = 0;
@@ -87,7 +78,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
      *
      * @param cbc - Collision boundary of the entity moving towards the player
      * @param playerCbc - Collision boundary of the player
-     * @param vc - The VelocityComponent of the enetity
+     * @param vc - The VelocityComponent of the entity
      * @param ac - The AccelerantComponent of the entity
      */
     private void moveToPlayerWithGravityComponent(CollisionBoundComponent cbc, CollisionBoundComponent playerCbc, VelocityComponent vc, AccelerantComponent ac){
@@ -98,6 +89,36 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
             vc.velocity.x  = (vc.velocity.x >= ac.maxX) ? ac.maxX : vc.velocity.x + ac.accelX;
             if(cbc.getCenterX() + vc.velocity.x * world.delta > playerCbc.getCenterX()) vc.velocity.x = 0;
         }
+    }
+
+
+    /**
+     * Moves an Entity towards a player using both the accelX and accelY of their Accelerant components
+     * and adding it to their velocity
+     *
+     * @param cbc - Collision boundary of the entity moving towards the player
+     * @param playerCbc - Collision boundary of the player
+     * @param vc - The VelocityComponent of the entity
+     * @param ac - The AccelerantComponent of the entity
+     */
+    private void moveToPlayer(CollisionBoundComponent cbc, CollisionBoundComponent playerCbc, VelocityComponent vc, AccelerantComponent ac){
+
+
+        double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), playerCbc.getCenterX(), playerCbc.getCenterY());
+
+        float vy = BulletMath.velocityY(vc.velocity.y, angleOfTravel);
+        float accelY = BulletMath.velocityY(ac.accelY, angleOfTravel);
+        float maxY = BulletMath.velocityY(ac.maxY, angleOfTravel);
+
+        vc.velocity.y = (Math.abs(vy) + Math.abs(accelY) >= Math.abs(maxY)) ? maxY : vc.velocity.y + accelY;
+
+
+        float vx = BulletMath.velocityX(vc.velocity.x, angleOfTravel);
+        float accelX = BulletMath.velocityX(ac.accelX, angleOfTravel);
+        float maxX = BulletMath.velocityX(ac.maxX, angleOfTravel);
+
+        vc.velocity.x = (Math.abs(vx) + Math.abs(accelX) >= Math.abs(maxX)) ? maxX : vc.velocity.x + accelX;
+
     }
 
 }

@@ -324,7 +324,7 @@ public class BossWraithCowl extends EnemyFactory {
         }
 
 
-        public Direction pickNextDirection(Direction direction){
+        private Direction pickNextDirection(Direction direction){
 
             switch (direction){
                 case LEFT: direction = random.nextBoolean() ? Direction.UP : Direction.RIGHT;
