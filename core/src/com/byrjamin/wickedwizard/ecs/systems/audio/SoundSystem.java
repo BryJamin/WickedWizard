@@ -14,18 +14,25 @@ import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 
 /**
- * Created by Home on 02/06/2017.
+ * Created by BB on 02/06/2017.
+ *
+ * Sound System plays sounds that are queued up inside of the system per iteration
+ *
+ * Update:
+ * In future it may be prudent to have a range that sounds can be played from.
+ * The only issue is you'd need to have a way to track the position the sound is being played from.
+ * Which may need to be stored either as a static? method that translates volume based on position or
+ * you use Pair to track position and upcoming sounds.
+ *
+ * This is to avoid hearing sound from miles away that you shouldn't hear
+ *
  */
 
 public class SoundSystem extends BaseSystem {
 
     private AssetManager assetManager;
 
-    private Array<Sound> upcomingSounds = new Array<Sound>();
-
     private Array<Mix> upcomingMixes = new Array<Mix>();
-
-
 
     public SoundSystem(AssetManager assetManager){
         this.assetManager = assetManager;
@@ -39,49 +46,24 @@ public class SoundSystem extends BaseSystem {
         boolean soundOn = preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
         if(soundOn){
-            for(Sound s : upcomingSounds){
-                s.play();
-
-            }
-
             for(Mix m : upcomingMixes){
                 Sound s = assetManager.get(m.getFileName(), Sound.class);
                 s.play(m.getVolume(), m.getPitch(), 0);
             }
-
         }
 
         upcomingMixes.clear();
-        upcomingSounds.clear();
 
     }
 
-    //TODO idea track sounds played within the same game frame. If it is the same sound then do not play is.
-    //TODO may extend this to multiple game frames (max of 2?)
 
-    //TODO number of sounds avalaible to play within one game frame could be something like 5? They have pritoriy attached
-
-
-    public void playSound(String soundFile){
-        if(assetManager.isLoaded(soundFile, Sound.class) &&
-                Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_SOUND, true)){
-            Sound s = assetManager.get(soundFile, Sound.class);
-            s.play();
-            //s.stop();
-        }
-    }
-
-    public void playSound(String soundFile, float volume){
-        if(assetManager.isLoaded(soundFile, Sound.class) &&
-                Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_SOUND, true)){
-            Sound s = assetManager.get(soundFile, Sound.class);
-            s.play(volume);
-        }
-    }
-
+    /**
+     * Queues up a Mix to be played in the process of the SoundSystem
+     * To avoid amplification of sound, if the same mix is played (As all mixes come from the same static methods)
+     * that mix is not queued up.
+     * @param mix - The mix to be played
+     */
     public void playSound(Mix mix){
-
-        System.out.println(mix.getFileName());
 
         if(assetManager.isLoaded(mix.getFileName(), Sound.class) &&
                 Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_SOUND, true)){
@@ -91,6 +73,10 @@ public class SoundSystem extends BaseSystem {
         }
     }
 
+    /**
+     * This runs the playSound method for a random mix from an Array of Mixes
+     * @param mixes - Array of mixes
+     */
     public void playRandomSound(Mix... mixes){
         playSound(mixes[MathUtils.random.nextInt(mixes.length)]);
     }
