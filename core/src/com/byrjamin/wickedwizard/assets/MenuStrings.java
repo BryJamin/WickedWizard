@@ -8,4 +8,5 @@ public class MenuStrings {
 
     public static final String START = "Start";
 
+    public static final String CONTINUE = "Continue";
 }

@@ -54,18 +54,36 @@ public class QuickSave {
 
 
 
+    public static boolean checkQuickSave(){
+
+        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
+        String loadString = preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+
+        try {
+            SaveData saveData = json.fromJson(SaveData.class, loadString);
+            json.fromJson(StatComponent.class, saveData.getStatComponentJSON());
+            json.fromJson(CurrencyComponent.class, saveData.getCurrencyJSON());
+            json.fromJson(Array.class, saveData.getItemPoolJSON());
+
+            return true;
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
     public static void loadQuickSave(World world){
 
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
         String loadString = preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
 
 
-        SaveData saveData = json.fromJson(SaveData.class, loadString);
-
         try {
 
-            System.out.println(world.getAspectSubscriptionManager().get(Aspect.all()).getEntities().size());
-            System.out.println("INSIFE QUICK SAVE SIZE" + world.getSystem(RoomTransitionSystem.class).getCurrentArena().getBagOfEntities().size());
+            SaveData saveData = json.fromJson(SaveData.class, loadString);
 
             StatComponent s = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
             s.applyStats(json.fromJson(StatComponent.class, saveData.getStatComponentJSON()));
@@ -80,12 +98,7 @@ public class QuickSave {
             jg.getItemStore().getItemStringArray().clear();
             jg.getItemStore().getItemStringArray().addAll(json.fromJson(Array.class, saveData.getItemPoolJSON()));
 
-
-            //world.getSystem(RoomTransitionSystem.class).packRoom(world, world.getSystem(RoomTransitionSystem.class).getCurrentArena());
-
             world.getSystem(MapTeleportationSystem.class).createNewLevel();
-
-            System.out.println("FINAL ENTITY SIZE" + world.getAspectSubscriptionManager().get(Aspect.all()).getEntities().size());
 
             preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
             preferences.flush();

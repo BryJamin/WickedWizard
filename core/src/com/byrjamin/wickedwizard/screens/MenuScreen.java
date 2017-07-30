@@ -71,6 +71,7 @@ public class MenuScreen extends AbstractScreen {
 
     private Preferences settings;
     private Preferences devSettings;
+    private Preferences preferences;
 
 
     public enum MenuType {
@@ -87,6 +88,7 @@ public class MenuScreen extends AbstractScreen {
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
         devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
+        preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
 
 
         String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
@@ -159,7 +161,16 @@ public class MenuScreen extends AbstractScreen {
         Color backGround = new Color(0,0,0,0);
 
 
-        Entity startGame = mb.createButton(world, MenuStrings.START, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
+
+        final boolean quickSaveDataIsDefault =
+                preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE).equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+
+
+        final boolean quickSaveDataIsReadable = QuickSave.checkQuickSave();
+
+        final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
+
+        Entity startGame = mb.createButton(world, quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
                 ,MainGame.GAME_HEIGHT / 2 + Measure.units(5f),
                 Measure.units(30f),
                 Measure.units(10f),
