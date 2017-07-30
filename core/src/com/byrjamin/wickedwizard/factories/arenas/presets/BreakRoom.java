@@ -54,7 +54,7 @@ public class BreakRoom extends AbstractFactory {
 
         MenuButton menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
 
-        Bag<ComponentBag> bags = menuButton.createButtonWithAction("Take A Break", Measure.units(10f), Measure.units(30f), Measure.units(20f), Measure.units(10f),
+        Bag<ComponentBag> bags = menuButton.createButtonWithAction("Take A Break", Measure.units(10f), Measure.units(30f), Measure.units(25f), Measure.units(20f),
                 new Color(Color.WHITE), new Color(Color.BLACK), new Action() {
                     @Override
                     public void performAction(World world, Entity e) {

@@ -9,9 +9,6 @@ public class PreferenceStrings {
 
     public final static String SETTINGS = "com.benjamin.wickedwizard.settings";
 
-    public final static String SETTINGS_BOUND = "bounds";
-    public final static String SETTINGS_GODMODE = "godmode";
-
     public final static String SETTINGS_SOUND = "sound";
     public final static String SETTINGS_MUSIC = "music";
 
@@ -25,6 +22,8 @@ public class PreferenceStrings {
     public final static String DEV_BOSS_NUMBER = "boss_number";
     public final static String DEV_ROOM_LEVEL = "room_level";
     public final static String DEV_ROOM_NUMBER = "room_number";
+    public final static String DEV_BOUND = "bounds";
+    public final static String DEV_GODMODE = "godmode";
 
 
 

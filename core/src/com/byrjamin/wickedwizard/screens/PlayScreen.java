@@ -293,7 +293,7 @@ public class PlayScreen extends AbstractScreen {
 
         StatComponent stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
 
-        if(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false)) {
+        if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false)) {
             stats.damage = 10f;
             stats.accuracy = 99f;
             stats.fireRate = 10f;

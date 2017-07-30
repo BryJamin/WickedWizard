@@ -40,7 +40,7 @@ public class BoundsDrawingSystem extends EntitySystem {
 
     public BoundsDrawingSystem() {
         super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class, WallComponent.class));
-        this.isDrawing = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
+        this.isDrawing = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_BOUND, false);
     }
 
 

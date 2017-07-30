@@ -42,7 +42,7 @@ public class HealthSystem extends EntityProcessingSystem {
 
                 if(!bm.get(e).isHit) {
 
-                    if (Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false))
+                    if (Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false))
                         return;
 
                     StatComponent sc = sm.get(e);

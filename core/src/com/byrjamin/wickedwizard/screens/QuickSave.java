@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.SerializationException;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
@@ -42,7 +43,7 @@ public class QuickSave {
 
         try {
             Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-            preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, saveDataString);
+            preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, Base64Coder.encodeString(saveDataString));
             preferences.flush();
         } catch (SerializationException e){
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class QuickSave {
         String loadString = preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
 
         try {
-            SaveData saveData = json.fromJson(SaveData.class, loadString);
+            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
             json.fromJson(StatComponent.class, saveData.getStatComponentJSON());
             json.fromJson(CurrencyComponent.class, saveData.getCurrencyJSON());
             json.fromJson(Array.class, saveData.getItemPoolJSON());
@@ -69,6 +70,12 @@ public class QuickSave {
 
         } catch (Exception e){
             e.printStackTrace();
+
+            if(!loadString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+                preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+                preferences.flush();
+            }
+
             return false;
         }
 
@@ -83,7 +90,7 @@ public class QuickSave {
 
         try {
 
-            SaveData saveData = json.fromJson(SaveData.class, loadString);
+            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
 
             StatComponent s = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
             s.applyStats(json.fromJson(StatComponent.class, saveData.getStatComponentJSON()));
