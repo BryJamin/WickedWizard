@@ -13,13 +13,22 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.factories.arenas.presets.BreakRoom;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -101,7 +110,22 @@ public class PortalFactory extends AbstractFactory {
                 world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        world.getSystem(MapTeleportationSystem.class).createNewLevel();
+
+                        RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
+                        rts.packRoom(world, rts.getCurrentArena());
+                        rts.setCurrentMap(new ArenaMap(new BreakRoom(assetManager).createBreakRoom()));
+                        rts.unpackRoom(rts.getCurrentArena());
+
+                        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
+                        player.position.x = rts.getCurrentArena().getWidth() / 2;
+                        player.position.y = rts.getCurrentArena().getHeight() / 2;
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+                        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
+                        vc.velocity.x = 0;
+                        vc.velocity.y = 0;
+                        world.getSystem(PlayerInputSystem.class).turnOffGlide();
+
+                       // world.getSystem(MapTeleportationSystem.class).createNewLevel();
                     }
                 });
 

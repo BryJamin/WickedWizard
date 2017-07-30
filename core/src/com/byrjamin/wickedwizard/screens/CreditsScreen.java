@@ -2,55 +2,24 @@ package com.byrjamin.wickedwizard.screens;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.WorldConfiguration;
-import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
-import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
-import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
-import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
-import com.byrjamin.wickedwizard.factories.BackgroundFactory;
-import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.screens.world.CreditsWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.byrjamin.wickedwizard.utils.Measure;
 
 //TODO
 
@@ -93,7 +62,7 @@ public class CreditsScreen extends AbstractScreen {
         super(game);
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
-        devToolPrefs = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE);
+        devToolPrefs = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
 
         gestureDetector = new GestureDetector(new CreditsScreenGestures());
         manager = game.manager;

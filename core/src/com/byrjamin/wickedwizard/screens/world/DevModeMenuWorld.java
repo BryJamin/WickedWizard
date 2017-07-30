@@ -17,14 +17,9 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
-import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -66,7 +61,7 @@ public class DevModeMenuWorld extends WorldContainer{
         world = new World(config);
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
-        devToolPrefs = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE);
+        devToolPrefs = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
 
         boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
         boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
@@ -125,7 +120,7 @@ public class DevModeMenuWorld extends WorldContainer{
         MenuButton mb = new MenuButton(Assets.small, atlas.findRegion(TextureStrings.BLOCK));
 
 
-        final Entity bossStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.BOSS_NUMBER, "0"), Measure.units(20f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        final Entity bossStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_BOSS_NUMBER, "0"), Measure.units(20f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
         bossStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -142,7 +137,7 @@ public class DevModeMenuWorld extends WorldContainer{
 
                 int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
                 String bossSetting = Integer.toString(i < 8 ? i + 1 : i);
-                devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
+                devToolPrefs.putString(PreferenceStrings.DEV_BOSS_NUMBER, bossSetting).flush();
                 bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
             }
         }));
@@ -155,7 +150,7 @@ public class DevModeMenuWorld extends WorldContainer{
             public void performAction(World world, Entity e) {
                 int i = Integer.parseInt(bossStartbutton.getComponent(TextureFontComponent.class).text);
                 String bossSetting = Integer.toString(i > 0 ? i - 1 : i);
-                devToolPrefs.putString(PreferenceStrings.BOSS_NUMBER, bossSetting).flush();
+                devToolPrefs.putString(PreferenceStrings.DEV_BOSS_NUMBER, bossSetting).flush();
                 bossStartbutton.getComponent(TextureFontComponent.class).text = bossSetting;
             }
         }));
@@ -163,7 +158,7 @@ public class DevModeMenuWorld extends WorldContainer{
 
 
 
-        final Entity levelStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        final Entity levelStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_ROOM_LEVEL, "0"), Measure.units(80f), Measure.units(45f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
         levelStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -171,8 +166,8 @@ public class DevModeMenuWorld extends WorldContainer{
                 game.setScreen(new PlayScreen(game,
                         new PlayScreenConfig(
                                 PlayScreenConfig.Spawn.ARENA,
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.DEV_ROOM_LEVEL, "0")),
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.DEV_ROOM_NUMBER, "0")))));
             }
         }));
 
@@ -186,7 +181,7 @@ public class DevModeMenuWorld extends WorldContainer{
                 int i = Integer.parseInt(levelStartbutton.getComponent(TextureFontComponent.class).text);
                 String levelSetting = Integer.toString(i < 5 ? i + 1 : i);
 
-                devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
+                devToolPrefs.putString(PreferenceStrings.DEV_ROOM_LEVEL, levelSetting).flush();
                 levelStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));
@@ -201,7 +196,7 @@ public class DevModeMenuWorld extends WorldContainer{
                 String levelSetting = Integer.toString(i > 0 ? i - 1 : i);
 
 
-                devToolPrefs.putString(PreferenceStrings.ROOM_LEVEL, levelSetting).flush();
+                devToolPrefs.putString(PreferenceStrings.DEV_ROOM_LEVEL, levelSetting).flush();
                 levelStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));
@@ -213,7 +208,7 @@ public class DevModeMenuWorld extends WorldContainer{
 
 
 
-        final Entity roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(12.5f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
+        final Entity roomStartbutton = mb.createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(12.5f), Measure.units(10f), Measure.units(10), new Color(Color.BLACK), new Color(Color.WHITE));
         roomStartbutton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -221,8 +216,8 @@ public class DevModeMenuWorld extends WorldContainer{
                 game.setScreen(new PlayScreen(game,
                         new PlayScreenConfig(
                                 PlayScreenConfig.Spawn.ARENA,
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_LEVEL, "0")),
-                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.ROOM_NUMBER, "0")))));
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.DEV_ROOM_LEVEL, "0")),
+                                Integer.parseInt(devToolPrefs.getString(PreferenceStrings.DEV_ROOM_NUMBER, "0")))));
             }
         }));
 
@@ -237,7 +232,7 @@ public class DevModeMenuWorld extends WorldContainer{
                 String levelSetting = Integer.toString(i < 30 ? i + 1 : i);
 
 
-                devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
+                devToolPrefs.putString(PreferenceStrings.DEV_ROOM_NUMBER, levelSetting).flush();
                 roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));
@@ -252,7 +247,7 @@ public class DevModeMenuWorld extends WorldContainer{
                 String levelSetting = Integer.toString(i > -1 ? i - 1 : i);
 
 
-                devToolPrefs.putString(PreferenceStrings.ROOM_NUMBER, levelSetting).flush();
+                devToolPrefs.putString(PreferenceStrings.DEV_ROOM_NUMBER, levelSetting).flush();
                 roomStartbutton.getComponent(TextureFontComponent.class).text = levelSetting;
             }
         }));

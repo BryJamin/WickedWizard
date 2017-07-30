@@ -19,17 +19,17 @@ public class PreferenceStrings {
 
 
 
-    public final static String DEV_MODE = "com.benjamin.wickedwizard.dev";
+    public final static String DEV_MODE_PREF_KEY = "com.benjamin.wickedwizard.dev";
 
-    public final static String MENU_IS_DEV = "menu_is_dev";
-    public final static String BOSS_NUMBER = "boss_number";
-    public final static String ROOM_LEVEL = "room_level";
-    public final static String ROOM_NUMBER = "room_number";
+    public final static String DEV_MENU_IS_DEV = "menu_is_dev";
+    public final static String DEV_BOSS_NUMBER = "boss_number";
+    public final static String DEV_ROOM_LEVEL = "room_level";
+    public final static String DEV_ROOM_NUMBER = "room_number";
 
 
 
-    public final static String DATA = "com.bb.wickedwizard.data";
-    public final static String QUICK_SAVE = "abx4";
+    public final static String DATA_PREF_KEY = "com.bb.wickedwizard.data";
+    public final static String DATA_QUICK_SAVE = "abx4";
 
 
 

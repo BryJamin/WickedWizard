@@ -1,16 +1,15 @@
 package com.byrjamin.wickedwizard.screens;
 
+import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.SerializationException;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
-import com.byrjamin.wickedwizard.screens.world.AdventureWorld;
-import com.byrjamin.wickedwizard.utils.BagSearch;
 
 /**
  * Created by Home on 29/07/2017.
@@ -23,13 +22,13 @@ public class QuickSave {
     private static Json json = new Json();
 
 
-    public static void saveGame(AdventureWorld world){
+    public static void saveGame(World world){
 
         SaveData saveData = new SaveData();
-        saveData.setStatComponentJSON(json.toJson(BagSearch.getObjectOfTypeClass(StatComponent.class, world.getPlayer())));
-        saveData.setLevelJSON(world.getWorld().getSystem(ChangeLevelSystem.class).getLevel().name());
-        saveData.setCurrencyJSON(json.toJson(BagSearch.getObjectOfTypeClass(CurrencyComponent.class, world.getPlayer())));
-        saveData.setItemPoolJSON(json.toJson(world.getWorld().getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().getItemStringArray()));
+        saveData.setStatComponentJSON(json.toJson(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class)));
+        saveData.setLevelJSON(world.getSystem(ChangeLevelSystem.class).getLevel().name());
+        saveData.setCurrencyJSON(json.toJson(world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class)));
+        saveData.setItemPoolJSON(json.toJson(world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().getItemStringArray()));
 
 
         System.out.println(saveData.toString());
@@ -37,12 +36,9 @@ public class QuickSave {
         String saveDataString = json.toJson(saveData);
 
         try {
-           // StatComponent statComponent = json.fromJson(StatComponent.class, statString);
-
-            //System.out.println(statComponent.damage);
-
-            Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA);
-            preferences.putString(PreferenceStrings.QUICK_SAVE, saveDataString);
+            Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
+            preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, saveDataString);
+            preferences.flush();
         } catch (SerializationException e){
             e.printStackTrace();
         }

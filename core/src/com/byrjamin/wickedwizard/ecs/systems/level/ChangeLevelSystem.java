@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.factories.arenas.levels.Level2Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level3Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level4Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level5Rooms;
+import com.byrjamin.wickedwizard.factories.arenas.levels.PresetGenerators;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.Bourbon;
@@ -64,6 +65,9 @@ public class ChangeLevelSystem extends BaseSystem {
         }
 
         public ArenaSkin getArenaSkin(){
+
+
+
             return  arenaSkin;
         }
 
@@ -84,18 +88,6 @@ public class ChangeLevelSystem extends BaseSystem {
         level = ONE;
     }
 
-    public ChangeLevelSystem(AssetManager assetManager, Random random){
-        this.assetManager = assetManager;
-        this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        ONE.setArenaSkin(new LightGraySkin(atlas));
-        TWO.setArenaSkin(new FoundarySkin(atlas));
-        THREE.setArenaSkin(new DarkPurpleAndBrown(atlas));
-        FOUR.setArenaSkin(new Bourbon(atlas));
-        FIVE.setArenaSkin(new DarkGraySkin(atlas));
-        this.random = random;
-        level = ONE;
-        jigsawGenerator = getJigsawGenerator(ONE);
-    }
 
     public void setLevel(Level level) {
         this.level = level;
@@ -146,64 +138,36 @@ public class ChangeLevelSystem extends BaseSystem {
             case ONE:
             default:
 
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).blobbaMapCreate());
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).adojMapCreate());
+                jg = new PresetGenerators().level1Configuration(assetManager, arenaSkin, random)
+                        .itemStore(jigsawGenerator.getItemStore())
+                        .build();
 
-                jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
-                        .arenaCreates(new Level1Rooms(assetManager, arenaSkin, random).getAllArenas())
-                        .bossMapCreates(bossMapGens)
-//                        .itemStore(jigsawGenerator.getItemStore())
-                        .noBattleRooms(numberOfLevel1Rooms)
-                        .build(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
             case TWO:
 
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).wandaMapCreate());
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).giantSpinnerMapCreate());
-
-                jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
-                        .arenaCreates(new Level2Rooms(assetManager, arenaSkin, random).getAllArenas())
-                        .bossMapCreates(bossMapGens)
-        //                .itemStore(jigsawGenerator.getItemStore())
-                        .noBattleRooms(numberOfLevel2Rooms)
+                jg = new PresetGenerators().level2Configuration(assetManager, arenaSkin, random)
+                        .itemStore(jigsawGenerator.getItemStore())
                         .build();
 
                 break;
             case THREE:
 
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).boomyMapCreate());
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).ajirMapCreate());
-
-                jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
-                        .arenaCreates(new Level3Rooms(assetManager, arenaSkin, random).getAllArenas())
-                        .bossMapCreates(bossMapGens)
-            //            .itemStore(jigsawGenerator.getItemStore())
-                        .noBattleRooms(numberOfLevel3Rooms)
+                jg = new PresetGenerators().level3Configuration(assetManager, arenaSkin, random)
+                        .itemStore(jigsawGenerator.getItemStore())
                         .build();
 
                 break;
             case FOUR:
 
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).amalgamaMapCreate());
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).wraithMapCreate());
-
-                jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
-                        .arenaCreates(new Level4Rooms(assetManager, arenaSkin, random).getAllArenas())
-                        .bossMapCreates(bossMapGens)
-          //              .itemStore(jigsawGenerator.getItemStore())
-                        .noBattleRooms(numberOfLevel4Rooms)
+                jg = new PresetGenerators().level4Configuration(assetManager, arenaSkin, random)
+                        .itemStore(jigsawGenerator.getItemStore())
                         .build();
 
                 break;
             case FIVE:
 
-                bossMapGens.add(new BossMaps(assetManager, arenaSkin).endMapCreate());
-
-                jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
-                        .arenaCreates(new Level5Rooms(assetManager, arenaSkin, random).getAllArenas())
-                        .bossMapCreates(bossMapGens)
-         //               .itemStore(jigsawGenerator.getItemStore())
-                        .noBattleRooms(numberOfLevel5Rooms)
+                jg = new PresetGenerators().level5Configuration(assetManager, arenaSkin, random)
+                        .itemStore(jigsawGenerator.getItemStore())
                         .build();
 
                 break;

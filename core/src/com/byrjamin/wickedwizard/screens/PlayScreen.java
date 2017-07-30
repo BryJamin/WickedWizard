@@ -35,6 +35,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.AllArenaStore;
+import com.byrjamin.wickedwizard.factories.arenas.levels.PresetGenerators;
 import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -207,12 +208,15 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         setUpGlobals();
 
-        jg = new ChangeLevelSystem(game.manager, random).getJigsawGenerator(ChangeLevelSystem.Level.ONE);
+        jg = new PresetGenerators().level1Configuration(game.manager, new LightGraySkin(atlas), random)
+                .build();
         jg.generate();
         jg.cleanArenas();
 
         createWorlds();
         Gdx.input.setCatchBackKey(true);
+
+
     }
 
 
@@ -280,14 +284,8 @@ public class PlayScreen extends AbstractScreen {
 
 
     public void createWorlds(){
-        //ItemStore itemStore = new ItemStore(random);
 
-        Arena startingArena = jg.getStartingRoom();
-        adventureWorld = new AdventureWorld(game, gameport, random);
-        adventureWorld.setJigsawGenerator(jg);
-        adventureWorld.setPlayer(new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
-        adventureWorld.createAdventureWorld();
-        adventureWorld.getWorld().getSystem(MusicSystem.class).playLevelMusic(adventureWorld.getWorld().getSystem(ChangeLevelSystem.class).getLevel());
+        adventureWorld = new AdventureWorld(game, gameport,jg, random);
 
 
         StatComponent stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
@@ -359,7 +357,7 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void pause() {
-        QuickSave.saveGame(adventureWorld);
+        //QuickSave.saveGame(world);
     }
 
     @Override

@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
@@ -25,7 +24,6 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
-import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -34,19 +32,14 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
-import com.byrjamin.wickedwizard.factories.BackgroundFactory;
-import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.screens.world.DevModeMenuWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
@@ -54,7 +47,6 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 //TODO
 
@@ -94,10 +86,10 @@ public class MenuScreen extends AbstractScreen {
         super(game);
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
-        devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE);
+        devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
 
 
-        String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE).getString(PreferenceStrings.MENU_IS_DEV, MenuType.DEV.name());
+        String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
 
         menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
 
@@ -342,11 +334,11 @@ public class MenuScreen extends AbstractScreen {
 
             switch(menuType) {
                 case DEV: menuType = MenuType.MAIN;
-                    devSettings.putString(PreferenceStrings.MENU_IS_DEV, menuType.name());
+                    devSettings.putString(PreferenceStrings.DEV_MENU_IS_DEV, menuType.name());
                     devSettings.flush();
                     break;
                 case MAIN: menuType = MenuType.DEV;
-                    devSettings.putString(PreferenceStrings.MENU_IS_DEV, menuType.name());
+                    devSettings.putString(PreferenceStrings.DEV_MENU_IS_DEV, menuType.name());
                     devSettings.flush();
                     break;
             }
