@@ -54,7 +54,7 @@ public class DevModeMenuWorld extends WorldContainer{
                         new ActionOnTouchSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RenderingSystem(game.batch, game.manager, gameport),
-                        new BoundsDrawingSystem(true)
+                        new BoundsDrawingSystem()
                 )
                 .build();
 

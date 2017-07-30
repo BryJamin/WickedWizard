@@ -136,7 +136,7 @@ public class MenuScreen extends AbstractScreen {
                         new GravitySystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RenderingSystem(game.batch, manager, gameport),
-                        new BoundsDrawingSystem(true),
+                        new BoundsDrawingSystem(),
                         new MusicSystem(manager)
 
                 )

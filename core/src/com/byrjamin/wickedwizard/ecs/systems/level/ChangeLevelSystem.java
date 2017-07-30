@@ -93,6 +93,12 @@ public class ChangeLevelSystem extends BaseSystem {
         this.level = level;
     }
 
+    public void setLevel(String level) {
+        for(Level l : Level.values()){
+            if(l.name().equals(level)) this.level = l;
+        }
+    }
+
     public JigsawGenerator incrementLevel(){
 
         switch (level) {

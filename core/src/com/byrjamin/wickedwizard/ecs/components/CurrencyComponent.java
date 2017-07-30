@@ -24,4 +24,9 @@ public class CurrencyComponent extends Component {
         this.keys = keys;
     }
 
+    public void updateCurrency(CurrencyComponent c){
+        this.money = c.money;
+        this.keys = c.keys;
+    }
+
 }

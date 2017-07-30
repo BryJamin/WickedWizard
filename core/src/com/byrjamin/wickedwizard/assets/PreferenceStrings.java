@@ -31,6 +31,8 @@ public class PreferenceStrings {
     public final static String DATA_PREF_KEY = "com.bb.wickedwizard.data";
     public final static String DATA_QUICK_SAVE = "abx4";
 
+    public final static String DATA_QUICK_SAVE_NO_VALID_SAVE = "no_valid_save";
+
 
 
 

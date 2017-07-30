@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -65,6 +66,7 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 
+import java.math.RoundingMode;
 import java.util.Random;
 
 
@@ -214,6 +216,7 @@ public class PlayScreen extends AbstractScreen {
         jg.cleanArenas();
 
         createWorlds();
+
         Gdx.input.setCatchBackKey(true);
 
 

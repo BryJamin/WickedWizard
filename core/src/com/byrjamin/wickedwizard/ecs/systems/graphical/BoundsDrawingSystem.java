@@ -4,9 +4,11 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -36,14 +38,9 @@ public class BoundsDrawingSystem extends EntitySystem {
     private Array<Rectangle> proxhitboxes = new Array<Rectangle>();
 
 
-    @SuppressWarnings("unchecked")
     public BoundsDrawingSystem() {
         super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class, WallComponent.class));
-    }
-
-    public BoundsDrawingSystem(boolean isDrawing) {
-        super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class, WallComponent.class));
-        this.isDrawing = isDrawing;
+        this.isDrawing = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
     }
 
 

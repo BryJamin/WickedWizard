@@ -59,7 +59,6 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.ActiveOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.JumpSystem;
@@ -90,6 +89,7 @@ import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.KeyUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
+import com.byrjamin.wickedwizard.screens.QuickSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -185,7 +185,6 @@ public class AdventureWorld {
                         new OrbitalSystem(),
                         new InCombatSystem(),
                         new ExpiryRangeSystem(),
-                        new ActiveOnTouchSystem(),
                         new AnimationSystem(),
                         new BlinkOnHitSystem(),
                         //TODO where bullet system used to be
@@ -223,7 +222,7 @@ public class AdventureWorld {
                         new RenderingSystem(batch, assetManager, gameport),
                         new BulletSystem(),
                         new ScreenWipeSystem(batch, assetManager, (OrthographicCamera) gameport.getCamera()),
-                        new BoundsDrawingSystem(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_BOUND, false)),
+                        new BoundsDrawingSystem(),
                         new DoorSystem(),
                         new LevelItemSystem(new ItemStore(random), random),
                         new MusicSystem(assetManager),
@@ -240,6 +239,15 @@ public class AdventureWorld {
         world = new World(config);
         //TODO CLEAN THIS UP you shouldn'#t need to set the world of the input
         world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
+
+        if(!Gdx.app.getPreferences(
+                PreferenceStrings.DATA_PREF_KEY).getString(
+                PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)
+                .equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+            QuickSave.loadQuickSave(world);
+        }
+
+
 
         for (Bag<Component> bag : world.getSystem(RoomTransitionSystem.class).getCurrentArena().getBagOfEntities()) {
             Entity entity = world.createEntity();

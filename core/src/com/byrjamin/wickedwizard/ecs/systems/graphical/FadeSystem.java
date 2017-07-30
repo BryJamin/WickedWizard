@@ -59,8 +59,6 @@ public class FadeSystem extends EntityProcessingSystem {
                 fc.alpha = fc.minAlpha;
                 fc.count--;
 
-                System.out.println("FADE COUNT " + fc.count);
-
             } else {
                 fc.alpha = fc.minAlpha;
             }
@@ -69,8 +67,6 @@ public class FadeSystem extends EntityProcessingSystem {
                 fc.fadeIn = false;
                 fc.alpha = fc.maxAlpha;
                 fc.count--;
-
-                System.out.println("FADE COUNT " + fc.count);
 
             } else {
                 fc.alpha = fc.maxAlpha;
