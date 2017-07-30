@@ -28,6 +28,11 @@ public class PreferenceStrings {
 
 
 
+    public final static String DATA = "com.bb.wickedwizard.data";
+    public final static String QUICK_SAVE = "abx4";
+
+
+
 
 
 }

@@ -130,6 +130,22 @@ public class ItemStore {
     }
 
 
+
+
+    public Array<String> getItemStringArray(){
+
+        Array<String> stringArray = new Array<String>();
+
+        for(ItemOptions io: itemOptions){
+            stringArray.add(io.item.getName());
+        }
+
+        return stringArray;
+    }
+
+
+
+
     public class ItemOptions {
 
         public Item item;

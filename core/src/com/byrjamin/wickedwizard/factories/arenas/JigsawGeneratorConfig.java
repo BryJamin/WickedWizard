@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
+import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import java.util.Random;
@@ -29,6 +30,8 @@ public class JigsawGeneratorConfig {
     public final AssetManager assetManager;
     public ArenaSkin arenaSkin;
 
+    public ItemStore itemStore;
+
     public Array<ArenaCreate> arenaGens;
     public Array<BossMapCreate> bossMapGens;
 
@@ -43,6 +46,8 @@ public class JigsawGeneratorConfig {
         this.arenaSkin = arenaSkin;
         this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords()));
         this.arenaGens = new Level1Rooms(assetManager, arenaSkin, random).getLevel1RoomArray();
+
+        this.itemStore = new ItemStore(random);
 
         bossMapGens = new Array<BossMapCreate>();
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).blobbaMapCreate());
@@ -60,11 +65,17 @@ public class JigsawGeneratorConfig {
     public JigsawGeneratorConfig startingMap(ArenaMap val)
     { startingMap = val; return this; }
 
+    public JigsawGeneratorConfig itemStore(ItemStore val)
+    { itemStore = val; return this; }
+
+
     public JigsawGeneratorConfig arenaCreates(Array<ArenaCreate> val)
     { arenaGens = val; return this; }
 
     public JigsawGeneratorConfig bossMapCreates(Array<BossMapCreate> val)
     { bossMapGens = val; return this; }
+
+
 
 
     public JigsawGenerator build(){

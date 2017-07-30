@@ -80,8 +80,6 @@ public class PlayScreen extends AbstractScreen {
     private Viewport gameport;
 
 
-
-
     public TextureAtlas atlas;
     public AssetManager manager;
 
@@ -262,6 +260,7 @@ public class PlayScreen extends AbstractScreen {
                         if(!isPaused) {
                             adventureWorld.pauseWorld();
                             isPaused = true;
+                            pause();
                             pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.manager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
                                     adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
                         } else {
@@ -298,6 +297,7 @@ public class PlayScreen extends AbstractScreen {
             stats.accuracy = 99f;
             stats.fireRate = 10f;
             stats.speed = 1.5f;
+            stats.luck = 10f;
         }
 
     }
@@ -359,7 +359,7 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void pause() {
-
+        QuickSave.saveGame(adventureWorld);
     }
 
     @Override

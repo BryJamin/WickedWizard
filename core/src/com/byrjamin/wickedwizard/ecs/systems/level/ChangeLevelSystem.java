@@ -52,6 +52,8 @@ public class ChangeLevelSystem extends BaseSystem {
     private TextureAtlas atlas;
     private Random random;
 
+    private JigsawGenerator jigsawGenerator;
+
     public enum Level {
         ONE, TWO, THREE, FOUR, FIVE;
 
@@ -69,6 +71,19 @@ public class ChangeLevelSystem extends BaseSystem {
 
     private Level level;
 
+    public ChangeLevelSystem(AssetManager assetManager, JigsawGenerator jigsawGenerator, Random random){
+        this.assetManager = assetManager;
+        this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
+        ONE.setArenaSkin(new LightGraySkin(atlas));
+        TWO.setArenaSkin(new FoundarySkin(atlas));
+        THREE.setArenaSkin(new DarkPurpleAndBrown(atlas));
+        FOUR.setArenaSkin(new Bourbon(atlas));
+        FIVE.setArenaSkin(new DarkGraySkin(atlas));
+        this.random = random;
+        this.jigsawGenerator = jigsawGenerator;
+        level = ONE;
+    }
+
     public ChangeLevelSystem(AssetManager assetManager, Random random){
         this.assetManager = assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
@@ -79,6 +94,7 @@ public class ChangeLevelSystem extends BaseSystem {
         FIVE.setArenaSkin(new DarkGraySkin(atlas));
         this.random = random;
         level = ONE;
+        jigsawGenerator = getJigsawGenerator(ONE);
     }
 
     public void setLevel(Level level) {
@@ -86,8 +102,6 @@ public class ChangeLevelSystem extends BaseSystem {
     }
 
     public JigsawGenerator incrementLevel(){
-
-        JigsawGenerator jigsawGenerator;
 
         switch (level) {
             case ONE:
@@ -138,6 +152,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
                         .arenaCreates(new Level1Rooms(assetManager, arenaSkin, random).getAllArenas())
                         .bossMapCreates(bossMapGens)
+//                        .itemStore(jigsawGenerator.getItemStore())
                         .noBattleRooms(numberOfLevel1Rooms)
                         .build(); //level3Rooms.getLevel3RoomArray(); //arenaGens = level2Rooms.getLevel2RoomArray();
                 break;
@@ -149,6 +164,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
                         .arenaCreates(new Level2Rooms(assetManager, arenaSkin, random).getAllArenas())
                         .bossMapCreates(bossMapGens)
+        //                .itemStore(jigsawGenerator.getItemStore())
                         .noBattleRooms(numberOfLevel2Rooms)
                         .build();
 
@@ -161,6 +177,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
                         .arenaCreates(new Level3Rooms(assetManager, arenaSkin, random).getAllArenas())
                         .bossMapCreates(bossMapGens)
+            //            .itemStore(jigsawGenerator.getItemStore())
                         .noBattleRooms(numberOfLevel3Rooms)
                         .build();
 
@@ -173,6 +190,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
                         .arenaCreates(new Level4Rooms(assetManager, arenaSkin, random).getAllArenas())
                         .bossMapCreates(bossMapGens)
+          //              .itemStore(jigsawGenerator.getItemStore())
                         .noBattleRooms(numberOfLevel4Rooms)
                         .build();
 
@@ -184,6 +202,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 jg = new JigsawGeneratorConfig(assetManager, arenaSkin, random)
                         .arenaCreates(new Level5Rooms(assetManager, arenaSkin, random).getAllArenas())
                         .bossMapCreates(bossMapGens)
+         //               .itemStore(jigsawGenerator.getItemStore())
                         .noBattleRooms(numberOfLevel5Rooms)
                         .build();
 
@@ -205,6 +224,9 @@ public class ChangeLevelSystem extends BaseSystem {
     }
 
 
+    public JigsawGenerator getJigsawGenerator() {
+        return jigsawGenerator;
+    }
 
     @Override
     protected void processSystem() {

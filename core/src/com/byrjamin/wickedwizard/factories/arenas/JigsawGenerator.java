@@ -618,4 +618,9 @@ public class JigsawGenerator {
         }
         return null;
     }
+
+
+    public ItemStore getItemStore() {
+        return itemStore;
+    }
 }
