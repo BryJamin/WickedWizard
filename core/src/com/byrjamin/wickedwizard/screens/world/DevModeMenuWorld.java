@@ -78,8 +78,8 @@ public class DevModeMenuWorld extends WorldContainer{
         boundOption.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                boolean isBound = settings.getBoolean(PreferenceStrings.DEV_BOUND, true);
-                settings.putBoolean(PreferenceStrings.DEV_BOUND, !isBound).flush();
+                boolean isBound = devToolPrefs.getBoolean(PreferenceStrings.DEV_BOUND, true);
+                devToolPrefs.putBoolean(PreferenceStrings.DEV_BOUND, !isBound).flush();
                 e.getComponent(TextureFontComponent.class).text = !isBound ? "Bounds on" : "Bounds off";
             }
         }));
@@ -89,8 +89,11 @@ public class DevModeMenuWorld extends WorldContainer{
         godOption.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                boolean isGod = settings.getBoolean(PreferenceStrings.DEV_GODMODE, true);
-                settings.putBoolean(PreferenceStrings.DEV_GODMODE, !isGod).flush();
+                boolean isGod = devToolPrefs.getBoolean(PreferenceStrings.DEV_GODMODE, true);
+
+                System.out.println(isGod);
+
+                devToolPrefs.putBoolean(PreferenceStrings.DEV_GODMODE, !isGod).flush();
                 e.getComponent(TextureFontComponent.class).text = !isGod ? "GodMode on" : "GodMode off";
             }
         }));

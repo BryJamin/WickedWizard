@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -78,7 +79,9 @@ public class MainGame extends Game {
 		size1Params.fontParameters.size = (int) Measure.units(3f);
 		size1Params.fontParameters.borderColor = new Color(Color.BLACK);
 		size1Params.fontParameters.borderWidth = 0;
-        //size1Params.fontParameters.genMipMaps = true;
+		size1Params.fontParameters.minFilter = Texture.TextureFilter.Linear;
+		size1Params.fontParameters.magFilter = Texture.TextureFilter.Linear;
+		//size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
 		manager.load(Assets.small, BitmapFont.class, size1Params);
 
@@ -87,7 +90,9 @@ public class MainGame extends Game {
         size2Params.fontParameters.size = (int) Measure.units(4f);
         size2Params.fontParameters.borderColor = new Color(Color.BLACK);
         size2Params.fontParameters.borderWidth = 0;
-        //size1Params.fontParameters.genMipMaps = true;
+		size2Params.fontParameters.minFilter = Texture.TextureFilter.Linear;
+		size2Params.fontParameters.magFilter = Texture.TextureFilter.Linear;
+		//size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
         manager.load(Assets.medium, BitmapFont.class, size2Params);
 

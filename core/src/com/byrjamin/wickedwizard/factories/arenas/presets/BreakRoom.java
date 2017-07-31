@@ -6,6 +6,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
@@ -28,14 +29,11 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class BreakRoom extends AbstractFactory {
 
-    private ArenaShellFactory arenaShellFactory;
-
     private ArenaSkin arenaSkin;
 
     public BreakRoom(AssetManager assetManager) {
         super(assetManager);
         this.arenaSkin = new AllBlackSkin(atlas);
-        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
     }
 
 
@@ -52,9 +50,13 @@ public class BreakRoom extends AbstractFactory {
                 .buildArena(arena);
 
 
+        float width = Measure.units(27.5f);
+        float height = Measure.units(20f);
+
+
         MenuButton menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
 
-        Bag<ComponentBag> bags = menuButton.createButtonWithAction("Take A Break", Measure.units(10f), Measure.units(30f), Measure.units(25f), Measure.units(20f),
+        Bag<ComponentBag> bags = menuButton.createButtonWithAction(MenuStrings.BREAK, Measure.units(10f), Measure.units(30f), width, height,
                 new Color(Color.WHITE), new Color(Color.BLACK), new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -72,7 +74,7 @@ public class BreakRoom extends AbstractFactory {
             arena.addEntity(bag);
         }
 
-        bags = menuButton.createButtonWithAction("Continue", Measure.units(70f), Measure.units(30f), Measure.units(20f), Measure.units(10f),
+        bags = menuButton.createButtonWithAction(MenuStrings.CONTINUE, Measure.units(62.5f), Measure.units(30f), width, height,
                 new Color(Color.WHITE), new Color(Color.BLACK), new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
