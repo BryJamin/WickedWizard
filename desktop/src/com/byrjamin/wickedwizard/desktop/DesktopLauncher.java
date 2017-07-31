@@ -28,16 +28,17 @@ public class DesktopLauncher {
 		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 
-//		TexturePacker.process(settings, inputDir,outputDir,packFileName);
+		TexturePacker.process(settings, inputDir,outputDir,packFileName);
 
-/*		 settings = new Settings();
+		 settings = new Settings();
 		settings.maxWidth = 1024;
 		settings.maxHeight = 1024;
-		settings.filterMin = Texture.TextureFilter.Nearest;
+		settings.filterMin = Texture.TextureFilter.Linear;
+		settings.filterMag = Texture.TextureFilter.Linear;
 		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 
-		TexturePacker.process(settings, projectPath + "/images/tobepacked/item",outputDir,"item");*/
+		TexturePacker.process(settings, projectPath + "/images/tobepacked/item",outputDir,"item");
 
 		new LwjglApplication(new MainGame(), config);
 	}

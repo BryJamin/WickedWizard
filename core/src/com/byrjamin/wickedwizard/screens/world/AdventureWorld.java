@@ -123,7 +123,6 @@ public class AdventureWorld {
 
     private JigsawGenerator jigsawGenerator;
 
-
     private BitmapFont currencyFont;
 
     public AdventureWorld(MainGame game, Viewport gameport, JigsawGenerator jigsawGenerator, Random random){
@@ -364,32 +363,39 @@ public class AdventureWorld {
 
         int count = 0;
 
+        float otherUIPosition = 0;
+
         for(int i = 0; i < healthRegions.size; i++) {
             batch.draw(healthRegions.get(i),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
+
             count++;
         }
+
+        int otherCount = count;
 
         for(int i = count; i < playerStats.armor + count; i++) {
             batch.draw(atlas.findRegion("item/armor"),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-            //count++;
+            otherCount++;
         }
+
+        otherUIPosition = otherCount * 110;
 
         PickUp p = new MoneyPlus1();
 
         batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(11f),
-                Measure.units(2f), Measure.units(2f));
+                camX + otherUIPosition + 55,
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(3.5f),
+                Measure.units(2.5f), Measure.units(2.5f));
 
         currencyFont.draw(batch, "" + playerCurrency.money,
-                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(9f),
+                camX + otherUIPosition + Measure.units(6f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(1.5f),
                 Measure.units(7f), Align.left, true);
 
         p = new KeyUp();
