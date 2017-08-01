@@ -73,7 +73,7 @@ public class MenuButton {
 
         ComponentBag textBag = new ComponentBag();
         textBag.add(new PositionComponent(x, y));
-        TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
         tfc.color = foreground;
         tfc.DEFAULT = foreground;
         textBag.add(tfc);
@@ -84,7 +84,7 @@ public class MenuButton {
 
         ComponentBag backingBag = new ComponentBag();
         backingBag.add(new PositionComponent(x, y));
-        TextureRegionComponent trc = new TextureRegionComponent(buttonTexture, width, height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, background);
+        TextureRegionComponent trc = new TextureRegionComponent(buttonTexture, width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR, background);
         backingBag.add(trc);
 
 

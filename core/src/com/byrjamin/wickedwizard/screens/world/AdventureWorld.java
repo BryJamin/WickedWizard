@@ -58,6 +58,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
@@ -229,7 +230,11 @@ public class AdventureWorld {
                         new ChangeLevelSystem(assetManager, jigsawGenerator, random),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
-                        new EndGameSystem(game)
+                        new EndGameSystem(game),
+                        new UISystem(game, gameport,
+                                arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
+                                playerStats,
+                                playerCurrency)
 
                 )
                 .build();
@@ -261,9 +266,6 @@ public class AdventureWorld {
         }
 
 
-        arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas);
-
-
         world.getSystem(MusicSystem.class).playLevelMusic(world.getSystem(ChangeLevelSystem.class).getLevel());
 
 
@@ -291,7 +293,7 @@ public class AdventureWorld {
 
     public void pauseWorld() {
         for(BaseSystem s: world.getSystems()){
-            if(!(s instanceof RenderingSystem)) {
+            if(!(s instanceof RenderingSystem || s instanceof UISystem)) {
                 s.setEnabled(false);
             }
         }
@@ -310,7 +312,7 @@ public class AdventureWorld {
 
 
 
-
+/*
     public void drawMapAndHud(boolean isPaused){
 
         if(!isPaused) {
@@ -409,7 +411,7 @@ public class AdventureWorld {
                 gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
                 Measure.units(5f), Align.center, true);
-    }
+    }*/
 
 
 

@@ -17,10 +17,13 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -35,7 +38,7 @@ public class ScreenWipeSystem extends BaseSystem {
 
     private static final float durationInSeconds = 0.25f;
     private static final float fadeDurationInSeconds = 0.25f;
-    private static final float fadeOutDurationInSeconds = 0.25f;
+    private static final float fadeOutDurationInSeconds = 0.50f;
 
     private float fadeElapsed = 0;
 
@@ -56,7 +59,7 @@ public class ScreenWipeSystem extends BaseSystem {
 
 
     public enum Transition {
-        LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP, FADE, FLASH
+        LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP, FADE, FLASH, NONE
     }
 
     public Transition transition;
@@ -88,6 +91,13 @@ public class ScreenWipeSystem extends BaseSystem {
             if(performFirstTransition(transitionEntity)){
                 taskToPerformInbetweenTransition.performAction(world, null);
                 fadeElapsed = fadeOutDurationInSeconds;
+                //transitionEntity.edit().add(new Exp)
+                if(transition == Transition.FADE){
+                    transitionEntity.edit().remove(FadeComponent.class);
+                    transitionEntity.edit().add(new FadeComponent(false, fadeOutDurationInSeconds, false));
+                }
+
+
                 isEntry = false;
                 isExit = true;
                 return;
@@ -126,18 +136,24 @@ public class ScreenWipeSystem extends BaseSystem {
         isExit = false;
         this.transition = transition;
 
+        if(transitionEntity != null) transitionEntity.deleteFromWorld();
+
         transitionEntity = world.createEntity();
-        transitionEntity.edit().add(new PositionComponent());
-        transitionEntity.edit().add(new MoveToPositionComponent());
-        transitionEntity.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
 
-        transitionEntity.edit().add(new UnpackableComponent());
-        transitionEntity.edit().add(new TextureRegionComponent(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
-                gamecam.viewportWidth, gamecam.viewportHeight,
-                TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK)));
+        if(transition != Transition.NONE) {
+
+            transitionEntity.edit().add(new PositionComponent());
+            transitionEntity.edit().add(new MoveToPositionComponent());
+            transitionEntity.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
+
+            transitionEntity.edit().add(new UnpackableComponent());
+            transitionEntity.edit().add(new TextureRegionComponent(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
+                    gamecam.viewportWidth, gamecam.viewportHeight,
+                    TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK)));
 
 
-        startingTransitionSetup(transitionEntity, transition ,gamecam);
+            startingTransitionSetup(transitionEntity, transition, gamecam);
+        }
 
         this.taskToPerformInbetweenTransition = taskToPerformInbetweenTransition;
 
@@ -145,7 +161,12 @@ public class ScreenWipeSystem extends BaseSystem {
             @Override
             public void performAction(World world, Entity e) {
                 for(BaseSystem s: world.getSystems()){
-                    if(!(s instanceof RenderingSystem) && !(s instanceof ScreenWipeSystem) && !(s instanceof FollowPositionSystem) && !(s instanceof CameraSystem)) {
+                    if(!(s instanceof RenderingSystem) &&
+                            !(s instanceof ScreenWipeSystem) &&
+                            !(s instanceof FollowPositionSystem) &&
+                            !(s instanceof CameraSystem) &&
+                            !(s instanceof UISystem) &&
+                            !(s instanceof FadeSystem)) {
                         s.setEnabled(false);
                     }
                 }
@@ -170,7 +191,6 @@ public class ScreenWipeSystem extends BaseSystem {
 
         switch(transition){
             case LEFT_TO_RIGHT:
-            default:
                 e.getComponent(FollowPositionComponent.class).offsetX = -gamecam.viewportWidth / 2 - gamecam.viewportWidth + MainGame.GAME_BORDER;
                 break;
             case RIGHT_TO_LEFT:
@@ -183,14 +203,18 @@ public class ScreenWipeSystem extends BaseSystem {
                 e.getComponent(FollowPositionComponent.class).offsetY = -gamecam.viewportHeight / 2 - gamecam.viewportHeight + MainGame.GAME_BORDER;
                 break;
             case FADE: e.getComponent(TextureRegionComponent.class).color.a = 0f;
+                e.edit().add(new FadeComponent(true, fadeDurationInSeconds, false));
                 fadeElapsed = 0;
                 break;
+            default:
         }
 
     }
 
 
     private boolean performFirstTransition (Entity e){
+
+        if(transition == Transition.NONE) return true;
 
         FollowPositionComponent followPositionComponent = e.getComponent(FollowPositionComponent.class);
 
@@ -215,18 +239,20 @@ public class ScreenWipeSystem extends BaseSystem {
                 if(followPositionComponent.offsetY <= targetOffsetY) return true;
                 break;
             case FADE:
-                fadeElapsed += world.getDelta();
-                e.getComponent(TextureRegionComponent.class).color.a = Interpolation.fade.apply(fadeElapsed / fadeDurationInSeconds);
-                if(fadeElapsed >= fadeDurationInSeconds) return true;
+                if(e.getComponent(TextureRegionComponent.class).color.a >= 1f) return true;
                 break;
             default: return true;
         }
+
+
 
         return false;
 
     }
 
     private boolean performSecondTransition (Entity e){
+
+        if(transition == Transition.NONE) return true;
 
         FollowPositionComponent followPositionComponent = e.getComponent(FollowPositionComponent.class);
 
@@ -262,10 +288,7 @@ public class ScreenWipeSystem extends BaseSystem {
                 break;
 
             case FADE:
-                fadeElapsed -= world.getDelta();
-
-                e.getComponent(TextureRegionComponent.class).color.a = Interpolation.fade.apply(fadeElapsed / fadeOutDurationInSeconds);
-                if(fadeElapsed <= 0) return true;
+                if(e.getComponent(TextureRegionComponent.class).color.a <= 0f) return true;
                 break;
             default: return true;
         }

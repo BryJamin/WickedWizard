@@ -325,31 +325,10 @@ public class PlayScreen extends AbstractScreen {
 
         if(adventureWorld.isGameOver() && deathScreenWorld == null) deathScreenWorld = new DeathScreenWorld(game, gameport);
 
-
-        if(!game.batch.isDrawing()) game.batch.begin();
-
-        drawScreenBorder(game.batch, atlas);
-
-        if(!adventureWorld.isGameOver()) adventureWorld.drawMapAndHud(isPaused);
-
-        game.batch.end();
-
         if(isPaused) pauseWorld.process(delta);
         if(adventureWorld.isGameOver() && deathScreenWorld != null) deathScreenWorld.process(delta);
 
 
-    }
-
-    private void drawScreenBorder(SpriteBatch batch, TextureAtlas atlas){
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        batch.setColor(new Color(Color.BLACK));
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY + gamecam.viewportHeight - Measure.units(5f), gamecam.viewportWidth, Measure.units(5f));
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY, gamecam.viewportWidth, Measure.units(5f));
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY, Measure.units(5f), gamecam.viewportHeight);
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX + gamecam.viewportWidth - Measure.units(5f), camY, Measure.units(5f), gamecam.viewportHeight);
-        batch.setColor(new Color(Color.WHITE));
     }
 
 

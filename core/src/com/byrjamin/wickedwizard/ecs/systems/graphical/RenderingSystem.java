@@ -15,8 +15,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.UIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -47,7 +49,6 @@ public class RenderingSystem extends EntitySystem {
     private ArrayList<Entity> orderedEntities;
 
     public SpriteBatch batch;
-    public ShapeRenderer shapeRenderer;
     public Viewport gameport;
     public AssetManager assetManager;
     public TextureAtlas atlas;
@@ -58,7 +59,7 @@ public class RenderingSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, AssetManager assetManager, Viewport gameport) {
-        super(Aspect.all(PositionComponent.class).one(
+        super(Aspect.all(PositionComponent.class).exclude(UIComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
                 TextureFontComponent.class
@@ -66,9 +67,8 @@ public class RenderingSystem extends EntitySystem {
         this.batch = batch;
         this.gameport = gameport;
         this.assetManager = assetManager;
-        this.atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
+        this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
-        shapeRenderer = new ShapeRenderer();
         orderedEntities = new ArrayList<Entity>();
 
         loadShader();
@@ -233,7 +233,7 @@ public class RenderingSystem extends EntitySystem {
                     layer2 = trfm.get(e2).layer;
                 }
 
-                return ((Integer)layer1).compareTo(layer2);
+                return layer1.compareTo(layer2);
             }
         });
     }

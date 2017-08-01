@@ -77,6 +77,7 @@ public class RoomTransitionSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
+/*
         ScreenWipeSystem.Transition transition;
 
         switch(currentDoor.exit){
@@ -95,9 +96,10 @@ public class RoomTransitionSystem extends EntitySystem {
                 transition = ScreenWipeSystem.Transition.BOTTOM_TO_TOP;
                 break;
         }
+*/
 
 
-        world.getSystem(ScreenWipeSystem.class).startScreenWipe(transition, new Task() {
+        world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.NONE, new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
