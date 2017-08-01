@@ -141,13 +141,44 @@ public class EnemyFactory extends AbstractFactory {
         return flash;
     }
 
+    protected Action defaultDeathAction(){
 
+        return new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
 
-    protected ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
+                new Giblets.GibletBuilder(assetManager)
+                        .intangible(false)
+                        .minSpeed(Measure.units(10f))
+                        .maxSpeed(Measure.units(50f))
+                        .expiryTime(0.6f)
+                        .fadeRate(0.75f)
+                        .intangible(true)
+                        .numberOfGibletPairs(5)
+                        .size(Measure.units(1f))
+                        .build().performAction(world, e);
+
+                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.explosionMix1);
+
+            }
+        };
+    }
+
+    protected ComponentBag defaultEnemyBagNoLootNoDeath (ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new HealthComponent(health));
         fillbag.add(new BlinkOnHitComponent());
         fillbag.add(new EnemyComponent());
+        return fillbag;
+    }
+
+
+
+
+    ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
+
+        fillbag = defaultEnemyBagNoLootNoDeath(fillbag, x, y, health);
+
         fillbag.add(new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {

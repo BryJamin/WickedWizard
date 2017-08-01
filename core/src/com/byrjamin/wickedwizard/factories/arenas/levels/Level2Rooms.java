@@ -5,6 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -25,6 +26,7 @@ import java.util.Random;
 
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
+import static com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory.DECORATIVE_BEAM_WIDTH;
 
 /**
  * Created by Home on 17/05/2017.
@@ -403,10 +405,10 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(40f), Measure.units(60f), Measure.units(5)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(75f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
-                arena.addEntity(decorFactory.destructibleWall(Measure.units(25f), Measure.units(25f), Measure.units(50f), Measure.units(5f)));
+
+                arena.addEntity(decorFactory.decorativeBlock(Measure.units(25f), Measure.units(32.5f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+                arena.addEntity(decorFactory.decorativeBlock(Measure.units(75f) - DECORATIVE_BEAM_WIDTH, Measure.units(32.5f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(25f), Measure.units(50f), Measure.units(5f)));
 
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(30f), Measure.units(30f)));

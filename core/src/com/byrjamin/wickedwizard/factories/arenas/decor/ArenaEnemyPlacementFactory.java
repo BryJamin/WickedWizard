@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.factories.enemy.AmoebaFactory;
 import com.byrjamin.wickedwizard.factories.enemy.BouncerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.CowlFactory;
 import com.byrjamin.wickedwizard.factories.enemy.GoatWizardFactory;
+import com.byrjamin.wickedwizard.factories.enemy.HoarderFactory;
 import com.byrjamin.wickedwizard.factories.enemy.JigFactory;
 import com.byrjamin.wickedwizard.factories.enemy.JumpingJackFactory;
 import com.byrjamin.wickedwizard.factories.enemy.KnightFactory;
@@ -46,6 +47,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     public BouncerFactory bouncerFactory;
     public CowlFactory cowlFactory;
     public GoatWizardFactory goatWizardFactory;
+    public HoarderFactory hoarderFactory;
     public JumpingJackFactory jumpingJackFactory;
     public JigFactory jigFactory;
     public KnightFactory knightFactory;
@@ -73,6 +75,7 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         this.bouncerFactory = new BouncerFactory(assetManager);
         this.cowlFactory = new CowlFactory(assetManager);
         this.goatWizardFactory = new GoatWizardFactory(assetManager);
+        this.hoarderFactory = new HoarderFactory(assetManager);
         this.jigFactory = new JigFactory(assetManager);
         this.jumpingJackFactory = new JumpingJackFactory(assetManager);
         this.knightFactory = new KnightFactory(assetManager);

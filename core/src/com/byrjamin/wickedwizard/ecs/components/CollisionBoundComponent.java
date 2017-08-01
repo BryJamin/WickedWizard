@@ -15,6 +15,8 @@ public class CollisionBoundComponent extends Component{
     public Rectangle bound;
     public Array<HitBox> hitBoxes = new Array<HitBox>();
 
+    public boolean hitBoxDisabled = false;
+
     public Array<Collider.Collision> recentCollisions = new Array<Collider.Collision>();
 
     public CollisionBoundComponent(Rectangle bound){

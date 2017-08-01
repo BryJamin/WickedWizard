@@ -62,14 +62,12 @@ public class SpawnerFactory extends EnemyFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(0);
-        bag.add(sc);
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, a);
+        animMap.put(AnimationStateComponent.DEFAULT, a);
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(a.getKeyFrame(sc.stateTime), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SPAWNER), width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
 
         SpawnerComponent spawn = new SpawnerComponent(spawners, spawnTime);

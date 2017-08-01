@@ -17,6 +17,7 @@ import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ChestComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -73,6 +74,7 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
         bag.add(new LootComponent(5, 2));
+        bag.add(new ChestComponent());
         bag.add(new GravityComponent());
         bag.add(new HealthComponent(3));
         bag.add(new BlinkOnHitComponent());

@@ -20,6 +20,8 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
+import static com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory.DECORATIVE_BEAM_WIDTH;
+
 public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory {
 
     ItemFactory itemFactory;
@@ -142,8 +144,8 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
         arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(32.5f), Measure.units(60f), Measure.units(5f)));
 
-        arena.addEntity(decorFactory.decorativeBlock(Measure.units(25f), Measure.units(32.5f), Measure.units(2f), Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
-        arena.addEntity(decorFactory.decorativeBlock(Measure.units(75f) - Measure.units(2f), Measure.units(32.5f), Measure.units(2f), Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+        arena.addEntity(decorFactory.decorativeBlock(Measure.units(25f), Measure.units(32.5f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+        arena.addEntity(decorFactory.decorativeBlock(Measure.units(75f) - DECORATIVE_BEAM_WIDTH, Measure.units(32.5f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
 
         for(ComponentBag b : itemFactory.createItemAltarBag(Measure.units(42.5f),
                 Measure.units(37.5f), item, arenaSkin.getWallTint())) {

@@ -7,6 +7,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnHitActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -27,7 +28,8 @@ public class BulletSystem extends EntityProcessingSystem {
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
-    ComponentMapper<BlinkOnHitComponent> bm;
+    ComponentMapper<BlinkOnHitComponent> blinkMapper;
+    ComponentMapper<OnHitActionComponent> onHitActionMapper;
     ComponentMapper<BulletComponent> bulm;
 
 
@@ -76,18 +78,28 @@ public class BulletSystem extends EntityProcessingSystem {
 
     public void bulletScan(Entity bullet, IntBag entityIds){
 
+
         for(int i = 0; i < entityIds.size(); i++){
 
-            for(HitBox hb : cbm.get(entityIds.get(i)).hitBoxes){
-                if(hb.hitbox.overlaps(cbm.get(bullet).bound)){
-                    HealthComponent hc = hm.get(entityIds.get(i));
+            int entity = entityIds.get(i);
+
+            for(HitBox hb : cbm.get(entity).hitBoxes){
+                if(hb.hitbox.overlaps(cbm.get(bullet).bound) && !cbm.get(entity).hitBoxDisabled){
+                    HealthComponent hc = hm.get(entity);
 
                     System.out.println("Damage is " + bulm.get(bullet).damage);
                     hc.applyDamage(bulm.get(bullet).damage);
-                    if(bm.has(entityIds.get(i))){
-                        BlinkOnHitComponent bc = bm.get(entityIds.get(i));
+                    if(blinkMapper.has(entity)){
+                        BlinkOnHitComponent bc = blinkMapper.get(entityIds.get(i));
                         bc.isHit = true;
                     }
+
+                    if(onHitActionMapper.has(entity)){
+                        onHitActionMapper.get(entity).action.performAction(world, world.getEntity(entity));
+                    }
+
+                   // if)
+
                     world.getSystem(OnDeathSystem.class).kill(bullet);
                     break;
                 }

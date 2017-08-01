@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
@@ -13,6 +14,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
+import com.byrjamin.wickedwizard.factories.enemy.HoarderFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -195,15 +197,15 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
                 float chestPosX = chestsAreLeft ? Measure.units(6.5f) : a.getWidth() -  Measure.units(16.5f);
                 float chest2PosX = chestsAreLeft ? Measure.units(19f) : a.getWidth() - Measure.units(29f);
 
-                float wallPosX = chestsAreLeft ? Measure.units(5f) : a.getWidth() - Measure.units(35f);
-                float lockPosX = chestsAreLeft ? Measure.units(30f) : a.getWidth() - Measure.units(35f);
-
+                float hoarderPosX = chestsAreLeft ? Measure.units(17.5f) : a.getWidth() -  Measure.units(17.5f);
                 a.addEntity(chestFactory.chestBag(chestPosX, Measure.units(10f)));
                 a.addEntity(chestFactory.chestBag(chest2PosX, Measure.units(10f)));
 
-                a.addEntity(decorFactory.destructibleWall(lockPosX, Measure.units(10f), Measure.units(5f), Measure.units(10f)));
+                a.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(hoarderPosX, Measure.units(27.5f)));
 
-                a.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(30f), Measure.units(10f), arenaSkin.getWallTint()));
+              //  a.addEntity(decorFactory.destructibleWall(lockPosX, Measure.units(10f), Measure.units(5f), Measure.units(10f)));
+
+              //  a.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(30f), Measure.units(10f), arenaSkin.getWallTint()));
 
                 //RoomDecorationFactory.spawnBlob(a);
                 return a;
@@ -748,12 +750,14 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 boolean chestsAreLeft = random.nextBoolean();
 
-                arena.addEntity(decorFactory.wallBag(chestsAreLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-               // arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-                //arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-                arena.addEntity(decorFactory.destructibleWall(chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5)));
-                arena.addEntity(chestFactory.chestBag(chestsAreLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(40f)));
-                arena.addEntity(chestFactory.chestBag(chestsAreLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(
+                        chestsAreLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f),
+                        Measure.units(47.5f)));
+
+
+                arena.addEntity(decorFactory.wallBag(chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5)));
+                arena.addEntity(chestFactory.chestBag(chestsAreLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(35f)));
+                arena.addEntity(chestFactory.chestBag(chestsAreLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(35f)));
                 arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedLockOnTurret(chestsAreLeft ? Measure.units(85f) : arena.getWidth() - Measure.units(85f), Measure.units(45f)));
 
 

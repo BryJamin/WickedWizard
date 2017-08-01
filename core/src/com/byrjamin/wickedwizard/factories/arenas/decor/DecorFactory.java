@@ -64,6 +64,8 @@ public class DecorFactory extends AbstractFactory {
 
     private static final float wallTurretFiringOffset = Measure.units(2.5f);
 
+    public static final float DECORATIVE_BEAM_WIDTH = Measure.units(2.5f);
+
 
     public DecorFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
@@ -106,7 +108,7 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height,
-                TextureRegionComponent.BACKGROUND_LAYER_NEAR, arenaSkin.getWallTint());
+                layer, arenaSkin.getWallTint());
 
         trc.color.a = 0.7f;
 
