@@ -16,6 +16,19 @@ public class ArenaMap {
     private OrderedSet<Arena> unvisitedButAdjacentArenas = new OrderedSet<Arena>();
 
 
+
+    public ArenaMap(Arena currentArena) {
+        this.currentArena = currentArena;
+        this.roomArray = new Array<Arena>();
+        roomArray.add(currentArena);
+    }
+
+    public ArenaMap(Arena currentArena, Array<Arena> roomArray) {
+        this.currentArena = currentArena;
+        this.roomArray = roomArray;
+    }
+
+
     public ArenaMap(Arena currentArena, Array<Arena> roomArray, OrderedSet<Arena> visitedArenas, OrderedSet<Arena> unvisitedButAdjacentArenas) {
         this.currentArena = currentArena;
         this.roomArray = roomArray;

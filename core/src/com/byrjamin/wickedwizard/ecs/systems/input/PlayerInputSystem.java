@@ -9,7 +9,6 @@ import com.artemis.utils.Bag;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -68,23 +67,19 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     ComponentMapper<TextureRegionComponent> trm;
     ComponentMapper<JumpComponent> jm;
 
-    OrthographicCamera gamecam;
     Viewport gameport;
 
     private PlayerInput playerInput;
-
-    private Array<ChildComponent> wingChildren = new Array<ChildComponent>();
 
     public Rectangle movementArea;
 
 
     @SuppressWarnings("unchecked")
-    public PlayerInputSystem(OrthographicCamera gamecam, Viewport gameport) {
+    public PlayerInputSystem(Viewport gameport) {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
-        this.gamecam = gamecam;
         this.gameport = gameport;
-        movementArea = new Rectangle(gamecam.position.x - gameport.getWorldWidth() / 2,
-                gamecam.position.y - gameport.getWorldHeight() / 2,
+        movementArea = new Rectangle(gameport.getCamera().position.x - gameport.getWorldWidth() / 2,
+                gameport.getCamera().position.y - gameport.getWorldHeight() / 2,
                 MainGame.GAME_WIDTH, Measure.units(10f));
 
         playerInput = new PlayerInput(world, gameport, movementArea);
@@ -109,6 +104,14 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         GravityComponent gc = gm.get(e);
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
+
+
+/*
+        if(vc.velocity.x != 0) {
+            System.out.println("Player X IS:" + vc.velocity.x);
+            System.out.println("Player Y IS:" + vc.velocity.y);
+        }
+*/
 
         if (mtm.get(e).targetX == null && mtm.get(e).targetY == null) {
             playerInput.activeGrapple = false;
@@ -156,7 +159,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                         }
                     }
 
-                    StatComponent statComponent = world.getSystem(FindPlayerSystem.class).getPC(StatComponent.class);
+                    StatComponent statComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
 
                     if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate() / statComponent.fireRate)) {
                         asc.queueAnimationState(AnimationStateComponent.FIRING);
@@ -181,9 +184,9 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         AssetManager am = world.getSystem(RenderingSystem.class).assetManager;
         PlayerFactory pf = new PlayerFactory(am);
 
-        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
-        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
+        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class);
+        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
 
 
         Rectangle r = world.getSystem(GrapplePointSystem.class).returnTouchedGrapple(grappleX, grappleY);
@@ -200,7 +203,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                 if (parc.children.contains(grapple.getComponent(ChildComponent.class), true)) world.getSystem(OnDeathSystem.class).kill(grapple);
             }
 
-            Bag<Component> bag = pf.grappleShot(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class),
+            Bag<Component> bag = pf.grappleShot(world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class),
                     cbc.getCenterX(),
                     cbc.getCenterY(),
                     r.x + r.getWidth() / 2,
@@ -218,8 +221,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
             turnOffGlide();
 
-            world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity.y = 0;
-            world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity.x = 0;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.y = 0;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.x = 0;
 
         }
 
@@ -231,9 +234,9 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         AssetManager am = world.getSystem(RenderingSystem.class).assetManager;
         PlayerFactory pf = new PlayerFactory(am);
 
-        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
-        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
-        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
+        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
+        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class);
+        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
 
         Entity e = world.createEntity();
         for(Component c : pf.wings(parc, pc, true)) {
@@ -252,8 +255,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public void turnOffGlide(){
 
-        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class);
-        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPC(GlideComponent.class);
+        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class);
+        GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
 
 
         //TODO find it only for the wings component

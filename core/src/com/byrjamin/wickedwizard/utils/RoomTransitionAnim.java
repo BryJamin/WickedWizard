@@ -55,8 +55,6 @@ public class RoomTransitionAnim {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
 
-        shapeRenderer = new ShapeRenderer();
-
         differenceX = startX - endX;
         differenceY = startY - endY;
 
@@ -67,7 +65,6 @@ public class RoomTransitionAnim {
         if(startY < endY && differenceY < 0 || startY > endY && differenceY > 0){
             differenceY *= -1;
         }
-
 
         distancePerSecondX = differenceX / this.durationInSeconds;
         distancePerSecondY = differenceY / this.durationInSeconds;

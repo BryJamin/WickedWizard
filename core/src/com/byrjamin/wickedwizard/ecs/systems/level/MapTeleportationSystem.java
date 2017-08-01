@@ -2,23 +2,23 @@ package com.byrjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
+import com.artemis.Component;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
+import com.artemis.utils.Bag;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 
 import java.util.HashMap;
 
@@ -29,8 +29,6 @@ import java.util.HashMap;
 public class MapTeleportationSystem extends EntitySystem {
 
     private HashMap<BossTeleporterComponent, ArenaMap> mapTracker;
-
-    private boolean processingFlag = false;
 
     private ComponentMapper<BossTeleporterComponent> btm;
     private ComponentMapper<CollisionBoundComponent> cbm;
@@ -49,120 +47,144 @@ public class MapTeleportationSystem extends EntitySystem {
 
     @Override
     protected boolean checkProcessing() {
-        return processingFlag;
+        return false;
     }
 
-    public void goFromTo(BossTeleporterComponent btc){
 
-        if(mapTracker.containsKey(btc)){
-            processingFlag = true;
+    /**
+     * Checks to see if the source Teleporter has a map associated with it.
+     * Then checks if the source Teleporter links to a destination that exists in the Map Tracker
+     * If this is the case the maps are the player is then moved into the other map and a screenwipe is
+     * triggered
+     *
+     * @param source - The Teleporter that was touched the player triggering the Map Switch
+     */
+    public void goFromSourceToDestination(BossTeleporterComponent source){
 
-            final BossTeleporterComponent hmm = btc;
+        if(mapTracker.containsKey(source)){
 
+            final BossTeleporterComponent destination = isTeleportAvaliable(source);
 
-            world.getSystem(ScreenWipeSystem.class).startScreenWipe(Direction.DOWN, new Task() {
-                @Override
-                public void performAction(World world, Entity e) {
-                    switchMap(hmm);
-                    for(BaseSystem s: world.getSystems()){
-                        if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
+            if(destination != null) {
+                    world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                        @Override
+                        public void performAction(World world, Entity e) {
+                            switchMap(destination);
+                            for(BaseSystem s: world.getSystems()){
+                                s.setEnabled(true);
+        /*                if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
                             s.setEnabled(true);
+                        }*/
+                            }
                         }
-                    }
+                    });
                 }
-
-                @Override
-                public void cleanUpAction(World world, Entity e) {
-
-                }
-            });
-
-
-
-
-
         }
     }
 
-    public void switchMap(BossTeleporterComponent from){
+    /**
+     * Switchs the map to another map in the Arena Map Tracker
+     * @param destination - The Teleporter that is being switched to
+     */
+    private void switchMap(BossTeleporterComponent destination){
 
-        BossTeleporterComponent to = isTeleportAvaliable(from);
+            if (mapTracker.containsKey(destination)) {
 
-        if(to != null) {
-
-            if (mapTracker.containsKey(to)) {
-
-                ArenaMap map = mapTracker.get(to);
+                ArenaMap map = mapTracker.get(destination);
                 RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
                 rts.packRoom(world, rts.getCurrentArena());
                 rts.setCurrentMap(map);
                 rts.unpackRoom(rts.getCurrentArena());
-                rts.getVisitedArenas().add(rts.getCurrentArena());
-                rts.getUnvisitedButAdjacentArenas().addAll(rts.getAdjacentArenas(rts.getCurrentArena()));
 
-                for(Arena a : rts.getAdjacentArenas(rts.getCurrentArena())) {
-                    if(!rts.getVisitedArenas().contains(a)) {
-                        rts.getUnvisitedButAdjacentArenas().add(a);
-                    }
-                }
+                placePlayerAfterTeleport(rts.getCurrentArena());
 
-                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
-                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
-                world.getSystem(PlayerInputSystem.class).turnOffGlide();
-
-                //System.out.println("size of entites" + this.getEntities().size());
-                for (Entity e : this.getEntities()) {
-                    if (btm.get(e).link == to.link) {
-
-                        cbc.setCenterX(cbm.get(e).getCenterX());
-                        cbc.bound.y = cbm.get(e).bound.getY() - cbc.bound.getHeight() * 2;
-                        vc.velocity.y = 0;
-
-                        pc.setX(cbc.bound.x);
-                        pc.setY(cbc.bound.y);
-
-                        mtc.reset();
-                    }
-                }
             }
+    }
+
+
+    /**
+     * Uses the offset parameters of the destination BossTeleportComponenet to place the player after they have been
+     * teleported
+     * @param currentArena - The destination arena the player has been teleported to
+     */
+    private void placePlayerAfterTeleport(Arena currentArena){
+
+        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
+        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
+        world.getSystem(PlayerInputSystem.class).turnOffGlide();
+
+        for(Bag<Component> b : currentArena.getBagOfEntities()) {
+            if (BagSearch.contains(BossTeleporterComponent.class, b)  && BagSearch.contains(CollisionBoundComponent.class, b)) {
+
+                BossTeleporterComponent btc = BagSearch.getObjectOfTypeClass(BossTeleporterComponent.class, b);
+                CollisionBoundComponent teleporterBound = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, b);
+                cbc.bound.setCenter(
+                        teleporterBound.getCenterX() + btc.offsetX,
+                        teleporterBound.getCenterY() + btc.offsetY);
+
+                vc.velocity.y = 0;
+                vc.velocity.x = 0;
+
+                pc.setX(cbc.bound.x);
+                pc.setY(cbc.bound.y);
+
+                mtc.reset();
+            }
+
         }
+
 
 
     }
 
 
-    public BossTeleporterComponent isTeleportAvaliable(BossTeleporterComponent from){
-        for(BossTeleporterComponent btc : mapTracker.keySet()){
-            if(from.link == btc.link && from != btc){
-                return btc;
+
+    /**
+     * Checks if there is a teleporter available in the Map Tracker with the same link
+     * @param source - The Teleporter that was entered
+     * @return - The Destination teleporter is returned if one exists, if not a null value is returned
+     */
+    private BossTeleporterComponent isTeleportAvaliable(BossTeleporterComponent source){
+        for(BossTeleporterComponent destination : mapTracker.keySet()){
+            if(source.link == destination.link && source != destination){
+                return destination;
             }
         }
         return null;
     }
 
 
-
-    public void recreateWorld(){
+    /**
+     * Currently this method is used to change the level from 1 to 2 and etc.
+     *
+     * Needs to be improved to better place the player after the map change has taken place.
+     *
+     * Also sets the new Map Tracker used for different Arena Map teleportations
+     *
+     */
+    public void createNewLevel(){
 
         RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
         rts.packRoom(world, rts.getCurrentArena());
 
         JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).incrementLevel();
-        jg.generateTutorial = false;
         jg.generate();
 
         mapTracker = jg.getMapTracker();
 
         rts.setCurrentMap(jg.getStartingMap());
         rts.unpackRoom(rts.getCurrentArena());
-        rts.getVisitedArenas().add(rts.getCurrentArena());
-        rts.getUnvisitedButAdjacentArenas().addAll(rts.getAdjacentArenas(rts.getCurrentArena()));
 
-        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+        PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
         player.position.x = rts.getCurrentArena().getWidth() / 2;
         player.position.y = rts.getCurrentArena().getHeight() / 2;
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
+        vc.velocity.x = 0;
+        vc.velocity.y = 0;
+        world.getSystem(PlayerInputSystem.class).turnOffGlide();
 
     }
 

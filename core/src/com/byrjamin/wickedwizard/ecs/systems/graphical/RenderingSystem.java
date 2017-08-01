@@ -7,30 +7,25 @@ import com.artemis.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.UIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.ArrayList;
@@ -43,20 +38,18 @@ import java.util.Comparator;
 public class RenderingSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm;
-    private ComponentMapper<BlinkComponent> bm;
+    private ComponentMapper<BlinkOnHitComponent> bm;
     private ComponentMapper<BulletComponent> bulletm;
     private ComponentMapper<HighlightComponent> hm;
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<TextureRegionBatchComponent> trbm;
     private ComponentMapper<TextureFontComponent> trfm;
-    private ComponentMapper<ShapeComponent> sm;
     private ComponentMapper<CollisionBoundComponent> cbm;
 
     private ArrayList<Entity> orderedEntities;
 
     public SpriteBatch batch;
-    public ShapeRenderer shapeRenderer;
-    public OrthographicCamera gamecam;
+    public Viewport gameport;
     public AssetManager assetManager;
     public TextureAtlas atlas;
 
@@ -65,18 +58,17 @@ public class RenderingSystem extends EntitySystem {
     public ShaderProgram whiteShaderProgram;
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, OrthographicCamera gamecam) {
-        super(Aspect.all(PositionComponent.class).one(
+    public RenderingSystem(SpriteBatch batch, AssetManager assetManager, Viewport gameport) {
+        super(Aspect.all(PositionComponent.class).exclude(UIComponent.class).one(
                 TextureRegionComponent.class,
                 TextureRegionBatchComponent.class,
                 TextureFontComponent.class
         ));
         this.batch = batch;
-        this.gamecam = gamecam;
+        this.gameport = gameport;
         this.assetManager = assetManager;
-        this.atlas = assetManager.get("sprite.atlas", TextureAtlas.class);
+        this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
-        shapeRenderer = new ShapeRenderer();
         orderedEntities = new ArrayList<Entity>();
 
         loadShader();
@@ -91,7 +83,7 @@ public class RenderingSystem extends EntitySystem {
 
     @Override
     protected void begin() {
-        batch.setProjectionMatrix(gamecam.combined);
+        batch.setProjectionMatrix(gameport.getCamera().combined);
         if(!batch.isDrawing()) {
             batch.begin();
         }
@@ -107,6 +99,7 @@ public class RenderingSystem extends EntitySystem {
     protected void process(Entity e) {
 
 
+
         //System.out.println("INSIDE");
 
         PositionComponent pc = pm.get(e);
@@ -118,7 +111,7 @@ public class RenderingSystem extends EntitySystem {
             boolean shaderOn = false;
 
             if(bm.has(e)){
-                shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkComponent.BLINKTYPE.CONSTANT;
+                shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkOnHitComponent.BLINKTYPE.CONSTANT;
             }
 
             if(shaderOn){
@@ -189,20 +182,6 @@ public class RenderingSystem extends EntitySystem {
             bmf.setColor(Color.WHITE);
         }
 
-        if(sm.has(e)) {
-
-            batch.end();
-            ShapeComponent sc = sm.get(e);
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            shapeRenderer.setProjectionMatrix(gamecam.combined);
-            shapeRenderer.begin(sc.shapeType);
-            shapeRenderer.setColor(sc.color);
-            shapeRenderer.rect(pc.getX(),pc.getY(), sc.width, sc.height);
-            shapeRenderer.setColor(batchColor);
-            shapeRenderer.end();
-            batch.begin();
-        }
-
         batch.setColor(batchColor);
 
 
@@ -244,8 +223,6 @@ public class RenderingSystem extends EntitySystem {
                     layer1 = trbm.get(e1).layer;
                 } else if(trfm.has(e1)){
                     layer1 = trfm.get(e1).layer;
-                } else if(sm.has(e1)){
-                    layer1 = sm.get(e1).layer;
                 }
 
                 if(trm.has(e2)) {
@@ -254,11 +231,9 @@ public class RenderingSystem extends EntitySystem {
                     layer2 = trbm.get(e2).layer;
                 } else if(trfm.has(e2)){
                     layer2 = trfm.get(e2).layer;
-                } else if(sm.has(e2)){
-                    layer2 = sm.get(e2).layer;
                 }
 
-                return ((Integer)layer1).compareTo(layer2);
+                return layer1.compareTo(layer2);
             }
         });
     }

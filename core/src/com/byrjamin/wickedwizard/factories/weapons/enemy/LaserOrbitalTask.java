@@ -34,23 +34,23 @@ import com.byrjamin.wickedwizard.utils.collider.Collider;
 public class LaserOrbitalTask implements Task {
 
 
-    private int[] angles = new int[] {0,80,170, 260};
+    private final int[] angles;
 
-    private float orbitalSize;
-    private float orbitalIntervalSize;
-    private float speedInDegrees;
-    private float chargeTime;
-    private float disperseTime = 0.5f;
+    private final float orbitalSize;
+    private final float orbitalIntervalSize;
+    private final float speedInDegrees;
+    private final float chargeTime;
+    private final float disperseTime;
 
-    private boolean expire = false;
-    private float expiryTime;
+    private final boolean expire;
+    private final float expiryTime;
 
-    private int numberOfOrbitals;
-    private int layer;
+    private final int numberOfOrbitals;
+    private final int layer;
 
-    private Color color;
+    private final Color color;
 
-    private TextureAtlas atlas;
+    private final TextureAtlas atlas;
 
 
     public static class LaserBuilder{
@@ -135,39 +135,6 @@ public class LaserOrbitalTask implements Task {
     }
 
 
-
-
-    public LaserOrbitalTask(AssetManager assetManager, float size, float speedInDegrees, int numberOfOrbitals, float chargeTime, int[] angles){
-        this.orbitalSize = size;
-        this.orbitalIntervalSize = size;
-        this.speedInDegrees = speedInDegrees;
-        this.numberOfOrbitals = numberOfOrbitals;
-        this.angles = angles;
-        this.chargeTime = chargeTime;
-        this.color = new Color(Color.RED);
-        atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-    }
-
-    public void setAngles(int[] angles) {
-        this.angles = angles;
-    }
-
-    public void setOrbitalSize(float orbitalSize) {
-        this.orbitalSize = orbitalSize;
-    }
-
-    public void setSpeedInDegrees(float speedInDegrees) {
-        this.speedInDegrees = speedInDegrees;
-    }
-
-    public void setNumberOfOrbitals(int numberOfOrbitals) {
-        this.numberOfOrbitals = numberOfOrbitals;
-    }
-
-    public void setChargeTime(float chargeTime) {
-        this.chargeTime = chargeTime;
-    }
-
     @Override
     public void performAction(World world, Entity e) {
 
@@ -181,8 +148,8 @@ public class LaserOrbitalTask implements Task {
 
             for (int angle : angles) {
                 Entity orbital = world.createEntity();
-                orbital.edit().add(new PositionComponent());
-                orbital.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, orbitalSize, orbitalSize), true));
+                orbital.edit().add(new PositionComponent(current.getX(), current.getY()));
+                orbital.edit().add(new CollisionBoundComponent(new Rectangle(current.getX(), current.getY(), orbitalSize, orbitalSize), true));
                 orbital.edit().add(new OrbitComponent(
                         new Vector3(current.getX(), current.getY(), 0f), i * orbitalIntervalSize,
                         angleSpeed, angle, cbc.bound.width / 2, cbc.bound.height / 2
@@ -264,14 +231,8 @@ public class LaserOrbitalTask implements Task {
 
             Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
 
-            System.out.println(child != null);
-
             if(child != null){
                 world.getSystem(OnDeathSystem.class).kill(child);
-/*                child.edit().remove(EnemyComponent.class);
-                child.edit().add(new FadeComponent(false, 0.5f, false));
-                child.edit().add(new ExpireComponent(0.6f));
-                System.out.println("HELP");*/
             }
         };
 

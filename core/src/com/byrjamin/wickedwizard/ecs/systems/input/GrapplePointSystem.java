@@ -11,7 +11,9 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 
 /**
- * Created by Home on 18/03/2017.
+ * Created by BB on 18/03/2017.
+ *
+ * This can be refactored into an action on touch system
  */
 
 public class GrapplePointSystem extends EntitySystem {
@@ -30,34 +32,17 @@ public class GrapplePointSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-
         grapples.clear();
 
         for(Entity e : this.getEntities()){
             grapples.add(e.getComponent(CollisionBoundComponent.class).bound);
         }
 
-
-
-
     }
 
     @Override
     protected boolean checkProcessing() {
         return true;
-    }
-
-
-    public Vector2 canGrappleTo(float inputX, float inputY){
-        for(Rectangle r : grapples){
-            if(r.contains(inputX, inputY)){
-                Vector2 destination = new Vector2();
-                destination.x = r.getX() + r.getWidth() / 2;
-                destination.y = r.getY() + r.getHeight() / 2;
-                return destination;
-            }
-        }
-        return null;
     }
 
 

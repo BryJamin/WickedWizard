@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -15,6 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -22,7 +24,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 14/04/2017.
  */
 
-public class PlayerInput extends InputAdapter{
+public class PlayerInput extends InputAdapter {
 
     private World world;
     private Rectangle movementArea;
@@ -76,7 +78,7 @@ public class PlayerInput extends InputAdapter{
         gameport.unproject(touchInput);
         //TimeUtils.nanoTime();
 
-        if(world.getSystem(ShoppingSystem.class).activeOnTouchTrigger(touchInput.x, touchInput.y)) return true;
+        if(world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y)) return true;
 
 
         tapStartTime = Gdx.input.getCurrentEventTime();
@@ -86,7 +88,7 @@ public class PlayerInput extends InputAdapter{
 
         if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
             movementInputPoll = pointer;
-            world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = false;
         } else if(firingInputPoll == null){
             firingInputPoll = pointer;
         }
@@ -137,9 +139,9 @@ public class PlayerInput extends InputAdapter{
                     };
 
                     if(!grapple) {
-                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
-                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                        JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPC(JumpComponent.class);
+                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+                        JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
 
                         if (input.y > cbc.getCenterY()) {
                             if (jc.jumps > 0) {
@@ -147,6 +149,7 @@ public class PlayerInput extends InputAdapter{
                                 jc.jumps--;
                                 world.getSystem(PlayerInputSystem.class).turnOffGlide();
                                 world.getSystem(PlayerInputSystem.class).turnOnGlide();
+                                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.jumpMix);
                             }
 
                         } else if (tapCount == 2) {
@@ -172,7 +175,7 @@ public class PlayerInput extends InputAdapter{
             firingInputPoll = (firingInputPoll == pointer) ? null : firingInputPoll;
 
             if(firingInputPoll == null){
-                world.getSystem(FindPlayerSystem.class).getPC(WeaponComponent.class).timer.reset();
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(WeaponComponent.class).timer.reset();
             }
 
         }

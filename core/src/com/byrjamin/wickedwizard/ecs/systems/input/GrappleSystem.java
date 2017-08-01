@@ -213,7 +213,7 @@ public class GrappleSystem extends EntityProcessingSystem {
     }
 
 
-    //TODO in future if I do shoot out something check if it hits something then if it does perform a grapple task? Holy shizz I think I figure it out.
+    //TODO in future if I do shoot out something check if it hits something then if it does perform a grapple action? Holy shizz I think I figure it out.
     //public void grappleCollisionCheck;
 
 

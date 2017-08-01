@@ -2,16 +2,17 @@ package com.byrjamin.wickedwizard.screens;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.ShapeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -22,9 +23,11 @@ public class MenuButton {
 
 
     private String font;
+    private TextureRegion buttonTexture;
 
-    public MenuButton(String font) {
+    public MenuButton(String font, TextureRegion buttonTexture) {
         this.font = font;
+        this.buttonTexture = buttonTexture;
     }
 
 
@@ -37,7 +40,7 @@ public class MenuButton {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(x, y));
-        TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
         tfc.color = foreground;
         tfc.DEFAULT = foreground;
         e.edit().add(tfc);
@@ -49,15 +52,50 @@ public class MenuButton {
 
         Entity shape = world.createEntity();
         shape.edit().add(new PositionComponent(x, y));
-
-        ShapeComponent sc = new ShapeComponent(width, height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        sc.color = background;
-        sc.DEFAULT = background;
-
-        shape.edit().add(sc);
+        TextureRegionComponent trc = new TextureRegionComponent(buttonTexture, width, height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, background);
+        shape.edit().add(trc);
 
         return e;
 
     }
+
+
+    public Entity createButtonWithAction(World world, String text, float x, float y, float width, float height, Color foreground, Color background, Action action){
+
+        Entity e = createButton(world, text, x, y, width, height, foreground, background);
+        e.edit().add(new ActionOnTouchComponent(action));
+        return e;
+
+    }
+
+
+    public Bag<ComponentBag> createButtonWithAction(String text, float x, float y, float width, float height, Color foreground, Color background, Action action){
+
+        ComponentBag textBag = new ComponentBag();
+        textBag.add(new PositionComponent(x, y));
+        TextureFontComponent tfc = new TextureFontComponent(font, text, 0, height / 2 + Measure.units(1f), width, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+        tfc.color = foreground;
+        tfc.DEFAULT = foreground;
+        textBag.add(tfc);
+        Rectangle r = new Rectangle(x, y, width, height);
+        textBag.add(new CollisionBoundComponent(r));
+        textBag.add(new ActionOnTouchComponent(action));
+
+
+        ComponentBag backingBag = new ComponentBag();
+        backingBag.add(new PositionComponent(x, y));
+        TextureRegionComponent trc = new TextureRegionComponent(buttonTexture, width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR, background);
+        backingBag.add(trc);
+
+
+        Bag<ComponentBag> bags = new Bag<ComponentBag>();
+        bags.add(textBag);
+        bags.add(backingBag);
+
+        return bags;
+
+
+    }
+
 
 }

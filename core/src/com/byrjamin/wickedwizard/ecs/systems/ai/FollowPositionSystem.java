@@ -8,7 +8,11 @@ import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
 /**
- * Created by Home on 06/04/2017.
+ * Created by BB on 06/04/2017.
+ *
+ * Set the position of all entities with a 'FollowPositionComponent' at the designated offset
+ * from the position they followings
+ *
  */
 
 public class FollowPositionSystem extends EntityProcessingSystem {
@@ -25,6 +29,7 @@ public class FollowPositionSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         PositionComponent pc = pm.get(e);
         FollowPositionComponent fc = fm.get(e);
+
         pc.position.set(fc.trackedPosition.x + fc.offsetX, fc.trackedPosition.y + fc.offsetY, 0);
     }
 

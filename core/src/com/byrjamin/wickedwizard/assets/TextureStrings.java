@@ -5,6 +5,19 @@ package com.byrjamin.wickedwizard.assets;
  */
 public class TextureStrings {
 
+    public static final  String BLOCK = "block";
+
+
+    public static final String MAIN_MENU_BACKDROP = "backgrounds/menu_backdrop";
+
+    //DECOR
+    public static final String DECOR_BLOCK_DOOR = "decor/block_door";
+    public static final String CHEST = "chest";
+
+
+    public static final String TELEPORTER = "teleporter";
+
+
     //PLAYER
     public static final  String SQU_WALK = "squ_walk";
     public static final String SQU_FIRING = "squ_firing";//AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
@@ -151,6 +164,32 @@ public class TextureStrings {
     public static final String MR_BOOMY_FACING = "enemy/mr_boomy_forward";
     public static final String MR_BOOMY_SIDE = "enemy/mr_boomy_side";
     public static final String MR_BOOMY_DETONATE = "enemy/mr_boomy_detonate";
+
+
+    //MR BOOMY
+    public static final String ADOJ = "enemy/adoj";
+    public static final String ADOJ_FIRING = "enemy/adoj_firing";
+
+
+    //WRAITH COWL
+    public static final String WRAITH_COWL_SAD = "enemy/boss/wraith_cowl_sad";
+    public static final String WRAITH_COWL_MAD = "enemy/boss/wraith_cowl_mad";
+
+    //AJIR
+    public static final String AJIR = "enemy/boss/ajir";
+    public static final String AJIR_FIRING = "enemy/boss/ajir_firing";
+
+    //AMALGAMA
+    public static final String AMALGAMA_RED_EYE = "enemy/boss/amalgama_red";
+    public static final String AMALGAMA_BLUE_EYE = "enemy/boss/amalgama_blue";
+    public static final String AMALGAMA_GREEN_EYE = "enemy/boss/amalgama_green";
+    public static final String AMALGAMA_YELLOW_EYE = "enemy/boss/amalgama_yellow";
+
+    //END
+    public static final String END_HAND = "enemy/boss/end_hand";
+    public static final String END_HAND_CHARGING = "enemy/boss/end_hand_charging";
+    public static final String END_HAND_FIRING = "enemy/boss/end_hand_firing";
+
 
 
 

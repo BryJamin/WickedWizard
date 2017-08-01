@@ -12,12 +12,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -31,7 +34,6 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.RoomTransition;
 
 /**
  * Created by Home on 13/03/2017.
@@ -48,8 +50,13 @@ public class RoomTransitionSystem extends EntitySystem {
     private ComponentMapper<DoorComponent> dm;
     private ComponentMapper<MoveToComponent> mtm;
     private ComponentMapper<ParentComponent> parm;
-    private ComponentMapper<ExpireComponent> em;
+    private ComponentMapper<ExpireComponent> expireM;
     private ComponentMapper<ChildComponent> cm;
+    private ComponentMapper<UnpackableComponent> unpackableComponent;
+
+    private ComponentMapper<OffScreenPickUpComponent> offScreenPickUpM;
+
+    private ComponentMapper<CurrencyComponent> currencyComponentComponentMapper;
 
     private ArenaMap currentMap;
 
@@ -61,34 +68,38 @@ public class RoomTransitionSystem extends EntitySystem {
     private float doorEntryPercentage;
 
 
-    public RoomTransition entryTransition;
-    public RoomTransition exitTransition;
-
-    private boolean canNowExitTransition = false;
-
-    private MoveToComponent blackScreenTarget;
-
-
     @SuppressWarnings("unchecked")
     public RoomTransitionSystem(ArenaMap arenaMap) {
         super(Aspect.all().exclude(PlayerComponent.class));
-        this.currentMap = arenaMap;
-        currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
-        currentMap.getUnvisitedButAdjacentArenas().addAll(getAdjacentArenas(currentMap.getCurrentArena()));
-    }
-
-    public RoomTransition getEntryTransition() {
-        return entryTransition;
-    }
-
-    public RoomTransition getExitTransition() {
-        return exitTransition;
+        this.setCurrentMap(arenaMap);
     }
 
     @Override
     protected void processSystem() {
 
-        world.getSystem(ScreenWipeSystem.class).startScreenWipe(currentDoor.exit, new Task() {
+/*
+        ScreenWipeSystem.Transition transition;
+
+        switch(currentDoor.exit){
+            case LEFT:
+            default:
+                transition = ScreenWipeSystem.Transition.LEFT_TO_RIGHT;
+                break;
+            case RIGHT:
+                transition = ScreenWipeSystem.Transition.RIGHT_TO_LEFT;
+
+                break;
+            case UP:
+                transition = ScreenWipeSystem.Transition.TOP_TO_BOTTOM;
+                break;
+            case DOWN:
+                transition = ScreenWipeSystem.Transition.BOTTOM_TO_TOP;
+                break;
+        }
+*/
+
+
+        world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.NONE, new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -143,9 +154,9 @@ public class RoomTransitionSystem extends EntitySystem {
             if(dm.has(e)){
                 placePlayerAfterTransition(dm.get(e),
                         cbm.get(e),
-                        world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class),
-                        world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class),
-                        world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class),
                         doorEntryPercentage);
             }
 
@@ -153,14 +164,18 @@ public class RoomTransitionSystem extends EntitySystem {
 
         }
 
-        world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = false;
-        world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class).reset();
-        Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class).velocity;
+        world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = false;
+        world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class).reset();
+        Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity;
 
         velocity.y = velocity.y / 2;
         velocity.x = velocity.x / 2 ;
 
         world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).getPlayerInput().activeGrapple = false;
+
+
+
+
         //System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);
 
 
@@ -203,6 +218,11 @@ public class RoomTransitionSystem extends EntitySystem {
         }
     }
 
+    /**
+     * Checks if an arena Exists via it's Map Co-ordinates
+     * @param destination
+     * @return
+     */
     public Arena findRoom(MapCoords destination){
         for(Arena a : currentMap.getRoomArray()) {
             if(a.cotainingCoords.contains(destination, false)){
@@ -213,6 +233,11 @@ public class RoomTransitionSystem extends EntitySystem {
         return null;
     }
 
+    /**
+     * Gets all Adjacent arenas of the current Arena (May store this in a seperate class as a static)
+     * @param a
+     * @return
+     */
     public Array<Arena> getAdjacentArenas(Arena a){
         Array<Arena> arenas = new Array<Arena>();
         for(DoorComponent dc : a.getDoors()){
@@ -238,16 +263,27 @@ public class RoomTransitionSystem extends EntitySystem {
     }
 
 
+    /**
+     * Gets all currently active entites and converted them into a Bag of COmponents that will be stored
+     * in the selected Arena.
+     *
+     * Certain entities are not stored such as those who are set to Expire. Or are picked up off screen.
+     *
+     * @param world - The current world
+     * @param arena - The target where all new Bags of Components will be stored
+     */
     public void packRoom(World world, Arena arena){
 
         arena.getBagOfEntities().clear();
 
         for(Entity e : this.getEntities()){
 
-            if(!bm.has(e) && !em.has(e)) {
+            if(unpackableComponent.has(e)) continue;
+
+            if(!bm.has(e) && !expireM.has(e) && !offScreenPickUpM.has(e)) {
 
                 if(cm.has(e)){
-                    if(world.getSystem(FindPlayerSystem.class).getPC(ParentComponent.class).
+                    if(world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class).
                             children.contains(cm.get(e), true)){
                         continue;
                     }
@@ -258,12 +294,25 @@ public class RoomTransitionSystem extends EntitySystem {
                 arena.getBagOfEntities().add(e.getComponents(b));
             }
 
+            if(offScreenPickUpM.has(e)){
+                if(world.getSystem(FindPlayerSystem.class).getPlayerEntity() != null) {
+                    offScreenPickUpM.get(e).getPickUp().applyEffect(world, world.getSystem(FindPlayerSystem.class).getPlayerEntity());
+                }
+            }
+
+
+
             e.deleteFromWorld();
         }
 
     }
 
 
+    /**
+     * Unpacks the bags of bags of components stored in the selected Arena and turns them into
+     * Entities inside of the world
+     * @param arena - The arena who's Bags of Bags of Components will be unpacked
+     */
     public void unpackRoom(Arena arena) {
 
         for(Bag<Component> b : arena.getBagOfEntities()) {
@@ -280,7 +329,14 @@ public class RoomTransitionSystem extends EntitySystem {
 
     }
 
-    public boolean goFromTo(DoorComponent dc, float doorEntryPercentage){
+    /**
+     * Triggers the running of the RoomTransitionSystem if a door can be found in the map of existing arenas
+     *
+     * @param dc - The active door that has been touched by the player entity
+     * @param doorEntryHeightPercentage - The height the player was at when he touched the door
+     * @return - True if there is a matching door, False if there is not
+     */
+    public boolean goFromSourceDoorToDestinationDoor(DoorComponent dc, float doorEntryHeightPercentage){
 
         Arena next = findRoom(dc.leaveCoords);
         if(next != null) {
@@ -288,22 +344,35 @@ public class RoomTransitionSystem extends EntitySystem {
             this.currentDoor = dc;
             this.previousDestination = dc.currentCoords;
             this.destination = dc.leaveCoords;
-            this.doorEntryPercentage = doorEntryPercentage;
+            this.doorEntryPercentage = doorEntryHeightPercentage;
             return true;
         }
         return false;
     }
 
 
+    /**
+     * Calcuates the current player position in Map Co-ordinates using the position of the player
+     * This is to show in real time the player position in rooms of size larger than 1 square
+     * @return - The Player's position in map co-ordinates
+     */
     public MapCoords getCurrentPlayerLocation(){
-        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         playerLocation.setX(currentMap.getCurrentArena().getStartingCoords().getX() + (int) (pBound.getCenterX() / ArenaShellFactory.SECTION_WIDTH));
         playerLocation.setY(currentMap.getCurrentArena().getStartingCoords().getY() + (int) (pBound.getCenterY() / ArenaShellFactory.SECTION_HEIGHT));
         return playerLocation;
     }
 
+    /**
+     * Sets the current Map of the RoomTransitionSystem
+     *
+     * Also runs the update method on new Maps
+     *
+     * @param currentMap - The map that is going to be the current Arena Map of the game
+     */
     public void setCurrentMap(ArenaMap currentMap) {
         this.currentMap = currentMap;
+        this.updateNewMap(currentMap);
     }
 
     public ArenaMap getCurrentMap() {
@@ -314,17 +383,16 @@ public class RoomTransitionSystem extends EntitySystem {
         return currentMap.getCurrentArena();
     }
 
-    public Array<Arena> getRoomArray(){
-        return currentMap.getRoomArray();
-    }
 
-
-    public OrderedSet<Arena> getVisitedArenas(){
-        return currentMap.getVisitedArenas();
-    }
-
-    public OrderedSet<Arena> getUnvisitedButAdjacentArenas(){
-        return currentMap.getUnvisitedButAdjacentArenas();
+    /**
+     * If the current map has just been added and does not have any visited or unvisited arenas,
+     * Use this is set them up.
+     */
+    public void updateNewMap(ArenaMap currentMap){
+        if(currentMap.getVisitedArenas().size == 0){
+            currentMap.getVisitedArenas().add(currentMap.getCurrentArena());
+            currentMap.getUnvisitedButAdjacentArenas().addAll(this.getAdjacentArenas(currentMap.getCurrentArena()));
+        }
     }
 
 }

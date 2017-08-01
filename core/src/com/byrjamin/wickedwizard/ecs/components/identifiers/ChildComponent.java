@@ -7,4 +7,13 @@ import com.artemis.Component;
  */
 
 public class ChildComponent extends Component {
+
+    public ChildComponent(){
+
+    }
+
+    public ChildComponent(ParentComponent pc){
+        pc.children.add(this);
+    }
+
 }

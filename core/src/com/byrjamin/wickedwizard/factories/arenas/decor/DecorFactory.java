@@ -1,9 +1,7 @@
 package com.byrjamin.wickedwizard.factories.arenas.decor;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -14,14 +12,13 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
@@ -38,19 +35,19 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchCompon
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BackgroundFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
-import com.byrjamin.wickedwizard.factories.weapons.enemy.Pistol;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BulletMath;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
-import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
@@ -63,6 +60,9 @@ public class DecorFactory extends AbstractFactory {
 
     private ArenaSkin arenaSkin;
     private BackgroundFactory bf;
+
+    private static final float wallTurretFiringOffset = Measure.units(2.5f);
+
 
     public DecorFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
@@ -202,8 +202,7 @@ public class DecorFactory extends AbstractFactory {
                 e.edit().add(new ConditionalActionComponent(new Condition() {
                     @Override
                     public boolean condition(World world, Entity entity) {
-
-                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class).bound);
+                        return entity.getComponent(CollisionBoundComponent.class).bound.overlaps(world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class).bound);
 
                     }
 
@@ -211,9 +210,9 @@ public class DecorFactory extends AbstractFactory {
                 }, new Task() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                        vc.velocity.x = BulletMath.velocityX(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
-                        vc.velocity.y = BulletMath.velocityY(Measure.units(200f), Math.toRadians(angleOfPushInDegrees));
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+                        vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(angleOfPushInDegrees));
+                        vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(angleOfPushInDegrees));
                     }
 
                     @Override
@@ -286,22 +285,23 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-
-    public Bag<Component> doorBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
-        return doorBag(x,y,true,current,leaveCoords,exit);
-    }
-
-
-    public Bag<Component> doorBag(float x, float y, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exit){
-
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(x,y));
+    public ComponentBag defaultDoorBag(float x, float y, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
 
         float width = isVertical ? Measure.units(5) : Measure.units(20);
         float height = isVertical ? Measure.units(20) : Measure.units(5);
 
+        return doorBag(x, y, width, height, isVertical, current, leaveCoords, exitDirection);
+
+    }
+
+
+    public ComponentBag doorBag(float x, float y, float width, float height, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
-        bag.add(new DoorComponent(current, leaveCoords, exit));
+        bag.add(new DoorComponent(current, leaveCoords, exitDirection));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
@@ -311,20 +311,24 @@ public class DecorFactory extends AbstractFactory {
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
         aniMap.put(AnimationStateComponent.State.LOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door")));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions(TextureStrings.DECOR_BLOCK_DOOR)));
         aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door"), Animation.PlayMode.REVERSED));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions(TextureStrings.DECOR_BLOCK_DOOR), Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(aniMap));
         //TODO explains the giant blob
 
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
-                0, 0, Measure.units(27), Measure.units(22),
+                isVertical ? 0 : CenterMath.offsetX(width, height),
+                isVertical ? 0 : CenterMath.offsetX(height, width),
+                isVertical ? width : height,
+                isVertical ? height : width,
                 PLAYER_LAYER_FAR);
 
         trc.color = arenaSkin.getWallTint();
         trc.DEFAULT = arenaSkin.getWallTint();
 
         trc.rotation = isVertical ? 0 : 90;
+
         //trc.setColor(0.7f, 0, 0f, 1);
         bag.add(trc);
         //bag.add(new GrappleableComponent());
@@ -333,45 +337,15 @@ public class DecorFactory extends AbstractFactory {
     }
 
 
-    public Bag<Component> horizontalDoorBag(float x, float y, MapCoords current, MapCoords leaveCoords, Direction exit){
-
-        Bag<Component> bag = new Bag<Component>();
+    public ComponentBag unTexturedDoorBag(float x, float y, float width, float height, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
-
-        float width = Measure.units(20);
-        float height = Measure.units(5);
-
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
-        bag.add(new DoorComponent(current, leaveCoords, exit));
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
-        sc.setCurrentState(AnimationStateComponent.State.UNLOCKED.getState());
-        sc.stateTime = 100f;
-        bag.add(sc);
-
-        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(AnimationStateComponent.State.LOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door")));
-        aniMap.put(AnimationStateComponent.State.UNLOCKED.getState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("block_door"), Animation.PlayMode.REVERSED));
-        bag.add(new AnimationComponent(aniMap));
-        //TODO explains the giant blob
-
-        TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(AnimationStateComponent.State.UNLOCKED.getState()).getKeyFrame(sc.stateTime),
-                -Measure.units(2.5f), Measure.units(2.5f), Measure.units(27), Measure.units(22),
-                PLAYER_LAYER_FAR);
-
-        trc.color = arenaSkin.getWallTint();
-        trc.DEFAULT = arenaSkin.getWallTint();
-
-        trc.rotation = 90;
-        //trc.setColor(0.7f, 0, 0f, 1);
-        bag.add(trc);
-        //bag.add(new GrappleableComponent());
+        bag.add(new DoorComponent(current, leaveCoords, exitDirection));
         bag.add(new LockComponent());
         return bag;
     }
+
 
     public ComponentBag grapplePointBag(float x, float y){
 
@@ -435,129 +409,73 @@ public class DecorFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WALLTURRET), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
-        trc.rotation = angleInDegrees;
-        trc.DEFAULT = arenaSkin.getWallTint();
-        trc.color = arenaSkin.getWallTint();
-
-
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(fireRate / atlas.findRegions(TextureStrings.WALLTURRET).size, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.REVERSED));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(fireRate / atlas.findRegions(TextureStrings.WALLTURRET).size, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.REVERSED));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.005f / 1f, atlas.findRegions(TextureStrings.WALLTURRET), Animation.PlayMode.NORMAL));
 
 
         bag.add(new AnimationComponent(animMap));
 
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegions(TextureStrings.WALLTURRET).peek(), width, height, TextureRegionComponent.ENEMY_LAYER_NEAR);
 
+        trc.rotation = angleInDegrees;
+        trc.DEFAULT = arenaSkin.getWallTint();
+        trc.color = arenaSkin.getWallTint();
 
         bag.add(trc);
 
         //Hazard?
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-/*        bag.add(new TextureRegionComponent(PlayScreen.atlas.findRegion(TextureStrings.BLOB_STANDING),
-                -Measure.units(1f), 0, Measure.units(12), Measure.units(12), TextureRegionComponent.ENEMY_LAYER_MIDDLE
-        ));*/
-
-        WeaponComponent wc = new WeaponComponent(new Pistol(assetManager, fireRate), fireDelay);
-        bag.add(wc);
-        //In order to match firing angle with direction of texture add 90 degrees
-        bag.add(new FiringAIComponent(angleInDegrees + 90));
-
-        return bag;
-    }
-
-
-
-
-    public ComponentBag mapPortal (float x, float y, BossTeleporterComponent btc){
-
-
-        float width = Measure.units(10f);
-        float height = Measure.units(10f);
-
-        x = x - width / 2;
-        y = y - height / 2;
-
-        ComponentBag bag = portal(x,y);
-        Rectangle r = new Rectangle(x,y,width,height);
-        bag.add(btc);
-
-        bag.add(new ProximityTriggerAIComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(MapTeleportationSystem.class).goFromTo(e.getComponent(BossTeleporterComponent.class));
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }, new HitBox(r)));
-
-        return bag;
-
-    }
-
-
-    private ComponentBag portal(float x, float y){
-
-
-        float width = Measure.units(10f);
-        float height = Measure.units(10f);
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x, y));
-
-
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
 
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(0);
-        bag.add(sc);
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.1f, atlas.findRegions("teleporter"), Animation.PlayMode.LOOP));
-        bag.add(new AnimationComponent(animMap));
+        WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(fireRate)
+                .build());
+        bag.add(wc);
+        //In order to match firing angle with direction of texture add 90 degrees
 
-        bag.add(new TextureRegionComponent(atlas.findRegion("teleporter"),
-                Measure.units(10),
-                Measure.units(10),
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        double firingAngle = Math.toRadians(angleInDegrees + 90);
 
+        FiringAIComponent firingAIComponent = new FiringAIComponent();
+        firingAIComponent.ai = FiringAIComponent.AI.UNTARGETED;
+        firingAIComponent.firingAngleInRadians = firingAngle;
+        firingAIComponent.offsetX = BulletMath.velocityX(wallTurretFiringOffset, firingAngle);
+        firingAIComponent.offsetY = BulletMath.velocityY(wallTurretFiringOffset, firingAngle);
+
+        bag.add(firingAIComponent);
 
         return bag;
-
     }
 
 
-    public ComponentBag levelPortal(float x, float y){
 
+    public ComponentBag inCombatfixedWallTurret(float x, float y, final float angleInDegrees, float fireRate, final float fireDelay){
 
-        float width = Measure.units(10f);
-        float height = Measure.units(10f);
+        ComponentBag bag = fixedWallTurret(x, y, angleInDegrees, fireRate, fireDelay);
+        BagSearch.removeObjectOfTypeClass(FiringAIComponent.class, bag);
 
-        x = x - width / 2;
-        y = y - height / 2;
-
-        ComponentBag bag = portal(x,y);
-        Rectangle r = new Rectangle(x,y,width,height);
-
-        bag.add(new ProximityTriggerAIComponent(new Task() {
+        bag.add(new InCombatActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(MapTeleportationSystem.class).recreateWorld();
+
+                double firingAngle = Math.toRadians(angleInDegrees + 90);
+
+                FiringAIComponent firingAIComponent = new FiringAIComponent();
+                firingAIComponent.ai = FiringAIComponent.AI.UNTARGETED;
+                firingAIComponent.firingAngleInRadians = firingAngle;
+                firingAIComponent.offsetX = BulletMath.velocityX(wallTurretFiringOffset, firingAngle);
+                firingAIComponent.offsetY = BulletMath.velocityY(wallTurretFiringOffset, firingAngle);
+
+                e.edit().add(firingAIComponent);
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-
+                e.edit().remove(FiringAIComponent.class);
             }
-        }, new HitBox(r)));
-
-
+        }));
         return bag;
-
     }
 
 
@@ -641,10 +559,10 @@ public class DecorFactory extends AbstractFactory {
             @Override
             public boolean condition(World world, Entity entity) {
 
-                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
-                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
                 CollisionBoundComponent wallCbc = entity.getComponent(CollisionBoundComponent.class);
-                CurrencyComponent cc = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
+                CurrencyComponent cc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class);
 
                 Rectangle futureRectangle = new Rectangle(playerCbc.bound);
                 futureRectangle.x += (vc.velocity.x * world.delta);
@@ -682,25 +600,6 @@ public class DecorFactory extends AbstractFactory {
 
     }
 
-
-
-
-
-
-    public ComponentBag laserChain(float x, float y){
-
-        float width = Measure.units(5f);
-        float height = Measure.units(5f);
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(Color.BLACK)));
-        bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask(assetManager, Measure.units(5f), 1f, 10, 0, new int[]{0,180}), 0));
-
-        return bag;
-    }
 
     public ComponentBag laserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
         float width = Measure.units(5f) * scale;
@@ -775,6 +674,80 @@ public class DecorFactory extends AbstractFactory {
         return inCombatTimedLaserChain(x,y,scale,timeTillReapeat,true, laserOrbitalTask);
     }
 
+
+    public ComponentBag timedLaserBeam(float x, float y, float scale, float offset, final float timeTillReapeat, final LaserBeam laserBeam){
+        return timedLaserBeam(x,y,scale, offset, timeTillReapeat,true, laserBeam);
+    }
+
+
+
+    public ComponentBag timedLaserBeam(float x, float y, float scale, final float offset, final float timeTillReapeat, final boolean isInstant, final LaserBeam laserBeam){
+
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
+        ComponentBag bag = new ComponentBag();
+
+
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+
+                laserBeam.createBeam(world,
+                        cbc.bound.x +  (!laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetX(cbc.bound.getWidth(), laserBeam.getChargingLaserWidth())),
+                        cbc.bound.y + (laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetY(cbc.bound.getHeight(), laserBeam.getChargingLaserHeight())));
+            }
+        }, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
+
+        return bag;
+
+
+
+    }
+
+
+    public ComponentBag inCombatTimedLaserBeam(float x, float y, float scale, final float offset, final float timeTillReapeat, final boolean isInstant, final LaserBeam laserBeam){
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
+        ComponentBag bag = new ComponentBag();
+
+
+        bag.add(new PositionComponent(x,y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new InCombatActionComponent(new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().add(new ActionAfterTimeComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+
+                        laserBeam.createBeam(world,
+                                cbc.bound.x +  (!laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetX(cbc.bound.getWidth(), laserBeam.getChargingLaserWidth())),
+                                cbc.bound.y + (laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetY(cbc.bound.getHeight(), laserBeam.getChargingLaserHeight())));
+                    }
+                }, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+                //laserOrbitalTask.cleanUpAction(world, e);
+                e.edit().remove(ActionAfterTimeComponent.class);
+            }
+        }));
+        return bag;
+    }
+
+    public ComponentBag inCombatTimedLaserBeam(float x, float y, float scale, float offset, final float timeTillReapeat, final LaserBeam laserBeam){
+        return inCombatTimedLaserBeam(x,y,scale, offset, timeTillReapeat,true, laserBeam);
+    }
 
 
 

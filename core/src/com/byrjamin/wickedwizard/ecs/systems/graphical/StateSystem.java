@@ -7,7 +7,10 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 
 /**
- * Created by Home on 07/03/2017.
+ * Created by BB on 07/03/2017.
+ *
+ * Adds animation state time to all Entities with a AnimationStateComponent
+ *
  */
 public class StateSystem extends EntityProcessingSystem {
 

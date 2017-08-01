@@ -9,7 +9,15 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
 /**
- * Created by Home on 14/05/2017.
+ * Created by BB on 14/05/2017.
+ *
+ * System used for expiring entities based on how far they have travelled.
+ *
+ * Per iteration the distance they have travelled from the last interation is tallied up.
+ *
+ * If the total distance travelled is greater than the ExpiryRangeComponent's range the entity
+ * is killed using the OnDeathSystem
+ *
  */
 
 public class ExpiryRangeSystem extends EntityProcessingSystem {
@@ -28,11 +36,8 @@ public class ExpiryRangeSystem extends EntityProcessingSystem {
         ExpiryRangeComponent erc = erm.get(e);
 
         float distanceTravelled = erc.currentPosition.dst(pc.position);
-
         erc.distanceTravelled += Math.abs(distanceTravelled);
         erc.currentPosition.set(pc.position);
-
-        //System.out.println(erc.distanceTravelled);
 
         if(erc.distanceTravelled > erc.range){
             world.getSystem(OnDeathSystem.class).kill(e);

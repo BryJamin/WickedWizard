@@ -14,6 +14,8 @@ import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
+import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
@@ -25,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -39,6 +42,7 @@ public class JumpingJackFactory extends EnemyFactory{
 
     private static final float speed = Measure.units(40f);
     private static final float tiredSpeed = Measure.units(20f);
+    private static final float tiredjumpSpeed = Measure.units(20);
     private static final float health = 25;
 
     private static final float jumpSpeed = Measure.units(100);
@@ -60,7 +64,7 @@ public class JumpingJackFactory extends EnemyFactory{
 
 
         x = x - width / 2;
-        y = y - width / 2;
+        y = y - height / 2;
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
@@ -80,7 +84,9 @@ public class JumpingJackFactory extends EnemyFactory{
 
         PhaseComponent phaseComponent = new PhaseComponent();
         phaseComponent.addPhase(tiredPhaseTime, new JumpJackTiredPhase());
-        phaseComponent.addPhase(awakePhaseTime, new JumpJackPhase());
+        phaseComponent.addPhase(awakePhaseTime, new JumpJackPhase(startsRight));
+        phaseComponent.addPhase(tiredPhaseTime, new JumpJackTiredPhase());
+        phaseComponent.addPhase(awakePhaseTime, new JumpJackPhase(!startsRight));
         bag.add(phaseComponent);
 
 
@@ -111,11 +117,18 @@ public class JumpingJackFactory extends EnemyFactory{
 
     private class JumpJackPhase implements Task {
 
+
+        private boolean startsRight;
+
+        public JumpJackPhase(boolean startsRight){
+            this.startsRight = startsRight;
+        }
+
         @Override
         public void performAction(World world, Entity e) {
             VelocityComponent vc = e.getComponent(VelocityComponent.class);
             vc.velocity.y = jumpSpeed;
-            vc.velocity.x = vc.velocity.x < 0 ? vc.velocity.x = -speed : speed;
+            vc.velocity.x = 0;
             e.edit().add(new GravityComponent());
             e.edit().add(new FiringAIComponent(0));
             e.edit().add(new WeaponComponent(new JumpingJackWeapon(assetManager), 0.5f));
@@ -128,7 +141,9 @@ public class JumpingJackFactory extends EnemyFactory{
                 @Override
                 public void performAction(World world, Entity e) {
                     e.edit().remove(new GravityComponent());
-                    e.getComponent(VelocityComponent.class).velocity.y = 0;
+                    VelocityComponent vc = e.getComponent(VelocityComponent.class);
+                    vc.velocity.y = 0;
+                    vc.velocity.x = startsRight ? vc.velocity.x = -speed : speed;
                 }
 
                 @Override
@@ -153,13 +168,11 @@ public class JumpingJackFactory extends EnemyFactory{
         public void performAction(World world, Entity e) {
 
             VelocityComponent vc = e.getComponent(VelocityComponent.class);
-            vc.velocity.x = vc.velocity.x < 0 ? vc.velocity.x = -tiredSpeed : tiredSpeed;
+            vc.velocity.x = 0;
+            vc.velocity.y = tiredjumpSpeed;
             e.edit().add(new GravityComponent());
-
             e.getComponent(AnimationStateComponent.class).setDefaultState(JUMPINGJACKTIREDANIMATION);
-            //e.edit().add(new FiringAIComponent());
-            //e.edit().add(new WeaponComponent(new JumpingJackWeapon(assetManager), 0.5f));
-            e.edit().add(jackOCAC(tiredSpeed));
+
         }
 
         @Override
@@ -179,19 +192,18 @@ public class JumpingJackFactory extends EnemyFactory{
 
         public JumpingJackWeapon(AssetManager assetManager) {
 
-            int i = 15;
-            int j = 30;
+            int i = 10;
+            int j = 35;
             int k = 45;
-            int l = 60;
-            int m = 75;
-
+            int l = 80;
             MultiPistol.PistolBuilder mp = new MultiPistol.PistolBuilder(assetManager)
                     .shotScale(3)
-                    .angles(i, j, k, l, m, i + 180, j + 180, k + 180, l + 180, m + 180);
+                    .shotSpeed(Measure.units(60f))
+                    .angles(i, j, k, l, i + 180, j + 180, k + 180, l + 180);
 
             weapon1 = mp.build();
 
-            weapon2 = mp.angles(i + 90, j + 90, k + 90, l + 90, m + 90,  i + 270, j + 270, k + 270, l + 270, m + 270)
+            weapon2 = mp.angles(i + 90, j + 90, k + 90, l + 90, i + 270, j + 270, k + 270, l + 270)
                     .build();
 
         }

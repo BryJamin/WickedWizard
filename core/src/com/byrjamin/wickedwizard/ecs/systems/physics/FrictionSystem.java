@@ -29,7 +29,7 @@ public class FrictionSystem extends EntityProcessingSystem {
     ComponentMapper<GlideComponent> glidem;
     ComponentMapper<GravityComponent> gravm;
 
-    ComponentMapper<FrictionComponent> fm;
+    ComponentMapper<FrictionComponent> frictionMapper;
 
 
     @SuppressWarnings("unchecked")
@@ -44,7 +44,7 @@ public class FrictionSystem extends EntityProcessingSystem {
 
         if(canApplyFriction(e) || pm.has(e)) {
             VelocityComponent vc = vm.get(e);
-            FrictionComponent fc = fm.get(e);
+            FrictionComponent fc = frictionMapper.get(e);
 
 
             float friction = Measure.units(7.5f);
@@ -84,7 +84,7 @@ public class FrictionSystem extends EntityProcessingSystem {
             }
         }
 
-        if(pickUpm.has(e) && cbm.has(e) && gravm.has(e) || !fm.get(e).airFriction){
+        if(pickUpm.has(e) && cbm.has(e) && gravm.has(e) || !frictionMapper.get(e).airFriction){
             return cbm.get(e).recentCollisions.contains(Collider.Collision.BOTTOM, false);
         }
 

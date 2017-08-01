@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
-import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.utils.timer.StateTimer;
 
 /**

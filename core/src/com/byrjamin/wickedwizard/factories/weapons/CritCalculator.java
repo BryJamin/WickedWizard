@@ -18,7 +18,7 @@ public class CritCalculator {
     }
 
     public boolean isCrit(float critChance, float accuracy, float luck){
-        System.out.println(getCritChance(critChance, accuracy, luck));
+        //System.out.println(getCritChance(critChance, accuracy, luck));
         return getCritChance(critChance, accuracy, luck) > random.nextInt(100);
     }
 

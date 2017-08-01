@@ -5,14 +5,18 @@ import com.artemis.Entity;
 import com.artemis.World;
 
 /**
- * Created by Home on 27/05/2017.
+ * Created by BB on 27/05/2017.
+ *
+ * Component used in the Action After Time System.
+ *
+ * Stores the action to perform after a period of time
  */
 
 public class ActionAfterTimeComponent extends Component {
 
     //TODO possible expansion. Repeat 'x' times. Or if set to -1 repeat endlessly;
 
-    public Action task;
+    public Action action;
     public float timeUntilAction;
     public float resetTime;
 
@@ -20,7 +24,7 @@ public class ActionAfterTimeComponent extends Component {
 
     public ActionAfterTimeComponent(){
 
-        task = new Task() {
+        action = new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -35,16 +39,20 @@ public class ActionAfterTimeComponent extends Component {
         timeUntilAction = 0;
     }
 
-    public ActionAfterTimeComponent(Action task, float timeUntilAction){
-        this(task, timeUntilAction, false);
+    public ActionAfterTimeComponent(Action action){
+        this(action, 0, false);
     }
 
-    public ActionAfterTimeComponent(Action task, float timeUntilAction, boolean repeat){
-        this(task, timeUntilAction, timeUntilAction, repeat);
+    public ActionAfterTimeComponent(Action action, float timeUntilAction){
+        this(action, timeUntilAction, false);
     }
 
-    public ActionAfterTimeComponent(Action task, float timeUntilAction, float resetTime, boolean repeat){
-        this.task = task;
+    public ActionAfterTimeComponent(Action action, float timeUntilAction, boolean repeat){
+        this(action, timeUntilAction, timeUntilAction, repeat);
+    }
+
+    public ActionAfterTimeComponent(Action action, float timeUntilAction, float resetTime, boolean repeat){
+        this.action = action;
         this.timeUntilAction = timeUntilAction;
         this.resetTime = resetTime;
         this.repeat = repeat;

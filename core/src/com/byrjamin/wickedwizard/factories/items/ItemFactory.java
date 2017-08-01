@@ -9,7 +9,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.assets.SoundStrings;
+import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
@@ -17,6 +18,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
@@ -36,11 +38,10 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
-import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -91,6 +92,7 @@ public class ItemFactory extends AbstractFactory {
         //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
 
         bag.add(new IntangibleComponent());
+        bag.add(new OffScreenPickUpComponent(pickUp));
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
         bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(2), Measure.units(2),
@@ -101,8 +103,18 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new OnDeathActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                new GibletFactory(assetManager).bombGiblets(10, 0.2f, 0, Measure.units(50f), Measure.units(1f), new Color(Color.YELLOW)).performAction(world, e);
-                world.getSystem(SoundSystem.class).playSound(SoundStrings.coinPickUpMix);
+
+                new Giblets.GibletBuilder(assetManager)
+                        .numberOfGibletPairs(5)
+                        .expiryTime(0.2f)
+                        .maxSpeed(Measure.units(50f))
+                        .fadeRate(0.25f)
+                        .size(Measure.units(1f))
+                        .mixes(SoundFileStrings.coinPickUpMix)
+                        .colors(new Color(ColorResource.MONEY_YELLOW))
+                        .build()
+                .performAction(world, e);
+                
             }
 
             @Override
@@ -254,7 +266,7 @@ public class ItemFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                CurrencyComponent playerMoney = world.getSystem(FindPlayerSystem.class).getPC(CurrencyComponent.class);
+                CurrencyComponent playerMoney = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class);
                 CurrencyComponent itemPrice = e.getComponent(CurrencyComponent.class);
 
 
@@ -337,7 +349,7 @@ public class ItemFactory extends AbstractFactory {
                             Entity player = world.getEntity(entityIds.get(i));
                             ac.pickUp.applyEffect(world, player);
                             world.getSystem(PickUpSystem.class).itemOverHead(player, item.getRegionName());
-                            world.getSystem(MessageBannerSystem.class).createBanner(item.getName(), item.getDescription());
+                            world.getSystem(MessageBannerSystem.class).createItemBanner(item.getName(), item.getDescription());
 
                         }
 

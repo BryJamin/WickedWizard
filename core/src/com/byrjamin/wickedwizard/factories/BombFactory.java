@@ -8,9 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ExplosionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
@@ -27,6 +30,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -39,11 +44,15 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 public class BombFactory extends  AbstractFactory{
 
 
-    private GibletFactory gf;
+    private Giblets.GibletBuilder gibletBuilder;
+
+    private static final float mineSpeed = Measure.units(10f);
+
+    private static final float defaultExplosionSize = Measure.units(20f);
 
     public BombFactory(AssetManager assetManager) {
         super(assetManager);
-        this.gf = new GibletFactory(assetManager);
+        this.gibletBuilder = new Giblets.GibletBuilder(assetManager);
     }
 
 
@@ -94,14 +103,20 @@ public class BombFactory extends  AbstractFactory{
         return bag;
     }
 
+    public ComponentBag fadeInSeaMine(float x, float y, boolean startsLeft, boolean starsUp){
+        ComponentBag bag = multiDirectionalSeaMine(x, y, startsLeft, starsUp);
+        bag.add(new FadeComponent(true, 0.5f, false));
+        TextureRegionComponent trc = BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag);
+        if(trc != null) trc.color.a = 0f;
 
-    public ComponentBag seaMine(float x, float y, boolean startsLeft, boolean startsUp){
+        return bag;
+    }
+
+
+    public ComponentBag stationarySeaMine(float x, float y){
 
         float width = Measure.units(10);
         float height = Measure.units(10);
-
-        float speed = Measure.units(5f);
-
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -109,22 +124,15 @@ public class BombFactory extends  AbstractFactory{
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AIR_MINE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
         bag.add(trc);
 
-        //Hazard?
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-
-        bag.add(new FadeComponent(true, 0.5f, false));
-
-        bag.add(new BounceComponent());
-        bag.add(new VelocityComponent(startsLeft ? speed : - speed, startsUp ? speed : -speed));
-
 
         bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 e.edit().add(new ExpireComponent(1f));
-                e.edit().add(new AnimationStateComponent(0));
+                e.edit().add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
                 IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-                animMap.put(0, new Animation<TextureRegion>(0.125f / 1f, atlas.findRegions(TextureStrings.AIR_MINE), Animation.PlayMode.LOOP));
+                animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.125f / 1f, atlas.findRegions(TextureStrings.AIR_MINE), Animation.PlayMode.LOOP));
                 e.edit().add(new AnimationComponent(animMap));
                 e.edit().add(new OnDeathActionComponent(explosionTask()));
             }
@@ -134,6 +142,36 @@ public class BombFactory extends  AbstractFactory{
 
             }
         }, new HitBox(new Rectangle(x,y,width,height))));
+
+        return bag;
+    }
+
+
+    public ComponentBag horizontalSeaMine(float x, float y, boolean startsRight){
+
+        ComponentBag bag = stationarySeaMine(x, y);
+        bag.add(new BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? mineSpeed : -mineSpeed, 0));
+
+        return bag;
+
+    }
+
+    public ComponentBag verticalSeaMine(float x, float y, boolean startsUp){
+
+        ComponentBag bag = stationarySeaMine(x, y);
+        bag.add(new BounceComponent());
+        bag.add(new VelocityComponent(0, startsUp ? mineSpeed : -mineSpeed));
+
+        return bag;
+
+    }
+
+    public ComponentBag multiDirectionalSeaMine(float x, float y, boolean startsLeft, boolean startsUp){
+
+        ComponentBag bag = stationarySeaMine(x, y);
+        bag.add(new BounceComponent());
+        bag.add(new VelocityComponent(startsLeft ? mineSpeed : - mineSpeed, startsUp ? mineSpeed : -mineSpeed));
 
         return bag;
 
@@ -162,105 +200,53 @@ public class BombFactory extends  AbstractFactory{
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BOMB), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.BOMB), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        ConditionalActionComponent cac = new ConditionalActionComponent();
-        cac.condition = new Condition() {
+        ConditionalActionComponent cac = new ConditionalActionComponent( new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(ExpireComponent.class).expiryTime < 0.75f;
             }
-        };
-
-
-        cac.task = new Task() {
+        }, new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(AnimationComponent.class).animations.get(0).setFrameDuration(0.05f / 1f);
             }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        };
+        });
 
         bag.add(cac);
 
-        //TODO bombs do not have explosion component at the moment
-
-        OnDeathActionComponent onDeathActionComponent = new OnDeathActionComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-
-                BagToEntity.bagToEntity(world.createEntity(),
-                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), Measure.units(20f), Measure.units(20f)));
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(246/ 255f, 45f/255f, 45f/255f, 1f)).performAction(world, e);
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(255f/ 255f, 124f/255f, 0f/255f, 1f)).performAction(world, e);
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(249f/ 255f, 188f/255f, 4f/255f, 1f)).performAction(world, e);
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        });
-
-        bag.add(onDeathActionComponent);
+        bag.add(new OnDeathActionComponent(explosionTask()));
 
         return bag;
 
     }
 
 
-    public Task explosionTask(){
-        return new Task() {
+    public Action explosionTask(){
+        return new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                 BagToEntity.bagToEntity(world.createEntity(),
-                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), Measure.units(20f), Measure.units(20f)));
+                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), defaultExplosionSize, defaultExplosionSize));
 
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(246 / 255f, 45f / 255f, 45f / 255f, 1f)).performAction(world, e);
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(255f / 255f, 124f / 255f, 0f / 255f, 1f)).performAction(world, e);
-
-                gf.bombGiblets(10, 0.35f, 0,
-                        Measure.units(75f),
-                        Measure.units(1.5f),
-                        new Color(249f / 255f, 188f / 255f, 4f / 255f, 1f)).performAction(world, e);
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
+                gibletBuilder.numberOfGibletPairs(15)
+                        .expiryTime(0.35f)
+                        .fadeRate(0.25f)
+                        .size(Measure.units(1.5f))
+                        .minSpeed(Measure.units(0f))
+                        .maxSpeed(Measure.units(75f))
+                        .mixes(SoundFileStrings.explosionMegaMix)
+                        .colors(new Color(ColorResource.BOMB_ORANGE), new Color(ColorResource.BOMB_RED), new Color(ColorResource.BOMB_YELLOW))
+                        .build().performAction(world, e);
 
             }
-
         };
     }
 

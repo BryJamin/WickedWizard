@@ -10,7 +10,7 @@ import com.artemis.World;
 
 /**
  * Performs an Task when combat starts,
- * Cleans Up task when Combat is over.
+ * Cleans Up action when Combat is over.
  */
 public class InCombatActionComponent extends Component {
     public Task task;

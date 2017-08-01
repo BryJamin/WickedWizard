@@ -10,7 +10,14 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
- * Created by Home on 07/04/2017.
+ * Created by BB on 07/04/2017.
+ *
+ * Used to determine the direction a Entity with a directional Component should be facing
+ *
+ * Resets the directional priority after ever iteration
+ *
+ * //TODO until I add a face onto the player character this isn't really used much
+ *
  */
 
 public class DirectionalSystem extends EntitySystem {

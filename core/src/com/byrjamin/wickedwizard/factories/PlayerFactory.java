@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
@@ -41,6 +41,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.Pistol;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -97,7 +98,7 @@ public class PlayerFactory extends AbstractFactory {
         WeaponComponent wc = new WeaponComponent(new Pistol(assetManager), 0.3f);
         bag.add(wc);
         bag.add(new HealthComponent(6));
-        bag.add(new BlinkComponent(1, BlinkComponent.BLINKTYPE.FLASHING));
+        bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),
@@ -169,7 +170,15 @@ public class PlayerFactory extends AbstractFactory {
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"),
                 width, height, TextureRegionComponent.PLAYER_LAYER_NEAR, new Color(Color.BLACK));
 
-        bag.add(new OnDeathActionComponent(new GibletFactory(assetManager).defaultGiblets(new Color(Color.BLACK))));
+        bag.add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
+                .colors(new Color(Color.BLACK))
+                .intangible(false)
+                .expiryTime(0.2f)
+                .build()));
 
         bag.add(trc);
 
@@ -181,13 +190,12 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new GrappleComponent());
 
 
-        ConditionalActionComponent cac = new ConditionalActionComponent();
-        cac.condition = new Condition() {
+        ConditionalActionComponent cac = new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
 
                 Rectangle r = world.getSystem(GrapplePointSystem.class).returnTouchedGrapple(entity.getComponent(CollisionBoundComponent.class).getCenterX(),
-                entity.getComponent(CollisionBoundComponent.class).getCenterY());
+                        entity.getComponent(CollisionBoundComponent.class).getCenterY());
 
                 if(r != null && r.contains(targetX, targetY)) {
 
@@ -203,15 +211,12 @@ public class PlayerFactory extends AbstractFactory {
 
                 return false;
             }
-        };
-
-
-        cac.task = new Task() {
+        },  new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPC(MoveToComponent.class);
+                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
 
-                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
 
                 float x = e.getComponent(CollisionBoundComponent.class).getCenterX();
@@ -227,7 +232,7 @@ public class PlayerFactory extends AbstractFactory {
                 mtc.maxEndSpeedY = Measure.units(80f);//150f = MAXGRAPPLEMOVEMENT
 
 
-                world.getSystem(FindPlayerSystem.class).getPC(GravityComponent.class).ignoreGravity = true;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = true;
 
                 e.edit().remove(VelocityComponent.class);
 
@@ -242,8 +247,7 @@ public class PlayerFactory extends AbstractFactory {
             public void cleanUpAction(World world, Entity e) {
 
             }
-        };
-
+        });
 
         bag.add(cac);
 

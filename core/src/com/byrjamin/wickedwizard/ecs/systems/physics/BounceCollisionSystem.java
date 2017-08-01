@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
@@ -45,6 +46,27 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
         BounceComponent bc = bouncecm.get(e);
         VelocityComponent vc = vm.get(e);
         PositionComponent pc = pm.get(e);
+
+
+        //The sake of this is to stop the collision between two together vertical block (this is a test run)
+
+        boolean leftOrRight = cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) ||
+                cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true);
+
+        boolean topOrBottom = cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true) ||
+                cbc.getRecentCollisions().contains(Collider.Collision.TOP, true);
+
+/*
+        if(leftOrRight && topOrBottom) {
+
+            Array<Collider.Collision> collisionArray = new Array<Collider.Collision>();
+            collisionArray.addAll(cbc.getRecentCollisions());
+
+            for (Collider.Collision c : collisionArray) {
+                cbc.getRecentCollisions().removeValue(c, false);
+            }
+        }
+*/
 
         for(Collider.Collision c : cbc.getRecentCollisions()){
 

@@ -13,16 +13,23 @@ import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
  * Created by Home on 25/06/2017.
@@ -38,6 +45,9 @@ public class LaserusFactory extends EnemyFactory{
 
 
     public float laserusHealth = 20f;
+
+    private final static float laserCharge = 1f;
+    private final static float fireRate = 1.5f;
 
     public LaserusFactory(AssetManager assetManager) {
         super(assetManager);
@@ -66,35 +76,10 @@ public class LaserusFactory extends EnemyFactory{
         bag.add(new VelocityComponent(startsRight ? hSpeed : -hSpeed, startsUp ? vSpeed : - vSpeed));
         bag.add(new BounceComponent());
 
-
-        final LaserOrbitalTask lb = new LaserOrbitalTask.LaserBuilder(assetManager)
-                .angles(0,90,180,270)
-                .chargeTime(0.2f)
-                .numberOfOrbitals(20)
-                .orbitalAndIntervalSize(Measure.units(5f))
-                .expiryTime(0.25f)
-                .disperseTime(0.5f)
-                .layer(TextureRegionComponent.FOREGROUND_LAYER_NEAR)
-                .build();
+        bag.add(new ParentComponent());
 
         WeaponComponent wc = new WeaponComponent(
-                new Weapon() {
-                    @Override
-                    public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-                        lb.performAction(world, e);
-                    }
-
-                    @Override
-                    public float getBaseFireRate() {
-                        return 1.5f;
-                    }
-
-                    @Override
-                    public float getBaseDamage() {
-                        return 0;
-                    }
-                },
-        1f);
+                new LazerusWeapon(assetManager));
         bag.add(wc);
 
 
@@ -110,11 +95,91 @@ public class LaserusFactory extends EnemyFactory{
             }
         }, true));
 
-
-
-
         return bag;
 
+    }
+
+
+
+    private class LazerusWeapon implements Weapon {
+
+
+        private LaserBeam middleBeam;
+        private LaserBeam leftBeam;
+        private LaserBeam rightBeam;
+
+        private float length = Measure.units(500f);
+        private float girth = Measure.units(5f);
+
+
+        public LazerusWeapon(AssetManager assetManager){
+
+            LaserBeam.LaserBeamBuilder lbb = new LaserBeam.LaserBeamBuilder(assetManager)
+                    .activeLaserHeight(length)
+                    .activeLaserWidth(girth)
+                    .chargingLaserHeight(length)
+                    .chargingLaserWidth(girth)
+                    .activeLaserTime(0.25f)
+                    .activeLaserDisperseTime(0.5f)
+                    .chargingLaserTime(laserCharge);
+
+            middleBeam = lbb.build();
+
+            lbb.activeLaserHeight(girth)
+                    .activeLaserWidth(length)
+                    .chargingLaserHeight(girth)
+                    .chargingLaserWidth(length);
+
+            leftBeam = lbb.build();
+            rightBeam = lbb.build();
+
+        }
+
+
+        @Override
+        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+
+            CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+
+            float midOffsetX = CenterMath.offsetX(cbc.bound.getWidth(), middleBeam.getChargingLaserWidth());
+            float midOffsetY = CenterMath.offsetY(cbc.bound.getHeight(), middleBeam.getChargingLaserHeight());
+
+            Entity beam = middleBeam.createBeam(world,
+                    cbc.bound.x + midOffsetX,
+                    cbc.bound.y + midOffsetY);
+
+            beam.edit().add(new FollowPositionComponent(e.getComponent(PositionComponent.class).position, midOffsetX, midOffsetY));
+            beam.edit().add(new ChildComponent(e.getComponent(ParentComponent.class)));
+
+
+
+            float leftOffsetX = CenterMath.offsetX(cbc.bound.getWidth(), leftBeam.getChargingLaserWidth());
+            float leftOffsetY = CenterMath.offsetY(cbc.bound.getHeight(), leftBeam.getChargingLaserHeight());
+
+            Entity leftBeam = this.leftBeam.createBeam(world,
+                    cbc.bound.x + midOffsetX - length,
+                    cbc.bound.y + leftOffsetY);
+
+            leftBeam.edit().add(new FollowPositionComponent(e.getComponent(PositionComponent.class).position, midOffsetX - length, leftOffsetY));
+            leftBeam.edit().add(new ChildComponent(e.getComponent(ParentComponent.class)));
+
+
+            float rightOffsetY = CenterMath.offsetY(cbc.bound.getHeight(), rightBeam.getChargingLaserHeight());
+
+            Entity rightBeam = this.rightBeam.createBeam(world,
+                    cbc.bound.x + midOffsetX + girth,
+                    cbc.bound.y + rightOffsetY);
+
+            rightBeam.edit().add(new FollowPositionComponent(e.getComponent(PositionComponent.class).position, midOffsetX + girth, rightOffsetY));
+            rightBeam.edit().add(new ChildComponent(e.getComponent(ParentComponent.class)));
+
+        }
+
+        @Override
+        public float getBaseFireRate() {return fireRate;}
+
+        @Override
+        public float getBaseDamage() {return 0;}
     }
 
 

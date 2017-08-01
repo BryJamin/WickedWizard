@@ -11,7 +11,13 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 
 /**
- * Created by Home on 07/03/2017.
+ * Created by BB on 07/03/2017.
+ *
+ * Controls the current State of Animation an Entity is in.
+ *
+ * Checks to see if a temporary animation has been queued up or if the default animation need to be displayed
+ * Temporary animations have priority over default animations
+ *
  */
 public class AnimationSystem extends EntityProcessingSystem {
 
@@ -30,36 +36,34 @@ public class AnimationSystem extends EntityProcessingSystem {
         AnimationStateComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
 
-        int key;
+        int state;
 
         if(sc.getStateQueue().size != 0) {
-            key = sc.getStateQueue().first();
 
+            state = sc.getStateQueue().first();
             boolean canRemove = true;
 
-            if(ac.animations.containsKey(key)){
-                canRemove = (ac.animations.get(key).isAnimationFinished(sc.stateTime)) && key == sc.getCurrentState();
+            if(ac.animations.containsKey(state)){
+                canRemove = (ac.animations.get(state).isAnimationFinished(sc.stateTime)) && state == sc.getCurrentState();
             }
 
             if(canRemove)  {
-                key = sc.getDefaultState();
+                state = sc.getDefaultState();
                 sc.getStateQueue().removeFirst();
             }
 
-            //TODO need to check animation is finished before switching back to the default state.
-            //TODO also need to check this works using the turrets
-
         } else {
-            key = sc.getDefaultState();
+            state = sc.getDefaultState();
         }
 
-        if(key != sc.getCurrentState()) {
-            sc.setCurrentState(key);
+        if(state != sc.getCurrentState()) {
+            sc.setCurrentState(state);
         }
 
         if(ac.animations.containsKey(sc.getCurrentState())){
             trc.region = ac.animations.get(sc.getCurrentState()).getKeyFrame(sc.stateTime);
         }
     }
+
 
 }

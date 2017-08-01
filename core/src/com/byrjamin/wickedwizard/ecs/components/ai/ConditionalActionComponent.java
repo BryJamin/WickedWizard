@@ -1,8 +1,8 @@
 package com.byrjamin.wickedwizard.ecs.components.ai;
 
 import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.World;
+import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by ae164 on 20/05/17.
@@ -10,39 +10,34 @@ import com.artemis.World;
 
 public class ConditionalActionComponent extends Component {
 
-    public Condition condition;
-    public Task task;
+
+    public Array<Pair<Action, Condition>> actionConditionPairArray = new Array<Pair<Action, Condition>>();
 
 
-    public ConditionalActionComponent(Condition condition, Task task) {
-        this.condition = condition;
-        this.task = task;
+    public ConditionalActionComponent(Condition condition, Action action) {
+        actionConditionPairArray.add(new Pair<Action, Condition>(action, condition));
+    }
+
+
+    public ConditionalActionComponent(Pair<Action, Condition>... actionConditionPairs) {
+        for(Pair<Action, Condition> actionConditionPair : actionConditionPairs){
+            actionConditionPairArray.add(actionConditionPair);
+        }
+    }
+
+
+    public void add(Condition condition, Action action){
+        actionConditionPairArray.add(new Pair<Action, Condition>(action, condition));
+    }
+
+    public void add(Pair<Action, Condition>... actionConditionPairs){
+        for(Pair<Action, Condition> actionConditionPair : actionConditionPairs){
+            actionConditionPairArray.add(actionConditionPair);
+        }
     }
 
 
     public ConditionalActionComponent(){
-
-        condition = new Condition() {
-            @Override
-            public boolean condition(World world, Entity entity) {
-                return false;
-            }
-        };
-
-
-        task = new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        };
-
-
     }
 
 

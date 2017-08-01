@@ -59,4 +59,9 @@ public class CollisionBoundComponent extends Component{
     public Array<Collider.Collision> getRecentCollisions() {
         return recentCollisions;
     }
+
+    public void setCenter(float x, float y) {
+        setCenterX(x);
+        setCenterY(y);
+    }
 }

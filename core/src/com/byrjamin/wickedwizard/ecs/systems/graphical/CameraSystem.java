@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.ecs.systems.graphical;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.EntitySystem;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -20,10 +21,15 @@ import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
- * Created by Home on 23/03/2017.
+ * Created by BB on 23/03/2017.
+ *
+ * System used to control the movement of the camera when both following the players in small and large
+ * rooms as well as on room and map transistions
+ *
+ * //TODO the camera movement isn't 100% smooth at the moment need to come back here at practice on it
+ *
  */
 
 public class CameraSystem extends EntitySystem {
@@ -32,9 +38,9 @@ public class CameraSystem extends EntitySystem {
     ComponentMapper<ActiveOnTouchComponent> aotm;
     ComponentMapper<WallComponent> wm;
 
-    PositionComponent playerPosition;
+    private PositionComponent playerPosition;
 
-    private OrthographicCamera gamecam;
+    private Camera gamecam;
     private Viewport gamePort;
 
     private Arena currentArena;
@@ -60,11 +66,6 @@ public class CameraSystem extends EntitySystem {
     private float cameradefaultMaxVelocity = Measure.units(100f);
     private Vector2 cameraVelocity;
 
-    private Rectangle left = new Rectangle();
-    private Rectangle right = new Rectangle();
-    private Rectangle top = new Rectangle();
-    private Rectangle bottom = new Rectangle();
-
     private float targetX;
     private float targetY;
 
@@ -78,9 +79,9 @@ public class CameraSystem extends EntitySystem {
 
 
     @SuppressWarnings("unchecked")
-    public CameraSystem(OrthographicCamera gamecam, Viewport gamePort) {
+    public CameraSystem(Viewport gamePort) {
         super(Aspect.all(PlayerComponent.class));
-        this.gamecam = gamecam;
+        this.gamecam = gamePort.getCamera();
         this.gamePort = gamePort;
         this.cameraVelocity = new Vector2();
         this.cameraMode = CameraMode.FIXED;
@@ -100,11 +101,21 @@ public class CameraSystem extends EntitySystem {
 
     }
 
+
+    /**
+     * Forces the camera to update to the collision boundary entered, even if the system is disabled
+     * @param cbc - The collision boundary to update to
+     */
+    public void snapCameraUpdate(CollisionBoundComponent cbc){
+        int offsetY = (int) cbc.bound.getY() / (int) ArenaShellFactory.SECTION_HEIGHT;
+        gamecam.position.set(cbc.getCenterX(), offsetY * ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f), 0);
+    }
+
     //TODO need to break this method up. It is too large and confusing.
     public void updateGamecam() {
-        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
+        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
-        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPC(VelocityComponent.class);
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
 
 
         Arena currentArena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
@@ -223,7 +234,7 @@ public class CameraSystem extends EntitySystem {
 
 
 
-    public OrthographicCamera getGamecam() {
+    public Camera getGamecam() {
         return gamecam;
     }
 
@@ -264,23 +275,6 @@ public class CameraSystem extends EntitySystem {
     }
 
 
-    public Rectangle getLeft() {
-        return left;
-    }
-
-    public Rectangle getRight() {
-        return right;
-    }
-
-    public Rectangle getTop() {
-        return top;
-    }
-
-    public Rectangle getBottom() {
-        return bottom;
-    }
-
-
     public float getCameraX(){
         return gamecam.position.x - gamecam.viewportWidth / 2;
     }
@@ -292,7 +286,7 @@ public class CameraSystem extends EntitySystem {
 
     //TODO may ned to factor in the border
     public boolean isOnCamera(Rectangle r){
-        System.out.println(r.getX());
+        //System.out.println(r.getX());
         boolean isOnX = r.getX() + r.getWidth() >= getCameraX() + MainGame.GAME_BORDER && r.getX() - r.getWidth() <= getCameraX() + gamecam.viewportWidth - MainGame.GAME_BORDER;
         boolean isOnY = r.getY() >= getCameraY() + MainGame.GAME_BORDER && r.getY() - r.getHeight() <= getCameraY() + ArenaShellFactory.SECTION_HEIGHT - MainGame.GAME_BORDER;
         return isOnX && isOnY;

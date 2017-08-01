@@ -4,10 +4,12 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.assets.PreferenceStrings;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
@@ -17,41 +19,33 @@ import com.byrjamin.wickedwizard.utils.BoundsDrawer;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
- * Created by Home on 18/03/2017.
+ * Created by BB on 18/03/2017.
+ *
+ * Debugging system used to see Boundaries of hitboxes, collision bounds and proximity bounds
+ *
  */
 
 public class BoundsDrawingSystem extends EntitySystem {
 
-    ComponentMapper<HealthComponent> hm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ProximityTriggerAIComponent> ptam;
     ComponentMapper<WallComponent> wm;
 
-    ComponentMapper<BlinkComponent> bm;
+    private boolean isDrawing;
 
-    public boolean isDrawing;
+    private Array<Rectangle> bounds = new Array<Rectangle>();
+    private Array<Rectangle> hitboxes = new Array<Rectangle>();
+    private Array<Rectangle> proxhitboxes = new Array<Rectangle>();
 
-    @SuppressWarnings("unchecked")
+
     public BoundsDrawingSystem() {
         super(Aspect.one(CollisionBoundComponent.class, ProximityTriggerAIComponent.class, WallComponent.class));
-    }
-
-    public BoundsDrawingSystem(boolean isDrawing) {
-        super(Aspect.all(CollisionBoundComponent.class));
-        this.isDrawing = isDrawing;
+        this.isDrawing = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_BOUND, false);
     }
 
 
     @Override
     protected void processSystem() {
-
-        //System.out.println(enabled);
-
-
-        Array<Rectangle> bounds = new Array<Rectangle>();
-        Array<Rectangle> hitboxes = new Array<Rectangle>();
-        Array<Rectangle> proxhitboxes = new Array<Rectangle>();
-
 
         if(!isDrawing) return;
 
@@ -76,15 +70,17 @@ public class BoundsDrawingSystem extends EntitySystem {
 
 
         if(world.getSystem(PlayerInputSystem.class) != null) {
-            bounds.add(world.getSystem(PlayerInputSystem.class).movementArea);
+          //  bounds.add(world.getSystem(PlayerInputSystem.class).movementArea);
         }
-
 
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, bounds);
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.CYAN, hitboxes);
         BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, Color.PINK, proxhitboxes);
-     //   BoundsDrawer.drawBounds();
 
+
+        bounds.clear();
+        hitboxes.clear();
+        proxhitboxes.clear();
 
 
 

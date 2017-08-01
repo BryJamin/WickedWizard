@@ -36,6 +36,7 @@ import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -53,23 +54,32 @@ public class BossWanda extends EnemyFactory {
     private DeathFactory df;
     private BulletFactory bf;
 
-    private final float width = Measure.units(7.5f);
-    private final float height = Measure.units(7.5f);
+    private static final float width = Measure.units(7.5f);
+    private static final float height = Measure.units(7.5f);
 
-    private final float textureWidth = Measure.units(10);
-    private final float textureHeight = Measure.units(10);
+    private static final float textureWidth = Measure.units(10);
+    private static final float textureHeight = Measure.units(10);
 
-    private final float textureOffsetX = -Measure.units(1.25f);
-    private final float textureOffsetY = 0;
+    private static final float textureOffsetX = -Measure.units(1.25f);
+    private static final float textureOffsetY = 0;
 
-    private final GibletFactory gibletFactory;
+    private Giblets.GibletBuilder gibletBuilder;
 
 
     public BossWanda(AssetManager assetManager) {
         super(assetManager);
         this.df = new DeathFactory(assetManager);
         this.bf = new BulletFactory(assetManager);
-        this.gibletFactory = new GibletFactory(assetManager);
+
+        this.gibletBuilder = new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
+                .colors(new Color(Color.RED))
+                .intangible(false)
+                .expiryTime(0.2f);
+
     }
 
 
@@ -80,8 +90,7 @@ public class BossWanda extends EnemyFactory {
         y = y - height / 2;
 
 
-        ComponentBag bag = new ComponentBag();
-        defaultEnemyBag(bag, x , y, 75);
+        ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, 75);
 
         bag.add(new VelocityComponent());
        // bag.add(new GravityComponent());
@@ -302,7 +311,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(new ExpiryRangeComponent(new Vector3(x, y, 0), Measure.units(200f)));
             //e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new FadeComponent(true, 0.2f, false));
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.RED))));
+            e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
@@ -381,7 +390,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0), Measure.units(20f)));
             //e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new FadeComponent(true, 0.2f, false));
-            e.edit().add(new OnDeathActionComponent(gibletFactory.defaultGiblets(new Color(Color.RED))));
+            e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;

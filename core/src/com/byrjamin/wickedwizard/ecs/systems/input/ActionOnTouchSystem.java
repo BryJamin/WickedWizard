@@ -1,15 +1,17 @@
 package com.byrjamin.wickedwizard.ecs.systems.input;
 
 import com.artemis.Aspect;
+import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 
 /**
- * Created by Home on 03/06/2017.
+ * Created by BB on 03/06/2017.
+ *
+ * System for running actions of Components with the ActionOnTouchComponent when the screen touches
+ * their collision boundaries
+ *
  */
 
 public class ActionOnTouchSystem extends EntitySystem {
@@ -20,18 +22,40 @@ public class ActionOnTouchSystem extends EntitySystem {
     }
 
     @Override
-    protected void processSystem() {
+    protected void processSystem() {}
 
+    @Override
+    protected boolean checkProcessing() {
+        return false;
     }
 
+    /**
+     * Runs a check to see if the inserted co-ordinates are contained in any of this system's entities'
+     * collision boundaries. If they are an action is performed
+     *
+     * @param x - x position of the area of the screen that was touched
+     * @param y - y position of the area of the screen that was touched
+     *
+     */
 
-    public class gesture extends GestureDetector.GestureAdapter {
 
-        @Override
-        public boolean tap(float x, float y, int count, int button) {
-            return super.tap(x, y, count, button);
+    /**
+     * Runs a check to see if the inserted co-ordinates are contained in any of this system's entities'
+     * collision boundaries. If they are an action is performed
+     *
+     * @param x - x position of the area of the screen that was touched
+     * @param y - y position of the area of the screen that was touched
+     * @return - True if an entity has been touched, False otherwise
+     */
+    public boolean touch(float x, float y){
+        for(Entity e : this.getEntities()) {
+            if (e.getComponent(CollisionBoundComponent.class).bound.contains(x, y)) {
+                e.getComponent(ActionOnTouchComponent.class).action.performAction(world, e);
+                return true;
+            }
         }
-    }
 
+        return false;
+    }
 
 }

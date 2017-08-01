@@ -51,8 +51,8 @@ public class BossGurner extends EnemyFactory{
     private DeathFactory df;
     private BulletFactory bf;
 
-    private final float width = Measure.units(30f);
-    private final float height = Measure.units(30f);
+    private static final float width = Measure.units(30f);
+    private static final float height = Measure.units(30f);
 
 
     public BossGurner(AssetManager assetManager) {
@@ -73,7 +73,7 @@ public class BossGurner extends EnemyFactory{
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 90);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x , y, 90);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 

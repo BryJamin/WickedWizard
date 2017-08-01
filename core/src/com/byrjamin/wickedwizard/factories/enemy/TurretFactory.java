@@ -23,7 +23,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BombFactory;
-import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.BulletMath;
@@ -38,19 +37,21 @@ import java.util.Random;
 
 public class TurretFactory extends EnemyFactory {
 
-    private WeaponFactory wf;
-    private BombFactory bf;
+    private BombFactory bombFactory;
 
-    private final float sentryHealth = 10;
-    private final float triSentryHealth = 15;
-    private final float flyByHealth = 15;
-    private final float pentaHealth = 30;
-    private final float doubleFlyByHealth = 30;
+    private final static float sentryHealth = 10;
+    private final static float triSentryHealth = 15;
+    private final static float flyByHealth = 15;
+    private final static float pentaHealth = 30;
+    private final static float doubleFlyByHealth = 30;
+
+    private final static float turretSpeed = Measure.units(15f);
+
+    private final static float turretWeaponFireRate = 2.0f;
 
     public TurretFactory(AssetManager assetManager) {
         super(assetManager);
-        wf = new WeaponFactory(assetManager);
-        bf = new BombFactory(assetManager);
+        bombFactory = new BombFactory(assetManager);
     }
 
     final float width = Measure.units(10f);
@@ -59,7 +60,7 @@ public class TurretFactory extends EnemyFactory {
     final float upgradeWidth = Measure.units(15f);
     final float upgradeHeight = Measure.units(15f);
 
-    private float upgradeSpeed = Measure.units(5f);
+    private float upgradeSpeed = Measure.units(10f);
 
     public Bag<Component> fixedLockOnTurret(float x, float y){
         x = x - width / 2;
@@ -79,7 +80,9 @@ public class TurretFactory extends EnemyFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-        WeaponComponent wc = new WeaponComponent(wf.enemyWeapon(), 2f);
+        WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(turretWeaponFireRate)
+                .angles(0).build(), turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -93,9 +96,9 @@ public class TurretFactory extends EnemyFactory {
 
         Random random = new Random();
         if(random.nextBoolean()) {
-            bag.add(new VelocityComponent(300, 0));
+            bag.add(new VelocityComponent(turretSpeed, 0));
         } else {
-            bag.add(new VelocityComponent(-300, 0));
+            bag.add(new VelocityComponent(-turretSpeed, 0));
         }
 
         bag.add(new BounceComponent());
@@ -140,7 +143,10 @@ public class TurretFactory extends EnemyFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-        WeaponComponent wc = new WeaponComponent(new MultiPistol(assetManager, 2f), 2f);
+        WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(turretWeaponFireRate)
+                .angles(0,25,-25)
+                .build(), turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -149,17 +155,9 @@ public class TurretFactory extends EnemyFactory {
     }
 
 
-    public Bag<Component> movingHorizontalMultiSentry(float x, float y){
-
+    public Bag<Component> movingHorizontalMultiSentry(float x, float y, boolean startsRight){
         ComponentBag bag = fixedMultiSentry(x,y);
-
-        Random random = new Random();
-        if(random.nextBoolean()) {
-            bag.add(new VelocityComponent(300, 0));
-        } else {
-            bag.add(new VelocityComponent(-300, 0));
-        }
-
+        bag.add(new VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
         bag.add(new BounceComponent());
 
         return bag;
@@ -168,14 +166,7 @@ public class TurretFactory extends EnemyFactory {
     public Bag<Component> movingVerticalMultiSentry(float x, float y, boolean startsUp){
 
         ComponentBag bag = fixedMultiSentry(x,y);
-
-
-        if(startsUp) {
-            bag.add(new VelocityComponent(0, 300));
-        } else {
-            bag.add(new VelocityComponent(0, -300));
-        }
-
+        bag.add(new VelocityComponent(0, startsUp ? turretSpeed : -turretSpeed));
         bag.add(new BounceComponent());
 
         return bag;
@@ -203,7 +194,7 @@ public class TurretFactory extends EnemyFactory {
 
             @Override
             public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-                Entity newEntity = BagToEntity.bagToEntity(world.createEntity(), bf.bomb(x,y,1f));
+                Entity newEntity = BagToEntity.bagToEntity(world.createEntity(), bombFactory.bomb(x,y,1f));
 
                 FrictionComponent fc = new FrictionComponent();
                 fc.airFriction = false;
@@ -218,14 +209,14 @@ public class TurretFactory extends EnemyFactory {
 
             @Override
             public float getBaseFireRate() {
-                return 2;
+                return turretWeaponFireRate;
             }
 
             @Override
             public float getBaseDamage() {
                 return 0;
             }
-        }, 2f);
+        }, turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -234,17 +225,18 @@ public class TurretFactory extends EnemyFactory {
     }
 
 
-    public Bag<Component> movingFlyByBombSentry(float x, float y){
+    public Bag<Component> movingFlyByBombSentry(float x, float y, boolean startsRight){
 
         ComponentBag bag = fixedFlyByBombSentry(x,y);
+        bag.add(new VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
+        bag.add(new BounceComponent());
 
-        Random random = new Random();
-        if(random.nextBoolean()) {
-            bag.add(new VelocityComponent(300, 0));
-        } else {
-            bag.add(new VelocityComponent(-300, 0));
-        }
+        return bag;
+    }
 
+    public Bag<Component> movingVerticalFlyByBombSentry(float x, float y, boolean startsUp){
+        ComponentBag bag = fixedFlyByBombSentry(x,y);
+        bag.add(new VelocityComponent(0, startsUp ? turretSpeed : -turretSpeed));
         bag.add(new BounceComponent());
 
         return bag;
@@ -271,7 +263,11 @@ public class TurretFactory extends EnemyFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-        WeaponComponent wc = new WeaponComponent(new MultiPistol(assetManager, 2f, 0,25,50,-25,-50), 2f);
+        WeaponComponent wc = new WeaponComponent(
+                new MultiPistol.PistolBuilder(assetManager)
+                        .angles(0,25,50,-25,-50)
+                        .fireRate(turretWeaponFireRate)
+                        .build(), turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());
@@ -315,7 +311,7 @@ public class TurretFactory extends EnemyFactory {
             public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
                 for(int i : angles) {
-                    Entity newEntity = BagToEntity.bagToEntity(world.createEntity(), bf.bomb(x, y, 1f));
+                    Entity newEntity = BagToEntity.bagToEntity(world.createEntity(), bombFactory.bomb(x, y, 1f));
                     FrictionComponent fc = new FrictionComponent();
                     fc.airFriction = false;
                     newEntity.edit().add(fc);
@@ -328,14 +324,14 @@ public class TurretFactory extends EnemyFactory {
 
             @Override
             public float getBaseFireRate() {
-                return 2;
+                return turretWeaponFireRate;
             }
 
             @Override
             public float getBaseDamage() {
                 return 0;
             }
-        }, 2f);
+        }, turretWeaponFireRate);
         bag.add(wc);
 
         bag.add(defaultTurretTrigger());

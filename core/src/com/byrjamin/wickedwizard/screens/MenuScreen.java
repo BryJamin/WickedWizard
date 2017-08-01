@@ -1,11 +1,9 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
@@ -14,7 +12,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
@@ -24,29 +21,31 @@ import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
-import com.byrjamin.wickedwizard.assets.MusicStrings;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
-import com.byrjamin.wickedwizard.ecs.systems.SoundSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
-import com.byrjamin.wickedwizard.factories.BackgroundFactory;
-import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.skins.SolitarySkin;
+import com.byrjamin.wickedwizard.screens.world.DevModeMenuWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 //TODO
@@ -61,31 +60,26 @@ public class MenuScreen extends AbstractScreen {
 
     private Viewport gameport;
 
-    public final TextureAtlas atlas;
-    public AssetManager manager;
-
-    private BitmapFont currencyFont;
+    private TextureAtlas atlas;
+    private AssetManager manager;
 
     private World world;
 
-    private Rectangle startGameButton;
-    private Rectangle tutorialGameButton;
+    private DevModeMenuWorld devModeMenuWorld;
 
-
-    private Entity startGame;
-    private Entity startTutorial;
-
-    private Entity boundOption;
-    private Entity godOption;
-
-    private Entity musicSetting;
-
-    private Entity soundSetting;
-
-    GestureDetector gestureDetector;
-    private boolean gameOver = false;
+    private GestureDetector gestureDetector;
 
     private Preferences settings;
+    private Preferences devSettings;
+    private Preferences preferences;
+
+
+    public enum MenuType {
+        MAIN, DEV, SETTING, DOWN;
+    }
+
+    private MenuType menuType;
+
 
     //TODO IF you ever click in the deck area don't cast any spells
 
@@ -93,6 +87,13 @@ public class MenuScreen extends AbstractScreen {
         super(game);
 
         settings = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
+        devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
+        preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
+
+
+        String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
+
+        menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
 
         gestureDetector = new GestureDetector(new gestures());
         manager = game.manager;
@@ -106,6 +107,9 @@ public class MenuScreen extends AbstractScreen {
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
         createMenu();
+
+        devModeMenuWorld = new DevModeMenuWorld(game, gameport);
+
     }
 
     public TextureAtlas getAtlas() {
@@ -121,9 +125,6 @@ public class MenuScreen extends AbstractScreen {
 
 
     public void createMenu(){
-
-        SoundSystem soundSystem = new SoundSystem(manager);
-
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem()
@@ -132,41 +133,83 @@ public class MenuScreen extends AbstractScreen {
                         new AnimationSystem(),
                         new StateSystem(),
                         new CollisionSystem(),
+                        new ActionOnTouchSystem(),
                         //new FindPlayerSystem(player),
                         new GravitySystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, manager, gamecam),
-                        new BoundsDrawingSystem(true),
-                        soundSystem
+                        new RenderingSystem(game.batch, manager, gameport),
+                        new BoundsDrawingSystem(),
+                        new MusicSystem(manager)
 
                 )
                 .build();
 
-        soundSystem.playMusic(MusicStrings.high_c);
-
         world = new World(config);
-
-        startGame = createButton(world, "Start", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(25f));
+        world.getSystem(MusicSystem.class).playMainMenuMusic();
 
 
-        startTutorial = createButton(world, "Tutorial", gameport.getWorldWidth() / 2
-                ,gameport.getWorldHeight() / 2 + Measure.units(10f));
 
 
-        boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, false);
-        boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
+        Entity backdrop = world.createEntity();
+        backdrop.edit().add(new PositionComponent(0,0));
+        backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
+                ColorResource.RGBtoColor(137, 207, 240, 1)));
+
+        MenuButton mb = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+
+        Color foreGround = new Color(Color.BLACK);
+        Color backGround = new Color(1,1,1,0.75f);
+
+
+
+        final boolean quickSaveDataIsDefault =
+                preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE).equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+
+
+        final boolean quickSaveDataIsReadable = QuickSave.checkQuickSave();
+
+        final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
+
+        Entity startGame = mb.createButton(world, quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
+                ,MainGame.GAME_HEIGHT / 2 + Measure.units(5f),
+                Measure.units(30f),
+                Measure.units(10f),
+                foreGround,
+                backGround);
+
+        startGame.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game));
+                world.getSystem(MusicSystem.class).stopMusic();
+            }
+        }));
+
+        Entity startTutorial = mb.createButton(world, "Tutorial", CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
+                ,MainGame.GAME_HEIGHT / 2 - Measure.units(10f),
+                Measure.units(30f),
+                Measure.units(10f),
+                foreGround,
+                backGround);
+
+        startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
+                world.getSystem(MusicSystem.class).stopMusic();
+
+            }
+        }));
+
 
         boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
         boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
-        boundOption = createButton(world, isBound ? "Bounds on" : "Bounds off", Measure.units(20f), Measure.units(30));
-        godOption = createButton(world, isGod ? "GodMode on" : "GodMode off", Measure.units(20f), Measure.units(20));
 
-        float x = Measure.units(50f);
-        float y = Measure.units(10f);
+        float x = Measure.units(5f);
+        float y = Measure.units(5);
 
-        musicSetting = world.createEntity();
+        Entity musicSetting = world.createEntity();
         musicSetting.edit().add(new PositionComponent(x, y));
         musicSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
         TextureRegionComponent trc = new TextureRegionComponent(musicOn ? atlas.findRegion(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegion(TextureStrings.SETTINGS_MUSIC_OFF),
@@ -176,12 +219,20 @@ public class MenuScreen extends AbstractScreen {
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, musicOn ? atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
         musicSetting.edit().add(new AnimationComponent(animMap));
+        musicSetting.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+                settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, !musicOn).flush();
+                setUpMusicEntity(e, !musicOn);
+            }
+        }));
 
 
-        x = Measure.units(60f);
-        y = Measure.units(10f);
+        x = Measure.units(17.5f);
+        y = Measure.units(5);
 
-        soundSetting = world.createEntity();
+        Entity soundSetting = world.createEntity();
         soundSetting.edit().add(new PositionComponent(x, y));
         soundSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
         trc = new TextureRegionComponent(soundOn ? atlas.findRegion(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegion(TextureStrings.SETTINGS_SOUND_OFF),
@@ -191,97 +242,14 @@ public class MenuScreen extends AbstractScreen {
         animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, soundOn ? atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
         soundSetting.edit().add(new AnimationComponent(animMap));
-        //Player
-
-/*        Entity player = world.createEntity();
-        player.edit().add(new PositionComponent(Measure.units(80f),Measure.units(18f)));
-        player.edit().add(new CollisionBoundComponent(new Rectangle(600,900,100, 100)));
-        player.edit().add(new VelocityComponent(0,0));
-        player.edit().add(new GravityComponent());
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(0);
-        player.edit().add(sc);
-
-        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions("block_walk"), Animation.PlayMode.LOOP));
-
-        player.edit().add(new AnimationComponent(k));
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),0, 0,
-                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
-        trc.color = new Color(Color.WHITE);
-        trc.DEFAULT = new Color(Color.WHITE);
-        player.edit().add(trc);*/
-
-
-        SolitarySkin ss = new SolitarySkin(atlas);
-
-        DecorFactory df = new DecorFactory(manager, ss);
-        BackgroundFactory bf = new BackgroundFactory();
-
-
-        Bag<Bag<Component>> bags = new Bag<Bag<Component>>();
-        bags.add(df.wallBag(0, 0, Measure.units(5), gameport.getWorldHeight(), new Color(Color.BLACK)));
-        bags.add(df.wallBag(0, 0, gameport.getWorldWidth(), Measure.units(10f), new Color(Color.BLACK)));
-        bags.add(df.wallBag(0, gameport.getWorldHeight() - Measure.units(5f), gameport.getWorldWidth(), Measure.units(5), new Color(Color.BLACK)));
-
-        bags.add(bf.backgroundBags(0,0, gameport.getWorldWidth(), gameport.getWorldHeight(), Measure.units(20),
-                atlas.findRegions("block"), new Color(Color.BLACK)));
-
-        for(Bag<Component> b  : bags) {
-            Entity e = world.createEntity();
-            for(Component c : b){
-                e.edit().add(c);
+        soundSetting.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
+                settings.putBoolean(PreferenceStrings.SETTINGS_SOUND, !soundOn).flush();
+                setUpSoundEntity(e, !soundOn);
             }
-        }
-
-     /*   Entity e = world.createEntity();
-        e.edit().add(new PositionComponent(gamecam.viewportWidth / 2
-                ,gamecam.position.y - gamePort.getWorldHeight() / 2 + 800));
-        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, "Start", gamecam.viewportWidth, 0, TextureRegionComponent.BACKGROUND_LAYER_FAR);
-        e.edit().add(tfc);
-        e.edit().add(new CollisionBoundComponent(new Rectangle(gamecam.viewportWidth / 2,
-                gamecam.position.y - gamePort.getWorldHeight() / 2 + 700, gamecam.viewportWidth, Measure.units(10f))));*/
-
-    }
-
-
-
-    public Entity createButton(World world, String text, float x, float y){
-
-        SolitarySkin ss = new SolitarySkin(atlas);
-
-        float width = Measure.units(30f);
-        float height = Measure.units(10f);
-
-        x = x - width / 2;
-        y = y - width / 2;
-
-        Entity e = world.createEntity();
-        e.edit().add(new PositionComponent(x,y));
-        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, text, 0, height / 2 + Measure.units(1f), width, height,
-                TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.WHITE));
-
-
-        /*        tfc.color = ss.getBackgroundTint();
-        tfc.DEFAULT = ss.getBackgroundTint();*/
-        e.edit().add(tfc);
-
-        Rectangle r = new Rectangle(x, y, width, height);
-
-        e.edit().add(new CollisionBoundComponent(r));
-
-/*
-        Entity shape = world.createEntity();
-        shape.edit().add(new PositionComponent(x,y));
-
-        ShapeComponent sc = new ShapeComponent(width,height, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
-        sc.color = ss.getWallTint();
-        sc.DEFAULT = ss.getWallTint();
-
-
-        shape.edit().add(sc);*/
-
-        return e;
+        }));
 
     }
 
@@ -309,11 +277,15 @@ public class MenuScreen extends AbstractScreen {
 
         handleInput(world.delta);
         world.process();
+        if(menuType == MenuType.MAIN) {
+          //  world.process();
+        } else if(menuType == MenuType.DEV){
+            devModeMenuWorld.process(delta);
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        //Updates the view port to the designated width and height.
         gameport.update(width, height);
 
     }
@@ -335,7 +307,7 @@ public class MenuScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
     }
 
     public void setUpMusicEntity(Entity musicEntity, boolean musicOn) {
@@ -343,7 +315,6 @@ public class MenuScreen extends AbstractScreen {
                     new Animation<TextureRegion>(0.15f / 1f, musicOn ?
                             atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) :
                             atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
-        System.out.println(musicOn);
     }
 
     public void setUpSoundEntity(Entity soundEntity, boolean soundOn) {
@@ -357,57 +328,34 @@ public class MenuScreen extends AbstractScreen {
 
         @Override
         public boolean tap(float x, float y, int count, int button) {
-
-
             Vector3 touchInput = new Vector3(x, y, 0);
             gameport.unproject(touchInput);
 
-            if (startGame.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-                game.setScreen(new PlayScreen(game, false));
-                world.getSystem(SoundSystem.class).stopMusic();
+            if(menuType == MenuType.MAIN) {
+                world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+            } else if(menuType == MenuType.DEV){
+                devModeMenuWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
             }
-
-            if (startTutorial.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-                game.setScreen(new PlayScreen(game, true));
-                world.getSystem(SoundSystem.class).stopMusic();
-            }
-
-            if (boundOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-
-                boolean isBound = settings.getBoolean(PreferenceStrings.SETTINGS_BOUND, true);
-                settings.putBoolean(PreferenceStrings.SETTINGS_BOUND, !isBound).flush();
-                boundOption.getComponent(TextureFontComponent.class).text = !isBound ? "Bounds on" : "Bounds off";
-                //game.setScreen(new PlayScreen(game, true));
-            }
-
-            if (godOption.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x,touchInput.y)) {
-
-                boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, true);
-                settings.putBoolean(PreferenceStrings.SETTINGS_GODMODE, !isGod).flush();
-                godOption.getComponent(TextureFontComponent.class).text = !isGod ? "GodMode on" : "GodMode off";
-
-
-                //game.setScreen(new PlayScreen(game, true));
-            }
-
-            if(musicSetting.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x, touchInput.y)) {
-                boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
-                settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, !musicOn).flush();
-                setUpMusicEntity(musicSetting, !musicOn);
-            }
-
-            if(soundSetting.getComponent(CollisionBoundComponent.class).bound.contains(touchInput.x, touchInput.y)) {
-                boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
-                settings.putBoolean(PreferenceStrings.SETTINGS_SOUND, !soundOn).flush();
-                setUpSoundEntity(soundSetting, !soundOn);
-            }
-
-
-           // boolean isGod = settings.getBoolean(PreferenceStrings.SETTINGS_GODMODE, false);
-
             return true;
         }
 
+
+        @Override
+        public boolean longPress(float x, float y) {
+
+            switch(menuType) {
+                case DEV: menuType = MenuType.MAIN;
+                    devSettings.putString(PreferenceStrings.DEV_MENU_IS_DEV, menuType.name());
+                    devSettings.flush();
+                    break;
+                case MAIN: menuType = MenuType.DEV;
+                    devSettings.putString(PreferenceStrings.DEV_MENU_IS_DEV, menuType.name());
+                    devSettings.flush();
+                    break;
+            }
+
+            return true;
+        }
     }
 
 }

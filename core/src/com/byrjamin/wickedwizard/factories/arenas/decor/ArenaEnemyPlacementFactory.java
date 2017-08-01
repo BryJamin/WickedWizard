@@ -114,10 +114,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
     public ComponentBag spawnMovingJig(float x, float y){
+        return spawnMovingJig(x, y, random.nextBoolean());
+    }
+
+    public ComponentBag spawnMovingJig(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return jigFactory.movingJig(x,y);
+                return jigFactory.movingJig(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
@@ -208,10 +212,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
     public ComponentBag spawnMovingTriSentry(float x, float y){
+        return spawnMovingTriSentry(x, y, random.nextBoolean());
+    }
+
+    public ComponentBag spawnMovingTriSentry(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingHorizontalMultiSentry(x,y);
+                return turretFactory.movingHorizontalMultiSentry(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
@@ -258,14 +266,29 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
     public ComponentBag spawnMovingFlyByBombSentry(float x, float y){
+        return spawnMovingFlyByBombSentry(x, y, random.nextBoolean());
+    }
+
+    public ComponentBag spawnMovingFlyByBombSentry(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingFlyByBombSentry(x,y);
+                return turretFactory.movingFlyByBombSentry(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
     }
+
+    public ComponentBag spawnVertivalMovingFlyByBombSentry(float x, float y, final boolean startsUp){
+        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
+        s.add(new SpawnerFactory.Spawner() {
+            public Bag<Component> spawnBag(float x, float y) {
+                return turretFactory.movingVerticalFlyByBombSentry(x,y, startsUp);
+            }
+        });
+        return spawnerFactory.spawnerBag(x, y, s);
+    }
+
 
     public ComponentBag spawnFixedFlyByDoubleBombSentry(float x, float y){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
@@ -287,11 +310,16 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, 1,1.0f, 1.5f, s);
     }
 
+
     public ComponentBag spawnkugelDusche(float x, float y){
+        return spawnkugelDusche(x, y, random.nextBoolean());
+    }
+
+    public ComponentBag spawnkugelDusche(float x, float y, final boolean turnsLeft){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return kugelDuscheFactory.kugelDusche(x,y);
+                return kugelDuscheFactory.kugelDusche(x,y, turnsLeft);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
@@ -358,10 +386,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
     public ComponentBag spawnGoatWizard(float x, float y){
+        return spawnGoatWizard(x,y,random.nextBoolean(), random.nextBoolean());
+    }
+
+    public ComponentBag spawnGoatWizard(float x, float y, final boolean startsRight, final boolean startsUp){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return goatWizardFactory.goatWizard(x,y);
+                return goatWizardFactory.goatWizard(x,y, startsRight, startsUp);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);

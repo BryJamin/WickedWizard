@@ -10,38 +10,25 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.DeathFactory;
-import com.byrjamin.wickedwizard.factories.weapons.WeaponFactory;
-import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 26/03/2017.
@@ -61,18 +48,9 @@ public class BlobFactory extends EnemyFactory {
 
     private float speed = Measure.units(15f);
 
-    private ItemFactory itemf;
-    private WeaponFactory wf;
-    private DeathFactory df;
-
-    private Color defaultBlobColor = new Color(75f / 255f, 232f / 255f, 14f / 255f, 1f);
-    private Color fastBlobColor = new Color(241f / 255f,53f / 255f,53f / 255f, 1f);
 
     public BlobFactory(AssetManager assetManager) {
         super(assetManager);
-        this.df = new DeathFactory(assetManager);
-        this.itemf = new ItemFactory(assetManager);
-        this.wf = new WeaponFactory(assetManager);
     }
 
 
@@ -112,22 +90,22 @@ public class BlobFactory extends EnemyFactory {
 
 
     public ComponentBag blobBag(float x, float y, boolean startsRight){
-        return blob(x,y,1,Measure.units(15f), 10, startsRight, defaultBlobColor);
+        return blob(x,y,1,Measure.units(15f), 10, startsRight, ColorResource.BLOB_GREEN);
     }
 
     public ComponentBag angryBlobBag(float x, float y,  boolean startsRight){
-        return blob(x,y,1,Measure.units(30f), 15, startsRight, fastBlobColor);
+        return blob(x,y,1,Measure.units(30f), 15, startsRight, ColorResource.BLOB_RED);
     }
 
     public Bag<Component> smallblobBag(float x, float y,  boolean startsRight){
-        ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, startsRight, defaultBlobColor);
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(30f), 2, startsRight, ColorResource.BLOB_GREEN);
         BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new ExploderComponent());
         return bag;
     }
 
     public ComponentBag angrySmallBag(float x, float y,  boolean startsRight){
-        ComponentBag bag = blob(x,y,0.5f,Measure.units(45f), 3, startsRight, fastBlobColor);
+        ComponentBag bag = blob(x,y,0.5f,Measure.units(45f), 3, startsRight, ColorResource.BLOB_RED);
         BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new ExploderComponent());
         return bag;
@@ -166,7 +144,7 @@ public class BlobFactory extends EnemyFactory {
         bag.add(new GravityComponent());
         bag.add(new EnemyComponent());
         bag.add(new HealthComponent(1000));
-        bag.add(new BlinkComponent());
+        bag.add(new BlinkOnHitComponent());
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(0);
         bag.add(sc);

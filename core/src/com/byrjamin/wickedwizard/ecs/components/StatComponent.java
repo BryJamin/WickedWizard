@@ -51,4 +51,20 @@ public class StatComponent extends Component {
     }
 
 
+    public void applyStats(StatComponent statComponent){
+        this.health = statComponent.health;
+        this.maxHealth = statComponent.maxHealth;
+        this.damage = statComponent.damage;
+        this.armor = statComponent.armor;
+        this.fireRate = statComponent.fireRate;
+        this.speed = statComponent.speed;
+        this.luck = statComponent.luck;
+        this.range = statComponent.range;
+        this.shotSpeed = statComponent.shotSpeed;
+        this.accuracy = statComponent.accuracy;
+        this.crit = statComponent.crit;
+
+    }
+
+
 }

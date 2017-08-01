@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.byrjamin.wickedwizard.GameTest;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemStore;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,14 +38,15 @@ public class LevelItemSystemTest extends GameTest {
         assetManager.finishLoading();
         TextureAtlas atlas = assetManager.get("/android/assets/sprite.atlas", TextureAtlas.class);
 
-        LevelItemSystem l = new LevelItemSystem(new Random());
 
-        for(Item i : l.getItemPool()) {
-            Assert.assertTrue(i.getRegionName().getLeft()
+        ItemStore itemStore = new ItemStore(new Random());
+
+        for(ItemStore.ItemOptions i : itemStore.getItemOptions()) {
+            Assert.assertTrue(i.item.getRegionName().getLeft()
                     + " index "
-                    + i.getRegionName().getRight()
+                    + i.item.getRegionName().getRight()
                     + " is not inside of the sprite atlas",
-                    atlas.findRegion(i.getRegionName().getLeft()) != null);
+                    atlas.findRegion(i.item.getRegionName().getLeft()) != null);
         }
 
     }

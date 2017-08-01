@@ -1,5 +1,9 @@
 package com.byrjamin.wickedwizard.utils;
 
+import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
+
+import java.util.Comparator;
+
 /**
  * Created by Home on 03/02/2017.
  */
@@ -79,4 +83,20 @@ public class MapCoords {
         result = 31 * result + y;
         return result;
     }
+
+
+    public static final Comparator<MapCoords> FAR_COMPARATOR = new Comparator<MapCoords>() {
+        @Override
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
+
+
+
+
+
+
+
+            return 0;
+        }
+    };
+
 }

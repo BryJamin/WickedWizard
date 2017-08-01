@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -28,7 +27,6 @@ import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.sun.org.apache.xpath.internal.operations.Or;
 
 /**
  * Created by Home on 25/06/2017.
@@ -39,7 +37,7 @@ public class CowlFactory extends EnemyFactory{
     public float width = Measure.units(7.5f);
     public float height = Measure.units(7.5f);
 
-    private final static float radius = Measure.units(35f);
+    private final static float radius = Measure.units(30f);
     private final static float speedInDegrees = 1f;
 
     public float cowlHealth = 10f;
@@ -57,8 +55,8 @@ public class CowlFactory extends EnemyFactory{
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, cowlHealth);
 
         FadeComponent fc = new FadeComponent(true, 1.5f, true);
-        fc.minAlpha = 0.3f;
-        fc.maxAlpha = 0.8f;
+        fc.minAlpha = 0.5f;
+        fc.maxAlpha = 1f;
 
         bag.add(fc);
 
@@ -79,20 +77,21 @@ public class CowlFactory extends EnemyFactory{
         WeaponComponent wc = new WeaponComponent(
                 new MultiPistol.PistolBuilder(assetManager)
                         .color(new Color(ColorResource.GHOST_BULLET_COLOR))
-                        .fireRate(1.5f)
+                        .fireRate(0.5f)
                         .shotScale(3)
+                        //.bulletOffsets(Measure.units(2.5f), -Measure.units(2.5f))
+                        .shotSpeed(Measure.units(60f))
                         .angles(0)
                         .intangible(true)
-                        .build(),
-                1f);
+                        .build());
         bag.add(wc);
 
 
         bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                e.edit().add(new FiringAIComponent());
-                e.getComponent(WeaponComponent.class).addChargeTime(1f);
+                e.edit().add(new FiringAIComponent(270));
+                //e.getComponent(WeaponComponent.class).addChargeTime(1f);
             }
 
             @Override
@@ -106,7 +105,7 @@ public class CowlFactory extends EnemyFactory{
             @Override
             public void performAction(World world, Entity e) {
 
-                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPC(PositionComponent.class);
+                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 e.edit().add(new OrbitComponent(pc.position, radius, startsLeft ? speedInDegrees : -speedInDegrees, startingAngleInDegrees));
 
             }

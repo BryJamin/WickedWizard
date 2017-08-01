@@ -6,15 +6,19 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
-import com.byrjamin.wickedwizard.utils.BagSearch;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
+import com.byrjamin.wickedwizard.factories.BulletFactory;
+import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -22,22 +26,36 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 16/06/2017.
  */
 
-public class MultiPistol extends Pistol {
+public class MultiPistol implements Weapon {
 
-    private float shotScale = 4;
-    private float fireRate = 1.5f;
-    private float shotSpeed = Measure.units(50);
-    private float expireRange;
 
-    private boolean gravity = false;
-    private boolean expire = false;
-    private boolean intangible = false;
-    private boolean enemy = true;
+    private final AssetManager assetManager;
 
-    private int[] angles = new int[] {0,25,-25};
+    private final BulletFactory bulletFactory;
 
-    private Color color = new Color(Color.RED);
+    private final float shotScale;
+    private final float fireRate;
+    private final float shotSpeed;
+    private final float expireRange;
+    private final float damage;
 
+
+    private final boolean gravity;
+    private final boolean expire;
+    private final boolean intangible;
+    private final boolean enemy;
+
+    private final int[] angles;
+    private final float[] bulletOffsets;
+
+    private final Color color;
+
+    private final OnDeathActionComponent customOnDeathAction;
+
+
+    private final Giblets giblets;
+
+    private static final float gibletScaleModifier = 0.125f;
 
 
 
@@ -51,6 +69,7 @@ public class MultiPistol extends Pistol {
         private float fireRate = 1.5f;
         private float shotSpeed = Measure.units(50);
         private float expireRange = Measure.units(100f);
+        private float damage = 0f;
 
         private boolean gravity = false;
         private boolean expire = false;
@@ -59,7 +78,11 @@ public class MultiPistol extends Pistol {
 
         private int[] angles = new int[]{0};
 
-        private Color color = new Color(Color.RED);
+        private float[] bulletOffsets = new float[]{0};
+
+        private OnDeathActionComponent customOnDeathAction = null;
+
+        private Color color = new Color(ColorResource.ENEMY_BULLET_COLOR);
 
         public PistolBuilder(AssetManager assetManager) {
             this.assetManager = assetManager;
@@ -75,7 +98,10 @@ public class MultiPistol extends Pistol {
         { shotSpeed = val; return this; }
 
         public PistolBuilder expireRange(float val)
-        { expireRange = val; return this; }
+        { expireRange = val; expire(true); return this; }
+
+        public PistolBuilder damage(float val)
+        { expireRange = val; expire(true); return this; }
 
         public PistolBuilder gravity(boolean val)
         { gravity = val; return this; }
@@ -92,8 +118,14 @@ public class MultiPistol extends Pistol {
         public PistolBuilder angles(int... val)
         { angles = val; return this; }
 
+        public PistolBuilder bulletOffsets(float... val)
+        { bulletOffsets = val; return this; }
+
         public PistolBuilder color(Color val)
         { color = val; return this; }
+
+        public PistolBuilder customOnDeathAction(OnDeathActionComponent val)
+        { customOnDeathAction = val; return this; }
 
         public MultiPistol build() {
             return new MultiPistol(this);
@@ -103,11 +135,16 @@ public class MultiPistol extends Pistol {
     }
 
     public MultiPistol(PistolBuilder pb){
-        super(pb.assetManager, pb.fireRate);
+
+        this.assetManager = pb.assetManager;
+
+        this.bulletFactory = new BulletFactory(assetManager);
+
 
         this.shotScale = pb.shotScale;
         this.fireRate = pb.fireRate;
         this.shotSpeed = pb.shotSpeed;
+        this.damage = pb.damage;
 
         this.expireRange = pb.expireRange;
         this.gravity = pb.gravity;
@@ -116,49 +153,56 @@ public class MultiPistol extends Pistol {
         this.enemy = pb.enemy;
 
         this.angles = pb.angles;
+        this.bulletOffsets = pb.bulletOffsets;
+
+        this.customOnDeathAction = pb.customOnDeathAction;
 
         this.color = pb.color;
 
-    }
+
+        this.giblets = new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(3)
+                .fadeRate(0.0f)
+                .size(Measure.units(gibletScaleModifier * shotScale)) //Was just a flat 0.5f, but this is an experiment
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
+                .mixes(SoundFileStrings.queitExplosionMegaMix)
+                .colors(color)
+                .intangible(false)
+                .expiryTime(0.2f)
+                .build();
 
 
-    public MultiPistol(AssetManager assetManager, float fireRate) {
-        super(assetManager, fireRate);
-    }
-
-    public MultiPistol(AssetManager assetManager, float fireRate, int... angles) {
-        super(assetManager, fireRate);
-        setAngles(angles);
-    }
-
-
-    public void setAngles(int[] angles) {
-        this.angles = angles;
-    }
-
-    public void setScale(float scale) {
-        this.shotScale = scale;
     }
 
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-        for(int i : angles) {
-            Entity bullet = world.createEntity();
-            double angleOfTravel = angleInRadians + Math.toRadians(i);
-            for (Component c : bulletFactory.basicBulletBag(x, y, shotScale, color)) {
-                bullet.edit().add(c);
-            }
+
+
+        for (float f : bulletOffsets) {
+
+            for (int i : angles) {
+                Entity bullet = world.createEntity();
+                double angleOfTravel = angleInRadians + Math.toRadians(i);
+
+                for (Component c : bulletFactory.basicBulletBag(
+                        x + (BulletMath.velocityX(f, angleInRadians + (Math.PI / 2))),
+                        y + (BulletMath.velocityY(f, angleInRadians + (Math.PI / 2))),
+                        shotScale,
+                        color)) {
+                    bullet.edit().add(c);
+                }
 
                 bullet.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeed, angleOfTravel),
                         BulletMath.velocityY(shotSpeed, angleOfTravel)));
 
-                if(enemy) bullet.edit().add(new EnemyComponent());
+                if (enemy) bullet.edit().add(new EnemyComponent());
 
-                if(gravity) bullet.edit().add(new GravityComponent());
+                if (gravity) bullet.edit().add(new GravityComponent());
 
-                if(intangible) bullet.edit().add(new IntangibleComponent());
+                if (intangible) bullet.edit().add(new IntangibleComponent());
 
-                if(expire) {
+                if (expire) {
 
                     CollisionBoundComponent cbc = bullet.getComponent(CollisionBoundComponent.class);
                     bullet.edit().add(new ExpiryRangeComponent(
@@ -166,10 +210,31 @@ public class MultiPistol extends Pistol {
                 }
 
 
-                bullet.edit().add(new OnDeathActionComponent(gibletFactory.giblets(5, 0.2f, (int)
-                        Measure.units(10f), (int) Measure.units(20f),Measure.units(0.5f), new Color(Color.RED))));
-                //bullet.edit().remove(CollisionBoundComponent.class);
+
+                if(customOnDeathAction == null) {
+                    bullet.edit().add(new OnDeathActionComponent(giblets));
+                } else {
+                    bullet.edit().add(customOnDeathAction);
+                }
+            }
+
+
         }
+
+
+        world.getSystem(SoundSystem.class).playSound(SoundFileStrings.enemyFireMix);
+
+
+    }
+
+    @Override
+    public float getBaseFireRate() {
+        return fireRate;
+    }
+
+    @Override
+    public float getBaseDamage() {
+        return damage;
     }
 
 }

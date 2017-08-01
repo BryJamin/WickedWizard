@@ -117,7 +117,9 @@ public class BouncerFactory extends EnemyFactory {
 
 
         ComponentBag bag = basicBouncer(x,y,width,height,speed, isLeft);
-
+        BagSearch.removeObjectOfTypeClass(TextureRegionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(AnimationStateComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(AnimationComponent.class, bag);
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -141,14 +143,14 @@ public class BouncerFactory extends EnemyFactory {
 
         bag.add(new WeaponComponent(multiPistol, 0f));
 
-        Action a = new Action() {
+        Action action = new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 e.getComponent(WeaponComponent.class).weapon.fire(world, e, e.getComponent(CollisionBoundComponent.class).getCenterX(), e.getComponent(CollisionBoundComponent.class).getCenterY(), 0);
             }
         };
 
-        bag.add(new OnCollisionActionComponent(a,a,a,a));
+        bag.add(new OnCollisionActionComponent(action,action,action,action));
 
 
         return bag;

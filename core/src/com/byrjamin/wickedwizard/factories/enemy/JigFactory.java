@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -9,6 +11,8 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -16,6 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.CircleBlast;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -30,6 +35,10 @@ public class JigFactory extends EnemyFactory{
 
     private float texwidth = Measure.units(10f);
     private float texheight = Measure.units(10f);
+
+    private static final float fireRate = 0.75f;
+
+    private static final float speed = Measure.units(10f);
 
     private float health = 15;
 
@@ -69,14 +78,24 @@ public class JigFactory extends EnemyFactory{
                 atlas.findRegions(TextureStrings.JIG_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
-
         bag.add(new FiringAIComponent(0,0));
 
-        CircleBlast cb = new CircleBlast(assetManager, new int[] {0, 60,120,180,240,300}, 0.75f, 30f, true);
-        cb.setSpeed(Measure.units(20f));
-        cb.setSize(3);
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians(30f);
+            }
+        }, fireRate, true));
 
-        bag.add(new WeaponComponent(cb, 0));
+
+        MultiPistol multiPistol = new MultiPistol.PistolBuilder(assetManager)
+                .angles(0, 60,120,180,240,300)
+                .shotSpeed(Measure.units(30f))
+                .fireRate(fireRate)
+                .shotScale(3)
+                .build();
+
+        bag.add(new WeaponComponent(multiPistol, 0));
 
         return bag;
 
@@ -84,11 +103,10 @@ public class JigFactory extends EnemyFactory{
     }
 
 
-    public ComponentBag movingJig(float x, float y){
-
+    public ComponentBag movingJig(float x, float y, boolean startsRight){
 
         ComponentBag bag = stationaryJig(x,y);
-        bag.add(new VelocityComponent(Measure.units(10f), 0));
+        bag.add(new VelocityComponent(startsRight ? speed : -speed, 0));
         bag.add(new BounceComponent());
 
         return bag;

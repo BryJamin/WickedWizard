@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaGen;
+import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -42,8 +42,8 @@ public class GiantKugelRoom extends AbstractFactory {
     }
 
 
-    public ArenaGen giantKugelArena(){
-        return new ArenaGen() {
+    public ArenaCreate giantKugelArena(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

@@ -49,9 +49,7 @@ public class PylonFactory extends EnemyFactory {
     }
 
 
-
-
-    public ComponentBag pylonBag(float x, float y, float rotationInDegrees){
+    private ComponentBag basePylonBag(float x, float y, float rotationInDegrees, Color color){
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
@@ -62,27 +60,37 @@ public class PylonFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.05f / 1f,
-                atlas.findRegions(TextureStrings.PYLON_SPAWNING), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>( 1f / 25f,
+                atlas.findRegions(TextureStrings.PYLON_SPAWNING)));
         animMap.put(PYLONCHARGE, new Animation<TextureRegion>(0.15f / 1f,
                 atlas.findRegions(TextureStrings.PYLON_CHARGING), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AMOEBA),
+        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.PYLON_SPAWNING),
                 width, height,
-                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(color));
         tfc.rotation = rotationInDegrees;
 
         bag.add(tfc);
 
-        MultiPistol mp = new MultiPistol(assetManager, 1.5f);
+        return bag;
+
+    }
+
+
+    public ComponentBag pylonBag(float x, float y, float rotationInDegrees){
+
+        ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.ENEMY_BULLET_COLOR);
 
         int[] ints = new int[] {0,45,90,135,180};
         for(int i = 0; i < ints.length; i++) ints[i] = ints[i] + (int) rotationInDegrees;
 
-        mp.setAngles(ints);
-        mp.setScale(3);
+        MultiPistol mp = new MultiPistol.PistolBuilder(assetManager)
+                .fireRate(1.5f)
+                .angles(ints)
+                .shotScale(3)
+                .build();
 
         bag.add(spawningCondition(0, mp));
 
@@ -92,28 +100,7 @@ public class PylonFactory extends EnemyFactory {
 
     public ComponentBag ghostPylonBag(float x, float y, float rotationInDegrees){
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
-
-        BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
-
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
-
-
-        bag.add(new AnimationStateComponent(0));
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.05f / 1f,
-                atlas.findRegions(TextureStrings.PYLON_SPAWNING), Animation.PlayMode.LOOP));
-        animMap.put(PYLONCHARGE, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(TextureStrings.PYLON_CHARGING), Animation.PlayMode.LOOP));
-
-        bag.add(new AnimationComponent(animMap));
-
-        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AMOEBA),
-                width, height,
-                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(ColorResource.GHOST_BULLET_COLOR));
-        tfc.rotation = rotationInDegrees;
-
-        bag.add(tfc);
+        ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.GHOST_BULLET_COLOR);
 
         int[] ints = new int[] {0,45,90,135,180};
         for(int i = 0; i < ints.length; i++) ints[i] = ints[i] + (int) rotationInDegrees;
@@ -126,12 +113,6 @@ public class PylonFactory extends EnemyFactory {
                 .expire(true)
                 .expireRange(Measure.units(100f))
                 .build();
-
-
-
-
-        mp.setAngles(ints);
-        mp.setScale(3);
 
         bag.add(spawningCondition(0, mp));
 

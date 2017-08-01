@@ -6,7 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -17,18 +17,24 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
- * Created by Home on 05/03/2017.
+ * Created by BB on 05/03/2017.
+ *
+ * Gets all entities in the world that have an Enemy Component or Hazard Component
+ *
+ * If the player's hitbox overlaps the hitbox of any of entites a set amount of damage is applied
+ *
  */
 public class EnemyCollisionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<HealthComponent> hm;
+    ComponentMapper<HealthComponent> healthMapper;
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<ExploderComponent> em;
-    ComponentMapper<BlinkComponent> bm;
+    ComponentMapper<ExploderComponent> exploderMapper;
+
+    private static final int enemyDamage = 1;
 
     @SuppressWarnings("unchecked")
     public EnemyCollisionSystem() {
-        super(Aspect.all(PlayerComponent.class, BlinkComponent.class));
+        super(Aspect.all(PlayerComponent.class, BlinkOnHitComponent.class));
     }
 
     @Override
@@ -43,20 +49,14 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
 
                 for (HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
                     if (cbm.get(e).bound.overlaps(hb.hitbox)) {
-                        hm.get(e).applyDamage(1);
-                        if(em.has(entityIds.get(i))){
+                        healthMapper.get(e).applyDamage(enemyDamage);
+                        if(exploderMapper.has(entityIds.get(i))){
                             world.getSystem(OnDeathSystem.class).kill(world.getEntity((entityIds.get(i))));
                         }
                         break;
                     }
             }
         }
-
-
-        //PositionComponent pc = pm.get(e);
-        //VelocityComponent vc = vm.get(e);
-
-        //pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
 
     }
 

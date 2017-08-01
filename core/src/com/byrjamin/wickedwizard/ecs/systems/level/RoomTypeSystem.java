@@ -9,17 +9,13 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
 
 /**
  * Created by Home on 25/03/2017.
  */
 
 public class RoomTypeSystem extends BaseSystem {
-
-
-    public boolean nextLevelDoor = false;
-
-    private boolean inCombat = false;
 
     @Override
     protected void processSystem() {
@@ -33,34 +29,12 @@ public class RoomTypeSystem extends BaseSystem {
                 if(world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class).exclude(BulletComponent.class)).getEntities().size() <= 0){
 
                     if(!(current.getWaves().size <= 0)) {
-
-                        //Entity newEntity = world.createEntity();
-
-                        for(Bag<Component> bag : (current.getWaves().removeFirst())){
-                            Entity newEntity = world.createEntity();
-                            for(Component c : bag){
-                                newEntity.edit().add(c);
-                            }
-                        }
-
+                        BagToEntity.bagsToEntities(world, current.getWaves().removeFirst());
                         break;
-
                     }
-
 
                     world.getSystem(LockSystem.class).unlockDoors();
                     world.getSystem(InCombatSystem.class).leaveCombat();
-
-
-/*                    if(current.roomType == Arena.RoomType.BOSS) {
-                        if (!nextLevelDoor && world.getSystem(ChangeLevelSystem.class).getLevel() != ChangeLevelSystem.Level.FIVE) {
-                            Entity e = world.createEntity();
-                            for (Component c : new DeathFactory(world.getSystem(RenderingSystem.class).getAssetManager()).worldPortal(current.getWidth() / 2, current.getHeight() / 2)) {
-                                e.edit().add(c);
-                            }
-                            nextLevelDoor = true;
-                        }
-                    }*/
 
                 } else {
                     world.getSystem(LockSystem.class).lockDoors();

@@ -7,7 +7,7 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -28,7 +28,7 @@ public class DoorSystem extends EntityProcessingSystem {
     ComponentMapper<LockComponent> lm;
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
-    ComponentMapper<BlinkComponent> bm;
+    ComponentMapper<BlinkOnHitComponent> bm;
 
     @SuppressWarnings("unchecked")
     public DoorSystem() {
@@ -58,7 +58,6 @@ public class DoorSystem extends EntityProcessingSystem {
 
                 CollisionBoundComponent cbc = cbm.get(doorEntity);
                 if(cbc.bound.overlaps(cbm.get(e).bound)) {
-                   // System.out.println("INSIDE THA DOOR");
 
                     if(lm.has(doorEntity)) {
                         if(!lm.get(doorEntity).isLocked()) {
@@ -66,7 +65,7 @@ public class DoorSystem extends EntityProcessingSystem {
                             float doorEntryPercentage = ((cbm.get(e).bound.y - cbc.bound.getY()) /
                                     (cbc.bound.getHeight()));
 
-                            world.getSystem(RoomTransitionSystem.class).goFromTo(
+                            world.getSystem(RoomTransitionSystem.class).goFromSourceDoorToDestinationDoor(
                                     dm.get(doorEntity),
                                     doorEntryPercentage);
                         }

@@ -7,7 +7,12 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 
 /**
- * Created by Home on 13/04/2017.
+ * Created by BB on 13/04/2017.
+ *
+ * Iterates through all entities with an Expire Component
+ *
+ * If the entity has expired the OnDeathSystem 'kill' method is used on the entity
+ *
  */
 
 public class ExpireSystem extends EntityProcessingSystem {

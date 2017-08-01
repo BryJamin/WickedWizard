@@ -6,12 +6,13 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkComponent;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 
 /**
  * Created by Home on 05/03/2017.
@@ -21,9 +22,10 @@ public class HealthSystem extends EntityProcessingSystem {
     ComponentMapper<HealthComponent> hm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<StatComponent> sm;
+    ComponentMapper<HitSoundComponent> hitSoundComponent;
     ComponentMapper<PlayerComponent> pm;
 
-    ComponentMapper<BlinkComponent> bm;
+    ComponentMapper<BlinkOnHitComponent> bm;
 
     @SuppressWarnings("unchecked")
     public HealthSystem() {
@@ -40,7 +42,7 @@ public class HealthSystem extends EntityProcessingSystem {
 
                 if(!bm.get(e).isHit) {
 
-                    if (Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GODMODE, false))
+                    if (Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false))
                         return;
 
                     StatComponent sc = sm.get(e);
@@ -54,12 +56,12 @@ public class HealthSystem extends EntityProcessingSystem {
 
                 }
 
-
-
-
-
             } else {
                 hc.health = hc.health - hc.getAccumulatedDamage();
+                if(hitSoundComponent.has(e)){
+                    world.getSystem(SoundSystem.class).playRandomSound(hitSoundComponent.get(e).hitSounds);
+                }
+
             }
         }
 

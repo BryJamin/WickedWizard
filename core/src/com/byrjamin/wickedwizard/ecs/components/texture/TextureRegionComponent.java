@@ -13,11 +13,11 @@ import com.byrjamin.wickedwizard.screens.PlayScreen;
 public class TextureRegionComponent extends Component{
 
 
-    public final static int BACKGROUND_LAYER_FAR = -12;
-    public final static int BACKGROUND_LAYER_MIDDLE = -10;
-    public final static int BACKGROUND_LAYER_NEAR = -8;
+    public final static int BACKGROUND_LAYER_FAR = -64;
+    public final static int BACKGROUND_LAYER_MIDDLE = -32;
+    public final static int BACKGROUND_LAYER_NEAR = -16;
 
-    public final static int ENEMY_LAYER_FAR = -6;
+    public final static int ENEMY_LAYER_FAR = -8;
     public final static int ENEMY_LAYER_MIDDLE = -4;
     public final static int ENEMY_LAYER_NEAR = -2;
 
@@ -25,9 +25,9 @@ public class TextureRegionComponent extends Component{
     public final static int PLAYER_LAYER_MIDDLE = 2;
     public final static int PLAYER_LAYER_NEAR = 4;
 
-    public final static int FOREGROUND_LAYER_FAR = 6;
-    public final static int FOREGROUND_LAYER_MIDDLE = 8;
-    public final static int FOREGROUND_LAYER_NEAR = 10;
+    public final static int FOREGROUND_LAYER_FAR = 8;
+    public final static int FOREGROUND_LAYER_MIDDLE = 16;
+    public final static int FOREGROUND_LAYER_NEAR = 32;
 
 
     public int layer = PLAYER_LAYER_MIDDLE;
@@ -66,6 +66,10 @@ public class TextureRegionComponent extends Component{
 
 
     public TextureRegionComponent(){
+    }
+
+    public TextureRegionComponent(TextureRegion region, float width, float height){
+        this(region, 0,0, width, height, ENEMY_LAYER_MIDDLE);
     }
 
     public TextureRegionComponent(TextureRegion region, float width, float height, int layer){

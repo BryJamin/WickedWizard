@@ -14,12 +14,17 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
- * Created by Home on 17/04/2017.
+ * Created by BB on 17/04/2017.
+ *
+ * Iterates for entities with a ProximityTriggerAIComponent
+ *
+ * If the triggering conditions are met the the trigger action is performed
+ * When the triggering conditions are no longer let the clean up action is performed
+ *
+ *
  */
 
 public class ProximitySystem extends EntityProcessingSystem {
-
-    ComponentMapper<PickUpComponent> im;
 
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ProximityTriggerAIComponent> ptam;
@@ -30,8 +35,8 @@ public class ProximitySystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPC(CollisionBoundComponent.class);
 
+        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         CollisionBoundComponent cbc = cbm.get(e);
         ProximityTriggerAIComponent ptac = ptam.get(e);
 
@@ -39,9 +44,6 @@ public class ProximitySystem extends EntityProcessingSystem {
 
         if(ptac.onCameraTrigger){
             canBeTriggered = world.getSystem(CameraSystem.class).isOnCamera(cbc.bound);
-
-            System.out.println("I'm I on camera? " +  world.getSystem(CameraSystem.class).isOnCamera(playerCbc.bound));
-
         } else {
             canBeTriggered = overlapsHitbox(playerCbc.bound, ptac.proximityHitBoxes);
         }
@@ -56,6 +58,13 @@ public class ProximitySystem extends EntityProcessingSystem {
         }
     }
 
+    /**
+     * Checks to see if the given rectangle overlaps any of hitboxes stored within the
+     * ProximityTriggerAi Component
+     * @param rectangle - Rectangle of the player
+     * @param hitBoxes - Hitboxes stored within the ProximityTriggerAi Component
+     * @return - True is there is an overlap, False otherwise
+     */
     private boolean overlapsHitbox(Rectangle rectangle, Array<HitBox> hitBoxes){
         for(HitBox hb : hitBoxes){
             if(rectangle.overlaps(hb.hitbox)) return true;
