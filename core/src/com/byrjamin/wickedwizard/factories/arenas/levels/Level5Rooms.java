@@ -916,7 +916,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(60f), Measure.units(20f), Measure.units(30f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(20f), Measure.units(40f), Measure.units(15f), Measure.units(25f)));
 
-                arena.addEntity(decorFactory.lockWall(Measure.units(20f), Measure.units(95f), Measure.units(5), Measure.units(15f)));
+                arena.addEntity(decorFactory.destructibleWall(Measure.units(20f), Measure.units(95f), Measure.units(5), Measure.units(15f)));
                 arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(80f)));
                 arena.addEntity(decorFactory.platform(Measure.units(5f), Measure.units(75f), Measure.units(15f)));
                 arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(65f)));
@@ -959,7 +959,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 boolean lockedChestsAreLeft = random.nextBoolean();
 
 
-                arena.addEntity(decorFactory.lockWall(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5f)));
+                arena.addEntity(decorFactory.destructibleWall(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5f)));
                 arena.addEntity(decorFactory.wallBag(lockedChestsAreLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(25f)));
 
 

@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.factories.arenas.presets;
 
+import com.artemis.BaseSystem;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
@@ -82,6 +83,9 @@ public class BreakRoom extends AbstractFactory {
                             @Override
                             public void performAction(World world, Entity e) {
                                 world.getSystem(MapTeleportationSystem.class).createNewLevel();
+                                for(BaseSystem s: world.getSystems()){
+                                    s.setEnabled(true);
+                                }
                             }
                         });
                     }

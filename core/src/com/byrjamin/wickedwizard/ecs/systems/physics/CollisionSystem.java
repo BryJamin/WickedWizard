@@ -9,6 +9,7 @@ import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
@@ -50,6 +51,7 @@ public class CollisionSystem extends EntityProcessingSystem {
     private Array<Rectangle> temporarayCollidableObjects = new Array<Rectangle>();
 
     private Aspect.Builder wall;
+    private Aspect.Builder destructibleWalls;
     private Aspect.Builder playerWalls;
     private Aspect.Builder platforms;
     private Aspect.Builder enemyOnlyWalls;
@@ -57,7 +59,8 @@ public class CollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     public  CollisionSystem() {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
-        wall = Aspect.all(WallComponent.class);
+        wall = Aspect.all(WallComponent.class).exclude(HealthComponent.class);
+        destructibleWalls = Aspect.all(WallComponent.class, HealthComponent.class);
         enemyOnlyWalls = Aspect.all(CollisionBoundComponent.class, EnemyOnlyWallComponent.class);
         playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class, GrappleableComponent.class);
         platforms = Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class);
@@ -84,6 +87,10 @@ public class CollisionSystem extends EntityProcessingSystem {
 
         if(!playerm.has(e)) {
             addNearByCollidableObjects(cbc.bound, collidableobjects, playerWalls);
+        }
+
+        if(!bulletm.has(e)){
+            addNearByCollidableObjects(cbc.bound, collidableobjects, destructibleWalls);
         }
 
         if(!playerm.has(e) && !bulletm.has(e) && !grapplem.has(e)) {

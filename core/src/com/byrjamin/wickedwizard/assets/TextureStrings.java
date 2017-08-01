@@ -13,6 +13,7 @@ public class TextureStrings {
     //DECOR
     public static final String DECOR_BLOCK_DOOR = "decor/block_door";
     public static final String CHEST = "chest";
+    public static final String ALTAR = "decor/altar";
 
 
     public static final String TELEPORTER = "teleporter";
@@ -189,8 +190,5 @@ public class TextureStrings {
     public static final String END_HAND = "enemy/boss/end_hand";
     public static final String END_HAND_CHARGING = "enemy/boss/end_hand_charging";
     public static final String END_HAND_FIRING = "enemy/boss/end_hand_firing";
-
-
-
 
 }

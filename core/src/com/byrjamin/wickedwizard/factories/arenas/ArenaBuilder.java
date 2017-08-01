@@ -200,7 +200,7 @@ public class ArenaBuilder {
             arena.addEntity(bf.backgroundBags(0 + posX,0 + posY,
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
-                    Measure.units(10),
+                    Measure.units(20f),
                     arenaSkin.getBackgroundTextures(),
                     arenaSkin));
 

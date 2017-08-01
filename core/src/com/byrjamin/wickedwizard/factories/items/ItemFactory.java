@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
@@ -163,7 +164,7 @@ public class ItemFactory extends AbstractFactory {
     }
 
 
-    public Array<ComponentBag> createItemAltarBag(float x, float y, Item item){
+    public Array<ComponentBag> createItemAltarBag(float x, float y, Item item, Color color){
 
         float width = Measure.units(15);
         float height = Measure.units(15);
@@ -192,11 +193,11 @@ public class ItemFactory extends AbstractFactory {
         altarBag.add(new CollisionBoundComponent(bound));
         altarBag.add(new ProximityTriggerAIComponent(activeAltar(), new HitBox(bound)));
 
-        TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion("altar"), width, height,
+        TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion(TextureStrings.ALTAR), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR);
 
-        altarTexture.DEFAULT = new Color(Color.BLACK);
-        altarTexture.color = new Color(Color.BLACK);
+        altarTexture.DEFAULT = new Color(color);
+        altarTexture.color = new Color(color);
 
         altarBag.add(altarTexture);
 

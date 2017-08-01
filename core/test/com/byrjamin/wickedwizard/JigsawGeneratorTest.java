@@ -14,6 +14,7 @@ import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.ArenaRepostiory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
+import com.byrjamin.wickedwizard.factories.arenas.levels.PresetGenerators;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -59,8 +60,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             //LevelItemSystem lis = new LevelItemSystem(new Random());
 
-            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.ONE);
-            jg.setNoBattleRooms(numberOfRooms);
+            JigsawGenerator jg = new PresetGenerators().level1Configuration(assetManager, new LightGraySkin(atlas), random)
+                    .noBattleRooms(numberOfRooms).build();
             jg.generate();
             jg.cleanArenas();
 
@@ -145,8 +146,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             System.out.println("Generating for a room size of " + numberOfRooms);
 
-            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.TWO);
-            jg.setNoBattleRooms(numberOfRooms);
+            JigsawGenerator jg = new PresetGenerators().level2Configuration(assetManager, new LightGraySkin(atlas), random)
+                    .noBattleRooms(numberOfRooms).build();
             jg.generate();
             jg.cleanArenas();
 
@@ -221,8 +222,8 @@ public class JigsawGeneratorTest extends GameTest {
             System.out.println("Generating for a room size of " + numberOfRooms);
 
 
-            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.THREE);
-            jg.setNoBattleRooms(numberOfRooms);
+            JigsawGenerator jg = new PresetGenerators().level3Configuration(assetManager, new LightGraySkin(atlas), random)
+                    .noBattleRooms(numberOfRooms).build();
             jg.generate();
             jg.cleanArenas();
 
@@ -297,7 +298,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             int numberOfRooms = random.nextInt(95) + 5;
 
-            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.FOUR);
+            JigsawGenerator jg = new PresetGenerators().level4Configuration(assetManager, new LightGraySkin(atlas), random)
+                    .noBattleRooms(numberOfRooms).build();
             jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
             jg.cleanArenas();
@@ -376,12 +378,13 @@ public class JigsawGeneratorTest extends GameTest {
 
             Random random = new Random();
 
-            int numberOfRooms = 69; //random.nextInt(95) + 5;
+            int numberOfRooms = random.nextInt(95) + 5;
 
 
 
 
-            JigsawGenerator jg = new ChangeLevelSystem(assetManager, random).getJigsawGenerator(ChangeLevelSystem.Level.FIVE);
+            JigsawGenerator jg = new PresetGenerators().level5Configuration(assetManager, new LightGraySkin(atlas), random)
+                    .noBattleRooms(numberOfRooms).build();
             jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
             jg.cleanArenas();

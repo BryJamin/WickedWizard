@@ -842,9 +842,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(75f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
 
-                arena.addEntity(decorFactory.lockWall(Measure.units(25f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
+                arena.addEntity(decorFactory.destructibleWall(Measure.units(25f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(25f), Measure.units(35f), Measure.units(5f)));
-               // arena.addEntity(decorFactory.lockWall(Measure.units(60f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
+               // arena.addEntity(decorFactory.destructibleWall(Measure.units(60f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
 
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(30f), Measure.units(30f)));
@@ -991,7 +991,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(chestFactory.centeredChestBag(chestPosX, arena.getHeight() / 4));
                 arena.addEntity(chestFactory.centeredChestBag(chest2PosX, arena.getHeight() / 4));
 
-                arena.addEntity(decorFactory.lockWall(lockPosX, Measure.units(25f), Measure.units(25f), Measure.units(5f)));
+                arena.addEntity(decorFactory.destructibleWall(lockPosX, Measure.units(25f), Measure.units(25f), Measure.units(5f)));
 
                // arena.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(35f), Measure.units(10f), arenaSkin.getWallTint()));
 
@@ -1210,7 +1210,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(55f)));
 
-                arena.addEntity(decorFactory.lockWall(isBottomLeftLock ? Measure.units(30f) : Measure.units(65f), Measure.units(10f), Measure.units(5f), Measure.units(20f)));
+                arena.addEntity(decorFactory.destructibleWall(isBottomLeftLock ? Measure.units(30f) : Measure.units(65f), Measure.units(10f), Measure.units(5f), Measure.units(20f)));
 
 
                 arena.addEntity(chestFactory.chestBag(isBottomLeftLock ? Measure.units(75f) : Measure.units(15f), Measure.units(10f)));

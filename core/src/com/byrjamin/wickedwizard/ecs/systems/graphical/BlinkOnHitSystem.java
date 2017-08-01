@@ -4,7 +4,12 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.UIComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 
 /**
@@ -23,11 +28,15 @@ public class BlinkOnHitSystem extends EntityProcessingSystem {
 
     ComponentMapper<BlinkOnHitComponent> bm;
     ComponentMapper<TextureRegionComponent> trm;
+    ComponentMapper<TextureRegionBatchComponent> trbm;
 
 
     @SuppressWarnings("unchecked")
     public BlinkOnHitSystem() {
-        super(Aspect.all(BlinkOnHitComponent.class, TextureRegionComponent.class));
+        super(Aspect.all(BlinkOnHitComponent.class).exclude(UIComponent.class).one(
+                TextureRegionComponent.class,
+                TextureRegionBatchComponent.class
+        ));
     }
 
     @Override
@@ -35,6 +44,17 @@ public class BlinkOnHitSystem extends EntityProcessingSystem {
 
         BlinkOnHitComponent bc = bm.get(e);
         TextureRegionComponent trc = trm.get(e);
+
+        Color c;
+        Color defaultColor;
+
+        if(trm.has(e)) {
+            c = trm.get(e).color;
+            defaultColor = trm.get(e).DEFAULT;
+        } else {
+            c = trbm.get(e).color;
+            defaultColor = trbm.get(e).DEFAULT;
+        }
 
         if(bc.isHit){
 
@@ -48,7 +68,7 @@ public class BlinkOnHitSystem extends EntityProcessingSystem {
                         bc.isBlinking = !bc.isBlinking;
                     }
 
-                    trc.color.a = bc.isBlinking ? 0.1f : trc.DEFAULT.a;
+                    c.a = bc.isBlinking ? 0.1f : defaultColor.a;
 
                 }
 
@@ -57,7 +77,7 @@ public class BlinkOnHitSystem extends EntityProcessingSystem {
                 bc.isHit = false;
                 bc.timeUntilNoLongerBlinking = bc.resetTimeUntilNoLongerBlinking;
                 bc.blinkTimer = bc.resetTimer;
-                trc.color.set(trc.DEFAULT);
+                c.set(defaultColor);
             }
 
         }

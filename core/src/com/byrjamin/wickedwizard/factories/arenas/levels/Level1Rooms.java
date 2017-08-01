@@ -201,7 +201,7 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
                 a.addEntity(chestFactory.chestBag(chestPosX, Measure.units(10f)));
                 a.addEntity(chestFactory.chestBag(chest2PosX, Measure.units(10f)));
 
-                a.addEntity(decorFactory.lockWall(lockPosX, Measure.units(10f), Measure.units(5f), Measure.units(10f)));
+                a.addEntity(decorFactory.destructibleWall(lockPosX, Measure.units(10f), Measure.units(5f), Measure.units(10f)));
 
                 a.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(30f), Measure.units(10f), arenaSkin.getWallTint()));
 
@@ -751,7 +751,7 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(chestsAreLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
                // arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
                 //arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-                arena.addEntity(decorFactory.lockWall(chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5)));
+                arena.addEntity(decorFactory.destructibleWall(chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5)));
                 arena.addEntity(chestFactory.chestBag(chestsAreLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(40f)));
                 arena.addEntity(chestFactory.chestBag(chestsAreLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(40f)));
                 arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedLockOnTurret(chestsAreLeft ? Measure.units(85f) : arena.getWidth() - Measure.units(85f), Measure.units(45f)));

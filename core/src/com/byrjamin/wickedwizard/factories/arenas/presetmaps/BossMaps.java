@@ -117,7 +117,7 @@ public class BossMaps extends AbstractFactory {
 
 
         exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
-        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), item));
+        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), item, arenaSkin.getWallTint()));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
 
         return exitArena;

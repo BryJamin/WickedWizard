@@ -406,7 +406,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(40f), Measure.units(60f), Measure.units(5)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(75f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
-                arena.addEntity(decorFactory.lockWall(Measure.units(25f), Measure.units(25f), Measure.units(50f), Measure.units(5f)));
+                arena.addEntity(decorFactory.destructibleWall(Measure.units(25f), Measure.units(25f), Measure.units(50f), Measure.units(5f)));
 
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(30f), Measure.units(30f)));
@@ -1064,8 +1064,8 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(70f), Measure.units(10f)));
 
-                arena.addEntity(decorFactory.lockWall(Measure.units(65f), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
-                arena.addEntity(decorFactory.lockWall(arena.getWidth() - Measure.units(80), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
+                arena.addEntity(decorFactory.destructibleWall(Measure.units(65f), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
+                arena.addEntity(decorFactory.destructibleWall(arena.getWidth() - Measure.units(80), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(75f), Measure.units(10f)));
                 arena.addEntity(chestFactory.chestBag(Measure.units(90f), Measure.units(10f)));

@@ -16,17 +16,6 @@ public class LightGraySkin extends AbstractSkin {
     }
 
     @Override
-    public Array<? extends TextureRegion> getWallTexture() {
-        return atlas.findRegions("block");
-    }
-
-
-    @Override
-    public Array<? extends TextureRegion> getBackgroundTextures() {
-        return atlas.findRegions("block");
-    }
-
-    @Override
     public Color getBackgroundTint() {
         return new Color(0.7f,0.7f,0.7f,1);
     }

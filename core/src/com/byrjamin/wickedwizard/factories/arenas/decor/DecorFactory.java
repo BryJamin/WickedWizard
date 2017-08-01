@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -96,6 +97,23 @@ public class DecorFactory extends AbstractFactory {
         bag.add(trbc);
 
         return bag;
+    }
+
+
+    public ComponentBag decorativeBlock(float x, float y, float width, float height, int layer){
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height,
+                TextureRegionComponent.BACKGROUND_LAYER_NEAR, arenaSkin.getWallTint());
+
+        trc.color.a = 0.7f;
+
+        bag.add(trc);
+
+        return bag;
+
     }
 
     public ComponentBag wallBag(float x, float y, float width, float height, Color color){
@@ -514,41 +532,24 @@ public class DecorFactory extends AbstractFactory {
         return bag;
     }
 
-    public ComponentBag laserWall(float x, float y, float width, float height){
+
+    public ComponentBag destructibleWall(float x, float y, float width, float height){
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
-
-        TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
-                atlas.findRegions("block"),
-                PLAYER_LAYER_NEAR);
-        trbc.color = new Color(Color.RED);
-        bag.add(trbc);
-
-        bag.add(new HazardComponent());
-
-        return bag;
-    }
-
-
-
-
-
-
-    public ComponentBag lockWall(float x, float y, float width, float height){
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height)));
+        bag.add(new BlinkOnHitComponent());
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
+        bag.add(new HealthComponent(3));
 
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
                 atlas.findRegions(TextureStrings.LOCKBOX),
                 PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
+        trbc.DEFAULT = arenaSkin.getWallTint();
         bag.add(trbc);
 
 
-        bag.add(lockBlockConditionalActionComponent());
+      //  bag.add(lockBlockConditionalActionComponent());
 
         return bag;
     }

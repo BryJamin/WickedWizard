@@ -96,6 +96,30 @@ public class RenderingSystem extends EntitySystem {
         }
     }
 
+    protected boolean applyShaderForBlinkOnHitComponent(Entity e){
+
+        boolean shaderOn = false;
+
+        if(bm.has(e)){
+            shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkOnHitComponent.BLINKTYPE.CONSTANT;
+        }
+
+        if(shaderOn){
+            batch.end();
+            batch.setShader(whiteShaderProgram);
+            batch.begin();
+        }
+
+        return shaderOn;
+
+    }
+
+    private void removeShader(){
+        batch.end();
+        batch.setShader(null);
+        batch.begin();
+    }
+
     protected void process(Entity e) {
 
 
@@ -104,21 +128,11 @@ public class RenderingSystem extends EntitySystem {
 
         PositionComponent pc = pm.get(e);
 
+        boolean shaderOn = applyShaderForBlinkOnHitComponent(e);
 
         if(trm.has(e)) {
             TextureRegionComponent trc = trm.get(e);
 
-            boolean shaderOn = false;
-
-            if(bm.has(e)){
-                shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkOnHitComponent.BLINKTYPE.CONSTANT;
-            }
-
-            if(shaderOn){
-                batch.end();
-                batch.setShader(whiteShaderProgram);
-                batch.begin();
-            }
 
             float originX = trc.width * 0.5f;
             float originY = trc.height * 0.5f;
@@ -132,12 +146,6 @@ public class RenderingSystem extends EntitySystem {
                     trc.scaleX * rendDirection(e), trc.scaleY,
                     trc.rotation);
             batch.setColor(batchColor);
-
-            if(shaderOn){
-                    batch.end();
-                    batch.setShader(null);
-                    batch.begin();
-            }
 
         }
 
@@ -181,6 +189,8 @@ public class RenderingSystem extends EntitySystem {
             ,trfc.width, Align.center, true);
             bmf.setColor(Color.WHITE);
         }
+
+        if(shaderOn) removeShader();
 
         batch.setColor(batchColor);
 

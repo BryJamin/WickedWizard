@@ -305,11 +305,23 @@ public class JigsawGenerator {
 
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
-        Arena itemRoom = new ItemArenaFactory(assetManager, arenaSkin).createItemRoom(new MapCoords(), itemStore.generateItemRoomItem(), itemStore.generateItemRoomItem());
-        if(placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
-            placedArenas.add(itemRoom);
-            cleanArena(itemRoom, placedArenas);
-            return true;
+
+        Item item = itemStore.generateItemRoomItem();
+
+        Array<Arena> itemRooms = new Array<Arena>();
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createDownItemRoom(new MapCoords(), item));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createUpItemRoom(new MapCoords(), item));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createRightItemRoom(new MapCoords(), item));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createLeftItemRoom(new MapCoords(), item));
+
+        itemRooms.shuffle();
+
+        for(Arena itemRoom : itemRooms) {
+            if (placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)) {
+                placedArenas.add(itemRoom);
+                cleanArena(itemRoom, placedArenas);
+                return true;
+            }
         }
         return false;
     }

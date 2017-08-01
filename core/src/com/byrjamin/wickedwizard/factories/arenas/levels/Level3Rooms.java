@@ -545,7 +545,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 //Right
                 if(random.nextBoolean()) {
-                    arena.addEntity(decorFactory.lockWall(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
+                    arena.addEntity(decorFactory.destructibleWall(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
                     arena.addEntity(chestFactory.chestBag(Measure.units(67.5f), Measure.units(35f)));
                     arena.addEntity(chestFactory.chestBag(Measure.units(82.5f), Measure.units(35f)));
                 } else {
@@ -556,7 +556,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 //Left
                 if(random.nextBoolean()) {
-                    arena.addEntity(decorFactory.lockWall(Measure.units(5), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
+                    arena.addEntity(decorFactory.destructibleWall(Measure.units(5), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
                     arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(35f)));
                     arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(35f)));
                 } else {
@@ -731,7 +731,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(isTreasureOnLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
                 // arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
                 //arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-                arena.addEntity(decorFactory.lockWall(isTreasureOnLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5)));
+                arena.addEntity(decorFactory.destructibleWall(isTreasureOnLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5)));
                 arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(40f)));
                 arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(40f)));
                 arena.addEntity(isTri ? turretFactory.fixedMultiSentry(isTreasureOnLeft ? Measure.units(85f) : arena.getWidth() - Measure.units(85f), Measure.units(45f)) :
