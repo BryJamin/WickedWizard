@@ -70,7 +70,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public RoomTransitionSystem(ArenaMap arenaMap) {
-        super(Aspect.all().exclude(PlayerComponent.class));
+        super(Aspect.all().exclude(PlayerComponent.class, UnpackableComponent.class));
         this.setCurrentMap(arenaMap);
     }
 
@@ -278,7 +278,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
         for(Entity e : this.getEntities()){
 
-            if(unpackableComponent.has(e)) continue;
+            //if(unpackableComponent.has(e)) continue;
 
             if(!bm.has(e) && !expireM.has(e) && !offScreenPickUpM.has(e)) {
 

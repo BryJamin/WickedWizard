@@ -120,7 +120,8 @@ public class ScreenWipeSystem extends BaseSystem {
                 isFinished = true;
                 isExit = false;
                 processingFlag = false;
-                transitionEntity.deleteFromWorld();
+
+                if(transitionEntity != null) transitionEntity.deleteFromWorld();
             }
         }
     }
@@ -138,9 +139,9 @@ public class ScreenWipeSystem extends BaseSystem {
 
         if(transitionEntity != null) transitionEntity.deleteFromWorld();
 
-        transitionEntity = world.createEntity();
-
         if(transition != Transition.NONE) {
+
+            transitionEntity = world.createEntity();
 
             transitionEntity.edit().add(new PositionComponent());
             transitionEntity.edit().add(new MoveToPositionComponent());
