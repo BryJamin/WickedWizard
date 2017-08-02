@@ -499,24 +499,6 @@ public class DecorFactory extends AbstractFactory {
     }
 
 
-
-    public ComponentBag lockBox(float x , float y, float width, float height){
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.LOCKBOX), width, height, PLAYER_LAYER_FAR, arenaSkin.getWallTint()));
-        bag.add(new WallComponent(new Rectangle(x,y,width,height)));
-
-
-        bag.add(lockBlockConditionalActionComponent());
-        //bag.add()
-
-
-        return bag;
-
-    }
-
     public ComponentBag spikeWall(float x, float y, float width, float height, float angleOfRotationIndegrees){
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));

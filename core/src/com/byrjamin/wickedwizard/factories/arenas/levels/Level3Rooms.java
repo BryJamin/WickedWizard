@@ -543,11 +543,16 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
 
+                boolean variation = random.nextBoolean();
+
                 //Right
-                if(random.nextBoolean()) {
-                    arena.addEntity(decorFactory.destructibleWall(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
-                    arena.addEntity(chestFactory.chestBag(Measure.units(67.5f), Measure.units(35f)));
-                    arena.addEntity(chestFactory.chestBag(Measure.units(82.5f), Measure.units(35f)));
+                if(variation) {
+                    arena.addEntity(decorFactory.platform(arena.getWidth() - Measure.units(35f), Measure.units(26f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(67.5f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(82.5f), Measure.units(30f)));
+
+                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(Measure.units(20f), Measure.units(25f)));
+
                 } else {
                     arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(arena.getWidth() - Measure.units(20f), Measure.units(45f)));
                 }
@@ -555,28 +560,18 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
                 //Left
-                if(random.nextBoolean()) {
-                    arena.addEntity(decorFactory.destructibleWall(Measure.units(5), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
-                    arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(35f)));
-                    arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(35f)));
+                if(!variation) {
+                    arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(26f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(30f)));
+
+                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(arena.getWidth() - Measure.units(20f), Measure.units(25f)));
+
                 } else {
                     arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(Measure.units(20f), Measure.units(45f)));
                 }
                 arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(30f), Measure.units(5f), Measure.units(25f)));
 
-
-
-                if(true) {
-                    //TODO trap chest. could hold a bomb or a mimic or something the rest are actual chests.
-                    arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), new OnDeathActionComponent(new Action() {
-                        @Override
-                        public void performAction(World world, Entity e) {
-                            Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
-                            arena.roomType = Arena.RoomType.TRAP;
-                            BagToEntity.bagToEntity(world.createEntity(), arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(30f)));
-                        }
-                    })));
-                }
 
                 return arena;
             }

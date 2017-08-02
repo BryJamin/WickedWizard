@@ -1051,7 +1051,6 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                         new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                         new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
-                arena.roomType = Arena.RoomType.TRAP;
 
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -1075,25 +1074,28 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE)).buildArena(arena);
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(65f), Measure.units(5f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(10f), Measure.units(65f), Measure.units(5f), Measure.units(5f)));
+                arena.addEntity(decorFactory.platform(Measure.units(5f), Measure.units(65f), Measure.units(25f)));
+                arena.addEntity(decorFactory.platform(arena.getWidth() - Measure.units(30f), Measure.units(65f), Measure.units(25f)));
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(30f), Measure.units(25f), Measure.units(130f), Measure.units(45f)));
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(50f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(20f), Measure.units(50f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(30f), Measure.units(25f), Measure.units(140f), Measure.units(45f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(17.5f), Measure.units(50f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(17.5f), Measure.units(50f)));
 
-                arena.addEntity(decorFactory.lockBox(Measure.units(30f), Measure.units(10f), Measure.units(15f), Measure.units(15f)));
-                arena.addEntity(decorFactory.lockBox(arena.getWidth() - Measure.units(55f), Measure.units(10f), Measure.units(15f), Measure.units(15f)));
-                arena.addEntity(chestFactory.chestBag(Measure.units(50f), Measure.units(10f)));
 
-                arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(70f), Measure.units(10f)));
+                boolean variation = random.nextBoolean();
 
-                arena.addEntity(decorFactory.destructibleWall(Measure.units(65f), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
-                arena.addEntity(decorFactory.destructibleWall(arena.getWidth() - Measure.units(80), Measure.units(10f), Measure.units(5f), Measure.units(15f)));
+                if(variation) {
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(75f), Measure.units(10f)));
-                arena.addEntity(chestFactory.chestBag(Measure.units(90f), Measure.units(10f)));
-                arena.addEntity(chestFactory.chestBag(Measure.units(105f), Measure.units(10f)));
+                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(Measure.units(95f), Measure.units(17.5f)));
+
+                    arena.addEntity(chestFactory.chestBag(Measure.units(75f), Measure.units(10f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(90f), Measure.units(10f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(105f), Measure.units(10f)));
+
+                } else {
+
+                    arena.addEntity(chestFactory.chestBag(Measure.units(90f), Measure.units(10f)));
+                }
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnJig(arena.getWidth() / 2, Measure.units(95f)));
 
