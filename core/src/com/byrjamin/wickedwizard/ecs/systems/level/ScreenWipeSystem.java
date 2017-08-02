@@ -55,9 +55,6 @@ public class ScreenWipeSystem extends BaseSystem {
     private Entity exitEntity;
 
 
-    private Direction direction;
-
-
     public enum Transition {
         LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_TOP, FADE, FLASH, NONE
     }
@@ -128,6 +125,44 @@ public class ScreenWipeSystem extends BaseSystem {
 
 
 
+    public void instantWipe(Action taskToPerformInbetweenTransition){
+        taskBefore().performAction(world, null);
+        taskToPerformInbetweenTransition.performAction(world, null);
+        taskAfter().performAction(world, null);
+    }
+
+
+    private Action taskBefore(){
+        return new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                for (BaseSystem s : world.getSystems()) {
+                    if (!(s instanceof RenderingSystem) &&
+                            !(s instanceof ScreenWipeSystem) &&
+                            !(s instanceof FollowPositionSystem) &&
+                            !(s instanceof CameraSystem) &&
+                            !(s instanceof UISystem) &&
+                            !(s instanceof FadeSystem)) {
+                        s.setEnabled(false);
+                    }
+                }
+            }
+        };
+    }
+
+
+    private Action taskAfter(){
+        return new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                for (BaseSystem s : world.getSystems()) {
+                    s.setEnabled(true);
+                }
+            }
+        };
+    }
+
+
 
     public void startScreenWipe(Transition transition, Action taskToPerformInbetweenTransition){
 
@@ -158,30 +193,9 @@ public class ScreenWipeSystem extends BaseSystem {
 
         this.taskToPerformInbetweenTransition = taskToPerformInbetweenTransition;
 
-        this.taskBefore = new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                for(BaseSystem s: world.getSystems()){
-                    if(!(s instanceof RenderingSystem) &&
-                            !(s instanceof ScreenWipeSystem) &&
-                            !(s instanceof FollowPositionSystem) &&
-                            !(s instanceof CameraSystem) &&
-                            !(s instanceof UISystem) &&
-                            !(s instanceof FadeSystem)) {
-                        s.setEnabled(false);
-                    }
-                }
-            }
-        };
+        this.taskBefore = taskBefore();
 
-        this.taskAfter = new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                for(BaseSystem s: world.getSystems()){
-                    s.setEnabled(true);
-                }
-            }
-        };
+        this.taskAfter = taskAfter();
 
         this.taskBefore.performAction(world, null);
 

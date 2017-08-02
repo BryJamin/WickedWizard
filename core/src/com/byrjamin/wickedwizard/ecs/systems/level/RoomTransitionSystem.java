@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
@@ -77,43 +78,15 @@ public class RoomTransitionSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-/*
-        ScreenWipeSystem.Transition transition;
-
-        switch(currentDoor.exit){
-            case LEFT:
-            default:
-                transition = ScreenWipeSystem.Transition.LEFT_TO_RIGHT;
-                break;
-            case RIGHT:
-                transition = ScreenWipeSystem.Transition.RIGHT_TO_LEFT;
-
-                break;
-            case UP:
-                transition = ScreenWipeSystem.Transition.TOP_TO_BOTTOM;
-                break;
-            case DOWN:
-                transition = ScreenWipeSystem.Transition.BOTTOM_TO_TOP;
-                break;
-        }
-*/
-
-
-        world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.NONE, new Task() {
+        world.getSystem(ScreenWipeSystem.class).instantWipe(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-
                 switchRooms();
                 for(BaseSystem s: world.getSystems()){
                     if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
                         s.setEnabled(true);
                     }
                 }
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
             }
         });
 

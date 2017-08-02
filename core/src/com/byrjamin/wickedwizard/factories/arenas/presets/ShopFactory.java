@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
+import com.byrjamin.wickedwizard.factories.items.pickups.ArmorUp;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
@@ -71,7 +72,7 @@ public class ShopFactory extends AbstractFactory {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(37.5f), new HealthUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(37.5f), new ArmorUp(), 5)) {
             arena.addEntity(b);
         }
 

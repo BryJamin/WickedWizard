@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.bosses.BiggaBlobbaBoss;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
@@ -60,7 +61,7 @@ public class BiggaBlobbaMap extends AbstractFactory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
 
-                arena.addEntity(new BiggaBlobbaBoss(assetManager).biggaBlobbaBag(arena.getWidth() / 2, arena.getHeight() / 2));
+                arena.addEntity(new BiggaBlobbaBoss(assetManager).biggaBlobbaBag(Measure.units(65f), Measure.units(10f)));
 
                 return arena;
             }

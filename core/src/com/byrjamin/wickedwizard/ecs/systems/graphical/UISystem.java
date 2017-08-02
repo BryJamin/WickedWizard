@@ -186,17 +186,6 @@ public class UISystem extends EntitySystem {
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(1.5f),
                 Measure.units(7f), Align.left, true);
 
-/*        p = new KeyUp();
-
-        batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset,
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(15f),
-                Measure.units(3f), Measure.units(3f));
-
-        currencyFont.draw(batch, "" + playerCurrency.keys,
-                gamecam.position.x - (gamecam.viewportWidth / 2) + Measure.units(5f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(12.3f),
-                Measure.units(5f), Align.center, true);*/
     }
 
     @Override

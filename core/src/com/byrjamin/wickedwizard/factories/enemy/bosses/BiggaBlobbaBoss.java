@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -17,8 +18,10 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -27,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -35,6 +39,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.Pair;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
+import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 30/06/2017.
@@ -70,6 +75,13 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
     private static final float textureSize = Measure.units(35f);
 
+
+    //Phases
+    private static final float weaponPhaseTime = 2.0f;
+    private static final float angryTransitionTime = 1.0f;
+    private static final float jumpingPhaseTime = 5.0f;
+    private static final float chargingPhaseTime = 5.0f;
+
     private static final int CHARGINGANIMATION = 5;
 
 
@@ -79,14 +91,17 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
 
 
-
-    public Bag<Component> biggaBlobbaBag(float x, float y){
-
+    public ComponentBag centeredBlobbaBag(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        Bag<Component> bag = this.defaultBossBag(new ComponentBag(), x, y, health);
+        return biggaBlobbaBag(x, y);
+    }
+
+    public ComponentBag biggaBlobbaBag(float x, float y){
+
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
         bag.add(new VelocityComponent(0, 0));
 
         CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x, y, width, height));
@@ -119,10 +134,10 @@ public class BiggaBlobbaBoss extends EnemyFactory {
                 .angles(20,40,60,80, 100, 120, 140, 160)
                 .shotSpeed(Measure.units(75f))
                 .gravity(true)
-                .build(),  1.5f);
+                .build());
         bag.add(wc);
 
-        Task task1 = new Task(){
+        Task weaponPhase = new Task(){
             @Override
             public void performAction(World world, Entity e) {
 
@@ -137,14 +152,16 @@ public class BiggaBlobbaBoss extends EnemyFactory {
             }
         };
 
+        Pair<Task, Condition> angryTransitionPhase = new Pair<Task, Condition>(phaseChangeJump(), landingCondition(angryTransitionTime));
 
         PhaseComponent pc = new PhaseComponent();
-        pc.addPhase(5.0f, task1);
-        pc.addPhase(new Pair<Task, Condition>(phaseChangeJump(), landingCondition(1f)));
-        pc.addPhase(jumpingPhase(5.0f));
-        pc.addPhase(new Pair<Task, Condition>(phaseChangeJump(), landingCondition(1f)));
-        pc.addPhase(6.0f, movementPhase());
-        pc.addPhase(new Pair<Task, Condition>(phaseChangeJump(), landingCondition(1f)));
+        pc.addPhase(angryTransitionPhase);
+        pc.addPhase(jumpingPhase(jumpingPhaseTime));
+        pc.addPhase(angryTransitionPhase);
+        pc.addPhase(chargingPhaseTime, movementPhase());
+        pc.addPhase(new BlobbaMoveToPhase(), new OnTargetXCondition());
+        pc.addPhase(angryTransitionPhase);
+        pc.addPhase(weaponPhaseTime, weaponPhase);
         //pc.addPhaseSequence(1,0, 2);
 
         bag.add(pc);
@@ -153,6 +170,8 @@ public class BiggaBlobbaBoss extends EnemyFactory {
         return bag;
 
     }
+
+
 
 
 
@@ -177,7 +196,33 @@ public class BiggaBlobbaBoss extends EnemyFactory {
             }
         };
 
+    }
 
+
+    private class BlobbaMoveToPhase implements Task {
+
+        Vector3 position = new Vector3();
+
+        @Override
+        public void performAction(World world, Entity e) {
+            position.x = world.getSystem(RoomTransitionSystem.class).getCurrentArena().getWidth() / 2;
+            e.edit().add(new MoveToPositionComponent(position));
+            e.edit().add(new AccelerantComponent(speed, speed));
+        }
+
+        @Override
+        public void cleanUpAction(World world, Entity e) {
+            e.edit().remove(MoveToPositionComponent.class);
+            e.edit().remove(AccelerantComponent.class);
+        }
+    }
+
+
+    private class OnTargetXCondition implements Condition{
+        @Override
+        public boolean condition(World world, Entity entity) {
+            return entity.getComponent(MoveToPositionComponent.class).isOnTargetX;
+        }
     }
 
     private Task phaseChangeJump(){

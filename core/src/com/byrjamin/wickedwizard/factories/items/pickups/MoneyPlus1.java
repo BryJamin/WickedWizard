@@ -19,10 +19,6 @@ public class MoneyPlus1 implements PickUp {
     @Override
     public boolean applyEffect(World world, Entity player) {
         player.getComponent(CurrencyComponent.class).money += 1;
-
-
-
-
         return true;
     }
 
