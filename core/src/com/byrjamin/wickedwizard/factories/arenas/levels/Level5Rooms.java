@@ -908,17 +908,15 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 //Left
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(60f), Measure.units(20f), Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(55f), Measure.units(20f), Measure.units(30f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(40f), Measure.units(15f), Measure.units(25f)));
 
                 //Right
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(60f), Measure.units(20f), Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(55f), Measure.units(20f), Measure.units(30f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(20f), Measure.units(40f), Measure.units(15f), Measure.units(25f)));
 
-                arena.addEntity(decorFactory.destructibleWall(Measure.units(20f), Measure.units(95f), Measure.units(5), Measure.units(15f)));
-                arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(80f)));
-                arena.addEntity(decorFactory.platform(Measure.units(5f), Measure.units(75f), Measure.units(15f)));
+
                 arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(65f)));
 
                 arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(17.5f), Measure.units(65f)));

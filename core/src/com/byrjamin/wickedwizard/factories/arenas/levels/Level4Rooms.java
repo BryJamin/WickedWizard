@@ -838,37 +838,36 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(40f), Measure.units(60f), Measure.units(5)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(75f), Measure.units(25f), Measure.units(5f), Measure.units(15f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(30f), Measure.units(60f), Measure.units(5f)));
 
-                arena.addEntity(decorFactory.destructibleWall(Measure.units(25f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(25f), Measure.units(35f), Measure.units(5f)));
-               // arena.addEntity(decorFactory.destructibleWall(Measure.units(60f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
+                boolean variation = random.nextBoolean();
+
+                if(variation) arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(Measure.units(50f), Measure.units(45f)));
+                else  arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(Measure.units(50f), Measure.units(17.5f)));
 
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(30f), Measure.units(30f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(30f), Measure.units(35f)));
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(30f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(35f)));
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(60f), Measure.units(30f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(60f), Measure.units(35f)));
                 //arena.roomType = Arena.RoomType.TRAP;
 
 
                 LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
-                        .chargingLaserHeight(Measure.units(3.5f))
+                        .chargingLaserHeight(Measure.units(2f))
                         .chargingLaserWidth(Measure.units(15f))
-                        .activeLaserHeight(Measure.units(5f))
+                        .activeLaserHeight(Measure.units(2.5f))
                         .activeLaserWidth(Measure.units(15f))
                         .useWidthAsCenter(false)
                         .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
                         .build();
 
 
-                arena.addEntity(decorFactory.timedLaserBeam(Measure.units(17.5f), Measure.units(35f), 1, -Measure.units(15f), 3f,
+                arena.addEntity(decorFactory.timedLaserBeam(Measure.units(17.5f), Measure.units(31.25f), 0.5f, -Measure.units(15f), 3f,
                         laserBeam));
 
-                arena.addEntity(decorFactory.timedLaserBeam(Measure.units(77.5f), Measure.units(35f), 1, Measure.units(5), 3f,
+                arena.addEntity(decorFactory.timedLaserBeam(Measure.units(80f), Measure.units(31.25f), 0.5f, Measure.units(0), 3f,
                         laserBeam));
 
 
@@ -953,24 +952,34 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.FULL,
+                                chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE))
                         .buildArena(arena);
 
                 arena.addEntity(decorFactory.wallBag(0, Measure.units(-5f), arena.getWidth(), Measure.units(5f)));
 
-                float chestPosX = chestsAreLeft ? Measure.units(11.25f) : arena.getWidth() -  Measure.units(11.25f);
-                float chest2PosX = chestsAreLeft ? Measure.units(23.75f) : arena.getWidth() - Measure.units(23.75f);
+                float chestPosX = chestsAreLeft ? Measure.units(12.5f) : arena.getWidth() -  Measure.units(12.5f);
+                float chest2PosX = chestsAreLeft ? Measure.units(27.5f) : arena.getWidth() - Measure.units(27.5f);
+
+                float chestPosY = Measure.units(27.5f);
+
+                arena.addEntity(chestFactory.centeredChestBag(chestPosX, chestPosY));
+                arena.addEntity(chestFactory.centeredChestBag(chest2PosX, chestPosY));
+
+                float hoarderPosX = chestsAreLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f);
+                float hoarderPosY = Measure.units(42.5f);
+
+                arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(
+                        hoarderPosX,
+                        hoarderPosY));
 
 
-                float leftwallPosX = !chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(20f);
-                float rightwallPosX = chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f);
-                arena.addEntity(decorFactory.wallBag(leftwallPosX, 0, Measure.units(15f), Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(rightwallPosX, 0, Measure.units(30f), Measure.units(10f)));
+                float leftwallPosX = !chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(25f);
+                float rightTallWallPosX = chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f);
 
-                arena.addEntity(decorFactory.wallBag(chestsAreLeft ? Measure.units(30f) : arena.getWidth() - Measure.units(35f),
-                        Measure.units(10f), Measure.units(5f), Measure.units(20f)));
+                arena.addEntity(decorFactory.wallBag(leftwallPosX, 0, Measure.units(20f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(rightTallWallPosX, 0, Measure.units(30f), Measure.units(25f)));
 
                 LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .chargeTime(0.5f)
@@ -981,17 +990,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-                arena.addEntity(decorFactory.laserChain(!chestsAreLeft ? Measure.units(17.5f) : arena.getWidth() - Measure.units(22.5f), Measure.units(2.5f), 1,
+                arena.addEntity(decorFactory.laserChain(!chestsAreLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(27.5f), Measure.units(2.5f), 1,
                         lb.build()));
 
-
-                float wallPosX = chestsAreLeft ? 0 : arena.getWidth() - Measure.units(35f);
-                float lockPosX = chestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(30f);
-
-                arena.addEntity(chestFactory.centeredChestBag(chestPosX, arena.getHeight() / 4));
-                arena.addEntity(chestFactory.centeredChestBag(chest2PosX, arena.getHeight() / 4));
-
-                arena.addEntity(decorFactory.destructibleWall(lockPosX, Measure.units(25f), Measure.units(25f), Measure.units(5f)));
 
                // arena.addEntity(decorFactory.wallBag(wallPosX, Measure.units(20f), Measure.units(35f), Measure.units(10f), arenaSkin.getWallTint()));
 
@@ -1208,15 +1209,21 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 boolean isBottomLeftLock = random.nextBoolean();
 
+                boolean one = random.nextBoolean();
+                int both = random.nextInt(4);
+
+
+
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(55f)));
 
-                arena.addEntity(decorFactory.destructibleWall(isBottomLeftLock ? Measure.units(30f) : Measure.units(65f), Measure.units(10f), Measure.units(5f), Measure.units(20f)));
 
-
-                arena.addEntity(chestFactory.chestBag(isBottomLeftLock ? Measure.units(75f) : Measure.units(15f), Measure.units(10f)));
-
-                arena.addEntity(chestFactory.chestBag(isBottomLeftLock ? Measure.units(6.5f) : arena.getWidth() - Measure.units(16.5f), Measure.units(10f)));
-                arena.addEntity(chestFactory.chestBag(isBottomLeftLock ? Measure.units(18.5f) : arena.getWidth() - Measure.units(28.5f), Measure.units(10f)));
+                if(both == 3) {
+                    arena.addEntity(chestFactory.chestBag(Measure.units(75f), Measure.units(10f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(15f), Measure.units(10f)));
+                } else {
+                    if(one)  arena.addEntity(chestFactory.chestBag(Measure.units(75f), Measure.units(10f)));
+                    else arena.addEntity(chestFactory.chestBag(Measure.units(15f), Measure.units(10f)));
+                }
 
 
                 LaserOrbitalTask.LaserBuilder empty = new LaserOrbitalTask.LaserBuilder(assetManager);

@@ -723,12 +723,14 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 boolean isTri = random.nextBoolean();
                 boolean isTreasureOnLeft = random.nextBoolean();
 
-                arena.addEntity(decorFactory.wallBag(isTreasureOnLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-                // arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-                //arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f), arenaSkin));
-                arena.addEntity(decorFactory.destructibleWall(isTreasureOnLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5)));
-                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(40f)));
-                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(
+                        isTreasureOnLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f),
+                        Measure.units(47.5f)));
+
+
+                arena.addEntity(decorFactory.wallBag(isTreasureOnLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5)));
+                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(35f)));
+                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(35f)));
                 arena.addEntity(isTri ? turretFactory.fixedMultiSentry(isTreasureOnLeft ? Measure.units(85f) : arena.getWidth() - Measure.units(85f), Measure.units(45f)) :
                         turretFactory.fixedFlyByBombSentry(isTreasureOnLeft ? Measure.units(85f) : arena.getWidth() - Measure.units(85f), Measure.units(45f)));
 
