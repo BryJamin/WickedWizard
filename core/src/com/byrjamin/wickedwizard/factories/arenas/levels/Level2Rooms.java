@@ -406,16 +406,38 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
 
 
-                arena.addEntity(decorFactory.decorativeBlock(Measure.units(25f), Measure.units(32.5f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
-                arena.addEntity(decorFactory.decorativeBlock(Measure.units(75f) - DECORATIVE_BEAM_WIDTH, Measure.units(32.5f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
-                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(25f), Measure.units(50f), Measure.units(5f)));
+                boolean variation = random.nextBoolean();
 
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(30f), Measure.units(30f)));
+                if(variation) {
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(30f)));
+                    arena.addEntity(decorFactory.decorativeBlock(Measure.units(30f), Measure.units(30f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+                    arena.addEntity(decorFactory.decorativeBlock(Measure.units(70f) - DECORATIVE_BEAM_WIDTH, Measure.units(30f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+                    arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(30f), Measure.units(50f), Measure.units(5f)));
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(60f), Measure.units(30f)));
+
+                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(Measure.units(50f), Measure.units(20f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(32.5f), Measure.units(35f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(35f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(57.5f), Measure.units(35f)));
+
+                } else {
+
+
+                    arena.addEntity(decorFactory.decorativeBlock(Measure.units(30f), Measure.units(30f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+                    arena.addEntity(decorFactory.decorativeBlock(Measure.units(70f) - DECORATIVE_BEAM_WIDTH, Measure.units(30f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
+                    arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(25f), Measure.units(50f), Measure.units(5f)));
+
+
+                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(Measure.units(50f), Measure.units(45f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(32.5f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(57.5f), Measure.units(30f)));
+
+
+
+
+                }
                 //arena.roomType = Arena.RoomType.TRAP;
 
                 return arena;
