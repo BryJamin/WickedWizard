@@ -905,25 +905,24 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(70f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(110f)));
 
                 //Left
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(55f), Measure.units(20f), Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(55f), Measure.units(20f), Measure.units(35f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(40f), Measure.units(15f), Measure.units(25f)));
 
                 //Right
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(55f), Measure.units(20f), Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(55f), Measure.units(20f), Measure.units(35f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(20f), Measure.units(40f), Measure.units(15f), Measure.units(25f)));
 
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(65f)));
-
-                arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(17.5f), Measure.units(65f)));
-
-                arena.addEntity(decorFactory.wallBag(Measure.units(60f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
-
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(110f)));
+                if(random.nextInt(4) == 3) {
+                    arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(65f)));
+                    arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(17.5f), Measure.units(65f)));
+                } else {
+                    if(random.nextBoolean())  arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(65f)));
+                    else  arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(17.5f), Measure.units(65f)));
+                }
 
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(110f), Measure.units(20f), Measure.units(20f)));
@@ -957,15 +956,15 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 boolean lockedChestsAreLeft = random.nextBoolean();
 
 
-                arena.addEntity(decorFactory.destructibleWall(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(35f), Measure.units(30f), Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(lockedChestsAreLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(25f)));
+                arena.addEntity(decorFactory.platform(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(31f), Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(lockedChestsAreLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f)));
 
 
                 arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(40f)));
                 arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(40f)));
-
-
                 arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(70f) : arena.getWidth() - Measure.units(80f), Measure.units(10f), chestFactory.trapODAC()));
+
+                arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(lockedChestsAreLeft ? Measure.units(75f)  : Measure.units(25f), Measure.units(45f)));
 
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(lockedChestsAreLeft ? Measure.units(70f) : arena.getWidth() - Measure.units(70f), Measure.units(45f)));

@@ -9,7 +9,6 @@ import com.artemis.Component;
 public class CurrencyComponent extends Component {
 
     public int money = 0;
-    public int keys = 0;
 
     public CurrencyComponent(){
 
@@ -19,14 +18,8 @@ public class CurrencyComponent extends Component {
         this.money = money;
     }
 
-    public CurrencyComponent(int money, int keys){
-        this.money = money;
-        this.keys = keys;
-    }
-
     public void updateCurrency(CurrencyComponent c){
         this.money = c.money;
-        this.keys = c.keys;
     }
 
 }
