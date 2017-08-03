@@ -221,7 +221,7 @@ public class BossAjir extends EnemyFactory{
                     .activeLaserHeight(activeLaserHeight)
                     .chargingLaserTime(chargingLaserTime)
                     .activeLaserTime(activeLaserTime)
-                    .layer(TextureRegionComponent.FOREGROUND_LAYER_NEAR)
+                    .layer(TextureRegionComponent.FOREGROUND_LAYER_MIDDLE)
                     .build();
 
         }

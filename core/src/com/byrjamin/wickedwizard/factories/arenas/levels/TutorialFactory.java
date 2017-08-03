@@ -43,9 +43,9 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
             "Tap ABOVE your character and tap ABOVE AGAIN \n To DOUBLE Jump";
 
     private static final String enemyTutorialString =
-            "Hark! A Worthy Foe! \n \n Hold down within this area to shoot \n \n Drag to change aim";
+            "Hark! A Worthy Foe! \n \n Touch within this area of the screen to shoot \n \n Drag to change aim";
     private static final String grappleTutorialString =
-            "Doubt you can dash out of this one \n \n Tap anything highlighted to grapple to it";
+            "Tap grapple points to shoot your grappling hook \n \n (Grapple points are currently being highlighted)";
     private static final String endString =
             "Yea you seem about ready \n \n Now off to adventure!";
 

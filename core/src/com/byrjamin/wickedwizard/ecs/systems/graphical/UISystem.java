@@ -147,7 +147,7 @@ public class UISystem extends EntitySystem {
             }
         }
 
-        float screenoffset = Measure.units(0f);
+        float screenoffset = Measure.units(10f);
 
         int count = 0;
 
@@ -177,14 +177,16 @@ public class UISystem extends EntitySystem {
         PickUp p = new MoneyPlus1();
 
         batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                camX + otherUIPosition + 55,
+                camX,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(3.5f),
                 Measure.units(2.5f), Measure.units(2.5f));
 
         currencyFont.draw(batch, "" + playerCurrency.money,
-                camX + otherUIPosition + Measure.units(6f),
-                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(1.5f),
-                Measure.units(7f), Align.left, true);
+                camX + Measure.units(3f),
+                gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(1.25f),
+                0, Align.left, true);
+
+  //      currencyFont.dr
 
     }
 
