@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
@@ -30,6 +31,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
@@ -63,6 +65,12 @@ public class BossWanda extends EnemyFactory {
     private static final float textureOffsetX = -Measure.units(1.25f);
     private static final float textureOffsetY = 0;
 
+
+    private static final float shieldBlastFireRate = 0.1f;
+
+    //Phases
+    private static final float fadeDashPhaseTime = 0.5f;
+
     private Giblets.GibletBuilder gibletBuilder;
 
 
@@ -77,6 +85,7 @@ public class BossWanda extends EnemyFactory {
                 .minSpeed(Measure.units(10f))
                 .maxSpeed(Measure.units(20f))
                 .colors(new Color(Color.RED))
+                .mixes(SoundFileStrings.queitExplosionMegaMix)
                 .intangible(false)
                 .expiryTime(0.2f);
 
@@ -93,7 +102,6 @@ public class BossWanda extends EnemyFactory {
         ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, 75);
 
         bag.add(new VelocityComponent());
-       // bag.add(new GravityComponent());
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 
@@ -118,16 +126,16 @@ public class BossWanda extends EnemyFactory {
 
         PhaseComponent pc = new PhaseComponent();
         Phase1AOE p1 = new Phase1AOE();
-        PhaseFadeDash p2 = new PhaseFadeDash();
+        PhaseFadeDash phaseFadeDash = new PhaseFadeDash();
         Phase3 p3 = new Phase3(Direction.LEFT);
 
-        pc.addPhase(0.5f, p2);
+        pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
         pc.addPhase(2.5f, p3);
-        pc.addPhase(0.5f, p2);
+        pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
         pc.addPhase(2.5f, p3);
-        pc.addPhase(0.5f, p2);
+        pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
         pc.addPhase(2.5f, p3);
-        pc.addPhase(0.5f, p2);
+        pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
         pc.addPhase(2.5f, p1);
 
         bag.add(pc);
@@ -282,6 +290,8 @@ public class BossWanda extends EnemyFactory {
                         0), angles[i], new Color(Color.RED));
             }
 
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+
         }
 
         @Override
@@ -326,8 +336,7 @@ public class BossWanda extends EnemyFactory {
                     vc.velocity.x = BulletMath.velocityX(Measure.units(80f), Math.toRadians(startAngle));
                     vc.velocity.y = BulletMath.velocityY(Measure.units(80f), Math.toRadians(startAngle));
 
-                    System.out.println("angle is :" + startAngle);
-
+                    world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
                 }
 
                 @Override
@@ -357,13 +366,15 @@ public class BossWanda extends EnemyFactory {
                 angles[i] += 22.5f;
             }
 
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+
 
 
         }
 
         @Override
         public float getBaseFireRate() {
-            return 0.1f;
+            return shieldBlastFireRate;
         }
 
         @Override
@@ -404,9 +415,6 @@ public class BossWanda extends EnemyFactory {
                     VelocityComponent vc = e.getComponent(VelocityComponent.class);
                     vc.velocity.x = BulletMath.velocityX(Measure.units(125f), Math.toRadians(startAngle));
                     vc.velocity.y = BulletMath.velocityY(Measure.units(125f), Math.toRadians(startAngle));
-
-                    System.out.println("angle is :" + startAngle);
-
                 }
 
                 @Override

@@ -1,9 +1,12 @@
 package com.byrjamin.wickedwizard.factories.enemy;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
@@ -15,12 +18,14 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -83,6 +88,7 @@ public class EnemyFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 deathClone(world, e);
+                clearBullets(world);
                 Entity flash = bossEndFlash(world);
             }
         }));
@@ -112,7 +118,7 @@ public class EnemyFactory extends AbstractFactory {
                     .intangible(true)
                     .numberOfGibletPairs(10)
                     .size(Measure.units(1f))
-                    .colors(new Color(Color.RED))
+                    .colors(new Color(new Color(Color.RED)), new Color(ColorResource.BOMB_ORANGE), new Color(Color.BLACK))
                     .build();
 
             @Override
@@ -122,6 +128,17 @@ public class EnemyFactory extends AbstractFactory {
         }, 0.1f, true));
 
         return deathClone;
+
+    }
+
+    protected void clearBullets(World world){
+
+        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class, BulletComponent.class)).getEntities();
+
+        for(int i = 0; i < intBag.size(); i++){
+            world.getSystem(OnDeathSystem.class).kill(world.getEntity(intBag.get(i)));
+        }
+
 
     }
 

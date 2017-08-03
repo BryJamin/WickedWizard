@@ -6,7 +6,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
@@ -16,14 +18,19 @@ import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.enemy.JumpingJackFactory;
@@ -62,7 +69,17 @@ public class MrBoomyBoss extends EnemyFactory {
     private static final int EXPLODING_ANIMATION = 2;
     private static final int SIDEVIEW_ANIMATION = 4;
 
+
+    private static final float airBomberWeaponFireRate = 1.5f;
+    private static final float groundBomberWeaponFireRate = 0.5f;
+
     private BombFactory bombFactory;
+
+
+    //Phase
+    private static final float groundBomberPhaseTime = 5.0f;
+
+    private static final float airBomberPhaseTime = 8.5f;
 
     public MrBoomyBoss(AssetManager assetManager) {
         super(assetManager);
@@ -99,15 +116,15 @@ public class MrBoomyBoss extends EnemyFactory {
 
 
         PhaseComponent pc = new PhaseComponent();
-        pc.addPhase(5.0f, groundBomberPhase());
-        pc.addPhase(10.0f, jumpingAirBomberPhase());
+        pc.addPhase(groundBomberPhaseTime, groundBomberPhase());
+        pc.addPhase(airBomberPhaseTime , jumpingAirBomberPhase()); //, moveToPhaseTimingAndPositionCondition(airBomberPhaseTime));
         pc.addPhase(new Pair<Task, Condition>(dropAndExplode(), new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(CollisionBoundComponent.class).getRecentCollisions().contains(Collider.Collision.BOTTOM, true);
             }
         }));
-        pc.addPhase(5.0f, groundBomberPhase());
+        pc.addPhase(groundBomberPhaseTime, groundBomberPhase());
 
         bag.add(pc);
 
@@ -116,9 +133,16 @@ public class MrBoomyBoss extends EnemyFactory {
     }
 
 
-
-
-
+    private Condition moveToPhaseTimingAndPositionCondition(final float time){
+        return new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return entity.getComponent(PhaseComponent.class).currentPhaseTime > time &&
+                        entity.getComponent(CollisionBoundComponent.class).bound.contains(world.getSystem(RoomTransitionSystem.class).getCurrentArena().getWidth() / 2,
+                                entity.getComponent(PositionComponent.class).getY());
+            }
+        };
+    }
 
 
 
@@ -135,11 +159,9 @@ public class MrBoomyBoss extends EnemyFactory {
                 e.edit().add(new FiringAIComponent(0));
                 e.edit().add(new WeaponComponent(new AirBomberWeapon(assetManager), 0.5f));
 
-               // e.getComponent(AnimationStateComponent.class).setDefaultState(JUMPINGJACKANIMATION);
-
                 e.edit().add(new BounceComponent(true, false));
 
-                e.edit().add(new ActionAfterTimeComponent(new Task() {
+                e.edit().add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
 
@@ -148,11 +170,7 @@ public class MrBoomyBoss extends EnemyFactory {
                         e.edit().remove(new GravityComponent());
                         e.getComponent(VelocityComponent.class).velocity.y = 0;
                     }
-
-                    @Override
-                    public void cleanUpAction(World world, Entity e) {
-
-                    }
+                    
                 }, airTime));
             }
 
@@ -175,7 +193,7 @@ public class MrBoomyBoss extends EnemyFactory {
                 e.getComponent(VelocityComponent.class).velocity.x = 0;
                 e.getComponent(AnimationStateComponent.class).setDefaultState(EXPLODING_ANIMATION);
 
-                e.edit().add(new ActionAfterTimeComponent(new Task() {
+                    e.edit().add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         e.edit().add(new GravityComponent());
@@ -190,10 +208,6 @@ public class MrBoomyBoss extends EnemyFactory {
                         e.edit().add(ocac);
                     }
 
-                    @Override
-                    public void cleanUpAction(World world, Entity e) {
-
-                    }
                 }, dropTime));
             }
 
@@ -251,11 +265,13 @@ public class MrBoomyBoss extends EnemyFactory {
                 mineWeapon.fire(world, e, x, y, angleInRadians);
                 isBomb = !isBomb;
             }
+
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
         }
 
         @Override
         public float getBaseFireRate() {
-            return 1.5f;
+            return airBomberWeaponFireRate;
         }
 
         @Override
@@ -263,17 +279,6 @@ public class MrBoomyBoss extends EnemyFactory {
             return 0;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     private class DropBomberWeapon implements Weapon {
@@ -302,11 +307,14 @@ public class MrBoomyBoss extends EnemyFactory {
                 bombWeapon.fire(world, e , x, y, Math.toRadians(random.nextInt(90)));
                 isLeft = !isLeft;
             }
+
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+
         }
 
         @Override
         public float getBaseFireRate() {
-            return 0.5f;
+            return groundBomberWeaponFireRate;
         }
 
         @Override

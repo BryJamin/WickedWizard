@@ -291,7 +291,7 @@ public class BiggaBlobbaBoss extends EnemyFactory {
             }
         };
 
-        return new Pair<Task, Condition>(task, landingCondition(time    ));
+        return new Pair<Task, Condition>(task, landingCondition(time));
 
     }
 
