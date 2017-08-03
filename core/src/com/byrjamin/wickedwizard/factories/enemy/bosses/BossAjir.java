@@ -1,8 +1,9 @@
 package com.byrjamin.wickedwizard.factories.enemy.bosses;
 
-import com.artemis.Component;
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,28 +11,28 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
-import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
+import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
-import com.byrjamin.wickedwizard.factories.BulletFactory;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
-import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -79,10 +80,17 @@ public class BossAjir extends EnemyFactory{
 
     private static final float shotSpeed = Measure.units(25f);
 
+    //Phase
+    private static final float deathFromAbovePhase = 10.0f;
+    private static final float bulletSplitterWeaponPhase = 10.0f;
+
 
     private static final int NORMAL_STATE = 0;
     private static final int FIRING_STATE = 2;
     private static final int FIRING_LASERS_STATE = 4;
+
+
+    private Giblets.GibletBuilder splitterWeaponGiblets;
 
 
     private Random random;
@@ -90,6 +98,17 @@ public class BossAjir extends EnemyFactory{
     public BossAjir(AssetManager assetManager) {
         super(assetManager);
         this.random = new Random();
+
+        this.splitterWeaponGiblets = new Giblets.GibletBuilder(assetManager)
+                .numberOfGibletPairs(6)
+                .size(Measure.units(0.75f))
+                .fadeChance(0.5f)
+                .minSpeed(Measure.units(30f))
+                .maxSpeed(Measure.units(40f))
+                .colors(new Color(Color.RED))
+                .intangible(false)
+                .expiryTime(0.4f);
+
     }
 
     public ComponentBag ajir(float x, float y){
@@ -97,7 +116,20 @@ public class BossAjir extends EnemyFactory{
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultEnemyBagNoLootNoDeath(new ComponentBag(), x, y, health);
+
+        bag.add(new OnDeathActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                deathClone(world, e);
+                IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class, BulletComponent.class)).getEntities();
+                for(int i = 0; i < intBag.size(); i++){
+                    world.getEntity(intBag.get(i)).getComponent(OnDeathActionComponent.class).action = splitterWeaponGiblets.build();
+                    world.getSystem(OnDeathSystem.class).kill(world.getEntity(intBag.get(i)));
+                }
+                bossEndFlash(world);
+            }
+        }));
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
                 new HitBox(new Rectangle(x, y, bodyHitBoxWidth, bodyHitBoxHeight),
@@ -122,8 +154,8 @@ public class BossAjir extends EnemyFactory{
 
 
         PhaseComponent phaseComponent = new PhaseComponent();
-        phaseComponent.addPhase(10f, new AjirSplitterWeaponPhase(random));
-        phaseComponent.addPhase(10f, new AjirDeathFromAbovePhase(random));
+        phaseComponent.addPhase(bulletSplitterWeaponPhase, new AjirSplitterWeaponPhase(random));
+        phaseComponent.addPhase(deathFromAbovePhase, new AjirDeathFromAbovePhase(random));
 
         bag.add(phaseComponent);
 
@@ -151,19 +183,21 @@ public class BossAjir extends EnemyFactory{
         @Override
         public void performAction(World world, Entity e) {
 
+            e.edit().add(new WeaponComponent(ajirSplitterWeapon, 0.5f));
+            e.edit().add(new FiringAIComponent(Math.toRadians(possibleAngles[random.nextInt(possibleAngles.length)])));
+
             e.edit().add(new ActionAfterTimeComponent(new Action() {
                 @Override
                 public void performAction(World world, Entity e) {
-
-                    CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                    e.getComponent(AnimationStateComponent.class).queueAnimationState(FIRING_STATE);
-                    ajirSplitterWeapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), Math.toRadians(possibleAngles[random.nextInt(possibleAngles.length)]));
+                    e.getComponent(FiringAIComponent.class).firingAngleInRadians = Math.toRadians(possibleAngles[random.nextInt(possibleAngles.length)]);
                 }
             }, timeBetweenSplitAction, true));
         }
 
         @Override
         public void cleanUpAction(World world, Entity e) {
+            e.edit().remove(WeaponComponent.class);
+            e.edit().remove(FiringAIComponent.class);
             e.edit().remove(ActionAfterTimeComponent.class);
         }
     }
@@ -278,63 +312,40 @@ public class BossAjir extends EnemyFactory{
 
     private class AjirSplitterWeapon implements Weapon {
 
-        private BulletFactory bulletFactory;
-        private Giblets.GibletBuilder gibletBuilder;
-
         private Weapon weapoonFiredOnBulletDeath;
 
-        public AjirSplitterWeapon(AssetManager assetManager){
-            this.bulletFactory = new BulletFactory(assetManager);
+        private Weapon giantBulletThatSplits;
 
-            this.gibletBuilder = new Giblets.GibletBuilder(assetManager)
-                    .numberOfGibletPairs(3)
-                    .size(Measure.units(0.5f))
-                    .minSpeed(Measure.units(10f))
-                    .maxSpeed(Measure.units(20f))
-                    .colors(new Color(Color.RED))
-                    .intangible(false)
-                    .expiryTime(0.2f);
+        public AjirSplitterWeapon(AssetManager assetManager){
 
             this.weapoonFiredOnBulletDeath = new MultiPistol.PistolBuilder(assetManager)
                     .angles(0,30,60,90,120,150,180,210,240,270,300,330)
                     .shotScale(2)
                     .expire(true)
                     .build();
+
+            this.giantBulletThatSplits = new MultiPistol.PistolBuilder(assetManager)
+                    .shotScale(10)
+                    .shotSpeed(shotSpeed)
+                    .customOnDeathAction(new OnDeathActionComponent(new Action() {
+                        @Override
+                        public void performAction(World world, Entity e) {
+                            CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                            //splitterWeaponGiblets.build().performAction(world, e);
+                            weapoonFiredOnBulletDeath.fire(world, e , cbc.getCenterX(), cbc.getCenterY(), 0);
+                        }
+                    }))
+                    .build();
         }
 
         @Override
         public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-
-            Entity bullet = world.createEntity();
-
-            for(Component c : bulletFactory.basicBulletBag(x, y, 10, atlas.findRegion(TextureStrings.BLOCK), new Color(Color.RED))) {
-                bullet.edit().add(c);
-            };
-
-            bullet.edit().add(new EnemyComponent());
-            bullet.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeed, angleInRadians),
-                    BulletMath.velocityY(shotSpeed, angleInRadians)));
-
-
-            bullet.edit().add(new OnDeathActionComponent(new Action() {
-                @Override
-                public void performAction(World world, Entity e) {
-                    CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-
-                    gibletBuilder.build().performAction(world, e);
-
-                    weapoonFiredOnBulletDeath.fire(world, e , cbc.getCenterX(), cbc.getCenterY(), 0);
-                }
-            }));
-
-            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
-
-
+            giantBulletThatSplits.fire(world, e, x, y, angleInRadians);
         }
 
         @Override
         public float getBaseFireRate() {
-            return 0;
+            return timeBetweenSplitAction;
         }
 
         @Override

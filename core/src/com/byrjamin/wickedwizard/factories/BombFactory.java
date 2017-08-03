@@ -238,7 +238,7 @@ public class BombFactory extends  AbstractFactory{
 
                 gibletBuilder.numberOfGibletPairs(15)
                         .expiryTime(0.35f)
-                        .fadeRate(0.25f)
+                        .fadeChance(0.25f)
                         .size(Measure.units(1.5f))
                         .minSpeed(Measure.units(0f))
                         .maxSpeed(Measure.units(75f))

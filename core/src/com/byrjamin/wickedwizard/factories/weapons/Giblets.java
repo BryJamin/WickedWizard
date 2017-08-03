@@ -94,7 +94,7 @@ public class Giblets extends AbstractFactory implements Action {
 
         private float expiryTime = 0.2f;
 
-        //Chance to fade (ROll beteween 1 and 100
+        //Chance to fade between 0 and 1.0f
         private float fadeChance = 0;
 
         private float minSpeed = 0;
@@ -119,7 +119,7 @@ public class Giblets extends AbstractFactory implements Action {
         public GibletBuilder expiryTime(float val)
         { expiryTime = val; return this; }
 
-        public GibletBuilder fadeRate(float val)
+        public GibletBuilder fadeChance(float val)
         { fadeChance = val; return this; }
 
         public GibletBuilder minSpeed(float val)

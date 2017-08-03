@@ -162,7 +162,7 @@ public class MultiPistol implements Weapon {
 
         this.giblets = new Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(3)
-                .fadeRate(0.0f)
+                .fadeChance(0.0f)
                 .size(Measure.units(gibletScaleModifier * shotScale)) //Was just a flat 0.5f, but this is an experiment
                 .minSpeed(Measure.units(10f))
                 .maxSpeed(Measure.units(20f))

@@ -109,7 +109,7 @@ public class ItemFactory extends AbstractFactory {
                         .numberOfGibletPairs(5)
                         .expiryTime(0.2f)
                         .maxSpeed(Measure.units(50f))
-                        .fadeRate(0.25f)
+                        .fadeChance(0.25f)
                         .size(Measure.units(1f))
                         .mixes(SoundFileStrings.coinPickUpMix)
                         .colors(new Color(ColorResource.MONEY_YELLOW))

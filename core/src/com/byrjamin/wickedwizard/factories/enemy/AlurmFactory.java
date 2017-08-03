@@ -28,8 +28,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWanda;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -166,7 +164,7 @@ public class AlurmFactory extends EnemyFactory {
             e.edit().add(new FadeComponent(true, 0.2f, false));
             e.edit().add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
                     .numberOfGibletPairs(3)
-                    .fadeRate(0.0f)
+                    .fadeChance(0.0f)
                     .size(Measure.units(0.5f))
                     .minSpeed(Measure.units(10f))
                     .maxSpeed(Measure.units(20f))

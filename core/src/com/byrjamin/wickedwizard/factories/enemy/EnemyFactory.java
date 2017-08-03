@@ -58,7 +58,7 @@ public class EnemyFactory extends AbstractFactory {
                         .minSpeed(Measure.units(10f))
                         .maxSpeed(Measure.units(50f))
                         .expiryTime(0.6f)
-                        .fadeRate(0.75f)
+                        .fadeChance(0.75f)
                         .intangible(true)
                         .numberOfGibletPairs(5)
                         .size(Measure.units(1f))
@@ -114,7 +114,7 @@ public class EnemyFactory extends AbstractFactory {
                     .minSpeed(Measure.units(10f))
                     .maxSpeed(Measure.units(100f))
                     .expiryTime(0.6f)
-                    .fadeRate(0.75f)
+                    .fadeChance(0.75f)
                     .intangible(true)
                     .numberOfGibletPairs(10)
                     .size(Measure.units(1f))
@@ -134,7 +134,6 @@ public class EnemyFactory extends AbstractFactory {
     protected void clearBullets(World world){
 
         IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class, BulletComponent.class)).getEntities();
-
         for(int i = 0; i < intBag.size(); i++){
             world.getSystem(OnDeathSystem.class).kill(world.getEntity(intBag.get(i)));
         }
@@ -169,7 +168,7 @@ public class EnemyFactory extends AbstractFactory {
                         .minSpeed(Measure.units(10f))
                         .maxSpeed(Measure.units(50f))
                         .expiryTime(0.6f)
-                        .fadeRate(0.75f)
+                        .fadeChance(0.75f)
                         .intangible(true)
                         .numberOfGibletPairs(5)
                         .size(Measure.units(1f))
@@ -205,7 +204,7 @@ public class EnemyFactory extends AbstractFactory {
                         .minSpeed(Measure.units(10f))
                         .maxSpeed(Measure.units(50f))
                         .expiryTime(0.6f)
-                        .fadeRate(0.75f)
+                        .fadeChance(0.75f)
                         .intangible(true)
                         .numberOfGibletPairs(5)
                         .size(Measure.units(1f))
