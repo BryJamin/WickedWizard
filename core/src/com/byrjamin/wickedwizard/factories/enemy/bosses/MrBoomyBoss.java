@@ -170,7 +170,8 @@ public class MrBoomyBoss extends EnemyFactory {
                         e.edit().remove(new GravityComponent());
                         e.getComponent(VelocityComponent.class).velocity.y = 0;
                     }
-                    
+
+
                 }, airTime));
             }
 

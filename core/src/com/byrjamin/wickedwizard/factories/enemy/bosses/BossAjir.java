@@ -10,28 +10,26 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.BounceComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -63,12 +61,12 @@ public class BossAjir extends EnemyFactory{
     private static final float armsHitBoxOffsetY = Measure.units(12.5f);
 
     private static final float chargingLaserWidth = Measure.units(5f);
-    private static final float chargingLaserHeight = Measure.units(50f);
-    private static final float laserWidth = Measure.units(7.5f);
-    private static final float laserHeight = Measure.units(50f);
+    private static final float chargingLaserHeight = Measure.units(100f);
+    private static final float activeLaserWidth = Measure.units(7.5f);
+    private static final float activeLaserHeight = Measure.units(100f);
 
     private static final float activeLaserTime = 0.4f;
-    private static final float laserChargeTime = 0.8f;
+    private static final float chargingLaserTime = 1.6f;
 
     private static final float speed = Measure.units(10f);
 
@@ -76,8 +74,8 @@ public class BossAjir extends EnemyFactory{
 
     private static final float health = 80;
 
-    private static final float timeBetweenSplitAction = 1.25f;
-    private static final float timeBetweenLasers = 1.0f;
+    private static final float timeBetweenSplitAction = 1.0f;
+    private static final float timeBetweenLasers = 1.3f;
 
     private static final float shotSpeed = Measure.units(25f);
 
@@ -142,7 +140,7 @@ public class BossAjir extends EnemyFactory{
         private AjirSplitterWeapon ajirSplitterWeapon;
 
         //TODO change these to different angles once the art is finalized (Directly below is not fair)
-        private int[] possibleAngles = new int[]{0, 45, 90, 135, 180, 270};
+        private int[] possibleAngles = new int[]{0, 45, 90, 135, 180};
 
         public AjirSplitterWeaponPhase(Random random){
             this.random = random;
@@ -177,8 +175,21 @@ public class BossAjir extends EnemyFactory{
 
         private Random random;
 
+        private LaserBeam laserBeam;
+
         public AjirDeathFromAbovePhase(Random random){
             this.random = random;
+
+            laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
+                    .chargingLaserWidth(chargingLaserWidth)
+                    .chargingLaserHeight(chargingLaserHeight)
+                    .activeLaserWidth(activeLaserWidth)
+                    .activeLaserHeight(activeLaserHeight)
+                    .chargingLaserTime(chargingLaserTime)
+                    .activeLaserTime(activeLaserTime)
+                    .layer(TextureRegionComponent.FOREGROUND_LAYER_NEAR)
+                    .build();
+
         }
 
         @Override
@@ -234,7 +245,9 @@ public class BossAjir extends EnemyFactory{
                     positions.add(Measure.units(10f + (secondChoice * gapBetweenPositions)));
 
                     for(Float f : positions) {
-                        createBeam(world, f, Measure.units(10f));
+                        laserBeam.createBeam(world, f, Measure.units(10f));
+
+                        //createBeam(world, f, Measure.units(10f));
                     }
 
                     positions.clear();
@@ -257,60 +270,6 @@ public class BossAjir extends EnemyFactory{
             e.edit().remove(ActionAfterTimeComponent.class);
             e.edit().remove(BounceComponent.class);
             e.edit().remove(VelocityComponent.class);
-        }
-
-
-        public void createBeam(World world, float x, float y){
-
-            Entity beam = world.createEntity();
-
-            beam.edit().add(new PositionComponent(x, y));
-            beam.edit().add(new CollisionBoundComponent(new Rectangle(x, y, chargingLaserWidth, chargingLaserHeight), true));
-            //beam.edit().add(new HazardComponent());
-            beam.edit().add(new FadeComponent(true, 0.5f, false, 0, 0.3f));
-            beam.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), chargingLaserWidth, chargingLaserHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
-                    new Color(Color.RED.r, Color.RED.g, Color.RED.b, 0)));
-
-            beam.edit().add(new ActionAfterTimeComponent(new Action() {
-                @Override
-                public void performAction(World world, Entity e) {
-
-                    e.edit().remove(FadeComponent.class);
-
-                    e.edit().add(new HazardComponent());
-
-                    PositionComponent pc = e.getComponent(PositionComponent.class);
-                    pc.position.set(pc.getX() - (laserWidth / 2 - chargingLaserWidth / 2), pc.getY(), 0);
-
-                    e.edit().remove(CollisionBoundComponent.class);
-                    e.edit().add(new CollisionBoundComponent(new Rectangle(pc.getX(), pc.getY(), laserWidth, laserHeight), true));
-
-                    TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
-                    trc.width = laserWidth;
-                    trc.height = laserHeight;
-                    //TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
-                    trc.color.a = 1;
-
-
-                    e.edit().add(new ExpireComponent(activeLaserTime));
-                    e.edit().add(new OnDeathActionComponent(new Action() {
-                        @Override
-                        public void performAction(World world, Entity e) {
-                            Entity fadingBeam = world.createEntity();
-                            fadingBeam.edit().add(e.getComponent(PositionComponent.class));
-                            fadingBeam.edit().add(e.getComponent(TextureRegionComponent.class));
-                            fadingBeam.edit().add(new FadeComponent(false, 0.3f, false));
-                        }
-                    }));
-                }
-            }, laserChargeTime));
-
-
-
-
-
-
-
         }
 
 
@@ -340,7 +299,6 @@ public class BossAjir extends EnemyFactory{
                     .angles(0,30,60,90,120,150,180,210,240,270,300,330)
                     .shotScale(2)
                     .expire(true)
-                    //.expireRange(Measure.units(50f))
                     .build();
         }
 
@@ -368,6 +326,9 @@ public class BossAjir extends EnemyFactory{
                     weapoonFiredOnBulletDeath.fire(world, e , cbc.getCenterX(), cbc.getCenterY(), 0);
                 }
             }));
+
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+
 
         }
 
