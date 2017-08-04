@@ -166,7 +166,7 @@ public class MultiPistol implements Weapon {
                 .size(Measure.units(gibletScaleModifier * shotScale)) //Was just a flat 0.5f, but this is an experiment
                 .minSpeed(Measure.units(10f))
                 .maxSpeed(Measure.units(20f))
-                .mixes(SoundFileStrings.queitExplosionMegaMix)
+                //.mixes(SoundFileStrings.queitExplosionMegaMix)
                 .colors(color)
                 .intangible(false)
                 .expiryTime(0.2f)

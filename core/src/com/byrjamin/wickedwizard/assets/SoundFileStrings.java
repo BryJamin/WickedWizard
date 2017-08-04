@@ -1,5 +1,8 @@
 package com.byrjamin.wickedwizard.assets;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
+
 /**
  * Created by Home on 03/06/2017.
  */
@@ -10,12 +13,15 @@ public class SoundFileStrings {
     public static final String playerFire = "audio/sounds/laser.wav";
     public static final Mix playerFireMix = new Mix(playerFire, 0.05f);
 
+    public static final String grappleFire = "audio/sounds/laser.wav";
+    public static final Mix grappleFireMix = new Mix(playerFire, 0.05f);
+
 
     public static final String enemyFire = "audio/sounds/laser2.wav";
     public static final Mix enemyFireMix = new Mix(enemyFire, 0.05f);
 
 
-    public static final Mix jumpMix = new Mix.MixMaker("audio/sounds/Jump55.wav").build();
+    public static final Mix jumpMix = new Mix.MixMaker("audio/sounds/Jump55.wav").volume(0.2f).build();
 
     public static final String explosion1 = "audio/sounds/explosion-01.ogg";
     public static final String explosion2 = "audio/sounds/explosion-02.ogg";
@@ -54,6 +60,46 @@ public class SoundFileStrings {
 
     public static final String coinPickUp = "audio/sounds/diing-01.ogg";
     public static final Mix coinPickUpMix = new Mix(coinPickUp, 0.1f);
+
+
+
+    public static final String itemPickUp = "audio/sounds/diing-01.ogg";
+    public static final Mix itemPickUpMix = new Mix(itemPickUp, 0.1f);
+
+
+
+    //Laser
+    public static final String quietLaser = "audio/sounds/betaLaser.ogg";
+    public static final Mix quietLaserMix = new Mix(quietLaser, 0.4f);
+
+
+    public static final String laser = "audio/sounds/betaLaser.ogg";
+    public static final Mix laserMix = new Mix(laser, 0.7f);
+
+
+
+
+
+
+
+    public static void loadSoundsToManager(AssetManager assetManager){
+
+        assetManager.load(playerFire, Sound.class);
+        assetManager.load(enemyFire, Sound.class);
+
+        for(String s : SoundFileStrings.explosionStrings) assetManager.load(s, Sound.class);
+        for(Mix m : SoundFileStrings.hitMegaMix) assetManager.load(m.getFileName(), Sound.class);
+
+        assetManager.load(coinPickUp, Sound.class);
+        assetManager.load(jumpMix.getFileName(), Sound.class);
+
+        assetManager.load(quietLaser, Sound.class);
+        assetManager.load(laser, Sound.class);
+
+
+
+    }
+
 
 
 }

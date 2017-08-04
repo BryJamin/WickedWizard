@@ -1,20 +1,12 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.artemis.Entity;
-import com.artemis.World;
-import com.artemis.WorldConfiguration;
-import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
@@ -25,13 +17,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
-import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
-import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -46,27 +35,15 @@ import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.byrjamin.wickedwizard.screens.world.*;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
-import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.utils.Measure;
 
 
-import java.math.RoundingMode;
 import java.util.Random;
 
 
@@ -115,7 +92,7 @@ public class PlayScreen extends AbstractScreen {
             default:
                 Array<Arena> placedArenas = new Array<Arena>();
 
-                TutorialFactory tutorialFactory = new TutorialFactory(game.manager, new LightGraySkin(atlas));
+                TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, new LightGraySkin(atlas));
 
                 Arena startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
                 placedArenas.add(startingArena);
@@ -124,12 +101,12 @@ public class PlayScreen extends AbstractScreen {
                 placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
                 placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
                 placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
-                placedArenas.add(new ArenaShellFactory(game.manager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
+                placedArenas.add(new ArenaShellFactory(game.assetManager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
 
                 ArenaMap arenaMap = new ArenaMap(startingArena, placedArenas);
 
 
-                jg = new JigsawGeneratorConfig(game.manager, random)
+                jg = new JigsawGeneratorConfig(game.assetManager, random)
                         .noBattleRooms(5)
                         .startingMap(arenaMap)
                         .build();
@@ -143,15 +120,15 @@ public class PlayScreen extends AbstractScreen {
 
                 try{
 
-                    bossMap = new BossMaps(game.manager, playScreenConfig.id != 8 ? new LightGraySkin(atlas) : new DarkGraySkin(atlas)).getBossMapsArray().get(playScreenConfig.id);
+                    bossMap = new BossMaps(game.assetManager, playScreenConfig.id != 8 ? new LightGraySkin(atlas) : new DarkGraySkin(atlas)).getBossMapsArray().get(playScreenConfig.id);
 
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
-                    bossMap = new BossMaps(game.manager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent(),new ItemVitaminC());
+                    bossMap = new BossMaps(game.assetManager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent(),new ItemVitaminC());
 
                 }
 
-                jg = new JigsawGeneratorConfig(game.manager, random)
+                jg = new JigsawGeneratorConfig(game.assetManager, random)
                         .startingMap(bossMap)
                         .build();
 
@@ -165,7 +142,7 @@ public class PlayScreen extends AbstractScreen {
 
                 //TODO if id is negative one get all areans in that level
 
-                AllArenaStore allArenaStore = new AllArenaStore(game.manager, arenaSkin, random);
+                AllArenaStore allArenaStore = new AllArenaStore(game.assetManager, arenaSkin, random);
 
 
                 Array<ArenaCreate> arenaCreates = new Array<ArenaCreate>();
@@ -187,7 +164,7 @@ public class PlayScreen extends AbstractScreen {
 
                 }
 
-                jg = new JigsawGeneratorConfig(game.manager, random)
+                jg = new JigsawGeneratorConfig(game.assetManager, random)
                         .noBattleRooms(20)
                         .arenaCreates(arenaCreates)
                         .build();
@@ -210,7 +187,7 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         setUpGlobals();
 
-        jg = new PresetGenerators().level1Configuration(game.manager, new LightGraySkin(atlas), random)
+        jg = new PresetGenerators().level1Configuration(game.assetManager, new LightGraySkin(atlas), random)
                 .build();
         jg.generate();
         jg.cleanArenas();
@@ -225,9 +202,9 @@ public class PlayScreen extends AbstractScreen {
 
     public void setUpGlobals(){
         gestureDetector = new GestureDetector(new PlayScreenGestures());
-        manager = game.manager;
-        atlas = game.manager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        Assets.initialize(game.manager);
+        manager = game.assetManager;
+        atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
+        Assets.initialize(game.assetManager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
@@ -268,7 +245,7 @@ public class PlayScreen extends AbstractScreen {
                             adventureWorld.pauseWorld();
                             isPaused = true;
                             pause();
-                            pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.manager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
+                            pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
                                     adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
                         } else {
                             adventureWorld.unPauseWorld();

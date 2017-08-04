@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -14,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -150,6 +152,8 @@ public class LaserBeam {
         //beam.edit().add(new HazardComponent());
         beam.edit().add(new FadeComponent(true, 0.5f, false, 0, 0.3f));
 
+        beam.edit().add(new SoundEmitterComponent(SoundFileStrings.quietLaserMix));
+
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), chargingLaserWidth, chargingLaserHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
                 new Color(color.r, color.g, color.b, 0));
@@ -166,6 +170,7 @@ public class LaserBeam {
 
                 Entity activeBeam = world.createEntity();
                 activeBeam.edit().add(new HazardComponent());
+                activeBeam.edit().add(new SoundEmitterComponent(SoundFileStrings.laserMix));
 
 
                 PositionComponent oldPC = e.getComponent(PositionComponent.class);
@@ -189,11 +194,18 @@ public class LaserBeam {
                     @Override
                     public void performAction(World world, Entity e) {
 
+                        e.edit().remove(OnDeathActionComponent.class);
+                        e.edit().remove(HazardComponent.class);
+                        e.edit().remove(FadeComponent.class);
+                        e.edit().add(new FadeComponent(false, activeLaserDisperseTime, false));
+                        e.edit().add(new ExpireComponent(activeLaserDisperseTime + 0.1f));
+
+/*
                         Entity fadingBeam = world.createEntity();
                         fadingBeam.edit().add(e.getComponent(PositionComponent.class));
                         fadingBeam.edit().add(e.getComponent(TextureRegionComponent.class));
                         fadingBeam.edit().add(new FadeComponent(false, activeLaserDisperseTime, false));
-                        fadingBeam.edit().add(new ExpireComponent(activeLaserDisperseTime + 0.1f));
+                        fadingBeam.edit().add(new ExpireComponent(activeLaserDisperseTime + 0.1f));*/
                     }
                 }));
 

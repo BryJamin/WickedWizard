@@ -44,7 +44,7 @@ public class DevModeMenuWorld extends WorldContainer{
 
         this.game = game;
 
-        atlas = game.manager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
+        atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -53,7 +53,7 @@ public class DevModeMenuWorld extends WorldContainer{
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new ActionOnTouchSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, game.manager, gameport),
+                        new RenderingSystem(game.batch, game.assetManager, gameport),
                         new BoundsDrawingSystem()
                 )
                 .build();

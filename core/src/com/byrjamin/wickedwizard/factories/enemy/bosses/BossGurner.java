@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
@@ -36,6 +37,8 @@ import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
 import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
+import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -48,17 +51,31 @@ import java.util.Random;
 
 public class BossGurner extends EnemyFactory{
 
-    private DeathFactory df;
-    private BulletFactory bf;
-
     private static final float width = Measure.units(30f);
     private static final float height = Measure.units(30f);
+
+    private static final float health = 90;
+
+    //SPRAY
+
+    private static final float sprayAndPrayPhaseTime = 10f;
+
+    private static final float weaponStartUpTime = 0.5f;
+    private static final float changeInFiringAngleInDegrees = 25;
+    private static final float shotSpeed = Measure.units(35f);
+    private static final float fireRate = 0.5f;
+
+
+
+    //LaserPhase
+    private static final float laserSquareSize = Measure.units(7.5f);
+    private static final float speedInDegrees = 0.5f;
+
+    private static final float laserPhaseTime = 12.5f;
 
 
     public BossGurner(AssetManager assetManager) {
         super(assetManager);
-        this.df = new DeathFactory(assetManager);
-        this.bf = new BulletFactory(assetManager);
     }
 
 
@@ -73,7 +90,7 @@ public class BossGurner extends EnemyFactory{
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x , y, 90);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x , y, health);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
@@ -93,31 +110,29 @@ public class BossGurner extends EnemyFactory{
         trc.DEFAULT = new Color(Color.BLACK);
 
         bag.add(trc);
-        bag.add(new FiringAIComponent(0));
        // bag.add(new WeaponComponent(new KugelWeapon(left), 0.5f));
 
+        LaserOrbitalTask.LaserBuilder laserBuilder =  new LaserOrbitalTask.LaserBuilder(assetManager)
+                .angles(-10,80,170, 260)
+                .orbitalAndIntervalSize(laserSquareSize)
+                .speedInDegrees(isLeft ? speedInDegrees : -speedInDegrees)
+                .numberOfOrbitals(15)
+                .chargeTime(1.5f)
+                .disperseTime(0.5f);
 
-        Task p = new Task() {
+        LaserOrbitalTask laserOrbitalTask = laserBuilder.build();
 
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(new WeaponComponent(new KugelWeapon(left), 0.5f));
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(WeaponComponent.class);
-            }
-        };
+        LaserOrbitalTask secondLaserOrbitalTask = laserBuilder
+                .speedInDegrees(!isLeft ? speedInDegrees : -speedInDegrees)
+                .build();
 
 
         PhaseComponent pc = new PhaseComponent();
-        pc.addPhase(10f, p);
-        pc.addPhase(15f, new Orbitals(Measure.units(50f), left));
-        pc.addPhase(10f, p);
-        pc.addPhase(15f, new Orbitals(Measure.units(50f), !left));
+        pc.addPhase(sprayAndPrayPhaseTime, new SprayAndPrayPhase(left));
+        pc.addPhase(laserPhaseTime,laserOrbitalTask);
+        pc.addPhase(sprayAndPrayPhaseTime, new SprayAndPrayPhase(!left));
+        pc.addPhase(laserPhaseTime, secondLaserOrbitalTask);
         bag.add(pc);
-        // bag.add(df.basicOnDeathExplosion(new OnDeathComponent(), width, height, 0,0));
 
 
 
@@ -127,148 +142,47 @@ public class BossGurner extends EnemyFactory{
     }
 
 
-    private class Orbitals implements Task {
+    private class SprayAndPrayPhase implements Task {
+
+        private MultiPistol pistol;
+
+        private boolean turnsLeft;
 
 
-        int[] angles = new int[] {-10,80,170, 260};
-        float range;
-        private boolean isLeft;
+        public SprayAndPrayPhase(boolean turnsLeft){
+            pistol = new MultiPistol.PistolBuilder(assetManager)
+                    .fireRate(fireRate)
+                    .angles(0,45,90,135,180,225,270,315)
+                    .shotScale(4f)
+                    .shotSpeed(shotSpeed)
+                    .build();
 
-        public Orbitals(float range, boolean isLeft){
-            this.range = range;
-            this.isLeft = isLeft;
+            this.turnsLeft = turnsLeft;
         }
+
+
 
         @Override
         public void performAction(World world, Entity e) {
+            e.edit().add(new WeaponComponent(pistol, weaponStartUpTime));
+            e.edit().add(new FiringAIComponent(0));
 
-            PositionComponent current = e.getComponent(PositionComponent.class);
-            ParentComponent pc = new ParentComponent();
-
-            float bulletSize = Measure.units(7.5f);
-            float angleSpeed = isLeft ? 0.5f : -0.5f;
-
-            for(int i = 0; i < 15; i ++) {
-
-                for (int angle : angles) {
-                    Entity orbital = world.createEntity();
-                    orbital.edit().add(new PositionComponent());
-                    //orbital.edit().add(new EnemyComponent());
-                    orbital.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, bulletSize,bulletSize), true));
-                    orbital.edit().add(new OrbitComponent(
-                            new Vector3(current.getX(), current.getY(), 0f), i * bulletSize, angleSpeed, angle, width / 2, height / 2
-                    ));
-
-                    orbital.edit().add(new TextureRegionComponent(atlas.findRegion("block"),
-                            bulletSize,bulletSize, TextureRegionComponent.ENEMY_LAYER_FAR, new Color(Color.RED)));
-
-                    orbital.edit().add(new FadeComponent(true, 1.25f, false));
-
-                    orbital.edit().add(new IntangibleComponent());
-
-                    ChildComponent c = new ChildComponent();
-                    pc.children.add(c);
-                    orbital.edit().add(c);
-
-
-                    orbital.edit().add(new ActionAfterTimeComponent(new Task() {
-                        @Override
-                        public void performAction(World world, Entity e) {
-                            e.edit().add(new EnemyComponent());
-                        }
-
-                        @Override
-                        public void cleanUpAction(World world, Entity e) {
-
-                        }
-                    }, 1.0f));
-
-
+            e.edit().add(new ActionAfterTimeComponent(new Action() {
+                @Override
+                public void performAction(World world, Entity e) {
+                    e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((turnsLeft) ? changeInFiringAngleInDegrees : -changeInFiringAngleInDegrees);
                 }
-
-                e.edit().add(pc);
-            }
-
+            }, fireRate, true));
 
         }
 
         @Override
         public void cleanUpAction(World world, Entity e) {
-
-
-            Array<ChildComponent> childComponents  = new Array<ChildComponent>();
-            childComponents.addAll(e.getComponent(ParentComponent.class).children);
-
-            for(ChildComponent c : childComponents) {
-
-                Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
-
-
-                if(child != null){
-                    child.edit().remove(EnemyComponent.class);
-                    child.edit().add(new FadeComponent(false, 0.5f, false));
-                    child.edit().add(new ExpireComponent(0.6f));
-                    //world.getSystem(OnDeathSystem.class).kill(child);
-                }
-            };
-
-            e.edit().remove(ParentComponent.class);
+            e.edit().remove(WeaponComponent.class);
+            e.edit().remove(FiringAIComponent.class);
+            e.edit().remove(ActionAfterTimeComponent.class);
         }
     }
-
-
-
-
-    private class KugelWeapon implements Weapon{
-
-
-        int[] angles = new int[] {0,45,90,135,180,225,270,315};
-        private boolean left;
-
-        KugelWeapon(boolean left){
-            this.left = left;
-        }
-
-        @Override
-        public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-            for(int i : angles){
-                double angleOfTravel = angleInRadians + Math.toRadians(i);
-                Bag<Component> bag = bf.basicEnemyBulletBag(x, y, 4f);
-                bag.add(new VelocityComponent((float) (Measure.units(37) * Math.cos(angleOfTravel)), (float) (Measure.units(34) * Math.sin(angleOfTravel))));
-                BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;
-
-                Entity bullet = world.createEntity();
-                for(Component c : bag){
-                    bullet.edit().add(c);
-                }
-            }
-
-            e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((left) ? 25 : -25);
-
-        }
-
-        @Override
-        public float getBaseFireRate() {
-            return 0.5f;
-        }
-
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
-
-
-        public void setLeft(boolean left){
-            this.left = left;
-        }
-    }
-
-
-
-
-
-
-
 
 
 }

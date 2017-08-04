@@ -1,12 +1,10 @@
 package com.byrjamin.wickedwizard;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,7 +15,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
-import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
@@ -38,7 +35,7 @@ public class MainGame extends Game {
 	//60 tiles high
 
 	public SpriteBatch batch;
-	public AssetManager manager = new AssetManager();
+	public AssetManager assetManager = new AssetManager();
 
 
 	@Override
@@ -46,32 +43,22 @@ public class MainGame extends Game {
 		batch = new SpriteBatch();
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(0, 0);
-		manager.load(FileLocationStrings.spriteAtlas, TextureAtlas.class);
+		assetManager.load(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
-		manager.load(MusicStrings.BG_MAIN_MENU.getFileName(), Music.class);
-		manager.load(MusicStrings.BG_LEVEL_ONE.getFileName(), Music.class);
-		manager.load(MusicStrings.BG_LEVEL_TWO.getFileName(), Music.class);
-		manager.load(MusicStrings.BG_LEVEL_THREE.getFileName(), Music.class);
-		manager.load(MusicStrings.BG_LEVEL_FOUR.getFileName(), Music.class);
-		manager.load(MusicStrings.BG_LEVEL_FIVE.getFileName(), Music.class);
-
-        manager.load(SoundFileStrings.playerFire, Sound.class);
-        manager.load(SoundFileStrings.enemyFire, Sound.class);
-
-		for(String s : SoundFileStrings.explosionStrings) manager.load(s, Sound.class);
-		for(Mix m : SoundFileStrings.hitMegaMix) manager.load(m.getFileName(), Sound.class);
-
-        manager.load(SoundFileStrings.coinPickUp, Sound.class);
-		manager.load(SoundFileStrings.jumpMix.getFileName(), Sound.class);
+		assetManager.load(MusicStrings.BG_MAIN_MENU.getFileName(), Music.class);
+		assetManager.load(MusicStrings.BG_LEVEL_ONE.getFileName(), Music.class);
+		assetManager.load(MusicStrings.BG_LEVEL_TWO.getFileName(), Music.class);
+		assetManager.load(MusicStrings.BG_LEVEL_THREE.getFileName(), Music.class);
+		assetManager.load(MusicStrings.BG_LEVEL_FOUR.getFileName(), Music.class);
+		assetManager.load(MusicStrings.BG_LEVEL_FIVE.getFileName(), Music.class);
 
 
-        System.out.println(Gdx.files.getLocalStoragePath());
-		System.out.println(Gdx.files.getExternalStoragePath());
+		SoundFileStrings.loadSoundsToManager(assetManager);
 
 
 		FileHandleResolver resolver = new InternalFileHandleResolver();
-		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+		assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+		assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
 
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
@@ -83,7 +70,7 @@ public class MainGame extends Game {
 		size1Params.fontParameters.magFilter = Texture.TextureFilter.Linear;
 		//size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
-		manager.load(Assets.small, BitmapFont.class, size1Params);
+		assetManager.load(Assets.small, BitmapFont.class, size1Params);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size2Params.fontFileName = "fonts/Roboto-Black.ttf";
@@ -94,7 +81,7 @@ public class MainGame extends Game {
 		size2Params.fontParameters.magFilter = Texture.TextureFilter.Linear;
 		//size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
-        manager.load(Assets.medium, BitmapFont.class, size2Params);
+        assetManager.load(Assets.medium, BitmapFont.class, size2Params);
 
 
 		setScreen(new LoadingScreen(this));

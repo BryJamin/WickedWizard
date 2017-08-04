@@ -106,7 +106,7 @@ public class MessageBannerSystem extends EntitySystem {
 
         createBannerBox(parentComponent, fc, ec, new Color(Color.BLACK));
 
-        fc = new FadeComponent(true, 0.5f, false);
+        fc = new FadeComponent(true, 0.25f, false);
         fc.count = 1;
 
         Entity whiteFlashingBox = createBannerBox(parentComponent, fc, new ExpireComponent(0.9f), new Color(Color.WHITE));

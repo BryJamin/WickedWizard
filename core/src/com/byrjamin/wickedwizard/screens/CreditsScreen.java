@@ -65,9 +65,9 @@ public class CreditsScreen extends AbstractScreen {
         devToolPrefs = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
 
         gestureDetector = new GestureDetector(new CreditsScreenGestures());
-        manager = game.manager;
-        atlas = game.manager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        Assets.initialize(game.manager);
+        manager = game.assetManager;
+        atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
+        Assets.initialize(game.assetManager);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);

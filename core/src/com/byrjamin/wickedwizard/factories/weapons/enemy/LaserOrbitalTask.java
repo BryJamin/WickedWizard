@@ -8,12 +8,16 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
@@ -26,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
@@ -75,7 +80,7 @@ public class LaserOrbitalTask implements Task {
 
         private int[] angles = new int[]{0};
 
-        private Color color = new Color(Color.RED);
+        private Color color = new Color(ColorResource.ENEMY_BULLET_COLOR);
 
         public LaserBuilder(AssetManager assetManager) {
             this.assetManager = assetManager;
@@ -112,6 +117,9 @@ public class LaserOrbitalTask implements Task {
         public LaserBuilder angles(int... val)
         { angles = val; return this; }
 
+        public LaserBuilder color(Color val)
+        { color = val; return this; }
+
         public LaserOrbitalTask build() {
             return new LaserOrbitalTask(this);
         }
@@ -140,7 +148,9 @@ public class LaserOrbitalTask implements Task {
 
         PositionComponent current = e.getComponent(PositionComponent.class);
         CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-        ParentComponent pc = new ParentComponent();
+        ParentComponent parentComponent = new ParentComponent();
+        e.edit().add(parentComponent);
+        e.edit().add(new SoundEmitterComponent(SoundFileStrings.laserMix));
 
         float angleSpeed = speedInDegrees;
 
@@ -157,7 +167,7 @@ public class LaserOrbitalTask implements Task {
 
                 //TODO was Enemy Layer Far
 
-                orbital.edit().add(new TextureRegionComponent(atlas.findRegion("block"),
+                orbital.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                         orbitalSize, orbitalSize, layer, color));
 
                 orbital.edit().add(new FadeComponent(true, chargeTime, false));
@@ -165,7 +175,7 @@ public class LaserOrbitalTask implements Task {
 
                 ChildComponent c = new ChildComponent();
                 orbital.edit().add(c);
-                pc.children.add(c);
+                parentComponent.children.add(c);
 
 
 
@@ -210,7 +220,6 @@ public class LaserOrbitalTask implements Task {
 
             }
 
-            e.edit().add(pc);
         }
 
 
@@ -237,5 +246,7 @@ public class LaserOrbitalTask implements Task {
         };
 
         e.edit().remove(ParentComponent.class);
+
+        e.edit().remove(SoundEmitterComponent.class);
     }
 }

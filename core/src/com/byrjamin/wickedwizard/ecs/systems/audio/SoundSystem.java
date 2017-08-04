@@ -1,6 +1,10 @@
 package com.byrjamin.wickedwizard.ecs.systems.audio;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
+import com.artemis.ComponentMapper;
+import com.artemis.Entity;
+import com.artemis.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,10 +12,16 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.Queue;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
+import com.byrjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+
+import java.util.Map;
 
 /**
  * Created by BB on 02/06/2017.
@@ -28,14 +38,50 @@ import com.byrjamin.wickedwizard.assets.PreferenceStrings;
  *
  */
 
-public class SoundSystem extends BaseSystem {
+public class SoundSystem extends EntitySystem {
+
+    private ComponentMapper<SoundEmitterComponent> soundMapper;
 
     private AssetManager assetManager;
 
     private Array<Mix> upcomingMixes = new Array<Mix>();
 
+
+    private OrderedMap<Long, Entity> emitterEntityIds = new OrderedMap<Long, Entity>();
+
+    private Sound sound;
+
     public SoundSystem(AssetManager assetManager){
+        super(Aspect.all(SoundEmitterComponent.class));
         this.assetManager = assetManager;
+        sound = assetManager.get(SoundFileStrings.coinPickUp, Sound.class);
+    }
+/*
+    public void insertSoundEmitter(Entity e, Mix m){
+        SoundEmitterComponent soundEmitterComponent = new SoundEmitterComponent(m);
+        sound = assetManager.get(m.getFileName(), Sound.class);
+        soundEmitterComponent.soundId =  sound.loop(m.getVolume(), m.getPitch(), 0);
+        e.edit().add(soundEmitterComponent);
+    }
+
+    public void removeSoundEmitter(Entity e){
+        SoundEmitterComponent soundEmitterComponent = soundMapper.get(e);
+        sound.stop(soundEmitterComponent.soundId);
+        e.edit().remove(soundEmitterComponent);
+    }*/
+
+    @Override
+    public void inserted(Entity e) {
+        SoundEmitterComponent soundEmitterComponent = e.getComponent(SoundEmitterComponent.class);
+        Mix m = soundEmitterComponent.mix;
+        sound = assetManager.get(m.getFileName(), Sound.class);
+        soundEmitterComponent.soundId =  sound.loop(m.getVolume(), m.getPitch(), 0);
+        emitterEntityIds.put(soundEmitterComponent.soundId, e);
+    }
+
+    @Override
+    public void removed(Entity e) {
+        sound.stop(emitterEntityIds.findKey(e, true));
     }
 
     @Override
@@ -48,8 +94,11 @@ public class SoundSystem extends BaseSystem {
         if(soundOn){
             for(Mix m : upcomingMixes){
                 Sound s = assetManager.get(m.getFileName(), Sound.class);
+
                 s.play(m.getVolume(), m.getPitch(), 0);
             }
+        } else {
+            sound.stop();
         }
 
         upcomingMixes.clear();
@@ -84,5 +133,6 @@ public class SoundSystem extends BaseSystem {
     @Override
     protected void dispose() {
         super.dispose();
+        sound.stop();
     }
 }

@@ -1,6 +1,5 @@
 package com.byrjamin.wickedwizard.screens;
 
-import com.badlogic.gdx.Screen;
 import com.byrjamin.wickedwizard.MainGame;
 
 /**
@@ -22,7 +21,7 @@ public class LoadingScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
 
-        if(game.manager.update())
+        if(game.assetManager.update())
         {
             //game.setScreen(new CreditsScreen(game));
             game.setScreen(new MenuScreen(game));

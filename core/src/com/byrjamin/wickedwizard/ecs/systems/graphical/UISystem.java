@@ -53,7 +53,7 @@ public class UISystem extends EntitySystem {
         this.batch = game.batch;
         this.gameport = gameport;
 
-        this.assetManager = game.manager;
+        this.assetManager = game.assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         this.currencyFont = assetManager.get(Assets.small, BitmapFont.class);// font size 12 pixels
 
@@ -176,13 +176,15 @@ public class UISystem extends EntitySystem {
 
         PickUp p = new MoneyPlus1();
 
+        float offsetX = Measure.units(1.5f);
+
         batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
-                camX,
+                camX + offsetX,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(3.5f),
                 Measure.units(2.5f), Measure.units(2.5f));
 
         currencyFont.draw(batch, "" + playerCurrency.money,
-                camX + Measure.units(3f),
+                camX + offsetX + Measure.units(3f),
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(1.25f),
                 0, Align.left, true);
 

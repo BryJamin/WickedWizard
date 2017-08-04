@@ -8,6 +8,7 @@ import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
@@ -33,17 +34,19 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.HighlightComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -55,6 +58,11 @@ import java.util.Random;
  */
 
 public class ItemFactory extends AbstractFactory {
+
+    private static final float altarWidth = Measure.units(15f);
+    private static final float altarHeight = Measure.units(15f);
+    private static final float altarItemWidth = Measure.units(5f);
+    private static final float altarItemHeight = Measure.units(5f);
 
     public ItemFactory(AssetManager assetManager) {
         super(assetManager);
@@ -156,7 +164,6 @@ public class ItemFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new PickUpComponent(item));
-        bag.add(new HighlightComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR));
@@ -164,42 +171,50 @@ public class ItemFactory extends AbstractFactory {
     }
 
 
-    public Array<ComponentBag> createItemAltarBag(float x, float y, Item item, Color color){
+    private ComponentBag altarItemTexture(Item item, ParentComponent pc, FollowPositionComponent followPositionComponent){
 
-        float width = Measure.units(15);
-        float height = Measure.units(15);
+        ComponentBag bag = new ComponentBag();
+
+        bag.add(new PositionComponent());
+        bag.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        bag.add(followPositionComponent);
+        ChildComponent c = new ChildComponent(pc);
+        bag.add(c);
+
+        return bag;
+
+
+    }
+
+
+
+
+    public Array<ComponentBag> createItemAltarBag(float x, float y, Item item, Color color){
 
         Array<ComponentBag> bags =  new Array<ComponentBag>();
 
         PositionComponent positionComponent = new PositionComponent(x,y);
 
-        ComponentBag altarItemTexture = new ComponentBag();
-        altarItemTexture.add(new PositionComponent());
-        altarItemTexture.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
-        altarItemTexture.add(new FollowPositionComponent(positionComponent.position, width / 2 - Measure.units(2.5f), Measure.units(5)));
-        ChildComponent c = new ChildComponent();
-        altarItemTexture.add(c);
-
         ComponentBag altarBag = new ComponentBag();
-        altarBag.add(new ParentComponent(c));
+        ParentComponent pc = new ParentComponent();
+        altarBag.add(pc);
         altarBag.add(positionComponent);
-        //bag.add(new PickUpComponent(item));
         altarBag.add(new AltarComponent(item));
-        // bag.add(new HighlightComponent());
         altarBag.add(new VelocityComponent());
         altarBag.add(new GravityComponent());
 
-        Rectangle bound = new Rectangle(new Rectangle(x,y, width, height / 3));
+        Rectangle bound = new Rectangle(new Rectangle(x,y, altarWidth, altarHeight / 3));
         altarBag.add(new CollisionBoundComponent(bound));
         altarBag.add(new ProximityTriggerAIComponent(activeAltar(), new HitBox(bound)));
 
-        TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion(TextureStrings.ALTAR), width, height,
-                TextureRegionComponent.PLAYER_LAYER_FAR);
-
-        altarTexture.DEFAULT = new Color(color);
-        altarTexture.color = new Color(color);
+        TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion(TextureStrings.ALTAR), altarWidth, altarHeight,
+                TextureRegionComponent.PLAYER_LAYER_FAR, new Color(color));
 
         altarBag.add(altarTexture);
+
+
+        ComponentBag altarItemTexture = altarItemTexture(item, pc, new FollowPositionComponent(positionComponent.position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f)));
+
 
 
         bags.add(altarItemTexture);
@@ -262,7 +277,7 @@ public class ItemFactory extends AbstractFactory {
     }
 
 
-    private static Task buyItem(){
+    private Task buyItem(){
         return new Task() {
             @Override
             public void performAction(World world, Entity e) {
@@ -272,7 +287,6 @@ public class ItemFactory extends AbstractFactory {
 
 
                 if(playerMoney.money - itemPrice.money >= 0) {
-
 
                     AltarComponent ac = e.getComponent(AltarComponent.class);
 
@@ -291,30 +305,14 @@ public class ItemFactory extends AbstractFactory {
 
                     playerMoney.money -= itemPrice.money;
 
-
-                    //TODO if pickup do this
-
-
-                    //TODO only certain items should be deleted from the world when bought. E.G keys or something
-
                     if (world.getMapper(ParentComponent.class).has(e)) {
-
-                        for (ChildComponent c : world.getMapper(ParentComponent.class).get(e).children) {
-                            Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
-                            child.deleteFromWorld();
-
-                            //TODO children seem to not exist?
-                        }
+                        world.getSystem(OnDeathSystem.class).killChildComponentsIgnoreOnDeath(world.getMapper(ParentComponent.class).get(e));
                     }
+
 
                     e.deleteFromWorld();
                 }
 
-
-
-
-                //TODO If pickup just apply Item
-                //TODO If Item do the raise above head thing that will be made into a static method
             }
 
             @Override
@@ -326,15 +324,11 @@ public class ItemFactory extends AbstractFactory {
 
 
 
-    private static Task activeAltar (){
+    private Task activeAltar (){
 
         return new Task() {
             @Override
             public void performAction(World world, Entity e) {
-
-
-                e.edit().add(new HighlightComponent());
-
 
                 AltarComponent ac = e.getComponent(AltarComponent.class);
 
@@ -355,33 +349,19 @@ public class ItemFactory extends AbstractFactory {
                         }
 
                         ac.hasItem = false;
-                        //TODO Previous the has ParenComponet was not here I re-used this for the shop I added it on
-                        //TODO I would advise removing this once you wake back up
                         if (world.getMapper(ParentComponent.class).has(e)) {
                             world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first()).deleteFromWorld();
                         }
+
+                        world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.itemPickUpMix);
                     }
 
                 }
 
-                //TODO ditto
-                if(world.getMapper(ParentComponent.class).has(e)) {
-                    Entity child = world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
-                    if (child != null) {
-                        child.edit().add(new HighlightComponent());
-                    }
-                }
-               // e.getComponent(ParentComponent.class).children.get(0)
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(HighlightComponent.class);
-
-                Entity child = world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first());
-                if(child != null){
-                    child.edit().remove(HighlightComponent.class);
-                }
             }
         };
 

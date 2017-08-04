@@ -120,7 +120,7 @@ public class AdventureWorld {
 
     public AdventureWorld(MainGame game, Viewport gameport, JigsawGenerator jigsawGenerator, Random random){
         this.game = game;
-        this.assetManager = game.manager;
+        this.assetManager = game.assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas);
         this.batch = game.batch;
         this.gameport = gameport;
@@ -156,7 +156,7 @@ public class AdventureWorld {
 
 
         Arena startingArena = jigsawGenerator.getStartingRoom();
-        this.setPlayer(new PlayerFactory(game.manager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
+        this.setPlayer(new PlayerFactory(game.assetManager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()

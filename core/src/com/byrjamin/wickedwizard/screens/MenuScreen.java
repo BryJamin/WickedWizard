@@ -96,9 +96,9 @@ public class MenuScreen extends AbstractScreen {
         menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
 
         gestureDetector = new GestureDetector(new gestures());
-        manager = game.manager;
-        atlas = game.manager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        Assets.initialize(game.manager);
+        manager = game.assetManager;
+        atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
+        Assets.initialize(game.assetManager);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);

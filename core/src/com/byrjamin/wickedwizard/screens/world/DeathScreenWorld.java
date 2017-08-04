@@ -4,9 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -46,7 +44,7 @@ public class DeathScreenWorld {
 
     public DeathScreenWorld(MainGame game, Viewport gameport){
         this.game = game;
-        this.atlas  = game.manager.get(FileLocationStrings.spriteAtlas);
+        this.atlas  = game.assetManager.get(FileLocationStrings.spriteAtlas);
         this.gameport = gameport;
         createDeathScreenWorld();
     }
@@ -65,7 +63,7 @@ public class DeathScreenWorld {
                         new ActionOnTouchSystem(),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new RenderingSystem(game.batch, game.manager, gameport),
+                        new RenderingSystem(game.batch, game.assetManager, gameport),
                         new BoundsDrawingSystem()
                 )
                 .build();
