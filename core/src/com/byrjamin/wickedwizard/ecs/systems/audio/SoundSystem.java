@@ -47,7 +47,12 @@ public class SoundSystem extends EntitySystem {
     private Array<Mix> upcomingMixes = new Array<Mix>();
 
 
-    private OrderedMap<Long, Entity> emitterEntityIds = new OrderedMap<Long, Entity>();
+    private OrderedMap<SoundEmitterComponent, Entity> emitterEntityIds = new OrderedMap<SoundEmitterComponent, Entity>();
+
+
+    private Array<SoundEmitterComponent> soundFadeArray = new Array<SoundEmitterComponent>();
+
+
 
     private Sound sound;
 
@@ -55,6 +60,7 @@ public class SoundSystem extends EntitySystem {
         super(Aspect.all(SoundEmitterComponent.class));
         this.assetManager = assetManager;
         sound = assetManager.get(SoundFileStrings.coinPickUp, Sound.class);
+
     }
 /*
     public void insertSoundEmitter(Entity e, Mix m){
@@ -75,14 +81,14 @@ public class SoundSystem extends EntitySystem {
         SoundEmitterComponent soundEmitterComponent = e.getComponent(SoundEmitterComponent.class);
         Mix m = soundEmitterComponent.mix;
         sound = assetManager.get(m.getFileName(), Sound.class);
-        soundEmitterComponent.soundId =  sound.loop(m.getVolume(), m.getPitch(), 0);
-        emitterEntityIds.put(soundEmitterComponent.soundId, e);
+
+        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
+        boolean soundOn = preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
+
+        soundEmitterComponent.soundId =  sound.loop(soundOn ? m.getVolume() : 0, m.getPitch(), 0);
+        emitterEntityIds.put(soundEmitterComponent, e);
     }
 
-    @Override
-    public void removed(Entity e) {
-        sound.stop(emitterEntityIds.findKey(e, true));
-    }
 
     @Override
     protected void processSystem() {
@@ -91,17 +97,67 @@ public class SoundSystem extends EntitySystem {
 
         boolean soundOn = preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
+        emitterCheck();
+        soundFadeOut();
+
         if(soundOn){
             for(Mix m : upcomingMixes){
                 Sound s = assetManager.get(m.getFileName(), Sound.class);
 
                 s.play(m.getVolume(), m.getPitch(), 0);
             }
+
         } else {
             sound.stop();
         }
 
         upcomingMixes.clear();
+
+    }
+
+    private void soundFadeOut(){
+
+
+
+        for(SoundEmitterComponent sec : soundFadeArray){
+
+            sec.mix.setVolume(sec.mix.getVolume() - (world.delta * 0.35f));
+            System.out.println(sec.mix.getVolume());
+
+
+
+            if(sec.mix.getVolume() <= 0){
+                sound.setVolume(sec.soundId, 0);
+                sound.stop(sec.soundId);
+                soundFadeArray.removeValue(sec, true);
+            } else {
+                sound.setVolume(sec.soundId, sec.mix.getVolume());
+            }
+
+
+
+        }
+
+    }
+
+
+
+    private void emitterCheck(){
+
+
+        Array<Entity> array = new Array<Entity>();
+        array.addAll(emitterEntityIds.values().toArray());
+
+        for(Entity e : array){
+            if(!this.getEntities().contains(e)){
+                if(emitterEntityIds.containsValue(e, false)) {
+                    SoundEmitterComponent soundEmitterComponent = emitterEntityIds.findKey(e, false);
+                    soundFadeArray.add(soundEmitterComponent);
+                    //sound.stop(l);
+                    emitterEntityIds.remove(soundEmitterComponent);
+                }
+            }
+        }
 
     }
 

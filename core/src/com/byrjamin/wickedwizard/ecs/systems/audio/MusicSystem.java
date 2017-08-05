@@ -50,19 +50,10 @@ public class MusicSystem extends BaseSystem {
 
         if(musicOn && !currentMusic.isPlaying()) {
             currentMusic.play();
+            System.out.println("awgduawnxdyawdyaw");
         }
 
     }
-
-    public void playMusic(String musicFile){
-        if(assetManager.isLoaded(musicFile, Music.class)){
-            currentMusic = assetManager.get(musicFile, Music.class);
-            currentMusic.setLooping(true);
-            currentMusic.play();
-            //if(Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_MUSIC, true)
-        }
-    }
-
 
     public void playShopMusic(){
 
@@ -86,7 +77,10 @@ public class MusicSystem extends BaseSystem {
     public void changeTrack(Mix mix){
 
         if(currentMusic != null){
-            if(currentMusic.isPlaying()) currentMusic.stop();
+            if(currentMusic.isPlaying()) {
+                currentMusic.stop();
+                currentMusic.dispose();
+            }
         }
 
         if(mix.getFileName().equals(currentMix.getFileName())) return;
@@ -94,9 +88,11 @@ public class MusicSystem extends BaseSystem {
         currentMix = mix;
 
         if(assetManager.isLoaded(mix.getFileName(), Music.class)){
-            currentMusic = assetManager.get(mix.getFileName(), Music.class);
+            currentMusic = Gdx.audio.newMusic(Gdx.files.internal(mix.getFileName()));
             currentMusic.setLooping(true);
             currentMusic.setVolume(mix.getVolume());
+            //currentMusic.play();
+            //currentMusic.pause();
             //currentMusic.play();
         }
     }
@@ -112,9 +108,12 @@ public class MusicSystem extends BaseSystem {
                         break;
                 case TWO: mix = MusicStrings.BG_LEVEL_TWO;
                     break;
-                case THREE: mix = MusicStrings.BG_LEVEL_THREE; break;
-                case FOUR: mix = MusicStrings.BG_LEVEL_FOUR; break;
-                case FIVE: mix = MusicStrings.BG_LEVEL_FIVE; break;
+                case THREE: mix = MusicStrings.BG_LEVEL_THREE;
+                    break;
+                case FOUR: mix = MusicStrings.BG_LEVEL_FOUR;
+                    break;
+                case FIVE: mix = MusicStrings.BG_LEVEL_FIVE;
+                    break;
 
             }
 

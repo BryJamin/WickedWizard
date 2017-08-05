@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
@@ -69,6 +71,8 @@ public class SpawnerFactory extends EnemyFactory {
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SPAWNER), width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
+
+        bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix));
 
         SpawnerComponent spawn = new SpawnerComponent(spawners, spawnTime);
         spawn.offsetX = width / 2;

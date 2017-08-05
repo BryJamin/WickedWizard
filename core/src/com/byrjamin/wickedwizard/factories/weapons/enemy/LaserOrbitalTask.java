@@ -231,22 +231,9 @@ public class LaserOrbitalTask implements Task {
 
         if(!world.getMapper(ParentComponent.class).has(e)) return;
 
-        Array<ChildComponent> childComponents  = new Array<ChildComponent>();
-        childComponents.addAll(e.getComponent(ParentComponent.class).children);
-
-
-
-        for(ChildComponent c : childComponents) {
-
-            Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);
-
-            if(child != null){
-                world.getSystem(OnDeathSystem.class).kill(child);
-            }
-        };
+        world.getSystem(OnDeathSystem.class).killChildComponents(e.getComponent(ParentComponent.class));
 
         e.edit().remove(ParentComponent.class);
-
         e.edit().remove(SoundEmitterComponent.class);
     }
 }

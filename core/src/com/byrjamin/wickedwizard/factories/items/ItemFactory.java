@@ -353,7 +353,8 @@ public class ItemFactory extends AbstractFactory {
                             world.getSystem(FindChildSystem.class).findChildEntity(e.getComponent(ParentComponent.class).children.first()).deleteFromWorld();
                         }
 
-                        world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.itemPickUpMix);
+                        System.out.println("HDHAUDHAWUD");
+                        world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.itemPickUpMegaMix);
                     }
 
                 }

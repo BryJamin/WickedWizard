@@ -158,7 +158,7 @@ public class MenuScreen extends AbstractScreen {
         MenuButton mb = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
 
         Color foreGround = new Color(Color.BLACK);
-        Color backGround = new Color(1,1,1,0.75f);
+        Color backGround = new Color(1,1,1,0.9f);
 
 
 
