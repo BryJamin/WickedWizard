@@ -13,7 +13,7 @@ public class ColorResource {
     public static final Color GHOST_BULLET_COLOR = RGBtoColor(147, 76, 206, 1);
     public static final Color ENEMY_BULLET_COLOR = new Color(Color.RED);
 
-    public static final Color MONEY_YELLOW = new Color(Color.YELLOW);
+    public static final Color MONEY_YELLOW = RGBtoColor(255, 214, 0, 1);
 
 
 

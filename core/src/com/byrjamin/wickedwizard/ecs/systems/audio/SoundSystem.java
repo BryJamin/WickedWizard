@@ -121,7 +121,7 @@ public class SoundSystem extends EntitySystem {
 
         for(SoundEmitterComponent sec : soundFadeArray){
 
-            sec.mix.setVolume(sec.mix.getVolume() - (world.delta * 0.35f));
+            sec.mix.setVolume(sec.mix.getVolume() - (world.delta * sec.volumeFadeFactor));
             System.out.println(sec.mix.getVolume());
 
 

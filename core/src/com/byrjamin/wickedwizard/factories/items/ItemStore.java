@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenScar
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenScarab;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemJadeScarab;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemScope;
 import com.byrjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
 
@@ -88,6 +89,7 @@ public class ItemStore {
         createItem(new ItemThreeLeafClover());
 
         //Range
+        createItem(new ItemLaserScope());
         createItem(new ItemScope());
 
         //Speed

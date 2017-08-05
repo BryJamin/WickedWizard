@@ -117,6 +117,7 @@ public class EnemyFactory extends AbstractFactory {
                     .fadeChance(0.75f)
                     .intangible(true)
                     .numberOfGibletPairs(10)
+                    .mixes(SoundFileStrings.explosionMegaMix)
                     .size(Measure.units(1f))
                     .colors(new Color(new Color(Color.RED)), new Color(ColorResource.BOMB_ORANGE), new Color(Color.BLACK))
                     .build();

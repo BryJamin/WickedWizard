@@ -12,6 +12,10 @@ public class SoundEmitterComponent extends Component {
 
     public Mix mix;
 
+    public float volumeFadeTime  = 1;
+
+    public float volumeFadeFactor = 1;
+
     public long soundId;
 
     public SoundEmitterComponent(){
@@ -20,6 +24,12 @@ public class SoundEmitterComponent extends Component {
 
     public SoundEmitterComponent(Mix mix){
         this.mix = mix;
+    }
+
+    public SoundEmitterComponent(Mix mix, float volumeFadeTime){
+        this.mix = mix;
+        this.volumeFadeFactor = volumeFadeTime > 0 ? (mix.getVolume() / volumeFadeTime) : mix.getVolume();
+        System.out.println(volumeFadeFactor);
     }
 
 

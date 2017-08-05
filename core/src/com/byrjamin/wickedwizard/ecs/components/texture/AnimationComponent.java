@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.IntMap;
  */
 public class AnimationComponent extends Component {
 
-    public IntMap<Animation<TextureRegion>> animations;
+    public IntMap<Animation<TextureRegion>> animations = new IntMap<Animation<TextureRegion>>();
 
     public AnimationComponent(){
         animations = new IntMap<Animation<TextureRegion>>();
@@ -19,4 +19,5 @@ public class AnimationComponent extends Component {
     public AnimationComponent(IntMap<Animation<TextureRegion>> animations) {
         this.animations = animations;
     }
+
 }

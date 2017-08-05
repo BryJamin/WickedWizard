@@ -149,7 +149,7 @@ public class PlayerInput extends InputAdapter {
                                 jc.jumps--;
                                 world.getSystem(PlayerInputSystem.class).turnOffGlide();
                                 world.getSystem(PlayerInputSystem.class).turnOnGlide();
-                                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.jumpMix);
+                                world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.jumpMegaMix);
                             }
 
                         } else if (tapCount == 2) {

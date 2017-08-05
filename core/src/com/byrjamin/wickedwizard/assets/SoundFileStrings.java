@@ -21,7 +21,10 @@ public class SoundFileStrings {
     public static final Mix enemyFireMix = new Mix(enemyFire, 0.025f);
 
 
-    public static final Mix jumpMix = new Mix.MixMaker("audio/sounds/Jump55.wav").volume(0.2f).build();
+    public static final Mix jumpMix = new Mix.MixMaker("audio/sounds/jump/1_jump.ogg").volume(0.2f).build();
+    public static final Mix jumpMix2 = new Mix.MixMaker("audio/sounds/jump/2_jump.ogg").volume(0.2f).build();
+    public static final Mix jumpMix3 = new Mix.MixMaker("audio/sounds/jump/3_jump.ogg").volume(0.2f).build();
+    public static final Mix[] jumpMegaMix = new Mix[]{jumpMix, jumpMix2, jumpMix3};
 
     public static final String explosion1 = "audio/sounds/explosion-01.ogg";
     public static final String explosion2 = "audio/sounds/explosion-02.ogg";
@@ -94,6 +97,7 @@ public class SoundFileStrings {
 
         for(String s : SoundFileStrings.explosionStrings) assetManager.load(s, Sound.class);
         for(Mix m : SoundFileStrings.hitMegaMix) assetManager.load(m.getFileName(), Sound.class);
+        for(Mix m : SoundFileStrings.jumpMegaMix) assetManager.load(m.getFileName(), Sound.class);
 
         assetManager.load(coinPickUp, Sound.class);
         assetManager.load(jumpMix.getFileName(), Sound.class);

@@ -72,7 +72,7 @@ public class SpawnerFactory extends EnemyFactory {
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SPAWNER), width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
 
-        bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix));
+        bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix, 0.25f));
 
         SpawnerComponent spawn = new SpawnerComponent(spawners, spawnTime);
         spawn.offsetX = width / 2;

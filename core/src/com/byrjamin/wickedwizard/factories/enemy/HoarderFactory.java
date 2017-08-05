@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -22,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnHitActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChestComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
@@ -87,6 +89,7 @@ public class HoarderFactory extends EnemyFactory {
         bag.add(new PositionComponent(x, y));
         bag.add(new HealthComponent(health));
         bag.add(new BlinkOnHitComponent());
+        bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix));
 
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
@@ -122,33 +125,6 @@ public class HoarderFactory extends EnemyFactory {
 
             }
         }));
-
-/*
-        bag.add(new ConditionalActionComponent(new Condition() {
-            @Override
-            public boolean condition(World world, Entity entity) {
-                return entity.getComponent(TextureRegionComponent.class).color.a <= 0;
-            }
-        }, new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(OnDeathSystem.class).killChildComponents(e.getComponent(ParentComponent.class));
-
-
-                IntBag bag = world.getAspectSubscriptionManager().get(Aspect.all(ChestComponent.class)).getEntities();
-
-                for(int i = 0; i < bag.size(); i++) {
-                   world.getEntity(bag.get(i)).deleteFromWorld();
-                }
-
-                e.deleteFromWorld();
-            }
-        }));*/
-
-
-
-
-
 
 
         bag.add(new OnDeathActionComponent(new Action() {
@@ -191,8 +167,6 @@ public class HoarderFactory extends EnemyFactory {
 
     }
 
-
-  //  private Entity
 
     private Entity createSpawnerAnimation(World world, ParentComponent hoarderParentComponent, Entity followEntity){
 
