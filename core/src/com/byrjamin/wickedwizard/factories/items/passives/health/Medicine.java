@@ -7,6 +7,7 @@ import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -19,8 +20,9 @@ public class Medicine implements Item {
     @Override
     public boolean applyEffect(World world, Entity player) {
         StatComponent sc = player.getComponent(StatComponent.class);
-        sc.maxHealth = sc.maxHealth + 2;
-        sc.health = (sc.health + 1 >= sc.maxHealth) ? sc.maxHealth : sc.health + 2;
+        int i = PresetStatIncrease.Health.increase(1);
+        sc.maxHealth = sc.maxHealth + i;
+        sc.health = (sc.health + i >= sc.maxHealth) ? sc.maxHealth : sc.health + i;
         return true;
     }
 

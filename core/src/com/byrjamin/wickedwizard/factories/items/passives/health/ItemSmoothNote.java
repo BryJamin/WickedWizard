@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.factories.items.passives.speed;
+package com.byrjamin.wickedwizard.factories.items.passives.health;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -8,29 +8,31 @@ import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
- * Created by Home on 13/05/2017.
+ * Created by Home on 06/08/2017.
  */
 
-public class ItemQuickness implements Item {
+public class ItemSmoothNote implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).speed += PresetStatIncrease.Speed.massive;
+        StatComponent sc = player.getComponent(StatComponent.class);
+        sc.maxHealth = sc.maxHealth + PresetStatIncrease.Health.increase(1);
+        sc.health = (sc.health + PresetStatIncrease.Health.increase(2) >= sc.maxHealth) ? sc.maxHealth : sc.health + PresetStatIncrease.Health.increase(2);
         return true;
     }
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/Quickness", 0);
+        return new Pair<String, Integer>("item/SootheNote", 0);
     }
 
     @Override
     public String getName() {
-        return "Quickness";
+        return "Soothe Note";
     }
 
     @Override
     public String getDescription() {
-        return "Speed+++";
+        return "Soothing";
     }
 }

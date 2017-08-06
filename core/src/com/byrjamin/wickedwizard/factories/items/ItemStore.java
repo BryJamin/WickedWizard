@@ -29,9 +29,12 @@ import com.byrjamin.wickedwizard.factories.items.passives.range.ItemLostLettersR
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemScope;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeather;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
 import com.byrjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
 
 import java.util.Random;
@@ -105,9 +108,12 @@ public class ItemStore {
         createItem(new ItemScope());
 
         //shotspeed
+        createItem(new ItemBoringRock());
         createItem(new ItemBubble());
-        createItem(new ItemMomentum(), Available.ITEM);
+        createItem(new ItemDullFeather());
         createItem(new ItemLostLettersShotSpeedAccuracy());
+        createItem(new ItemMomentum(), Available.ITEM);
+        createItem(new ItemShinyFeather());
 
         //Speed
         createItem(new ItemQuickness());
