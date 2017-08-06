@@ -8,7 +8,6 @@ import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
@@ -79,7 +78,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new GravityComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(5), Measure.units(5),
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
         bag.add(new FrictionComponent());
         return bag;
@@ -104,7 +103,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new OffScreenPickUpComponent(pickUp));
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()), Measure.units(2), Measure.units(2),
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), Measure.units(2), Measure.units(2),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
 
@@ -165,7 +164,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new PickUpComponent(item));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()), width, height,
                 TextureRegionComponent.PLAYER_LAYER_FAR));
         return bag;
     }
@@ -176,7 +175,7 @@ public class ItemFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
 
         bag.add(new PositionComponent());
-        bag.add(new TextureRegionComponent(atlas.findRegion(item.getRegionName().getLeft(), item.getRegionName().getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
         bag.add(followPositionComponent);
         ChildComponent c = new ChildComponent(pc);
         bag.add(c);
@@ -245,7 +244,7 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getRegionName().getLeft(), pickUp.getRegionName().getRight()),
+        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()),
                 (width / 2) - (textureWidth / 2),
                 (height / 2) - (textureHeight / 2),
                 textureWidth,
@@ -261,7 +260,7 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
-        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getRegionName().getLeft(), new MoneyPlus1().getRegionName().getRight()), goldWidth, goldHeight, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getValues().region.getLeft(), new MoneyPlus1().getValues().region.getRight()), goldWidth, goldHeight, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         TextureFontComponent tfc = new TextureFontComponent(""+money);
         //tfc.width = width / 2;
         tfc.offsetX = Measure.units(5);
@@ -343,8 +342,8 @@ public class ItemFactory extends AbstractFactory {
                         for (int i = 0; i < entityIds.size(); i++) {
                             Entity player = world.getEntity(entityIds.get(i));
                             ac.pickUp.applyEffect(world, player);
-                            world.getSystem(PickUpSystem.class).itemOverHead(player, item.getRegionName());
-                            world.getSystem(MessageBannerSystem.class).createItemBanner(item.getName(), item.getDescription());
+                            world.getSystem(PickUpSystem.class).itemOverHead(player, item.getValues().region);
+                            world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().name, item.getValues().description );
 
                         }
 

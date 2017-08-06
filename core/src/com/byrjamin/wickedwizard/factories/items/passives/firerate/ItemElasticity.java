@@ -3,15 +3,15 @@ package com.byrjamin.wickedwizard.factories.items.passives.firerate;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
-import com.byrjamin.wickedwizard.factories.items.AbstractItem;
+import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
-import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 13/05/2017.
  */
 
-public class ItemElasticity extends AbstractItem {
+public class ItemElasticity implements Item {
 
 
     @Override
@@ -22,17 +22,8 @@ public class ItemElasticity extends AbstractItem {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/Elasticity", 0);
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.FireRate.elasticity;
     }
 
-    @Override
-    public String getName() {
-        return "Elasticity";
-    }
-
-    @Override
-    public String getDescription() {
-        return "FireRate+ Range+";
-    }
 }

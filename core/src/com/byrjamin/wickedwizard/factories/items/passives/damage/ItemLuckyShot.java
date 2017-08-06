@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -21,17 +22,7 @@ public class ItemLuckyShot implements Item {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/LuckyShot", 0);
-    }
-
-    @Override
-    public String getName() {
-        return "Lucky Shot";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Damage+ Luck+";
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.Damage.luckyShot;
     }
 }

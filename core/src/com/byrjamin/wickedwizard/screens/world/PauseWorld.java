@@ -30,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.byrjamin.wickedwizard.factories.weapons.CritCalculator;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -134,7 +135,7 @@ public class PauseWorld {
                         String.format(Locale.getDefault(), "Rng %.2f", playerStats.range),
                         String.format(Locale.getDefault(), "Acc %.2f", playerStats.accuracy),
                         String.format(Locale.getDefault(), "Lck %.2f", playerStats.luck),
-                        String.format(Locale.getDefault(), "Crt %.2f", playerStats.crit) + "%",
+                        String.format(Locale.getDefault(), "Crt %.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%",
                         String.format(Locale.getDefault(), "Spd %.0f", playerStats.speed * 100) + "%",
                 };
 

@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -23,17 +24,7 @@ public class ItemSarcasticLion implements Item {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/SarcasticLion", 0);
-    }
-
-    @Override
-    public String getName() {
-        return "Sarcastic Lion";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Rawr";
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.Health.sarcasticLion;
     }
 }

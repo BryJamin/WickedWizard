@@ -178,7 +178,7 @@ public class UISystem extends EntitySystem {
 
         float offsetX = Measure.units(1.5f);
 
-        batch.draw(atlas.findRegion(p.getRegionName().getLeft(), p.getRegionName().getRight()),
+        batch.draw(atlas.findRegion(p.getValues().region.getLeft(), p.getValues().region.getRight()),
                 camX + offsetX,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(3.5f),
                 Measure.units(2.5f), Measure.units(2.5f));

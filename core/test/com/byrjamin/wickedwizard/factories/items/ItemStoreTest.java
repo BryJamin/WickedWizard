@@ -13,18 +13,11 @@ import com.byrjamin.wickedwizard.GameTest;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
-import com.byrjamin.wickedwizard.factories.items.ItemStore;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.internal.matchers.Find;
 
 import java.util.Random;
 
@@ -93,11 +86,11 @@ public class ItemStoreTest extends GameTest {
         ItemStore itemStore = new ItemStore(new Random());
 
         for(ItemStore.ItemOptions i : itemStore.getItemOptions()) {
-            Assert.assertTrue(i.item.getRegionName().getLeft()
+            Assert.assertTrue(i.item.getValues().region.getLeft()
                             + " index "
-                            + i.item.getRegionName().getRight()
+                            + i.item.getValues().region.getRight()
                             + " is not inside of the sprite atlas",
-                    atlas.findRegion(i.item.getRegionName().getLeft()) != null);
+                    atlas.findRegion(i.item.getValues().region.getLeft()) != null);
         }
 
     }

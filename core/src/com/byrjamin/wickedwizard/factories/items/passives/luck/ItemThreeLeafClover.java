@@ -2,9 +2,9 @@ package com.byrjamin.wickedwizard.factories.items.passives.luck;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -23,17 +23,7 @@ public class ItemThreeLeafClover implements Item {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/ThreeLeafClover", 0);
-    }
-
-    @Override
-    public String getName() {
-        return "Three Leaf Clover";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Close Enough... Luck+";
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.Luck.threeLeafClover;
     }
 }

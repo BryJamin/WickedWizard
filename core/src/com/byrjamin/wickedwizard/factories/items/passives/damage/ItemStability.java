@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -21,17 +22,8 @@ public class ItemStability implements Item {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/Stability", 0);
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.Damage.stability;
     }
 
-    @Override
-    public String getName() {
-        return "Stability";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Damage+ Accuracy+";
-    }
 }

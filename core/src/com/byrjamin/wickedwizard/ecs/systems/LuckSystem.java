@@ -9,7 +9,7 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
-import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.PickUpHalfHealthUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
@@ -79,7 +79,7 @@ public class LuckSystem extends BaseSystem {
         Array<WeightedObject<PickUp>> pickUps = new Array<WeightedObject<PickUp>>();
         //TODO apply luck
         pickUps.add(new WeightedObject<PickUp>(null, 70));
-        pickUps.add(new WeightedObject<PickUp>(new HealthUp(), 5));
+        pickUps.add(new WeightedObject<PickUp>(new PickUpHalfHealthUp(), 5));
 
         WeightedRoll<PickUp> weightedRoll = new WeightedRoll<PickUp>(pickUps, random);
 
@@ -100,7 +100,7 @@ public class LuckSystem extends BaseSystem {
     public void spawnChestPickUp(float x , float y){
 
         Array<WeightedObject<PickUp>> pickUps = new Array<WeightedObject<PickUp>>();
-        pickUps.add(new WeightedObject<PickUp>(new HealthUp(), chestHeart + (int) luck));
+        pickUps.add(new WeightedObject<PickUp>(new PickUpHalfHealthUp(), chestHeart + (int) luck));
         pickUps.add(new WeightedObject<PickUp>(new MoneyPlus1(), chestMoney - (int) luck));
 
         WeightedRoll<PickUp> weightedRoll = new WeightedRoll<PickUp>(pickUps, random);

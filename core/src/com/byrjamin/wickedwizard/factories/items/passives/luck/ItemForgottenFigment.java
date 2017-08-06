@@ -2,9 +2,9 @@ package com.byrjamin.wickedwizard.factories.items.passives.luck;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -23,17 +23,9 @@ public class ItemForgottenFigment implements Item {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/ForgottenScarab", 0);
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.Luck.forgottenFigment;
     }
 
-    @Override
-    public String getName() {
-        return "Forgotten Figment";
-    }
 
-    @Override
-    public String getDescription() {
-        return "Something feels off...";
-    }
 }

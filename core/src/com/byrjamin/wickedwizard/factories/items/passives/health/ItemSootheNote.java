@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -11,7 +12,7 @@ import com.byrjamin.wickedwizard.utils.Pair;
  * Created by Home on 06/08/2017.
  */
 
-public class ItemSmoothNote implements Item {
+public class ItemSootheNote implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
@@ -22,17 +23,7 @@ public class ItemSmoothNote implements Item {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/SootheNote", 0);
-    }
-
-    @Override
-    public String getName() {
-        return "Soothe Note";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Soothing";
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.Health.sootheNote;
     }
 }

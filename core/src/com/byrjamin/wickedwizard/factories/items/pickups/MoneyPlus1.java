@@ -2,12 +2,9 @@ package com.byrjamin.wickedwizard.factories.items.pickups;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
-import com.byrjamin.wickedwizard.factories.GibletFactory;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
@@ -23,7 +20,7 @@ public class MoneyPlus1 implements PickUp {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("gold", 0);
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.PickUp.moneyUp;
     }
 }

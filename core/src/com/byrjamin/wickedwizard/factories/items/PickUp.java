@@ -19,6 +19,6 @@ public interface PickUp {
      * @return - Returns true if the item can be used/picked up by the entity.
      */
     boolean applyEffect(World world, Entity player);
-    Pair<String, Integer> getRegionName();
+    ItemResource.ItemValues getValues();
 
 }

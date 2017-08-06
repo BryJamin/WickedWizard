@@ -2,21 +2,27 @@ package com.byrjamin.wickedwizard.factories.items;
 
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEnergy;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
-import com.byrjamin.wickedwizard.factories.items.passives.damage.Anger;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemLuckyShot;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapult;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemSmoulderingEmber;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemStability;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemMinorAccelerant;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemRunedFragment;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemTacticalKnitwear;
 import com.byrjamin.wickedwizard.factories.items.passives.health.ItemHyperTrophy;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemIronFragment;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
 import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
@@ -67,6 +73,8 @@ public class ItemStore {
 
         //Accuracy
         createItem(new ItemAce());
+        createItem(new ItemBlockOfEnergy());
+        createItem(new ItemCriticalEye());
         createItem(new ItemKeenEye());
 
         //Armor
@@ -76,7 +84,7 @@ public class ItemStore {
         createItem(new ItemVitaminC());
 
         //Damage
-        createItem(new Anger(), Available.BOSS);
+        createItem(new ItemAnger(), Available.BOSS);
         createItem(new ItemLuckyShot());
         createItem(new ItemMiniCatapult());
         createItem(new ItemSmoulderingEmber());
@@ -85,11 +93,15 @@ public class ItemStore {
         //Firerate
         createItem(new ItemElasticity());
         createItem(new ItemMinorAccelerant());
+        createItem(new ItemRunedFragment());
         createItem(new ItemSwiftShot());
         createItem(new ItemTacticalKnitwear());
 
         //Health
         createItem(new ItemHyperTrophy());
+        createItem(new ItemIronFragment());
+        createItem(new ItemSarcasticLion());
+        createItem(new ItemSootheNote());
         createItem(new Medicine());
 
         //Luck
@@ -175,7 +187,7 @@ public class ItemStore {
         Array<String> stringArray = new Array<String>();
 
         for(ItemOptions io: itemOptions){
-            stringArray.add(io.item.getName());
+            stringArray.add(io.item.getValues().name);
         }
 
         return stringArray;

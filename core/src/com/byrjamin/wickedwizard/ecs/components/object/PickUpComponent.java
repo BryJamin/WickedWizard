@@ -1,7 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
-import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.PickUpHalfHealthUp;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 
 /**
@@ -14,7 +14,7 @@ public class PickUpComponent extends Component{
 
 
     public PickUpComponent(){
-        pickUp = new HealthUp();
+        pickUp = new PickUpHalfHealthUp();
     }
 
     public PickUpComponent(PickUp pickUp){

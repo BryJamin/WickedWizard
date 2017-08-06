@@ -127,8 +127,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
                     if (input.y <= movementArea.y + movementArea.getHeight()) {
-                        ac.accelX = Measure.units(15f) * sc.speed;
-                        ac.maxX = Measure.units(80f) * sc.speed;
+                        ac.accelX = Measure.units(15f) * (1 + sc.speed);
+                        ac.maxX = Measure.units(80f) * (1 + sc.speed);
                         GrappleSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
                     }
                 }

@@ -16,11 +16,11 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
-import com.byrjamin.wickedwizard.factories.items.pickups.ArmorUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.PickUpArmorUp;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.factories.items.pickups.HealthUp;
+import com.byrjamin.wickedwizard.factories.items.pickups.PickUpHalfHealthUp;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 import static com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder.SECTION_HEIGHT;
@@ -68,11 +68,11 @@ public class ShopFactory extends AbstractFactory {
                         ArenaBuilder.wall.GRAPPLE,
                         ArenaBuilder.wall.DOOR)).buildArena(arena);
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(37.5f), new HealthUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(37.5f), new PickUpHalfHealthUp(), 5)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(37.5f), new ArmorUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(37.5f), new PickUpArmorUp(), 5)) {
             arena.addEntity(b);
         }
 
@@ -112,7 +112,7 @@ public class ShopFactory extends AbstractFactory {
 
 
     private void createCheapItem(Arena arena, MapCoords arenaCoords){
-        for(Bag<Component> b : itemFactory.createShopItemBag(arenaCoords.getX(),arenaCoords.getY(), new HealthUp(), 2)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(arenaCoords.getX(),arenaCoords.getY(), new PickUpHalfHealthUp(), 2)) {
             arena.addEntity(b);
         }
     }

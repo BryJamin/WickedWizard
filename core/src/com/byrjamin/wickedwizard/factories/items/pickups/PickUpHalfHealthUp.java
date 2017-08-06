@@ -2,19 +2,16 @@ package com.byrjamin.wickedwizard.factories.items.pickups;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
-import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 09/04/2017.
  */
 
-public class HealthUp implements PickUp {
+public class PickUpHalfHealthUp implements PickUp {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
@@ -25,7 +22,7 @@ public class HealthUp implements PickUp {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/heart", 1);
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.PickUp.healthUp;
     }
 }

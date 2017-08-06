@@ -3,14 +3,13 @@ package com.byrjamin.wickedwizard.factories.items.pickups;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
-import com.byrjamin.wickedwizard.factories.items.PickUp;
-import com.byrjamin.wickedwizard.utils.Pair;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 
 /**
  * Created by Home on 02/08/2017.
  */
 
-public class ArmorUp implements PickUp {
+public class PickUpArmorUp implements com.byrjamin.wickedwizard.factories.items.PickUp {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
@@ -20,7 +19,7 @@ public class ArmorUp implements PickUp {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/armor", 0);
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.PickUp.armorUp;
     }
 }

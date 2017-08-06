@@ -6,7 +6,6 @@ import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.byrjamin.wickedwizard.GameTest;
-import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 
 import org.junit.Assert;
@@ -42,11 +41,11 @@ public class LevelItemSystemTest extends GameTest {
         ItemStore itemStore = new ItemStore(new Random());
 
         for(ItemStore.ItemOptions i : itemStore.getItemOptions()) {
-            Assert.assertTrue(i.item.getRegionName().getLeft()
+            Assert.assertTrue(i.item.getValues().region.getLeft()
                     + " index "
-                    + i.item.getRegionName().getRight()
+                    + i.item.getValues().region.getRight()
                     + " is not inside of the sprite atlas",
-                    atlas.findRegion(i.item.getRegionName().getLeft()) != null);
+                    atlas.findRegion(i.item.getValues().region.getLeft()) != null);
         }
 
     }

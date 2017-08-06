@@ -28,7 +28,7 @@ import java.util.Random;
 public class Pistol implements Weapon{
 
     private float baseDamage = 1;
-    private float baseFireRate = 1;
+    private float baseFireRate = 0.3f;
     private BulletFactory bulletFactory;
     private Giblets.GibletBuilder gibletBuilder;
     private CritCalculator critCalculator;
@@ -51,7 +51,7 @@ public class Pistol implements Weapon{
         boolean isCrit = critCalculator.isCrit(sc.crit, sc.accuracy, sc.luck);
 
         Entity bullet = world.createEntity();
-        for(Component c : bulletFactory.basicBulletBag(x,y,2)){
+        for(Component c : bulletFactory.basicBulletBag(x,y,2, isCrit ? new Color(0,0,0,1) : new Color(1,1,1,1))){
             bullet.edit().add(c);
         }
         bullet.edit().add(new FriendlyComponent());
@@ -61,8 +61,6 @@ public class Pistol implements Weapon{
 
         bullet.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0),
                 getRange() + (sc.range * Measure.units(5f))));
-
-        if(isCrit) bullet.getComponent(TextureRegionComponent.class).color.set(0,0,0,1);
 
         if(isCrit) {
             bullet.edit().add(new OnDeathActionComponent(gibletBuilder
@@ -98,7 +96,7 @@ public class Pistol implements Weapon{
 
     @Override
     public float getBaseFireRate() {
-        return 0.3f;
+        return baseFireRate;
     }
 
     @Override

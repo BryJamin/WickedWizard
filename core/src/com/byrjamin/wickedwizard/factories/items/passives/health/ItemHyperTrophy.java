@@ -2,9 +2,9 @@ package com.byrjamin.wickedwizard.factories.items.passives.health;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -27,17 +27,8 @@ public class ItemHyperTrophy implements Item {
     }
 
     @Override
-    public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/Hypertrophy", 0);
+    public ItemResource.ItemValues getValues() {
+        return ItemResource.Health.hypertrophy;
     }
 
-    @Override
-    public String getName() {
-        return "Hypertrophy";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Health+ Speed- Damage+";
-    }
 }
