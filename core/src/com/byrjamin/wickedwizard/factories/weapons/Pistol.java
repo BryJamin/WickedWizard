@@ -33,6 +33,9 @@ public class Pistol implements Weapon{
     private Giblets.GibletBuilder gibletBuilder;
     private CritCalculator critCalculator;
 
+    private static final float shotSpeedMultiplier = 25f;
+
+
     public Pistol(AssetManager assetManager) {
         bulletFactory = new BulletFactory(assetManager);
         gibletBuilder = new Giblets.GibletBuilder(assetManager);
@@ -52,7 +55,9 @@ public class Pistol implements Weapon{
             bullet.edit().add(c);
         }
         bullet.edit().add(new FriendlyComponent());
-        bullet.edit().add(new VelocityComponent((float) (Measure.units(100) * Math.cos(angleInRadians)), (float) (Measure.units(100) * Math.sin(angleInRadians))));
+        bullet.edit().add(new VelocityComponent(
+                (float) (Measure.units(100 + (sc.shotSpeed * shotSpeedMultiplier)) * Math.cos(angleInRadians)),
+                (float) (Measure.units(100 + (sc.shotSpeed * shotSpeedMultiplier)) * Math.sin(angleInRadians))));
 
         bullet.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0),
                 getRange() + (sc.range * Measure.units(5f))));
@@ -82,8 +87,8 @@ public class Pistol implements Weapon{
         }
         if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?
-                    baseDamage * e.getComponent(StatComponent.class).damage :
-                    baseDamage * e.getComponent(StatComponent.class).damage * 2f; //crit multiplier
+                    baseDamage * (baseDamage + e.getComponent(StatComponent.class).damage) :
+                    (baseDamage * (baseDamage + e.getComponent(StatComponent.class).damage)) * 2f; //crit multiplier
         }
 
 

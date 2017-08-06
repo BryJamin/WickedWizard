@@ -21,17 +21,17 @@ public class ItemLaserScope implements Item {
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/Laser_Scope", 0);
+        return new Pair<String, Integer>("item/LaserScope", 0);
     }
 
     @Override
     public String getName() {
-        return "Scope";
+        return "Laser Scope";
     }
 
     @Override
     public String getDescription() {
-        return "Range++";
+        return "Range+++";
     }
 }
 

@@ -1,38 +1,38 @@
-package com.byrjamin.wickedwizard.factories.items.passives.luck;
+package com.byrjamin.wickedwizard.factories.items.passives.range;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
- * Created by Home on 13/05/2017.
+ * Created by Home on 05/08/2017.
  */
 
-public class ItemJadeScarab implements Item {
+public class ItemNeatCube implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        CurrencyComponent cc = player.getComponent(CurrencyComponent.class);
-        player.getComponent(StatComponent.class).luck += PresetStatIncrease.major;
+        player.getComponent(StatComponent.class).range += PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).shotSpeed += PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).luck += PresetStatIncrease.minor;
         return true;
     }
 
     @Override
     public Pair<String, Integer> getRegionName() {
-        return new Pair<String, Integer>("item/JadeScarab", 0);
+        return new Pair<String, Integer>("item/NeatCube", 0);
     }
 
     @Override
     public String getName() {
-        return "Jade Scarab";
+        return "Neat Cube";
     }
 
     @Override
     public String getDescription() {
-        return "A Lucky Keepsake. Luck++";
+        return "Pretty Neat";
     }
 }

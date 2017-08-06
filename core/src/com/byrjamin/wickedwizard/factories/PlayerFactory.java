@@ -73,7 +73,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());
         bag.add(new FrictionComponent());
-        bag.add(new CollisionBoundComponent(new Rectangle(600,900,width, height)));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
         bag.add(new CurrencyComponent(50));
@@ -92,9 +92,6 @@ public class PlayerFactory extends AbstractFactory {
 
 
         StatComponent statComponent = new StatComponent();
-        statComponent.fireRate = 1f;
-        statComponent.damage = 1f;
-        statComponent.speed = 1f;
 
         bag.add(statComponent);
         WeaponComponent wc = new WeaponComponent(new Pistol(assetManager), 0.3f);

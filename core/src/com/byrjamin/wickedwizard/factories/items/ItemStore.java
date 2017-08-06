@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.factories.items;
 
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.factories.items.passives.ChangeColor;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
@@ -19,12 +18,20 @@ import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemTacticalKnitwear;
 import com.byrjamin.wickedwizard.factories.items.passives.health.ItemHyperTrophy;
 import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
-import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenScarab;
-import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenScarab;
-import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemJadeScarab;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemClearSight;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemFireSight;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemLostLettersRangeFireRate;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemScope;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.byrjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
 
 import java.util.Random;
@@ -83,20 +90,29 @@ public class ItemStore {
         createItem(new Medicine());
 
         //Luck
-        createItem(new ItemForgottenScarab());
-        createItem(new ItemGoldenScarab());
-        createItem(new ItemJadeScarab());
+        createItem(new ItemForgottenFigment());
+        createItem(new ItemGoldenFigment());
+        createItem(new ItemJadeFigment());
         createItem(new ItemThreeLeafClover());
 
         //Range
+        createItem(new ItemClearSight());
+        createItem(new ItemFireSight());
         createItem(new ItemLaserScope());
+        createItem(new ItemLostLettersRangeFireRate());
+        createItem(new ItemNeatCube());
+        createItem(new ItemQuadonometry());
         createItem(new ItemScope());
+
+        //shotspeed
+        createItem(new ItemBubble());
+        createItem(new ItemMomentum(), Available.ITEM);
+        createItem(new ItemLostLettersShotSpeedAccuracy());
 
         //Speed
         createItem(new ItemQuickness());
 
         //Other
-        createItem(new ChangeColor());
 
     }
 
@@ -111,11 +127,23 @@ public class ItemStore {
 
 
     public Item generateItemRoomItem(){
+        return generateRoomItem(Available.ITEM);
+    }
+
+    public Item generateShopRoomItem(){
+        return generateRoomItem(Available.SHOP);
+    }
+
+    public Item generateBossRoomItem(){
+        return generateRoomItem(Available.BOSS);
+    }
+
+    private Item generateRoomItem(Available available){
 
         Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
 
         for(ItemOptions io : itemOptions){
-            if(io.availables.contains(Available.ITEM, true)) itemOptionsArray.add(io);
+            if(io.availables.contains(available, true)) itemOptionsArray.add(io);
         }
 
         Item item;
@@ -130,6 +158,8 @@ public class ItemStore {
         }
         return item;
     }
+
+
 
 
 
