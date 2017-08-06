@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
@@ -18,7 +17,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 
 public class LockSystem extends EntitySystem {
 
-    ComponentMapper<ActiveOnTouchComponent> aotm;
+
     ComponentMapper<AnimationStateComponent> sm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<GrappleableComponent> gm;
@@ -53,15 +52,7 @@ public class LockSystem extends EntitySystem {
             LockComponent lc = lm.get(e);
             if(!lc.isLocked()) {
                 lc.lock();
-                if (aotm.has(e)) {
-                    aotm.get(e).isEnabled = false;
-                    e.edit().remove(GrappleableComponent.class);
-                } else {
-                    //System.out.println("aw man");
-                    //e.edit().remove(GrappleableComponent.class);
-                    e.edit().add(new WallComponent(cbm.get(e).bound));
-                }
-
+                e.edit().add(new WallComponent(cbm.get(e).bound));
                 if(sm.has(e)){
                     sm.get(e).setDefaultState(AnimationStateComponent.State.LOCKED.getState());
                 }
@@ -77,14 +68,7 @@ public class LockSystem extends EntitySystem {
             LockComponent lc = lm.get(e);
             if(lc.isLocked()) {
                 lm.get(e).unlock();
-                if (aotm.has(e)) {
-                    aotm.get(e).isEnabled = true;
-                    e.edit().add(new GrappleableComponent());
-                } else {
-                    //e.edit().add(new GrappleableComponent());
-                    e.edit().remove(WallComponent.class);
-                }
-
+                e.edit().remove(WallComponent.class);
                 if(sm.has(e)){
                     sm.get(e).setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
                 }

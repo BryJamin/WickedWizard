@@ -6,7 +6,6 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
@@ -23,7 +22,6 @@ import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 public class DoorSystem extends EntityProcessingSystem {
 
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<ActiveOnTouchComponent> aotm;
     ComponentMapper<DoorComponent> dm;
     ComponentMapper<LockComponent> lm;
     ComponentMapper<EnemyComponent> em;
@@ -47,12 +45,6 @@ public class DoorSystem extends EntityProcessingSystem {
             int doorEntity = entityIds.get(i);
 
             if(dm.get(doorEntity).ignore) continue;
-
-            if(aotm.has(doorEntity)) {
-                if(!aotm.get(doorEntity).isActive) {
-                    continue;
-                }
-            }
 
             if(cbm.has(doorEntity)) {
 

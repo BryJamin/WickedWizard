@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -35,7 +34,6 @@ import com.byrjamin.wickedwizard.utils.Measure;
 public class CameraSystem extends EntitySystem {
 
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<ActiveOnTouchComponent> aotm;
     ComponentMapper<WallComponent> wm;
 
     private PositionComponent playerPosition;

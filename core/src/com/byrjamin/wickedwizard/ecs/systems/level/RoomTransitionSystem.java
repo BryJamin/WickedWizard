@@ -10,11 +10,8 @@ import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -47,7 +44,6 @@ public class RoomTransitionSystem extends EntitySystem {
     private ComponentMapper<VelocityComponent> vm;
     private ComponentMapper<GravityComponent> gm;
     private ComponentMapper<CollisionBoundComponent> cbm;
-    private ComponentMapper<ActiveOnTouchComponent> aotm;
     private ComponentMapper<DoorComponent> dm;
     private ComponentMapper<MoveToComponent> mtm;
     private ComponentMapper<ParentComponent> parm;
@@ -118,10 +114,6 @@ public class RoomTransitionSystem extends EntitySystem {
             Entity e = world.createEntity();
             for(Component c : b){
                 e.edit().add(c);
-            }
-
-            if(aotm.has(e)){
-                aotm.get(e).isActive = false;
             }
 
             if(dm.has(e)){
@@ -292,10 +284,6 @@ public class RoomTransitionSystem extends EntitySystem {
             Entity e = world.createEntity();
             for (Component c : b) {
                 e.edit().add(c);
-            }
-
-            if (aotm.has(e)) {
-                aotm.get(e).isActive = false;
             }
 
         }

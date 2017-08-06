@@ -44,7 +44,7 @@ import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
-import com.byrjamin.wickedwizard.factories.weapons.Pistol;
+import com.byrjamin.wickedwizard.factories.weapons.PlayerPistol;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.BulletMath;
@@ -94,7 +94,7 @@ public class PlayerFactory extends AbstractFactory {
         StatComponent statComponent = new StatComponent();
 
         bag.add(statComponent);
-        WeaponComponent wc = new WeaponComponent(new Pistol(assetManager), 0.3f);
+        WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager), 0.3f);
         bag.add(wc);
         bag.add(new HealthComponent(6));
         bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));

@@ -8,7 +8,6 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.ActiveOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
@@ -62,8 +61,8 @@ public class CollisionSystem extends EntityProcessingSystem {
         wall = Aspect.all(WallComponent.class).exclude(HealthComponent.class);
         destructibleWalls = Aspect.all(WallComponent.class, HealthComponent.class);
         enemyOnlyWalls = Aspect.all(CollisionBoundComponent.class, EnemyOnlyWallComponent.class);
-        playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class, GrappleableComponent.class);
-        platforms = Aspect.all(PlatformComponent.class, CollisionBoundComponent.class).exclude(ActiveOnTouchComponent.class);
+        playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(GrappleableComponent.class);
+        platforms = Aspect.all(PlatformComponent.class, CollisionBoundComponent.class);
     }
 
 

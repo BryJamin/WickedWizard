@@ -25,7 +25,7 @@ import java.util.Random;
  * Created by Home on 15/04/2017.
  */
 
-public class Pistol implements Weapon{
+public class PlayerPistol implements Weapon{
 
     private float baseDamage = 1;
     private float baseFireRate = 0.3f;
@@ -35,12 +35,17 @@ public class Pistol implements Weapon{
 
     private static final float shotSpeedMultiplier = 25f;
 
+    private static final float range = Measure.units(50f);
 
-    public Pistol(AssetManager assetManager) {
+
+    public PlayerPistol(AssetManager assetManager) {
         bulletFactory = new BulletFactory(assetManager);
         gibletBuilder = new Giblets.GibletBuilder(assetManager);
         critCalculator = new CritCalculator(new Random());
     }
+
+
+    //public void applyWeaponConfig()
 
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {
@@ -60,7 +65,7 @@ public class Pistol implements Weapon{
                 (float) (Measure.units(100 + (sc.shotSpeed * shotSpeedMultiplier)) * Math.sin(angleInRadians))));
 
         bullet.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0),
-                getRange() + (sc.range * Measure.units(5f))));
+                range + (sc.range * Measure.units(5f))));
 
         if(isCrit) {
             bullet.edit().add(new OnDeathActionComponent(gibletBuilder
