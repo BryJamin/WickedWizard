@@ -41,12 +41,12 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
 
 
-        if((cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, true ) ||
-                cbc.getRecentCollisions().contains(Collider.Collision.TOP, true))) {
+        if(cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false)){
+            if(vc.velocity.y <= 0) vc.velocity.y = 0;
+        }
+
+        if((cbc.getRecentCollisions().contains(Collider.Collision.TOP, true))) {
             vc.velocity.y = 0;
-
-        //} else if (true){
-
         }
 
         if(cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) || cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true)){

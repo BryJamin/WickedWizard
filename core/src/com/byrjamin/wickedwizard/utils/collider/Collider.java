@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.utils.collider;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 
 /**
  * A class used for checking collision between dynamic and static bodies and returning the type
@@ -13,6 +14,9 @@ public class Collider {
     }
 
     private static final float buffer = 40f;
+
+
+    private static final Rectangle innerRectangle = new Rectangle();
 
     /**
      * Checks to see if there is a collision between A static and a dynamic body using Rectangles
@@ -70,45 +74,13 @@ public class Collider {
         } else if(wall.overlaps(currentBound)){
 
 
-
-
-/*
-            System.out.println("current x" + currentBound.getX());
-            System.out.println("current x" + currentBound.getX() + currentBound.getWidth());
-            System.out.println("wall x " + wall.getX());
-            System.out.println("YYY");
-            System.out.println(currentBound.getY());
-            System.out.println(wall.getY());
-
-
-            boolean isGoingDown = futureBound.getY() < currentBound.getY();
-
-            boolean isOnTop = isGoingDown && currentBound.getY() == wall.getY() + wall.getHeight();
-
-            boolean leftOrRightPrecedence = currentBound.getX() + currentBound.getWidth() == wall.getX()
-                    || currentBound.getX() == wall.getX() + wall.getHeight();*/
-
+            innerRectangle.setHeight(currentBound.getHeight()  * 0.8f);
+            innerRectangle.setWidth(currentBound.getWidth()  * 0.8f);
+            innerRectangle.setX(currentBound.x + CenterMath.offsetX(currentBound.getWidth(), innerRectangle.getWidth()));
+            innerRectangle.setY(currentBound.y + CenterMath.offsetY(currentBound.getHeight(), innerRectangle.getHeight()));
 
             //TODO maybe turn this into top of bottom
-            return topOrBottomCollision(currentBound, wall);
-
-/*
-            System.out.println(currentBound.getX());
-            System.out.println(wall.getX());
-            System.out.println("YYY");
-            System.out.println(currentBound.getY());
-            System.out.println(wall.getY());
-            boolean leftOrRightPrecedence = (currentBound.getX() <=  wall.getX()
-                    || currentBound.getX() + currentBound.getHeight() >= wall.getX() + wall.getHeight())
-                    && ;
-            System.out.println("INSIDE ELSE");
-            if(leftOrRightPrecedence){
-                return leftOrRightCollision(futureBound, wall);
-            } else {
-                return topOrBottomCollision(futureBound, wall);
-            }
-*/
-
+            return topOrBottomCollision(innerRectangle, wall);
         }
 
         return Collision.NONE;

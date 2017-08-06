@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
@@ -52,7 +53,6 @@ public class ScreenWipeSystem extends BaseSystem {
     private boolean processingFlag;
 
     private Entity transitionEntity;
-    private Entity exitEntity;
 
 
     public enum Transition {
@@ -172,7 +172,7 @@ public class ScreenWipeSystem extends BaseSystem {
         isExit = false;
         this.transition = transition;
 
-        if(transitionEntity != null) transitionEntity.deleteFromWorld();
+       // if(transitionEntity != null) transitionEntity.deleteFromWorld();
 
         if(transition != Transition.NONE) {
 
@@ -186,6 +186,7 @@ public class ScreenWipeSystem extends BaseSystem {
             transitionEntity.edit().add(new TextureRegionComponent(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
                     gamecam.viewportWidth, gamecam.viewportHeight,
                     TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK)));
+            transitionEntity.edit().add(new ExpireComponent(10f));
 
 
             startingTransitionSetup(transitionEntity, transition, gamecam);

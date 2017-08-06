@@ -108,13 +108,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         MoveToComponent mtc = mtm.get(e);
 
 
-/*
-        if(vc.velocity.x != 0) {
-            System.out.println("Player X IS:" + vc.velocity.x);
-            System.out.println("Player Y IS:" + vc.velocity.y);
-        }
-*/
-
         if (mtm.get(e).targetX == null && mtm.get(e).targetY == null) {
             playerInput.activeGrapple = false;
             gc.ignoreGravity = false;
@@ -175,7 +168,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
             }
         }
 
-        if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false)) {
+        if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
             turnOffGlide();
         }
     }
