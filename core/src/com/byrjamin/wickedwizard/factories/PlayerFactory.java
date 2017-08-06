@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;

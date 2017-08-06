@@ -5,10 +5,8 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.graphics.Color;
-import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
-import com.byrjamin.wickedwizard.ecs.components.UIComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 

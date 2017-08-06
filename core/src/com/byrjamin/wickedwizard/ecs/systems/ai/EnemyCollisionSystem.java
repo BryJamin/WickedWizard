@@ -6,7 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExploderComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;

@@ -9,13 +9,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
-import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
@@ -27,8 +25,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 28/06/2017.

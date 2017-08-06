@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
-import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -48,7 +46,6 @@ import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;

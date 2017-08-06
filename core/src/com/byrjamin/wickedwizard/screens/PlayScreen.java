@@ -31,6 +31,7 @@ import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemDangerSensor;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.byrjamin.wickedwizard.screens.world.*;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
@@ -124,7 +125,7 @@ public class PlayScreen extends AbstractScreen {
 
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
-                    bossMap = new BossMaps(game.assetManager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent(),new ItemVitaminC());
+                    bossMap = new BossMaps(game.assetManager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent(),new ItemDangerSensor());
 
                 }
 
@@ -274,7 +275,7 @@ public class PlayScreen extends AbstractScreen {
             stats.damage = 10f;
             stats.accuracy = 99f;
             stats.fireRate = 10f;
-            stats.speed = 1.5f;
+            stats.speed = 0.5f;
             stats.luck = 10f;
         }
 

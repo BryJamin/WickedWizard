@@ -6,7 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnHitActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
@@ -45,6 +45,7 @@ public class BulletSystem extends EntityProcessingSystem {
         CollisionBoundComponent cbc = cbm.get(e);
 
         if(em.has(e)){
+            System.out.println("ENEMY");
             CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
             if(pcbc.bound.overlaps(cbc.bound)){
 
@@ -60,7 +61,9 @@ public class BulletSystem extends EntityProcessingSystem {
             }
 
         } else if(fm.has(e)){
-            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, HealthComponent.class).one(EnemyComponent.class,OnlyPlayerBulletsComponent.class) );
+
+            System.out.println("FRIENDLY");
+            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, HealthComponent.class).exclude(PlayerComponent.class).one(EnemyComponent.class,OnlyPlayerBulletsComponent.class) );
             IntBag entityIds = subscription.getEntities();
             bulletScan(e, entityIds);
         }

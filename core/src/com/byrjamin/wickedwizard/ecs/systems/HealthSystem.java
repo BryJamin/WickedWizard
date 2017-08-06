@@ -6,7 +6,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;

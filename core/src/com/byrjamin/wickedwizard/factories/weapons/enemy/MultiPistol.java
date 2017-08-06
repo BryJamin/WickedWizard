@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -44,6 +45,7 @@ public class MultiPistol implements Weapon {
     private final boolean expire;
     private final boolean intangible;
     private final boolean enemy;
+    private final boolean friendly;
 
     private final int[] angles;
     private final float[] bulletOffsets;
@@ -75,6 +77,7 @@ public class MultiPistol implements Weapon {
         private boolean expire = false;
         private boolean intangible = false;
         private boolean enemy = true;
+        private boolean friendly = false;
 
         private int[] angles = new int[]{0};
 
@@ -115,6 +118,9 @@ public class MultiPistol implements Weapon {
         public PistolBuilder enemy(boolean val)
         { enemy = val; return this; }
 
+        public PistolBuilder friendly(boolean val)
+        { friendly = val; return this; }
+
         public PistolBuilder angles(int... val)
         { angles = val; return this; }
 
@@ -151,6 +157,7 @@ public class MultiPistol implements Weapon {
         this.expire = pb.expire;
         this.intangible = pb.intangible;
         this.enemy = pb.enemy;
+        this.friendly = pb.friendly;
 
         this.angles = pb.angles;
         this.bulletOffsets = pb.bulletOffsets;
@@ -197,6 +204,8 @@ public class MultiPistol implements Weapon {
                         BulletMath.velocityY(shotSpeed, angleOfTravel)));
 
                 if (enemy) bullet.edit().add(new EnemyComponent());
+
+                if (friendly) bullet.edit().add(new FriendlyComponent());
 
                 if (gravity) bullet.edit().add(new GravityComponent());
 

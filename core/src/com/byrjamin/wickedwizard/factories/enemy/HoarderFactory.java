@@ -13,13 +13,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.BlinkOnHitComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
-import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnHitActionComponent;
@@ -34,11 +32,9 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
  * Created by Home on 01/08/2017.

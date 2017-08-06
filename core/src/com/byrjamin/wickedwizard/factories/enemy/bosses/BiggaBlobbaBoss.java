@@ -1,9 +1,7 @@
 package com.byrjamin.wickedwizard.factories.enemy.bosses;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,7 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -39,7 +37,6 @@ import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.Pair;
 import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
-import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 30/06/2017.

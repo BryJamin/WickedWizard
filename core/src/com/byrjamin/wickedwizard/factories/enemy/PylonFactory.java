@@ -11,13 +11,9 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
-import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Condition;
 import com.byrjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -28,7 +24,6 @@ import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 /**
  * Created by Home on 21/06/2017.

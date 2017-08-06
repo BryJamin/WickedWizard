@@ -6,9 +6,8 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.OnCollisionActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.utils.collider.Collider;
 
 import static com.byrjamin.wickedwizard.utils.collider.Collider.Collision.BOTTOM;
 import static com.byrjamin.wickedwizard.utils.collider.Collider.Collision.TOP;
