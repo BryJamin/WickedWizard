@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.factories.items;
 
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEnergy;
@@ -73,6 +74,7 @@ public class ItemStore {
 
         //Accuracy
         createItem(new ItemAce());
+        createItem(new ItemAimAssist());
         createItem(new ItemBlockOfEnergy());
         createItem(new ItemCriticalEye());
         createItem(new ItemKeenEye());
