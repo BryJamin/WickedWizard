@@ -7,6 +7,7 @@ import com.artemis.EntitySystem;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.PlatformComponent;
@@ -22,6 +23,7 @@ public class PlatformSystem extends EntitySystem {
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<PlatformComponent> platm;
+    ComponentMapper<GravityComponent> gravm;
     ComponentMapper<DirectionalComponent> dm;
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
@@ -34,6 +36,9 @@ public class PlatformSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
+        //TODO change platform disabling to intead be on a timer. like two world.delta ticks
+
+
         CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
 
@@ -44,7 +49,7 @@ public class PlatformSystem extends EntitySystem {
 
             if(platform.canPassThrough){
 
-                if(playerBound.bound.getY() >= cbc.bound.getY() + cbc.bound.getHeight() - Measure.units(1) && !playerBound.bound.overlaps(cbc.bound)) {
+                if(playerBound.bound.getY() >= cbc.bound.getY() + cbc.bound.getHeight() + Measure.units(1) && !playerBound.bound.overlaps(cbc.bound)) {
                     platform.canPassThrough = false;
                 }
 
@@ -85,6 +90,9 @@ public class PlatformSystem extends EntitySystem {
 
         CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+        GravityComponent playerGravity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class);
+
+        //TODO make take in an input parameter and check whether or not to fall through the platform (Distance of like Measure.units 20f or something?
 
         for(Entity e : this.getEntities()) {
 
@@ -96,9 +104,12 @@ public class PlatformSystem extends EntitySystem {
 
                 Rectangle futureRectangle = new Rectangle(playerBound.bound);
                 futureRectangle.x += (playerVelocity.velocity.x * world.delta);
-                futureRectangle.y += (playerVelocity.velocity.y * world.delta);
+                futureRectangle.y += (playerGravity.gravity * world.delta);
 
                 Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
+
+
+                System.out.println("PLATFORM COLLISION IS " + c);
 
                 if(c == Collider.Collision.BOTTOM) {
                     platform.canPassThrough = true;

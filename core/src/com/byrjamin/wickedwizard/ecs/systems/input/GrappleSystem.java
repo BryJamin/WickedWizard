@@ -53,31 +53,6 @@ public class GrappleSystem extends EntityProcessingSystem {
         }
 
 
-
-/*        if(!cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY()) && !gm.has(e)) {
-
-            double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), pBound.getCenterX(), pBound.getCenterY());
-
-            float vy = BulletMath.velocityY(vc.velocity.y, angleOfTravel);
-            float accelY = BulletMath.velocityY(ac.accelY, angleOfTravel);
-            float maxY = BulletMath.velocityY(ac.maxY, angleOfTravel);
-
-            vc.velocity.y = (Math.abs(vy) + Math.abs(accelY) >= Math.abs(maxY)) ? maxY : vc.velocity.y + accelY;
-
-
-            float vx = BulletMath.velocityX(vc.velocity.x, angleOfTravel);
-            float accelX = BulletMath.velocityX(ac.accelX, angleOfTravel);
-            float maxX = BulletMath.velocityX(ac.maxX, angleOfTravel);
-
-            vc.velocity.x = (Math.abs(vx) + Math.abs(accelX) >= Math.abs(maxX)) ? maxX : vc.velocity.x + accelX;
-
-        } else if(cbc.bound.contains(pBound.getCenterX(), pBound.getCenterY())){
-            vc.velocity.x = 0;
-            vc.velocity.y = 0;
-        }*/
-
-
-
         Float targetX = mtc.targetX;
 
 
@@ -137,58 +112,6 @@ public class GrappleSystem extends EntityProcessingSystem {
 
     }
 
-
-    public void endTravel(VelocityComponent vc, MoveToComponent mtc){
-
-
-/*        if(mtc.maxEndSpeedY != null) {
-            if (vc.velocity.y > mtc.maxEndSpeedY) {
-                vc.velocity.y = mtc.maxEndSpeedY;
-            }
-
-            mtc.maxEndSpeedY = null;
-        } else {
-            //vc.velocity.y = 0;
-        }*/
-/*
-        vc.velocity.x = vc.velocity.x / 2;
-        vc.velocity.y = vc.velocity.y / 2;
-
-        mtc.targetY = null;
-        mtc.targetX = null;*/
-
-    }
-
-
-    public void flyTo(double angleOfTravel, float distanceOfTravel, float speedOfTravel, MoveToComponent mtc, CollisionBoundComponent cbc){
-
-        float cosine = (float) Math.cos(angleOfTravel);
-        float sine = (float) Math.sin(angleOfTravel);
-
-        Vector2 flyPath = flyPathCheck(angleOfTravel, distanceOfTravel, cbc.bound);
-
-        mtc.targetX = flyPath.x;
-        mtc.targetY = flyPath.y;
-
-
-        mtc.accelX = Math.abs(cosine * speedOfTravel);
-        mtc.accelY = Math.abs(sine * speedOfTravel);
-
-        mtc.maxX = Math.abs(cosine * speedOfTravel);
-        mtc.maxY = Math.abs(sine * speedOfTravel);
-
-      //  mtc.speedX = cosine * speedOfTravel;
-      //  mtc.speedY = sine * speedOfTravel;
-
-        //mtc.endSpeedX = 0;
-
-        mtc.maxEndSpeedY = null;
-
-
-
-
-    }
-
     public void flyToNoPathCheck(double angleOfTravel, float x, float y, float speedOfTravel, MoveToComponent mtc, CollisionBoundComponent cbc){
 
         float cosine = (float) Math.cos(angleOfTravel);
@@ -209,76 +132,6 @@ public class GrappleSystem extends EntityProcessingSystem {
         mtc.maxY = Math.abs(sine * speedOfTravel);
 
         //mtc.endSpeedY =
-
-    }
-
-
-    //TODO in future if I do shoot out something check if it hits something then if it does perform a grapple action? Holy shizz I think I figure it out.
-    //public void grappleCollisionCheck;
-
-
-
-    public Vector2 flyPathCheck(double angleOfTravel, float distanceOfTravel, Rectangle startingBound){
-
-        float cosine = (float) Math.cos(angleOfTravel);
-        float sine = (float) Math.sin(angleOfTravel);
-
-        float xDistance = (cosine * distanceOfTravel);
-        float yDistance = (sine * distanceOfTravel);;
-
-        float targetX = (startingBound.x + startingBound.getWidth() / 2) + xDistance; //input.x; //gradientX * GRAPPLE_MOVEMENT;
-        float targetY = (startingBound.y + startingBound.getHeight() / 2) + yDistance; //input.y; //gradientY * GRAPPLE_MOVEMENT;
-
-
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(WallComponent.class));
-        IntBag wallComponentIds = subscription.getEntities();
-
-        boolean useX = xDistance > yDistance;
-        float mockTravelPathDistance = (useX) ? startingBound.getWidth() : startingBound.getHeight();
-
-        Array<Rectangle> mockPath = new Array<Rectangle>();
-        mockPath.add(startingBound);
-
-        boolean pathNotFound = true;
-
-        do {
-
-            //TODO is it possible to endlessly loop?
-
-            Rectangle r = mockPath.peek();
-            float x = r.x + (cosine * mockTravelPathDistance);
-            float y = r.y + (sine * mockTravelPathDistance);
-
-            Rectangle newR = new Rectangle(x,y,r.width, r.height);
-
-            for(int i = 0; i < wallComponentIds.size(); i++) {
-                Rectangle wall = wm.get(wallComponentIds.get(i)).bound;
-                if(newR.overlaps(wall)){
-                    Collider.collision(r, newR, wall);
-                    targetX = r.x + r.getWidth() / 2;
-                    targetY = r.y + r.getHeight() / 2;
-                    pathNotFound = false;
-                    break;
-                }
-
-                if((Math.abs(startingBound.x - newR.x)) > xDistance &&
-                        Math.abs(startingBound.y - newR.y) > yDistance)
-                {
-                    pathNotFound = false;
-                    break;
-                }
-            }
-
-            if(pathNotFound) {
-                mockPath.add(newR);
-            }
-
-
-
-        } while(pathNotFound);
-
-
-        return new Vector2(targetX, targetY);
 
     }
 

@@ -41,9 +41,10 @@ public class FrictionSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
         //PositionComponent pc = pm.get(e);
+        VelocityComponent vc = vm.get(e);
 
         if(canApplyFriction(e) || pm.has(e)) {
-            VelocityComponent vc = vm.get(e);
+            //VelocityComponent vc = vm.get(e);
             FrictionComponent fc = frictionMapper.get(e);
 
 
@@ -72,7 +73,11 @@ public class FrictionSystem extends EntityProcessingSystem {
                 }
             }
 
+
+
         }
+
+
 
     }
 

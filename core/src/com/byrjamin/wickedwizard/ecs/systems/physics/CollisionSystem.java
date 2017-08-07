@@ -141,52 +141,6 @@ public class CollisionSystem extends EntityProcessingSystem {
 
     }
 
-    /**
-     * Takes in an array of colliable objects and links together
-     */
-    public void createLinkedRectangles(Array<Rectangle> collidableobjects){
-
-        temporarayCollidableObjects.clear();
-        temporarayCollidableObjects.addAll(collidableobjects);
-
-
-        while(temporarayCollidableObjects.size >= 0) {
-
-            Rectangle r = temporarayCollidableObjects.pop();
-
-            for (int i = 0; i < collidableobjects.size; i++) {
-
-                Rectangle temp = collidableobjects.get(i);
-
-                if(!r.equals(temp)) {
-
-                    if (r.x == collidableobjects.get(i).getX()){
-
-
-
-
-                    }
-
-                }
-            }
-
-        }
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-
 
     public void addNearByCollidableObjects(Rectangle r, Array<Rectangle> collidableObjects, Aspect.Builder aspect){
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(aspect);

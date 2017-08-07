@@ -38,6 +38,7 @@ public class MovementSystem extends EntityProcessingSystem {
             VelocityComponent vc = vm.get(e);
             pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta, 0);
 
+        //    System.out.println("VelY is + " + vc.velocity.y);
 
             if(dm.has(e)) {
                 if (vc.velocity.x < 0)

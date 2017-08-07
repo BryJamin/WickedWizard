@@ -74,8 +74,6 @@ public class BulletSystem extends EntityProcessingSystem {
         bulletScan(e, entityIds);
 
 
-        //pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta);
-
     }
 
 

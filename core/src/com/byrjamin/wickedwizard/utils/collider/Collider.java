@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.utils.collider;
 
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 
@@ -73,14 +74,40 @@ public class Collider {
             return topOrBottomCollision(futureBound, wall);
         } else if(wall.overlaps(currentBound)){
 
+            Intersector.intersectRectangles(currentBound, wall, innerRectangle);
 
+            System.out.println("CurrentBound X: " + currentBound.getX());
+            System.out.println("IntersectRectangle X: " + innerRectangle.getX());
+            System.out.println("CurrentBound width: " + currentBound.getWidth());
+            System.out.println("IntersectRectangle width: " + innerRectangle.getWidth());
+
+           // if(innerRectangle.getWidth() > 5f) {
+
+            //TODO Possibly do the same thing for the y axis as well?
+
+                if (currentBound.getX() == innerRectangle.getX()) {
+                    currentBound.x += innerRectangle.getWidth();
+                } else if (currentBound.getX() + currentBound.getWidth() == innerRectangle.getX() + innerRectangle.getWidth()) {
+                    currentBound.x -= innerRectangle.getWidth();
+                }
+           // }
+
+/*            if(innerRectangle.getWidth() > innerRectangle.getHeight()){
+                return leftOrRightCollision(currentBound, wall);
+            } else {
+                return topOrBottomCollision(currentBound, wall);
+            }*/
+
+
+/*
             innerRectangle.setHeight(currentBound.getHeight()  * 0.8f);
             innerRectangle.setWidth(currentBound.getWidth()  * 0.8f);
             innerRectangle.setX(currentBound.x + CenterMath.offsetX(currentBound.getWidth(), innerRectangle.getWidth()));
             innerRectangle.setY(currentBound.y + CenterMath.offsetY(currentBound.getHeight(), innerRectangle.getHeight()));
+*/
 
             //TODO maybe turn this into top of bottom
-            return topOrBottomCollision(innerRectangle, wall);
+            //return topOrBottomCollision(innerRectangle, wall);
         }
 
         return Collision.NONE;

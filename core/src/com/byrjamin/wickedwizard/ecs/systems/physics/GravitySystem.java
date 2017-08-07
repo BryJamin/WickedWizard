@@ -16,7 +16,7 @@ public class GravitySystem extends EntityProcessingSystem {
 
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<GravityComponent> gm;
-    ComponentMapper<GlideComponent> glm;
+    ComponentMapper<GlideComponent> glidem;
 
     private static final float MAXGRAVITY = -Measure.units(110f);
 
@@ -31,8 +31,8 @@ public class GravitySystem extends EntityProcessingSystem {
         GravityComponent gc = gm.get(e);
 
         if(!gc.ignoreGravity) {
-            if(glm.has(e)) {
-                if (glm.get(e).gliding && glm.get(e).active && vc.velocity.y <= 0) {
+            if(glidem.has(e)) {
+                if (glidem.get(e).gliding && glidem.get(e).active && vc.velocity.y <= 0) {
                     vc.velocity.add(0, gc.gravity / 4);
 /*                    if (vc.velocity.y < gc.gravity * 4f) {
                         vc.velocity.y = gc.gravity * 4f;

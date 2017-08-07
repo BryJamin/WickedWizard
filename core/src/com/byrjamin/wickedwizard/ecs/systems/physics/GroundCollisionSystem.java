@@ -40,18 +40,47 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
         VelocityComponent vc = vm.get(e);
         PositionComponent pc = pm.get(e);
 
+        boolean topOrBottom = cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) ||
+                cbc.getRecentCollisions().contains(Collider.Collision.TOP, false);
+
+        boolean leftOrRight = cbc.getRecentCollisions().contains(Collider.Collision.LEFT, false) ||
+                cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, false);
+
+
+
+        if(topOrBottom && leftOrRight){
+
+        }
+
 
         if(cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false)){
             if(vc.velocity.y <= 0) vc.velocity.y = 0;
         }
 
-        if((cbc.getRecentCollisions().contains(Collider.Collision.TOP, true))) {
+
+/*        if((cbc.getRecentCollisions().contains(Collider.Collision.TOP, true))) {
             vc.velocity.y = 0;
+        }*/
+
+
+        if((cbc.getRecentCollisions().contains(Collider.Collision.TOP, true) && !leftOrRight)) {
+
+            System.out.println("INSIDE");
+
+             vc.velocity.y = 0;
         }
 
         if(cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) || cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true)){
             vc.velocity.x = 0;
         }
+
+/*
+        if(cbc.getRecentCollisions().size >= 2) {
+            for (Collider.Collision c : cbc.getRecentCollisions()) {
+                System.out.println("Collision is " + c);
+            }
+        }*/
+
 
     }
 

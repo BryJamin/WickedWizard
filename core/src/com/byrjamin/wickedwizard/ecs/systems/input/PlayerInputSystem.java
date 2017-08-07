@@ -158,7 +158,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
                     if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate() / (1 + statComponent.fireRate) )) {
                         asc.queueAnimationState(AnimationStateComponent.FIRING);
-                        wc.weapon.fire(world,e, x, y, angleOfTravel);
+                        //wc.weapon.fire(world,e, x, y, angleOfTravel);
                     }
                 }
             } else {

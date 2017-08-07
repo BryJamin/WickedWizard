@@ -162,6 +162,8 @@ public class AdventureWorld {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem(),
+
+                        new GravitySystem(),
                         //TODO this is here because lock boxes check for a collision but ground collision sets vertical velocity to 0.
                         //TODO either change lock to except next Tos or
                         new CollisionSystem(),
@@ -201,7 +203,6 @@ public class AdventureWorld {
                         new PlayerInputSystem(gameport),
                         new StateSystem(),
                         new SpawnerSystem(),
-                        new GravitySystem(),
                         new GrappleSystem(),
                         new FrictionSystem(),
                         new ConditionalActionSystem()
