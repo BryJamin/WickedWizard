@@ -107,6 +107,7 @@ public class ArenaGUI {
         drawMapContainer(batch);
         drawMapSquares(batch);
         drawMapLines(batch);
+        batch.setColor(Color.WHITE);
     }
 
     public void drawMapContainer(SpriteBatch batch){

@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.ecs.systems.graphical;
 
 import com.artemis.Aspect;
+import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -17,9 +19,17 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.UIComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
@@ -49,7 +59,7 @@ public class UISystem extends EntitySystem {
     private BitmapFont currencyFont;
 
     public UISystem(MainGame game, Viewport gameport, ArenaGUI arenaGUI, StatComponent playerStats, CurrencyComponent playerCurrency) {
-        super(Aspect.all(UIComponent.class));
+        super(Aspect.all(UIComponent.class, TextureRegionComponent.class, PositionComponent.class));
         this.batch = game.batch;
         this.gameport = gameport;
 
@@ -71,6 +81,7 @@ public class UISystem extends EntitySystem {
         if(!batch.isDrawing()) {
             batch.begin();
         }
+
     }
 
     @Override
@@ -78,6 +89,17 @@ public class UISystem extends EntitySystem {
 
         drawScreenBorder(batch, atlas, gameport.getCamera());
         drawMapAndHud(isPaused);
+
+        for(Entity e : this.getEntities()) {
+
+            TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
+            PositionComponent pc = e.getComponent(PositionComponent.class);
+
+            batch.draw(trc.region,
+                    pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
+                    trc.width, trc.height);
+
+        }
 
     }
 

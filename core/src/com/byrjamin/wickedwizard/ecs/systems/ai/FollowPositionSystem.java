@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.UIComponent;
 
 /**
  * Created by BB on 06/04/2017.
@@ -29,6 +30,11 @@ public class FollowPositionSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         PositionComponent pc = pm.get(e);
         FollowPositionComponent fc = fm.get(e);
+
+        if(world.getMapper(UIComponent.class).has(e)){
+            System.out.println("PAUSE ?");
+            System.out.println(pc.position.x);
+        }
 
         pc.position.set(fc.trackedPosition.x + fc.offsetX, fc.trackedPosition.y + fc.offsetY, 0);
     }

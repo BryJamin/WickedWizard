@@ -32,6 +32,8 @@ public class TextureStrings {
     public static final String SETTINGS_MUSIC_ON = "settings/music";
     public static final String SETTINGS_MUSIC_OFF = "settings/music_off";
 
+    public static final String ICON_PAUSE = "pause";
+
 
     public static final String LOCKBOX = "decor/lock_block";
     public static final String SPIKEWALL = "decor/spike_wall";

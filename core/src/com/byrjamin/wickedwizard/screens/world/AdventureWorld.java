@@ -13,14 +13,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.byrjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.byrjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ExplosionSystem;
@@ -260,6 +269,23 @@ public class AdventureWorld {
 
 
         world.getSystem(MusicSystem.class).playLevelMusic(world.getSystem(ChangeLevelSystem.class).getLevel());
+
+        float width = Measure.units(15f);
+        float height = Measure.units(15f);
+
+        Entity pauseButton = world.createEntity();
+        pauseButton.edit().add(new UIComponent());
+        pauseButton.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(EndGameSystem.class).pauseGame();
+            }
+        }));
+        pauseButton.edit().add(new FollowPositionComponent(gameport.getCamera().position));
+        pauseButton.edit().add(new PositionComponent());
+        pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0,0, width, height)));
+        pauseButton.edit().add(new UnpackableComponent());
+        pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
         return world;

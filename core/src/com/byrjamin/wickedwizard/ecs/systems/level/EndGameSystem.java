@@ -24,6 +24,10 @@ public class EndGameSystem extends BaseSystem {
 
     }
 
+    public void pauseGame(){
+        game.pause();
+    }
+
 
     public void startCredits(){
         game.getScreen().dispose();

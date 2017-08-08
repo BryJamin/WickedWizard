@@ -109,6 +109,7 @@ public class MenuScreen extends AbstractScreen {
         createMenu();
 
         devModeMenuWorld = new DevModeMenuWorld(game, gameport);
+        Gdx.input.setCatchBackKey(false);
 
     }
 

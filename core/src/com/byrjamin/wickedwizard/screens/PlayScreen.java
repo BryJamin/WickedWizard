@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
@@ -75,6 +76,7 @@ public class PlayScreen extends AbstractScreen {
     private JigsawGenerator jg;
 
     private AdventureWorld adventureWorld;
+
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -241,16 +243,17 @@ public class PlayScreen extends AbstractScreen {
                 @Override
                 public boolean keyDown(int keycode) {
 
-                    if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
+                    if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK){
                         if(!isPaused) {
-                            adventureWorld.pauseWorld();
-                            isPaused = true;
                             pause();
-                            pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
-                                    adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
                         } else {
-                            adventureWorld.unPauseWorld();
-                            isPaused = false;
+
+                            if(keycode == Input.Keys.BACK){
+                                game.dispose();
+                                game.setScreen(new MenuScreen(game));
+                            } else {
+                                unpause();
+                            }
                         }
                     }
 
@@ -306,6 +309,22 @@ public class PlayScreen extends AbstractScreen {
         if(isPaused) pauseWorld.process(delta);
         if(adventureWorld.isGameOver() && deathScreenWorld != null) deathScreenWorld.process(delta);
 
+        if(!adventureWorld.isGameOver()) {
+
+            if(!game.batch.isDrawing()) game.batch.begin();
+
+
+            float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+            float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+
+
+           // game.batch.draw(TextureStrings.ICON_PAUSE, );
+
+            game.batch.end();
+
+
+        }
 
     }
 
@@ -317,7 +336,17 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void pause() {
+        adventureWorld.pauseWorld();
+        isPaused = true;
+        //pause();
+        pauseWorld = new com.byrjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
+                adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
         //QuickSave.saveGame(world);
+    }
+
+    public void unpause(){
+        adventureWorld.unPauseWorld();
+        isPaused = false;
     }
 
     @Override

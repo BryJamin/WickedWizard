@@ -55,6 +55,9 @@ public class MovementSystem extends EntityProcessingSystem {
             cbc.bound.x = pc.getX();
             cbc.bound.y = pc.getY();
 
+
+
+
             for(HitBox hb : cbc.hitBoxes){
                 hb.hitbox.x = pc.getX() + hb.offsetX;
                 hb.hitbox.y = pc.getY() + hb.offsetY;

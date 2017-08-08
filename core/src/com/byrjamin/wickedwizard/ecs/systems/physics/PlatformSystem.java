@@ -109,8 +109,6 @@ public class PlatformSystem extends EntitySystem {
                 Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
 
 
-                System.out.println("PLATFORM COLLISION IS " + c);
-
                 if(c == Collider.Collision.BOTTOM) {
                     platform.canPassThrough = true;
                     return true;
