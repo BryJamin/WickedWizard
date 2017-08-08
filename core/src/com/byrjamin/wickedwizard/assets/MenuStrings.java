@@ -11,4 +11,8 @@ public class MenuStrings {
     public static final String CONTINUE = "Continue";
 
     public static final String BREAK = "Take a Break";
+
+    public static final String RESUME = "Resume";
+
+    public static final String MAIN_MENU = "Main Menu";
 }

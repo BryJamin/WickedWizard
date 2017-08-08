@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
@@ -33,6 +34,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.weapons.CritCalculator;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -55,7 +57,8 @@ public class PauseWorld {
 
     private MenuButton menuButton;
 
-    private Entity returntoMainMenu;
+
+    private static final float buttonWidth = Measure.units(37.5f);
 
     private RoomTransitionSystem roomTransitionSystem;
 
@@ -80,7 +83,7 @@ public class PauseWorld {
 
     }
 
-    public World startWorld(StatComponent playerStats){
+    public World startWorld(final StatComponent playerStats){
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -104,8 +107,8 @@ public class PauseWorld {
         float camX = gamecam.position.x - gamecam.viewportWidth / 2 + MainGame.GAME_BORDER;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2 + MainGame.GAME_BORDER;
 
-        returntoMainMenu = menuButton.createButton(world, "Main Menu", camX + Measure.units(50f)
-                ,camY, Measure.units(40f), Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
+        Entity returntoMainMenu = menuButton.createButton(world, MenuStrings.MAIN_MENU, camX
+                ,camY,buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
         returntoMainMenu.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -114,12 +117,22 @@ public class PauseWorld {
             }
         }));
 
+        Entity resume = menuButton.createButton(world, MenuStrings.RESUME, camX + Measure.units(62.5f)
+                ,camY, buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
+        resume.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                PlayScreen playscreen = (PlayScreen) game.getScreen();
+                playscreen.unpause();
+            }
+        }));
+
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(camX,camY));
         e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 CenterMath.offsetX(gamecam.viewportWidth, gamecam.viewportWidth * 2),
-                CenterMath.offsetX(gamecam.viewportHeight, gamecam.viewportHeight * 2),
+                CenterMath.offsetY(gamecam.viewportHeight, gamecam.viewportHeight * 2),
                 gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));
 
 
@@ -183,7 +196,7 @@ public class PauseWorld {
         float camY = gameport.getCamera().position.y - gameport.getCamera().viewportHeight / 2;
 
         pauseArenaGUI.update(world.getDelta(),
-                camX + Measure.units(75f),
+                camX + Measure.units(85f),
                 camY + Measure.units(35f),
                 roomTransitionSystem.getCurrentMap(),
                 roomTransitionSystem.getCurrentPlayerLocation());

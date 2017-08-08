@@ -270,8 +270,8 @@ public class AdventureWorld {
 
         world.getSystem(MusicSystem.class).playLevelMusic(world.getSystem(ChangeLevelSystem.class).getLevel());
 
-        float width = Measure.units(15f);
-        float height = Measure.units(15f);
+        float width = Measure.units(4.5f);
+        float height = Measure.units(4.5f);
 
         Entity pauseButton = world.createEntity();
         pauseButton.edit().add(new UIComponent());
@@ -281,7 +281,7 @@ public class AdventureWorld {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new FollowPositionComponent(gameport.getCamera().position));
+        pauseButton.edit().add(new FollowPositionComponent(gameport.getCamera().position, Measure.units(32.5f), Measure.units(30.5f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0,0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());
