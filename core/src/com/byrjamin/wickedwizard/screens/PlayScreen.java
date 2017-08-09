@@ -313,6 +313,7 @@ public class PlayScreen extends AbstractScreen {
 
         if(adventureWorld.isGameOver() && deathScreenWorld == null) deathScreenWorld = new DeathScreenWorld(game, gameport);
         if(isPaused) pauseWorld.process(delta);
+
         if(areYouSureWorld != null) {
             areYouSureWorld.process(delta);
         }

@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
@@ -39,6 +40,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     private DecorFactory decorFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
     private TurretFactory turretFactory;
+    private BeamTurretFactory beamTurretFactory;
     private Random random;
     private ArenaSkin arenaSkin;
 
@@ -49,6 +51,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
         this.turretFactory = new TurretFactory(assetManager);
+        this.beamTurretFactory = new BeamTurretFactory(assetManager, arenaSkin);
         this.random = random;
         this.arenaSkin = arenaSkin;
     }
@@ -342,7 +345,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(195f), Measure.units(10f), Measure.units(5f), Measure.units(10f)));
 
 
-                arena.addEntity(decorFactory.laserChain(
+                arena.addEntity(beamTurretFactory.laserChain(
                         Measure.units(145f),
                         Measure.units(25f),
                         2,

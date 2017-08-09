@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class PlayerPistol implements Weapon{
 
-    private float baseDamage = 0.1f;
+    private float baseDamage = 1;
 
     private static final float defaultFireRate = 0.3f;
 
@@ -98,8 +98,8 @@ public class PlayerPistol implements Weapon{
         }
         if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?
-                    baseDamage * (1 + e.getComponent(StatComponent.class).damage) :
-                    (baseDamage * ((1 + (e.getComponent(StatComponent.class).damage)) * 2f));  //crit multiplier
+                    baseDamage * (1 + e.getComponent(StatComponent.class).damage * 0.1f) :
+                    baseDamage * ((1 + (e.getComponent(StatComponent.class).damage * 0.1f)) * 2f);  //crit multiplier
             System.out.println("Bullet damage" + bullet.getComponent(BulletComponent.class).damage);
         }
 

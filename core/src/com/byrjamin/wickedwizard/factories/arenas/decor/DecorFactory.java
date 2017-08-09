@@ -59,7 +59,7 @@ public class DecorFactory extends AbstractFactory {
     private ArenaSkin arenaSkin;
     private BackgroundFactory bf;
 
-    private static final float wallTurretFiringOffset = Measure.units(2.5f);
+    private static final float wallTurretFiringOffset = Measure.units(2.0f);
 
     public static final float DECORATIVE_BEAM_WIDTH = Measure.units(2.5f);
 
@@ -171,29 +171,6 @@ public class DecorFactory extends AbstractFactory {
 
 
     }
-
-    public ComponentBag appearInCombatWall(final float x, final float y, final float width, final float height){
-        ComponentBag bag = wallBag(x,y,width,height);
-        BagSearch.removeObjectOfTypeClass(WallComponent.class, bag);
-        BagSearch.getObjectOfTypeClass(TextureRegionBatchComponent.class, bag).color.a = 0;
-
-        bag.add(new InCombatActionComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(new WallComponent(new Rectangle(x,y,width,height)));
-                e.edit().add(new FadeComponent(true, 1.0f, false));
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(new WallComponent());
-                e.edit().add(new FadeComponent(false, 1.0f, false));
-            }
-        }));
-
-        return bag;
-    }
-
 
     public ComponentBag appearInCombatWallPush(final float x, final float y, final float width, final float height, final float angleOfPushInDegrees){
 
@@ -512,155 +489,6 @@ public class DecorFactory extends AbstractFactory {
 
         return bag;
     }
-
-    public ComponentBag laserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
-        float width = Measure.units(5f) * scale;
-        float height = Measure.units(5f) * scale;
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
-        bag.add(new ActionAfterTimeComponent(laserOrbitalTask, 0));
-        return bag;
-    }
-
-
-
-    public ComponentBag inCombatLaserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
-        float width = Measure.units(5f) * scale;
-        float height = Measure.units(5f) * scale;
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
-        bag.add(new InCombatActionComponent(laserOrbitalTask));
-        return bag;
-    }
-
-
-
-    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat, boolean isInstant, LaserOrbitalTask laserOrbitalTask){
-        float width = Measure.units(5f) * scale;
-        float height = Measure.units(5f) * scale;
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
-        bag.add(new ActionAfterTimeComponent(laserOrbitalTask, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
-        return bag;
-    }
-
-
-    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat,  LaserOrbitalTask laserOrbitalTask){
-        return timedLaserChain(x,y,scale,timeTillReapeat, true, laserOrbitalTask);
-    }
-
-
-    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final boolean isInstant, final LaserOrbitalTask laserOrbitalTask){
-        float width = Measure.units(5f) * scale;
-        float height = Measure.units(5f) * scale;
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
-        bag.add(new InCombatActionComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(new ActionAfterTimeComponent(laserOrbitalTask, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-                laserOrbitalTask.cleanUpAction(world, e);
-                e.edit().remove(ActionAfterTimeComponent.class);
-            }
-        }));
-        return bag;
-    }
-
-    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final LaserOrbitalTask laserOrbitalTask){
-        return inCombatTimedLaserChain(x,y,scale,timeTillReapeat,true, laserOrbitalTask);
-    }
-
-
-    public ComponentBag timedLaserBeam(float x, float y, float scale, float offset, final float timeTillReapeat, final LaserBeam laserBeam){
-        return timedLaserBeam(x,y,scale, offset, timeTillReapeat,true, laserBeam);
-    }
-
-
-
-    public ComponentBag timedLaserBeam(float x, float y, float scale, final float offset, final float timeTillReapeat, final boolean isInstant, final LaserBeam laserBeam){
-
-        float width = Measure.units(5f) * scale;
-        float height = Measure.units(5f) * scale;
-        ComponentBag bag = new ComponentBag();
-
-
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
-
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-
-                laserBeam.createBeam(world,
-                        cbc.bound.x +  (!laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetX(cbc.bound.getWidth(), laserBeam.getChargingLaserWidth())),
-                        cbc.bound.y + (laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetY(cbc.bound.getHeight(), laserBeam.getChargingLaserHeight())));
-            }
-        }, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
-
-        return bag;
-
-
-
-    }
-
-
-    public ComponentBag inCombatTimedLaserBeam(float x, float y, float scale, final float offset, final float timeTillReapeat, final boolean isInstant, final LaserBeam laserBeam){
-        float width = Measure.units(5f) * scale;
-        float height = Measure.units(5f) * scale;
-        ComponentBag bag = new ComponentBag();
-
-
-        bag.add(new PositionComponent(x,y));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
-        bag.add(new InCombatActionComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(new ActionAfterTimeComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-
-                        laserBeam.createBeam(world,
-                                cbc.bound.x +  (!laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetX(cbc.bound.getWidth(), laserBeam.getChargingLaserWidth())),
-                                cbc.bound.y + (laserBeam.isUseWidthAsCenter() ? offset : CenterMath.offsetY(cbc.bound.getHeight(), laserBeam.getChargingLaserHeight())));
-                    }
-                }, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-                //laserOrbitalTask.cleanUpAction(world, e);
-                e.edit().remove(ActionAfterTimeComponent.class);
-            }
-        }));
-        return bag;
-    }
-
-    public ComponentBag inCombatTimedLaserBeam(float x, float y, float scale, float offset, final float timeTillReapeat, final LaserBeam laserBeam){
-        return inCombatTimedLaserBeam(x,y,scale, offset, timeTillReapeat,true, laserBeam);
-    }
-
 
 
 

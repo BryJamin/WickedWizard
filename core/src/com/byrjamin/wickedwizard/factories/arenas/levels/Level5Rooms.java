@@ -12,6 +12,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
@@ -33,8 +34,8 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
     private ArenaShellFactory arenaShellFactory;
     private ChestFactory chestFactory;
     private DecorFactory decorFactory;
+    private BeamTurretFactory beamTurretFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
-    private BombFactory bombFactory;
     private Random random;
     private ArenaSkin arenaSkin;
 
@@ -44,7 +45,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
         this.chestFactory = new ChestFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
-        this.bombFactory = new BombFactory(assetManager);
+        this.beamTurretFactory = new BeamTurretFactory(assetManager, arenaSkin);
         this.random = random;
         this.arenaSkin = arenaSkin;
     }
@@ -296,10 +297,10 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .numberOfOrbitals(12)
                         .angles(0,180);
 
-                arena.addEntity(decorFactory.inCombatLaserChain(Measure.units(20f), Measure.units(25f),2,
+                arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(20f), Measure.units(25f),2,
                         lb.build()));
 
-                arena.addEntity(decorFactory.inCombatLaserChain(arena.getWidth() - Measure.units(30f), Measure.units(25f),2,
+                arena.addEntity(beamTurretFactory.inCombatLaserChain(arena.getWidth() - Measure.units(30f), Measure.units(25f),2,
                         lb.speedInDegrees(-1f).build()));
 
                 arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(5f), Measure.units(40f), -90));
@@ -424,10 +425,10 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .expiryTime(1)
                         .angles(90);
 
-                arena.addEntity(decorFactory.timedLaserChain(Measure.units(35f), Measure.units(25f), 6, 4f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(35f), Measure.units(25f), 6, 4f,
                         lb.build()));
 
-                arena.addEntity(decorFactory.timedLaserChain(Measure.units(35f), Measure.units(160), 6, 4f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(35f), Measure.units(160), 6, 4f,
                         new LaserOrbitalTask.LaserBuilder(assetManager).build()));
 
 
@@ -473,10 +474,10 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .build();
 
 
-                arena.addEntity(decorFactory.inCombatTimedLaserBeam(Measure.units(20f), Measure.units(52.5f), 1, -Measure.units(50f), 3f,
+                arena.addEntity(beamTurretFactory.inCombatTimedLaserBeam(Measure.units(20f), Measure.units(52.5f), 1, -Measure.units(50f), 3f,
                         laserBeam));
 
-                arena.addEntity(decorFactory.inCombatTimedLaserBeam(arena.getWidth() - Measure.units(25f), Measure.units(52.5f), 1,-Measure.units(50f), 3f,
+                arena.addEntity(beamTurretFactory.inCombatTimedLaserBeam(arena.getWidth() - Measure.units(25f), Measure.units(52.5f), 1,-Measure.units(50f), 3f,
                         laserBeam));
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 2, Measure.units(40f)));
@@ -581,10 +582,10 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 //chestsAreLeft
 
-                arena.addEntity(decorFactory.timedLaserChain(Measure.units(65f), arena.getHeight() - Measure.units(15f), 6, 3f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(65f), arena.getHeight() - Measure.units(15f), 6, 3f,
                         lb.build()));
 
-                arena.addEntity(decorFactory.timedLaserChain(Measure.units(105f), arena.getHeight() - Measure.units(15f), 6, 3f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(105f), arena.getHeight() - Measure.units(15f), 6, 3f,
                         lb.build()));
 
 
@@ -1081,14 +1082,14 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                     float y = Measure.units(40f + (i * 40f));
 
-                    arena.addEntity(decorFactory.laserChain(Measure.units(60f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(60f), y, 2,
                             lb.build()));
-                    arena.addEntity(decorFactory.laserChain(Measure.units(85f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(85f), y, 2,
                             empty.build()));
 
-                    arena.addEntity(decorFactory.laserChain(Measure.units(5f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(5f), y, 2,
                             lb.build()));
-                    arena.addEntity(decorFactory.laserChain(Measure.units(30f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(30f), y, 2,
                             empty.build()));
 
                 }
