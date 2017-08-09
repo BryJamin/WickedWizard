@@ -78,11 +78,11 @@ public class ChangeLevelSystem extends BaseSystem {
     public ChangeLevelSystem(AssetManager assetManager, JigsawGenerator jigsawGenerator, Random random){
         this.assetManager = assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        ONE.setArenaSkin(new LightGraySkin(atlas));
-        TWO.setArenaSkin(new FoundarySkin(atlas));
-        THREE.setArenaSkin(new DarkPurpleAndBrown(atlas));
-        FOUR.setArenaSkin(new Bourbon(atlas));
-        FIVE.setArenaSkin(new DarkGraySkin(atlas));
+        ONE.setArenaSkin(new LightGraySkin());
+        TWO.setArenaSkin(new FoundarySkin());
+        THREE.setArenaSkin(new DarkPurpleAndBrown());
+        FOUR.setArenaSkin(new Bourbon());
+        FIVE.setArenaSkin(new DarkGraySkin());
         this.random = random;
         this.jigsawGenerator = jigsawGenerator;
         level = ONE;

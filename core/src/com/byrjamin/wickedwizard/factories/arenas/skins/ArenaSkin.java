@@ -10,10 +10,10 @@ import com.badlogic.gdx.utils.Array;
 
 public interface ArenaSkin {
 
-    Array<? extends TextureRegion> getBackgroundTextures();
+    String getBackgroundTextures();
     Color getBackgroundTint();
 
-    Array<? extends  TextureRegion> getWallTexture();
+    String getWallTexture();
     Color getWallTint();
 
 

@@ -9,9 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class DarkPurpleAndBrown extends AbstractSkin {
 
-    public DarkPurpleAndBrown(TextureAtlas atlas) {
-        super(atlas);
-    }
 
 
     @Override

@@ -9,9 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class Bourbon extends AbstractSkin{
 
-    public Bourbon(TextureAtlas atlas) {
-        super(atlas);
-    }
 
     @Override
     public Color getBackgroundTint() {

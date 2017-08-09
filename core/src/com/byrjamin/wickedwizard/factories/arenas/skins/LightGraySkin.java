@@ -11,9 +11,6 @@ import com.badlogic.gdx.utils.Array;
 
 public class LightGraySkin extends AbstractSkin {
 
-    public LightGraySkin(TextureAtlas atlas) {
-        super(atlas);
-    }
 
     @Override
     public Color getBackgroundTint() {

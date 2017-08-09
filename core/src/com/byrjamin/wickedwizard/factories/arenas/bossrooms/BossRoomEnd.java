@@ -63,7 +63,7 @@ public class BossRoomEnd extends AbstractFactory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
-                                new AllBlackSkin(atlas)))
+                                new AllBlackSkin()))
                         .addSection(new ArenaBuilder.Section( new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 20),
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,

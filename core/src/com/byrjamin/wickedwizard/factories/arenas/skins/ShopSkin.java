@@ -9,10 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class ShopSkin extends  AbstractSkin{
 
-    public ShopSkin(TextureAtlas atlas) {
-        super(atlas);
-    }
-
     @Override
     public Color getBackgroundTint() {
         return new Color(247/255f, 220/255f, 180/255f, 1);

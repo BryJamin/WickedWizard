@@ -34,14 +34,14 @@ public class BreakRoom extends AbstractFactory {
 
     public BreakRoom(AssetManager assetManager) {
         super(assetManager);
-        this.arenaSkin = new AllBlackSkin(atlas);
+        this.arenaSkin = new AllBlackSkin();
     }
 
 
 
     public Arena createBreakRoom(){
 
-        Arena arena = new Arena(new AllBlackSkin(atlas), new MapCoords());
+        Arena arena = new Arena(new AllBlackSkin(), new MapCoords());
         arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(new MapCoords(),
                         ArenaBuilder.wall.FULL,

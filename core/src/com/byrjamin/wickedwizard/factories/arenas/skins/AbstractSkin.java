@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 
 /**
  * Created by Home on 28/04/2017.
@@ -11,15 +12,12 @@ import com.badlogic.gdx.utils.Array;
 
 public abstract class AbstractSkin implements ArenaSkin{
 
-    protected TextureAtlas atlas;
-
-    public AbstractSkin(TextureAtlas atlas) {
-        this.atlas = atlas;
+    public AbstractSkin() {
     }
 
     @Override
-    public Array<? extends TextureRegion> getBackgroundTextures() {
-        return atlas.findRegions("block");
+    public String getBackgroundTextures() {
+        return TextureStrings.BLOCK;
     }
 
     @Override
@@ -28,8 +26,8 @@ public abstract class AbstractSkin implements ArenaSkin{
     }
 
     @Override
-    public Array<? extends TextureRegion> getWallTexture() {
-        return atlas.findRegions("block");
+    public String getWallTexture() {
+        return TextureStrings.BLOCK;
     }
 
     @Override

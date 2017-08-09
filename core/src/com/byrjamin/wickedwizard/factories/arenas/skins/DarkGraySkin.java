@@ -9,20 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class DarkGraySkin extends AbstractSkin{
 
-    public DarkGraySkin(TextureAtlas atlas) {
-        super(atlas);
-    }
-/*
-    @Override
-    public Color getBackgroundTint() {
-        return new Color(0,1,0,1);
-    }
-
-    @Override
-    public Color getWallTint() {
-        return new Color(0,0.5f,0,1);
-    }*/
-
 
     @Override
     public Color getBackgroundTint() {

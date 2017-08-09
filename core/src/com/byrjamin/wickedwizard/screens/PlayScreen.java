@@ -91,7 +91,7 @@ public class PlayScreen extends AbstractScreen {
         setUpGlobals();
 
 
-        ArenaSkin arenaSkin = new LightGraySkin(atlas);
+        ArenaSkin arenaSkin = new LightGraySkin();
 
 
         switch (playScreenConfig.spawn){
@@ -99,7 +99,7 @@ public class PlayScreen extends AbstractScreen {
             default:
                 Array<Arena> placedArenas = new Array<Arena>();
 
-                TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, new LightGraySkin(atlas));
+                TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, new LightGraySkin());
 
                 Arena startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
                 placedArenas.add(startingArena);
@@ -108,7 +108,7 @@ public class PlayScreen extends AbstractScreen {
                 placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
                 placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
                 placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
-                placedArenas.add(new ArenaShellFactory(game.assetManager, new LightGraySkin(atlas)).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
+                placedArenas.add(new ArenaShellFactory(game.assetManager, new LightGraySkin()).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
 
                 ArenaMap arenaMap = new ArenaMap(startingArena, placedArenas);
 
@@ -127,7 +127,7 @@ public class PlayScreen extends AbstractScreen {
 
                 try{
 
-                    bossMap = new BossMaps(game.assetManager, playScreenConfig.id != 8 ? new LightGraySkin(atlas) : new DarkGraySkin(atlas)).getBossMapsArray().get(playScreenConfig.id);
+                    bossMap = new BossMaps(game.assetManager, playScreenConfig.id != 8 ? new LightGraySkin() : new DarkGraySkin()).getBossMapsArray().get(playScreenConfig.id);
 
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
@@ -191,7 +191,7 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         setUpGlobals();
 
-        jg = new PresetGenerators().level1Configuration(game.assetManager, new LightGraySkin(atlas), random)
+        jg = new PresetGenerators().level1Configuration(game.assetManager, new LightGraySkin(), random)
                 .build();
         jg.generate();
         jg.cleanArenas();

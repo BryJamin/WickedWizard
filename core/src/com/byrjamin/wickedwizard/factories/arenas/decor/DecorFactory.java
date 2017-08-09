@@ -89,7 +89,7 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
-                arenaSkin.getWallTexture(),
+                atlas.findRegions(arenaSkin.getWallTexture()),
                 PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
         trbc.DEFAULT = arenaSkin.getWallTint();
@@ -121,7 +121,7 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
-                arenaSkin.getWallTexture(),
+                atlas.findRegions(arenaSkin.getWallTexture()),
                 PLAYER_LAYER_FAR);
         trbc.color = color;
         trbc.DEFAULT = color;

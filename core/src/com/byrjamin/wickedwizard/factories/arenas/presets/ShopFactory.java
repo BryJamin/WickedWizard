@@ -46,7 +46,7 @@ public class ShopFactory extends AbstractFactory {
     public ShopFactory(AssetManager assetManager) {
         super(assetManager);
         itemFactory = new ItemFactory(assetManager);
-        this.arenaSkin = new ShopSkin(atlas);
+        this.arenaSkin = new ShopSkin();
 
     }
 

@@ -3,8 +3,10 @@ package com.byrjamin.wickedwizard.factories.arenas;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.BagSearch;
@@ -37,6 +39,7 @@ public class ArenaBuilder {
     private Array<Section> sections = new Array<Section>();
 
     private AssetManager assetManager;
+    private TextureAtlas atlas;
     private ArenaSkin arenaSkin;
     private BackgroundFactory bf = new BackgroundFactory();
     private DecorFactory decorFactory;
@@ -44,6 +47,7 @@ public class ArenaBuilder {
     public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin){
         this.assetManager = assetManager;
         this.arenaSkin = arenaSkin;
+        atlas = this.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
     }
 
@@ -199,7 +203,7 @@ public class ArenaBuilder {
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
                     Measure.units(20f),
-                    arenaSkin.getBackgroundTextures(),
+                    atlas.findRegions(arenaSkin.getBackgroundTextures()),
                     arenaSkin));
 
 

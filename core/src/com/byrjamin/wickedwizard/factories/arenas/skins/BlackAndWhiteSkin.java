@@ -10,10 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public class BlackAndWhiteSkin extends AbstractSkin{
 
 
-    public BlackAndWhiteSkin(TextureAtlas atlas) {
-        super(atlas);
-    }
-
     @Override
     public Color getBackgroundTint() {
         return new Color(Color.BLACK);

@@ -44,7 +44,7 @@ public class EndGameMap extends AbstractFactory {
 
     public EndGameMap(AssetManager assetManager) {
         super(assetManager);
-        this.arenaSkin = new BrightWhiteSkin(atlas);
+        this.arenaSkin = new BrightWhiteSkin();
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
     }

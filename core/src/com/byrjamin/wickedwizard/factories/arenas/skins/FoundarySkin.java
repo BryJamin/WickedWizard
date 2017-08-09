@@ -8,9 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  */
 
 public class FoundarySkin extends AbstractSkin {
-    public FoundarySkin(TextureAtlas atlas) {
-        super(atlas);
-    }
 
 
     @Override

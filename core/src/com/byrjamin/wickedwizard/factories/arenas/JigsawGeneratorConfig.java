@@ -36,7 +36,7 @@ public class JigsawGeneratorConfig {
     public Array<BossMapCreate> bossMapGens;
 
     public JigsawGeneratorConfig(AssetManager assetManager, Random random){
-        this(assetManager, new LightGraySkin(assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class)), random);
+        this(assetManager, new LightGraySkin(), random);
     }
 
 
