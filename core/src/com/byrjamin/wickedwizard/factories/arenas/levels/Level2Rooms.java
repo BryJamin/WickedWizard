@@ -689,7 +689,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addWave(
                         arenaEnemyPlacementFactory.spawnGoatWizard(
                                 chestsAreLeft ? arena.getWidth() - Measure.units(20f) : Measure.units(20f),
-                                Measure.units(50f), chestsAreLeft, true),
+                                Measure.units(45f), chestsAreLeft, true),
                         arenaEnemyPlacementFactory.spawnGoatWizard(
                                 chestsAreLeft ? arena.getWidth() - Measure.units(20f) : Measure.units(20f), Measure.units(20f), chestsAreLeft, true)
                         );

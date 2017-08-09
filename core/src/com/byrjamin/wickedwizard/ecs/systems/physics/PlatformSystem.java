@@ -76,7 +76,7 @@ public class PlatformSystem extends EntitySystem {
 
                 Collider.Collision c = Collider.cleanCollision(playerBound.bound, futureRectangle, cbc.bound);
 
-                if(c == Collider.Collision.BOTTOM) {
+                if(c == Collider.Collision.BOTTOM && playerVelocity.velocity.y <= 0) {
                     playerBound.getRecentCollisions().add(c);
                     playerVelocity.velocity.y = 0;
                     playerBound.bound.y = cbc.bound.y + cbc.bound.getHeight();

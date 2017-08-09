@@ -346,7 +346,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addWave(
                         arenaEnemyPlacementFactory.spawnKnight(chestsAreLeft ? arena.getWidth() - Measure.units(20f) : Measure.units(20f),
-                                Measure.units(50f), chestsAreLeft, true),
+                                Measure.units(45f), chestsAreLeft, true),
                         arenaEnemyPlacementFactory.spawnKnight(chestsAreLeft ? arena.getWidth() - Measure.units(20f) : Measure.units(20f), Measure.units(20f), chestsAreLeft, true)
                 );
 

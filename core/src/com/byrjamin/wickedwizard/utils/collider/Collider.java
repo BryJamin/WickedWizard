@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.utils.CenterMath;
 public class Collider {
 
     public enum Collision {
-        LEFT, RIGHT, BOTTOM, TOP, NONE
+        LEFT, RIGHT, BOTTOM, TOP, OVERLAPS, NONE
     }
 
     private static final float buffer = 40f;
@@ -84,14 +84,17 @@ public class Collider {
                     currentBound.x -= innerRectangle.getWidth();
                 } else {
 
-                    innerRectangle.setHeight(currentBound.getHeight()  * 0.8f);
+                    return leftOrRightCollision(currentBound, wall); //Collision.OVERLAPS;
+/*                    innerRectangle.setHeight(currentBound.getHeight());
                     innerRectangle.setWidth(currentBound.getWidth()  * 0.8f);
                     innerRectangle.setX(currentBound.x + CenterMath.offsetX(currentBound.getWidth(), innerRectangle.getWidth()));
-                    innerRectangle.setY(currentBound.y + CenterMath.offsetY(currentBound.getHeight(), innerRectangle.getHeight()));
+                    innerRectangle.setY(currentBound.y + CenterMath.offsetY(currentBound.getHeight(), innerRectangle.getHeight()));*/
                     // return topOrBottomCollision(innerRectangle, wall);
-                    return leftOrRightCollision(innerRectangle, wall);
+                   // return leftOrRightCollision(currentBound, wall);
 
                 }
+
+            return leftOrRightCollision(currentBound, wall);
 
            // return leftOrRightCollision(innerRectangle, wall);
 

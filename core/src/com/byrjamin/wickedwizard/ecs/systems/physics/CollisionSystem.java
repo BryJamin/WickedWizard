@@ -92,6 +92,7 @@ public class CollisionSystem extends EntityProcessingSystem {
             addNearByCollidableObjects(cbc.bound, collidableobjects, destructibleWalls);
         }
 
+        //Enemies respect platforms players and bullets don't
         if(!playerm.has(e) && !bulletm.has(e) && !grapplem.has(e)) {
             addNearByCollidableObjects(cbc.bound, collidableobjects, platforms);
         }
@@ -114,6 +115,9 @@ public class CollisionSystem extends EntityProcessingSystem {
             futureRectangle.x += (vc.velocity.x * world.delta);
             //System.out.println(futureRectangle.getX());
             futureRectangle.y += (vc.velocity.y * world.delta);
+        } else {
+            futureRectangle.x += (vc.velocity.x / 5 * world.delta);
+            futureRectangle.y += (vc.velocity.y / 5 * world.delta);
         }
 
         //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
