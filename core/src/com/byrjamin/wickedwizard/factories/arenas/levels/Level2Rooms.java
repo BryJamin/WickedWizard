@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -21,6 +22,7 @@ import com.byrjamin.wickedwizard.factories.hazards.SpikeBallFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -50,6 +52,10 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.random = random;
         this.arenaSkin = arenaSkin;
+    }
+
+    public Level2Rooms(AssetManager assetManager, Random random) {
+        this(assetManager, Level.TWO.getArenaSkin(), random);
     }
 
 

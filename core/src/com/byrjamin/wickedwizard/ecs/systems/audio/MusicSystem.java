@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.utils.RoomTransition;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 /**
  * Music System plays music based on what level you are on.
@@ -64,11 +65,11 @@ public class MusicSystem extends BaseSystem {
         changeTrack(MusicStrings.BG_MAIN_MENU);
     }
 
-    public void playLevelMusic(ChangeLevelSystem.Level level){
+    public void playLevelMusic(Level level){
         changeTrack(pickLevelMusic(level));
     }
 
-    public void playBossMusic(ChangeLevelSystem.Level level){
+    public void playBossMusic(Level level){
         changeTrack(MusicStrings.BG_MAIN_MENU);
     }
 
@@ -98,7 +99,7 @@ public class MusicSystem extends BaseSystem {
     }
 
 
-    private Mix pickLevelMusic(ChangeLevelSystem.Level level){
+    private Mix pickLevelMusic(Level level){
 
         Mix mix;
             switch(level){

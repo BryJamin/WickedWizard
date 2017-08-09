@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -45,6 +46,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 
 import java.util.Random;
@@ -191,7 +193,7 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         setUpGlobals();
 
-        jg = new PresetGenerators().level1Configuration(game.assetManager, new LightGraySkin(), random)
+        jg = new PresetGenerators().level1Configuration(game.assetManager, Level.ONE.getArenaSkin(), random)
                 .build();
         jg.generate();
         jg.cleanArenas();
