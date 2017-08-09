@@ -10,8 +10,8 @@ public class CritCalculator {
 
     private Random random;
 
-    private static final float accuracyMultiplier = 4;
-    private static final float luckMultiplier = 1f;
+    private static final float accuracyMultiplier = 1;
+    private static final float luckMultiplier = 0.25f;
 
     public CritCalculator(Random random){
         this.random = random;

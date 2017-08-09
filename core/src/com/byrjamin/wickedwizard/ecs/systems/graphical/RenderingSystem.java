@@ -179,7 +179,7 @@ public class RenderingSystem extends EntitySystem {
             bmf.setColor(trfc.color);
             bmf.draw(batch, trfc.text,
                     pc.getX() + trfc.offsetX, pc.getY() + trfc.offsetY
-            ,trfc.width, Align.center, true);
+            ,trfc.width, trfc.align, true);
             bmf.setColor(Color.WHITE);
         }
 

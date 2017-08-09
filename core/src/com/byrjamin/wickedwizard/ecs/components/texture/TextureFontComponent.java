@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.ecs.components.texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Align;
 import com.byrjamin.wickedwizard.assets.Assets;
 
 /**
@@ -15,6 +16,8 @@ public class TextureFontComponent extends TextureRegionComponent {
     public String font;
 
     public String text;
+
+    public int align = Align.center;
 
     public TextureFontComponent(){
         this(Assets.small, "Default");

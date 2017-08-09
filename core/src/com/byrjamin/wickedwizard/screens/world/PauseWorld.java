@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -140,65 +141,44 @@ public class PauseWorld {
 
 
         Entity statText = world.createEntity();
-        statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(55f)));
-        statText.edit().add(new TextureFontComponent(Assets.medium, "Stats", Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(60f)));
+        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, MenuStrings.STATS, Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR);
+        statText.edit().add(tfc);
 
 
         String[][] stats = new String[][]{
-                {"Dmg", String.format(Locale.getDefault(), "+%.0f", playerStats.damage)},
-                {"Fr", String.format(Locale.getDefault(), "+%.0f", playerStats.fireRate)},
-                {"Shotspd", String.format(Locale.getDefault(), "+%.0f", playerStats.shotSpeed)},
-                {"Range", String.format(Locale.getDefault(), "+%.0f", playerStats.range)},
-                {"Acc", String.format(Locale.getDefault(), "+%.0f", playerStats.accuracy)},
-                {"Luck", String.format(Locale.getDefault(), "+%.0f", playerStats.luck)},
-                {"Speed", String.format(Locale.getDefault(), "+%.0f", playerStats.speed * 100)},
-                {"Crit", String.format(Locale.getDefault(), "%.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%"},
-/*                {"Dmg", Float.toString(playerStats.damage)},
-                {"Dmg", Float.toString(playerStats.damage)},
-                {"Dmg", Float.toString(playerStats.damage)},
-                {"Dmg", Float.toString(playerStats.damage)},
-                {"Dmg", Float.toString(playerStats.damage)},
-                {"Dmg", Float.toString(playerStats.damage)},
-                {"Dmg", Float.toString(playerStats.damage)},
-                {"Dmg", Float.toString(playerStats.damage)},*/
-
+                {MenuStrings.Stats.DAMAGE, String.format(Locale.getDefault(), "+%.0f", playerStats.damage)},
+                {MenuStrings.Stats.FIRERATE, String.format(Locale.getDefault(), "+%.0f", playerStats.fireRate)},
+                {MenuStrings.Stats.SHOTSPEED, String.format(Locale.getDefault(), "+%.0f", playerStats.shotSpeed)},
+                {MenuStrings.Stats.RANGE, String.format(Locale.getDefault(), "+%.0f", playerStats.range)},
+                {MenuStrings.Stats.ACCURACY, String.format(Locale.getDefault(), "+%.0f", playerStats.accuracy)},
+                {MenuStrings.Stats.LUCK, String.format(Locale.getDefault(), "+%.0f", playerStats.luck)},
+                {MenuStrings.Stats.SPEED, String.format(Locale.getDefault(), "%.0f", 100 + playerStats.speed * 100) + "%"},
+                {MenuStrings.Stats.CRIT, String.format(Locale.getDefault(), "%.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%"},
         };
-/*
-
-        String[] stats = new String[]
-                {
-                        String.format(Locale.getDefault(), "Dmg %s", playerStats.damage),
-                        String.format(Locale.getDefault(), "Fir %s", playerStats.fireRate),
-                        String.format(Locale.getDefault(), "Rng %s", playerStats.range),
-                        String.format(Locale.getDefault(), "Acc %s", playerStats.accuracy),
-                        String.format(Locale.getDefault(), "Lck %s", playerStats.luck),
-                        String.format(Locale.getDefault(), "Crt %.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%",
-                        String.format(Locale.getDefault(), "Spd %.0f", playerStats.speed * 100) + "%",
-                };
-*/
-
 
         for(int i = 0; i < stats.length; i++){
-            statsText(world, stats[i][0], camX - Measure.units(5f), camY + Measure.units(50f - (5 * i)));
+            statsText(world, stats[i][0], camX, camY + Measure.units(55f - (5 * i)), Align.left);
         }
 
         for(int i = 0; i < stats.length; i++){
-            statsText(world, stats[i][1], camX + Measure.units(10), camY + Measure.units(50f - (5 * i)));
+            statsText(world, stats[i][1], camX + Measure.units(15), camY + Measure.units(55f - (5 * i)), Align.center);
         }
 
 
         Entity itemText = world.createEntity();
-        itemText.edit().add(new PositionComponent(camX + Measure.units(30f), camY + Measure.units(55f)));
-        itemText.edit().add(new TextureFontComponent(Assets.medium, "Items", Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        itemText.edit().add(new PositionComponent(camX + Measure.units(40f), camY + Measure.units(60f)));
+        itemText.edit().add(new TextureFontComponent(Assets.medium, MenuStrings.ITEMS, Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
         return world;
 
     }
 
-    public void statsText(World world, String text, float x, float y){
+    public void statsText(World world, String text, float x, float y, int align){
         Entity damage = world.createEntity();
         damage.edit().add(new PositionComponent(x, y));
         damage.edit().add(new TextureFontComponent(Assets.medium, text, Measure.units(20f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        damage.getComponent(TextureFontComponent.class).align = align;
     }
 
 

@@ -28,6 +28,9 @@ public class PlatformSystem extends EntitySystem {
     ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
 
+
+    private static float inputRadius = Measure.units(15f);
+
     @SuppressWarnings("unchecked")
     public PlatformSystem() {
         super(Aspect.all(PlatformComponent.class, CollisionBoundComponent.class));
@@ -89,13 +92,17 @@ public class PlatformSystem extends EntitySystem {
     }
 
 
-    public boolean fallThoughPlatform() {
+    public boolean fallThoughPlatform(float x, float y) {
 
         CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
         GravityComponent playerGravity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class);
 
         //TODO make take in an input parameter and check whether or not to fall through the platform (Distance of like Measure.units 20f or something?
+
+        boolean bool = x >= playerBound.bound.getX() - inputRadius && x <= playerBound.bound.getX() + inputRadius;
+
+        if(!bool) return false;
 
         for(Entity e : this.getEntities()) {
 

@@ -153,7 +153,7 @@ public class PlayerInput extends InputAdapter {
                             }
 
                         } else if (tapCount == 2) {
-                            if (!world.getSystem(PlatformSystem.class).fallThoughPlatform()) {
+                            if (!world.getSystem(PlatformSystem.class).fallThoughPlatform(input.x, input.y)) {
                                 world.getSystem(PlayerInputSystem.class).turnOffGlide();
                             }
 
