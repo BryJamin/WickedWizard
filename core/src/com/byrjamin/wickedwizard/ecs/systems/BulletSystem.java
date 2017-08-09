@@ -45,7 +45,6 @@ public class BulletSystem extends EntityProcessingSystem {
         CollisionBoundComponent cbc = cbm.get(e);
 
         if(em.has(e)){
-            System.out.println("ENEMY");
             CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
             if(pcbc.bound.overlaps(cbc.bound)){
 
@@ -61,8 +60,6 @@ public class BulletSystem extends EntityProcessingSystem {
             }
 
         } else if(fm.has(e)){
-
-            System.out.println("FRIENDLY");
             EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, HealthComponent.class).exclude(PlayerComponent.class).one(EnemyComponent.class,OnlyPlayerBulletsComponent.class) );
             IntBag entityIds = subscription.getEntities();
             bulletScan(e, entityIds);

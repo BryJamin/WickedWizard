@@ -30,12 +30,6 @@ public class FollowPositionSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         PositionComponent pc = pm.get(e);
         FollowPositionComponent fc = fm.get(e);
-
-        if(world.getMapper(UIComponent.class).has(e)){
-            System.out.println("PAUSE ?");
-            System.out.println(pc.position.x);
-        }
-
         pc.position.set(fc.trackedPosition.x + fc.offsetX, fc.trackedPosition.y + fc.offsetY, 0);
     }
 

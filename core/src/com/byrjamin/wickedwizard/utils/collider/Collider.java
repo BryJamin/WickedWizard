@@ -83,9 +83,17 @@ public class Collider {
                 } else if (currentBound.getX() + currentBound.getWidth() == innerRectangle.getX() + innerRectangle.getWidth()) {
                     currentBound.x -= innerRectangle.getWidth();
                 } else {
+
+                    innerRectangle.setHeight(currentBound.getHeight()  * 0.8f);
+                    innerRectangle.setWidth(currentBound.getWidth()  * 0.8f);
+                    innerRectangle.setX(currentBound.x + CenterMath.offsetX(currentBound.getWidth(), innerRectangle.getWidth()));
+                    innerRectangle.setY(currentBound.y + CenterMath.offsetY(currentBound.getHeight(), innerRectangle.getHeight()));
+                    // return topOrBottomCollision(innerRectangle, wall);
                     return leftOrRightCollision(innerRectangle, wall);
 
                 }
+
+           // return leftOrRightCollision(innerRectangle, wall);
 
 /*
                 if (currentBound.getY() == innerRectangle.getY()) {

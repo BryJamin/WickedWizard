@@ -55,6 +55,10 @@ import com.byrjamin.wickedwizard.utils.BulletMath;
 
 public class PlayerFactory extends AbstractFactory {
 
+
+    private static final int startingMoney = 0;
+
+
     public PlayerFactory(AssetManager assetManager) {
         super(assetManager);
     }
@@ -76,7 +80,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
-        bag.add(new CurrencyComponent(50));
+        bag.add(new CurrencyComponent(startingMoney));
         bag.add(new JumpComponent());
         bag.add(new GlideComponent());
         bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));

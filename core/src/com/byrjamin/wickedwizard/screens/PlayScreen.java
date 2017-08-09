@@ -180,9 +180,6 @@ public class PlayScreen extends AbstractScreen {
                 break;
         }
 
-
-
-
         createWorlds();
         Gdx.input.setCatchBackKey(true);
     }
@@ -285,11 +282,11 @@ public class PlayScreen extends AbstractScreen {
         StatComponent stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
 
         if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false)) {
-            stats.damage = 10f;
+            stats.damage = 99f;
             stats.accuracy = 99f;
-            stats.fireRate = 10f;
+            stats.fireRate = 99f;
             stats.speed = 0.5f;
-            stats.luck = 10f;
+            stats.luck = 99f;
         }
 
     }
