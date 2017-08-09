@@ -8,9 +8,9 @@ import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 
 public class PresetStatIncrease {
 
-    public static final float minor = 0.1f;
-    public static final float major = 0.2f;
-    public static final float massive = 0.3f;
+    public static final float minor = 1.0f;
+    public static final float major = 2.0f;
+    public static final float massive = 3.0f;
 
 
     public static class Speed {

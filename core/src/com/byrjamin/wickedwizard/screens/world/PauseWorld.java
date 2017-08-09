@@ -37,6 +37,7 @@ import com.byrjamin.wickedwizard.screens.MenuScreen;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.Pair;
 
 import java.util.Locale;
 
@@ -112,8 +113,9 @@ public class PauseWorld {
         returntoMainMenu.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                game.getScreen().dispose();
-                game.setScreen(new MenuScreen(game));
+
+                PlayScreen playScreen = (PlayScreen) game.getScreen();
+                playScreen.startAreYouSure();
             }
         }));
 
@@ -141,20 +143,47 @@ public class PauseWorld {
         statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(55f)));
         statText.edit().add(new TextureFontComponent(Assets.medium, "Stats", Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
+
+        String[][] stats = new String[][]{
+                {"Dmg", String.format(Locale.getDefault(), "+%.0f", playerStats.damage)},
+                {"Fr", String.format(Locale.getDefault(), "+%.0f", playerStats.fireRate)},
+                {"Shotspd", String.format(Locale.getDefault(), "+%.0f", playerStats.shotSpeed)},
+                {"Range", String.format(Locale.getDefault(), "+%.0f", playerStats.range)},
+                {"Acc", String.format(Locale.getDefault(), "+%.0f", playerStats.accuracy)},
+                {"Luck", String.format(Locale.getDefault(), "+%.0f", playerStats.luck)},
+                {"Speed", String.format(Locale.getDefault(), "+%.0f", playerStats.speed * 100)},
+                {"Crit", String.format(Locale.getDefault(), "%.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%"},
+/*                {"Dmg", Float.toString(playerStats.damage)},
+                {"Dmg", Float.toString(playerStats.damage)},
+                {"Dmg", Float.toString(playerStats.damage)},
+                {"Dmg", Float.toString(playerStats.damage)},
+                {"Dmg", Float.toString(playerStats.damage)},
+                {"Dmg", Float.toString(playerStats.damage)},
+                {"Dmg", Float.toString(playerStats.damage)},
+                {"Dmg", Float.toString(playerStats.damage)},*/
+
+        };
+/*
+
         String[] stats = new String[]
                 {
-                        String.format(Locale.getDefault(), "Dmg %.2f", playerStats.damage),
-                        String.format(Locale.getDefault(), "Fir %.2f", playerStats.fireRate),
-                        String.format(Locale.getDefault(), "Rng %.2f", playerStats.range),
-                        String.format(Locale.getDefault(), "Acc %.2f", playerStats.accuracy),
-                        String.format(Locale.getDefault(), "Lck %.2f", playerStats.luck),
+                        String.format(Locale.getDefault(), "Dmg %s", playerStats.damage),
+                        String.format(Locale.getDefault(), "Fir %s", playerStats.fireRate),
+                        String.format(Locale.getDefault(), "Rng %s", playerStats.range),
+                        String.format(Locale.getDefault(), "Acc %s", playerStats.accuracy),
+                        String.format(Locale.getDefault(), "Lck %s", playerStats.luck),
                         String.format(Locale.getDefault(), "Crt %.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%",
                         String.format(Locale.getDefault(), "Spd %.0f", playerStats.speed * 100) + "%",
                 };
+*/
 
 
         for(int i = 0; i < stats.length; i++){
-            statsText(world, stats[i], camX + Measure.units(5), camY + Measure.units(50f - (5 * i)));
+            statsText(world, stats[i][0], camX - Measure.units(5f), camY + Measure.units(50f - (5 * i)));
+        }
+
+        for(int i = 0; i < stats.length; i++){
+            statsText(world, stats[i][1], camX + Measure.units(10), camY + Measure.units(50f - (5 * i)));
         }
 
 
@@ -176,11 +205,6 @@ public class PauseWorld {
     public World getWorld() {
         return world;
     }
-
-    public void pauseWorldActionOnTouch(float x, float y){
-        world.getSystem(ActionOnTouchSystem.class).touch(x, y);
-    }
-
 
     public void process(float delta){
 

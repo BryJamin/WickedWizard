@@ -164,13 +164,11 @@ public class RoomTransitionSystem extends EntitySystem {
                     playerPosition.position.y = doorEntryY;
                     break;
                 case UP:
-                    System.out.println("UP");
                     playerPosition.position.x = doorBoundary.getCenterX();
                     playerPosition.position.y = doorBoundary.bound.getY() - playerBoundary.bound.getHeight();;
                     playerVelocity.velocity.y = (playerVelocity.velocity.y > 0) ? 0 : playerVelocity.velocity.y;
                     break;
                 case DOWN:
-                    System.out.println("DOWN");
                     playerPosition.position.x = doorBoundary.getCenterX();
                     playerPosition.position.y = doorBoundary.bound.getY() + playerBoundary.bound.getHeight() * 2;
                     playerVelocity.velocity.y = (playerVelocity.velocity.y < Measure.units(70f)) ? Measure.units(70f) : playerVelocity.velocity.y;

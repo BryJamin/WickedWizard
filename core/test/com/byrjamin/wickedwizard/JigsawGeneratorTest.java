@@ -156,10 +156,6 @@ public class JigsawGeneratorTest extends GameTest {
             boolean bossRoom = false;
 
             for (Arena a : arenas) {
-/*                System.out.println(a.roomType);
-                for(MapCoords mc : a.cotainingCoords){
-                    System.out.println(mc);
-                }*/
                 if (a.roomType == Arena.RoomType.BOSS) {
                     bossRoom = true;
                     break;

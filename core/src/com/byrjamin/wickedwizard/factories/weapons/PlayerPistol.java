@@ -28,12 +28,15 @@ import java.util.Random;
 public class PlayerPistol implements Weapon{
 
     private float baseDamage = 1;
+
+    private float defaultFireRate = 0.3f;
+
     private float baseFireRate = 0.3f;
     private BulletFactory bulletFactory;
     private Giblets.GibletBuilder gibletBuilder;
     private CritCalculator critCalculator;
 
-    private static final float shotSpeedMultiplier = 25f;
+    private static final float shotSpeedMultiplier = 2.5f;
 
     private static final float range = Measure.units(50f);
 
@@ -50,10 +53,15 @@ public class PlayerPistol implements Weapon{
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
+
+
         if(e.getComponent(StatComponent.class) == null) return;
 
         StatComponent sc =  e.getComponent(StatComponent.class);
+
         boolean isCrit = critCalculator.isCrit(sc.crit, sc.accuracy, sc.luck);
+
+        baseFireRate = defaultFireRate / (1 + (sc.fireRate / 10));
 
         Entity bullet = world.createEntity();
         for(Component c : bulletFactory.basicBulletBag(x,y,2, isCrit ? new Color(0,0,0,1) : new Color(1,1,1,1))){
@@ -106,7 +114,7 @@ public class PlayerPistol implements Weapon{
 
     @Override
     public float getBaseDamage() {
-        return 1;
+        return 0.1f;
     }
 
 

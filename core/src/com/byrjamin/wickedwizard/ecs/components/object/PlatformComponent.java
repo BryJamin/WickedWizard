@@ -7,5 +7,9 @@ import com.artemis.Component;
  */
 
 public class PlatformComponent extends Component {
+
+    public static final float FALLTHROUGH_TIME = 0.25f;
+
     public boolean canPassThrough;
+    public float timer;
 }

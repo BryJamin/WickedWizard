@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
@@ -67,6 +68,9 @@ public class PlayScreen extends AbstractScreen {
 
     private DeathScreenWorld deathScreenWorld;
     private com.byrjamin.wickedwizard.screens.world.PauseWorld pauseWorld;
+    private AreYouSureWorld areYouSureWorld;
+
+
 
     private boolean isPaused = false;
 
@@ -243,17 +247,23 @@ public class PlayScreen extends AbstractScreen {
                 @Override
                 public boolean keyDown(int keycode) {
 
-                    if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK){
-                        if(!isPaused) {
-                            pause();
-                        } else {
-
-                            if(keycode == Input.Keys.BACK){
-                                game.dispose();
-                                game.setScreen(new MenuScreen(game));
+                    if(areYouSureWorld == null) {
+                        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+                            if (!isPaused) {
+                                pause();
                             } else {
-                                unpause();
+
+                                if (keycode == Input.Keys.BACK) {
+                                    startAreYouSure();
+                                } else {
+                                    unpause();
+                                }
                             }
+                        }
+                    } else {
+                        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
+                            game.getScreen().dispose();
+                            game.setScreen(new MenuScreen(game));
                         }
                     }
 
@@ -305,21 +315,16 @@ public class PlayScreen extends AbstractScreen {
 
 
         if(adventureWorld.isGameOver() && deathScreenWorld == null) deathScreenWorld = new DeathScreenWorld(game, gameport);
-
         if(isPaused) pauseWorld.process(delta);
+        if(areYouSureWorld != null) {
+            areYouSureWorld.process(delta);
+        }
+
         if(adventureWorld.isGameOver() && deathScreenWorld != null) deathScreenWorld.process(delta);
 
         if(!adventureWorld.isGameOver()) {
 
             if(!game.batch.isDrawing()) game.batch.begin();
-
-
-            float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-            float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-
-
-           // game.batch.draw(TextureStrings.ICON_PAUSE, );
 
             game.batch.end();
 
@@ -349,6 +354,15 @@ public class PlayScreen extends AbstractScreen {
         isPaused = false;
     }
 
+    public void startAreYouSure(){
+        areYouSureWorld = new AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_EXIT_GAME);
+    }
+
+    public void escapeAreYouSure(){
+        areYouSureWorld = null;
+    }
+
+
     @Override
     public void resume() {
 
@@ -370,15 +384,23 @@ public class PlayScreen extends AbstractScreen {
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
+
+            if (areYouSureWorld != null) {
+                Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
+                areYouSureWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                return true;
+            }
+
             if (adventureWorld.isGameOver() && deathScreenWorld != null) {
                 Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
                 deathScreenWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
                 return true;
             }
 
-            if(isPaused) {
+            if(isPaused && areYouSureWorld == null) {
                 Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
                 pauseWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                return true;
             }
 
             return true;
