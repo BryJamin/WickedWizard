@@ -99,27 +99,12 @@ public class PlayScreen extends AbstractScreen {
         switch (playScreenConfig.spawn){
             case TUTORIAL:
             default:
-                Array<Arena> placedArenas = new Array<Arena>();
 
                 TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, new LightGraySkin());
 
-                Arena startingArena = tutorialFactory.groundMovementTutorial(new MapCoords(0,0));
-                placedArenas.add(startingArena);
-                placedArenas.add(tutorialFactory.jumpTutorial(new MapCoords(1, 0)));
-                placedArenas.add(tutorialFactory.platformTutorial(new MapCoords(4,0)));
-                placedArenas.add(tutorialFactory.grappleTutorial(new MapCoords(5,0)));
-                placedArenas.add(tutorialFactory.enemyTurtorial(new MapCoords(5,3)));
-                placedArenas.add(tutorialFactory.endTutorial(new MapCoords(6,3)));
-                placedArenas.add(new ArenaShellFactory(game.assetManager, new LightGraySkin()).createOmniArenaHiddenGrapple(new MapCoords(7,3)));
-
-                ArenaMap arenaMap = new ArenaMap(startingArena, placedArenas);
-
-
                 jg = new JigsawGeneratorConfig(game.assetManager, random)
-                        .noBattleRooms(5)
-                        .startingMap(arenaMap)
+                        .startingMap(tutorialFactory.tutorialMap())
                         .build();
-                jg.generate(jg.getStartingMap());
                 jg.cleanArenas();
                 break;
             case BOSS:

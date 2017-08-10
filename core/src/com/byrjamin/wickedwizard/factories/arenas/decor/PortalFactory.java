@@ -23,6 +23,7 @@ import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
@@ -65,6 +66,33 @@ public class PortalFactory extends AbstractFactory {
         });
 
         bag.add(btc);
+
+        return bag;
+
+    }
+
+
+    public ComponentBag endGamePortal(float x, float y){
+
+        ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(EndGameSystem.class).backToMenu();
+
+                    }
+                });
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        });
+
 
         return bag;
 

@@ -46,7 +46,7 @@ public class PlayerPistol implements Weapon{
         gibletBuilder = new Giblets.GibletBuilder(assetManager);
         this.playerStats = playerStats;
     }
-    
+
 
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {
