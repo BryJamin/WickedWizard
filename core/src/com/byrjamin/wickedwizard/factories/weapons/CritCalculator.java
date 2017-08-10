@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.factories.weapons;
 
+import com.badlogic.gdx.math.MathUtils;
+
 import java.util.Random;
 
 /**
@@ -8,23 +10,21 @@ import java.util.Random;
 
 public class CritCalculator {
 
-    private Random random;
 
     private static final float accuracyMultiplier = 1;
     private static final float luckMultiplier = 0.25f;
 
-    public CritCalculator(Random random){
-        this.random = random;
-    }
-
-    public boolean isCrit(float critChance, float accuracy, float luck){
-        //System.out.println(getCritChance(critChance, accuracy, luck));
-        return getCritChance(critChance, accuracy, luck) > random.nextInt(100);
+    public static boolean isCrit(float critChance, float accuracy, float luck){
+        return getCritChance(critChance, accuracy, luck) > MathUtils.random.nextInt(100);
     }
 
     public static float getCritChance(float critChance, float accuracy, float luck){
         return critChance + (accuracy * accuracyMultiplier) + (luck * luckMultiplier);
     }
 
+
+    public static float calculateFireRate(float weaponBaseFireRate, float fireRate){
+        return weaponBaseFireRate / (1 + (fireRate / 10));
+    }
 
 }

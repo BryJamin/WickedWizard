@@ -30,7 +30,8 @@ public class AllArenaStore extends AbstractFactory {
         super(assetManager);
         allLevels.add(new Level1Rooms(assetManager, Level.ONE.getArenaSkin(), random));
         allLevels.add(new Level2Rooms(assetManager, random));
-        allLevels.add(new Level3Rooms(assetManager, Level.FOUR.getArenaSkin(), random));
+        allLevels.add(new Level3Rooms(assetManager, Level.THREE.getArenaSkin(), random));
+        allLevels.add(new Level4Rooms(assetManager, Level.FOUR.getArenaSkin(), random));
         allLevels.add(new Level5Rooms(assetManager, Level.FIVE.getArenaSkin(), random));
         this.blank = new ArenaCreate() {
             @Override

@@ -98,7 +98,7 @@ public class PlayerFactory extends AbstractFactory {
         StatComponent statComponent = new StatComponent();
 
         bag.add(statComponent);
-        WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager), 0.3f);
+        WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager, statComponent), 0.3f);
         bag.add(wc);
         bag.add(new HealthComponent(6));
         bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -17,6 +18,7 @@ import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -25,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -38,7 +41,12 @@ public class CowlFactory extends EnemyFactory{
     public float height = Measure.units(7.5f);
 
     private final static float radius = Measure.units(30f);
-    private final static float speedInDegrees = 1f;
+    private final static float speedInDegrees = 2f;
+
+    private final static float fireRate = 1.25f;
+    private final static float weaponChargeTime = 0.75f;
+
+    private final static float shotSpeed = Measure.units(40f);
 
     public float cowlHealth = 10f;
 
@@ -47,18 +55,16 @@ public class CowlFactory extends EnemyFactory{
     }
 
 
-    public ComponentBag cowl(float x, float y, final float startingAngleInDegrees, final boolean startsLeft){
+    public ComponentBag cowl(float x, float y, final Vector3 orbitCenter, final float radius, final float startingAngleInDegrees, final boolean startsLeft){
 
         x = x - width / 2;
-        y = y - width / 2;
+        y = y - height / 2;
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, cowlHealth);
+        BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
 
-        FadeComponent fc = new FadeComponent(true, 1.5f, true);
-        fc.minAlpha = 0.5f;
-        fc.maxAlpha = 1f;
-
-        bag.add(fc);
+/*        FadeComponent fc = new FadeComponent(false, 0.5f, true);
+        bag.add(fc);*/
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.COWL),
@@ -72,25 +78,10 @@ public class CowlFactory extends EnemyFactory{
 
         bag.add(new AnimationComponent(animMap));
 
-
-
-        WeaponComponent wc = new WeaponComponent(
-                new MultiPistol.PistolBuilder(assetManager)
-                        .color(new Color(ColorResource.GHOST_BULLET_COLOR))
-                        .fireRate(0.5f)
-                        .shotScale(3)
-                        //.bulletOffsets(Measure.units(2.5f), -Measure.units(2.5f))
-                        .shotSpeed(Measure.units(60f))
-                        .angles(0)
-                        .intangible(true)
-                        .build());
-        bag.add(wc);
-
-
         bag.add(new ProximityTriggerAIComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                e.edit().add(new FiringAIComponent(270));
+                e.edit().add(new FiringAIComponent());
                 //e.getComponent(WeaponComponent.class).addChargeTime(1f);
             }
 
@@ -105,11 +96,37 @@ public class CowlFactory extends EnemyFactory{
             @Override
             public void performAction(World world, Entity e) {
 
-                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
-                e.edit().add(new OrbitComponent(pc.position, radius, startsLeft ? speedInDegrees : -speedInDegrees, startingAngleInDegrees));
+                e.edit().add(new EnemyComponent());
+
+                e.edit().remove(FadeComponent.class);
+
+                e.edit().add(new OrbitComponent(orbitCenter, radius, startsLeft ? speedInDegrees : -speedInDegrees, startingAngleInDegrees));
+
+                FadeComponent fc = new FadeComponent(true, 1.5f, true);
+                fc.minAlpha = 0f;
+                fc.maxAlpha = 1f;
+                e.edit().add(fc);
+
+
+                WeaponComponent wc = new WeaponComponent(
+                        new MultiPistol.PistolBuilder(assetManager)
+                                .angles(0, 30, 60, 90, 120,150,180,210,240,270,300,330)
+                                //.angles(0, 30, -30, 60, -60)
+                                .color(new Color(ColorResource.GHOST_BULLET_COLOR))
+                                .fireRate(fireRate)
+                                .expireRange(Measure.units(60f))
+                                .shotScale(3)
+                                //.gravity(true)
+                                //.bulletOffsets(Measure.units(2.5f), -Measure.units(2.5f))
+                                .shotSpeed(shotSpeed)
+                                .intangible(true)
+                                .build(), weaponChargeTime);
+                e.edit().add(wc);
+
+
 
             }
-        }, 0f));
+        }, 0.25f));
 
 
         return bag;

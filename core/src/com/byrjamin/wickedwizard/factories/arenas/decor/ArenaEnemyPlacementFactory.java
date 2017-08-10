@@ -438,16 +438,6 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
 
-    public ComponentBag spawnCowl(float x, float y){
-        Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
-        s.add(new SpawnerFactory.Spawner() {
-            public Bag<Component> spawnBag(float x, float y) {
-                return cowlFactory.cowl(x,y, 0, random.nextBoolean());
-            }
-        });
-        return spawnerFactory.spawnerBag(x, y, s);
-    }
-
     public ComponentBag spawnLaserus(float x, float y, final boolean startsRight, final boolean startsUp){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {

@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.factories.arenas.levels;
 import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
@@ -227,8 +228,14 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 boolean startsLeft = random.nextBoolean();
 
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() + Measure.units(10f), Measure.units(40f), 0, startsLeft));
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() + Measure.units(10f), Measure.units(40f), 180, startsLeft));
+/*                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(Measure.units(20f), Measure.units(40f),
+                        new Vector3(arena.getWidth() / 2, Measure.units(40f), 0),
+                        Measure.units(5f),
+                        0, startsLeft));*/
+                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f),
+                        new Vector3(arena.getWidth() / 2, Measure.units(45f), 0),
+                        Measure.units(5f),
+                        180, startsLeft));
                 return arena;
             }
         };
@@ -239,11 +246,18 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
                 arena.roomType = Arena.RoomType.TRAP;
                 boolean startsLeft = random.nextBoolean();
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() + Measure.units(10f), Measure.units(40f), 0, startsLeft));
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() + Measure.units(10f), Measure.units(40f), 180, startsLeft));
+
+                boolean isOnLeft = random.nextBoolean();
+
+                arena.addWave(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f),
+                        new Vector3(isOnLeft ? Measure.units(10f) : arena.getWidth() - Measure.units(10f),  arena.getHeight() / 2, 0),
+                        Measure.units(10f),
+                        isOnLeft ? 180 : 0, startsLeft));
+
+
                 return arena;
             }
         };
@@ -694,8 +708,10 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 arena.roomType = Arena.RoomType.TRAP;
 
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(0 - Measure.units(50f),0,90, bool));
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(0 - Measure.units(50f),0,270, !bool));
+                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f),
+                        new Vector3(arena.getWidth() / 2, Measure.units(45f), 0),
+                        Measure.units(5f),
+                        180, bool));
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(10f), Measure.units(30f), Measure.units(10f)));
 

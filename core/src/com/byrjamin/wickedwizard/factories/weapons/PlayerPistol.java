@@ -31,37 +31,27 @@ public class PlayerPistol implements Weapon{
 
     private static final float defaultFireRate = 0.3f;
 
-    private float baseFireRate = 0.3f;
     private BulletFactory bulletFactory;
     private Giblets.GibletBuilder gibletBuilder;
-    private CritCalculator critCalculator;
 
     private static final float shotSpeedMultiplier = 2.5f;
 
     private static final float range = Measure.units(50f);
 
+    private StatComponent playerStats;
 
-    public PlayerPistol(AssetManager assetManager) {
+
+    public PlayerPistol(AssetManager assetManager, StatComponent playerStats) {
         bulletFactory = new BulletFactory(assetManager);
         gibletBuilder = new Giblets.GibletBuilder(assetManager);
-        critCalculator = new CritCalculator(new Random());
+        this.playerStats = playerStats;
     }
-
-
-    //public void applyWeaponConfig()
+    
 
     @Override
     public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
-
-
-        if(e.getComponent(StatComponent.class) == null) return;
-
-        StatComponent sc =  e.getComponent(StatComponent.class);
-
-        boolean isCrit = critCalculator.isCrit(sc.crit, sc.accuracy, sc.luck);
-
-        baseFireRate = defaultFireRate / (1 + (sc.fireRate / 10));
+        boolean isCrit = CritCalculator.isCrit(playerStats.crit, playerStats.accuracy, playerStats.luck);
 
         Entity bullet = world.createEntity();
         for(Component c : bulletFactory.basicBulletBag(x,y,2, isCrit ? new Color(0,0,0,1) : new Color(1,1,1,1))){
@@ -69,11 +59,11 @@ public class PlayerPistol implements Weapon{
         }
         bullet.edit().add(new FriendlyComponent());
         bullet.edit().add(new VelocityComponent(
-                (float) (Measure.units(100 + (sc.shotSpeed * shotSpeedMultiplier)) * Math.cos(angleInRadians)),
-                (float) (Measure.units(100 + (sc.shotSpeed * shotSpeedMultiplier)) * Math.sin(angleInRadians))));
+                (float) (Measure.units(100 + (playerStats.shotSpeed * shotSpeedMultiplier)) * Math.cos(angleInRadians)),
+                (float) (Measure.units(100 + (playerStats.shotSpeed * shotSpeedMultiplier)) * Math.sin(angleInRadians))));
 
         bullet.edit().add(new ExpiryRangeComponent(new Vector3(x,y,0),
-                range + (sc.range * Measure.units(5f))));
+                range + (playerStats.range * Measure.units(5f))));
 
         if(isCrit) {
             bullet.edit().add(new OnDeathActionComponent(gibletBuilder
@@ -110,7 +100,7 @@ public class PlayerPistol implements Weapon{
 
     @Override
     public float getBaseFireRate() {
-        return baseFireRate;
+        return CritCalculator.calculateFireRate(defaultFireRate, playerStats.fireRate);
     }
 
     @Override
