@@ -97,6 +97,17 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
                 Arena a = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
                 a.addEntity(arenaEnemyPlacementFactory.spawnBlob(a.getWidth() / 4, a.getHeight() / 2));
                 a.roomType = Arena.RoomType.TRAP;
+
+/*                a.addEntity(chestFactory.chestBag(Measure.units(15f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(25f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(35f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(55f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(65f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(75f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(85f), Measure.units(10f)));
+                a.addEntity(chestFactory.chestBag(Measure.units(95f), Measure.units(10f)));*/
+
                 return a;
             }
 

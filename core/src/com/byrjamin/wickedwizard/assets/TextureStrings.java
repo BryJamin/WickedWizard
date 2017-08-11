@@ -170,8 +170,8 @@ public class TextureStrings {
 
 
     //MR BOOMY
-    public static final String ADOJ = "enemy/adoj";
-    public static final String ADOJ_FIRING = "enemy/adoj_firing";
+    public static final String ADOJ = "enemy/boss/adoj";
+    public static final String ADOJ_FIRING = "enemy/boss/adoj_firing";
 
 
     //WRAITH COWL

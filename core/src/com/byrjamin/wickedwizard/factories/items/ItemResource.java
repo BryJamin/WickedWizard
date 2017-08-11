@@ -338,6 +338,12 @@ public class ItemResource {
                 .description("Health+")
                 .build();
 
+        public static ItemValues fullHealthUp = new ItemValues.ItemValueBuilder().region("item/heart", 0)
+                .name("Health Up")
+                .description("Health++")
+                .build();
+
+
 
         public static ItemValues moneyUp = new ItemValues.ItemValueBuilder().region("gold")
                 .name("Money Up")

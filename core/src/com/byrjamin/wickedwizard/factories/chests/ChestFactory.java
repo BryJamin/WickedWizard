@@ -73,7 +73,7 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
         bag.add(new VelocityComponent());
-        bag.add(new LootComponent(5, 2));
+        bag.add(new LootComponent(LootComponent.TYPE.CHEST, 7, 2));
         bag.add(new ChestComponent());
         bag.add(new GravityComponent());
         bag.add(new HealthComponent(3));
