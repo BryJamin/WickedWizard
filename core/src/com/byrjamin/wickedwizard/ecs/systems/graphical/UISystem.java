@@ -28,6 +28,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
@@ -46,6 +47,8 @@ public class UISystem extends EntitySystem {
     private TextureAtlas atlas;
 
     private ArenaGUI arenaGUI;
+
+    private Array<TextureRegion> healthRegions = new Array<TextureRegion>();
 
     private StatComponent playerStats;
     private CurrencyComponent playerCurrency;
@@ -144,7 +147,7 @@ public class UISystem extends EntitySystem {
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
         //BORDER
 
-        Array<TextureRegion> healthRegions = new Array<TextureRegion>();
+        healthRegions.clear();
 
         for(int i = 1; i <= playerStats.health; i++){
             if(i <= playerStats.health && i % 2 == 0) {
@@ -163,32 +166,19 @@ public class UISystem extends EntitySystem {
             }
         }
 
+        for(int i = 0; i < playerStats.armor; i++) {
+            healthRegions.add(atlas.findRegion(ItemResource.PickUp.armorUp.region.getLeft()));
+        }
+
         float screenoffset = Measure.units(10f);
-
-        int count = 0;
-
-        float otherUIPosition = 0;
 
         for(int i = 0; i < healthRegions.size; i++) {
             batch.draw(healthRegions.get(i),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
-                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-
-            count++;
+                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (105 * i),
+                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f) + CenterMath.offsetY(Measure.units(5), Measure.units(4f)),
+                    MainGame.GAME_UNITS * 4, MainGame.GAME_UNITS * 4);
         }
 
-        int otherCount = count;
-
-        for(int i = count; i < playerStats.armor + count; i++) {
-            batch.draw(atlas.findRegion(ItemResource.PickUp.armorUp.region.getLeft()),
-                    gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
-                    gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
-                    MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);
-            otherCount++;
-        }
-
-        otherUIPosition = otherCount * 110;
 
         PickUp p = new MoneyPlus1();
 
