@@ -298,6 +298,7 @@ public class PlayScreen extends AbstractScreen {
         adventureWorld.process(delta);
 
 
+
         if(adventureWorld.isGameOver() && deathScreenWorld == null) deathScreenWorld = new DeathScreenWorld(game, gameport);
         if(isPaused) pauseWorld.process(delta);
 
@@ -315,6 +316,10 @@ public class PlayScreen extends AbstractScreen {
 
 
         }
+
+        gamecam.update();
+
+
 
     }
 

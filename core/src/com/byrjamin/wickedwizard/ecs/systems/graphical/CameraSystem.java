@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -90,25 +91,6 @@ public class CameraSystem extends EntitySystem {
         updateGamecam();
     }
 
-
-    public void applyCameraShake(){
-
-        this.get
-
-        for(Entity e : this.getEntities()) {
-
-        }
-
-    }
-
-
-
-    public void fixedFollow(){
-
-
-
-
-    }
 
 
     /**
@@ -251,9 +233,6 @@ public class CameraSystem extends EntitySystem {
         return gamecam;
     }
 
-    public void setPlayerPosition(PositionComponent playerPosition) {
-        this.playerPosition = playerPosition;
-    }
 
     public float getMax_width() {
         return max_width;

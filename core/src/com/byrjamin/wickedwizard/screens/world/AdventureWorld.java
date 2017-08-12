@@ -57,6 +57,7 @@ import com.byrjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BlinkOnHitSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraShakeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
@@ -219,6 +220,7 @@ public class AdventureWorld {
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
                         new CameraSystem(gameport),
+                        new CameraShakeSystem(gameport),
                         new FollowPositionSystem(),
                         new FadeSystem(), //Applies any fade before render
                         new RenderingSystem(batch, assetManager, gameport),

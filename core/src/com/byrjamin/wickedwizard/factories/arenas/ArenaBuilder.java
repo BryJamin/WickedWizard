@@ -134,6 +134,28 @@ public class ArenaBuilder {
             }
 
 
+            if(isLeftMostWall(arena, posX)){
+                arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
+            }
+
+            if(isRightMostWall(arena, posX)){
+
+                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
+
+                //arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
+            }
+
+
+            if(isCeiling(arena, posY)){
+
+                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT + posY, SECTION_WIDTH, WALLWIDTH * 4, arenaSkin));
+
+
+              //  arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
+
+                //arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
+            }
+
 
             //float
 
@@ -220,9 +242,48 @@ public class ArenaBuilder {
     }
 
 
+    /**
+     * Note to future. All arena currently start a (0,0) however, it could be useful to have an arena here if
+     * arenas ever do not start a (0,0)
+     * @param arena
+     * @param posX
+     * @return
+     */
+    private boolean isLeftMostWall(Arena arena, float posX){
+        return posX == 0;
+    }
+
+
+    private boolean isRightMostWall(Arena arena, float posX){
+        return posX + SECTION_WIDTH == arena.getWidth();
+    }
+
+
+    private boolean isCeiling(Arena arena, float posY){
+        return posY + SECTION_HEIGHT == arena.getHeight();
+    }
+
+    private boolean isFloor(Arena arena, float posY){
+        return posY == 0;
+    }
+
+
+
+
     public void buildFloor(Arena arena, ArenaSkin arenaSkin, Section s, float posX, float posY, int coordX, int coordY){
         if(s.floor == wall.FULL){
-            arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, SECTION_WIDTH, WALLWIDTH * 2, arenaSkin));
+
+            if(isFloor(arena, posY)) {
+
+
+                arena.addEntity(decorFactory.wallBag(0 + posX, 0 + posY - WALLWIDTH * 2, SECTION_WIDTH, WALLWIDTH * 4, arenaSkin));
+
+            } else {
+
+                arena.addEntity(decorFactory.wallBag(0 + posX, 0 + posY, SECTION_WIDTH, WALLWIDTH * 2, arenaSkin));
+
+            }
+
         } else if(s.floor == wall.DOOR || s.floor == wall.MANDATORYDOOR) {
 
             arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));

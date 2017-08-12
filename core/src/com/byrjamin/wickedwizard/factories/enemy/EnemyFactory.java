@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -63,6 +64,9 @@ public class EnemyFactory extends AbstractFactory {
                         .numberOfGibletPairs(5)
                         .size(Measure.units(1f))
                         .build().performAction(world, e);
+
+
+
 /*
 
                 gibletFactory.giblets(5, 0.4f,
@@ -105,6 +109,7 @@ public class EnemyFactory extends AbstractFactory {
         deathClone.edit().add(e.getComponent(TextureRegionComponent.class));
         deathClone.edit().add(e.getComponent(CollisionBoundComponent.class));
         deathClone.edit().add(new ExpireComponent(1.45f));
+        deathClone.edit().add(new CameraShakeComponent(0.75f));
         deathClone.edit().add(new EnemyComponent());
 
         deathClone.edit().add(new ActionAfterTimeComponent(new Action() {

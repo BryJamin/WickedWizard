@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ExplosionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -254,13 +255,14 @@ public class BombFactory extends  AbstractFactory{
     public ComponentBag bombExplosion(float x, float y, float width, float height) {
 
         x = x - width / 2;
-        y = y - width / 2;
+        y = y - height / 2;
 
         ComponentBag bag = new ComponentBag();
         bag.add(new ExplosionComponent(1));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
         bag.add(new PositionComponent(x, y));
-        bag.add(new ExpireComponent(2f));
+        bag.add(new CameraShakeComponent(0.5f));
+        bag.add(new ExpireComponent(0.15f));
         bag.add(new IntangibleComponent());
 
         return bag;
