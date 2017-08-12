@@ -116,9 +116,9 @@ public class TextureStrings {
 
 
     //SILVERHEAD
-    public static final String SILVERHEAD_ST = "silverhead_standing";
-    public static final String SILVERHEAD_HIDING = "silverhead_hiding";
-    public static final String SILVERHEAD_CHARGING = "silverhead_charging";
+    public static final String SILVERHEAD_ST = "enemy/silverhead_standing";
+    public static final String SILVERHEAD_HIDING = "enemy/silverhead_hiding";
+    public static final String SILVERHEAD_CHARGING = "enemy/silverhead_charging";
 
     //BOUNCER
     public static final String BOUNCER_DEFAULT = "enemy/bouncer";
@@ -162,7 +162,7 @@ public class TextureStrings {
     //BOSSES
 
     //BIGGABLOBBA
-    public static final String BIGGABLOBBA_STANDING = "biggablobba";
+    public static final String BIGGABLOBBA_STANDING = "enemy/boss/biggablobba";
 
     //WANDA
     public static final String WANDA_STANDING = "enemy/wanda_standing";

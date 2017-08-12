@@ -73,9 +73,9 @@ public class SilverHeadFactory extends EnemyFactory {
         //bag.add(new MoveToPlayerComponent());
         bag.add(new AnimationStateComponent(STANDING));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(STANDING, new Animation<TextureRegion>(0.15f, atlas.findRegions(TextureStrings.SILVERHEAD_ST), Animation.PlayMode.LOOP));
-        animMap.put(CLOSING, new Animation<TextureRegion>(0.1f, atlas.findRegions(TextureStrings.SILVERHEAD_HIDING)));
-        animMap.put(OPENING, new Animation<TextureRegion>(0.1f,  atlas.findRegions(TextureStrings.SILVERHEAD_HIDING), Animation.PlayMode.REVERSED));
+        animMap.put(STANDING, new Animation<TextureRegion>(0.125f, atlas.findRegions(TextureStrings.SILVERHEAD_ST), Animation.PlayMode.LOOP));
+        animMap.put(CLOSING, new Animation<TextureRegion>(0.05f, atlas.findRegions(TextureStrings.SILVERHEAD_HIDING)));
+        animMap.put(OPENING, new Animation<TextureRegion>(0.05f,  atlas.findRegions(TextureStrings.SILVERHEAD_HIDING), Animation.PlayMode.REVERSED));
         animMap.put(CHARING, new Animation<TextureRegion>(0.1f,  atlas.findRegions(TextureStrings.SILVERHEAD_CHARGING)));
         bag.add(new AnimationComponent(animMap));
 
