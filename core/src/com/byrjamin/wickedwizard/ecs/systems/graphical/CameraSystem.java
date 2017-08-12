@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.ecs.systems.graphical;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
+import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,7 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -35,8 +37,6 @@ public class CameraSystem extends EntitySystem {
 
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WallComponent> wm;
-
-    private PositionComponent playerPosition;
 
     private Camera gamecam;
     private Viewport gamePort;
@@ -78,7 +78,7 @@ public class CameraSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public CameraSystem(Viewport gamePort) {
-        super(Aspect.all(PlayerComponent.class));
+        super(Aspect.all(CameraShakeComponent.class));
         this.gamecam = gamePort.getCamera();
         this.gamePort = gamePort;
         this.cameraVelocity = new Vector2();
@@ -88,6 +88,17 @@ public class CameraSystem extends EntitySystem {
     @Override
     protected void processSystem() {
         updateGamecam();
+    }
+
+
+    public void applyCameraShake(){
+
+        this.get
+
+        for(Entity e : this.getEntities()) {
+
+        }
+
     }
 
 
@@ -224,6 +235,10 @@ public class CameraSystem extends EntitySystem {
         world.getSystem(PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2  +  MainGame.GAME_BORDER,
                 gamecam.position.y - gamePort.getWorldHeight() / 2 +  MainGame.GAME_BORDER);
     }
+
+
+
+
 
 
     public void setHorizontal(OrthographicCamera gamecam) {

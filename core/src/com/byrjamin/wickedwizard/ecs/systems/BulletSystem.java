@@ -9,7 +9,7 @@ import com.artemis.utils.IntBag;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnHitActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
-import com.byrjamin.wickedwizard.ecs.components.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
