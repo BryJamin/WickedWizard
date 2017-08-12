@@ -44,7 +44,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new ActionAfterTimeComponent(laserOrbitalTask, 0));
         return bag;
     }
@@ -58,7 +58,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new InCombatActionComponent(laserOrbitalTask));
         return bag;
     }
@@ -72,7 +72,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new ActionAfterTimeComponent(laserOrbitalTask, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
         return bag;
     }
@@ -90,7 +90,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion("block"), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new InCombatActionComponent(new Task() {
             @Override
             public void performAction(World world, Entity e) {

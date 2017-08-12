@@ -173,7 +173,7 @@ public class AlurmFactory extends EnemyFactory {
                     .expiryTime(0.2f)
                     .build()));
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);

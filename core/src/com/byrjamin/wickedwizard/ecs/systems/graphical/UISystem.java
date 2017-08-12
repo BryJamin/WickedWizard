@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -147,9 +148,9 @@ public class UISystem extends EntitySystem {
 
         for(int i = 1; i <= playerStats.health; i++){
             if(i <= playerStats.health && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion("item/heart", 0));
+                healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.region.getLeft(), 0));
             } else if(playerStats.health % 2 != 0 && i == playerStats.health){
-                healthRegions.add(atlas.findRegion("item/heart", 1));
+                healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.region.getLeft(), 1));
             }
         }
 
@@ -158,7 +159,7 @@ public class UISystem extends EntitySystem {
 
         for(int i = 1; i <= emptyHealth; i++) {
             if(i <= emptyHealth && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion("item/heart", 2));
+                healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.region.getLeft(), 2));
             }
         }
 
@@ -180,7 +181,7 @@ public class UISystem extends EntitySystem {
         int otherCount = count;
 
         for(int i = count; i < playerStats.armor + count; i++) {
-            batch.draw(atlas.findRegion("item/armor"),
+            batch.draw(atlas.findRegion(ItemResource.PickUp.armorUp.region.getLeft()),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (110 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f),
                     MainGame.GAME_UNITS * 5, MainGame.GAME_UNITS * 5);

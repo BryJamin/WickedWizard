@@ -79,7 +79,7 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new HealthComponent(3));
         bag.add(new BlinkOnHitComponent());
 
-        bag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
+       // bag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
 
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

@@ -18,7 +18,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.BulletFactory;
-import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -44,13 +43,8 @@ public class KugelDuscheFactory extends EnemyFactory {
     private final float changeAngleTime = 0.15f;
     private final static float changeInDegrees = 11;
 
-    private DeathFactory df;
-    private BulletFactory bf;
-
     public KugelDuscheFactory(AssetManager assetManager) {
         super(assetManager);
-        this.df = new DeathFactory(assetManager);
-        this.bf = new BulletFactory(assetManager);
     }
 
 

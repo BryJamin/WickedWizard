@@ -228,7 +228,7 @@ public class KnightFactory extends EnemyFactory {
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), 0, 0,  Measure.units(3), Measure.units(3), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0,  Measure.units(3), Measure.units(3), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);

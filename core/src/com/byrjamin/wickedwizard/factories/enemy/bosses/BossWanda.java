@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -33,8 +35,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.factories.BulletFactory;
-import com.byrjamin.wickedwizard.factories.DeathFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
@@ -52,9 +52,6 @@ import java.util.Random;
 
 public class BossWanda extends EnemyFactory {
 
-    private DeathFactory df;
-    private BulletFactory bf;
-
     private static final float width = Measure.units(7.5f);
     private static final float height = Measure.units(7.5f);
 
@@ -66,17 +63,19 @@ public class BossWanda extends EnemyFactory {
 
 
     private static final float shieldBlastFireRate = 0.1f;
+    private static final float shieldBlastWarningTime = 0.75f;
 
     //Phases
+    private static final float fadeDashFadeTime = 0.15f;
     private static final float fadeDashPhaseTime = 0.5f;
+
+    private static final float firingPhaseTime = 2.5f;
 
     private Giblets.GibletBuilder gibletBuilder;
 
 
     public BossWanda(AssetManager assetManager) {
         super(assetManager);
-        this.df = new DeathFactory(assetManager);
-        this.bf = new BulletFactory(assetManager);
 
         this.gibletBuilder = new Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(3)
@@ -109,7 +108,7 @@ public class BossWanda extends EnemyFactory {
                 textureOffsetY,
                 textureWidth,
                 textureHeight,
-                TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+                TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
 
         bag.add(new AnimationStateComponent(0));
@@ -124,18 +123,21 @@ public class BossWanda extends EnemyFactory {
 
 
         PhaseComponent pc = new PhaseComponent();
-        Phase1AOE p1 = new Phase1AOE();
         PhaseFadeDash phaseFadeDash = new PhaseFadeDash();
-        Phase3 p3 = new Phase3(Direction.LEFT);
+        Phase3 p3 = new Phase3(Direction.LEFT, Direction.RIGHT);
+
+
+
+        //Alternate between jump and spinny
 
         pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
-        pc.addPhase(2.5f, p3);
+        pc.addPhase(firingPhaseTime, p3);
         pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
-        pc.addPhase(2.5f, p3);
+        pc.addPhase(firingPhaseTime, p3);
         pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
-        pc.addPhase(2.5f, p3);
-        pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
-        pc.addPhase(2.5f, p1);
+        pc.addPhase(firingPhaseTime, new Phase3AOEORCenterFire());
+        //pc.addPhase(fadeDashPhaseTime, phaseFadeDash);
+        //pc.addPhase(2.5f, new AOEShieldBlastTask());
 
         bag.add(pc);
 
@@ -146,11 +148,48 @@ public class BossWanda extends EnemyFactory {
 
 
 
-    private class Phase1AOE implements Task {
+    private class Phase3AOEORCenterFire implements Task {
+
+        private Array<Task> tasksShuffle = new Array<Task>();
+        private Array<Task> tasks = new Array<Task>();
+
+        private Task currentTask;
+
+
+        private Phase3AOEORCenterFire(){
+            Task aoe = new AOEShieldBlastTask();
+            Task aboveFire =  new Phase3(Direction.UP);
+            tasksShuffle.addAll(aoe, aboveFire);
+        }
+
+
         @Override
         public void performAction(World world, Entity e) {
-            e.edit().add(new FadeComponent(true, 0.5f, false));
-            e.edit().add(new WeaponComponent(new ShieldBlast(), 0.5f));
+
+            if(tasks.size == 0) {
+                tasksShuffle.shuffle();
+                tasks.addAll(tasksShuffle);
+            }
+
+            currentTask = tasks.pop();
+            currentTask.performAction(world, e);
+
+
+        }
+
+        @Override
+        public void cleanUpAction(World world, Entity e) {
+            currentTask.cleanUpAction(world, e);
+        }
+    }
+
+
+
+    private class AOEShieldBlastTask implements Task {
+        @Override
+        public void performAction(World world, Entity e) {
+            e.edit().add(new FadeComponent(true, fadeDashFadeTime, false));
+            e.edit().add(new WeaponComponent(new ShieldBlast(), shieldBlastWarningTime));
             Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
             PositionComponent pc = e.getComponent(PositionComponent.class);
 
@@ -167,15 +206,15 @@ public class BossWanda extends EnemyFactory {
                 warning.edit().add(new OrbitComponent(pc.position, Measure.units(10f), -10, 90 * i, width / 2, height / 2));
                 warning.edit().add(new IntangibleComponent());
 
-                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"),
+                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                         Measure.units(2f),
                         Measure.units(2f),
-                        TextureRegionComponent.ENEMY_LAYER_NEAR, new Color(0xff000099));
+                        TextureRegionComponent.ENEMY_LAYER_NEAR, new Color(ColorResource.ENEMY_BULLET_COLOR));
 
                 warning.edit().add(trc);
 
                 warning.edit().add(new FadeComponent(true, 0.5f, false));
-                warning.edit().add(new ExpireComponent(0.5f));
+                warning.edit().add(new ExpireComponent(shieldBlastWarningTime));
 
 
             }
@@ -198,7 +237,7 @@ public class BossWanda extends EnemyFactory {
         @Override
         public void performAction(World world, Entity e) {
             //e.edit().add(new GravityComponent());
-            e.edit().add(new FadeComponent(false, 0.25f, false));
+            e.edit().add(new FadeComponent(false, fadeDashFadeTime, false));
             e.edit().add(new IntangibleComponent());
 
             //TODO make a harmless component or something
@@ -222,13 +261,26 @@ public class BossWanda extends EnemyFactory {
 
         private Direction direction;
 
-        public Phase3(Direction direction){
-            this.direction = direction;
+        private Array<Direction> directionChoices = new Array<Direction>();
+        private Array<Direction> directions = new Array<Direction>();
+
+        public Phase3(Direction... direction){
+            directionChoices.addAll(direction);
         }
 
         @Override
         public void performAction(World world, Entity e) {
-            e.edit().add(new FadeComponent(true, 0.5f, false));
+
+
+            if(directions.size == 0) {
+                directions.addAll(directionChoices);
+                directionChoices.shuffle();
+            }
+
+
+            direction = directions.pop();
+
+            e.edit().add(new FadeComponent(true, fadeDashFadeTime, false));
             Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
             PositionComponent pc = e.getComponent(PositionComponent.class);
 
@@ -240,18 +292,15 @@ public class BossWanda extends EnemyFactory {
                 case UP:
                 default:
                     pc.position.set(a.getWidth() / 2 - width / 2, y, 0);
-                    direction = Direction.LEFT;
-                    angles = new float[]{220,230,240,250,260,270,280,290,300,310,320};
+                    angles = new float[]{200, 210,220,230,240,300,310,320, 330, 340};
                     break;
 
                 case LEFT:
-                    pc.position.set(Measure.units(10f) - width / 2, y, 0);
-                    direction = Direction.RIGHT;
+                    pc.position.set(Measure.units(7.5f), y, 0);
                     angles = new float[]{0, 337.5f, 315,292.5f, 270};
                     break;
                 case RIGHT:
-                    pc.position.set(a.getWidth() - Measure.units(15f) - width / 2, y , 0);
-                    direction = Direction.UP;
+                    pc.position.set(a.getWidth() - Measure.units(7.5f) - width, y , 0);
                     angles = new float[]{180,202.5f, 225,245.5f, 270};
                     break;
             }
@@ -322,7 +371,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(new FadeComponent(true, 0.2f, false));
             e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
@@ -402,7 +451,7 @@ public class BossWanda extends EnemyFactory {
             e.edit().add(new FadeComponent(true, 0.2f, false));
             e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), size, size, TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);

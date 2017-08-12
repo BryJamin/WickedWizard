@@ -4,9 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -18,7 +16,6 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
-import com.byrjamin.wickedwizard.factories.hazards.SpikeBallFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -186,76 +183,6 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(10), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
                 arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(15), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
                 arena.addEntity(decorFactory.fixedWallTurret(arena.getWidth() - Measure.units(20), arena.getHeight() - Measure.units(10),  180, 3.0f, 1.5f));
-
-                return arena;
-            }
-        };
-    }
-
-
-    public ArenaCreate room5GrappleTreasureRoom(){
-        return new ArenaCreate() {
-            @Override
-            public Arena createArena(MapCoords defaultCoords) {
-
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2));
-
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
-                        .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.FULL))
-                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.NONE)).buildArena(arena);
-
-
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(22.5f), Measure.units(40f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(22.5f), Measure.units(40f)));
-
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(22.5f), Measure.units(80f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(22.5f), Measure.units(80f)));
-
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(22.5f), Measure.units(120f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(22.5f), Measure.units(120f)));
-
-     /*           arena.addEntity(decorFactory.grapplePointBag(Measure.units(22.5f), Measure.units(160f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(22.5f), Measure.units(160f)));
-*/
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(165f)));
-                //arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(22.5f), Measure.units(160f)));
-
-                arena.addEntity(new SpikeBallFactory(assetManager).bouncingSpikeBall(arena.getWidth() / 2, Measure.units(25f),
-                        Measure.units(5f), Measure.units(5),
-                        new VelocityComponent(Measure.units(20), 0)));
-
-                arena.addEntity(new SpikeBallFactory(assetManager).bouncingSpikeBall(arena.getWidth() / 2, Measure.units(65f),
-                        Measure.units(5f), Measure.units(5),
-                        new VelocityComponent(-Measure.units(20), 0)));
-
-                arena.addEntity(new SpikeBallFactory(assetManager).bouncingSpikeBall(arena.getWidth() / 2, Measure.units(105f),
-                        Measure.units(5f), Measure.units(5),
-                        new VelocityComponent(Measure.units(20), 0)));
-
-                arena.addEntity(new SpikeBallFactory(assetManager).bouncingSpikeBall(arena.getWidth() / 2, Measure.units(145f),
-                        Measure.units(5f), Measure.units(5),
-                        new VelocityComponent(-Measure.units(20), 0)));
-
-
-                arena.addEntity(new ChestFactory(assetManager).centeredChestBag(arena.getWidth() / 2, Measure.units(30f)));
-
-
-                arena.addEntity(decorFactory.platform(0, SECTION_HEIGHT * 2 + SECTION_HEIGHT / 2, SECTION_WIDTH));
 
                 return arena;
             }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -92,8 +93,8 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions("block_walk"), Animation.PlayMode.LOOP));
-        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions("block_walk")));
+        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
+        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions(TextureStrings.BLOCK_WALK)));
         bag.add(new AnimationComponent(k));
 
 
@@ -106,7 +107,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));
         bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block_walk"),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK_WALK),
                width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         trc.color = new Color(Color.WHITE);
         trc.DEFAULT = new Color(Color.WHITE);
@@ -133,11 +134,11 @@ public class PlayerFactory extends AbstractFactory {
         sc.setDefaultState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions("wings"), Animation.PlayMode.LOOP));
+        aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions(TextureStrings.WINGS), Animation.PlayMode.LOOP));
         AnimationComponent ac = new AnimationComponent(aniMap);
         bag.add(ac);
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("wings"),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WINGS),
                 -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.scaleX = isLeft ? 1 : -1;
         bag.add(trc);
@@ -172,7 +173,7 @@ public class PlayerFactory extends AbstractFactory {
         //bag.add(new IntangibleComponent());
         //bag.add(new BulletComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 width, height, TextureRegionComponent.PLAYER_LAYER_NEAR, new Color(Color.BLACK));
 
         bag.add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)

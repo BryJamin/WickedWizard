@@ -140,7 +140,7 @@ public class DecorFactory extends AbstractFactory {
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
         aniMap.put(sc.getDefaultState(),
-                new Animation<TextureRegion>(1 / 35f, atlas.findRegions("chevron"), Animation.PlayMode.LOOP_PINGPONG));
+                new Animation<TextureRegion>(1 / 35f, atlas.findRegions(TextureStrings.CHEVRON), Animation.PlayMode.LOOP_PINGPONG));
         bag.add(new AnimationComponent(aniMap));
 
         TextureRegionComponent trc = new TextureRegionComponent(aniMap.get(sc.getDefaultState()).getKeyFrame(sc.stateTime), width, height,
@@ -161,7 +161,7 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion("block"), width, height,
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height,
                 PLAYER_LAYER_FAR);
         trc.color = arenaSkin.getWallTint();
         trc.color.a = 0;
@@ -252,7 +252,7 @@ public class DecorFactory extends AbstractFactory {
         //bag.add(new WallComponent(new Rectangle(x,y, width, Measure.units(5f))));
 
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, Measure.units(5f), Measure.units(5),
-                atlas.findRegions("platform"),
+                atlas.findRegions(TextureStrings.PLATFORM),
                 PLAYER_LAYER_FAR);
         trbc.color = arenaSkin.getWallTint();
         trbc.offsetY = -1;

@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -89,9 +90,9 @@ public class ShopFactory extends AbstractFactory {
         bag.add(new VelocityComponent(0, 0));
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0,  new Animation<TextureRegion>(0.1f, atlas.findRegions("shopkeeper"), Animation.PlayMode.LOOP));
+        animMap.put(0,  new Animation<TextureRegion>(0.1f, atlas.findRegions(TextureStrings.SHOPKEEPER), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion("shopkeeper"),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SHOPKEEPER),
                 0, 0, Measure.units(15f), Measure.units(15f),
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
