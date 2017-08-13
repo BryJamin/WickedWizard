@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -33,11 +34,11 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 public class ModonFactory extends EnemyFactory{
 
 
-    private final float width = Measure.units(15);
+    private final float width = Measure.units(20);
     private final float height = Measure.units(20);
 
-    private final float textureWidth = Measure.units(20);
-    private final float textureHeight = Measure.units(20);
+    private final float textureWidth = Measure.units(25);
+    private final float textureHeight = Measure.units(25);
 
     private final float textureOffsetX = -Measure.units(2.5f);
     private final float textureOffsetY = 0;
@@ -69,10 +70,7 @@ public class ModonFactory extends EnemyFactory{
         cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width - Measure.units(1f), Measure.units(8f)), Measure.units(0.5f), 0));
 
         //mid
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width, Measure.units(8f)), 0, Measure.units(8f)));
-
-        //upper
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width - Measure.units(4f), Measure.units(3f)), Measure.units(2f), Measure.units(16f)));
+        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width, height)));
 
         bag.add(cbc);
 
@@ -81,21 +79,25 @@ public class ModonFactory extends EnemyFactory{
 
         bag.add(fc);
 
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.05f / 1f,
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.15f / 1f,
                 atlas.findRegions(TextureStrings.MODON), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.1f / 1f,
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.2f / 1f,
                 atlas.findRegions(TextureStrings.MODON_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOATWIZARD),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
                 textureOffsetX, 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
-        trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
-        trc.DEFAULT = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
-
         bag.add(trc);
+
+        bag.add(new OnCollisionActionComponent(null, null, null, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.DEFAULT);
+            }
+        }));
 
 
         bag.add(new ActionAfterTimeComponent(new Task() {
@@ -109,7 +111,7 @@ public class ModonFactory extends EnemyFactory{
                 e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
                 e.getComponent(VelocityComponent.class).velocity.y = Measure.units(85);
 
-                e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
+                e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.FIRING);
 
 
             }
@@ -167,7 +169,7 @@ public class ModonFactory extends EnemyFactory{
                 atlas.findRegions(TextureStrings.MODON_HEAVY_IN_AIR), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOATWIZARD),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
                 textureOffsetX, 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.color = new Color(174f / 255f, 238f / 255f, 238f / 255f, 1);

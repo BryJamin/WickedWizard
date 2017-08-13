@@ -100,7 +100,7 @@ public class KnightFactory extends EnemyFactory {
                 atlas.findRegions(TextureStrings.KNIGHT_FIRING), Animation.PlayMode.LOOP_RANDOM));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOATWIZARD),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
                 (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);

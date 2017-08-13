@@ -52,6 +52,11 @@ public class GoatWizardFactory extends EnemyFactory {
 
     private static final float fireRate = 3f;
 
+
+    private static final int GOAT_WIZARD_NORMAL_STATE = 0;
+    private static final int GOAT_WIZARD_FIRING_STATE = 2;
+
+
     private final Giblets.GibletBuilder gibletBuilder;
 
     public GoatWizardFactory(AssetManager assetManager) {
@@ -79,17 +84,16 @@ public class GoatWizardFactory extends EnemyFactory {
 
         bag.add(cbc);
 
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(GOAT_WIZARD_NORMAL_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f,
-                atlas.findRegions(TextureStrings.GOATWIZARD), Animation.PlayMode.LOOP_RANDOM));
+        animMap.put(GOAT_WIZARD_NORMAL_STATE, new Animation<TextureRegion>(0.15f / 1f,
+                atlas.findRegions(TextureStrings.GOAT_WIZARD), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 1f,
+                atlas.findRegions(TextureStrings.GOAT_WIZARD_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOATWIZARD),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
                 (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
-
-        trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
-        trc.DEFAULT = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
 
         bag.add(trc);
 
@@ -140,10 +144,10 @@ public class GoatWizardFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.1f / 1f,
-                atlas.findRegions(TextureStrings.GOATWIZARD), Animation.PlayMode.LOOP_RANDOM));
+                atlas.findRegions(TextureStrings.GOAT_WIZARD), Animation.PlayMode.LOOP_RANDOM));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOATWIZARD),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
                 (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);

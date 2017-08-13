@@ -81,8 +81,8 @@ public class TextureStrings {
 
 
     //SENTRY
-    public static final String SENTRY = "sentry";
-    public static final String SENTRY_FIRING = "sentry_firing";
+    public static final String SENTRY = "enemy/sentry";
+    public static final String SENTRY_FIRING = "enemy/sentry_firing";
 
 
     //TRI-SENTRY
@@ -97,7 +97,7 @@ public class TextureStrings {
 
     //MODON
     public static final String MODON = "enemy/modon";
-    public static final String MODON_FIRING = "enemy/modon_firing";
+    public static final String MODON_FIRING = "enemy/modon_jump";
 
     //HEAVY MODON
     public static final String MODON_HEAVY = "enemy/modon_heavy";
@@ -135,8 +135,10 @@ public class TextureStrings {
     public static final String SPAWNER = "spawner";
 
 
-    //GOATWIZARD
-    public static final String GOATWIZARD = "goat_wizard";
+    //GOAT_WIZARD
+    public static final String GOAT_WIZARD = "enemy/goat_wizard";
+
+    public static final String GOAT_WIZARD_FIRING = "enemy/goat_wizard_firing";
 
     public static final String CIRCLE = "circle";
 
@@ -162,7 +164,7 @@ public class TextureStrings {
     //BOSSES
 
     //BIGGABLOBBA
-    public static final String BIGGABLOBBA_STANDING = "enemy/boss/biggablobba";
+    public static final String BIGGABLOBBA_STANDING = "enemy/boss/#biggablobba";
 
     //WANDA
     public static final String WANDA_STANDING = "enemy/wanda_standing";
