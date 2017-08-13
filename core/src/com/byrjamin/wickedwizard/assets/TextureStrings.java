@@ -101,7 +101,7 @@ public class TextureStrings {
 
     //HEAVY MODON
     public static final String MODON_HEAVY = "enemy/modon_heavy";
-    public static final String MODON_HEAVY_FIRING = "enemy/modon_heavy_firing";
+    public static final String MODON_HEAVY_FIRING = "enemy/modon_heavy_jump";
     public static final String MODON_HEAVY_IN_AIR = "enemy/modon_heavy_in_air";
 
 

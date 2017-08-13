@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -23,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -34,17 +37,20 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 public class ModonFactory extends EnemyFactory{
 
 
-    private final float width = Measure.units(20);
-    private final float height = Measure.units(20);
+    private final float width = Measure.units(17.5f);
+    private final float height = Measure.units(17.5f);
 
-    private final float textureWidth = Measure.units(25);
-    private final float textureHeight = Measure.units(25);
+    private final float textureWidth = Measure.units(22.5f);
+    private final float textureHeight = Measure.units(22.5f);
 
-    private final float textureOffsetX = -Measure.units(2.5f);
-    private final float textureOffsetY = 0;
+    private static final float health = 20;
+    private static final float heavyHealth = 30;
 
-    private final float health = 20;
-    private final float heavyHealth = 25;
+    private static final float stompShakeTime = 0.25f;
+    private static final float stompIntensity = 0.5f;
+
+
+    private static final float jumpTimer = 1.5f;
 
     private final int HEAVY_MODON_IN_AIR_STATE = 100;
 
@@ -63,16 +69,7 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new GravityComponent());
         bag.add(new VelocityComponent());
 
-
-        CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x,y,width,height));
-
-        //lower
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width - Measure.units(1f), Measure.units(8f)), Measure.units(0.5f), 0));
-
-        //mid
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width, height)));
-
-        bag.add(cbc);
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 
         FrictionComponent fc = new FrictionComponent(true, false);
         fc.airFriction = false;
@@ -81,26 +78,22 @@ public class ModonFactory extends EnemyFactory{
 
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.15f / 1f,
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.1f / 1f,
                 atlas.findRegions(TextureStrings.MODON), Animation.PlayMode.LOOP));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.2f / 1f,
                 atlas.findRegions(TextureStrings.MODON_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
-                textureOffsetX, 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+                CenterMath.offsetX(width, textureWidth), 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);
 
-        bag.add(new OnCollisionActionComponent(null, null, null, new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.DEFAULT);
-            }
-        }));
+        bag.add(modonOnCollisionAction());
 
 
-        bag.add(new ActionAfterTimeComponent(new Task() {
+
+        bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
@@ -113,14 +106,12 @@ public class ModonFactory extends EnemyFactory{
 
                 e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.FIRING);
 
+                e.edit().add(modonOnCollisionAction());
+
 
             }
 
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }, 1.5f, true));
+        }, jumpTimer, true));
 
 
         return bag;
@@ -140,28 +131,16 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new GravityComponent());
         bag.add(new VelocityComponent());
 
-
-        CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x,y,width,height));
-
-        //lower
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width - Measure.units(1f), Measure.units(8f)), Measure.units(0.5f), 0));
-
-        //mid
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width, Measure.units(8f)), 0, Measure.units(8f)));
-
-        //upper
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x,y,width - Measure.units(6f), Measure.units(3f)), Measure.units(3f), Measure.units(16f)));
-
-        bag.add(cbc);
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 
         FrictionComponent fc = new FrictionComponent(true, false);
         fc.airFriction = false;
 
         bag.add(fc);
 
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(HEAVY_MODON_IN_AIR_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.05f / 1f,
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.05f / 1f,
                 atlas.findRegions(TextureStrings.MODON_HEAVY), Animation.PlayMode.LOOP));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.1f / 1f,
                 atlas.findRegions(TextureStrings.MODON_HEAVY_FIRING)));
@@ -169,16 +148,15 @@ public class ModonFactory extends EnemyFactory{
                 atlas.findRegions(TextureStrings.MODON_HEAVY_IN_AIR), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
-                textureOffsetX, 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
-
-        trc.color = new Color(174f / 255f, 238f / 255f, 238f / 255f, 1);
-        trc.DEFAULT = new Color(174f / 255f, 238f / 255f, 238f / 255f, 1);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.MODON_HEAVY),
+                CenterMath.offsetX(width, textureWidth), 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);
 
+        bag.add(heavyModonOnCollisionAction());
 
-        bag.add(new ActionAfterTimeComponent(new Task() {
+
+        bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
@@ -192,38 +170,67 @@ public class ModonFactory extends EnemyFactory{
                 e.getComponent(AnimationStateComponent.class).setDefaultState(HEAVY_MODON_IN_AIR_STATE);
                 e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
 
-                OnCollisionActionComponent ocac = new OnCollisionActionComponent();
-                ocac.bottom = new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        e.getComponent(AnimationStateComponent.class).setDefaultState(0);
-                        MultiPistol mp = new MultiPistol.PistolBuilder(assetManager)
-                                .angles(70,80,90,100,110)
-                                .shotScale(3)
-                                .shotSpeed(Measure.units(110f))
-                                .gravity(true)
-                                .build();
-                        CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                        mp.fire(world, e, cbc.getCenterX(), cbc.getCenterY() - Measure.units(5f), 0);
-                        e.edit().remove(OnCollisionActionComponent.class);
-
-                    }
-                };
-
-                e.edit().add(ocac);
+                e.edit().add(heavyModonOnCollisionAction());
 
 
             }
 
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }, 1.5f, true));
+        }, jumpTimer, true));
 
 
         return bag;
 
+
+    }
+
+
+
+
+    public OnCollisionActionComponent heavyModonOnCollisionAction(){
+
+        OnCollisionActionComponent ocac = new OnCollisionActionComponent();
+        ocac.bottom = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.DEFAULT);
+                MultiPistol mp = new MultiPistol.PistolBuilder(assetManager)
+                        .angles(70,80,90,100,110)
+                        .shotScale(3)
+                        .shotSpeed(Measure.units(110f))
+                        .gravity(true)
+                        .build();
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                mp.fire(world, e, cbc.getCenterX(), cbc.getCenterY() - Measure.units(5f), 0);
+                e.edit().remove(OnCollisionActionComponent.class);
+
+                Entity shaker = world.createEntity();
+                shaker.edit().add(new ExpireComponent(stompShakeTime));
+                shaker.edit().add(new CameraShakeComponent(stompIntensity));
+
+            }
+        };
+
+
+        return ocac;
+
+    }
+
+
+    public OnCollisionActionComponent modonOnCollisionAction(){
+
+        OnCollisionActionComponent ocac = new OnCollisionActionComponent();
+        ocac.bottom = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().remove(OnCollisionActionComponent.class);
+                Entity shaker = world.createEntity();
+                shaker.edit().add(new ExpireComponent(stompShakeTime));
+                shaker.edit().add(new CameraShakeComponent(stompIntensity));
+            }
+        };
+
+
+        return ocac;
 
     }
 

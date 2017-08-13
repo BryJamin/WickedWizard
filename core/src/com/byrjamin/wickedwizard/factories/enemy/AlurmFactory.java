@@ -45,8 +45,8 @@ public class AlurmFactory extends EnemyFactory {
     private final float width = Measure.units(5);
     private final float height = Measure.units(5);
 
-    private final float hitboxWidth = Measure.units(40);
-    private final float hitboxHeight = Measure.units(40);
+    private final float hitboxWidth = Measure.units(35f);
+    private final float hitboxHeight = Measure.units(35f);
 
     private final float health = 10;
 
@@ -55,6 +55,8 @@ public class AlurmFactory extends EnemyFactory {
 
     private final float textureWidth = Measure.units(20);
     private final float textureHeight = Measure.units(20);
+
+    private final static float fireRate = 0.35f;
 
     private final float textureOffsetX = -Measure.units(1f);
     private final float textureOffsetY = 0;
@@ -135,7 +137,7 @@ public class AlurmFactory extends EnemyFactory {
 
         @Override
         public float getBaseFireRate() {
-            return 0.1f;
+            return fireRate;
         }
 
         @Override
@@ -169,7 +171,7 @@ public class AlurmFactory extends EnemyFactory {
                     .minSpeed(Measure.units(10f))
                     .maxSpeed(Measure.units(20f))
                     .colors(color)
-                    .intangible(false)
+                    //.intangible(false)
                     .expiryTime(0.2f)
                     .build()));
 

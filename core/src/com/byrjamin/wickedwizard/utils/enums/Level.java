@@ -5,6 +5,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.Bourbon;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkPurpleAndBrown;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.InfernalSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 
 /**
@@ -23,8 +24,8 @@ public enum Level {
                     return new LightGraySkin();
                 case TWO: return new FoundarySkin();
                 case THREE: return new DarkPurpleAndBrown();
-                case FOUR: return new Bourbon();
-                case FIVE: return new DarkGraySkin();
+                case FOUR: return new DarkGraySkin();
+                case FIVE: return new InfernalSkin();
             }
         }
 
