@@ -367,14 +367,14 @@ enemy/pylon_spawning
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 0
 enemy/pylon_spawning
   rotate: false
   xy: 265, 331
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 1
 decor/block_door
   rotate: false
   xy: 397, 463
@@ -1385,18 +1385,25 @@ enemy/jig_firing
   index: 1
 enemy/jig_firing
   rotate: false
-  xy: 529, 199
+  xy: 463, 133
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/jig_firing
   rotate: false
-  xy: 595, 265
+  xy: 529, 199
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
+enemy/jig_firing
+  rotate: false
+  xy: 595, 265
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
 enemy/jumping_jack
   rotate: false
   xy: 661, 331
@@ -1620,13 +1627,6 @@ enemy/modon_jump
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
-enemy/modon_jump
-  rotate: false
-  xy: 925, 463
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 3
 enemy/modon_jump
   rotate: false
@@ -1635,6 +1635,13 @@ enemy/modon_jump
   orig: 64, 64
   offset: 0, 0
   index: 2
+enemy/modon_jump
+  rotate: false
+  xy: 925, 463
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
 enemy/modon_heavy
   rotate: false
   xy: 991, 529
@@ -1690,14 +1697,14 @@ enemy/modon_heavy_jump
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
+  index: 3
 enemy/modon_heavy_jump
   rotate: false
   xy: 1123, 661
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
+  index: 2
 enemy/modon_heavy_in_air
   rotate: false
   xy: 1189, 727
@@ -2334,14 +2341,14 @@ enemy/wanda_standing
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
+  index: 0
 enemy/wanda_standing
   rotate: false
   xy: 1717, 727
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 3
 enemy/wanda_firing
   rotate: false
   xy: 1783, 793

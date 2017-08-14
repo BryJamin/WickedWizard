@@ -142,6 +142,8 @@ public class PauseWorld {
         statText.edit().add(tfc);
 
 
+        System.out.println(playerStats.damage);
+
         String[][] stats = new String[][]{
                 {MenuStrings.Stats.DAMAGE, String.format(Locale.getDefault(), "+%.0f", playerStats.damage)},
                 {MenuStrings.Stats.FIRERATE, String.format(Locale.getDefault(), "+%.0f", playerStats.fireRate)},

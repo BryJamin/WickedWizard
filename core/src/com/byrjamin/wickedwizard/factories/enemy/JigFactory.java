@@ -20,8 +20,10 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 11/06/2017.
@@ -29,17 +31,23 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class JigFactory extends EnemyFactory{
 
-    private float width = Measure.units(10f);
+    private float width = Measure.units(15f);
     private float height = Measure.units(10f);
 
-    private float texwidth = Measure.units(10f);
-    private float texheight = Measure.units(10f);
+    private float texwidth = Measure.units(15f);
+    private float texheight = Measure.units(15f);
+
+    private float hitBoxWidth = Measure.units(10f);
+    private float hitBoxHeight = Measure.units(6.5f);
+
+    private float bodyHitBoxWidth = Measure.units(15f);
+    private float bodyHitBoxHeight = Measure.units(2.5f);
 
     private static final float fireRate = 0.75f;
 
     private static final float speed = Measure.units(10f);
 
-    private float health = 15;
+    private static final float health = 15;
 
     public JigFactory(AssetManager assetManager) {
         super(assetManager);
@@ -52,29 +60,32 @@ public class JigFactory extends EnemyFactory{
         y = y - height / 2;
 
         ComponentBag bag = new ComponentBag();
-        this.defaultEnemyBag(bag, x,y,15);
+        this.defaultEnemyBag(bag, x,y,health);
 
 
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height),
+                new HitBox(new Rectangle(x,y,hitBoxWidth,hitBoxHeight),
+                        CenterMath.offsetX(width, hitBoxWidth),
+                        CenterMath.offsetY(height, hitBoxHeight)),
+                new HitBox(new Rectangle(x,y,bodyHitBoxWidth,bodyHitBoxHeight),
+                        CenterMath.offsetX(width, bodyHitBoxWidth),
+                        CenterMath.offsetY(height, bodyHitBoxHeight))
+                ));
+
 
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.JIG_FIRING),
-                (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
-
-        trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
-        trc.DEFAULT = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
+                CenterMath.offsetX(width, texwidth), CenterMath.offsetY(height, texheight), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);
-/*
-        bag.add(new VelocityComponent(Measure.units(10f), 0));
-        bag.add(new BounceComponent());*/
 
-        bag.add(new AnimationStateComponent(0));
+
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.3f / 1f,
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.3f / 1f,
                 atlas.findRegions(TextureStrings.JIG_FIRING), Animation.PlayMode.LOOP));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.1f / 1f,
-                atlas.findRegions(TextureStrings.JIG_FIRING)));
+                atlas.findRegions(TextureStrings.JIG_FIRING), Animation.PlayMode.REVERSED));
         bag.add(new AnimationComponent(animMap));
 
         bag.add(new FiringAIComponent(0,0));

@@ -168,7 +168,7 @@ public class TextureStrings {
     //BOSSES
 
     //BIGGABLOBBA
-    public static final String BIGGABLOBBA_STANDING = "enemy/boss/#biggablobba";
+    public static final String BIGGABLOBBA_STANDING = "enemy/boss/biggablobba";
 
     //WANDA
     public static final String WANDA_STANDING = "enemy/wanda_standing";

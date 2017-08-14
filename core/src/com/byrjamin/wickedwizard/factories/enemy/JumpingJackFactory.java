@@ -69,9 +69,9 @@ public class JumpingJackFactory extends EnemyFactory{
         bag.add(new AnimationStateComponent(JUMPINGJACKANIMATION));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(JUMPINGJACKANIMATION,  new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(TextureStrings.JUMPING_JACK), Animation.PlayMode.LOOP));
-        animMap.put(JUMPINGJACKTIREDANIMATION,  new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.JUMPING_JACK_TIRED), Animation.PlayMode.LOOP));
+        animMap.put(JUMPINGJACKTIREDANIMATION,  new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions(TextureStrings.JUMPING_JACK_TIRED), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.JUMPING_JACK),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.JUMPING_JACK_TIRED),
                 width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 

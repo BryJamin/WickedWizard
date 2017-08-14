@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
@@ -305,6 +306,7 @@ public class JigsawGenerator {
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
+        //Item item = new ItemMomentum();//itemStore.generateItemRoomItem();
         Item item = itemStore.generateItemRoomItem();
 
         Array<Arena> itemRooms = new Array<Arena>();
