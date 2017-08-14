@@ -149,6 +149,10 @@ public class TextureStrings {
     public static final String SWITCH = "enemy/switch";
 
 
+    //HOARDER
+    public static final String HOARDER = "enemy/hoarder";
+
+
     //JUMPING JACK
     public static final String JUMPING_JACK = "enemy/jumping_jack";
     public static final String JUMPING_JACK_TIRED = "enemy/jumping_jack_tired";

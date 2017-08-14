@@ -90,12 +90,10 @@ public class HoarderFactory extends EnemyFactory {
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
-        bag.add(new AnimationStateComponent(0));
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(TextureStrings.ALURM), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.05f / 1f,
-                atlas.findRegions(TextureStrings.ALURM_FIRING), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.15f / 1f,
+                atlas.findRegions(TextureStrings.HOARDER), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ALURM),
