@@ -255,9 +255,9 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
                 a.addEntity(decorFactory.fixedWallTurret(lowertTurretPosX, Measure.units(47.5f),  angle, 3.0f, 0f));
-                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(40f),  angle, 3.0f, 1f));
-                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(30f),  angle, 3.0f, 1f));
-                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(20f),  angle, 3.0f, 1f));
+                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(40f),  angle, 3.0f, 1.0f));
+                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(30f),  angle, 3.0f, 1.0f));
+                a.addEntity(decorFactory.fixedWallTurret(posX, Measure.units(20f),  angle, 3.0f, 1.0f));
                 a.addEntity(decorFactory.fixedWallTurret(lowertTurretPosX, Measure.units(12.5f),  angle, 3.0f, 0f));
 
 

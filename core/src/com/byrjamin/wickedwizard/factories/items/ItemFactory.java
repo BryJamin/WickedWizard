@@ -12,7 +12,9 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.BackPackComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
@@ -336,16 +338,12 @@ public class ItemFactory extends AbstractFactory {
                     Item item = (Item) ac.pickUp;
 
                     if (ac.hasItem) {
-                        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlayerComponent.class));
-                        IntBag entityIds = subscription.getEntities();
 
-                        for (int i = 0; i < entityIds.size(); i++) {
-                            Entity player = world.getEntity(entityIds.get(i));
-                            ac.pickUp.applyEffect(world, player);
-                            world.getSystem(PickUpSystem.class).itemOverHead(player, item.getValues().region);
-                            world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().name, item.getValues().description );
-
-                        }
+                        Entity player = world.getSystem(FindPlayerSystem.class).getPlayerEntity();
+                        item.applyEffect(world, player);
+                        player.getComponent(StatComponent.class).collectedItems.add(item);
+                        world.getSystem(PickUpSystem.class).itemOverHead(player, item.getValues().region);
+                        world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().name, item.getValues().description );
 
                         ac.hasItem = false;
                         if (world.getMapper(ParentComponent.class).has(e)) {

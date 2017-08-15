@@ -23,8 +23,12 @@ public class GameCreator {
 
     public LevelCreator getNextLevel(){
         position++;
-        if(position > gameLevels.size) position = gameLevels.size - 1;
+        if(position >= gameLevels.size) position = gameLevels.size - 1;
         return gameLevels.get(position);
+    }
+
+    public boolean isFinalLevel(){
+        return position + 1 >= gameLevels.size;
     }
 
     public LevelCreator getCurrentLevel(){
@@ -32,8 +36,8 @@ public class GameCreator {
     }
 
     public LevelCreator getAndSetLevel(int position){
-        if(position < 0) position = 0;
-        if(position > gameLevels.size) position = gameLevels.size - 1;
+        if(position <= 0) position = 0;
+        if(position >= gameLevels.size) position = gameLevels.size - 1;
         this.position = position;
         return gameLevels.get(position);
     }

@@ -59,6 +59,12 @@ public class ChangeLevelSystem extends BaseSystem {
 
     public JigsawGenerator incrementLevel(){
 
+
+        if(gameCreator.isFinalLevel()) {
+            world.getSystem(EndGameSystem.class).backToMenu();
+            return null;
+        }
+
         GameCreator.LevelCreator levelCreator = gameCreator.getNextLevel();
         JigsawGeneratorConfig jigsawGeneratorConfig = levelCreator.jigsawGeneratorConfig;
         level = jigsawGeneratorConfig.level;
@@ -68,6 +74,8 @@ public class ChangeLevelSystem extends BaseSystem {
 
         if(levelCreator.isGenerated){
             jigsawGenerator.generate();
+        } else {
+            jigsawGenerator.cleanArenas();
         }
 
         world.getSystem(MessageBannerSystem.class).createLevelBanner(jigsawGeneratorConfig.level.getName());

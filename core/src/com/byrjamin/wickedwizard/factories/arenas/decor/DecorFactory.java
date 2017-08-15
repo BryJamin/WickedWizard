@@ -408,7 +408,7 @@ public class DecorFactory extends AbstractFactory {
 
         WeaponComponent wc = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
                 .fireRate(fireRate)
-                .build(), fireRate);
+                .build(), fireDelay);
         bag.add(wc);
         //In order to match firing angle with direction of texture add 90 degrees
 

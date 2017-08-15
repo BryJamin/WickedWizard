@@ -30,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.weapons.CritCalculator;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
@@ -42,10 +43,7 @@ import java.util.Locale;
  * Created by ae164 on 19/05/17.
  */
 
-public class PauseWorld {
-
-
-    private World world;
+public class PauseWorld extends WorldContainer {
 
     private SpriteBatch batch;
     private MainGame game;
@@ -57,6 +55,50 @@ public class PauseWorld {
 
 
     private static final float buttonWidth = Measure.units(37.5f);
+
+
+
+    //Stats
+    private static final float statsTitleOffsetX = Measure.units(8f);
+    private static final float statsTitleOffsetY = Measure.units(60f);
+
+
+    //Stats
+    private static final float statsNamesOffsetX = 0;
+    private static final float statsNamesOffsetY = Measure.units(55f);
+    private static final float statsNamesGap = -Measure.units(5f);
+
+    private static final float statsNumbersOffsetX = Measure.units(12.5f);
+    private static final float statsNumbersOffsetY = Measure.units(55f);
+    private static final float statsNumbersGap = -Measure.units(5f);
+
+
+    //Items
+    private static final float itemTitleOffsetX = Measure.units(42.5f);
+    private static final float itemTitleOffsetY = Measure.units(60f);
+
+    private static final int maxColumns = 5;
+    //private static final float statsNamesGap = -Measure.units(5f);
+
+
+    private static final float itemIconSize = Measure.units(5f);
+    private static final float itemIconOffsetX = Measure.units(36f);
+    private static final float itemIconOffsetY = Measure.units(50f);
+
+
+    private static final float itemIconGapX = Measure.units(6f);
+    private static final float itemIconGapY = -Measure.units(7.5f);
+
+
+    //Map
+    private static final float mapOffsetX = Measure.units(90f);
+    private static final float mapOffsetY = Measure.units(40f);
+
+
+    //Resume
+    private static final float resumeOffsetX = Measure.units(67.5f);
+    private static final float resumeOffsetY = Measure.units(0);
+
 
     private RoomTransitionSystem roomTransitionSystem;
 
@@ -116,8 +158,8 @@ public class PauseWorld {
             }
         }));
 
-        Entity resume = menuButton.createButton(world, MenuStrings.RESUME, camX + Measure.units(62.5f)
-                ,camY, buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
+        Entity resume = menuButton.createButton(world, MenuStrings.RESUME, camX + resumeOffsetX
+                ,camY + resumeOffsetY, buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
         resume.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -137,12 +179,10 @@ public class PauseWorld {
 
 
         Entity statText = world.createEntity();
-        statText.edit().add(new PositionComponent(camX + Measure.units(10f), camY + Measure.units(60f)));
+        statText.edit().add(new PositionComponent(camX + statsTitleOffsetX, camY + statsTitleOffsetY));
         TextureFontComponent tfc = new TextureFontComponent(Assets.medium, MenuStrings.STATS, Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR);
         statText.edit().add(tfc);
 
-
-        System.out.println(playerStats.damage);
 
         String[][] stats = new String[][]{
                 {MenuStrings.Stats.DAMAGE, String.format(Locale.getDefault(), "+%.0f", playerStats.damage)},
@@ -156,16 +196,25 @@ public class PauseWorld {
         };
 
         for(int i = 0; i < stats.length; i++){
-            statsText(world, stats[i][0], camX, camY + Measure.units(55f - (5 * i)), Align.left);
+            statsText(world, stats[i][0], camX + statsNamesOffsetX, camY + statsNamesOffsetY + (statsNamesGap * i), Align.left);
         }
 
         for(int i = 0; i < stats.length; i++){
-            statsText(world, stats[i][1], camX + Measure.units(15), camY + Measure.units(55f - (5 * i)), Align.center);
+            statsText(world, stats[i][1], camX + statsNumbersOffsetX, camY + statsNamesOffsetY + (statsNamesGap * i), Align.center);
+        }
+
+        for(int i = 0; i < playerStats.collectedItems.size; i++){
+
+            int mod = i % maxColumns;
+            int div = i / maxColumns;
+
+            itemIcon(world, playerStats.collectedItems.get(i), camX + itemIconOffsetX + (itemIconGapX * mod),
+                    camY + itemIconOffsetY + (itemIconGapY * div));
         }
 
 
         Entity itemText = world.createEntity();
-        itemText.edit().add(new PositionComponent(camX + Measure.units(40f), camY + Measure.units(60f)));
+        itemText.edit().add(new PositionComponent(camX + itemTitleOffsetX, camY + itemTitleOffsetY));
         itemText.edit().add(new TextureFontComponent(Assets.medium, MenuStrings.ITEMS, Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
         return world;
@@ -180,26 +229,26 @@ public class PauseWorld {
     }
 
 
+    public void itemIcon(World world, Item item, float x, float y){
+        Entity itemEntity = world.createEntity();
+        itemEntity.edit().add(new PositionComponent(x, y));
+        itemEntity.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
+                itemIconSize, itemIconSize, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+    }
+
     public World getWorld() {
         return world;
     }
 
     public void process(float delta){
-
-        if (delta < 0.02f) {
-            world.setDelta(delta);
-        } else {
-            world.setDelta(0.02f);
-        }
-
-        world.process();
+        super.process(delta);
 
         float camX = gameport.getCamera().position.x - gameport.getCamera().viewportWidth / 2;
         float camY = gameport.getCamera().position.y - gameport.getCamera().viewportHeight / 2;
 
         pauseArenaGUI.update(world.getDelta(),
-                camX + Measure.units(85f),
-                camY + Measure.units(35f),
+                camX + mapOffsetX,
+                camY + mapOffsetY,
                 roomTransitionSystem.getCurrentMap(),
                 roomTransitionSystem.getCurrentPlayerLocation());
 

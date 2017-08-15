@@ -1,6 +1,8 @@
 package com.byrjamin.wickedwizard.ecs.components;
 
 import com.artemis.Component;
+import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.items.Item;
 
 /**
  * Created by Home on 15/04/2017.
@@ -8,6 +10,8 @@ import com.artemis.Component;
 
 public class StatComponent extends Component {
 
+
+    public Array<Item> collectedItems = new Array<Item>();
 
     public int health = 6;
     public int maxHealth = 6;

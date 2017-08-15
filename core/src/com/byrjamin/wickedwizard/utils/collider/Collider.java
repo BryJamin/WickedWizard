@@ -84,7 +84,12 @@ public class Collider {
                     currentBound.x -= innerRectangle.getWidth();
                 } else {
 
-                    return leftOrRightCollision(currentBound, wall); //Collision.OVERLAPS;
+                    if(wall.getWidth() >= wall.getHeight()) {
+                        return topOrBottomCollision(currentBound, wall);
+                    } else {
+                        return leftOrRightCollision(currentBound, wall);
+                        //Collision.OVERLAPS;
+                    }
 /*                    innerRectangle.setHeight(currentBound.getHeight());
                     innerRectangle.setWidth(currentBound.getWidth()  * 0.8f);
                     innerRectangle.setX(currentBound.x + CenterMath.offsetX(currentBound.getWidth(), innerRectangle.getWidth()));

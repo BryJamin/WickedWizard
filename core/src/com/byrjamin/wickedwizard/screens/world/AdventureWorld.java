@@ -162,10 +162,13 @@ public class AdventureWorld {
 
     public World createAdventureWorld() {
 
+        System.out.println(gameCreator.gameLevels.size);
 
         jigsawGenerator = gameCreator.getCurrentLevel().jigsawGeneratorConfig.build();
         if(gameCreator.getCurrentLevel().isGenerated){
             jigsawGenerator.generate();
+        } else {
+            jigsawGenerator.cleanArenas();
         }
 
 

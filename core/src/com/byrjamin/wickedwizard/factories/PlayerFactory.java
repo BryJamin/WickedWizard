@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.BackPackComponent;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -79,6 +80,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());
+        bag.add(new BackPackComponent());
         bag.add(new FrictionComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new GravityComponent());

@@ -38,6 +38,9 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.items.companions.ItemDangerSensor;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
 import com.byrjamin.wickedwizard.screens.world.*;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -105,7 +108,7 @@ public class PlayScreen extends AbstractScreen {
             default:
                 TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, new LightGraySkin());
                 gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
-                        .startingMap(tutorialFactory.tutorialMap())));
+                        .startingMap(tutorialFactory.tutorialMap()), false));
                 break;
             case BOSS:
 
@@ -123,7 +126,7 @@ public class PlayScreen extends AbstractScreen {
                 }
 
                 gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
-                        .startingMap(bossMap)));
+                        .startingMap(bossMap), false));
                 break;
 
 
@@ -258,7 +261,27 @@ public class PlayScreen extends AbstractScreen {
             stats.fireRate = 99f;
             stats.speed = 0.5f;
             stats.luck = 99f;
-        }
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemNeatCube());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemNeatCube());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemNeatCube());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemNeatCube());
+            stats.collectedItems.add(new ItemLostLettersShotSpeedAccuracy());
+            stats.collectedItems.add(new ItemSootheNote());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemNeatCube());
+            stats.collectedItems.add(new ItemVitaminC());
+        };
 
     }
 
