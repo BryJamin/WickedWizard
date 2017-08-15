@@ -35,6 +35,12 @@ public class GameCreator {
         return gameLevels.get(position);
     }
 
+    public void setCurrentLevel(int position) {
+        if(position <= 0) position = 0;
+        if(position >= gameLevels.size) position = gameLevels.size - 1;
+        this.position = position;
+    }
+
     public LevelCreator getAndSetLevel(int position){
         if(position <= 0) position = 0;
         if(position >= gameLevels.size) position = gameLevels.size - 1;

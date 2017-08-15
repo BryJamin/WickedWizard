@@ -67,7 +67,7 @@ public class StatComponent extends Component {
         this.shotSpeed = statComponent.shotSpeed;
         this.accuracy = statComponent.accuracy;
         this.crit = statComponent.crit;
-
+        this.collectedItems = statComponent.collectedItems;
     }
 
 

@@ -88,6 +88,9 @@ public class ChangeLevelSystem extends BaseSystem {
         return level;
     }
 
+    public GameCreator getGameCreator() {
+        return gameCreator;
+    }
 
     public JigsawGenerator getJigsawGenerator() {
         return jigsawGenerator;

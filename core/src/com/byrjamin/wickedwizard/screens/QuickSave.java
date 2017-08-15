@@ -32,7 +32,7 @@ public class QuickSave {
 
         SaveData saveData = new SaveData();
         saveData.setStatComponentJSON(json.toJson(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class)));
-        saveData.setLevelJSON(world.getSystem(ChangeLevelSystem.class).getLevel().name());
+        saveData.setLevelJSON(world.getSystem(ChangeLevelSystem.class).getGameCreator().position + "");
         saveData.setCurrencyJSON(json.toJson(world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class)));
         saveData.setItemPoolJSON(json.toJson(world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().getItemStringArray()));
 
@@ -99,7 +99,7 @@ public class QuickSave {
             currencyComponent.updateCurrency(json.fromJson(CurrencyComponent.class, saveData.getCurrencyJSON()));
 
             String level = json.fromJson(String.class, saveData.getLevelJSON());
-            world.getSystem(ChangeLevelSystem.class).setLevel(level);
+            world.getSystem(ChangeLevelSystem.class).getGameCreator().setCurrentLevel(Integer.parseInt(level));
 
             JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator();
             jg.getItemStore().getItemStringArray().clear();

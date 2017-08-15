@@ -261,7 +261,7 @@ public class PlayScreen extends AbstractScreen {
             stats.fireRate = 99f;
             stats.speed = 0.5f;
             stats.luck = 99f;
-            stats.collectedItems.add(new ItemVitaminC());
+/*            stats.collectedItems.add(new ItemVitaminC());
             stats.collectedItems.add(new ItemVitaminC());
             stats.collectedItems.add(new ItemVitaminC());
             stats.collectedItems.add(new ItemNeatCube());
@@ -280,7 +280,7 @@ public class PlayScreen extends AbstractScreen {
             stats.collectedItems.add(new ItemVitaminC());
             stats.collectedItems.add(new ItemVitaminC());
             stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemVitaminC());*/
         };
 
     }
