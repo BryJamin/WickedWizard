@@ -90,6 +90,7 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
@@ -127,9 +128,11 @@ public class AdventureWorld {
 
     private JigsawGenerator jigsawGenerator;
 
+    private GameCreator gameCreator;
+
     private BitmapFont currencyFont;
 
-    public AdventureWorld(MainGame game, Viewport gameport, JigsawGenerator jigsawGenerator, Random random) {
+    public AdventureWorld(MainGame game, Viewport gameport, GameCreator gameCreator, Random random) {
         this.game = game;
         this.assetManager = game.assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas);
@@ -137,8 +140,7 @@ public class AdventureWorld {
         this.gameport = gameport;
         this.random = random;
         this.player = new PlayerFactory(assetManager).playerBag(Measure.units(50f), Measure.units(45f));
-        this.jigsawGenerator = jigsawGenerator;
-
+        this.gameCreator = gameCreator;
         playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
         playerCurrency = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
 
@@ -158,12 +160,13 @@ public class AdventureWorld {
         playerCurrency = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
     }
 
-    public void setJigsawGenerator(JigsawGenerator jigsawGenerator) {
-        this.jigsawGenerator = jigsawGenerator;
-    }
-
-
     public World createAdventureWorld() {
+
+
+        jigsawGenerator = gameCreator.getCurrentLevel().jigsawGeneratorConfig.build();
+        if(gameCreator.getCurrentLevel().isGenerated){
+            jigsawGenerator.generate();
+        }
 
 
         Arena startingArena = jigsawGenerator.getStartingRoom();
@@ -232,7 +235,7 @@ public class AdventureWorld {
                         new LevelItemSystem(new ItemStore(random), random),
                         new MusicSystem(assetManager),
                         new SoundSystem(assetManager),
-                        new ChangeLevelSystem(PresetGames.DEFAULT_GAME(assetManager, random), assetManager, jigsawGenerator, random),
+                        new ChangeLevelSystem(gameCreator, jigsawGenerator),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
                         new EndGameSystem(game),
@@ -246,7 +249,7 @@ public class AdventureWorld {
 
 
         world = new World(config);
-        //TODO CLEAN THIS UP you shouldn'#t need to set the world of the input
+
         world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
 
         if (!Gdx.app.getPreferences(

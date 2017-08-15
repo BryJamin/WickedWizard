@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -28,30 +29,25 @@ public class JigsawGeneratorConfig {
     public ArenaMap startingMap;
 
     public final AssetManager assetManager;
-    public ArenaSkin arenaSkin;
+
+    public Level level = Level.ONE;
+
 
     public ItemStore itemStore;
 
     public Array<ArenaCreate> arenaGens;
     public Array<BossMapCreate> bossMapGens;
 
+
     public JigsawGeneratorConfig(AssetManager assetManager, Random random){
-        this(assetManager, new LightGraySkin(), random);
-    }
-
-
-    public JigsawGeneratorConfig(AssetManager assetManager, ArenaSkin arenaSkin, Random random){
         this.assetManager = assetManager;
         this.random = random;
-        this.arenaSkin = arenaSkin;
-        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords()));
-        this.arenaGens = new Level1Rooms(assetManager, arenaSkin, random).getLevel1RoomArray();
-
+        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, level.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords()));
+        this.arenaGens = new Level1Rooms(assetManager, level.getArenaSkin(), random).getLevel1RoomArray();
         this.itemStore = new ItemStore(random);
-
         bossMapGens = new Array<BossMapCreate>();
-        bossMapGens.add(new BossMaps(assetManager, arenaSkin).blobbaMapCreate());
-        bossMapGens.add(new BossMaps(assetManager, arenaSkin).adojMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, level.getArenaSkin()).blobbaMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, level.getArenaSkin()).adojMapCreate());
 
     }
 
@@ -59,15 +55,15 @@ public class JigsawGeneratorConfig {
     public JigsawGeneratorConfig noBattleRooms(int val)
     { noBattleRooms = val; return this; }
 
-    public JigsawGeneratorConfig arenaSkin(ArenaSkin val)
-    { arenaSkin = val; return this; }
-
     public JigsawGeneratorConfig startingMap(ArenaMap val)
     { startingMap = val; return this; }
 
+
+    public JigsawGeneratorConfig level(Level val)
+    { level = val; return this; }
+
     public JigsawGeneratorConfig itemStore(ItemStore val)
     { itemStore = val; return this; }
-
 
     public JigsawGeneratorConfig arenaCreates(Array<ArenaCreate> val)
     { arenaGens = val; return this; }

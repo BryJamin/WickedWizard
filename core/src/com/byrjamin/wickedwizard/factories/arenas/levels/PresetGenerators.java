@@ -40,8 +40,9 @@ public class PresetGenerators {
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).blobbaMapCreate());
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).adojMapCreate());
 
-        return new JigsawGeneratorConfig(assetManager, arenaSkin, random)
+        return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level1Rooms(assetManager, arenaSkin, random).getAllArenas())
+                .level(Level.ONE)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel1Rooms);
 
@@ -59,15 +60,16 @@ public class PresetGenerators {
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).wandaMapCreate());
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).giantSpinnerMapCreate());
 
-        return new JigsawGeneratorConfig(assetManager, arenaSkin, random)
+        return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level2Rooms(assetManager, arenaSkin, random).getAllArenas())
+                .level(Level.TWO)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel2Rooms);
 
     }
 
     public JigsawGeneratorConfig level3Configuration(AssetManager assetManager, Random random) {
-        return level1Configuration(assetManager, Level.THREE.getArenaSkin(), random);
+        return level3Configuration(assetManager, Level.THREE.getArenaSkin(), random);
     }
 
 
@@ -78,14 +80,15 @@ public class PresetGenerators {
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).boomyMapCreate());
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).ajirMapCreate());
 
-        return new JigsawGeneratorConfig(assetManager, arenaSkin, random)
+        return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level3Rooms(assetManager, arenaSkin, random).getAllArenas())
+                .level(Level.THREE)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel3Rooms);
     }
 
     public JigsawGeneratorConfig level4Configuration(AssetManager assetManager, Random random) {
-        return level1Configuration(assetManager, Level.FOUR.getArenaSkin(), random);
+        return level4Configuration(assetManager, Level.FOUR.getArenaSkin(), random);
     }
 
 
@@ -96,15 +99,16 @@ public class PresetGenerators {
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).amalgamaMapCreate());
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).wraithMapCreate());
 
-        return new JigsawGeneratorConfig(assetManager, arenaSkin, random)
+        return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level4Rooms(assetManager, arenaSkin, random).getAllArenas())
+                .level(Level.FOUR)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel4Rooms);
 
     }
 
     public JigsawGeneratorConfig level5Configuration(AssetManager assetManager, Random random) {
-        return level1Configuration(assetManager, Level.FIVE.getArenaSkin(), random);
+        return level5Configuration(assetManager, Level.FIVE.getArenaSkin(), random);
     }
 
 
@@ -114,8 +118,9 @@ public class PresetGenerators {
 
         bossMapGens.add(new BossMaps(assetManager, arenaSkin).endMapCreate());
 
-        return new JigsawGeneratorConfig(assetManager, arenaSkin, random)
+        return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level5Rooms(assetManager, arenaSkin, random).getAllArenas())
+                .level(Level.FIVE)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel5Rooms);
 

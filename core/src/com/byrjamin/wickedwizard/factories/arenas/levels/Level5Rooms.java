@@ -301,7 +301,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt(4));
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
                 arena.roomType = Arena.RoomType.TRAP;
 
 

@@ -27,6 +27,7 @@ import com.byrjamin.wickedwizard.utils.WeightedObject;
 import com.byrjamin.wickedwizard.utils.WeightedRoll;
 import com.byrjamin.wickedwizard.utils.comparator.FarSort;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -43,6 +44,8 @@ public class JigsawGenerator {
     private int noBattleRooms;
 
     private Random random;
+
+    private Level level;
 
     private FarSort farSort;
 
@@ -69,8 +72,14 @@ public class JigsawGenerator {
         this.arenaGens = jigsawGeneratorConfig.arenaGens;
         this.farSort = new FarSort(getStartingMap().getCurrentArena().getStartingCoords());
         this.bossMapGens = jigsawGeneratorConfig.bossMapGens;
-        this.arenaSkin = jigsawGeneratorConfig.arenaSkin;
+        this.arenaSkin = jigsawGeneratorConfig.level.getArenaSkin();
+        this.level = jigsawGeneratorConfig.level;
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+    }
+
+
+    public Level getLevel(){
+        return level;
     }
 
 

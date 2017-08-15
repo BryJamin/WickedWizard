@@ -34,21 +34,16 @@ import java.util.Random;
 
 public class ChangeLevelSystem extends BaseSystem {
 
-    private AssetManager assetManager;
-    private Random random;
-
     private JigsawGenerator jigsawGenerator;
 
     private GameCreator gameCreator;
 
     private Level level;
 
-    public ChangeLevelSystem(GameCreator gameCreator, AssetManager assetManager, JigsawGenerator jigsawGenerator, Random random){
+    public ChangeLevelSystem(GameCreator gameCreator, JigsawGenerator jigsawGenerator){
         this.gameCreator = gameCreator;
-        this.assetManager = assetManager;
-        this.random = random;
         this.jigsawGenerator = jigsawGenerator;
-        level = Level.ONE;
+        this.level = jigsawGenerator.getLevel();
     }
 
 
@@ -64,89 +59,21 @@ public class ChangeLevelSystem extends BaseSystem {
 
     public JigsawGenerator incrementLevel(){
 
+        GameCreator.LevelCreator levelCreator = gameCreator.getNextLevel();
+        JigsawGeneratorConfig jigsawGeneratorConfig = levelCreator.jigsawGeneratorConfig;
+        level = jigsawGeneratorConfig.level;
 
-        jigsawGenerator = gameCreator.gameLevels.removeFirst().jigsawGeneratorConfig
-                .itemStore(jigsawGenerator.getItemStore())
+        jigsawGenerator = jigsawGeneratorConfig.itemStore(jigsawGenerator.getItemStore())
                 .build();
 
-/*        switch (level) {
-            case ONE:
-            default:
-                level = Level.TWO;
-                jigsawGenerator = getJigsawGenerator(Level.TWO);
-                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 2");
-                break;
-            case TWO: level = Level.THREE;
-                jigsawGenerator = getJigsawGenerator(Level.THREE);
-                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 3");
-                break;
-            case THREE: level = Level.FOUR;
-                jigsawGenerator = getJigsawGenerator(Level.FOUR);
-                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 4");
-                break;
-            case FOUR: level = Level.FIVE;
-                jigsawGenerator = getJigsawGenerator(Level.FIVE);
-                world.getSystem(MessageBannerSystem.class).createLevelBanner("Chapter 5");
-                break;
-            case FIVE:
-                jigsawGenerator = getJigsawGenerator(Level.ONE);
-                //TODO world.endGame
-                break;
-        }*/
-
-
-        world.getSystem(MusicSystem.class).playLevelMusic(level);
-
-        return jigsawGenerator;
-    }
-
-    public JigsawGenerator getJigsawGenerator(Level currentLevel){
-
-
-        JigsawGenerator jg;
-        ArenaSkin arenaSkin = currentLevel.getArenaSkin();
-
-        switch(currentLevel){
-            case ONE:
-            default:
-
-                jg = new PresetGenerators().level1Configuration(assetManager, arenaSkin, random)
-                        .itemStore(jigsawGenerator.getItemStore())
-                        .build();
-
-                break;
-            case TWO:
-
-                jg = new PresetGenerators().level2Configuration(assetManager, arenaSkin, random)
-                        .itemStore(jigsawGenerator.getItemStore())
-                        .build();
-
-                break;
-            case THREE:
-
-                jg = new PresetGenerators().level3Configuration(assetManager, arenaSkin, random)
-                        .itemStore(jigsawGenerator.getItemStore())
-                        .build();
-
-                break;
-            case FOUR:
-
-                jg = new PresetGenerators().level4Configuration(assetManager, arenaSkin, random)
-                        .itemStore(jigsawGenerator.getItemStore())
-                        .build();
-
-                break;
-            case FIVE:
-
-                jg = new PresetGenerators().level5Configuration(assetManager, arenaSkin, random)
-                        .itemStore(jigsawGenerator.getItemStore())
-                        .build();
-
-                break;
+        if(levelCreator.isGenerated){
+            jigsawGenerator.generate();
         }
 
+        world.getSystem(MessageBannerSystem.class).createLevelBanner(jigsawGeneratorConfig.level.getName());
+        world.getSystem(MusicSystem.class).playLevelMusic(jigsawGeneratorConfig.level);
 
-        return jg;
+        return jigsawGenerator;
     }
 
     public Level getLevel() {

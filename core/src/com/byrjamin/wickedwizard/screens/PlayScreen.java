@@ -25,7 +25,9 @@ import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
+import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
+import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.AllArenaStore;
 import com.byrjamin.wickedwizard.factories.arenas.levels.PresetGenerators;
@@ -95,17 +97,15 @@ public class PlayScreen extends AbstractScreen {
 
         ArenaSkin arenaSkin = new LightGraySkin();
 
+        GameCreator gameCreator;
+
 
         switch (playScreenConfig.spawn){
             case TUTORIAL:
             default:
-
                 TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, new LightGraySkin());
-
-                jg = new JigsawGeneratorConfig(game.assetManager, random)
-                        .startingMap(tutorialFactory.tutorialMap())
-                        .build();
-                jg.cleanArenas();
+                gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
+                        .startingMap(tutorialFactory.tutorialMap())));
                 break;
             case BOSS:
 
@@ -122,19 +122,12 @@ public class PlayScreen extends AbstractScreen {
 
                 }
 
-                jg = new JigsawGeneratorConfig(game.assetManager, random)
-                        .startingMap(bossMap)
-                        .build();
-
-                jg.cleanArenas();
-
-
+                gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
+                        .startingMap(bossMap)));
                 break;
 
 
             case ARENA:
-
-                //TODO if id is negative one get all areans in that level
 
                 AllArenaStore allArenaStore = new AllArenaStore(game.assetManager, arenaSkin, random);
 
@@ -158,16 +151,13 @@ public class PlayScreen extends AbstractScreen {
 
                 }
 
-                jg = new JigsawGeneratorConfig(game.assetManager, random)
+                gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
                         .noBattleRooms(20)
-                        .arenaCreates(arenaCreates)
-                        .build();
-                jg.generate();
-                jg.cleanArenas();
+                        .arenaCreates(arenaCreates)));
                 break;
         }
 
-        createWorlds();
+        createWorlds(gameCreator);
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -178,13 +168,7 @@ public class PlayScreen extends AbstractScreen {
         super(game);
         setUpGlobals();
 
-        jg = new PresetGenerators().level1Configuration(game.assetManager, Level.ONE.getArenaSkin(), random)
-                .build();
-        jg.generate();
-        jg.cleanArenas();
-
-        createWorlds();
-
+        createWorlds(PresetGames.DEFAULT_GAME(game.assetManager, random));
         Gdx.input.setCatchBackKey(true);
 
 
@@ -261,9 +245,9 @@ public class PlayScreen extends AbstractScreen {
     }
 
 
-    public void createWorlds(){
+    public void createWorlds(GameCreator gameCreator){
 
-        adventureWorld = new AdventureWorld(game, gameport,jg, random);
+        adventureWorld = new AdventureWorld(game, gameport,gameCreator, random);
 
 
         StatComponent stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());

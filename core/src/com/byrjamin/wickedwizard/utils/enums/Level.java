@@ -17,7 +17,6 @@ public enum Level {
         ONE, TWO, THREE, FOUR, FIVE;
 
         public ArenaSkin getArenaSkin(){
-
             switch (this){
                 case ONE:
                 default:
@@ -28,5 +27,18 @@ public enum Level {
                 case FIVE: return new InfernalSkin();
             }
         }
+
+
+    public String getName(){
+        switch (this){
+            case ONE:
+            default:
+                return "One";
+            case TWO: return "Two";
+            case THREE: return "Three";
+            case FOUR: return "Four";
+            case FIVE: return "Five";
+        }
+    }
 
 }

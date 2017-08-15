@@ -170,7 +170,6 @@ public class MapTeleportationSystem extends EntitySystem {
         rts.packRoom(world, rts.getCurrentArena());
 
         JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).incrementLevel();
-        jg.generate();
 
         mapTracker = jg.getMapTracker();
 
@@ -182,6 +181,7 @@ public class MapTeleportationSystem extends EntitySystem {
         player.position.y = rts.getCurrentArena().getHeight() / 2;
         VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
         MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
+        mtc.reset();
         vc.velocity.x = 0;
         vc.velocity.y = 0;
         world.getSystem(PlayerInputSystem.class).turnOffGlide();
