@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.arenas.BossMapCreate;
+import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
@@ -38,9 +39,12 @@ public class ChangeLevelSystem extends BaseSystem {
 
     private JigsawGenerator jigsawGenerator;
 
+    private GameCreator gameCreator;
+
     private Level level;
 
-    public ChangeLevelSystem(AssetManager assetManager, JigsawGenerator jigsawGenerator, Random random){
+    public ChangeLevelSystem(GameCreator gameCreator, AssetManager assetManager, JigsawGenerator jigsawGenerator, Random random){
+        this.gameCreator = gameCreator;
         this.assetManager = assetManager;
         this.random = random;
         this.jigsawGenerator = jigsawGenerator;
@@ -60,7 +64,12 @@ public class ChangeLevelSystem extends BaseSystem {
 
     public JigsawGenerator incrementLevel(){
 
-        switch (level) {
+
+        jigsawGenerator = gameCreator.gameLevels.removeFirst().jigsawGeneratorConfig
+                .itemStore(jigsawGenerator.getItemStore())
+                .build();
+
+/*        switch (level) {
             case ONE:
             default:
                 level = Level.TWO;
@@ -83,7 +92,7 @@ public class ChangeLevelSystem extends BaseSystem {
                 jigsawGenerator = getJigsawGenerator(Level.ONE);
                 //TODO world.endGame
                 break;
-        }
+        }*/
 
 
         world.getSystem(MusicSystem.class).playLevelMusic(level);

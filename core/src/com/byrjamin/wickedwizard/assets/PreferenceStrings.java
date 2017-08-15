@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.assets;
 
+import com.badlogic.gdx.utils.Base64Coder;
+
 /**
  * Created by Home on 15/05/2017.
  */
@@ -29,8 +31,8 @@ public class PreferenceStrings {
 
     public final static String DATA_PREF_KEY = "com.bb.wickedwizard.data";
     public final static String DATA_QUICK_SAVE = "abx4";
-
-    public final static String DATA_QUICK_SAVE_NO_VALID_SAVE = "no_valid_save";
+    public final static String DATA_TUTORIAL_COMPLETE = "abx8";
+    public final static String DATA_QUICK_SAVE_NO_VALID_SAVE = Base64Coder.encodeString("novalidsave");
 
 
 

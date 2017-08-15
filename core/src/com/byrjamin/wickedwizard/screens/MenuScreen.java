@@ -73,6 +73,16 @@ public class MenuScreen extends AbstractScreen {
     private Preferences devSettings;
     private Preferences preferences;
 
+    private static final float buttonWidth = Measure.units(30f);
+    private static final float buttonHeight = Measure.units(10f);
+
+
+    private static final Color buttonForeground = new Color(Color.BLACK);
+    private static final Color buttonBackground = new Color(Color.WHITE);
+
+    private MenuButton menuButton;
+
+
 
     public enum MenuType {
         MAIN, DEV, SETTING, DOWN;
@@ -135,7 +145,6 @@ public class MenuScreen extends AbstractScreen {
                         new StateSystem(),
                         new CollisionSystem(),
                         new ActionOnTouchSystem(),
-                        //new FindPlayerSystem(player),
                         new GravitySystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RenderingSystem(game.batch, manager, gameport),
@@ -149,6 +158,9 @@ public class MenuScreen extends AbstractScreen {
         world.getSystem(MusicSystem.class).playMainMenuMusic();
 
 
+        menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+
+
 
 
         Entity backdrop = world.createEntity();
@@ -156,51 +168,18 @@ public class MenuScreen extends AbstractScreen {
         backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
                 ColorResource.RGBtoColor(137, 207, 240, 1)));
 
-        MenuButton mb = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
-
-        Color foreGround = new Color(Color.BLACK);
-        Color backGround = new Color(1,1,1,0.9f);
 
 
 
-        final boolean quickSaveDataIsDefault =
-                preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE).equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+        boolean isTutorialComplete = preferences.getBoolean(PreferenceStrings.DATA_TUTORIAL_COMPLETE, false);
+
+        if(isTutorialComplete){
+            setUpMenuScreenStartAndTutorial();
+        } else {
+            setUpMenuScreenOnlyTutorial();
+        }
 
 
-        final boolean quickSaveDataIsReadable = QuickSave.checkQuickSave();
-
-        final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
-
-        Entity startGame = mb.createButton(world, quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
-                ,MainGame.GAME_HEIGHT / 2 + Measure.units(5f),
-                Measure.units(30f),
-                Measure.units(10f),
-                foreGround,
-                backGround);
-
-        startGame.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                game.setScreen(new PlayScreen(game));
-                world.getSystem(MusicSystem.class).stopMusic();
-            }
-        }));
-
-        Entity startTutorial = mb.createButton(world, "Tutorial", CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
-                ,MainGame.GAME_HEIGHT / 2 - Measure.units(10f),
-                Measure.units(30f),
-                Measure.units(10f),
-                foreGround,
-                backGround);
-
-        startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
-                world.getSystem(MusicSystem.class).stopMusic();
-
-            }
-        }));
 
 
         boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
@@ -253,6 +232,78 @@ public class MenuScreen extends AbstractScreen {
         }));
 
     }
+
+
+    private void setUpMenuScreenOnlyTutorial(){
+
+        Entity startTutorial =
+                menuButton.createButton(
+                        world,
+                        MenuStrings.START,
+                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth)
+                ,CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight),
+                buttonWidth,
+                buttonHeight,
+                buttonForeground,
+                buttonBackground);
+
+        startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
+                world.getSystem(MusicSystem.class).stopMusic();
+            }
+        }));
+
+    }
+
+
+
+    private void setUpMenuScreenStartAndTutorial() {
+
+        final boolean quickSaveDataIsDefault =
+                preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE).equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+
+
+        final boolean quickSaveDataIsReadable = QuickSave.checkQuickSave();
+
+        final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
+
+        Entity startGame = menuButton.createButton(world, quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
+                ,MainGame.GAME_HEIGHT / 2 + Measure.units(5f),
+                buttonWidth,
+                buttonHeight,
+                buttonForeground,
+                buttonBackground);
+
+        startGame.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game));
+                world.getSystem(MusicSystem.class).stopMusic();
+            }
+        }));
+
+        Entity startTutorial = menuButton.createButton(world, MenuStrings.TUTORIAL, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
+                ,MainGame.GAME_HEIGHT / 2 - Measure.units(10f),
+                buttonWidth,
+                buttonHeight,
+                buttonForeground,
+                buttonBackground);
+
+        startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.setScreen(new PlayScreen(game, new PlayScreenConfig(PlayScreenConfig.Spawn.TUTORIAL, 0)));
+                world.getSystem(MusicSystem.class).stopMusic();
+
+            }
+        }));
+
+
+    }
+
+
 
     @Override
     public void show() {
@@ -312,14 +363,14 @@ public class MenuScreen extends AbstractScreen {
     }
 
     public void setUpMusicEntity(Entity musicEntity, boolean musicOn) {
-            musicEntity.getComponent(AnimationComponent.class).animations.put(0,
+            musicEntity.getComponent(AnimationComponent.class).animations.put(AnimationStateComponent.DEFAULT,
                     new Animation<TextureRegion>(0.15f / 1f, musicOn ?
                             atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) :
                             atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
     }
 
     public void setUpSoundEntity(Entity soundEntity, boolean soundOn) {
-        soundEntity.getComponent(AnimationComponent.class).animations.put(0,
+        soundEntity.getComponent(AnimationComponent.class).animations.put(AnimationStateComponent.DEFAULT,
                 new Animation<TextureRegion>(0.15f / 1f, soundOn ?
                         atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) :
                         atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));

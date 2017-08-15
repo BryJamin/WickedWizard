@@ -4,6 +4,8 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
@@ -89,8 +92,8 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         placedArenas.add(jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(platformTutorial(new MapCoords(5,0)));
         placedArenas.add(grappleTutorial(new MapCoords(6,0)));
-        placedArenas.add(enemyTurtorial(new MapCoords(7,3)));
-        placedArenas.add(endTutorial(new MapCoords(8,3)));
+        placedArenas.add(enemyTurtorial(new MapCoords(6,3)));
+        placedArenas.add(endTutorial(new MapCoords(7,3)));
 
 
         return new ArenaMap(startingArena, placedArenas);
@@ -468,15 +471,10 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         arena.addEntity(new PortalFactory(assetManager).endGamePortal(arena.getWidth() / 2, Measure.units(25f)));
 
-
-/*
-        arena.addEntity(decorFactory.chevronBag(Measure.units(42.5f), Measure.units(48.5f), -90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(65f), Measure.units(48.5f), 90));
-        arena.addEntity(decorFactory.chevronBag(Measure.units(54f), Measure.units(23f), 0));
-*//*
-
-
-        for(int i = 0; i < 3; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90)); */
+        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
+        preferences.putBoolean(PreferenceStrings.DATA_TUTORIAL_COMPLETE, true);
+        preferences.flush();
+        //boolean isTutorialComplete = preferences.getBoolean(PreferenceStrings.DATA_TUTORIAL_COMPLETE, false);
 
         return arena;
 

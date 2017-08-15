@@ -6,6 +6,7 @@ import com.byrjamin.wickedwizard.factories.arenas.BossMapCreate;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -28,6 +29,10 @@ public class PresetGenerators {
     }
 
 
+    public JigsawGeneratorConfig level1Configuration(AssetManager assetManager, Random random) {
+        return level1Configuration(assetManager, Level.ONE.getArenaSkin(), random);
+    }
+
     public JigsawGeneratorConfig level1Configuration(AssetManager assetManager, ArenaSkin arenaSkin, Random random){
 
         Array<BossMapCreate> bossMapGens = new Array<BossMapCreate>();
@@ -42,6 +47,11 @@ public class PresetGenerators {
 
     }
 
+    public JigsawGeneratorConfig level2Configuration(AssetManager assetManager, Random random) {
+        return level2Configuration(assetManager, Level.TWO.getArenaSkin(), random);
+    }
+
+
     public JigsawGeneratorConfig level2Configuration(AssetManager assetManager, ArenaSkin arenaSkin, Random random){
 
         Array<BossMapCreate> bossMapGens = new Array<BossMapCreate>();
@@ -54,6 +64,10 @@ public class PresetGenerators {
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel2Rooms);
 
+    }
+
+    public JigsawGeneratorConfig level3Configuration(AssetManager assetManager, Random random) {
+        return level1Configuration(assetManager, Level.THREE.getArenaSkin(), random);
     }
 
 
@@ -70,6 +84,9 @@ public class PresetGenerators {
                 .noBattleRooms(numberOfLevel3Rooms);
     }
 
+    public JigsawGeneratorConfig level4Configuration(AssetManager assetManager, Random random) {
+        return level1Configuration(assetManager, Level.FOUR.getArenaSkin(), random);
+    }
 
 
     public JigsawGeneratorConfig level4Configuration(AssetManager assetManager, ArenaSkin arenaSkin, Random random){
@@ -84,6 +101,10 @@ public class PresetGenerators {
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel4Rooms);
 
+    }
+
+    public JigsawGeneratorConfig level5Configuration(AssetManager assetManager, Random random) {
+        return level1Configuration(assetManager, Level.FIVE.getArenaSkin(), random);
     }
 
 

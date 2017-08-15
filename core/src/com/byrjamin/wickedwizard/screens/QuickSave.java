@@ -110,7 +110,7 @@ public class QuickSave {
             preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
             preferences.flush();
 
-        } catch (SerializationException e){
+        } catch (Exception e){
 
             preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
             preferences.flush();

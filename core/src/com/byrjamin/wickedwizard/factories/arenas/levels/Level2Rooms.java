@@ -408,12 +408,12 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
+ /*               arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
                 arena.addEntity(decorFactory.spikeWall(Measure.units(20f), Measure.units(20f), Measure.units(10f), Measure.units(5f), 0));
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(70f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
                 arena.addEntity(decorFactory.spikeWall(Measure.units(70f), Measure.units(20f), Measure.units(10f), Measure.units(5f), 0));
-
+*/
 
                 //Top Spikes
                 arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(50f), Measure.units(90f), Measure.units(5f), 180));

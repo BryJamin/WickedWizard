@@ -91,6 +91,7 @@ import com.byrjamin.wickedwizard.factories.PlayerFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.screens.QuickSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
@@ -231,7 +232,7 @@ public class AdventureWorld {
                         new LevelItemSystem(new ItemStore(random), random),
                         new MusicSystem(assetManager),
                         new SoundSystem(assetManager),
-                        new ChangeLevelSystem(assetManager, jigsawGenerator, random),
+                        new ChangeLevelSystem(PresetGames.DEFAULT_GAME(assetManager, random), assetManager, jigsawGenerator, random),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
                         new EndGameSystem(game),
