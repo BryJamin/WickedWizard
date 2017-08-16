@@ -40,7 +40,7 @@ public class LevelItemSystemTest extends GameTest {
 
         ItemStore itemStore = new ItemStore(new Random());
 
-        for(ItemStore.ItemOptions i : itemStore.getItemOptions()) {
+        for(ItemStore.ItemOptions i : itemStore.getItemOptionsArray()) {
             Assert.assertTrue(i.item.getValues().region.getLeft()
                     + " index "
                     + i.item.getValues().region.getRight()

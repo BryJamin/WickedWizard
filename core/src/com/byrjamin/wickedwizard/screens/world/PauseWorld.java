@@ -54,17 +54,15 @@ public class PauseWorld extends WorldContainer {
     private MenuButton menuButton;
 
 
-    private static final float buttonWidth = Measure.units(37.5f);
-
 
 
     //Stats
-    private static final float statsTitleOffsetX = Measure.units(8f);
+    private static final float statsTitleOffsetX = Measure.units(5.5f);
     private static final float statsTitleOffsetY = Measure.units(60f);
 
 
     //Stats
-    private static final float statsNamesOffsetX = 0;
+    private static final float statsNamesOffsetX = -Measure.units(2.5f);
     private static final float statsNamesOffsetY = Measure.units(55f);
     private static final float statsNamesGap = -Measure.units(5f);
 
@@ -74,15 +72,16 @@ public class PauseWorld extends WorldContainer {
 
 
     //Items
-    private static final float itemTitleOffsetX = Measure.units(42.5f);
+    private static final float itemTitleOffsetX = Measure.units(40f);
     private static final float itemTitleOffsetY = Measure.units(60f);
 
     private static final int maxColumns = 5;
+    private static final int maxDisplayedItems = 30;
     //private static final float statsNamesGap = -Measure.units(5f);
 
 
     private static final float itemIconSize = Measure.units(5f);
-    private static final float itemIconOffsetX = Measure.units(36f);
+    private static final float itemIconOffsetX = Measure.units(33.5f);
     private static final float itemIconOffsetY = Measure.units(50f);
 
 
@@ -91,13 +90,20 @@ public class PauseWorld extends WorldContainer {
 
 
     //Map
-    private static final float mapOffsetX = Measure.units(90f);
+    private static final float mapOffsetX = Measure.units(87.5f);
     private static final float mapOffsetY = Measure.units(40f);
 
 
+
+    private static final float buttonWidth = Measure.units(37.5f);
+
     //Resume
-    private static final float resumeOffsetX = Measure.units(67.5f);
+    private static final float resumeOffsetX = Measure.units(65f);
     private static final float resumeOffsetY = Measure.units(0);
+
+    //Mainmenu
+    private static final float mainmenuOffsetX = Measure.units(0);
+    private static final float mainmenuOffsetY = Measure.units(0);
 
 
     private RoomTransitionSystem roomTransitionSystem;
@@ -147,8 +153,8 @@ public class PauseWorld extends WorldContainer {
         float camX = gamecam.position.x - gamecam.viewportWidth / 2 + MainGame.GAME_BORDER;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2 + MainGame.GAME_BORDER;
 
-        Entity returntoMainMenu = menuButton.createButton(world, MenuStrings.MAIN_MENU, camX
-                ,camY,buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
+        Entity returntoMainMenu = menuButton.createButton(world, MenuStrings.MAIN_MENU, camX + mainmenuOffsetX
+                ,camY + mainmenuOffsetY,buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
         returntoMainMenu.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -205,10 +211,12 @@ public class PauseWorld extends WorldContainer {
 
         for(int i = 0; i < playerStats.collectedItems.size; i++){
 
+            if(i >= maxDisplayedItems) continue;
+
             int mod = i % maxColumns;
             int div = i / maxColumns;
 
-            itemIcon(world, playerStats.collectedItems.get(i), camX + itemIconOffsetX + (itemIconGapX * mod),
+            itemIcon(world, playerStats.collectedItems.get(playerStats.collectedItems.size - i - 1), camX + itemIconOffsetX + (itemIconGapX * mod),
                     camY + itemIconOffsetY + (itemIconGapY * div));
         }
 

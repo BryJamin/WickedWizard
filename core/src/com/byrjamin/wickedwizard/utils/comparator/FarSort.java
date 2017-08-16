@@ -49,6 +49,43 @@ public class FarSort {
     }
 
 
+
+    public Comparator<MapCoords> LEFTMOST_DISTANCE = new Comparator<MapCoords>() {
+        @Override
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
+            Integer i1 = mapCoords1.getX();
+            Integer i2 = mapCoords2.getX();
+            return i1 < i2?-1:(i1.equals(i2) ?0:1);
+        }
+    };
+
+
+    public Comparator<DoorComponent> LEFTMOST_DISTANCE_DOORS = new Comparator<DoorComponent>() {
+        @Override
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
+            return LEFTMOST_DISTANCE.compare(dc1.leaveCoords, dc2.leaveCoords);
+        }
+    };
+
+
+    public Comparator<MapCoords> RIGHTMOST_DISTANCE = new Comparator<MapCoords>() {
+        @Override
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
+            Integer i1 = mapCoords1.getX();
+            Integer i2 = mapCoords2.getX();
+            return i1 > i2?-1:(i1.equals(i2) ?0:1);
+        }
+    };
+
+
+    public Comparator<DoorComponent> RIGHTMOST_DISTANCE_DOORS = new Comparator<DoorComponent>() {
+        @Override
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
+            return LEFTMOST_DISTANCE.compare(dc1.leaveCoords, dc2.leaveCoords);
+        }
+    };
+
+
     public int compare(DoorComponent mapCoords, DoorComponent t1) {
         return 0;
     }

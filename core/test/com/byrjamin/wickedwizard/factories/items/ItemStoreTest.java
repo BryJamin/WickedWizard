@@ -34,9 +34,9 @@ public class ItemStoreTest extends GameTest {
     public void testGeneratedItemIsRemoved() throws Exception {
 
         ItemStore itemStore = new ItemStore(new Random());
-        int i = itemStore.getItemOptions().size;
+        int i = itemStore.getItemOptionsArray().size;
         itemStore.generateItemRoomItem();
-        assertTrue(itemStore.getItemOptions().size == i - 1);
+        assertTrue(itemStore.getItemOptionsArray().size == i - 1);
 
     }
 
@@ -46,7 +46,7 @@ public class ItemStoreTest extends GameTest {
     public void testNoNullPointerWhenAllItemsGenerated() throws Exception {
 
         ItemStore itemStore = new ItemStore(new Random());
-        int max = itemStore.getItemOptions().size * 2;
+        int max = itemStore.getItemOptionsArray().size * 2;
         for(int i = 0; i < max; i++) itemStore.generateItemRoomItem();
         assertTrue(itemStore.generateItemRoomItem() != null);
 
@@ -56,13 +56,13 @@ public class ItemStoreTest extends GameTest {
     @Test
     public void testBossItemsNotGeneratedWhenCallingItemRoomItem() throws Exception {
         ItemStore itemStore = new ItemStore(new Random());
-        int max = itemStore.getItemOptions().size * 2;
+        int max = itemStore.getItemOptionsArray().size * 2;
         for(int i = 0; i < max; i++) {
             itemStore.generateItemRoomItem();
         }
-        assertTrue(itemStore.getItemOptions().size == 1);
-        assertTrue(itemStore.getItemOptions().first().availables.contains(ItemStore.Available.BOSS, true));
-        assertTrue(!itemStore.getItemOptions().first().availables.contains(ItemStore.Available.ITEM, true));
+        assertTrue(itemStore.getItemOptionsArray().size == 1);
+        assertTrue(itemStore.getItemOptionsArray().first().availables.contains(ItemStore.Available.BOSS, true));
+        assertTrue(!itemStore.getItemOptionsArray().first().availables.contains(ItemStore.Available.ITEM, true));
 
     }
 
@@ -85,7 +85,7 @@ public class ItemStoreTest extends GameTest {
 
         ItemStore itemStore = new ItemStore(new Random());
 
-        for(ItemStore.ItemOptions i : itemStore.getItemOptions()) {
+        for(ItemStore.ItemOptions i : itemStore.getItemOptionsArray()) {
             Assert.assertTrue(i.item.getValues().region.getLeft()
                             + " index "
                             + i.item.getValues().region.getRight()
@@ -134,7 +134,7 @@ public class ItemStoreTest extends GameTest {
 
 
 
-        for(ItemStore.ItemOptions i : itemStore.getItemOptions()) {
+        for(ItemStore.ItemOptions i : itemStore.getItemOptionsArray()) {
 
             StatComponent pre = new StatComponent();
 

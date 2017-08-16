@@ -280,7 +280,10 @@ public class PlayScreen extends AbstractScreen {
             stats.collectedItems.add(new ItemVitaminC());
             stats.collectedItems.add(new ItemVitaminC());
             stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemVitaminC());*/
+            stats.collectedItems.add(new ItemVitaminC());
+            stats.collectedItems.add(new ItemNeatCube());
+            stats.collectedItems.add(new ItemLostLettersShotSpeedAccuracy());*/
+
         };
 
     }

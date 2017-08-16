@@ -828,10 +828,20 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.MANDATORYDOOR))
                         .buildArena(arena);
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(60f), Measure.units(10f), Measure.units(35f), Measure.units((25f))));
-                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(20f), Measure.units(35f), Measure.units((20f))));
-                arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 270));
-                arena.addEntity(chestFactory.chestBag(Measure.units(70), Measure.units(35f)));
+
+                if(random.nextBoolean()) {
+
+                    arena.addEntity(decorFactory.wallBag(Measure.units(60f), Measure.units(10f), Measure.units(35f), Measure.units((65f))));
+                    arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(22.5f), Measure.units(35f), Measure.units((20f))));
+                    arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 270));
+
+                } else {
+
+                    arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(10f), Measure.units(35f), Measure.units((65f))));
+                    arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(22.5f), Measure.units(35f), Measure.units((20f))));
+                    arena.addEntity(decorFactory.spikeWall(arena.getWidth() - Measure.units(10f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 90));
+
+                }
 
                 return arena;
             }

@@ -375,7 +375,17 @@ public class JigsawGenerator {
 
     public boolean placeRoomUsingDoors(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
         Array<DoorComponent> adc = avaliableDoorsSet.orderedItems();
-        adc.shuffle();
+
+        int i = rand.nextInt(3);
+
+        if(i == 0) {
+            adc.sort(farSort.LEFTMOST_DISTANCE_DOORS);
+        } else if(i == 1) {
+            adc.sort(farSort.RIGHTMOST_DISTANCE_DOORS);
+        } else {
+            adc.shuffle();
+        }
+       // adc.shuffle();
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
 
     }

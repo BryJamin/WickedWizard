@@ -65,7 +65,7 @@ public class ItemStore {
     }
 
 
-    private Array<ItemOptions> itemOptions = new Array<ItemOptions>();
+    private Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
 
     private Random random;
 
@@ -137,12 +137,12 @@ public class ItemStore {
     }
 
     private void createItem(Item item){
-        itemOptions.add(new ItemOptions(item, Available.SHOP, Available.ITEM));
+        itemOptionsArray.add(new ItemOptions(item, Available.SHOP, Available.ITEM));
     }
 
 
     private void createItem(Item item, Available... avability){
-        itemOptions.add(new ItemOptions(item, avability));
+        itemOptionsArray.add(new ItemOptions(item, avability));
     }
 
 
@@ -162,7 +162,7 @@ public class ItemStore {
 
         Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
 
-        for(ItemOptions io : itemOptions){
+        for(ItemOptions io : this.itemOptionsArray){
             if(io.availables.contains(available, true)) itemOptionsArray.add(io);
         }
 
@@ -171,7 +171,7 @@ public class ItemStore {
             int i = random.nextInt(itemOptionsArray.size);
             item = itemOptionsArray.get(i).item;
             if(!itemOptionsArray.get(i).repeatable) {
-                itemOptions.removeValue(itemOptionsArray.get(i), true);
+                this.itemOptionsArray.removeValue(itemOptionsArray.get(i), true);
             }
         } else {
             item = new ItemVitaminC();
@@ -180,6 +180,37 @@ public class ItemStore {
     }
 
 
+    /**
+     *  Updates the list of avaliable items within the item store
+     *  using item ids.
+     *
+     *  The item ids used to identify what should be within the itemstore
+     *
+     * @param itemIds - Ids that will be uploaded to itemOptions. If the
+     */
+    public void updateItemOptions(Array<String> itemIds){
+
+
+        Array<ItemOptions> copyArray = new Array<ItemOptions>();
+        copyArray.addAll(itemOptionsArray);
+
+        for(String id : itemIds){
+            for(ItemOptions itemOptions : itemOptionsArray){
+                if(itemOptions.item.getValues().id.equals(id)) {
+                    copyArray.removeValue(itemOptions, true);
+                }
+            }
+        }
+
+
+        for(ItemOptions itemOptions : copyArray){
+            itemOptionsArray.removeValue(itemOptions, false);
+        }
+
+
+        System.out.println("After: " + itemOptionsArray.size);
+
+    }
 
 
 
@@ -188,8 +219,8 @@ public class ItemStore {
 
         Array<String> stringArray = new Array<String>();
 
-        for(ItemOptions io: itemOptions){
-            stringArray.add(io.item.getValues().name);
+        for(ItemOptions io: itemOptionsArray){
+            stringArray.add(io.item.getValues().id);
         }
 
         return stringArray;
@@ -224,7 +255,23 @@ public class ItemStore {
     }
 
 
-    public Array<ItemOptions> getItemOptions() {
-        return itemOptions;
+    public Array<ItemOptions> getItemOptionsArray() {
+        return itemOptionsArray;
+    }
+
+
+    @Override
+    public String toString() {
+
+        String s = "Items Avaliable are :";
+
+        System.out.println(itemOptionsArray.size);
+
+        for(ItemOptions itemOption : this.itemOptionsArray){
+            s = s + "\n" + itemOption.item.getValues().name;
+        }
+
+
+        return s;
     }
 }

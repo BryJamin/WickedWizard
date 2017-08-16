@@ -90,7 +90,7 @@ public class PlayerPistol implements Weapon{
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?
                     baseDamage * (1 + e.getComponent(StatComponent.class).damage * 0.1f) :
                     baseDamage * ((1 + (e.getComponent(StatComponent.class).damage * 0.1f)) * 2f);  //crit multiplier
-            System.out.println("Bullet damage" + bullet.getComponent(BulletComponent.class).damage);
+           // System.out.println("Bullet damage" + bullet.getComponent(BulletComponent.class).damage);
         }
 
 

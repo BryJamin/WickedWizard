@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -68,6 +69,7 @@ public class CowlFactory extends EnemyFactory{
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.COWL),
                 0, 0, width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(1f,1f,1f,0f)
         ));
+        bag.add(new ArenaLockComponent());
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

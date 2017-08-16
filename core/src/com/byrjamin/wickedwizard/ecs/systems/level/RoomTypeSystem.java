@@ -5,6 +5,7 @@ import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.utils.Bag;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
@@ -26,7 +27,7 @@ public class RoomTypeSystem extends BaseSystem {
         switch(current.roomType){
             case TRAP:
             case BOSS:
-                if(world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class).exclude(BulletComponent.class)).getEntities().size() <= 0){
+                if(world.getAspectSubscriptionManager().get(Aspect.one(EnemyComponent.class, ArenaLockComponent.class).exclude(BulletComponent.class)).getEntities().size() <= 0){
 
                     if(!(current.getWaves().size <= 0)) {
                         BagToEntity.bagsToEntities(world, current.getWaves().removeFirst());
