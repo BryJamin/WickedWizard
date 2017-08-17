@@ -99,7 +99,7 @@ public class QuickSave {
             world.getSystem(ChangeLevelSystem.class).getGameCreator().setCurrentLevel(Integer.parseInt(level));
 
             JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator();
-            jg.getItemStore().updateItemOptions(json.fromJson(Array.class, saveData.getItemPoolJSON()));
+            jg.getItemStore().updateItemOptions(json.fromJson(Array.class, String.class, saveData.getItemPoolJSON()));
 
             System.out.println(jg.getItemStore().toString());
 

@@ -37,6 +37,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.screens.world.DevModeMenuWorld;
+import com.byrjamin.wickedwizard.screens.world.SettingsWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -64,10 +65,13 @@ public class MenuScreen extends AbstractScreen {
     private AssetManager manager;
 
     private World world;
+    private World backdropWorld;
 
     private DevModeMenuWorld devModeMenuWorld;
+    private SettingsWorld settingsWorld;
 
     private GestureDetector gestureDetector;
+    private GestureDetector settingsDetector;
 
     private Preferences settings;
     private Preferences devSettings;
@@ -80,12 +84,24 @@ public class MenuScreen extends AbstractScreen {
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
 
+
+    private static final float musicButtonPosX = Measure.units(5f);
+    private static final float musicButtonPosY = Measure.units(5f);
+
+    private static final float soundButtonPosX = Measure.units(17.5f);
+    private static final float soundButtonPosY = Measure.units(5f);
+
+    private static final float settingsButtonPosX = Measure.units(85f);
+    private static final float settingsButtonPosY = Measure.units(5f);
+
+    private static final float smallButtonSize = Measure.units(10f);
+
     private MenuButton menuButton;
 
 
 
     public enum MenuType {
-        MAIN, DEV, SETTING, DOWN;
+        MAIN, DEV, SETTING, CHALLENGES;
     }
 
     private MenuType menuType;
@@ -119,6 +135,8 @@ public class MenuScreen extends AbstractScreen {
         createMenu();
 
         devModeMenuWorld = new DevModeMenuWorld(game, gameport);
+        settingsWorld = new SettingsWorld(game, gameport);
+        settingsDetector = new GestureDetector(settingsWorld);
         Gdx.input.setCatchBackKey(false);
 
     }
@@ -130,7 +148,15 @@ public class MenuScreen extends AbstractScreen {
 
     public void handleInput(float dt) {
         InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(gestureDetector);
+
+        switch (menuType){
+            case SETTING: multiplexer.addProcessor(settingsDetector);
+                break;
+            default:
+                multiplexer.addProcessor(gestureDetector);
+                break;
+        }
+        //multiplexer.addProcessor(gestureDetector);
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -154,7 +180,22 @@ public class MenuScreen extends AbstractScreen {
                 )
                 .build();
 
+
+        WorldConfiguration backDropconfig = new WorldConfigurationBuilder()
+                .with(WorldConfigurationBuilder.Priority.HIGHEST,
+                        new MovementSystem()
+                )
+                .with(WorldConfigurationBuilder.Priority.HIGH,
+                        new AnimationSystem(),
+                        new StateSystem())
+                .with(WorldConfigurationBuilder.Priority.LOW,
+                        new RenderingSystem(game.batch, manager, gameport),
+                        new BoundsDrawingSystem()
+                )
+                .build();
+
         world = new World(config);
+        backdropWorld = new World(backDropconfig);
         world.getSystem(MusicSystem.class).playMainMenuMusic();
 
 
@@ -163,7 +204,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        Entity backdrop = world.createEntity();
+        Entity backdrop = backdropWorld.createEntity();
         backdrop.edit().add(new PositionComponent(0,0));
         backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
                 ColorResource.RGBtoColor(137, 207, 240, 1)));
@@ -171,7 +212,7 @@ public class MenuScreen extends AbstractScreen {
 
 
 
-        boolean isTutorialComplete = preferences.getBoolean(PreferenceStrings.DATA_TUTORIAL_COMPLETE, false);
+        boolean isTutorialComplete = DataSave.isDataAvailable(DataSave.TUTORIAL_COMPLETE);
 
         if(isTutorialComplete){
             setUpMenuScreenStartAndTutorial();
@@ -186,14 +227,14 @@ public class MenuScreen extends AbstractScreen {
         boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
 
-        float x = Measure.units(5f);
-        float y = Measure.units(5);
+        float x = musicButtonPosX;
+        float y = musicButtonPosY;
 
         Entity musicSetting = world.createEntity();
         musicSetting.edit().add(new PositionComponent(x, y));
-        musicSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
+        musicSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         TextureRegionComponent trc = new TextureRegionComponent(musicOn ? atlas.findRegion(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegion(TextureStrings.SETTINGS_MUSIC_OFF),
-                Measure.units(10f), Measure.units(10f), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+                smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         musicSetting.edit().add(trc);
         musicSetting.edit().add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -209,14 +250,14 @@ public class MenuScreen extends AbstractScreen {
         }));
 
 
-        x = Measure.units(17.5f);
-        y = Measure.units(5);
+        x = soundButtonPosX;
+        y = soundButtonPosY;
 
         Entity soundSetting = world.createEntity();
         soundSetting.edit().add(new PositionComponent(x, y));
-        soundSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(10f), Measure.units(10f))));
+        soundSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         trc = new TextureRegionComponent(soundOn ? atlas.findRegion(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegion(TextureStrings.SETTINGS_SOUND_OFF),
-                Measure.units(10f), Measure.units(10f), TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+                smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         soundSetting.edit().add(trc);
         soundSetting.edit().add(new AnimationStateComponent(0));
         animMap = new IntMap<Animation<TextureRegion>>();
@@ -230,6 +271,25 @@ public class MenuScreen extends AbstractScreen {
                 setUpSoundEntity(e, !soundOn);
             }
         }));
+
+
+        x = settingsButtonPosX;
+        y = settingsButtonPosY;
+
+        Entity goToSettings = world.createEntity();
+        goToSettings.edit().add(new PositionComponent(x, y));
+        goToSettings.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
+        trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
+        goToSettings.edit().add(trc);
+        goToSettings.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                menuType = MenuType.SETTING;
+            }
+        }));
+
+
 
     }
 
@@ -323,17 +383,33 @@ public class MenuScreen extends AbstractScreen {
 
         if (delta < 0.030f) {
             world.setDelta(delta);
+
+            backdropWorld.setDelta(delta);
         } else {
             world.setDelta(0.030f);
+            backdropWorld.setDelta(0.030f);
         }
 
         handleInput(world.delta);
-        world.process();
-        if(menuType == MenuType.MAIN) {
-          //  world.process();
-        } else if(menuType == MenuType.DEV){
-            devModeMenuWorld.process(delta);
+
+        backdropWorld.process();
+
+        switch (menuType){
+            case MAIN:
+               // backdropWorld.process();
+                world.process();
+                break;
+            case DEV:
+                world.process();
+                devModeMenuWorld.process(delta);
+                break;
+            case SETTING:
+                settingsWorld.process(delta);
+                System.out.println("sadface");
+                break;
         }
+
+
     }
 
     @Override
@@ -383,11 +459,16 @@ public class MenuScreen extends AbstractScreen {
             Vector3 touchInput = new Vector3(x, y, 0);
             gameport.unproject(touchInput);
 
-            if(menuType == MenuType.MAIN) {
-                world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-            } else if(menuType == MenuType.DEV){
-                devModeMenuWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+            switch(menuType){
+                case MAIN: world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+                case DEV:
+                    devModeMenuWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+
             }
+
             return true;
         }
 

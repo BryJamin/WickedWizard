@@ -24,13 +24,14 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.screens.PlayScreenConfig;
+import com.byrjamin.wickedwizard.utils.GameDelta;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 28/07/2017.
  */
 
-public class DevModeMenuWorld extends WorldContainer{
+public class DevModeMenuWorld implements WorldContainer{
 
     private MainGame game;
 
@@ -38,6 +39,8 @@ public class DevModeMenuWorld extends WorldContainer{
 
     private Preferences settings;
     private Preferences devToolPrefs;
+
+    private World world;
 
 
     public DevModeMenuWorld(MainGame game, Viewport gameport) {
@@ -261,7 +264,7 @@ public class DevModeMenuWorld extends WorldContainer{
 
     @Override
     public void process(float delta) {
-        super.process(delta);
+        GameDelta.delta(world, delta);
     }
 
     @Override

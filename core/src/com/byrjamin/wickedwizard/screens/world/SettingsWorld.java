@@ -4,9 +4,10 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -15,56 +16,53 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.GameDelta;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
- * Created by BB on 08/08/2017.
- *
- * Used to ask are you sure
- *
+ * Created by BB on 17/08/2017.
  */
 
-public class AreYouSureWorld implements WorldContainer {
-
-
-    private final String text;
+public class SettingsWorld extends AbstractGestureDectector implements WorldContainer{
 
     private final MainGame game;
     private final Viewport gameport;
     private final TextureAtlas atlas;
     private final MenuButton menuButton;
 
-    private final float buttonWidth = Measure.units(20f);
 
-    private boolean isActive = false;
+    private static final float buttonWidth = Measure.units(30f);
+    private static final float buttonHeight = Measure.units(10f);
+
+    private static final Color buttonForeground = new Color(Color.BLACK);
+    private static final Color buttonBackground = new Color(Color.WHITE);
+
+
     private World world;
 
-    public AreYouSureWorld(MainGame game, Viewport viewport, String text){
+    public SettingsWorld(MainGame game, Viewport viewport){
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
         menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
-        this.text = text;
-        isActive = true;
         createWorld();
     }
 
 
-    public World createWorld() {
+
+
+    public World createWorld(){
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -81,51 +79,29 @@ public class AreYouSureWorld implements WorldContainer {
                 )
                 .build();
 
+
         world = new World(config);
 
-        Camera gamecam = gameport.getCamera();
 
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2 + MainGame.GAME_BORDER;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2 + MainGame.GAME_BORDER;
+        Entity startTutorial =
+                menuButton.createButton(
+                        world,
+                        MenuStrings.RESET,
+                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth)
+                        , CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight),
+                        buttonWidth,
+                        buttonHeight,
+                        buttonForeground,
+                        buttonBackground);
 
-
-        Entity textEntity = world.createEntity();
-        textEntity.edit().add(new PositionComponent(gameport.getCamera().position.x
-                ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + Measure.units(50f)));
-        textEntity.edit().add(new TextureFontComponent(text));
-
-        Entity blackScreen = world.createEntity();
-        blackScreen.edit().add(new PositionComponent(gameport.getCamera().position.x - gameport.getWorldWidth() / 2,
-                gameport.getCamera().position.y - gameport.getWorldHeight() / 2));
-        blackScreen.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
-                gameport.getCamera().viewportWidth,
-                gameport.getCamera().viewportHeight,
-                TextureRegionComponent.BACKGROUND_LAYER_FAR,
-                new Color(Color.BLACK)));
-
-
-
-        Entity yes = menuButton.createButton(world, MenuStrings.YES, camX + Measure.units(20f)
-                ,camY + Measure.units(20f),buttonWidth, Measure.units(10f), new Color(Color.WHITE), new Color(Color.BLACK));
-        yes.edit().add(new ActionOnTouchComponent(new Action() {
+        startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
+                DataSave.clearData();
                 game.getScreen().dispose();
                 game.setScreen(new MenuScreen(game));
             }
         }));
-
-        Entity resume = menuButton.createButton(world, MenuStrings.NO, camX + Measure.units(60f)
-                ,camY + Measure.units(20f), buttonWidth, Measure.units(10f), new Color(Color.WHITE), new Color(Color.BLACK));
-        resume.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                PlayScreen playScreen = (PlayScreen) game.getScreen();
-                playScreen.escapeAreYouSure();
-            }
-        }));
-
-
 
 
         return world;
@@ -141,5 +117,13 @@ public class AreYouSureWorld implements WorldContainer {
     @Override
     public World getWorld() {
         return world;
+    }
+
+
+    @Override
+    public boolean tap(float x, float y, int count, int button) {
+        Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
+        world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+        return true;
     }
 }

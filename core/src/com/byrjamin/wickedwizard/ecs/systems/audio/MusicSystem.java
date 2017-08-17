@@ -14,7 +14,6 @@ import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.utils.RoomTransition;
 import com.byrjamin.wickedwizard.utils.enums.Level;
 
 /**
@@ -29,9 +28,9 @@ public class MusicSystem extends BaseSystem {
 
     private AssetManager assetManager;
 
-    private Music currentMusic;
+    private static Music currentMusic;
 
-    private Mix currentMix = new Mix("");
+    private static Mix currentMix = new Mix("");
 
 
     public MusicSystem(AssetManager assetManager){
@@ -45,13 +44,13 @@ public class MusicSystem extends BaseSystem {
 
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
         boolean musicOn = preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+
         if(currentMusic.isPlaying() && !musicOn){
             stopMusic();
         }
 
         if(musicOn && !currentMusic.isPlaying()) {
             currentMusic.play();
-            System.out.println("awgduawnxdyawdyaw");
         }
 
     }
@@ -92,9 +91,6 @@ public class MusicSystem extends BaseSystem {
             currentMusic = Gdx.audio.newMusic(Gdx.files.internal(mix.getFileName()));
             currentMusic.setLooping(true);
             currentMusic.setVolume(mix.getVolume());
-            //currentMusic.play();
-            //currentMusic.pause();
-            //currentMusic.play();
         }
     }
 

@@ -84,19 +84,4 @@ public class MapCoords {
         return result;
     }
 
-
-    public static final Comparator<MapCoords> FAR_COMPARATOR = new Comparator<MapCoords>() {
-        @Override
-        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
-
-
-
-
-
-
-
-            return 0;
-        }
-    };
-
 }

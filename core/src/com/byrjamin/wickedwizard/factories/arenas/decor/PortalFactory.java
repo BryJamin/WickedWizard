@@ -28,6 +28,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presets.BreakRoom;
+import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
@@ -91,9 +92,33 @@ public class PortalFactory extends AbstractFactory {
             }
         });
 
+        return bag;
+    }
+
+    public ComponentBag endChallengePortal(float x, float y, final String id){
+
+        ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                DataSave.saveData(id);
+
+                world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(EndGameSystem.class).backToMenu();
+
+                    }
+                });
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        });
 
         return bag;
-
     }
 
 

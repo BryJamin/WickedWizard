@@ -37,6 +37,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
+import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -469,12 +470,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
 
 
-        arena.addEntity(new PortalFactory(assetManager).endGamePortal(arena.getWidth() / 2, Measure.units(25f)));
-
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        preferences.putBoolean(PreferenceStrings.DATA_TUTORIAL_COMPLETE, true);
-        preferences.flush();
-        //boolean isTutorialComplete = preferences.getBoolean(PreferenceStrings.DATA_TUTORIAL_COMPLETE, false);
+        arena.addEntity(new PortalFactory(assetManager).endChallengePortal(arena.getWidth() / 2, Measure.units(25f), DataSave.TUTORIAL_COMPLETE));
 
         return arena;
 

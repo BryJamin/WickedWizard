@@ -35,6 +35,7 @@ import com.byrjamin.wickedwizard.factories.weapons.CritCalculator;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.CenterMath;
+import com.byrjamin.wickedwizard.utils.GameDelta;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 import java.util.Locale;
@@ -43,7 +44,7 @@ import java.util.Locale;
  * Created by ae164 on 19/05/17.
  */
 
-public class PauseWorld extends WorldContainer {
+public class PauseWorld implements WorldContainer {
 
     private SpriteBatch batch;
     private MainGame game;
@@ -52,6 +53,8 @@ public class PauseWorld extends WorldContainer {
     private Viewport gameport;
 
     private MenuButton menuButton;
+
+    private World world;
 
 
 
@@ -249,7 +252,8 @@ public class PauseWorld extends WorldContainer {
     }
 
     public void process(float delta){
-        super.process(delta);
+
+        GameDelta.delta(world, delta);
 
         float camX = gameport.getCamera().position.x - gameport.getCamera().viewportWidth / 2;
         float camY = gameport.getCamera().position.y - gameport.getCamera().viewportHeight / 2;
