@@ -11,6 +11,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BossComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -133,6 +136,9 @@ public class BossEnd extends EnemyFactory {
         ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, mainBodyHealth);
         BagSearch.getObjectOfTypeClass(OnDeathActionComponent.class, bag);
         BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(BossComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
+        bag.add(new ArenaLockComponent());
 
         bag.add(new OnDeathActionComponent(new Action() {
             @Override
@@ -198,6 +204,8 @@ public class BossEnd extends EnemyFactory {
 
                 playerCbc.setCenter(endCbc.getCenterX(), endCbc.getCenterY());
                 playerPosition.position.set(playerCbc.bound.x, playerCbc.bound.y, playerPosition.position.z);
+
+                e.edit().add(new BossComponent());
 
                 e.edit().remove(ActionAfterTimeComponent.class);
                 e.edit().add(new ActionAfterTimeComponent(new SummonArms(), 0.5f));
@@ -404,6 +412,7 @@ public class BossEnd extends EnemyFactory {
         }
 
         hand.edit().add(new CollisionBoundComponent(new Rectangle(tempPos, tempPos, handsWidth, handsHeight)));
+        hand.edit().add(new BossComponent());
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 CenterMath.offsetX(handsWidth, handsTextureWidth),
                 CenterMath.offsetY(handsHeight, handsTextureHeight),

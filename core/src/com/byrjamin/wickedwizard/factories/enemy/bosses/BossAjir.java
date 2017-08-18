@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BossComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -117,6 +118,7 @@ public class BossAjir extends EnemyFactory{
         y = y - height / 2;
 
         ComponentBag bag = this.defaultEnemyBagNoLootNoDeath(new ComponentBag(), x, y, health);
+        bag.add(new BossComponent());
 
         bag.add(new OnDeathActionComponent(new Action() {
             @Override

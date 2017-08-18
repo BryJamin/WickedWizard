@@ -61,6 +61,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraShakeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
@@ -245,8 +246,8 @@ public class AdventureWorld {
                         new UISystem(game, gameport,
                                 arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
                                 playerStats,
-                                playerCurrency)
-
+                                playerCurrency),
+                        new HealthBarSystem(game, gameport)
                 )
                 .build();
 

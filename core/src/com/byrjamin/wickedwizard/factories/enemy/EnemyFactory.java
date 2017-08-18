@@ -11,6 +11,7 @@ import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BossComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -88,6 +89,7 @@ public class EnemyFactory extends AbstractFactory {
         //fillbag.add(new LootComponent());
         fillbag.add(new HealthComponent(health));
         fillbag.add(new BlinkOnHitComponent());
+        fillbag.add(new BossComponent());
         fillbag.add(new EnemyComponent());
         fillbag.add(new OnDeathActionComponent(new Action() {
             @Override
