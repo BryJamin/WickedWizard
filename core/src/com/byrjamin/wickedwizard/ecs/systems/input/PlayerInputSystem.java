@@ -123,6 +123,11 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                         ac.accelX = Measure.units(15f) * (1 + sc.speed);
                         ac.maxX = Measure.units(80f) * (1 + sc.speed);
                         GrappleSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
+
+                        if(mtc.hasTarget()) {
+                            mtc.reset();
+                        }
+
                     }
                 }
             }

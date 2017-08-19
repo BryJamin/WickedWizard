@@ -4,8 +4,6 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -16,6 +14,7 @@ import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
@@ -32,12 +31,15 @@ import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.screens.DataSave;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -106,12 +108,6 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
-
-
-
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
@@ -136,7 +132,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         for(int i = 0; i < 3; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90));
 
-        arena.addEntity(createTutorialHighlight(0,0, WIDTH, WALLWIDTH * 2, new Color(Color.BLACK)));
+        arena.addEntity(createTutorialHighlight(0,0, arena.getWidth(), WALLWIDTH * 2, new Color(Color.BLACK)));
 
         return arena;
 
@@ -147,9 +143,6 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Arena arena = new Arena(arenaSkin, defaultCoords,
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT * 2);
 
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -223,13 +216,6 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena(arena);
-
-/*        //BEFORE GAP
-        arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3, arenaSkin));
-        //AFTER GAP
-        arena.addEntity(decorFactory.wallBag(WIDTH - WALLWIDTH * 6,  -WALLWIDTH, WALLWIDTH * 6, WALLWIDTH * 3, arenaSkin));
-        //HIDDEN SAFETY NET
-        arena.addEntity(decorFactory.wallBag(0,  -WALLWIDTH * 3, WIDTH, WALLWIDTH * 3, arenaSkin));*/
 
         arena.addEntity(decorFactory.wallBag(Measure.units(30f),  Measure.units(10f), Measure.units(40f), WALLWIDTH * 2, arenaSkin));
 
@@ -336,10 +322,6 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Arena arena = new Arena(Arena.RoomType.TRAP, arenaSkin, defaultCoords);
 
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
         arena =  new ArenaBuilder(assetManager, arenaSkin).addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
@@ -351,6 +333,9 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1000));
         bag.add(new TextureFontComponent(enemyTutorialString));
         arena.addEntity(bag);
+
+        float HEIGHT = arena.getHeight();
+        float WIDTH = arena.getWidth();
 
         arena.addEntity(createTutorialHighlight(0, WALLWIDTH * 2, WALLWIDTH / 2, HEIGHT));
         arena.addEntity(createTutorialHighlight(0, WALLWIDTH * 2, WIDTH, WALLWIDTH / 2));
@@ -394,12 +379,6 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2));
 
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT * 3);
-
-        float HEIGHT = SECTION_HEIGHT * 3;
-        float WIDTH = SECTION_WIDTH;
-
         arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
@@ -420,7 +399,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         //TODO find less lazy way to add the highlight to the arena
         Bag<Component> bag;
 
-        arena.addEntity(decorFactory.platform(0, HEIGHT - Measure.units(35), WIDTH));
+        arena.addEntity(decorFactory.platform(0, arena.getHeight() - Measure.units(35), arena.getWidth()));
 /*        bag = decorFactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 3),
@@ -470,7 +449,25 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
 
 
-        arena.addEntity(new PortalFactory(assetManager).endChallengePortal(arena.getWidth() / 2, Measure.units(25f), DataSave.TUTORIAL_COMPLETE));
+        arena.addEntity(new PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(25f),
+
+                new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+
+                        DataSave.saveData(DataSave.TUTORIAL_COMPLETE);
+
+                        world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+
+                                MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                game.getScreen().dispose();
+                                game.setScreen(new PlayScreen(game));
+                            }
+                        });
+                    }
+                }));
 
         return arena;
 

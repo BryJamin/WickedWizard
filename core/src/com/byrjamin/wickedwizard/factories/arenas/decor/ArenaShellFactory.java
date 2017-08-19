@@ -34,9 +34,6 @@ public class  ArenaShellFactory extends AbstractFactory {
     public static final float SECTION_WIDTH = MainGame.GAME_WIDTH;
     public static final float SECTION_HEIGHT = MainGame.GAME_HEIGHT;
 
-    public final float WIDTH = MainGame.GAME_WIDTH;
-    public final float HEIGHT = MainGame.GAME_HEIGHT;
-
     public final float WALLWIDTH = Measure.units(5);
 
     public Arena createOmniArenaSquareCenter(MapCoords defaultCoords) {

@@ -40,6 +40,9 @@ public class EndGameSystem extends BaseSystem {
         game.setScreen(new MenuScreen(game));
     }
 
+    public MainGame getGame() {
+        return game;
+    }
 
     public void quickSaveAndBackToMenu(){
         QuickSave.saveGame(world);

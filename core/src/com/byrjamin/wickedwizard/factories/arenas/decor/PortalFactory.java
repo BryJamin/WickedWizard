@@ -121,8 +121,25 @@ public class PortalFactory extends AbstractFactory {
         return bag;
     }
 
+    public ComponentBag customSmallPortal(float x, float y, final Action action){
 
-    private ComponentBag portal(float x, float y, float width, float height, Task task){
+        return portal(x, y, mapPortalSize, mapPortalSize, new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                action.performAction(world, e);
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        });
+
+
+    }
+
+
+    public ComponentBag portal(float x, float y, float width, float height, Task task){
 
         x = x - width / 2;
         y = y - height / 2;
