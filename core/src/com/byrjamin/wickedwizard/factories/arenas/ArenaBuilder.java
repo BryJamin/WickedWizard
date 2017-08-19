@@ -9,6 +9,7 @@ import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -38,23 +39,35 @@ public class ArenaBuilder {
     private MapCoords defaultCoords;
     private Array<Section> sections = new Array<Section>();
 
+
+    private Arena.RoomType roomType = Arena.RoomType.TRAP;
+
     private AssetManager assetManager;
     private TextureAtlas atlas;
     private ArenaSkin arenaSkin;
     private BackgroundFactory bf = new BackgroundFactory();
     private DecorFactory decorFactory;
 
-    public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin){
+    public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin, Section... sections){
         this.assetManager = assetManager;
         this.arenaSkin = arenaSkin;
         atlas = this.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+
+        this.sections.addAll(sections);
+
     }
 
     public ArenaBuilder addSection(Section s){
         sections.add(s);
         return this;
     }
+
+    public ArenaBuilder addRoomType(Arena.RoomType val){
+        this.roomType = val;
+        return this;
+    }
+
 
 
     public void setWidthAndHeight(Arena a, Array<Section> sections){
@@ -93,24 +106,25 @@ public class ArenaBuilder {
         }
     }
 
-    public Arena buildArena(Arena arena){
 
-        if(sections.size <= 0) return arena;
 
-        defaultCoords = arena.getStartingCoords(); //sections.get(0).coords;
+    public Arena buildArena(){
 
-        //Arena arena = new Arena(a.roomType, arenaSkin, sections.get(0).coords);
-        //setArenaCoords(a, sections);
+        if(sections.size <= 0) return new Arena(new LightGraySkin(), new MapCoords());
+
+        Array<MapCoords> mapCoordses = new Array<MapCoords>();
+
+        for(Section s : sections){
+            mapCoordses.add(s.coords);
+        }
+
+        Arena arena = new Arena(roomType, arenaSkin, mapCoordses);
+        defaultCoords = sections.first().coords;
         setWidthAndHeight(arena, sections);
 
 
 
         for(Section s : sections) {
-            //arena.cotainingCoords.add(s.coords);
-
-            //System.out.println(sections.size);
-
-            //TODO multX may not work for negatives
 
             int multX = s.coords.getX() - defaultCoords.getX();
             int multY = s.coords.getY() - defaultCoords.getY();
@@ -340,6 +354,11 @@ public class ArenaBuilder {
         public wall floor;
 
         public ArenaSkin arenaSkin;
+
+
+        public Section(){
+            this(new MapCoords(), wall.DOOR, wall.DOOR, wall.DOOR, wall.DOOR);
+        }
 
 
         public Section(MapCoords coords, wall left, wall right, wall ceiling, wall floor){

@@ -35,17 +35,13 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
     //TODO actually make the rareItem rare.
     public Arena createItemRoom(MapCoords defaultCoords, Item item, Item rareItem) {
 
-        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addRoomType(Arena.RoomType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.GRAPPLE,
-                        ArenaBuilder.wall.DOOR)).buildArena(arena);
+                        ArenaBuilder.wall.DOOR)).buildArena();
 
         arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
         arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
@@ -62,14 +58,13 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createLeftItemRoom(MapCoords defaultCoords, Item item) {
 
-        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addRoomType(Arena.RoomType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.FULL)).buildArena();
 
         arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(35f), Measure.units(10f), Measure.units(30f), Measure.units(25f)));
 
@@ -84,14 +79,13 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createRightItemRoom(MapCoords defaultCoords, Item item) {
 
-        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addRoomType(Arena.RoomType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.FULL)).buildArena();
 
         arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(10f), Measure.units(30f), Measure.units(25f)));
 
@@ -107,14 +101,14 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createUpItemRoom(MapCoords defaultCoords, Item item) {
 
-        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addRoomType(Arena.RoomType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.FULL))
+                .buildArena();
 
         arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(32.5f), Measure.units(60f), Measure.units(5f)));
 
@@ -129,14 +123,12 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createDownItemRoom(MapCoords defaultCoords, Item item) {
 
-        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, defaultCoords);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.DOOR)).buildArena(arena);
+                        ArenaBuilder.wall.DOOR)).buildArena();
 
 
 
@@ -163,23 +155,12 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createItemTestRoom(MapCoords defaultCoords) {
 
-        Array<MapCoords> containingCorrds = new Array<MapCoords>();
-        containingCorrds.add(defaultCoords);
-        containingCorrds.add(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-
-        Arena arena = new Arena(Arena.RoomType.ITEM, arenaSkin, containingCorrds.toArray());
-
-
-        arena.setWidth(SECTION_WIDTH * 2);
-        arena.setHeight(SECTION_HEIGHT);
-
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.FULL)).buildArena();
 
 
         Item[] items = {new Medicine(), new ItemAnger(), new ItemSwiftShot()};

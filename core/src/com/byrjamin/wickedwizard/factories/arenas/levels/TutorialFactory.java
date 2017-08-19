@@ -106,14 +106,12 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena groundMovementTutorial(MapCoords defaultCoords){
 
-        Arena arena = new Arena(arenaSkin, defaultCoords);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.FULL)).buildArena();
 
         Bag<Component> textBag = new Bag<Component>();
         textBag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
@@ -141,10 +139,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena platformTutorial(MapCoords defaultCoords){
 
-        Arena arena = new Arena(arenaSkin, defaultCoords,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -154,7 +149,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.NONE)).buildArena(arena);
+                        ArenaBuilder.wall.NONE)).buildArena();
 
         //Blocker
         arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(10f), Measure.units(20f), Measure.units(50f), arenaSkin));
@@ -190,12 +185,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena jumpTutorial(MapCoords defaultCoords){
 
-        Arena arena = new Arena(arenaSkin, defaultCoords,
-                new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
-                new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()));
-
-        arena = new ArenaBuilder(assetManager, arenaSkin).addSection(
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin).addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -215,7 +205,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL)).buildArena(arena);
+                                ArenaBuilder.wall.FULL)).buildArena();
 
         arena.addEntity(decorFactory.wallBag(Measure.units(30f),  Measure.units(10f), Measure.units(40f), WALLWIDTH * 2, arenaSkin));
 
@@ -320,14 +310,12 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena enemyTurtorial(MapCoords defaultCoords){
 
-        Arena arena = new Arena(Arena.RoomType.TRAP, arenaSkin, defaultCoords);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin).addSection(
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin).addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.DOOR)).buildArena(arena);
+                        ArenaBuilder.wall.DOOR)).buildArena();
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1000));
@@ -375,11 +363,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena grappleTutorial(MapCoords defaultCoords){
 
-        Arena arena = new Arena(arenaSkin, defaultCoords,
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2));
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
@@ -394,7 +378,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.NONE)).buildArena(arena);
+                        ArenaBuilder.wall.NONE)).buildArena();
 
         //TODO find less lazy way to add the highlight to the arena
         Bag<Component> bag;
@@ -429,17 +413,12 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena endTutorial(MapCoords defaultCoords){
 
-        Arena arena = new Arena(arenaSkin, defaultCoords);
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.FULL)).buildArena(arena);
+                        ArenaBuilder.wall.FULL)).buildArena();
 
         Bag<Component> bag = new Bag<Component>();
 

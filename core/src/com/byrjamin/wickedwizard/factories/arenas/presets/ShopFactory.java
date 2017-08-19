@@ -57,17 +57,14 @@ public class ShopFactory extends AbstractFactory {
 
     public Arena createShop(MapCoords defaultCoords, Item item1, Item item2) {
 
-        Arena arena = new Arena(Arena.RoomType.SHOP, arenaSkin, defaultCoords);
-
-        arena.setWidth(SECTION_WIDTH);
-        arena.setHeight(SECTION_HEIGHT);
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addRoomType(Arena.RoomType.SHOP)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.GRAPPLE,
-                        ArenaBuilder.wall.DOOR)).buildArena(arena);
+                        ArenaBuilder.wall.DOOR))
+                .buildArena();
 
         for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(37.5f), new PickUpHalfHealthUp(), 5)) {
             arena.addEntity(b);

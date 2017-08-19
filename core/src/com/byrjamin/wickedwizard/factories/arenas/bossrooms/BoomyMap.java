@@ -58,7 +58,7 @@ public class BoomyMap extends AbstractFactory{
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL)).buildArena(arena);
+                                ArenaBuilder.wall.FULL)).buildArena();
 
                 arena.addEntity(new MrBoomyBoss(assetManager).mrBoomy(arena.getWidth() / 2, arena.getHeight() / 2));
 

@@ -41,23 +41,22 @@ public class BreakRoom extends AbstractFactory {
 
     public Arena createBreakRoom(){
 
-        Arena arena = new Arena(new AllBlackSkin(), new MapCoords());
-        arena = new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(new MapCoords(),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
-                .buildArena(arena);
+                .buildArena();
 
 
-        float width = Measure.units(27.5f);
-        float height = Measure.units(20f);
+        float buttonWidth = Measure.units(27.5f);
+        float buttonHeight = Measure.units(20f);
 
 
         MenuButton menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
 
-        Bag<ComponentBag> bags = menuButton.createButtonWithAction(MenuStrings.BREAK, Measure.units(10f), Measure.units(30f), width, height,
+        Bag<ComponentBag> bags = menuButton.createButtonWithAction(MenuStrings.BREAK, Measure.units(10f), Measure.units(30f), buttonWidth, buttonHeight,
                 new Color(Color.WHITE), new Color(Color.BLACK), new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -75,7 +74,7 @@ public class BreakRoom extends AbstractFactory {
             arena.addEntity(bag);
         }
 
-        bags = menuButton.createButtonWithAction(MenuStrings.CONTINUE, Measure.units(62.5f), Measure.units(30f), width, height,
+        bags = menuButton.createButtonWithAction(MenuStrings.CONTINUE, Measure.units(62.5f), Measure.units(30f), buttonWidth, buttonHeight,
                 new Color(Color.WHITE), new Color(Color.BLACK), new Action() {
                     @Override
                     public void performAction(World world, Entity e) {

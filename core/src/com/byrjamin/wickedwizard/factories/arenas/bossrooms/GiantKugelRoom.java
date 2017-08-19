@@ -47,16 +47,7 @@ public class GiantKugelRoom extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
-                arena.roomType = Arena.RoomType.TRAP;
-
-                arena.setWidth(SECTION_WIDTH * 2);
-                arena.setHeight(SECTION_HEIGHT * 2);
-
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -76,7 +67,7 @@ public class GiantKugelRoom extends AbstractFactory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.NONE)).buildArena(arena);
+                                ArenaBuilder.wall.NONE)).buildArena();
 
 
                 arena.addEntity(new BossGurner(assetManager).giantKugelDusche(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(10f)));

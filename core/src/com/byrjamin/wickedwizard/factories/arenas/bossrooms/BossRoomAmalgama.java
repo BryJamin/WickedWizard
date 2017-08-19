@@ -44,18 +44,7 @@ public class BossRoomAmalgama extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 4, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 5, defaultCoords.getY()));
-                arena.roomType = Arena.RoomType.TRAP;
-
-                arena.setWidth(SECTION_WIDTH);
-                arena.setHeight(SECTION_HEIGHT);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -85,7 +74,7 @@ public class BossRoomAmalgama extends AbstractFactory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL)).buildArena(arena);
+                                ArenaBuilder.wall.FULL)).buildArena();
 
                 arena.addEntity(new BossAmalgama(assetManager).amalgama(-Measure.units(80f), 0));
 

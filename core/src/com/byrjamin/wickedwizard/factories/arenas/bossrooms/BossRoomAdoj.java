@@ -59,7 +59,7 @@ public class BossRoomAdoj extends AbstractFactory {
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL)).buildArena(arena);
+                                ArenaBuilder.wall.FULL)).buildArena();
 
                 arena.addEntity(new BossAdoj(assetManager).bossAdoj(Measure.units(70f), Measure.units(10f)));
 

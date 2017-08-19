@@ -63,10 +63,6 @@ public class EndGameMap extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-
-                Arena arena = new Arena(arenaSkin, defaultCoords
-                        );
-
                 ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin);
 
                 arenaBuilder.addSection(new ArenaBuilder.Section(defaultCoords,
@@ -75,7 +71,7 @@ public class EndGameMap extends AbstractFactory {
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL));
 
-                arenaBuilder.buildArena(arena);
+                Arena arena = arenaBuilder.buildArena();
 
 
                 arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));

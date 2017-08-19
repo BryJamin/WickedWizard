@@ -49,15 +49,7 @@ public class BossRoomEnd extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 20)
-                        );
-                arena.roomType = Arena.RoomType.TRAP;
-
-                arena.setWidth(SECTION_WIDTH);
-                arena.setHeight(SECTION_HEIGHT);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
@@ -68,7 +60,7 @@ public class BossRoomEnd extends AbstractFactory {
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL)).buildArena(arena);
+                                ArenaBuilder.wall.FULL)).buildArena();
 
                 arena.addEntity(new BossEnd(assetManager).end(SECTION_WIDTH / 2, Measure.units(35f)));
 

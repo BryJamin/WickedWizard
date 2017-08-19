@@ -155,10 +155,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             public Arena createArena(MapCoords defaultCoords) {
                 //TODO need to add change mandatory doors
 
-                Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-                arena.roomType = Arena.RoomType.TRAP;
-
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
@@ -168,7 +165,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.MANDATORYDOOR)).buildArena(arena);
+                                ArenaBuilder.wall.MANDATORYDOOR)).buildArena();
 
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(20), Measure.units(20), arena.getWidth() - Measure.units(40), Measure.units(25f), arenaSkin));
@@ -225,12 +222,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
-
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -250,7 +242,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                         ArenaBuilder.wall.NONE,
                                         ArenaBuilder.wall.DOOR,
                                         ArenaBuilder.wall.GRAPPLE,
-                                        ArenaBuilder.wall.NONE)).buildArena(arena);
+                                        ArenaBuilder.wall.NONE)).buildArena();
 
 
                 arena.addEntity(decorFactory.platform(0, SECTION_HEIGHT + Measure.units(5), arena.getWidth()));
@@ -287,11 +279,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
-                //arena.roomType = Arena.RoomType.TRAP;
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.MANDATORYDOOR,
@@ -302,7 +290,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.MANDATORYGRAPPLE,
                                 ArenaBuilder.wall.NONE))
-                        .buildArena(arena);
+                        .buildArena();
 
 
                 //WALLS
@@ -392,28 +380,17 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-                //arena.roomType = Arena.RoomType.TRAP;
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
-                        .buildArena(arena);
+                        .buildArena();
 
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(30f), Measure.units(10f), Measure.units(40f), Measure.units(15f)));
                 arena.addEntity(decorFactory.spikeWall(Measure.units(30f), Measure.units(25f), Measure.units(40f), Measure.units(5f), 0));
-
-
-
- /*               arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
-                arena.addEntity(decorFactory.spikeWall(Measure.units(20f), Measure.units(20f), Measure.units(10f), Measure.units(5f), 0));
-
-                arena.addEntity(decorFactory.wallBag(Measure.units(70f), Measure.units(10f), Measure.units(10f), Measure.units(10f)));
-                arena.addEntity(decorFactory.spikeWall(Measure.units(70f), Measure.units(20f), Measure.units(10f), Measure.units(5f), 0));
-*/
 
                 //Top Spikes
                 arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(50f), Measure.units(90f), Measure.units(5f), 180));
@@ -447,13 +424,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
-
-                arena.setWidth(SECTION_WIDTH);
-                arena.setHeight(SECTION_HEIGHT * 2);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
@@ -464,7 +435,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
-                        .buildArena(arena);
+                        .buildArena();
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(30f), Measure.units(20f)));
                 arena.addEntity(decorFactory.spikeWall(Measure.units(35), Measure.units(30f), Measure.units(5f), Measure.units(20f), 270));
@@ -538,16 +509,15 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
 
                 boolean isLeft = random.nextBoolean();
 
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 isLeft ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.FULL,
                                 isLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.MANDATORYGRAPPLE,
-                                ArenaBuilder.wall.MANDATORYDOOR)).buildArena(arena);
+                                ArenaBuilder.wall.MANDATORYDOOR)).buildArena();
 
                 float wallPos = isLeft ? arena.getWidth() - Measure.units(40f) : Measure.units(5f);
                 float skywallPos = isLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(40);
@@ -566,16 +536,13 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
 
-                arena.roomType = Arena.RoomType.TRAP;
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.DOOR)).buildArena(arena);
+                                ArenaBuilder.wall.DOOR)).buildArena();
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(20f), Measure.units(5f), Measure.units(25f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(20f), Measure.units(5f), Measure.units(25f)));
@@ -595,12 +562,11 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
 
 
                 boolean chestsAreLeft = random.nextBoolean();
 
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.DOOR,
                                 chestsAreLeft ? ArenaBuilder.wall.NONE : ArenaBuilder.wall.NONE,
@@ -610,7 +576,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 chestsAreLeft ? ArenaBuilder.wall.NONE : ArenaBuilder.wall.NONE,
                                 chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 chestsAreLeft ? ArenaBuilder.wall.GRAPPLE : ArenaBuilder.wall.FULL,
-                                chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL)).buildArena(arena);
+                                chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL)).buildArena();
 
 
                 arena.addWave(
@@ -640,15 +606,14 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
 
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
-                        .buildArena(arena);
+                        .buildArena();
 
                 for(int i = 0; i < 5; i++){
                     arena.addEntity(decorFactory.fixedWallTurret(Measure.units(5), Measure.units(30f + (i * 5f)), -90, 4f, 0));
@@ -675,15 +640,13 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .buildArena(arena);
+                        .buildArena();
 
                 arena.roomType = Arena.RoomType.TRAP;
 
@@ -733,17 +696,8 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
 
-                int i = random.nextInt(4);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
-                        .addSection(new ArenaBuilder.Section(defaultCoords,
-                                i != 0 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
-                                i != 1 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
-                                i != 2 ? ArenaBuilder.wall.GRAPPLE : ArenaBuilder.wall.FULL,
-                                i != 3 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL))
-                        .buildArena(arena);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4));
 
                 arena.roomType = Arena.RoomType.TRAP;
 
@@ -769,11 +723,9 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                                new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()));
 
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.NONE,
@@ -789,7 +741,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.DOOR))
-                        .buildArena(arena);
+                        .buildArena();
 
 
 
@@ -818,15 +770,14 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
 
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.MANDATORYDOOR))
-                        .buildArena(arena);
+                        .buildArena();
 
 
                 if(random.nextBoolean()) {
@@ -856,11 +807,11 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1));
+
 
                 boolean isLeft = random.nextBoolean();
 
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 isLeft ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.DOOR,
                                 isLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.MANDATORYDOOR,
@@ -871,7 +822,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.MANDATORYGRAPPLE,
                                 ArenaBuilder.wall.NONE))
-                        .buildArena(arena);
+                        .buildArena();
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
                 arena.addEntity(decorFactory.platform(Measure.units(35f), Measure.units(30f), Measure.units(30f)));
@@ -907,15 +858,14 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
 
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .buildArena(arena);
+                        .buildArena();
 
                 arena.roomType = Arena.RoomType.TRAP;
 
@@ -953,15 +903,13 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .buildArena(arena);
+                        .buildArena();
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
 
@@ -990,12 +938,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1));
-
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -1015,7 +958,8 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.NONE)).buildArena(arena);
+                                ArenaBuilder.wall.NONE))
+                        .buildArena();
 
                 arena.addEntity(decorFactory.platform(Measure.units(5f), Measure.units(65f), Measure.units(25f)));
                 arena.addEntity(decorFactory.platform(arena.getWidth() - Measure.units(30f), Measure.units(65f), Measure.units(25f)));
@@ -1052,18 +996,12 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.DOOR)).buildArena(arena);
-
-                arena.roomType = Arena.RoomType.TRAP;
-
-
+                                ArenaBuilder.wall.DOOR)).buildArena();
 
                 arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(0, arena.getHeight()));
                 arena.addEntity(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth() / 2, arena.getHeight()));
@@ -1084,14 +1022,12 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.DOOR)).buildArena(arena);
+                                ArenaBuilder.wall.DOOR)).buildArena();
 
                 arena.roomType = Arena.RoomType.TRAP;
 
@@ -1114,15 +1050,9 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords,
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
-                        new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2));
-
-
                 boolean isLeftAbove = random.nextBoolean();
-                //arena.roomType = Arena.RoomType.TRAP;
 
-                arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 isLeftAbove ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.MANDATORYDOOR,
                                 isLeftAbove ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.FULL,
@@ -1137,7 +1067,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 isLeftAbove ? ArenaBuilder.wall.MANDATORYDOOR : ArenaBuilder.wall.FULL,
                                 isLeftAbove ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.NONE)).buildArena(arena);
+                                ArenaBuilder.wall.NONE)).buildArena();
 
 
                 float oddPosx = isLeftAbove ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4;

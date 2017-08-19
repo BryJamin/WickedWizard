@@ -37,7 +37,6 @@ public class Arena {
 
     public Array<DoorComponent> doors = new Array<DoorComponent>();
     public Array<DoorComponent> mandatoryDoors = new Array<DoorComponent>();
-    //public Array<AltarComponent> altars = new Array<AltarComponent>();
 
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
 
@@ -184,6 +183,11 @@ public class Arena {
 
     public MapCoords getStartingCoords() {
         return startingCoords;
+    }
+
+
+    public void setArenaSkin(ArenaSkin arenaSkin) {
+        this.arenaSkin = arenaSkin;
     }
 
     public ArenaSkin getArenaSkin() {
