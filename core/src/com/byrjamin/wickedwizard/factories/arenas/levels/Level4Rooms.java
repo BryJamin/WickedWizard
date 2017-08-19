@@ -275,7 +275,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 Arena arena = new Arena(arenaSkin, defaultCoords,
                         new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()));
+                        new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()));
 
                 boolean upperDoorIsLeft = random.nextBoolean();
 
@@ -283,7 +284,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.DOOR, //upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL, //upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE ,
@@ -292,24 +293,33 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE ,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE ,
                                 ArenaBuilder.wall.MANDATORYDOOR,
-                                ArenaBuilder.wall.DOOR,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
                         .buildArena(arena);
+
+
+                float bottomWallWidth = Measure.units(45f);
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(0), Measure.units(-5f), arena.getWidth(), Measure.units(5)));
 
                 //left
-                arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(0), Measure.units(20f), Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25), Measure.units(0), Measure.units(20f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(0), bottomWallWidth, Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - bottomWallWidth - Measure.units(5f), Measure.units(0), bottomWallWidth, Measure.units(10f)));
 
                 arena.addEntity(decorFactory.spikeWall(0, 0, arena.getWidth(), Measure.units(5f), 0));
 
-                for(int i = 0; i < 5; i++) arena.addEntity(decorFactory.grapplePointBag(Measure.units(50 + (i * 50)), Measure.units(35f)));
+                for(int i = 0; i < 5; i++) arena.addEntity(decorFactory.grapplePointBag(Measure.units(100 + (i * 50)), Measure.units(35f)));
 
+                //Used for start direction of mine
                 int mod  = random.nextBoolean() ? 0 : 1;
 
-                for(int i = 0; i <= 5; i++) {
+                for(int i = 0; i <= 7; i++) {
                     arena.addEntity(arenaEnemyPlacementFactory.bombFactory.verticalSeaMine(Measure.units(20) + Measure.units(i * 50f), Measure.units(25f), i % 2 == mod));
                 }
 
@@ -449,16 +459,21 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(0), upperGroundPosY - Measure.units(5f), arena.getWidth(), Measure.units(5), 90));
 
+
+                float bottomWallWidth = Measure.units(30f);
+
                 //Bottom
                 arena.addEntity(decorFactory.wallBag(Measure.units(0), Measure.units(-5f), arena.getWidth(), Measure.units(5)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(0), Measure.units(20f), Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25), Measure.units(0), Measure.units(20f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(0), bottomWallWidth, Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - bottomWallWidth - Measure.units(5), Measure.units(0), bottomWallWidth, Measure.units(10f)));
                 arena.addEntity(decorFactory.spikeWall(0, 0, arena.getWidth(), Measure.units(5f), 0));
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(95), Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(Measure.units(90f), Measure.units(0f), Measure.units(20f), Measure.units(10f)));
-                arena.addEntity(bombFactory.mine(Measure.units(90f), Measure.units(10f), 0));
-                arena.addEntity(bombFactory.mine(Measure.units(105f), Measure.units(10f), 0));
+                float midWallHeight = Measure.units(50f);
+
+                arena.addEntity(chestFactory.chestBag(Measure.units(95), midWallHeight));
+                arena.addEntity(decorFactory.wallBag(Measure.units(90f), Measure.units(0f), Measure.units(20f), midWallHeight));
+                arena.addEntity(bombFactory.mine(Measure.units(90f), midWallHeight, 0));
+                arena.addEntity(bombFactory.mine(Measure.units(105f), midWallHeight, 0));
 
 
                 return arena;

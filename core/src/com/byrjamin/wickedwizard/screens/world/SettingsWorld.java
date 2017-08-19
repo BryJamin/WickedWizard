@@ -30,6 +30,8 @@ import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.GameDelta;
 import com.byrjamin.wickedwizard.utils.Measure;
 
+import java.awt.Menu;
+
 /**
  * Created by BB on 17/08/2017.
  */
@@ -48,6 +50,15 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
 
+    private AreYouSureWorld areYouSureWorld;
+
+
+    private enum STATE {
+        NORMAL, AREYOUSURE
+    }
+
+    private STATE state = STATE.NORMAL;
+
 
     private World world;
 
@@ -56,6 +67,8 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
         menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+
+
         createWorld();
     }
 
@@ -83,6 +96,19 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
         world = new World(config);
 
 
+        Entity settingsText =
+                menuButton.createButton(
+                        world,
+                        MenuStrings.SETTINGS,
+                        Measure.units(0f),
+                        Measure.units(50f),
+                        buttonWidth,
+                        buttonHeight,
+                        buttonForeground,
+                        new Color(0,0,0,0));
+
+
+
         Entity startTutorial =
                 menuButton.createButton(
                         world,
@@ -97,9 +123,26 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
         startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                DataSave.clearData();
-                game.getScreen().dispose();
-                game.setScreen(new MenuScreen(game));
+
+                areYouSureWorld = new AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_RESET_PROGRESS,
+                        new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                DataSave.clearData();
+                                game.getScreen().dispose();
+                                game.setScreen(new MenuScreen(game));
+                            }
+                        },
+                        new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                state = STATE.NORMAL;
+                            }
+                        }
+                );
+
+
+                state = STATE.AREYOUSURE;
             }
         }));
 
@@ -111,7 +154,15 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
 
     @Override
     public void process(float delta) {
-        GameDelta.delta(world, delta);
+        switch (state){
+            case NORMAL:
+            default:
+                GameDelta.delta(world, delta);
+                break;
+            case AREYOUSURE:
+                areYouSureWorld.process(delta);
+                break;
+        }
     }
 
     @Override
@@ -122,8 +173,16 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
-        world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-        return true;
+
+        switch (state){
+
+            case NORMAL:
+            default:
+                Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
+                return world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+            case AREYOUSURE:
+                return areYouSureWorld.tap(x, y, count, button);
+
+        }
     }
 }

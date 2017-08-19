@@ -12,7 +12,7 @@ public class MenuStrings {
 
     public static final String TUTORIAL = "Tutorial";
 
-    public static final String RESET = "Reset";
+    public static final String RESET = "Reset Data";
 
     public static final String BREAK = "Take a Break";
 
@@ -30,6 +30,8 @@ public class MenuStrings {
 
     public static final String ARE_YOU_SURE_EXIT_GAME = "Are you sure you wish to exit the game? \n Your current progress will be lost";
 
+    public static final String ARE_YOU_SURE_RESET_PROGRESS = "Are you sure you want to reset all progress? \n You will not be able to recover your data";
+    public static final String SETTINGS = "Settings";
 
 
     public static class Stats {

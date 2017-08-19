@@ -91,7 +91,7 @@ public class MenuScreen extends AbstractScreen {
     private static final float soundButtonPosX = Measure.units(17.5f);
     private static final float soundButtonPosY = Measure.units(5f);
 
-    private static final float settingsButtonPosX = Measure.units(85f);
+    private static final float settingsButtonPosX = Measure.units(30f);
     private static final float settingsButtonPosY = Measure.units(5f);
 
     private static final float smallButtonSize = Measure.units(10f);
@@ -127,6 +127,9 @@ public class MenuScreen extends AbstractScreen {
         Assets.initialize(game.assetManager);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
+
+        gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
 
 
@@ -148,12 +151,12 @@ public class MenuScreen extends AbstractScreen {
 
     public void handleInput(float dt) {
         InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(gestureDetector);
 
         switch (menuType){
             case SETTING: multiplexer.addProcessor(settingsDetector);
                 break;
             default:
-                multiplexer.addProcessor(gestureDetector);
                 break;
         }
         //multiplexer.addProcessor(gestureDetector);
@@ -186,6 +189,7 @@ public class MenuScreen extends AbstractScreen {
                         new MovementSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
+                        new ActionOnTouchSystem(),
                         new AnimationSystem(),
                         new StateSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
@@ -230,7 +234,7 @@ public class MenuScreen extends AbstractScreen {
         float x = musicButtonPosX;
         float y = musicButtonPosY;
 
-        Entity musicSetting = world.createEntity();
+        Entity musicSetting = backdropWorld.createEntity();
         musicSetting.edit().add(new PositionComponent(x, y));
         musicSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         TextureRegionComponent trc = new TextureRegionComponent(musicOn ? atlas.findRegion(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegion(TextureStrings.SETTINGS_MUSIC_OFF),
@@ -253,7 +257,7 @@ public class MenuScreen extends AbstractScreen {
         x = soundButtonPosX;
         y = soundButtonPosY;
 
-        Entity soundSetting = world.createEntity();
+        Entity soundSetting = backdropWorld.createEntity();
         soundSetting.edit().add(new PositionComponent(x, y));
         soundSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         trc = new TextureRegionComponent(soundOn ? atlas.findRegion(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegion(TextureStrings.SETTINGS_SOUND_OFF),
@@ -276,16 +280,16 @@ public class MenuScreen extends AbstractScreen {
         x = settingsButtonPosX;
         y = settingsButtonPosY;
 
-        Entity goToSettings = world.createEntity();
+        Entity goToSettings = backdropWorld.createEntity();
         goToSettings.edit().add(new PositionComponent(x, y));
         goToSettings.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
-        trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+        trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GO_TO_SETTINGS),
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         goToSettings.edit().add(trc);
         goToSettings.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                menuType = MenuType.SETTING;
+                menuType = menuType == MenuType.MAIN ? MenuType.SETTING : MenuType.MAIN;
             }
         }));
 
@@ -405,7 +409,6 @@ public class MenuScreen extends AbstractScreen {
                 break;
             case SETTING:
                 settingsWorld.process(delta);
-                System.out.println("sadface");
                 break;
         }
 
@@ -458,6 +461,9 @@ public class MenuScreen extends AbstractScreen {
         public boolean tap(float x, float y, int count, int button) {
             Vector3 touchInput = new Vector3(x, y, 0);
             gameport.unproject(touchInput);
+
+
+            backdropWorld.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
 
             switch(menuType){
                 case MAIN: world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);

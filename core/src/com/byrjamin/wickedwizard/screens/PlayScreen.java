@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.screens;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -20,6 +22,7 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
@@ -184,7 +187,6 @@ public class PlayScreen extends AbstractScreen {
         atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         Assets.initialize(game.assetManager);
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
         //gameport.setScreenPosition(-(int)MainGame.GAME_BORDER, -(int)MainGame.GAME_BORDER);
 
@@ -355,7 +357,22 @@ public class PlayScreen extends AbstractScreen {
     }
 
     public void startAreYouSure(){
-        areYouSureWorld = new AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_EXIT_GAME);
+        areYouSureWorld = new AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_EXIT_GAME,
+                new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        game.getScreen().dispose();
+                        game.setScreen(new MenuScreen(game));
+                    }
+                },
+
+                new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        PlayScreen playScreen = (PlayScreen) game.getScreen();
+                        playScreen.escapeAreYouSure();
+                    }
+                });
     }
 
     public void escapeAreYouSure(){
