@@ -289,7 +289,7 @@ public class MenuScreen extends AbstractScreen {
         goToSettings.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                menuType = menuType == MenuType.MAIN ? MenuType.SETTING : MenuType.MAIN;
+                menuType = menuType != MenuType.SETTING ? MenuType.SETTING : menuType;
             }
         }));
 
@@ -466,16 +466,15 @@ public class MenuScreen extends AbstractScreen {
             backdropWorld.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
 
             switch(menuType){
-                case MAIN: world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-                    break;
+                case MAIN:
+                    return world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
                 case DEV:
                     devModeMenuWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-                    world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-                    break;
+                    return world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
 
             }
 
-            return true;
+            return false;
         }
 
 

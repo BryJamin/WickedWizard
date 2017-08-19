@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -44,21 +46,22 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 public class BiggaBlobbaBoss extends EnemyFactory {
 
-    private static final float width = Measure.units(27);
-    private static final float height = Measure.units(30);
+    private static final float width = Measure.units(25);
+    private static final float height = Measure.units(25);
 
+    private static final float textureSize = Measure.units(32.5f);
 
-    private static final float bottomWidth = Measure.units(27);
+    private static final float bottomWidth = Measure.units(25);
     private static final float bottomHeight = Measure.units(10);
 
-    private static final float bottomMidWidth = Measure.units(23);
-    private static final float bottomMidHeight = Measure.units(8);
+    private static final float bottomMidWidth = Measure.units(20);
+    private static final float bottomMidHeight = Measure.units(7.5f);
 
     private static final float bottomTopWidth = Measure.units(12f);
-    private static final float bottomTopHeight = Measure.units(5);
+    private static final float bottomTopHeight = Measure.units(4.5f);
 
     private static final float crownWidth = Measure.units(5f);
-    private static final float crownHeight = Measure.units(5);
+    private static final float crownHeight = Measure.units(4.5f);
 
     private static final float gunOffsetY = Measure.units(12.5f);
 
@@ -70,7 +73,8 @@ public class BiggaBlobbaBoss extends EnemyFactory {
     private static final float jumpVlx = Measure.units(45f);
     private static final float jumpVly = Measure.units(75f);
 
-    private static final float textureSize = Measure.units(35f);
+    private static final float stompShakeTime = 0.25f;
+    private static final float stompIntensity = 0.5f;
 
 
     //Phases
@@ -157,8 +161,6 @@ public class BiggaBlobbaBoss extends EnemyFactory {
         pc.addPhase(angryTransitionPhase);
         pc.addPhase(chargingPhaseTime, movementPhase());
         pc.addPhase(new BlobbaMoveToPhase(), new OnTargetXCondition());
-        pc.addPhase(angryTransitionPhase);
-        pc.addPhase(weaponPhaseTime, weaponPhase);
         //pc.addPhaseSequence(1,0, 2);
 
         bag.add(pc);
@@ -229,6 +231,7 @@ public class BiggaBlobbaBoss extends EnemyFactory {
                 e.edit().add(new BounceComponent());
                 e.getComponent(VelocityComponent.class).velocity.y = jumpTransitionVly;
                 e.getComponent(VelocityComponent.class).velocity.x = 0;
+                e.edit().add(blobbaOnCollisionActionGroundShake());
             }
 
             @Override
@@ -269,6 +272,7 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
 
+                        e.edit().add(blobbaOnCollisionActionGroundShake());
 
                     }
 
@@ -290,6 +294,21 @@ public class BiggaBlobbaBoss extends EnemyFactory {
 
         return new Pair<Task, Condition>(task, landingCondition(time));
 
+    }
+
+
+    private OnCollisionActionComponent blobbaOnCollisionActionGroundShake(){
+        OnCollisionActionComponent ocac = new OnCollisionActionComponent();
+        ocac.bottom = new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.edit().remove(OnCollisionActionComponent.class);
+                Entity shaker = world.createEntity();
+                shaker.edit().add(new ExpireComponent(stompShakeTime));
+                shaker.edit().add(new CameraShakeComponent(stompIntensity));
+            }
+        };
+        return ocac;
     }
 
 
