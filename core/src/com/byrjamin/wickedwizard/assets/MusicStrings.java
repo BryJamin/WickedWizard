@@ -10,7 +10,7 @@ public class MusicStrings {
 
     public static final Mix BG_LEVEL_ONE = new Mix.MixMaker("audio/music/Field.ogg").build();
 
-    public static final Mix BG_LEVEL_TWO = new Mix.MixMaker("audio/music/SecondStep.ogg").build();
+    public static final Mix BG_LEVEL_TWO = new Mix.MixMaker("audio/music/SecondStep.ogg").volume(0.7f).build();
 
     public static final Mix BG_LEVEL_THREE = new Mix.MixMaker("audio/music/SittingAloneInMyRoomAndThisIsAllICouldComeUpWith-02.ogg").build();
 

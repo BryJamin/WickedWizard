@@ -251,14 +251,14 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt());
 
-                arena.addEntity(arenaEnemyPlacementFactory.bouncerFactory.laserBouncer(arena.getWidth() / 2, Measure.units(30f), random.nextBoolean()));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 2, Measure.units(47.5f), random.nextBoolean()));
                 //arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(45f), Measure.units(20f), Measure.units(10f), Measure.units(5f), arenaSkin));
-                arena.addEntity(decorFactory.wallBag(Measure.units(45f), Measure.units(35f), Measure.units(10f), Measure.units(5f), arenaSkin));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(20f), Measure.units(20f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(35f), Measure.units(20f), Measure.units(5f)));
 
-                arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(25f), Measure.units(5f), Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(25f), Measure.units(5f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(20f), Measure.units(5f), Measure.units(20f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(20f), Measure.units(5f), Measure.units(20f)));
 
                 //arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4  , arena.getHeight() / 2));
                 //arena.roomType = Arena.RoomType.TRAP;

@@ -59,6 +59,10 @@ public class JigsawGeneratorConfig {
     { startingMap = val; return this; }
 
 
+    public JigsawGeneratorConfig startArena(Arena val)
+    { startingMap.setCurrentArena(val); return this; }
+
+
     public JigsawGeneratorConfig level(Level val)
     { level = val; return this; }
 

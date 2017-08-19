@@ -29,8 +29,13 @@ public class MusicSystem extends BaseSystem {
     private AssetManager assetManager;
 
     private static Music currentMusic;
+    private static Music upcomingMusic;
+
+
+    private static final float rateOfVolumeDecrease = 0.01f;
 
     private static Mix currentMix = new Mix("");
+    private static Mix upComingMix = new Mix("");
 
 
     public MusicSystem(AssetManager assetManager){
@@ -40,10 +45,36 @@ public class MusicSystem extends BaseSystem {
     @Override
     protected void processSystem() {
 
+
+
+        if(upComingMix != null && currentMusic != null){
+
+            if(currentMusic.getVolume() <= 0){
+                changeTrack(upComingMix);
+                upComingMix = null;
+            }
+
+            float volume = currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease
+                    <= 0 ? 0 : currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease;
+
+            currentMusic.setVolume(volume);
+
+            return;
+        }
+
+
+
         if(currentMusic == null) return;
 
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
         boolean musicOn = preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+
+
+
+        float volume = currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease
+                >= currentMix.getVolume() ? currentMix.getVolume() : currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease;
+
+        currentMusic.setVolume(volume);
 
         if(currentMusic.isPlaying() && !musicOn){
             stopMusic();
@@ -65,7 +96,7 @@ public class MusicSystem extends BaseSystem {
     }
 
     public void playLevelMusic(Level level){
-        changeTrack(pickLevelMusic(level));
+        changeMix(pickLevelMusic(level));
     }
 
     public void playBossMusic(Level level){
@@ -76,22 +107,37 @@ public class MusicSystem extends BaseSystem {
 
     public void changeTrack(Mix mix){
 
+
+        if(mix.equals(currentMix)) return;
+
+
         if(currentMusic != null){
+
+
+            upComingMix = mix;
+
             if(currentMusic.isPlaying()) {
                 currentMusic.stop();
                 currentMusic.dispose();
             }
         }
 
-        if(mix.getFileName().equals(currentMix.getFileName())) return;
-
         currentMix = mix;
 
         if(assetManager.isLoaded(mix.getFileName(), Music.class)){
             currentMusic = Gdx.audio.newMusic(Gdx.files.internal(mix.getFileName()));
             currentMusic.setLooping(true);
-            currentMusic.setVolume(mix.getVolume());
+            currentMusic.setVolume(0);
         }
+    }
+
+    public void changeMix(Mix mix){
+        if(mix.equals(currentMix)) return;
+
+        if(assetManager.isLoaded(mix.getFileName(), Music.class)){
+            upComingMix = mix;
+        }
+
     }
 
 

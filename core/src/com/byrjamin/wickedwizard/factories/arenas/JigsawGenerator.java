@@ -70,6 +70,9 @@ public class JigsawGenerator {
         this.shopFactory = new ShopFactory(assetManager);
         this.setStartingMap(jigsawGeneratorConfig.startingMap);
         this.arenaGens = jigsawGeneratorConfig.arenaGens;
+
+
+        System.out.println(getStartingMap().getCurrentArena());
         this.farSort = new FarSort(getStartingMap().getCurrentArena().getStartingCoords());
         this.bossMapGens = jigsawGeneratorConfig.bossMapGens;
         this.arenaSkin = jigsawGeneratorConfig.level.getArenaSkin();
@@ -266,7 +269,7 @@ public class JigsawGenerator {
 
     public void generate(){
         mapTracker.clear();
-        generate(new ArenaMap(new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords())));
+        generate(new ArenaMap(startingMap.getCurrentArena()));
     }
 
 

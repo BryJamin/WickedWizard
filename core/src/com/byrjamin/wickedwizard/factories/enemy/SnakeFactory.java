@@ -56,7 +56,7 @@ public class SnakeFactory extends EnemyFactory {
         x = x - width / 2;
         y = y - width / 2;
 
-        ComponentBag bag  = this.defaultEnemyBag(new ComponentBag(), x, y, 5);
+        ComponentBag bag  = this.defaultEnemyBagNoLoot(new ComponentBag(), x, y, 5);
 
         CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x,y,width,height));
         cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, hitboxWidth, hitboxHeight), (width / 2) - (hitboxWidth / 2), (height / 2) - (hitboxHeight / 2)));

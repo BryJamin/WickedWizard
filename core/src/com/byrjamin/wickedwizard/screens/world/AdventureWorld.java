@@ -276,9 +276,6 @@ public class AdventureWorld {
             entity.edit().add(comp);
         }
 
-
-        world.getSystem(MusicSystem.class).playLevelMusic(world.getSystem(ChangeLevelSystem.class).getLevel());
-
         float width = Measure.units(4.5f);
         float height = Measure.units(4.5f);
 

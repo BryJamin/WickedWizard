@@ -78,9 +78,6 @@ public class ChangeLevelSystem extends BaseSystem {
             jigsawGenerator.cleanArenas();
         }
 
-        world.getSystem(MessageBannerSystem.class).createLevelBanner(jigsawGeneratorConfig.level.getName());
-        world.getSystem(MusicSystem.class).playLevelMusic(jigsawGeneratorConfig.level);
-
         return jigsawGenerator;
     }
 

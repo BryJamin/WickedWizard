@@ -77,4 +77,26 @@ public class Mix {
     public float getPitch() {
         return pitch;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Mix mix = (Mix) o;
+
+        if (Float.compare(mix.getVolume(), getVolume()) != 0) return false;
+        if (Float.compare(mix.getPitch(), getPitch()) != 0) return false;
+        return getFileName().equals(mix.getFileName());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getFileName().hashCode();
+        result = 31 * result + (getVolume() != +0.0f ? Float.floatToIntBits(getVolume()) : 0);
+        result = 31 * result + (getPitch() != +0.0f ? Float.floatToIntBits(getPitch()) : 0);
+        return result;
+    }
 }
