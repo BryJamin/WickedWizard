@@ -332,6 +332,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 boolean chestsAreLeft = random.nextBoolean();
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                        .addRoomType(Arena.RoomType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.DOOR,
                                 chestsAreLeft ? ArenaBuilder.wall.NONE : ArenaBuilder.wall.NONE,

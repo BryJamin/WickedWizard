@@ -93,7 +93,6 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.screens.QuickSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
@@ -317,6 +316,9 @@ public class AdventureWorld {
 
 
     public void pauseWorld() {
+
+        world.getSystem(MusicSystem.class).pauseMusic();
+
         for (BaseSystem s : world.getSystems()) {
             if (!(s instanceof RenderingSystem || s instanceof UISystem)) {
                 s.setEnabled(false);
@@ -325,6 +327,9 @@ public class AdventureWorld {
     }
 
     public void unPauseWorld() {
+
+        world.getSystem(MusicSystem.class).resumeMusic();
+
         for (BaseSystem s : world.getSystems()) {
             s.setEnabled(true);
         }

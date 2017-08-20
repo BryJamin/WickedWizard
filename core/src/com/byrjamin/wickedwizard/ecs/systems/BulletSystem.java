@@ -85,7 +85,7 @@ public class BulletSystem extends EntityProcessingSystem {
                 if(hb.hitbox.overlaps(cbm.get(bullet).bound) && !cbm.get(entity).hitBoxDisabled){
                     HealthComponent hc = hm.get(entity);
 
-                    System.out.println("Damage is " + bulm.get(bullet).damage);
+                    //System.out.println("Damage is " + bulm.get(bullet).damage);
                     hc.applyDamage(bulm.get(bullet).damage);
                     if(blinkMapper.has(entity)){
                         BlinkOnHitComponent bc = blinkMapper.get(entityIds.get(i));

@@ -32,10 +32,25 @@ public class MusicSystem extends BaseSystem {
     private static Music upcomingMusic;
 
 
-    private static final float rateOfVolumeDecrease = 0.01f;
+    private static final float rateOfVolumeDecrease = 0.02f;
 
     private static Mix currentMix = new Mix("");
     private static Mix upComingMix = new Mix("");
+
+
+
+    private enum MusicState {
+        PLAYING, PAUSED, WAITING
+    }
+
+    private MusicState musicState = MusicState.WAITING;
+    private MusicState prePuaseState = MusicState.WAITING;
+
+    private enum FadeState {
+        FADE_OUT, FADE_IN, NORMAL
+    }
+
+    private FadeState fadeState = FadeState.FADE_IN;
 
 
     public MusicSystem(AssetManager assetManager){
@@ -45,36 +60,60 @@ public class MusicSystem extends BaseSystem {
     @Override
     protected void processSystem() {
 
+/*
+        System.out.println(fadeState);
+        System.out.println(musicState);*/
 
+        switch(musicState){
 
-        if(upComingMix != null && currentMusic != null){
+            case WAITING:
+                if(upComingMix != null){
+                    changeTrack(upComingMix);
+                    musicState = MusicState.PLAYING;
+                    fadeState = FadeState.FADE_IN;
+                    upComingMix = null;
+                }
+                break;
 
-            if(currentMusic.getVolume() <= 0){
-                changeTrack(upComingMix);
-                upComingMix = null;
-            }
+            case PLAYING:
 
-            float volume = currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease
-                    <= 0 ? 0 : currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease;
+                float volume;
 
-            currentMusic.setVolume(volume);
+                switch (fadeState) {
 
-            return;
+                    case FADE_IN:
+
+                        volume = currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease
+                                >= currentMix.getVolume() ? currentMix.getVolume() : currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease;
+                        currentMusic.setVolume(volume);
+
+                        if(currentMusic.getVolume() == currentMix.getVolume()) fadeState = FadeState.NORMAL;
+
+                        break;
+
+                    case FADE_OUT:
+
+                        volume = currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease
+                                <= 0 ? 0 : currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease;
+                        currentMusic.setVolume(volume);
+
+                        if(currentMusic.getVolume() <= 0) musicState = MusicState.WAITING;
+
+                        break;
+
+                }
+
+                if((fadeState == FadeState.NORMAL || fadeState == FadeState.FADE_IN) && upComingMix != null){
+                    fadeState = FadeState.FADE_OUT;
+                }
+
         }
-
 
 
         if(currentMusic == null) return;
 
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
         boolean musicOn = preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
-
-
-
-        float volume = currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease
-                >= currentMix.getVolume() ? currentMix.getVolume() : currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease;
-
-        currentMusic.setVolume(volume);
 
         if(currentMusic.isPlaying() && !musicOn){
             stopMusic();
@@ -92,7 +131,7 @@ public class MusicSystem extends BaseSystem {
 
 
     public void playMainMenuMusic(){
-        changeTrack(MusicStrings.BG_MAIN_MENU);
+        changeMix(MusicStrings.BG_MAIN_MENU);
     }
 
     public void playLevelMusic(Level level){
@@ -100,7 +139,7 @@ public class MusicSystem extends BaseSystem {
     }
 
     public void playBossMusic(Level level){
-        changeTrack(MusicStrings.BG_MAIN_MENU);
+        changeMix(MusicStrings.BG_MAIN_MENU);
     }
 
 
@@ -137,8 +176,12 @@ public class MusicSystem extends BaseSystem {
         if(assetManager.isLoaded(mix.getFileName(), Music.class)){
             upComingMix = mix;
         }
-
     }
+
+    public void fadeOutMusic(){
+        fadeState = FadeState.FADE_OUT;
+    }
+
 
 
     private Mix pickLevelMusic(Level level){
@@ -169,6 +212,33 @@ public class MusicSystem extends BaseSystem {
             currentMusic.stop();
         }
     }
+
+
+    public void pauseMusic(){
+        if(currentMusic != null){
+            currentMusic.pause();
+        }
+
+        prePuaseState = musicState == MusicState.PLAYING ? MusicState.PLAYING : MusicState.WAITING;
+        musicState = MusicState.PAUSED;
+
+    }
+
+    public void resumeMusic(){
+
+        musicState = prePuaseState;
+        if(currentMusic != null){
+
+            Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
+            boolean musicOn = preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+
+            if(musicOn) {
+                currentMusic.play();
+            }
+        }
+    }
+
+
 
     @Override
     protected void dispose() {

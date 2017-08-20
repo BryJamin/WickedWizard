@@ -287,9 +287,19 @@ public class MenuScreen extends AbstractScreen {
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         goToSettings.edit().add(trc);
         goToSettings.edit().add(new ActionOnTouchComponent(new Action() {
+
+            private MenuType previousMenuType = MenuType.MAIN;
+
             @Override
             public void performAction(World world, Entity e) {
-                menuType = menuType != MenuType.SETTING ? MenuType.SETTING : menuType;
+
+                if(menuType != MenuType.SETTING){
+                    previousMenuType = menuType;
+                    menuType = MenuType.SETTING;
+                } else {
+                    menuType = previousMenuType;
+                }
+
             }
         }));
 

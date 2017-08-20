@@ -5,11 +5,15 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
@@ -52,6 +56,20 @@ public class BreakRoom extends AbstractFactory {
 
         float buttonWidth = Measure.units(27.5f);
         float buttonHeight = Measure.units(20f);
+
+
+
+        ComponentBag componentBag = new ComponentBag();
+        componentBag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(MusicSystem.class).fadeOutMusic();
+                world.getSystem(OnDeathSystem.class).kill(e);
+            }
+        }));
+
+        arena.addEntity(componentBag);
+
 
 
         MenuButton menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
