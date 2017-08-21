@@ -1,4 +1,4 @@
-package com.byrjamin.wickedwizard.screens.world;
+package com.byrjamin.wickedwizard.screens.world.menu;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -25,6 +25,8 @@ import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
+import com.byrjamin.wickedwizard.screens.world.AreYouSureWorld;
+import com.byrjamin.wickedwizard.screens.world.WorldContainer;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.GameDelta;
@@ -36,12 +38,11 @@ import java.awt.Menu;
  * Created by BB on 17/08/2017.
  */
 
-public class SettingsWorld extends AbstractGestureDectector implements WorldContainer{
+public class SettingsWorld extends AbstractGestureDectector implements WorldContainer {
 
     private final MainGame game;
     private final Viewport gameport;
     private final TextureAtlas atlas;
-    private final MenuButton menuButton;
 
 
     private static final float buttonWidth = Measure.units(30f);
@@ -66,7 +67,6 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
-        menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
 
 
         createWorld();
@@ -75,7 +75,7 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
 
 
 
-    public World createWorld(){
+    public void createWorld(){
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -96,58 +96,58 @@ public class SettingsWorld extends AbstractGestureDectector implements WorldCont
         world = new World(config);
 
 
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(buttonWidth)
+                .height(buttonHeight)
+                .foregroundColor(buttonForeground)
+                .backgroundColor(new Color(0,0,0,0));
+
+
         Entity settingsText =
-                menuButton.createButton(
+                menuButtonBuilder.build().createButton(
                         world,
                         MenuStrings.SETTINGS,
                         Measure.units(0f),
-                        Measure.units(50f),
-                        buttonWidth,
-                        buttonHeight,
-                        buttonForeground,
-                        new Color(0,0,0,0));
+                        Measure.units(50f));
 
 
+        menuButtonBuilder
+                .backgroundColor(buttonBackground)
+                .action(new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
 
-        Entity startTutorial =
-                menuButton.createButton(
+                                areYouSureWorld = new AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_RESET_PROGRESS,
+                                        new Action() {
+                                            @Override
+                                            public void performAction(World world, Entity e) {
+                                                DataSave.clearData();
+                                                game.getScreen().dispose();
+                                                game.setScreen(new MenuScreen(game));
+                                            }
+                                        },
+                                        new Action() {
+                                            @Override
+                                            public void performAction(World world, Entity e) {
+                                                state = STATE.NORMAL;
+                                            }
+                                        }
+                                );
+
+
+                                state = STATE.AREYOUSURE;
+                            }
+                        });
+
+
+        Entity resetProgress =
+                menuButtonBuilder.build().createButton(
                         world,
                         MenuStrings.RESET,
                         CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth)
-                        , CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight),
-                        buttonWidth,
-                        buttonHeight,
-                        buttonForeground,
-                        buttonBackground);
-
-        startTutorial.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                areYouSureWorld = new AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_RESET_PROGRESS,
-                        new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                DataSave.clearData();
-                                game.getScreen().dispose();
-                                game.setScreen(new MenuScreen(game));
-                            }
-                        },
-                        new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                state = STATE.NORMAL;
-                            }
-                        }
-                );
+                        , CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight));
 
 
-                state = STATE.AREYOUSURE;
-            }
-        }));
-
-
-        return world;
 
     }
 

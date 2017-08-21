@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 public class ArenaMap {
 
     private Arena currentArena;
-    private Array<Arena> roomArray;
+    private Array<Arena> roomArray = new Array<Arena>();
     private OrderedSet<Arena> visitedArenas = new OrderedSet<Arena>();
     private OrderedSet<Arena> unvisitedButAdjacentArenas = new OrderedSet<Arena>();
 
@@ -26,6 +26,15 @@ public class ArenaMap {
     public ArenaMap(Arena currentArena, Array<Arena> roomArray) {
         this.currentArena = currentArena;
         this.roomArray = roomArray;
+    }
+
+    public ArenaMap(Arena startingArena, Arena... additionalArenas) {
+        this.currentArena = startingArena;
+        this.roomArray.add(startingArena);
+
+        for(Arena a : additionalArenas) {
+            this.roomArray.add(a);
+        }
     }
 
 

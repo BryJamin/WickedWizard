@@ -71,11 +71,12 @@ public class BreakRoom extends AbstractFactory {
         arena.addEntity(componentBag);
 
 
-
-        MenuButton menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
-
-        Bag<ComponentBag> bags = menuButton.createButtonWithAction(MenuStrings.BREAK, Measure.units(10f), Measure.units(30f), buttonWidth, buttonHeight,
-                new Color(Color.WHITE), new Color(Color.BLACK), new Action() {
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(buttonWidth)
+                .height(buttonHeight)
+                .foregroundColor(new Color(Color.WHITE))
+                .backgroundColor( new Color(Color.BLACK))
+                .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
@@ -87,13 +88,15 @@ public class BreakRoom extends AbstractFactory {
                     }
                 });
 
+        Bag<ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.BREAK, Measure.units(10f), Measure.units(30f));
+
 
         for(ComponentBag bag : bags){
             arena.addEntity(bag);
         }
 
-        bags = menuButton.createButtonWithAction(MenuStrings.CONTINUE, Measure.units(62.5f), Measure.units(30f), buttonWidth, buttonHeight,
-                new Color(Color.WHITE), new Color(Color.BLACK), new Action() {
+        bags = menuButtonBuilder
+                .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
@@ -106,7 +109,7 @@ public class BreakRoom extends AbstractFactory {
                             }
                         });
                     }
-                });
+                }).build().createButton(MenuStrings.CONTINUE, Measure.units(62.5f), Measure.units(30f));
 
         for(ComponentBag bag : bags){
             arena.addEntity(bag);

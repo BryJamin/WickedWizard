@@ -104,21 +104,23 @@ public class CreditsWorld {
 
 
 
-        Entity mainMenuTrigger = new MenuButton(Assets.small, atlas.findRegion(TextureStrings.BLOCK)).createButtonWithAction(world, skipText,
-                Measure.units(0f),
-                Measure.units(52.5f),
-                skipWidth,
-                skipHeight,
-                new Color(Color.WHITE),
-                new Color(Color.BLACK),
-                new Action() {
+
+
+        Entity mainMenuTrigger = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+                .width(skipWidth)
+                .height(skipHeight)
+                .foregroundColor(Color.WHITE)
+                .backgroundColor(Color.BLACK)
+                .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         game.getScreen().dispose();
                         game.setScreen(new MenuScreen(game));
                     }
-                });
-
+                }).build()
+                .createButton(world, skipText,
+                Measure.units(0f),
+                Measure.units(52.5f));
 
 
         createCreditsPart("Game Created By", creditsSmallGap);
@@ -140,7 +142,7 @@ public class CreditsWorld {
         createCreditsPart("Michelle Bryant", creditsSmallGap);
 
         createCreditsPart("Pete Colley", creditsSmallGap);
-        createCreditsPart("Dave Sharma", creditsSmallGap);
+        createCreditsPart("Dave Shama", creditsSmallGap);
         createCreditsPart("Anthony Gibson", creditsSmallGap);
 
 

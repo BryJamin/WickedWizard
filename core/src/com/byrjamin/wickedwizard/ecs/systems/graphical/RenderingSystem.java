@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,6 +26,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.ArrayList;
@@ -54,6 +56,9 @@ public class RenderingSystem extends EntitySystem {
     public Color batchColor = new Color(Color.WHITE);
 
     public ShaderProgram whiteShaderProgram;
+
+    private GlyphLayout glyphLayout = new GlyphLayout();
+
 
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, AssetManager assetManager, Viewport gameport) {
@@ -181,9 +186,24 @@ public class RenderingSystem extends EntitySystem {
             TextureFontComponent trfc = trfm.get(e);
             BitmapFont bmf = assetManager.get(trfc.font, BitmapFont.class);
             bmf.setColor(trfc.color);
-            bmf.draw(batch, trfc.text,
-                    pc.getX() + trfc.offsetX, pc.getY() + trfc.offsetY
-            ,trfc.width, trfc.align, true);
+
+            if(cbm.has(e)){
+                CollisionBoundComponent cbc = cbm.get(e);
+                glyphLayout.setText(bmf, trfc.text);
+
+/*
+                System.out.println("layout height" + glyphLayout.height);
+                System.out.println("Bound height" + cbc.bound.height);*/
+
+                bmf.draw(batch, glyphLayout,
+                        pc.getX() + CenterMath.offsetX(cbc.bound.getWidth(), glyphLayout.width) + trfc.offsetX,
+                        pc.getY() + glyphLayout.height + CenterMath.offsetY(cbc.bound.getHeight(), glyphLayout.height) + trfc.offsetY);
+            } else {
+                bmf.draw(batch, trfc.text,
+                        pc.getX() + trfc.offsetX, pc.getY() + trfc.offsetY
+                        ,trfc.width, trfc.align, true);
+            }
+
             bmf.setColor(Color.WHITE);
         }
 

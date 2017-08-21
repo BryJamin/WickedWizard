@@ -8,6 +8,7 @@ import com.artemis.World;
 
 public interface WorldContainer {
 
+    void createWorld();
     void process(float delta);
     World getWorld();
 

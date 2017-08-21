@@ -401,6 +401,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
             public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                        .addRoomType(Arena.RoomType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,

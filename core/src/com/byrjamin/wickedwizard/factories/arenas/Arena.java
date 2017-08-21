@@ -193,4 +193,12 @@ public class Arena {
     public ArenaSkin getArenaSkin() {
         return arenaSkin;
     }
+
+    public ComponentBag createArenaBag(){
+        ComponentBag bag = new ComponentBag();
+        this.addEntity(bag);
+        return bag;
+    }
+
+
 }

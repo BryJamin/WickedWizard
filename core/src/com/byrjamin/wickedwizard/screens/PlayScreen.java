@@ -31,6 +31,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
+import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.AllArenaStore;
 import com.byrjamin.wickedwizard.factories.arenas.levels.PresetGenerators;
@@ -173,11 +174,15 @@ public class PlayScreen extends AbstractScreen {
     public PlayScreen(MainGame game) {
         super(game);
         setUpGlobals();
-
-        createWorlds(PresetGames.DEFAULT_GAME(game.assetManager, random));
+        createWorlds(PresetGames.DEFAULT_GAME(manager, random));
         Gdx.input.setCatchBackKey(true);
+    }
 
-
+    public PlayScreen(MainGame game, GameCreator gameCreator) {
+        super(game);
+        setUpGlobals();
+        createWorlds(gameCreator);
+        Gdx.input.setCatchBackKey(true);
     }
 
 

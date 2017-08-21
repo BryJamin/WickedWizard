@@ -1,6 +1,17 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
+import com.artemis.Entity;
+import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
+import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
@@ -8,9 +19,15 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFacto
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.MessageFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
+import com.byrjamin.wickedwizard.screens.DataSave;
+import com.byrjamin.wickedwizard.screens.MenuScreen;
+import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
@@ -41,10 +58,97 @@ public class StartingRooms extends AbstractFactory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-
-                Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
                 arena.addEntity(new MessageFactory().nextLevelMessageBagAndMusic(level));
+                return arena;
+            }
+        };
+    }
 
+
+    public ArenaCreate challengeStartingArena(final Level level){
+        return new ArenaCreate() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+
+
+
+                ComponentBag messageAction = new ComponentBag();
+                messageAction.add(new ActionAfterTimeComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(MusicSystem.class).playLevelMusic(level);
+                    }
+                }, 0f, false));
+                messageAction.add(new ExpireComponent(1f));
+
+
+
+                arena.addEntity(new MessageFactory().nextLevelMessageBagAndMusic(level));
+                return arena;
+            }
+        };
+    }
+
+
+    public ArenaCreate challengeEndArena(final String challengeId){
+        return new ArenaCreate() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+
+
+
+                ComponentBag bag = arena.createArenaBag();
+                bag.add(new ActionAfterTimeComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+
+
+                        System.out.println("Challenge data" + DataSave.isDataAvailable(challengeId));
+
+                        if(!DataSave.isDataAvailable(challengeId)){
+                            DataSave.saveData(challengeId);
+                            world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
+                        } else {
+                            world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
+                        }
+                        e.deleteFromWorld();
+                    }
+                }));
+
+
+                arena.addEntity(new PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 4 * 3, Measure.units(32.5f),
+
+                        new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                                    @Override
+                                    public void performAction(World world, Entity e) {
+                                        MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                        game.getScreen().dispose();
+                                        game.setScreen(new MenuScreen(game));
+                                    }
+                                });
+                            }
+                        }));
+
+/*
+
+                ComponentBag messageAction = new ComponentBag();
+                messageAction.add(new ActionAfterTimeComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(MusicSystem.class).playLevelMusic(level);
+                    }
+                }, 0f, false));
+                messageAction.add(new ExpireComponent(1f));
+
+
+
+                arena.addEntity(new MessageFactory().nextLevelMessageBagAndMusic(level));*/
                 return arena;
             }
         };

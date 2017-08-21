@@ -46,19 +46,6 @@ import java.util.Locale;
 
 public class PauseWorld implements WorldContainer {
 
-    private SpriteBatch batch;
-    private MainGame game;
-    private AssetManager manager;
-    private TextureAtlas atlas;
-    private Viewport gameport;
-
-    private MenuButton menuButton;
-
-    private World world;
-
-
-
-
     //Stats
     private static final float statsTitleOffsetX = Measure.units(5.5f);
     private static final float statsTitleOffsetY = Measure.units(60f);
@@ -109,13 +96,23 @@ public class PauseWorld implements WorldContainer {
     private static final float mainmenuOffsetY = Measure.units(0);
 
 
+    private SpriteBatch batch;
+    private MainGame game;
+    private AssetManager manager;
+    private TextureAtlas atlas;
+    private Viewport gameport;
+
+    private World world;
+
     private RoomTransitionSystem roomTransitionSystem;
+
+    private StatComponent playerStats;
 
 
     private ArenaGUI pauseArenaGUI;
 
 
-        public PauseWorld(MainGame game, SpriteBatch batch, AssetManager manager, Viewport gameport, RoomTransitionSystem rts, StatComponent playerStats){
+    public PauseWorld(MainGame game, SpriteBatch batch, AssetManager manager, Viewport gameport, RoomTransitionSystem rts, StatComponent playerStats){
 
             this.game = game;
             this.batch = batch;
@@ -124,16 +121,17 @@ public class PauseWorld implements WorldContainer {
             this.gameport = gameport;
             this.roomTransitionSystem = rts;
             this.pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getCurrentMap(), atlas);
-            menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+            this.playerStats = playerStats;
 
-            world = startWorld(playerStats);
+            createWorld();
 
 
 
     }
 
-    public World startWorld(final StatComponent playerStats){
 
+    @Override
+    public void createWorld() {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem()
@@ -149,33 +147,46 @@ public class PauseWorld implements WorldContainer {
                 )
                 .build();
 
-        World world = new World(config);
+        world = new World(config);
 
         final Camera gamecam = gameport.getCamera();
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2 + MainGame.GAME_BORDER;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2 + MainGame.GAME_BORDER;
 
-        Entity returntoMainMenu = menuButton.createButton(world, MenuStrings.MAIN_MENU, camX + mainmenuOffsetX
-                ,camY + mainmenuOffsetY,buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
-        returntoMainMenu.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
 
-                PlayScreen playScreen = (PlayScreen) game.getScreen();
-                playScreen.startAreYouSure();
-            }
-        }));
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+                .width(buttonWidth)
+                .height(Measure.units(10f))
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(Color.WHITE));
 
-        Entity resume = menuButton.createButton(world, MenuStrings.RESUME, camX + resumeOffsetX
-                ,camY + resumeOffsetY, buttonWidth, Measure.units(10f), new Color(Color.BLACK), new Color(Color.WHITE));
-        resume.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                PlayScreen playscreen = (PlayScreen) game.getScreen();
-                playscreen.unpause();
-            }
-        }));
+
+        Entity returntoMainMenu = menuButtonBuilder
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+
+                        PlayScreen playScreen = (PlayScreen) game.getScreen();
+                        playScreen.startAreYouSure();
+                    }
+                })
+                .build()
+                .createButton(world, MenuStrings.MAIN_MENU, camX + mainmenuOffsetX
+                ,camY + mainmenuOffsetY);
+
+
+        Entity resume = menuButtonBuilder
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        PlayScreen playscreen = (PlayScreen) game.getScreen();
+                        playscreen.unpause();
+                    }
+                })
+                .build()
+                .createButton(world, MenuStrings.RESUME, camX + resumeOffsetX
+                ,camY + resumeOffsetY);
 
 
         Entity e = world.createEntity();
@@ -228,11 +239,9 @@ public class PauseWorld implements WorldContainer {
         itemText.edit().add(new PositionComponent(camX + itemTitleOffsetX, camY + itemTitleOffsetY));
         itemText.edit().add(new TextureFontComponent(Assets.medium, MenuStrings.ITEMS, Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
-        return world;
-
     }
 
-    public void statsText(World world, String text, float x, float y, int align){
+    private void statsText(World world, String text, float x, float y, int align){
         Entity damage = world.createEntity();
         damage.edit().add(new PositionComponent(x, y));
         damage.edit().add(new TextureFontComponent(Assets.medium, text, Measure.units(20f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
@@ -240,7 +249,7 @@ public class PauseWorld implements WorldContainer {
     }
 
 
-    public void itemIcon(World world, Item item, float x, float y){
+    private void itemIcon(World world, Item item, float x, float y){
         Entity itemEntity = world.createEntity();
         itemEntity.edit().add(new PositionComponent(x, y));
         itemEntity.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),

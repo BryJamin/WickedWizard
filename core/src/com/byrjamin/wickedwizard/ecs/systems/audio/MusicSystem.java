@@ -150,6 +150,8 @@ public class MusicSystem extends BaseSystem {
         if(mix.equals(currentMix)) return;
 
 
+        System.out.println(mix.equals(currentMix));
+
         if(currentMusic != null){
 
 
@@ -243,6 +245,6 @@ public class MusicSystem extends BaseSystem {
     @Override
     protected void dispose() {
         super.dispose();
-        stopMusic();
+        //stopMusic();
     }
 }

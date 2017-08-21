@@ -33,6 +33,14 @@ public class MenuStrings {
     public static final String ARE_YOU_SURE_RESET_PROGRESS = "Are you sure you want to reset all progress? \n You will not be able to recover your data";
     public static final String SETTINGS = "Settings";
 
+    public static final String BACK_TO_MAIN_MENU = "Back To Main Menu";
+
+
+    public static final String TRAILS = "Trials";
+    public static final String TRAIL_COMPLETE = "Trial Complete";
+    public static final String TRAIL_NEW_ITEM = "New Item Unlocked";
+    public static final String TRAIL_OLD_ITEM = "The previously unlocked item is still unlocked";
+
 
     public static class Stats {
 

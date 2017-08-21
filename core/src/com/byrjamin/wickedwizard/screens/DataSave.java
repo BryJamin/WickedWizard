@@ -19,6 +19,25 @@ public class DataSave {
 
     private static Json json = new Json();
 
+    private static DataSaveStore dataSaveStore = new DataSaveStore();
+
+
+    static {
+
+        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
+        String loadString = preferences.getString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+
+        try {
+
+            dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
     public static final String TUTORIAL_COMPLETE = "f239f5db-f5fe-42ed-b98f-54250522ec6c";
 
 
@@ -30,19 +49,18 @@ public class DataSave {
 
 
         try {
-            DataSave.DataSaveStore saveData;
             try {
-                saveData = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
+                dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
             } catch(Exception e){
-                saveData = new DataSaveStore();
+                e.printStackTrace();
             }
 
-            if(!saveData.keyStoreBoolean.containsKey(id)) {
-                saveData.keyStoreBoolean.put(id, true);
+            if(!dataSaveStore.keyStoreBoolean.containsKey(id)) {
+                dataSaveStore.keyStoreBoolean.put(id, true);
             }
 
 
-            String saveDataString = json.toJson(saveData);
+            String saveDataString = json.toJson(dataSaveStore);
 
             preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
             preferences.putString(PreferenceStrings.DATA_PERMANENT_DATA, Base64Coder.encodeString(saveDataString));
@@ -60,28 +78,13 @@ public class DataSave {
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
         preferences.putString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
         preferences.flush();
+        dataSaveStore = new DataSaveStore();
     }
 
 
 
     public static boolean isDataAvailable(String id){
-
-
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        String loadString = preferences.getString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-
-
-        try {
-
-            DataSave.DataSaveStore saveData = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
-            return saveData.keyStoreBoolean.containsKey(id);
-
-        } catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-
-
+        return dataSaveStore.keyStoreBoolean.containsKey(id);
     }
 
 

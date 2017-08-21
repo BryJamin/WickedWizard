@@ -49,7 +49,6 @@ public class AreYouSureWorld extends AbstractGestureDectector implements WorldCo
     private final MainGame game;
     private final Viewport gameport;
     private final TextureAtlas atlas;
-    private final MenuButton menuButton;
 
     private final float buttonWidth = Measure.units(20f);
 
@@ -67,7 +66,7 @@ public class AreYouSureWorld extends AbstractGestureDectector implements WorldCo
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
-        menuButton = new MenuButton(Assets.medium, atlas.findRegion(TextureStrings.BLOCK));
+
         this.text = text;
         isActive = true;
 
@@ -79,7 +78,7 @@ public class AreYouSureWorld extends AbstractGestureDectector implements WorldCo
     }
 
 
-    public World createWorld() {
+    public void  createWorld() {
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
@@ -121,19 +120,24 @@ public class AreYouSureWorld extends AbstractGestureDectector implements WorldCo
 
         float totalWidth = buttonWidth + buttonGap;
 
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .action(yesAction)
+                .width(buttonWidth)
+                .height(Measure.units(10f))
+                .foregroundColor(new Color(Color.WHITE))
+                .backgroundColor(new Color(Color.BLACK));
 
-        Entity yes = menuButton.createButton(world, MenuStrings.YES, camX + CenterMath.offsetX(gameport.getCamera().viewportWidth, totalWidth)
-                ,camY + Measure.units(20f),buttonWidth, Measure.units(10f), new Color(Color.WHITE), new Color(Color.BLACK));
+
+        Entity yes = menuButtonBuilder.build().createButton(world, MenuStrings.YES, camX + CenterMath.offsetX(gameport.getCamera().viewportWidth, totalWidth)
+                ,camY + Measure.units(20f));
         yes.edit().add(new ActionOnTouchComponent(yesAction));
 
-        Entity resume = menuButton.createButton(world, MenuStrings.NO, camX + CenterMath.offsetX(gameport.getCamera().viewportWidth, totalWidth) + buttonGap
-                ,camY + Measure.units(20f), buttonWidth, Measure.units(10f), new Color(Color.WHITE), new Color(Color.BLACK));
+        menuButtonBuilder.action(noAction);
+        Entity resume = menuButtonBuilder.build().createButton(world, MenuStrings.NO, camX + CenterMath.offsetX(gameport.getCamera().viewportWidth, totalWidth) + buttonGap
+                ,camY + Measure.units(20f)
+        );
         resume.edit().add(new ActionOnTouchComponent(noAction));
 
-
-
-
-        return world;
 
     }
 
