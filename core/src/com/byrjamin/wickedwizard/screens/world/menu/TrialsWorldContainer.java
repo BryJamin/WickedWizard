@@ -46,8 +46,8 @@ public class TrialsWorldContainer extends AbstractGestureDectector implements Wo
     private final TextureAtlas atlas;
 
 
-    private static final float buttonWidth = Measure.units(10f);
-    private static final float buttonHeight = Measure.units(10f);
+    private static final float buttonWidth = Measure.units(7.5f);
+    private static final float buttonHeight = Measure.units(7.5f);
 
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
@@ -114,8 +114,8 @@ public class TrialsWorldContainer extends AbstractGestureDectector implements Wo
                 .createButton(
                         world,
                         MenuStrings.BACK_TO_MAIN_MENU,
-                        MainGame.GAME_WIDTH - buttonWidth - Measure.units(5f)
-                        , Measure.units(10f));
+                        MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
+                        , Measure.units(5f));
 
 
         MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
@@ -127,24 +127,98 @@ public class TrialsWorldContainer extends AbstractGestureDectector implements Wo
 
         final ChallengeMaps challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
 
-        int count = 1;
+        int count = 0;
 
-        for (final String challengeId : ChallengesResource.Rank1Challenges.rank1ChallengesArray) {
+
+        float startY = Measure.units(40f);
+
+        float buttonGap = Measure.units(2.5f);
+
+
+        int maxColumns = 9;
+
+        float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (buttonWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
+
+        for(int i = 0; i < ChallengesResource.Rank1Challenges.rank1ChallengesArray.size; i++){
+
+            int mod = i % maxColumns;
+            int div = i / maxColumns;
+
+            final String s = ChallengesResource.Rank1Challenges.rank1ChallengesArray.get(i);
+
+            boolean challengeComplete = DataSave.isDataAvailable(s);
 
             Entity startChallenge = challengeButtonBuilder
+                    .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
+                    .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
                     .action(new Action() {
                         @Override
                         public void performAction(World world, Entity e) {
                             game.getScreen().dispose();
-                            game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(challengeId)));
+                            game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
                         }
                     })
                     .build()
-                    .createButton(world, Integer.toString(count), CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth)  + Measure.units(10 * count), CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight));
+                    .createButton(world, Integer.toString(count + 1), startX  + buttonWidth * mod + buttonGap * mod,
+                            startY - (div * buttonHeight) - (div * buttonGap));
+
+
 
             count++;
 
         }
+
+
+        int preCount = count;
+
+        for(int i = 0; i < ChallengesResource.Rank2Challenges.rank2ChallengesArray.size; i++){
+
+            int mod = count % maxColumns;
+            int div = count / maxColumns;
+
+            final String s = ChallengesResource.Rank2Challenges.rank2ChallengesArray.get(i);
+
+            boolean challengeComplete = DataSave.isDataAvailable(s);
+
+            if(DataSave.isDataAvailable(ChallengesResource.Rank2Challenges.rank2ChallengesUnlockString)) {
+
+                Entity startChallenge = challengeButtonBuilder
+                        .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
+                        .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
+                        .action(new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                game.getScreen().dispose();
+                                game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
+                            }
+                        })
+                        .build()
+                        .createButton(world, Integer.toString(count + 1), startX + buttonWidth * mod + buttonGap * mod,
+                                startY - (div * buttonHeight) - (div * buttonGap));
+
+            } else {
+
+                Entity startChallenge = challengeButtonBuilder
+                        .foregroundColor(buttonForeground)
+                        .backgroundColor(buttonForeground)
+                        .action(new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                
+                            }
+                        })
+                        .build()
+                        .createButton(world, "", startX + buttonWidth * mod + buttonGap * mod,
+                                startY - (div * buttonHeight) - (div * buttonGap));
+
+
+            }
+
+
+            count++;
+
+        }
+
 
     }
 

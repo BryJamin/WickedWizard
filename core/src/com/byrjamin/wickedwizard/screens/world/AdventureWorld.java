@@ -39,6 +39,7 @@ import com.byrjamin.wickedwizard.ecs.systems.HealthSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LockSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.ChallengeTimerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
@@ -179,7 +180,7 @@ public class AdventureWorld {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem(),
-
+                        new ChallengeTimerSystem(),
                         new GravitySystem(),
                         //TODO this is here because lock boxes check for a collision but ground collision sets vertical velocity to 0.
                         //TODO either change lock to except next Tos or

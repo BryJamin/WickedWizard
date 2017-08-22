@@ -1,13 +1,16 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
@@ -107,6 +110,11 @@ public class StartingRooms extends AbstractFactory {
 
 
                         System.out.println("Challenge data" + DataSave.isDataAvailable(challengeId));
+                        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(ChallengeTimerComponent.class)).getEntities();
+
+                        for(int i = 0; i < intBag.size(); i++){
+                            world.getEntity(intBag.get(i)).deleteFromWorld();
+                        }
 
                         if(!DataSave.isDataAvailable(challengeId)){
                             DataSave.saveData(challengeId);

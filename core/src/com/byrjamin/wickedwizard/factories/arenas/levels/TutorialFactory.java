@@ -384,15 +384,6 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         Bag<Component> bag;
 
         arena.addEntity(decorFactory.platform(0, arena.getHeight() - Measure.units(35), arena.getWidth()));
-/*        bag = decorFactory.grateBag(WIDTH / 2, HEIGHT - Measure.units(15),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
-                new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 3),
-                Direction.UP);
-        //arena.addDoor(bag);
-        arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));*/
-/*
-        //GROUND
-        arena.addEntity(EntityFactory.wallBag(0,  -WALLWIDTH, WIDTH, WALLWIDTH * 3));*/
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
