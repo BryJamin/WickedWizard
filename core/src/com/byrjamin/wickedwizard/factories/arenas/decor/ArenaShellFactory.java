@@ -79,9 +79,7 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords) {
 
-        Arena arena = new Arena(arenaSkin, defaultCoords);
-
-        arena = new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -135,30 +133,6 @@ public class  ArenaShellFactory extends AbstractFactory {
         return arena;
     }
 
-
-    public Arena createWidth2ArenaWithVerticalDoors(){
-        return createWidth2ArenaWithVerticalDoors(new MapCoords(0,0));
-    }
-
-
-    public Arena createWidth2ArenaWithVerticalDoors(MapCoords defaultCoords) {
-
-        Arena arena = new Arena(arenaSkin, defaultCoords, new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()));
-
-        arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addSection(new ArenaBuilder.Section(defaultCoords,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.DOOR))
-                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.DOOR)).buildArena();
-
-        return arena;
-    }
 
     public Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
 

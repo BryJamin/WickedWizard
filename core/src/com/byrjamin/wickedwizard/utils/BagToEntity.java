@@ -22,10 +22,15 @@ public class BagToEntity {
         }
     }*/
 
-    public static void bagsToEntities(World world, Bag<? extends Bag<Component>> bags){
+    public static Bag<Entity> bagsToEntities(World world, Bag<? extends Bag<Component>> bags){
+
+        Bag<Entity> entityBag = new Bag<Entity>();
+
         for(Bag<Component> bag : bags){
-            bagToEntity(world.createEntity(), bag);
+            entityBag.add(bagToEntity(world.createEntity(), bag));
         }
+
+        return entityBag;
     }
 
     public static Entity bagToEntity(Entity e, Bag<Component> bag){

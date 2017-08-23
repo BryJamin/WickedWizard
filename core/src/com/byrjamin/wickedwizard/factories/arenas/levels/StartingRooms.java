@@ -117,7 +117,7 @@ public class StartingRooms extends AbstractFactory {
                         }
 
                         if(!DataSave.isDataAvailable(challengeId)){
-                            DataSave.saveData(challengeId);
+                            DataSave.saveChallengeData(challengeId);
                             world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
                         } else {
                             world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);

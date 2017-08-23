@@ -22,16 +22,16 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.screens.world.menu.DevModeMenuWorld;
+import com.byrjamin.wickedwizard.screens.world.menu.ItemDisplayWorldContainer;
 import com.byrjamin.wickedwizard.screens.world.menu.MenuBackDropWorld;
 import com.byrjamin.wickedwizard.screens.world.menu.SettingsWorld;
-import com.byrjamin.wickedwizard.screens.world.menu.TrialsWorldContainer;
+import com.byrjamin.wickedwizard.screens.world.menu.ChallengesWorldContainer;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
@@ -62,12 +62,14 @@ public class MenuScreen extends AbstractScreen {
     private DevModeMenuWorld devModeMenuWorld;
     private SettingsWorld settingsWorld;
     private MenuBackDropWorld menuBackDropWorld;
-    private TrialsWorldContainer trialsWorldContainer;
+    private ChallengesWorldContainer challengesWorldContainer;
+    private ItemDisplayWorldContainer itemDisplayWorldContainer;
 
     private GestureDetector gestureDetector;
     private GestureDetector settingsDetector;
     private GestureDetector backDropDetector;
     private GestureDetector trailsWorldDectector;
+    private GestureDetector itemsDisplayWorldDectector;
 
     private Preferences devSettings;
     private Preferences preferences;
@@ -82,7 +84,7 @@ public class MenuScreen extends AbstractScreen {
 
 
     public enum MenuType {
-        MAIN, DEV, SETTING, TRIALS;
+        MAIN, DEV, SETTING, CHALLENGES, ITEMS;
     }
 
     private MenuType menuType;
@@ -113,10 +115,12 @@ public class MenuScreen extends AbstractScreen {
         devModeMenuWorld = new DevModeMenuWorld(game, gameport);
         settingsWorld = new SettingsWorld(game, gameport);
         menuBackDropWorld = new MenuBackDropWorld(game, gameport);
-        trialsWorldContainer = new TrialsWorldContainer(game, gameport);
+        challengesWorldContainer = new ChallengesWorldContainer(game, gameport);
+        itemDisplayWorldContainer = new ItemDisplayWorldContainer(game, gameport);
         settingsDetector = new GestureDetector(settingsWorld);
         backDropDetector = new GestureDetector(menuBackDropWorld);
-        trailsWorldDectector = new GestureDetector(trialsWorldContainer);
+        trailsWorldDectector = new GestureDetector(challengesWorldContainer);
+        itemsDisplayWorldDectector = new GestureDetector(itemDisplayWorldContainer);
         Gdx.input.setCatchBackKey(false);
 
     }
@@ -134,8 +138,10 @@ public class MenuScreen extends AbstractScreen {
         switch (menuType){
             case SETTING: multiplexer.addProcessor(settingsDetector);
                 break;
-            case TRIALS: multiplexer.addProcessor(trailsWorldDectector);
+            case CHALLENGES: multiplexer.addProcessor(trailsWorldDectector);
             default:
+                break;
+            case ITEMS: multiplexer.addProcessor(itemsDisplayWorldDectector);
                 break;
         }
         //multiplexer.addProcessor(gestureDetector);
@@ -245,7 +251,7 @@ public class MenuScreen extends AbstractScreen {
                 .action((new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        menuType = MenuType.TRIALS;
+                        menuType = MenuType.CHALLENGES;
                     }
                 }))
                 .build()
@@ -293,9 +299,13 @@ public class MenuScreen extends AbstractScreen {
             case SETTING:
                 settingsWorld.process(delta);
                 break;
-            case TRIALS:
-                trialsWorldContainer.process(delta);
+            case CHALLENGES:
+                challengesWorldContainer.process(delta);
                 break;
+            case ITEMS:
+                itemDisplayWorldContainer.process(delta);
+                break;
+
         }
 
 

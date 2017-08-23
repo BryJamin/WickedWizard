@@ -79,6 +79,7 @@ public class ItemStore {
         createItem(new ItemCriticalEye());
         createItem(new ItemKeenEye());
 
+
         //Armor
         createItem(new ItemIronBody());
         createItem(new ItemSlimeCoat());

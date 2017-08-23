@@ -37,6 +37,8 @@ public class TextureStrings {
     public static final String SETTINGS_MUSIC_ON = "settings/music";
     public static final String SETTINGS_MUSIC_OFF = "settings/music_off";
 
+    public static final String SETTINGS_QUESTION_MARK = "settings/question_mark";
+
     public static final String GO_TO_SETTINGS = "settings/settings_goto";
 
     public static final String ICON_PAUSE = "pause";

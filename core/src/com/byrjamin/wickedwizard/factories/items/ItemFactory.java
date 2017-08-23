@@ -342,7 +342,11 @@ public class ItemFactory extends AbstractFactory {
                         Entity player = world.getSystem(FindPlayerSystem.class).getPlayerEntity();
                         item.applyEffect(world, player);
                         player.getComponent(StatComponent.class).collectedItems.add(item);
-                        world.getSystem(PickUpSystem.class).itemOverHead(player, item.getValues().region);
+
+
+
+
+                        world.getSystem(PickUpSystem.class).itemOverHead(player, item);
                         world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().name, item.getValues().description );
 
                         ac.hasItem = false;

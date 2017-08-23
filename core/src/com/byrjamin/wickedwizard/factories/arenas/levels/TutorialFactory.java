@@ -425,7 +425,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                     @Override
                     public void performAction(World world, Entity e) {
 
-                        DataSave.saveData(DataSave.TUTORIAL_COMPLETE);
+                        DataSave.saveChallengeData(DataSave.TUTORIAL_COMPLETE);
 
                         world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                             @Override

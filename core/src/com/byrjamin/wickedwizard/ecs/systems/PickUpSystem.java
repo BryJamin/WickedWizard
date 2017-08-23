@@ -16,6 +16,8 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.Pair;
 
@@ -62,7 +64,7 @@ public class PickUpSystem extends EntityProcessingSystem {
     }
 
 
-    public void itemOverHead(Entity player, Pair<String, Integer> textureRegionName){
+    public void itemOverHead(Entity player, Item item){
 
         CollisionBoundComponent pBound = player.getComponent(CollisionBoundComponent.class);
 
@@ -70,21 +72,23 @@ public class PickUpSystem extends EntityProcessingSystem {
         itemHoverAffect.edit().add(new PositionComponent());
         itemHoverAffect.edit().add(new FollowPositionComponent(player.getComponent(PositionComponent.class).position,
                 0, pBound.bound.getHeight() + pBound.bound.getHeight() / 4));
-        itemHoverAffect.edit().add(new TextureRegionComponent(world.getSystem(RenderingSystem.class).atlas.findRegion(textureRegionName.getLeft(), textureRegionName.getRight()),
+        itemHoverAffect.edit().add(new TextureRegionComponent(world.getSystem(RenderingSystem.class).atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
         itemHoverAffect.edit().add(new ExpireComponent(1.2f));
 
-        FadeComponent fc = new FadeComponent();
-        fc.maxAlpha = 1.0f;
-        fc.fadeIn = false;
-        fc.isEndless = false;
-        fc.alphaTimeLimit = 1.0f;
-        fc.alphaTimer = 1.0f;
+        FadeComponent fc = new FadeComponent(false, 1.0f, false);
 
         itemHoverAffect.edit().add(fc);
+
+
+        DataSave.saveItemData(item.getValues().id);
 
 
 
 
     }
+
+
+
+
 }

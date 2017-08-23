@@ -4,10 +4,13 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -16,6 +19,9 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
@@ -23,39 +29,49 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
-import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
-import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.screens.world.AreYouSureWorld;
 import com.byrjamin.wickedwizard.screens.world.WorldContainer;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.CenterMath;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.GameDelta;
 import com.byrjamin.wickedwizard.utils.Measure;
 
 /**
- * Created by BB on 20/08/2017.
+ * Created by BB on 22/08/2017.
  */
 
-public class TrialsWorldContainer extends AbstractGestureDectector implements WorldContainer {
+public class ItemDisplayWorldContainer extends AbstractGestureDectector implements WorldContainer {
 
     private final MainGame game;
     private final Viewport gameport;
     private final TextureAtlas atlas;
 
 
-    private static final float buttonWidth = Measure.units(7.5f);
-    private static final float buttonHeight = Measure.units(7.5f);
+    private static final float arrowSize = Measure.units(5f);
+
+    private static final float iconWidth = Measure.units(7.5f);
+    private static final float iconHeight = Measure.units(7.5f);
 
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
 
+    private static final float buttonWidth = Measure.units(7.5f);
+    private static final float buttonHeight = Measure.units(7.5f);
+
+    private Array<Bag<ComponentBag>> itemComponentBagArray = new Array<Bag<ComponentBag>>();
+
+    private Bag<Entity> currentlyShownItems;
+    private int currentlyShownIndex = 0;
 
     private World world;
 
-    public TrialsWorldContainer(MainGame game, Viewport viewport){
+    public ItemDisplayWorldContainer(MainGame game, Viewport viewport){
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
@@ -93,14 +109,14 @@ public class TrialsWorldContainer extends AbstractGestureDectector implements Wo
                 .backgroundColor(new Color(0, 0, 0, 0))
                 .build()
                 .createButton(world,
-                        MenuStrings.TRAILS,
+                        MenuStrings.ITEMS,
                         CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
                         Measure.units(50f));
 
 
         Entity backToMainMenu = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30f))
-                .height(buttonHeight)
+                .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
                 .backgroundColor(new Color(0, 0, 0, 0))
                 .action(new Action() {
@@ -118,11 +134,6 @@ public class TrialsWorldContainer extends AbstractGestureDectector implements Wo
                         , Measure.units(5f));
 
 
-        MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
-                .width(buttonWidth)
-                .height(buttonHeight)
-                .foregroundColor(buttonForeground)
-                .backgroundColor(buttonBackground);
 
 
         final ChallengeMaps challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
@@ -135,90 +146,113 @@ public class TrialsWorldContainer extends AbstractGestureDectector implements Wo
         float buttonGap = Measure.units(2.5f);
 
 
-        int maxColumns = 9;
+        int maxColumns = 8;
+        int maxRows = 3;
 
-        float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (buttonWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
-
-        for(int i = 0; i < ChallengesResource.Rank1Challenges.rank1ChallengesArray.size; i++){
-
-            int mod = i % maxColumns;
-            int div = i / maxColumns;
-
-            final String s = ChallengesResource.Rank1Challenges.rank1ChallengesArray.get(i);
-
-            boolean challengeComplete = DataSave.isDataAvailable(s);
-
-            Entity startChallenge = challengeButtonBuilder
-                    .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
-                    .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
-                    .action(new Action() {
-                        @Override
-                        public void performAction(World world, Entity e) {
-                            game.getScreen().dispose();
-                            game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
-                        }
-                    })
-                    .build()
-                    .createButton(world, Integer.toString(count + 1), startX  + buttonWidth * mod + buttonGap * mod,
-                            startY - (div * buttonHeight) - (div * buttonGap));
+        float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (iconWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
 
 
 
-            count++;
 
-        }
+        ItemStore itemStore = new ItemStore(MathUtils.random);
 
 
-        int preCount = count;
+        while(itemStore.getItemOptionsArray().size > 0) {
 
-        for(int i = 0; i < ChallengesResource.Rank2Challenges.rank2ChallengesArray.size; i++){
 
-            int mod = count % maxColumns;
-            int div = count / maxColumns;
+            Array<ItemStore.ItemOptions> copyArray = new Array<ItemStore.ItemOptions>();
+            Bag<ComponentBag> bagArray = new Bag<ComponentBag>();
 
-            final String s = ChallengesResource.Rank2Challenges.rank2ChallengesArray.get(i);
+            for (int i = 0; i < itemStore.getItemOptionsArray().size; i++) {
 
-            boolean challengeComplete = DataSave.isDataAvailable(s);
+                int mod = i % maxColumns;
+                int div = i / maxColumns;
 
-            if(DataSave.isDataAvailable(ChallengesResource.Rank2Challenges.rank2ChallengesUnlockString)) {
+                ComponentBag item = itemIcon(itemStore.getItemOptionsArray().get(i).item, startX + iconWidth * mod + buttonGap * mod,
+                        startY - (div * iconHeight) - (div * buttonGap));
 
-                Entity startChallenge = challengeButtonBuilder
-                        .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
-                        .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
-                        .action(new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                game.getScreen().dispose();
-                                game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
-                            }
-                        })
-                        .build()
-                        .createButton(world, Integer.toString(count + 1), startX + buttonWidth * mod + buttonGap * mod,
-                                startY - (div * buttonHeight) - (div * buttonGap));
+                bagArray.add(item);
+                count++;
 
-            } else {
+                copyArray.add(itemStore.getItemOptionsArray().get(i));
 
-                Entity startChallenge = challengeButtonBuilder
-                        .foregroundColor(buttonForeground)
-                        .backgroundColor(buttonForeground)
-                        .action(new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                
-                            }
-                        })
-                        .build()
-                        .createButton(world, "", startX + buttonWidth * mod + buttonGap * mod,
-                                startY - (div * buttonHeight) - (div * buttonGap));
-
+                if (i + 1 >= maxColumns * maxRows) {
+                    break;
+                }
 
             }
 
+            itemComponentBagArray.add(bagArray);
 
-            count++;
+            itemStore.getItemOptionsArray().removeAll(copyArray, true);
+
+            System.out.println(itemStore.getItemOptionsArray().size);
 
         }
 
+        currentlyShownItems = BagToEntity.bagsToEntities(world, itemComponentBagArray.get(currentlyShownIndex));
+
+
+
+        arrowEntity(world, Measure.units(90f), CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), false);
+        arrowEntity(world, Measure.units(5f), CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), true);
+
+
+
+    }
+
+    private Entity arrowEntity(World world, float x, float y, final boolean isLeft){
+        Entity arrow = world.createEntity();
+
+        arrow.edit().add(new PositionComponent(x, y));
+        arrow.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                arrowSize, arrowSize, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
+        arrow.edit().add(new CollisionBoundComponent(new Rectangle(x, y, arrowSize, arrowSize)));
+        arrow.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                for(Entity item : currentlyShownItems){
+                    item.deleteFromWorld();
+                }
+
+
+                currentlyShownIndex = isLeft ? currentlyShownIndex - 1 : currentlyShownIndex + 1;
+
+                if(currentlyShownIndex >= itemComponentBagArray.size){
+                    currentlyShownIndex = 0;
+                } else if(currentlyShownIndex < 0) {
+                    currentlyShownIndex = itemComponentBagArray.size - 1;
+                }
+
+                currentlyShownItems = BagToEntity.bagsToEntities(world, itemComponentBagArray.get(currentlyShownIndex));
+
+
+            }
+        }));
+
+
+        return arrow;
+
+    }
+
+    private ComponentBag itemIcon(Item item, float x, float y){
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x, y));
+
+        boolean isItemCollected = DataSave.isItemCollected(item.getValues().id);
+
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
+                iconWidth, iconHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+
+        if(!isItemCollected) {
+            trc.color = new Color(Color.BLACK);
+            trc.DEFAULT = new Color(Color.BLACK);
+            //trc.region = atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK);
+        }
+
+        bag.add(trc);
+
+        return bag;
 
     }
 
@@ -240,3 +274,4 @@ public class TrialsWorldContainer extends AbstractGestureDectector implements Wo
         return world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
     }
 }
+
