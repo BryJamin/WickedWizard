@@ -248,6 +248,20 @@ public class PlayScreen extends AbstractScreen {
                     return super.keyDown(keycode);
                 }
             });
+        } else if(deathScreenWorld != null){
+            multiplexer.addProcessor(new InputAdapter() {
+                @Override
+                public boolean keyDown(int keycode) {
+
+                    if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
+                        game.getScreen().dispose();
+                        game.setScreen(new MenuScreen(game));
+                    }
+
+
+                    return super.keyDown(keycode);
+                }
+            });
         }
 
         multiplexer.addProcessor(gestureDetector);

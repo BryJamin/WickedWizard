@@ -6,10 +6,12 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -42,6 +44,10 @@ public class DeathScreenWorld {
 
     private World world;
 
+
+    private static final float buttonWidth = Measure.units(50f);
+    private static final float buttonHeight = Measure.units(15f);
+
     public DeathScreenWorld(MainGame game, Viewport gameport){
         this.game = game;
         this.atlas  = game.assetManager.get(FileLocationStrings.spriteAtlas);
@@ -73,28 +79,26 @@ public class DeathScreenWorld {
         FadeComponent fc = new FadeComponent(2.0f, false);
         fc.fadeIn = true;
 
-        Entity deathTextEntity = world.createEntity();
-        deathTextEntity.edit().add(new PositionComponent(gameport.getCamera().position.x
-                ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800));
-        TextureFontComponent tfc = new TextureFontComponent("Oh dear, you seem to have died \n\n Tap here to restart");
-        deathTextEntity.edit().add(tfc);
-        deathTextEntity.edit().add(fc);
+        Entity restartEntity = createRestartTextEntity(world, fc);
 
-        Entity mainMenuTrigger = world.createEntity();
+        PositionComponent restartEntityPosition = restartEntity.getComponent(PositionComponent.class);
+        CollisionBoundComponent restartEntityBound = restartEntity.getComponent(CollisionBoundComponent.class);
 
-        mainMenuTrigger.edit().add(new PositionComponent(gameport.getCamera().position.x - gameport.getCamera().viewportWidth / 2 + CenterMath.offsetX(gameport.getCamera().viewportWidth, Measure.units(50f)),
-                gameport.getCamera().position.y - Measure.units(5f)));
-        mainMenuTrigger.edit().add(new CollisionBoundComponent(new Rectangle(mainMenuTrigger.getComponent(PositionComponent.class).getX(),
-                mainMenuTrigger.getComponent(PositionComponent.class).getY(), Measure.units(50f), Measure.units(10f))));
+        Entity upperTextEntity = world.createEntity();
+        upperTextEntity.edit().add(new PositionComponent(restartEntityPosition.getX(), restartEntityPosition.getY() + restartEntityBound.bound.getHeight() / 2));
+        TextureFontComponent tfc = new TextureFontComponent(MenuStrings.Death.DEATH_FLAVOR_TEXT[MathUtils.random.nextInt(MenuStrings.Death.DEATH_FLAVOR_TEXT.length)]);
+        upperTextEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
+                ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, restartEntityBound.bound.getWidth(), restartEntityBound.bound.getHeight() / 2)));
+        upperTextEntity.edit().add(tfc);
+        upperTextEntity.edit().add(fc);
 
-        mainMenuTrigger.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                game.getScreen().dispose();
-                game.setScreen(new MenuScreen(game));
-            }
-        }));
-
+        Entity lowerTextEntity = world.createEntity();
+        lowerTextEntity.edit().add(new PositionComponent(restartEntityPosition.getX(), restartEntityPosition.getY()));
+        tfc = new TextureFontComponent(MenuStrings.Death.RESTART);
+        lowerTextEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
+                ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, restartEntityBound.bound.getWidth(), restartEntityBound.bound.getHeight() / 2)));
+        lowerTextEntity.edit().add(tfc);
+        lowerTextEntity.edit().add(fc);
 
 
 
@@ -108,6 +112,32 @@ public class DeathScreenWorld {
 
         blackScreen.edit().add(trc);
         blackScreen.edit().add(fc);
+
+    }
+
+
+    public Entity createRestartTextEntity(World world, FadeComponent fadeComponent){
+
+        float camX = gameport.getCamera().position.x - gameport.getCamera().viewportWidth / 2;
+        float camY = gameport.getCamera().position.y - gameport.getCamera().viewportHeight / 2;
+
+        Entity restartEntity = world.createEntity();
+        restartEntity.edit().add(new PositionComponent(camX + CenterMath.offsetX(gameport.getCamera().viewportWidth, Measure.units(50f))
+                ,camY + CenterMath.offsetY(gameport.getCamera().viewportHeight, Measure.units(10f))));
+        restartEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
+                ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, buttonWidth, buttonHeight)));
+        restartEntity.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.getScreen().dispose();
+                game.setScreen(new MenuScreen(game));
+            }
+        }));
+        restartEntity.edit().add(fadeComponent);
+
+
+        return restartEntity;
+
 
     }
 

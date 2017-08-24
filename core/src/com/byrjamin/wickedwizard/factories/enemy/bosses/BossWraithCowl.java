@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
@@ -50,6 +51,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -135,6 +137,9 @@ public class BossWraithCowl extends EnemyFactory {
         y = y - height / 2;
 
         ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
+        BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
+
+        bag.add(new ArenaLockComponent());
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
                 new HitBox(new Rectangle(x, y, hitBoxheight, hitBoxwidth), CenterMath.offsetX(width, hitBoxwidth),
@@ -166,6 +171,8 @@ public class BossWraithCowl extends EnemyFactory {
                 phaseComponent.addPhase(6f, fadeInPhaseLeft);
                 phaseComponent.addPhase(6f, fadeInPhaseLeft);
                 phaseComponent.addPhase(10f, new OrbitalChasePhase(random));
+
+                e.edit().add(new EnemyComponent());
 
                 e.edit().add(phaseComponent);
 

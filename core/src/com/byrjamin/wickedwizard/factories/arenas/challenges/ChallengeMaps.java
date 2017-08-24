@@ -66,6 +66,8 @@ public class ChallengeMaps extends AbstractFactory {
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
     private Rank2ChallengeMaps rank2ChallengeMaps;
+    private Rank3ChallengeMaps rank3ChallengeMaps;
+    private Rank4ChallengeMaps rank4ChallengeMaps;
 
     ArenaSkin arenaSkin = new LightGraySkin();
 
@@ -87,6 +89,8 @@ public class ChallengeMaps extends AbstractFactory {
         this.itemFactory = new ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
+        this.rank3ChallengeMaps = new Rank3ChallengeMaps(assetManager, random);
+        this.rank4ChallengeMaps = new Rank4ChallengeMaps(assetManager, random);
 
         this.random = random;
         setUpMap();
@@ -107,8 +111,16 @@ public class ChallengeMaps extends AbstractFactory {
         mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectAdoj, perfectAdoj(ChallengesResource.Rank1Challenges.perfectAdoj));
         mapOfChallenges.put(ChallengesResource.Rank1Challenges.tutorialSpeedRun, tutorialSpeedRun(ChallengesResource.Rank1Challenges.tutorialSpeedRun));
         mapOfChallenges.put(ChallengesResource.Rank1Challenges.arenaSpeedRun, arenaSpeedRun(ChallengesResource.Rank1Challenges.arenaSpeedRun));
+
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectWanda, rank2ChallengeMaps.perfectWanda(ChallengesResource.Rank2Challenges.perfectWanda));
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectKugel, rank2ChallengeMaps.perfectKugel(ChallengesResource.Rank2Challenges.perfectKugel));
+
+        mapOfChallenges.put(ChallengesResource.Rank3Challenges.perfectBoomy, rank3ChallengeMaps.perfectBoomy(ChallengesResource.Rank3Challenges.perfectBoomy));
+        mapOfChallenges.put(ChallengesResource.Rank3Challenges.perfectAjir, rank3ChallengeMaps.perfectAjir(ChallengesResource.Rank3Challenges.perfectAjir));
+
+        mapOfChallenges.put(ChallengesResource.Rank4Challenges.perfectWraith, rank4ChallengeMaps.perfectWraith(ChallengesResource.Rank4Challenges.perfectWraith));
+        mapOfChallenges.put(ChallengesResource.Rank4Challenges.perfectAmalgama, rank4ChallengeMaps.perfectAmalgama(ChallengesResource.Rank4Challenges.perfectAmalgama));
+
     }
 
 

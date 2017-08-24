@@ -43,7 +43,7 @@ public class BossRoomAjir extends AbstractFactory {
     }
 
 
-    public ArenaCreate adojArena() {
+    public ArenaCreate ajirArena() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {

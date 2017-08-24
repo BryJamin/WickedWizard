@@ -58,6 +58,34 @@ public class MenuStrings {
     }
 
 
+    public static class Death {
+
+
+        public static final String[] DEATH_FLAVOR_TEXT = {"Oh dear, you seem to have died",
+        "Welp, that happened",
+        "You were probably really close",
+        "Ouch",
+        "Oh no! You got hit too much...",
+        "These controls suck",
+        "Good try, I guess"};
+
+
+
+        public static final String RESTART = "Tap here to Restart";
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 
 
 }

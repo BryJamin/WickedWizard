@@ -53,6 +53,37 @@ public class ChallengesResource {
     }
 
 
+    public static class Rank3Challenges {
+
+        public static String perfectBoomy = "5971c470-98af-463a-947a-b86db48b0e35";
+        public static String perfectAjir = "536e9555-9beb-40fe-867e-d2999be26d32";
+
+        public static Array<String> rank3ChallengesArray = new Array<String>();
+
+        static {
+            rank3ChallengesArray.add(perfectBoomy);
+            rank3ChallengesArray.add(perfectAjir);
+        }
+
+    }
+
+
+
+    public static class Rank4Challenges {
+
+        public static String perfectAmalgama = "cb425f59-de30-4d19-b851-24e79b13bb0c";
+        public static String perfectWraith = "320ce1ee-10fa-4617-a4df-e4cd385a8a5c";
+
+        public static Array<String> rank4ChallengesArray = new Array<String>();
+
+        static {
+            rank4ChallengesArray.add(perfectWraith);
+            rank4ChallengesArray.add(perfectAmalgama);
+        }
+
+    }
+
+
 
 
 

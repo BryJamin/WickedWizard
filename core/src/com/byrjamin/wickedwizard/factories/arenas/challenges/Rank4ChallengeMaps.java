@@ -14,6 +14,8 @@ import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -30,7 +32,7 @@ import java.util.Random;
  * Created by BB on 24/08/2017.
  */
 
-public class Rank3ChallengeMaps extends AbstractFactory {
+public class Rank4ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 35f;
@@ -41,12 +43,12 @@ public class Rank3ChallengeMaps extends AbstractFactory {
     private ItemFactory itemFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
-    private ArenaSkin arenaSkin = Level.THREE.getArenaSkin();
+    private ArenaSkin arenaSkin = Level.FOUR.getArenaSkin();
 
     private Random random;
 
 
-    public Rank3ChallengeMaps(AssetManager assetManager, Random random) {
+    public Rank4ChallengeMaps(AssetManager assetManager, Random random) {
         super(assetManager);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
@@ -57,9 +59,9 @@ public class Rank3ChallengeMaps extends AbstractFactory {
     }
 
 
-    public GameCreator perfectBoomy(String id){
+    public GameCreator perfectWraith(String id){
 
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -73,7 +75,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BoomyMap(assetManager, arenaSkin).boomyArena().createArena(new MapCoords(1,0)),
+                new BossRoomWraithCowl(assetManager, arenaSkin).wraithcowlArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 
@@ -91,9 +93,9 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
 
 
-    public GameCreator perfectAjir(String id){
+    public GameCreator perfectAmalgama(String id){
 
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords(0, 0));
+        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -105,9 +107,9 @@ public class Rank3ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(7,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BossRoomAjir(assetManager, arenaSkin).ajirArena().createArena(new MapCoords(1,0)),
+                new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 
@@ -121,18 +123,6 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

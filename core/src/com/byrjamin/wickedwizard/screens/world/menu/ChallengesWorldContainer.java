@@ -154,77 +154,10 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
         count = createChallengeButtons(world, count, ChallengesResource.Rank1Challenges.rank1ChallengesArray, ChallengesResource.LEVEL_1_COMPLETE);
         count = createChallengeButtons(world, count, ChallengesResource.Rank2Challenges.rank2ChallengesArray,
                 ChallengesResource.LEVEL_2_COMPLETE);
-
-/*        for(int i = 0; i < ChallengesResource.Rank1Challenges.rank1ChallengesArray.size; i++){
-
-            int mod = i % maxColumns;
-            int div = i / maxColumns;
-
-            final String s = ChallengesResource.Rank1Challenges.rank1ChallengesArray.get(i);
-
-            boolean challengeComplete = DataSave.isDataAvailable(s);
-
-            Entity startChallenge = challengeButtonBuilder
-                    .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
-                    .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
-                    .action(new Action() {
-                        @Override
-                        public void performAction(World world, Entity e) {
-                            game.getScreen().dispose();
-                            game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
-                        }
-                    })
-                    .build()
-                    .createButton(world, Integer.toString(count + 1), startX  + buttonWidth * mod + buttonGap * mod,
-                            startY - (div * buttonHeight) - (div * buttonGap));
-
-
-
-            count++;
-
-        }*/
-
-
-/*        int preCount = count;
-
-        for(int i = 0; i < ChallengesResource.Rank2Challenges.rank2ChallengesArray.size; i++){
-
-            int mod = count % maxColumns;
-            int div = count / maxColumns;
-
-            final String s = ChallengesResource.Rank2Challenges.rank2ChallengesArray.get(i);
-
-            boolean challengeComplete = DataSave.isDataAvailable(s);
-
-            if(DataSave.isDataAvailable(ChallengesResource.Rank2Challenges.rank2ChallengesUnlockString)) {
-
-                Entity startChallenge = challengeButtonBuilder
-                        .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
-                        .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
-                        .action(new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                game.getScreen().dispose();
-                                game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
-                            }
-                        })
-                        .build()
-                        .createButton(world, Integer.toString(count + 1), startX + buttonWidth * mod + buttonGap * mod,
-                                startY - (div * buttonHeight) - (div * buttonGap));
-
-            } else {
-
-                Entity lockedChallenge = world.createEntity();
-                lockedChallenge.edit().add(new PositionComponent(startX + buttonWidth * mod + buttonGap * mod,
-                        startY - (div * buttonHeight) - (div * buttonGap)));
-                lockedChallenge.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_LOCK), buttonWidth, buttonHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-
-
-                count++;
-            }
-
-        }*/
-
+        count = createChallengeButtons(world, count, ChallengesResource.Rank3Challenges.rank3ChallengesArray,
+                ChallengesResource.LEVEL_3_COMPLETE);
+        count = createChallengeButtons(world, count, ChallengesResource.Rank4Challenges.rank4ChallengesArray,
+                ChallengesResource.LEVEL_4_COMPLETE);
 
     }
 

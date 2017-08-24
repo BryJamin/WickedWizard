@@ -1,10 +1,7 @@
 package com.byrjamin.wickedwizard.factories.arenas.presetmaps;
 
-import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.IntBag;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
@@ -12,7 +9,6 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
@@ -254,7 +250,7 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(2, 0),
                         btc,
                         item,
-                        new BossRoomAjir(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1, 0)));
+                        new BossRoomAjir(assetManager, arenaSkin).ajirArena().createArena(new MapCoords(1, 0)));
             }
         };
     }
