@@ -35,9 +35,6 @@ public class DataSave {
 
 
 
-    public static final String TUTORIAL_COMPLETE = "f239f5db-f5fe-42ed-b98f-54250522ec6c";
-
-
 
     public static void saveChallengeData(String id){
         dataSaveStore.keyStoreBoolean.put(id, true);

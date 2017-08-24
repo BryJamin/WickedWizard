@@ -13,11 +13,14 @@ import java.util.Random;
 public class PresetGames {
 
 
+    public static String DEFAULT_GAME_ID = "8d74501f-91ac-4964-82f0-34700da3686f";
+
+
     public static GameCreator DEFAULT_GAME(AssetManager assetManager, Random random){
 
         PresetGenerators presetGenerators = new PresetGenerators();
 
-        return new GameCreator(
+        return new GameCreator(DEFAULT_GAME_ID,
                 new GameCreator.LevelCreator(presetGenerators.level1Configuration(assetManager, random)),
                 new GameCreator.LevelCreator(presetGenerators.level2Configuration(assetManager, random)),
                 new GameCreator.LevelCreator(presetGenerators.level3Configuration(assetManager, random)),

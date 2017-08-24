@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.Assets;
@@ -16,6 +17,8 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
@@ -48,9 +51,17 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
 
     private static final float buttonWidth = Measure.units(7.5f);
     private static final float buttonHeight = Measure.units(7.5f);
+    private static final float buttonGap = Measure.units(2.5f);
 
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
+
+    private static final int maxColumns = 9;
+
+    private static final float startY = Measure.units(40f);
+    private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (buttonWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
+
+    private ChallengeMaps challengeMaps;
 
 
     private World world;
@@ -59,6 +70,7 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
+        this.challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
         createWorld();
     }
 
@@ -124,9 +136,6 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
                 .foregroundColor(buttonForeground)
                 .backgroundColor(buttonBackground);
 
-
-        final ChallengeMaps challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
-
         int count = 0;
 
 
@@ -139,7 +148,13 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
 
         float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (buttonWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
 
-        for(int i = 0; i < ChallengesResource.Rank1Challenges.rank1ChallengesArray.size; i++){
+
+
+        count = createChallengeButtons(world, count, ChallengesResource.Rank1Challenges.rank1ChallengesArray, ChallengesResource.LEVEL_1_COMPLETE);
+        count = createChallengeButtons(world, count, ChallengesResource.Rank2Challenges.rank2ChallengesArray,
+                ChallengesResource.LEVEL_2_COMPLETE);
+
+/*        for(int i = 0; i < ChallengesResource.Rank1Challenges.rank1ChallengesArray.size; i++){
 
             int mod = i % maxColumns;
             int div = i / maxColumns;
@@ -166,10 +181,10 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
 
             count++;
 
-        }
+        }*/
 
 
-        int preCount = count;
+/*        int preCount = count;
 
         for(int i = 0; i < ChallengesResource.Rank2Challenges.rank2ChallengesArray.size; i++){
 
@@ -198,19 +213,67 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
 
             } else {
 
+                Entity lockedChallenge = world.createEntity();
+                lockedChallenge.edit().add(new PositionComponent(startX + buttonWidth * mod + buttonGap * mod,
+                        startY - (div * buttonHeight) - (div * buttonGap)));
+                lockedChallenge.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_LOCK), buttonWidth, buttonHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+
+
+                count++;
+            }
+
+        }*/
+
+
+    }
+
+
+
+
+    public int createChallengeButtons(World world, int startCount, Array<String> challengeIds, String unlockString){
+
+
+        MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+                .width(buttonWidth)
+                .height(buttonHeight)
+                .foregroundColor(buttonForeground)
+                .backgroundColor(buttonBackground);
+
+        int count = startCount;
+
+        for(int i = 0; i < challengeIds.size; i++){
+
+            int mod = count % maxColumns;
+            int div = count / maxColumns;
+
+            final String s = challengeIds.get(i);
+
+            boolean challengeComplete = DataSave.isDataAvailable(s);
+
+            if(DataSave.isDataAvailable(unlockString)) {
+
                 Entity startChallenge = challengeButtonBuilder
-                        .foregroundColor(buttonForeground)
-                        .backgroundColor(buttonForeground)
+                        .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
+                        .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
                         .action(new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
-                                
+                                game.getScreen().dispose();
+                                game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
                             }
                         })
                         .build()
-                        .createButton(world, "", startX + buttonWidth * mod + buttonGap * mod,
+                        .createButton(world, Integer.toString(count + 1), startX + buttonWidth * mod + buttonGap * mod,
                                 startY - (div * buttonHeight) - (div * buttonGap));
 
+
+
+            } else {
+
+                Entity lockedChallenge = world.createEntity();
+                lockedChallenge.edit().add(new PositionComponent(startX + buttonWidth * mod + buttonGap * mod,
+                        startY - (div * buttonHeight) - (div * buttonGap)));
+                lockedChallenge.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_LOCK), buttonWidth, buttonHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
             }
 
@@ -220,7 +283,12 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
         }
 
 
+        return count;
+
+
     }
+
+
 
 
     @Override

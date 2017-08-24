@@ -30,6 +30,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
 import com.byrjamin.wickedwizard.factories.items.Item;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.screens.MenuButton;
@@ -154,27 +155,25 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
 
 
-        ItemStore itemStore = new ItemStore(MathUtils.random);
+        Array<Item> allItems = ItemResource.getAllItems();
 
+        while(allItems.size > 0) {
 
-        while(itemStore.getItemOptionsArray().size > 0) {
-
-
-            Array<ItemStore.ItemOptions> copyArray = new Array<ItemStore.ItemOptions>();
+            Array<Item> copyArray = new Array<Item>();
             Bag<ComponentBag> bagArray = new Bag<ComponentBag>();
 
-            for (int i = 0; i < itemStore.getItemOptionsArray().size; i++) {
+            for (int i = 0; i < allItems.size; i++) {
 
                 int mod = i % maxColumns;
                 int div = i / maxColumns;
 
-                ComponentBag item = itemIcon(itemStore.getItemOptionsArray().get(i).item, startX + iconWidth * mod + buttonGap * mod,
+                ComponentBag item = itemIcon(allItems.get(i), startX + iconWidth * mod + buttonGap * mod,
                         startY - (div * iconHeight) - (div * buttonGap));
 
                 bagArray.add(item);
                 count++;
 
-                copyArray.add(itemStore.getItemOptionsArray().get(i));
+                copyArray.add(allItems.get(i));
 
                 if (i + 1 >= maxColumns * maxRows) {
                     break;
@@ -184,9 +183,9 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
             itemComponentBagArray.add(bagArray);
 
-            itemStore.getItemOptionsArray().removeAll(copyArray, true);
+            allItems.removeAll(copyArray, true);
 
-            System.out.println(itemStore.getItemOptionsArray().size);
+            System.out.println(allItems.size);
 
         }
 
@@ -248,6 +247,10 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
             trc.color = new Color(Color.BLACK);
             trc.DEFAULT = new Color(Color.BLACK);
             //trc.region = atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK);
+        }
+
+        if(!DataSave.isDataAvailable(item.getValues().challengeId)){
+            trc.region = atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK);
         }
 
         bag.add(trc);

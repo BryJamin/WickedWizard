@@ -35,6 +35,7 @@ import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
@@ -425,7 +426,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                     @Override
                     public void performAction(World world, Entity e) {
 
-                        DataSave.saveChallengeData(DataSave.TUTORIAL_COMPLETE);
+                        DataSave.saveChallengeData(ChallengesResource.TUTORIAL_COMPLETE);
 
                         world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                             @Override

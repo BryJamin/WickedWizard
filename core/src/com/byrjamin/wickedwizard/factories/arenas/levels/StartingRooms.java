@@ -108,8 +108,6 @@ public class StartingRooms extends AbstractFactory {
                     @Override
                     public void performAction(World world, Entity e) {
 
-
-                        System.out.println("Challenge data" + DataSave.isDataAvailable(challengeId));
                         IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(ChallengeTimerComponent.class)).getEntities();
 
                         for(int i = 0; i < intBag.size(); i++){

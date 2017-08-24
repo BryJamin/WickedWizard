@@ -64,6 +64,13 @@ public class BreakRoom extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MusicSystem.class).fadeOutMusic();
+
+
+
+
+
+
+
                 world.getSystem(OnDeathSystem.class).kill(e);
             }
         }));

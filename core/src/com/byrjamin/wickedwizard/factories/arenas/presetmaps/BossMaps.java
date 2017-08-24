@@ -1,13 +1,26 @@
 package com.byrjamin.wickedwizard.factories.arenas.presetmaps;
 
+import com.artemis.Aspect;
+import com.artemis.Entity;
+import com.artemis.World;
+import com.artemis.utils.IntBag;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.byrjamin.wickedwizard.assets.MenuStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
+import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.BossMapCreate;
+import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
+import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
@@ -17,6 +30,7 @@ import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
+import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
@@ -25,6 +39,8 @@ import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.byrjamin.wickedwizard.screens.DataSave;
+import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -119,6 +135,38 @@ public class BossMaps extends AbstractFactory {
         exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
         exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), item, arenaSkin.getWallTint()));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
+
+
+        ComponentBag bag = exitArena.createArenaBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                GameCreator gameCreator = world.getSystem(ChangeLevelSystem.class).getGameCreator();
+
+                if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
+
+                    String id;
+
+                    switch (gameCreator.position){
+                        case 0:
+                        default: id = ChallengesResource.LEVEL_1_COMPLETE; break;
+                        case 1: id = ChallengesResource.LEVEL_2_COMPLETE; break;
+                        case 2: id = ChallengesResource.LEVEL_3_COMPLETE; break;
+                        case 3: id = ChallengesResource.LEVEL_4_COMPLETE; break;
+                        case 4: id = ChallengesResource.LEVEL_5_COMPLETE; break;
+                    }
+
+
+                    if (!DataSave.isDataAvailable(id)) {
+                        DataSave.saveChallengeData(id);
+                        world.getSystem(MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
+                    }
+                }
+                e.deleteFromWorld();
+            }
+        }));
+
 
         return exitArena;
     }

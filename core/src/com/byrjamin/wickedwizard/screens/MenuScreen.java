@@ -27,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
+import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.screens.world.menu.DevModeMenuWorld;
 import com.byrjamin.wickedwizard.screens.world.menu.ItemDisplayWorldContainer;
 import com.byrjamin.wickedwizard.screens.world.menu.MenuBackDropWorld;
@@ -174,7 +175,7 @@ public class MenuScreen extends AbstractScreen {
         world.getSystem(MusicSystem.class).playMainMenuMusic();
 
 
-        boolean isTutorialComplete = DataSave.isDataAvailable(DataSave.TUTORIAL_COMPLETE);
+        boolean isTutorialComplete = DataSave.isDataAvailable(ChallengesResource.TUTORIAL_COMPLETE);
 
         if(isTutorialComplete){
             setUpMenuScreenStartAndTutorial();

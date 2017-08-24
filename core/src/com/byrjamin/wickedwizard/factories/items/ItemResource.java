@@ -1,12 +1,93 @@
 package com.byrjamin.wickedwizard.factories.items;
 
+import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEnergy;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemLuckyShot;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapult;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemSmoulderingEmber;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemStability;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemMinorAccelerant;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemRunedFragment;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemTacticalKnitwear;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemHyperTrophy;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemIronFragment;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
+import com.byrjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
+import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemClearSight;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemFireSight;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemLostLettersRangeFireRate;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
+import com.byrjamin.wickedwizard.factories.items.passives.range.ItemScope;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeather;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
+import com.byrjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
+import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.utils.Pair;
+import com.byrjamin.wickedwizard.utils.enums.ItemType;
 
 /**
  * Created by Home on 06/08/2017.
  */
 
 public class ItemResource {
+
+
+    public static Array<Item> allItems = new Array<Item>();
+
+    static {
+        allItems.addAll(Accuracy.accuracyItems);
+        allItems.addAll(Armor.armorItems);
+        allItems.addAll(Damage.damageItems);
+        allItems.addAll(FireRate.fireRateItems);
+        allItems.addAll(Health.healthItems);
+        allItems.addAll(Luck.luckItems);
+        allItems.addAll(Range.rangeItems);
+        allItems.addAll(ShotSpeed.shotSpeedItems);
+        allItems.addAll(Speed.shotSpeedItems);
+    }
+
+    public static Array<Item> getAllItems() {
+
+        Array<Item> all = new Array<Item>();
+        all.addAll(Accuracy.accuracyItems);
+        all.addAll(Armor.armorItems);
+        all.addAll(Damage.damageItems);
+        all.addAll(FireRate.fireRateItems);
+        all.addAll(Health.healthItems);
+        all.addAll(Luck.luckItems);
+        all.addAll(Range.rangeItems);
+        all.addAll(ShotSpeed.shotSpeedItems);
+        all.addAll(Speed.shotSpeedItems);
+
+        return all;
+    }
+
+
+
 
     public static String WORD_ACCURACY = "Accuracy";
 
@@ -16,6 +97,8 @@ public class ItemResource {
         public final Pair<String, Integer> region;
         public final String name;
         public final String description;
+        public final ItemType[] itemTypes;
+        public final String challengeId;
 
 
         public static class ItemValueBuilder {
@@ -27,6 +110,8 @@ public class ItemResource {
             private Pair<String, Integer> region = new Pair<String,Integer>("item/SarcasticLion", 0);
             private String name = "Default Item";
             private String description = "You forgot to set this value";
+            private ItemType[] itemTypes = {ItemType.BOSS, ItemType.ITEM, ItemType.SHOP};
+            private String challengeId = ChallengesResource.TUTORIAL_COMPLETE;
 
 
             public ItemValueBuilder(String id){
@@ -45,6 +130,12 @@ public class ItemResource {
             public ItemValueBuilder description(String val)
             { description = val; return this; }
 
+            public ItemValueBuilder itemTypes(ItemType... val)
+            { itemTypes = val; return this; }
+
+            public ItemValueBuilder challengeId(String val)
+            { challengeId = val; return this; }
+
 
             public ItemValues build() {
                 return new ItemValues(this);
@@ -58,6 +149,8 @@ public class ItemResource {
             this.region = ivb.region;
             this.name = ivb.name;
             this.description = ivb.description;
+            this.itemTypes = ivb.itemTypes;
+            this.challengeId = ivb.challengeId;
         }
 
 
@@ -67,6 +160,15 @@ public class ItemResource {
 
     //Accuracy
     public static class Accuracy {
+
+
+        public static Item[] accuracyItems = {
+                new ItemAce(),
+                new ItemAimAssist(),
+                new ItemCriticalEye(),
+                new ItemKeenEye(),
+                new ItemBlockOfEnergy()};
+
 
         public static ItemValues Ace = new ItemValues.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/Ace")
@@ -84,6 +186,7 @@ public class ItemResource {
                 .region("item/CriticalEye")
                 .name("Critical Eye")
                 .description(WORD_ACCURACY + "+++")
+                .challengeId(ChallengesResource.Rank1Challenges.perfectBlobba)
                 .build();
 
         public static ItemValues KeenEye = new ItemValues.ItemValueBuilder("005e4ac8-81d8-11e7-bb31-be2e44b06b34")
@@ -102,6 +205,13 @@ public class ItemResource {
 
 
     public static class Armor {
+
+        public static Item[] armorItems = {
+                new ItemIronBody(),
+                new ItemSlimeCoat(),
+                new ItemSquareBuckler(),
+                new ItemVitaminC()};
+
 
         public static ItemValues ironBody = new ItemValues.ItemValueBuilder("795d5bee-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/IronBody")
@@ -133,6 +243,14 @@ public class ItemResource {
 
 
     public static class Damage {
+
+        public static Item[] damageItems = {
+                new ItemAnger(),
+                new ItemLuckyShot(),
+                new ItemMiniCatapult(),
+                new ItemMiniTrebuchet(),
+                new ItemSmoulderingEmber(),
+                new ItemStability()};
 
         public static ItemValues anger = new ItemValues.ItemValueBuilder("9863a17e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/Anger")
@@ -176,6 +294,14 @@ public class ItemResource {
 
     public static class FireRate {
 
+        public static Item[] fireRateItems = {
+                new ItemElasticity(),
+                new ItemMinorAccelerant(),
+                new ItemRunedFragment(),
+                new ItemSwiftShot(),
+                new ItemTacticalKnitwear()};
+
+
         public static ItemValues elasticity = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Elasticity")
                 .name("Elasticity")
@@ -212,6 +338,14 @@ public class ItemResource {
 
 
     public static class Health {
+
+        public static Item[] healthItems = {
+                new ItemHyperTrophy(),
+                new ItemIronFragment(),
+                new ItemSarcasticLion(),
+                new ItemSootheNote(),
+                new Medicine()};
+
 
         public static ItemValues hypertrophy = new ItemValues.ItemValueBuilder("5085bada-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Hypertrophy")
@@ -250,6 +384,12 @@ public class ItemResource {
 
     public static class Luck {
 
+        public static Item[] luckItems = {
+                new ItemForgottenFigment(),
+                new ItemGoldenFigment(),
+                new ItemJadeFigment(),
+                new ItemThreeLeafClover()};
+
         public static ItemValues forgottenFigment = new ItemValues.ItemValueBuilder("6b37cd6e-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ForgottenScarab")
                 .name("Forgotten Figment")
@@ -279,6 +419,15 @@ public class ItemResource {
 
 
     public static class Range {
+
+        public static Item[] rangeItems = {
+                new ItemClearSight(),
+                new ItemFireSight(),
+                new ItemLaserScope(),
+                new ItemLostLettersRangeFireRate(),
+                new ItemNeatCube(),
+                new ItemQuadonometry(),
+                new ItemScope()};
 
         public static ItemValues clearSight = new ItemValues.ItemValueBuilder("8074c97a-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ClearSight")
@@ -326,6 +475,15 @@ public class ItemResource {
 
     public static class ShotSpeed {
 
+        public static Item[] shotSpeedItems = {
+                new ItemBoringRock(),
+                new ItemBubble(),
+                new ItemDullFeather(),
+                new ItemLostLettersShotSpeedAccuracy(),
+                new ItemMomentum(),
+                new ItemShinyFeather()};
+
+
         public static ItemValues boringRock = new ItemValues.ItemValueBuilder("ad70fbce-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/BoringRock")
                 .name("Boring Rock")
@@ -367,6 +525,10 @@ public class ItemResource {
 
 
     public static class Speed {
+
+        public static Item[] shotSpeedItems = {
+                new ItemQuickness()};
+
 
         public static ItemValues quickness = new ItemValues.ItemValueBuilder("ce6f7cce-81d9-11e7-bb31-be2e44b06b34").region("item/Quickness")
                 .name("Quickness")

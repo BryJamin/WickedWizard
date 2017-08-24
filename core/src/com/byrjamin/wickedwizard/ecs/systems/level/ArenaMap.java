@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.ecs.systems.level;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
+import com.byrjamin.wickedwizard.utils.MapCoords;
 
 /**
  * Created by Home on 28/05/2017.
@@ -44,6 +45,22 @@ public class ArenaMap {
         this.visitedArenas = visitedArenas;
         this.unvisitedButAdjacentArenas = unvisitedButAdjacentArenas;
     }
+
+
+
+    public Arena getArenaByMapCoords(MapCoords mapCoords){
+
+        for(Arena a : roomArray){
+            if(a.getCotainingCoords().contains(mapCoords, false)) {
+                return a;
+            }
+        }
+
+        return null;
+
+    }
+
+
 
 
     public Arena getCurrentArena() {

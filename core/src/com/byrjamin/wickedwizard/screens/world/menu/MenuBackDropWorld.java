@@ -145,6 +145,13 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
         trc = new TextureRegionComponent(soundOn ? atlas.findRegion(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegion(TextureStrings.SETTINGS_SOUND_OFF),
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         soundSetting.edit().add(trc);
+
+        soundSetting.edit().add(new AnimationStateComponent(0));
+        animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(0,  new Animation<TextureRegion>(0.15f / 1f, soundOn ? atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
+        soundSetting.edit().add(new AnimationComponent(animMap));
+
+
         soundSetting.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -189,7 +196,7 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
         Entity goToItems = world.createEntity();
         goToItems.edit().add(new PositionComponent(x, y));
         goToItems.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
-        trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+        trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_ITEM),
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         goToItems.edit().add(trc);
         goToItems.edit().add(new ActionOnTouchComponent(new Action() {

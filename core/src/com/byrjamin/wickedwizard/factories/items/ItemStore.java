@@ -43,7 +43,10 @@ import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLett
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
 import com.byrjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
+import com.byrjamin.wickedwizard.screens.DataSave;
+import com.byrjamin.wickedwizard.utils.enums.ItemType;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -73,11 +76,17 @@ public class ItemStore {
         this.random = random;
 
         //Accuracy
-        createItem(new ItemAce());
+
+        for(Item i : ItemResource.Accuracy.accuracyItems){
+            if(DataSave.isDataAvailable(i.getValues().challengeId)) {
+                createItem(i);
+            }
+        }
+/*        createItem(new ItemAce());
         createItem(new ItemAimAssist());
         createItem(new ItemBlockOfEnergy());
         createItem(new ItemCriticalEye());
-        createItem(new ItemKeenEye());
+        createItem(new ItemKeenEye());*/
 
 
         //Armor
@@ -87,7 +96,7 @@ public class ItemStore {
         createItem(new ItemVitaminC());
 
         //Damage
-        createItem(new ItemAnger(), Available.BOSS);
+        createItem(new ItemAnger());
         createItem(new ItemLuckyShot());
         createItem(new ItemMiniCatapult());
         createItem(new ItemSmoulderingEmber());
@@ -127,7 +136,7 @@ public class ItemStore {
         createItem(new ItemBubble());
         createItem(new ItemDullFeather());
         createItem(new ItemLostLettersShotSpeedAccuracy());
-        createItem(new ItemMomentum(), Available.ITEM);
+        createItem(new ItemMomentum());
         createItem(new ItemShinyFeather());
 
         //Speed
@@ -138,33 +147,28 @@ public class ItemStore {
     }
 
     private void createItem(Item item){
-        itemOptionsArray.add(new ItemOptions(item, Available.SHOP, Available.ITEM));
-    }
-
-
-    private void createItem(Item item, Available... avability){
-        itemOptionsArray.add(new ItemOptions(item, avability));
+        itemOptionsArray.add(new ItemOptions(item));
     }
 
 
     public Item generateItemRoomItem(){
-        return generateRoomItem(Available.ITEM);
+        return generateRoomItem(ItemType.ITEM);
     }
 
     public Item generateShopRoomItem(){
-        return generateRoomItem(Available.SHOP);
+        return generateRoomItem(ItemType.SHOP);
     }
 
     public Item generateBossRoomItem(){
-        return generateRoomItem(Available.BOSS);
+        return generateRoomItem(ItemType.BOSS);
     }
 
-    private Item generateRoomItem(Available available){
+    private Item generateRoomItem(ItemType itemType){
 
         Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
 
         for(ItemOptions io : this.itemOptionsArray){
-            if(io.availables.contains(available, true)) itemOptionsArray.add(io);
+            if(Arrays.asList(io.item.getValues().itemTypes).contains(itemType)) itemOptionsArray.add(io);
         }
 
         Item item;
@@ -236,21 +240,13 @@ public class ItemStore {
 
         private boolean repeatable = false;
 
-        public Array<Available> availables = new Array<Available>();
-
         ItemOptions(Item item){
-            this(item, false, Available.SHOP, Available.ITEM, Available.BOSS);
+            this(item, false);
         }
 
-        ItemOptions(Item item, Available... avaliability){
-            this(item, false, avaliability);
-        }
-
-        ItemOptions(Item item, boolean repeatable, Available... avaliability){
+        ItemOptions(Item item, boolean repeatable){
             this.item = item;
             this.repeatable = repeatable;
-
-            for(Available a : avaliability) this.availables.add(a);
         }
 
     }

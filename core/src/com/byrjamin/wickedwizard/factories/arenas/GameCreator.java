@@ -11,8 +11,16 @@ import com.byrjamin.wickedwizard.utils.enums.Level;
 public class GameCreator {
 
 
+    public String id = "0";
+
     public Queue<LevelCreator> gameLevels = new Queue<LevelCreator>();
     public int position = 0;
+
+
+    public GameCreator(String id, LevelCreator... levelCreators){
+        this(levelCreators);
+        this.id = id;
+    }
 
     public GameCreator(LevelCreator... levelCreators){
         for(LevelCreator l : levelCreators){
