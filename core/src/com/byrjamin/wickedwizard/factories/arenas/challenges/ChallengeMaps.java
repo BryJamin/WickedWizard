@@ -1,7 +1,9 @@
 package com.byrjamin.wickedwizard.factories.arenas.challenges;
 
+import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.OrderedMap;
@@ -36,6 +38,7 @@ import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
+import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -51,12 +54,18 @@ import java.util.Random;
 
 public class ChallengeMaps extends AbstractFactory {
 
+
+    private static final float ARENA_SPEEDRUN_TIMER = 35f;
+
+
     private ArenaShellFactory arenaShellFactory;
     private ChestFactory chestFactory;
     private DecorFactory decorFactory;
     private PortalFactory portalFactory;
     private ItemFactory itemFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
+
+    private Rank2ChallengeMaps rank2ChallengeMaps;
 
     ArenaSkin arenaSkin = new LightGraySkin();
 
@@ -77,6 +86,7 @@ public class ChallengeMaps extends AbstractFactory {
         this.portalFactory = new PortalFactory(assetManager);
         this.itemFactory = new ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
+        this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
 
         this.random = random;
         setUpMap();
@@ -93,10 +103,12 @@ public class ChallengeMaps extends AbstractFactory {
 
 
     public void setUpMap(){
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectBlobba, perfectBlobba());
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectAdoj, perfectAdoj());
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.tutorialSpeedRun, tutorialSpeedRun());
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.arenaSpeedRun, arenaSpeedRun());
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectBlobba, perfectBlobba(ChallengesResource.Rank1Challenges.perfectBlobba));
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectAdoj, perfectAdoj(ChallengesResource.Rank1Challenges.perfectAdoj));
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.tutorialSpeedRun, tutorialSpeedRun(ChallengesResource.Rank1Challenges.tutorialSpeedRun));
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.arenaSpeedRun, arenaSpeedRun(ChallengesResource.Rank1Challenges.arenaSpeedRun));
+        mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectWanda, rank2ChallengeMaps.perfectWanda(ChallengesResource.Rank2Challenges.perfectWanda));
+        mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectKugel, rank2ChallengeMaps.perfectKugel(ChallengesResource.Rank2Challenges.perfectKugel));
     }
 
 
@@ -105,7 +117,7 @@ public class ChallengeMaps extends AbstractFactory {
     }
 
 
-    public GameCreator perfectBlobba(){
+    public GameCreator perfectBlobba(String id){
 
         updateArenaSkin(Level.ONE.getArenaSkin());
 
@@ -121,7 +133,7 @@ public class ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(ChallengesResource.Rank1Challenges.perfectBlobba).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BiggaBlobbaMap(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -142,7 +154,7 @@ public class ChallengeMaps extends AbstractFactory {
 
 
 
-    public GameCreator perfectAdoj(){
+    public GameCreator perfectAdoj(String id){
 
         updateArenaSkin(Level.ONE.getArenaSkin());
 
@@ -158,7 +170,7 @@ public class ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(ChallengesResource.Rank1Challenges.perfectAdoj).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BossRoomAdoj(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -179,16 +191,26 @@ public class ChallengeMaps extends AbstractFactory {
 
 
 
-    public GameCreator tutorialSpeedRun(){
+    public GameCreator tutorialSpeedRun(String id){
 
         updateArenaSkin(Level.ONE.getArenaSkin());
 
         Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.ONE.getMusic()).createArena(new MapCoords());
 
+        ComponentBag bag = startingArena.createArenaBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                e.deleteFromWorld();
+            }
+        }));
+
         TutorialFactory tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
         startingArena.addEntity(new OnLoadFactory().challengeTimer(20));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(ChallengesResource.Rank1Challenges.tutorialSpeedRun).createArena(new MapCoords(7,3));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(7,3));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 tutorialFactory.jumpTutorial(new MapCoords(1, 0)),
                 tutorialFactory.platformTutorial(new MapCoords(5,0)),
@@ -211,29 +233,62 @@ public class ChallengeMaps extends AbstractFactory {
 
 
 
-    public GameCreator arenaSpeedRun(){
+    public GameCreator arenaSpeedRun(String id){
 
         updateArenaSkin(Level.ONE.getArenaSkin());
 
         Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.ONE.getMusic()).createArena(new MapCoords());
-        startingArena.addEntity(new OnLoadFactory().challengeTimer(20));
 
+        ComponentBag bag = startingArena.createArenaBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
+                e.deleteFromWorld();
+            }
+        }));
 
 
         Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new MapCoords(1,0));
-
-        arena.addWave(
-                arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f), true),
+        arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 
 
-                )
-        .addWave(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
+
+        SpawnerFactory.SpawnerBuilder spawnerBuilder = new SpawnerFactory.SpawnerBuilder(assetManager, arenaSkin)
+                .resetTime(0.5f)
+                .life(5)
+                .spawners(new SpawnerFactory.Spawner() {
+                    @Override
+                    public Bag<Component> spawnBag(float x, float y) {
+                        return arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(x,y, true);
+                    }
+                });
+
+        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
 
 
-               // .addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
+        spawnerBuilder = new SpawnerFactory.SpawnerBuilder(assetManager, arenaSkin)
+                .life(5)
+                .spawners(new SpawnerFactory.Spawner() {
+                    @Override
+                    public Bag<Component> spawnBag(float x, float y) {
+                        return arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(x,y, false);
+                    }
+                });
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(ChallengesResource.Rank1Challenges.tutorialSpeedRun).createArena(new MapCoords(2, 0));
+        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
+
+
+        arena.addWave(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4, Measure.units(45f), false),
+                arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4 * 3, Measure.units(45f), true));
+
+        arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
+
+
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2, 0));
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 arena,

@@ -251,6 +251,7 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
 
             boolean challengeComplete = DataSave.isDataAvailable(s);
 
+
             if(DataSave.isDataAvailable(unlockString)) {
 
                 Entity startChallenge = challengeButtonBuilder
@@ -261,6 +262,8 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
                             public void performAction(World world, Entity e) {
 
                                 try {
+
+                                    System.out.println(s);
 
                                     GameCreator gameCreator = challengeMaps.getChallenge(s);
                                     if(gameCreator == null) throw new Exception("Challenge with id: " + s + " does not exist in the Challenge Maps Array");

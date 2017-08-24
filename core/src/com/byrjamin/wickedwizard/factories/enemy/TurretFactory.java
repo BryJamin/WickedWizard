@@ -90,17 +90,10 @@ public class TurretFactory extends EnemyFactory {
         return bag;
     }
 
-    public Bag<Component> movingSentry(float x, float y){
+    public Bag<Component> movingSentry(float x, float y, boolean startsRight){
 
         Bag<Component> bag = fixedLockOnTurret(x,y);
-
-        Random random = new Random();
-        if(random.nextBoolean()) {
-            bag.add(new VelocityComponent(turretSpeed, 0));
-        } else {
-            bag.add(new VelocityComponent(-turretSpeed, 0));
-        }
-
+        bag.add(new VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
         bag.add(new BounceComponent());
 
         return bag;

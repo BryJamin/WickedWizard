@@ -16,6 +16,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.SpawnerComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -24,13 +25,76 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 25/03/2017.
  */
 
-public class SpawnerFactory extends EnemyFactory {
+public class SpawnerFactory extends AbstractFactory {
 
     private ArenaSkin arenaSkin;
+    public int life;
+    public float spawnTime;
+    public float resetTime;
+    public float scale;
+    public Array<Spawner> spawners;
 
     public SpawnerFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
         this.arenaSkin = arenaSkin;
+    }
+
+
+    public SpawnerFactory(SpawnerBuilder sb) {
+        super(sb.assetManager);
+        this.arenaSkin = sb.arenaSkin;
+        this.spawners = sb.spawners;
+        this.life = sb.life;
+        this.spawnTime = sb.spawnTime;
+        this.resetTime = sb.resetTime;
+        this.scale = sb.scale;
+    }
+
+    public static class SpawnerBuilder {
+
+        //Required Parameters
+        private final AssetManager assetManager;
+        private final ArenaSkin arenaSkin;
+
+        //Optional Parameters
+        public int life = 1;
+        public float spawnTime = 1.0f;
+        public float resetTime = 1.0f;
+        public float scale = 1;
+        public Array<Spawner> spawners = new Array<Spawner>();
+
+
+        public SpawnerBuilder(AssetManager assetManager, ArenaSkin arenaSkin) {
+            this.assetManager = assetManager;
+            this.arenaSkin = arenaSkin;
+        }
+
+
+        public SpawnerBuilder spawners(Spawner... val) {
+            spawners = new Array<Spawner>();
+            spawners.addAll(val);
+            return this;
+        }
+
+        public SpawnerBuilder life(int val)
+        { life = val; return this; }
+
+
+        public SpawnerBuilder spawnTime(float val)
+        { spawnTime = val; return this; }
+
+        public SpawnerBuilder resetTime(float val)
+        { resetTime = val; return this; }
+
+        public SpawnerBuilder scale(float val)
+        { scale = val; return this; }
+
+
+        public SpawnerFactory build() {
+            return new SpawnerFactory(this);
+        }
+
+
     }
 
 
@@ -42,12 +106,42 @@ public class SpawnerFactory extends EnemyFactory {
         return spawnerBag(x,y, 1, 1.0f, 1.0f, 1, spawners);
     }
 
-    public ComponentBag spawnerBag(float x, float y,int life, float spawnTime, Array<Spawner> spawners) {
-        return spawnerBag(x,y,life,spawnTime,spawnTime, 1, spawners);
-    }
-
     public ComponentBag spawnerBag(float x, float y,int life, float spawnTime,float scale,  Array<Spawner> spawners) {
         return spawnerBag(x,y,life,spawnTime,spawnTime, scale, spawners);
+    }
+
+
+    public ComponentBag spawnerBag(float x, float y){
+
+        float width = this.width * scale;
+        float height = this.height * scale;
+
+
+        x = x - width  / 2;
+        y = y - height  / 2;
+
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(x,y));
+        bag.add(new EnemyComponent());
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
+        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(AnimationStateComponent.DEFAULT, a);
+        bag.add(new AnimationComponent(animMap));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SPAWNER), width, height,
+                TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
+
+        bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix, 0.5f));
+
+        SpawnerComponent spawn = new SpawnerComponent(spawners, spawnTime);
+        spawn.offsetX = width / 2;
+        spawn.offsetY = height / 2;
+        spawn.life = life;
+        spawn.resetTime = resetTime;
+
+        bag.add(spawn);
+        return bag;
     }
 
 

@@ -195,10 +195,14 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
     }
 
     public ComponentBag spawnMovingSentry(float x, float y){
+        return spawnMovingSentry(x, y, random.nextBoolean());
+    }
+
+    public ComponentBag spawnMovingSentry(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingSentry(x,y);
+                return turretFactory.movingSentry(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);

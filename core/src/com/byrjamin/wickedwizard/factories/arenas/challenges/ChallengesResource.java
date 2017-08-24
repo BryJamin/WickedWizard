@@ -18,38 +18,36 @@ public class ChallengesResource {
 
 
 
-        public static class Rank1Challenges {
+    public static class Rank1Challenges {
 
-            public static String tutorialSpeedRun = "c5374546-859a-11e7-bb31-be2e44b06b34";
-            public static String arenaSpeedRun = "8331965c-de7b-4fbe-87e0-42c23d3803ee";
-            public static String perfectBlobba = "c53749a6-859a-11e7-bb31-be2e44b06b34";
-            public static String perfectAdoj = "524f9b21-c38f-4237-88be-3c66adcb7bdd";
+        public static String tutorialSpeedRun = "c5374546-859a-11e7-bb31-be2e44b06b34";
+        public static String arenaSpeedRun = "8331965c-de7b-4fbe-87e0-42c23d3803ee";
+        public static String perfectBlobba = "c53749a6-859a-11e7-bb31-be2e44b06b34";
+        public static String perfectAdoj = "524f9b21-c38f-4237-88be-3c66adcb7bdd";
 
-            public static Array<String> rank1ChallengesArray = new Array<String>();
+        public static Array<String> rank1ChallengesArray = new Array<String>();
 
-            static {
-                rank1ChallengesArray.add(tutorialSpeedRun);
-                rank1ChallengesArray.add(arenaSpeedRun);
-                rank1ChallengesArray.add(perfectBlobba);
-                rank1ChallengesArray.add(perfectAdoj);
-            }
-
+        static {
+            rank1ChallengesArray.add(tutorialSpeedRun);
+            rank1ChallengesArray.add(arenaSpeedRun);
+            rank1ChallengesArray.add(perfectBlobba);
+            rank1ChallengesArray.add(perfectAdoj);
         }
+
+    }
 
 
 
     public static class Rank2Challenges {
 
-        public static String tutorialSpeedRun = "c5374546-859a-11e7-bb31-be2e44b06b34";
-        public static String perfectBlobba = "c53749a6-859a-11e7-bb31-be2e44b06b34";
-        public static String perfectAdoj = "524f9b21-c38f-4237-88be-3c66adcb7bdd";
+        public static String perfectWanda = "fb7165a7-67cf-4d6b-a112-5d5dd7793706";
+        public static String perfectKugel = "7dc228e4-8eb7-4e92-a3c4-9b915ff18709";
 
         public static Array<String> rank2ChallengesArray = new Array<String>();
 
         static {
-            rank2ChallengesArray.add(tutorialSpeedRun);
-            rank2ChallengesArray.add(perfectBlobba);
-            rank2ChallengesArray.add(perfectAdoj);
+            rank2ChallengesArray.add(perfectWanda);
+            rank2ChallengesArray.add(perfectKugel);
         }
 
     }
