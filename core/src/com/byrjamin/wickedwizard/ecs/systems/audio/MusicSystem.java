@@ -144,7 +144,7 @@ public class MusicSystem extends BaseSystem {
 
 
 
-    public void changeTrack(Mix mix){
+    private void changeTrack(Mix mix){
 
 
         if(mix.equals(currentMix)) return;

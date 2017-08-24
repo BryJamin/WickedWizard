@@ -66,7 +66,7 @@ public class JigsawGenerator {
         this.assetManager = jigsawGeneratorConfig.assetManager;
         this.random = jigsawGeneratorConfig.random;
         this.noBattleRooms = jigsawGeneratorConfig.noBattleRooms;
-        this.itemStore = new ItemStore(random);
+        this.itemStore = jigsawGeneratorConfig.itemStore;
         this.shopFactory = new ShopFactory(assetManager);
         this.setStartingMap(jigsawGeneratorConfig.startingMap);
         this.arenaGens = jigsawGeneratorConfig.arenaGens;

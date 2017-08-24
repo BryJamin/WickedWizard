@@ -84,13 +84,16 @@ public class Arena {
 
     private Queue<Bag<Bag<Component>>> waves = new Queue<Bag<Bag<Component>>>();
 
-    public void addWave(Bag<Component>... bags){
+    public Arena addWave(Bag<Component>... bags){
         Bag<Bag<Component>> bagOfBags = new Bag<Bag<Component>>();
 
         for(Bag<Component> b : bags){
             bagOfBags.add(b);
         }
         waves.addLast(bagOfBags);
+
+        return this;
+
     }
 
 
@@ -134,8 +137,9 @@ public class Arena {
         return doors;
     }
 
-    public void addEntity(Bag<Component> entityBag){
+    public Arena addEntity(Bag<Component> entityBag){
         bagOfEntities.add(entityBag);
+        return this;
     }
 
     public void addEntity(Bag<Component>... entityBags){

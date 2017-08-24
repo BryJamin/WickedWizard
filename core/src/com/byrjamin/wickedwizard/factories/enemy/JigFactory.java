@@ -43,6 +43,7 @@ public class JigFactory extends EnemyFactory{
     private float bodyHitBoxWidth = Measure.units(15f);
     private float bodyHitBoxHeight = Measure.units(2.5f);
 
+    private static final float initialChargeTime = 0.25f;
     private static final float fireRate = 0.75f;
 
     private static final float speed = Measure.units(10f);
@@ -105,7 +106,7 @@ public class JigFactory extends EnemyFactory{
                 .shotScale(3)
                 .build();
 
-        bag.add(new WeaponComponent(multiPistol, 0));
+        bag.add(new WeaponComponent(multiPistol, initialChargeTime));
 
         return bag;
 

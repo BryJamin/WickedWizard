@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.screens.DataSave;
@@ -258,8 +259,18 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
                         .action(new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
-                                game.getScreen().dispose();
-                                game.setScreen(new PlayScreen(game, challengeMaps.getChallenge(s)));
+
+                                try {
+
+                                    GameCreator gameCreator = challengeMaps.getChallenge(s);
+                                    if(gameCreator == null) throw new Exception("Challenge with id: " + s + " does not exist in the Challenge Maps Array");
+                                    game.getScreen().dispose();
+                                    game.setScreen(new PlayScreen(game, gameCreator));
+                                } catch (Exception exception){
+
+                                    exception.printStackTrace();
+
+                                }
                             }
                         })
                         .build()

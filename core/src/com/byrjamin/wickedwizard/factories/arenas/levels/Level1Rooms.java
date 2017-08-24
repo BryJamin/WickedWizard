@@ -1,17 +1,9 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
 import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
@@ -19,15 +11,12 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.decor.MessageFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.HoarderFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -94,20 +83,6 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(29, room30BlobAndBouncer());
         return ag;
     }
-
-
-
-    public ArenaCreate startingArena(){
-        return new ArenaCreate() {
-            @Override
-            public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords);
-                arena.addEntity(new MessageFactory().nextLevelMessageBagAndMusic(Level.ONE));
-                return arena;
-            }
-        };
-    }
-
 
 
     public ArenaCreate room1blobLeft(){

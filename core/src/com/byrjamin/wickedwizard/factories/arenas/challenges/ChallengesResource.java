@@ -21,6 +21,7 @@ public class ChallengesResource {
         public static class Rank1Challenges {
 
             public static String tutorialSpeedRun = "c5374546-859a-11e7-bb31-be2e44b06b34";
+            public static String arenaSpeedRun = "8331965c-de7b-4fbe-87e0-42c23d3803ee";
             public static String perfectBlobba = "c53749a6-859a-11e7-bb31-be2e44b06b34";
             public static String perfectAdoj = "524f9b21-c38f-4237-88be-3c66adcb7bdd";
 
@@ -28,6 +29,7 @@ public class ChallengesResource {
 
             static {
                 rank1ChallengesArray.add(tutorialSpeedRun);
+                rank1ChallengesArray.add(arenaSpeedRun);
                 rank1ChallengesArray.add(perfectBlobba);
                 rank1ChallengesArray.add(perfectAdoj);
             }

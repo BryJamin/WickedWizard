@@ -29,7 +29,7 @@ public class SwitchFactory extends EnemyFactory{
 
     private final float width = Measure.units(5);
     private final float height = Measure.units(5);
-    private final float health = 2;
+    private static final float health = 2;
 
     public SwitchFactory(AssetManager assetManager) {
         super(assetManager);
@@ -38,7 +38,7 @@ public class SwitchFactory extends EnemyFactory{
 
     public ComponentBag switchBag(float x , float y, float rotation){
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultEnemyBagNoLoot(new ComponentBag(), x, y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
 

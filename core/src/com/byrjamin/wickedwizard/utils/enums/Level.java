@@ -1,5 +1,7 @@
 package com.byrjamin.wickedwizard.utils.enums;
 
+import com.byrjamin.wickedwizard.assets.Mix;
+import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.Bourbon;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
@@ -33,11 +35,24 @@ public enum Level {
         switch (this){
             case ONE:
             default:
-                return "One";
-            case TWO: return "Two";
-            case THREE: return "Three";
-            case FOUR: return "Four";
-            case FIVE: return "Five";
+                return "Field";
+            case TWO: return "Tundra";
+            case THREE: return "Cave";
+            case FOUR: return "Mire";
+            case FIVE: return "Finale";
+        }
+    }
+
+
+    public Mix getMusic(){
+        switch (this){
+            case ONE:
+            default:
+                return MusicStrings.BG_LEVEL_ONE;
+            case TWO: return MusicStrings.BG_LEVEL_TWO;
+            case THREE: return MusicStrings.BG_LEVEL_THREE;
+            case FOUR: return MusicStrings.BG_LEVEL_FOUR;
+            case FIVE: return MusicStrings.BG_LEVEL_FIVE;
         }
     }
 
