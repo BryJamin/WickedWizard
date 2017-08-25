@@ -362,11 +362,11 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
-    public ComponentBag spawnBouncer(float x, float y, final boolean startsLeft){
+    public ComponentBag spawnBouncer(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return bouncerFactory.smallBouncer(x,y, startsLeft);
+                return bouncerFactory.smallBouncer(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);
@@ -382,11 +382,11 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, s);
     }
 
-    public ComponentBag spawnLaserBouncer(float x, float y, final boolean startsLeft){
+    public ComponentBag spawnLaserBouncer(float x, float y, final boolean startsRight){
         Array<SpawnerFactory.Spawner> s = new Array<SpawnerFactory.Spawner>();
         s.add(new SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return bouncerFactory.laserBouncer(x,y, startsLeft);
+                return bouncerFactory.laserBouncer(x,y, startsRight);
             }
         });
         return spawnerFactory.spawnerBag(x, y, s);

@@ -86,7 +86,7 @@ public class BouncerFactory extends EnemyFactory {
         return bag;
     }
 
-    private ComponentBag basicBouncer(float x, float y, float width, float height, float speed, boolean startsLeft) {
+    private ComponentBag basicBouncer(float x, float y, float width, float height, float speed, boolean startsRight) {
 
         x = x -width / 2;
         y = y - height / 2;
@@ -108,15 +108,15 @@ public class BouncerFactory extends EnemyFactory {
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         bag.add(new BounceComponent());
-        bag.add(new VelocityComponent(startsLeft ? -speed : speed,speed));
+        bag.add(new VelocityComponent(startsRight ? speed : -speed,speed));
 
         return bag;
     }
 
-    public ComponentBag laserBouncer(float x, float y, boolean isLeft){
+    public ComponentBag laserBouncer(float x, float y, boolean startsRight){
 
 
-        ComponentBag bag = basicBouncer(x,y,width,height,speed, isLeft);
+        ComponentBag bag = basicBouncer(x,y,width,height,speed, startsRight);
         BagSearch.removeObjectOfTypeClass(TextureRegionComponent.class, bag);
         BagSearch.removeObjectOfTypeClass(AnimationStateComponent.class, bag);
         BagSearch.removeObjectOfTypeClass(AnimationComponent.class, bag);

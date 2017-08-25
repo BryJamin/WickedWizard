@@ -40,6 +40,10 @@ public class KugelDuscheFactory extends EnemyFactory {
     private final float textureOffsetX = -Measure.units(1.5f);
     private final float textureOffsetY = 0;
 
+
+    private static final float kugelHealth = 20;
+    private static final float laserKugelHealth = 25;
+
     private final float changeAngleTime = 0.15f;
     private final static float changeInDegrees = 11;
 
@@ -48,22 +52,19 @@ public class KugelDuscheFactory extends EnemyFactory {
     }
 
 
-    public ComponentBag kugelDusche(float x, float y, boolean isLeft){
-
-
-        final boolean left = isLeft;
+    public ComponentBag kugelDusche(float x, float y, final boolean isLeft){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 25);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, kugelHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.KUGELDUSCHE_EMPTY),
-                (left) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
+                (isLeft) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
 
 
         bag.add(new AnimationComponent(animMap));
@@ -86,7 +87,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((left) ? changeInDegrees : -changeInDegrees);
+                e.getComponent(FiringAIComponent.class).firingAngleInRadians += Math.toRadians((isLeft) ? changeInDegrees : -changeInDegrees);
             }
         }, changeAngleTime, true));
 
@@ -103,7 +104,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, 25);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, laserKugelHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
@@ -126,7 +127,7 @@ public class KugelDuscheFactory extends EnemyFactory {
 
         bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask.LaserBuilder(assetManager)
                 .orbitalAndIntervalSize(Measure.units(5f))
-                .speedInDegrees(isLeft ? 1.25f : 1.25f)
+                .speedInDegrees(isLeft ? 1.25f : -1.25f)
                 .numberOfOrbitals(12)
                 .layer(TextureRegionComponent.ENEMY_LAYER_MIDDLE)
                 .chargeTime(1f)

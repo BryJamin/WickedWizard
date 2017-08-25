@@ -5,21 +5,10 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.OrderedMap;
-import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
-import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
@@ -45,7 +34,6 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.enums.Level;
 
-import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -115,6 +103,7 @@ public class ChallengeMaps extends AbstractFactory {
 
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectWanda, rank2ChallengeMaps.perfectWanda(ChallengesResource.Rank2Challenges.perfectWanda));
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectKugel, rank2ChallengeMaps.perfectKugel(ChallengesResource.Rank2Challenges.perfectKugel));
+        mapOfChallenges.put(ChallengesResource.Rank2Challenges.arenaTrail, rank2ChallengeMaps.rank2ArenaRace(ChallengesResource.Rank2Challenges.arenaTrail));
 
         mapOfChallenges.put(ChallengesResource.Rank3Challenges.perfectBoomy, rank3ChallengeMaps.perfectBoomy(ChallengesResource.Rank3Challenges.perfectBoomy));
         mapOfChallenges.put(ChallengesResource.Rank3Challenges.perfectAjir, rank3ChallengeMaps.perfectAjir(ChallengesResource.Rank3Challenges.perfectAjir));
@@ -147,7 +136,7 @@ public class ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BiggaBlobbaMap(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -185,7 +174,7 @@ public class ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BossRoomAdoj(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -226,7 +215,7 @@ public class ChallengeMaps extends AbstractFactory {
 
         TutorialFactory tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(7,3));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7,3));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 tutorialFactory.jumpTutorial(new MapCoords(1, 0)),
                 tutorialFactory.platformTutorial(new MapCoords(5,0)),
@@ -304,7 +293,7 @@ public class ChallengeMaps extends AbstractFactory {
         arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
 
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2, 0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2, 0));
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 arena,

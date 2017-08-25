@@ -72,7 +72,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BoomyMap(assetManager, arenaSkin).boomyArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -107,7 +107,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BossRoomAjir(assetManager, arenaSkin).ajirArena().createArena(new MapCoords(1,0)),
                 endArena

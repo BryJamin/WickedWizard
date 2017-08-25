@@ -51,6 +51,9 @@ public class LuckSystem extends BaseSystem {
 
     private float luck;
 
+
+    private boolean isEnemyDropsOn = true;
+
     private Random random;
 
 
@@ -68,17 +71,24 @@ public class LuckSystem extends BaseSystem {
 
     public void rollForLoot(LootComponent lc, float x, float y){
 
+        if(!this.isEnabled()) return;
+
+        System.out.println(this.isEnabled());
+
 
         if(lc.type == LootComponent.TYPE.CHEST){
             chestDrops(lc, x, y);
         } else {
 
-            for (int i = 0; i < lc.moneyDrops; i++) {
-                spawnMoney(x, y);
-            }
 
-            for (int i = 0; i < lc.lootDrops; i++) {
-                spawnEnemyPickUp(x, y);
+            if(isEnemyDropsOn) {
+                for (int i = 0; i < lc.moneyDrops; i++) {
+                    spawnMoney(x, y);
+                }
+
+                for (int i = 0; i < lc.lootDrops; i++) {
+                    spawnEnemyPickUp(x, y);
+                }
             }
         }
 
@@ -86,7 +96,7 @@ public class LuckSystem extends BaseSystem {
 
 
 
-    public void chestDrops(LootComponent lc, float x, float y){
+    private void chestDrops(LootComponent lc, float x, float y){
 
         //Money
 
@@ -154,14 +164,14 @@ public class LuckSystem extends BaseSystem {
 
 
 
-    public void spawnMoney(float x, float y){
+    private void spawnMoney(float x, float y){
         Entity e = world.createEntity();
         ItemFactory itemFactory = new ItemFactory(world.getSystem(RenderingSystem.class).getAssetManager());
         for(Component c : itemFactory.createIntangibleFollowingPickUpBag(x, y, new MoneyPlus1())) e.edit().add(c);
     }
 
 
-    public void spawnEnemyPickUp(float x , float y){
+    private void spawnEnemyPickUp(float x , float y){
         Array<WeightedObject<PickUp>> pickUps = new Array<WeightedObject<PickUp>>();
         //TODO apply luck
         pickUps.add(new WeightedObject<PickUp>(null, enemyNullChance));
@@ -183,32 +193,8 @@ public class LuckSystem extends BaseSystem {
 
     }
 
-
-
-    public void spawnChestPickUp(float x , float y){
-
-        Array<WeightedObject<PickUp>> pickUps = new Array<WeightedObject<PickUp>>();
-        pickUps.add(new WeightedObject<PickUp>(new PickUpHalfHealthUp(), chestHeart + (int) luck));
-        pickUps.add(new WeightedObject<PickUp>(new MoneyPlus1(), chestMoney - (int) luck));
-
-        WeightedRoll<PickUp> weightedRoll = new WeightedRoll<PickUp>(pickUps, random);
-
-        PickUp chosen = weightedRoll.roll();
-
-        if(chosen != null) {
-
-            Entity e = world.createEntity();
-
-            ItemFactory itemFactory = new ItemFactory(world.getSystem(RenderingSystem.class).getAssetManager());
-
-            if(chosen instanceof MoneyPlus1) {
-                for(Component c : itemFactory.createIntangibleFollowingPickUpBag(x, y, chosen)) e.edit().add(c);
-            } else {
-                for (Component c : itemFactory.createPickUpBag(x, y, chosen)) e.edit().add(c);
-            }
-
-        }
-
+    public void turnOffEnemyDrops(){
+        this.isEnemyDropsOn = false;
     }
 
 }

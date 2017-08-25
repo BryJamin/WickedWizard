@@ -43,7 +43,7 @@ public class AmoebaFactory extends EnemyFactory {
     public ComponentBag fastamoeba(float x , float y){
         x = x - width / 2;
         y = y - height / 2;
-        return amoebaBag(x,y, fastSpeed, new Color(Color.RED));
+        return amoebaBag(x,y, fastSpeed, new Color(ColorResource.AMOEBA_FAST_PURPLE));
     }
 
 

@@ -12,8 +12,6 @@ import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
@@ -73,7 +71,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BossRoomWraithCowl(assetManager, arenaSkin).wraithcowlArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -108,7 +106,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(7,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords(1,0)),
                 endArena

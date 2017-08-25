@@ -10,6 +10,7 @@ public class ColorResource {
 
 
     public static final Color AMOEBA_BLUE = RGBtoColor(59, 134, 134, 1);
+    public static final Color AMOEBA_FAST_PURPLE = RGBtoColor(98, 59, 206, 1);
     public static final Color GHOST_BULLET_COLOR = RGBtoColor(147, 76, 206, 1);
     public static final Color ENEMY_BULLET_COLOR = new Color(Color.RED);
 

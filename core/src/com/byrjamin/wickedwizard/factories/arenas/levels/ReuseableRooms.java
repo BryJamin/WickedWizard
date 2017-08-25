@@ -80,35 +80,38 @@ public class ReuseableRooms extends AbstractFactory {
     }
 
 
-    public ArenaCreate challengeEndArena(final String challengeId){
+    private void challengeRoadOnLoadActionEntity(Arena arena, final String challengeId){
+
+        ComponentBag bag = arena.createArenaBag();
+        bag.add(new OnRoomLoadActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(ChallengeTimerComponent.class)).getEntities();
+
+                for(int i = 0; i < intBag.size(); i++){
+                    world.getEntity(intBag.get(i)).deleteFromWorld();
+                }
+
+                if(!DataSave.isDataAvailable(challengeId)){
+                    DataSave.saveChallengeData(challengeId);
+                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
+                } else {
+                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
+                }
+                e.deleteFromWorld();
+            }
+        }));
+
+    }
+
+
+    public ArenaCreate challengeEndArenaRightPortal(final String challengeId){
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
-
-
-
-                ComponentBag bag = arena.createArenaBag();
-                bag.add(new OnRoomLoadActionComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-
-                        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(ChallengeTimerComponent.class)).getEntities();
-
-                        for(int i = 0; i < intBag.size(); i++){
-                            world.getEntity(intBag.get(i)).deleteFromWorld();
-                        }
-
-                        if(!DataSave.isDataAvailable(challengeId)){
-                            DataSave.saveChallengeData(challengeId);
-                            world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
-                        } else {
-                            world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
-                        }
-                        e.deleteFromWorld();
-                    }
-                }));
-
+                challengeRoadOnLoadActionEntity(arena, challengeId);
 
                 arena.addEntity(new PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 4 * 3, Measure.units(32.5f),
 
@@ -126,20 +129,35 @@ public class ReuseableRooms extends AbstractFactory {
                             }
                         }));
 
-/*
-
-                ComponentBag messageAction = new ComponentBag();
-                messageAction.add(new ActionAfterTimeComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        world.getSystem(MusicSystem.class).playLevelMusic(level);
-                    }
-                }, 0f, false));
-                messageAction.add(new ExpireComponent(1f));
+                return arena;
+            }
+        };
+    }
 
 
+    public ArenaCreate challengeEndArenaMiddlePortal(final String challengeId){
+        return new ArenaCreate() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+                challengeRoadOnLoadActionEntity(arena, challengeId);
 
-                arena.addEntity(new OnLoadFactory().nextLevelMessageBagAndMusic(level));*/
+                arena.addEntity(new PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(32.5f),
+
+                        new Action() {
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                                    @Override
+                                    public void performAction(World world, Entity e) {
+                                        MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                        game.getScreen().dispose();
+                                        game.setScreen(new MenuScreen(game));
+                                    }
+                                });
+                            }
+                        }));
+
                 return arena;
             }
         };

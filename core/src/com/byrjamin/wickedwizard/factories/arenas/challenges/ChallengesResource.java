@@ -42,12 +42,14 @@ public class ChallengesResource {
 
         public static String perfectWanda = "fb7165a7-67cf-4d6b-a112-5d5dd7793706";
         public static String perfectKugel = "7dc228e4-8eb7-4e92-a3c4-9b915ff18709";
+        public static String arenaTrail = "d009bc24-8ddb-488b-bd45-404dcc8bd923";
 
         public static Array<String> rank2ChallengesArray = new Array<String>();
 
         static {
             rank2ChallengesArray.add(perfectWanda);
             rank2ChallengesArray.add(perfectKugel);
+            rank2ChallengesArray.add(arenaTrail);
         }
 
     }
