@@ -103,6 +103,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 e.deleteFromWorld();
             }
         }));

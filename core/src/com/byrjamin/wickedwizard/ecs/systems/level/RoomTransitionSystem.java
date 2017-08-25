@@ -8,10 +8,12 @@ import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -53,6 +55,8 @@ public class RoomTransitionSystem extends EntitySystem {
 
     private ComponentMapper<OffScreenPickUpComponent> offScreenPickUpM;
 
+    private ComponentMapper<OnRoomLoadActionComponent> onRoomLoadMapper;
+
     private ComponentMapper<CurrencyComponent> currencyComponentComponentMapper;
 
     private ArenaMap currentMap;
@@ -78,6 +82,7 @@ public class RoomTransitionSystem extends EntitySystem {
             @Override
             public void performAction(World world, Entity e) {
                 switchRooms();
+
                 for(BaseSystem s: world.getSystems()){
                     if(s instanceof CameraSystem || s instanceof FollowPositionSystem) {
                         s.setEnabled(true);
@@ -125,6 +130,10 @@ public class RoomTransitionSystem extends EntitySystem {
                         doorEntryPercentage);
             }
 
+            if(onRoomLoadMapper.has(e)){
+                e.getComponent(OnRoomLoadActionComponent.class).action.performAction(world, e);
+            }
+
 
 
         }
@@ -137,8 +146,6 @@ public class RoomTransitionSystem extends EntitySystem {
         velocity.x = velocity.x / 2 ;
 
         world.getSystem(com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).getPlayerInput().activeGrapple = false;
-
-
 
 
         //System.out.println("VISITED ARENA SIZE :" + visitedArenas.size);

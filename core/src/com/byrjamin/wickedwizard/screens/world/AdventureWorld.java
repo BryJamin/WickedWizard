@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
@@ -261,18 +262,30 @@ public class AdventureWorld {
             QuickSave.loadQuickSave(world);
         }
 
-
-        for (Bag<Component> bag : world.getSystem(RoomTransitionSystem.class).getCurrentArena().getBagOfEntities()) {
-            Entity entity = world.createEntity();
-            for (Component comp : bag) {
-                entity.edit().add(comp);
-            }
-        }
-
         Entity entity = world.createEntity();
         for (Component comp : player) {
             entity.edit().add(comp);
         }
+
+        world.process();
+
+        for (Bag<Component> bag : world.getSystem(RoomTransitionSystem.class).getCurrentArena().getBagOfEntities()) {
+            entity = world.createEntity();
+            for (Component comp : bag) {
+                entity.edit().add(comp);
+            }
+
+            if(world.getMapper(OnRoomLoadActionComponent.class).has(entity)){
+                entity.getComponent(OnRoomLoadActionComponent.class).action.performAction(world, entity);
+            }
+
+        }
+
+
+
+
+
+
 
         float width = Measure.units(4.5f);
         float height = Measure.units(4.5f);

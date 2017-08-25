@@ -175,6 +175,7 @@ public class BossAjir extends EnemyFactory{
 
         //TODO change these to different angles once the art is finalized (Directly below is not fair)
         private int[] possibleAngles = new int[]{0, 45, 90, 135, 180};
+        private Array<Integer> angleArrayToBeShuffle = new Array<Integer>();
 
         public AjirSplitterWeaponPhase(Random random){
             this.random = random;

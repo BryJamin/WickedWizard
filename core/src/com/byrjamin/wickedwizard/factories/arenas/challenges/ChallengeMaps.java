@@ -56,6 +56,7 @@ public class ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 35f;
+    private static final float TUTORIAL_SPEEDRUN_TIMER = 20f;
 
 
     private ArenaShellFactory arenaShellFactory;
@@ -141,6 +142,7 @@ public class ChallengeMaps extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 e.deleteFromWorld();
             }
         }));
@@ -178,6 +180,7 @@ public class ChallengeMaps extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 e.deleteFromWorld();
             }
         }));
@@ -218,9 +221,10 @@ public class ChallengeMaps extends AbstractFactory {
                 e.deleteFromWorld();
             }
         }));
+        startingArena.addEntity(new OnLoadFactory().challengeTimer(TUTORIAL_SPEEDRUN_TIMER));
+
 
         TutorialFactory tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
-        startingArena.addEntity(new OnLoadFactory().challengeTimer(20));
 
         Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArena(id).createArena(new MapCoords(7,3));
         ArenaMap arenaMap = new ArenaMap(startingArena,

@@ -10,6 +10,7 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
@@ -88,7 +89,7 @@ public class ReuseableRooms extends AbstractFactory {
 
 
                 ComponentBag bag = arena.createArenaBag();
-                bag.add(new ActionAfterTimeComponent(new Action() {
+                bag.add(new OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
 
