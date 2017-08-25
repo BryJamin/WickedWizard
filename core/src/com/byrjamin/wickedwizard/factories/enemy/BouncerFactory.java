@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -66,6 +67,7 @@ public class BouncerFactory extends EnemyFactory {
 
         ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, random.nextBoolean());
         BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
+        bag.add(new LootComponent());
 
         bag.add(new OnDeathActionComponent(new Task() {
             @Override
@@ -93,7 +95,7 @@ public class BouncerFactory extends EnemyFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
-        this.defaultEnemyBag(bag, x, y, 3);
+        this.defaultEnemyBagNoLoot(bag, x, y, 3);
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

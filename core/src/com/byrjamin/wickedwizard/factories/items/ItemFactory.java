@@ -15,10 +15,12 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BackPackComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent;
@@ -43,9 +45,11 @@ import com.byrjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -154,24 +158,6 @@ public class ItemFactory extends AbstractFactory {
     }
 
 
-    public ComponentBag createFloatingItemBag(float x, float y, Item item){
-
-        float width = Measure.units(8);
-        float height = Measure.units(8);
-
-        x = x - width / 2;
-        y = y - height / 2;
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(x,y));
-        bag.add(new PickUpComponent(item));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()), width, height,
-                TextureRegionComponent.PLAYER_LAYER_FAR));
-        return bag;
-    }
-
-
     private ComponentBag altarItemTexture(Item item, ParentComponent pc, FollowPositionComponent followPositionComponent){
 
         ComponentBag bag = new ComponentBag();
@@ -190,9 +176,7 @@ public class ItemFactory extends AbstractFactory {
 
 
 
-    public Array<ComponentBag> createItemAltarBag(float x, float y, Item item, Color color){
-
-        Array<ComponentBag> bags =  new Array<ComponentBag>();
+    public ComponentBag createItemAltarBag(float x, float y, Color color){
 
         PositionComponent positionComponent = new PositionComponent(x,y);
 
@@ -200,7 +184,7 @@ public class ItemFactory extends AbstractFactory {
         ParentComponent pc = new ParentComponent();
         altarBag.add(pc);
         altarBag.add(positionComponent);
-        altarBag.add(new AltarComponent(item));
+        altarBag.add(new AltarComponent());
         altarBag.add(new VelocityComponent());
         altarBag.add(new GravityComponent());
 
@@ -208,24 +192,98 @@ public class ItemFactory extends AbstractFactory {
         altarBag.add(new CollisionBoundComponent(bound));
         altarBag.add(new ProximityTriggerAIComponent(activeAltar(), new HitBox(bound)));
 
+
+
+        altarBag.add(new OnRoomLoadActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
+                e.getComponent(AltarComponent.class).pickUp = item;
+
+                BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(item, e.getComponent(ParentComponent.class),
+                        new FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
+
+            }
+        }));
+
+
         TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion(TextureStrings.ALTAR), altarWidth, altarHeight,
                 TextureRegionComponent.PLAYER_LAYER_FAR, new Color(color));
 
         altarBag.add(altarTexture);
 
+        return altarBag;
+    }
 
-        ComponentBag altarItemTexture = altarItemTexture(item, pc, new FollowPositionComponent(positionComponent.position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f)));
+
+    public Array<ComponentBag> createShopItemBag(float x, float y, int money){
+
+        float width = Measure.units(10);
+        float height = Measure.units(10);
+
+        float textureWidth = Measure.units(5f);
+        float textureHeight = Measure.units(5f);
+
+        float goldWidth = Measure.units(2.5f);
+        float goldHeight = Measure.units(2.5f);
 
 
+        x = x - width / 2;
+        y = y - height / 2;
 
-        bags.add(altarItemTexture);
-        bags.add(altarBag);
+        Array<ComponentBag> bags =  new Array<ComponentBag>();
+
+        ParentComponent pc = new ParentComponent();
+
+        ComponentBag shopItemTexture = new ComponentBag();
+        shopItemTexture.add(new PositionComponent(x , y));
+        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                (width / 2) - (textureWidth / 2),
+                (height / 2) - (textureHeight / 2),
+                textureWidth,
+                textureHeight,
+                TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+        shopItemTexture.add(new AltarComponent());
+        shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
+        shopItemTexture.add(new CurrencyComponent(money));
+        shopItemTexture.add(pc);
+
+        shopItemTexture.add(new OnRoomLoadActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
+                e.getComponent(AltarComponent.class).pickUp = item;
+                e.getComponent(TextureRegionComponent.class).region = atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight());
+
+            }
+        }));
+
+        bags.add(shopItemTexture);
+
+
+        ComponentBag priceTag = new ComponentBag();
+        priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
+        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getValues().region.getLeft(), new MoneyPlus1().getValues().region.getRight()), goldWidth, goldHeight, TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        TextureFontComponent tfc = new TextureFontComponent(""+money);
+        //tfc.width = width / 2;
+        tfc.offsetX = Measure.units(5);
+        tfc.offsetY = Measure.units(2.5f);
+        priceTag.add(tfc);
+        ChildComponent c = new ChildComponent();
+        pc.children.add(c);
+        priceTag.add(c);
+
+        bags.add(priceTag);
 
         return bags;
     }
 
 
-    public Array<ComponentBag> createShopItemBag(float x, float y, PickUp pickUp, int money){
+
+    public Array<ComponentBag> createShopPickUpBag(float x, float y, PickUp pickUp, int money){
 
         float width = Measure.units(10);
         float height = Measure.units(10);
@@ -257,6 +315,14 @@ public class ItemFactory extends AbstractFactory {
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
         shopItemTexture.add(new CurrencyComponent(money));
         shopItemTexture.add(pc);
+
+        shopItemTexture.add(new OnRoomLoadActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+            }
+        }));
+
         bags.add(shopItemTexture);
 
 

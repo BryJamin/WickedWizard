@@ -12,7 +12,6 @@ import com.byrjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
@@ -20,7 +19,6 @@ import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
-import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.WeightedObject;
@@ -300,7 +298,7 @@ public class JigsawGenerator {
         mapTracker.put(btc, startingMap);
 
         btc = new BossTeleporterComponent(teleportLink);
-        ArenaMap bossMap = bossMapGens.get(random.nextInt(bossMapGens.size)).createBossMap(btc, itemStore.generateItemRoomItem());
+        ArenaMap bossMap = bossMapGens.get(random.nextInt(bossMapGens.size)).createBossMap(btc);
         cleanArenas(bossMap.getRoomArray());
 
         mapTracker.put(btc, bossMap);
@@ -318,14 +316,11 @@ public class JigsawGenerator {
 
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
-        //Item item = new ItemMomentum();//itemStore.generateItemRoomItem();
-        Item item = itemStore.generateItemRoomItem();
-
         Array<Arena> itemRooms = new Array<Arena>();
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createDownItemRoom(new MapCoords(), item));
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createLeftItemRoom(new MapCoords(), item));
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createRightItemRoom(new MapCoords(), item));
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createUpItemRoom(new MapCoords(), item));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createDownItemRoom(new MapCoords()));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createLeftItemRoom(new MapCoords()));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createRightItemRoom(new MapCoords()));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createUpItemRoom(new MapCoords()));
 
         itemRooms.shuffle();
 
@@ -347,10 +342,7 @@ public class JigsawGenerator {
 
     public boolean placeShopRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
-        Item item1 = itemStore.generateItemRoomItem();
-        Item item2 = itemStore.generateItemRoomItem();
-
-        Arena shopRoom = shopFactory.createShop(item1, item2);
+        Arena shopRoom = shopFactory.createShop(new MapCoords());
         if(placeRoomUsingDoors(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(shopRoom);
             cleanArena(shopRoom, placedArenas);

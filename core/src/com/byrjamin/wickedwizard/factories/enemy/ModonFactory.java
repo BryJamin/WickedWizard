@@ -84,7 +84,7 @@ public class ModonFactory extends EnemyFactory{
                 atlas.findRegions(TextureStrings.MODON_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.MODON),
                 CenterMath.offsetX(width, textureWidth), 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);

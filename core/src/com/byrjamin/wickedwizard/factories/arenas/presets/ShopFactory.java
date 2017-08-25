@@ -24,9 +24,6 @@ import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.PickUpHalfHealthUp;
 import com.byrjamin.wickedwizard.utils.Measure;
 
-import static com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder.SECTION_HEIGHT;
-import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
-
 /**
  * Created by Home on 18/04/2017.
  */
@@ -34,6 +31,10 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
 public class ShopFactory extends AbstractFactory {
 
     //TODO Shop Tutorial Popup reads: Oh look a shop, buy items by believing in yourself
+
+    private static final int pickUpPrice = 5;
+    private static final int itemPrice = 15;
+
 
 
     private ItemFactory itemFactory;
@@ -51,11 +52,8 @@ public class ShopFactory extends AbstractFactory {
 
     }
 
-    public Arena createShop(Item item1, Item item2){
-        return createShop(new MapCoords(0,0), item1, item2);
-    };
 
-    public Arena createShop(MapCoords defaultCoords, Item item1, Item item2) {
+    public Arena createShop(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addRoomType(Arena.RoomType.SHOP)
@@ -66,19 +64,19 @@ public class ShopFactory extends AbstractFactory {
                         ArenaBuilder.wall.DOOR))
                 .buildArena();
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(20),Measure.units(37.5f), new PickUpHalfHealthUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopPickUpBag(Measure.units(20),Measure.units(37.5f), new PickUpHalfHealthUp(), pickUpPrice)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(40),Measure.units(37.5f), new PickUpArmorUp(), 5)) {
+        for(Bag<Component> b : itemFactory.createShopPickUpBag(Measure.units(40),Measure.units(37.5f), new PickUpArmorUp(), pickUpPrice)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(37.5f), item1, 10)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60),Measure.units(37.5f), itemPrice)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(37.5f), item2, 10)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80),Measure.units(37.5f), itemPrice)) {
             arena.addEntity(b);
         }
 
@@ -110,7 +108,7 @@ public class ShopFactory extends AbstractFactory {
 
 
     private void createCheapItem(Arena arena, MapCoords arenaCoords){
-        for(Bag<Component> b : itemFactory.createShopItemBag(arenaCoords.getX(),arenaCoords.getY(), new PickUpHalfHealthUp(), 2)) {
+        for(Bag<Component> b : itemFactory.createShopPickUpBag(arenaCoords.getX(),arenaCoords.getY(), new PickUpHalfHealthUp(), 2)) {
             arena.addEntity(b);
         }
     }

@@ -32,9 +32,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -69,15 +67,15 @@ public class BossMaps extends AbstractFactory {
     public Array<ArenaMap> getBossMapsArray(){
 
         Array<ArenaMap> arenaMaps = new Array<ArenaMap>();
-        arenaMaps.insert(0, blobbaMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(1, adojMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(2, giantSpinnerMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(3, wandaMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(4, boomyMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(5, ajirMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(6, wraithMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(7, amalgamaMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
-        arenaMaps.insert(8, endMapCreate().createBossMap(new BossTeleporterComponent(), new ItemVitaminC()));
+        arenaMaps.insert(0, blobbaMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(1, adojMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(2, giantSpinnerMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(3, wandaMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(4, boomyMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(5, ajirMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(6, wraithMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(7, amalgamaMapCreate().createBossMap(new BossTeleporterComponent()));
+        arenaMaps.insert(8, endMapCreate().createBossMap(new BossTeleporterComponent()));
         return  arenaMaps;
     }
 
@@ -123,13 +121,13 @@ public class BossMaps extends AbstractFactory {
      * @param mapCoords - Map co-ordinates of the Arena
      * @return - Returns the arena
      */
-    public Arena bossMapExitArena(MapCoords mapCoords, Item item){
+    public Arena bossMapExitArena(MapCoords mapCoords){
         Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords);
         exitArena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
 
 
         exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
-        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), item, arenaSkin.getWallTint()));
+        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint()));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
 
 
@@ -174,12 +172,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate blobbaMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        item,
                         new BiggaBlobbaMap(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1, 0)));
             }
         };
@@ -188,12 +185,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate adojMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        item,
                         new BossRoomAdoj(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1, 0)));
             }
         };
@@ -202,12 +198,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate giantSpinnerMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(3, -1),
                         btc,
-                        item,
                         new GiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, -1)));
             }
         };
@@ -216,12 +211,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate wandaMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        item,
                         new WandaRoom(assetManager, arenaSkin).wandaArena().createArena(new MapCoords(1, 0)));
             }
         };
@@ -230,12 +224,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate boomyMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        item,
                         new BoomyMap(assetManager, arenaSkin).boomyArena().createArena(new MapCoords(1, 0)));
             }
         };
@@ -244,12 +237,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate ajirMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        item,
                         new BossRoomAjir(assetManager, arenaSkin).ajirArena().createArena(new MapCoords(1, 0)));
             }
         };
@@ -258,12 +250,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate wraithMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        item,
                         new BossRoomWraithCowl(assetManager, arenaSkin).wraithcowlArena().createArena(new MapCoords(1, 0)));
             }
         };
@@ -272,12 +263,11 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate amalgamaMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(7, 0),
                         btc,
-                        item,
                         new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords(1, 0)));
             }
         };
@@ -286,19 +276,18 @@ public class BossMaps extends AbstractFactory {
     public BossMapCreate endMapCreate(){
         return new BossMapCreate() {
             @Override
-            public ArenaMap createBossMap(BossTeleporterComponent btc, Item item) {
+            public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        item,
                         new BossRoomEnd(assetManager, arenaSkin).endArena().createArena(new MapCoords(1, -20)));
             }
         };
     }
 
 
-    public ArenaMap createABossMap(MapCoords entryArenaCoords, MapCoords exitArenaCoords, BossTeleporterComponent btc, Item item, Arena bossArena){
+    public ArenaMap createABossMap(MapCoords entryArenaCoords, MapCoords exitArenaCoords, BossTeleporterComponent btc, Arena bossArena){
 
         Array<Arena> placedArenas = new Array<Arena>();
 
@@ -306,7 +295,7 @@ public class BossMaps extends AbstractFactory {
 
         placedArenas.add(startingArena);
         placedArenas.add(bossArena);
-        placedArenas.add(bossMapExitArena(exitArenaCoords, item));
+        placedArenas.add(bossMapExitArena(exitArenaCoords));
 
         return new ArenaMap(startingArena, placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
 

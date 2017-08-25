@@ -2,6 +2,7 @@ package com.byrjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
 import com.byrjamin.wickedwizard.factories.items.PickUp;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
 
 /**
@@ -14,7 +15,7 @@ public class AltarComponent extends Component {
     public boolean hasItem = true;
 
     public AltarComponent(){
-        pickUp = new ItemAnger();
+        pickUp = new ItemVitaminC();
     }
 
     public AltarComponent(PickUp pickUp){

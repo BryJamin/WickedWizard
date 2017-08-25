@@ -10,5 +10,5 @@ import com.byrjamin.wickedwizard.utils.MapCoords;
  */
 
 public interface BossMapCreate {
-    ArenaMap createBossMap(BossTeleporterComponent btc, Item item);
+    ArenaMap createBossMap(BossTeleporterComponent btc);
 }
