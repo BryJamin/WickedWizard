@@ -104,7 +104,9 @@ public class ModonFactory extends EnemyFactory{
                 e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
                 e.getComponent(VelocityComponent.class).velocity.y = Measure.units(85);
 
+
                 e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.FIRING);
+                e.getComponent(AnimationStateComponent.class).stateTime = 0;
 
                 e.edit().add(modonOnCollisionAction());
 

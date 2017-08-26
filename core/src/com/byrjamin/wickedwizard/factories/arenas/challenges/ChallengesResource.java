@@ -43,6 +43,7 @@ public class ChallengesResource {
         public static String perfectWanda = "fb7165a7-67cf-4d6b-a112-5d5dd7793706";
         public static String perfectKugel = "7dc228e4-8eb7-4e92-a3c4-9b915ff18709";
         public static String arenaTrail = "d009bc24-8ddb-488b-bd45-404dcc8bd923";
+        public static String rank2TimeTrail = "ce9458d3-29d8-46cb-971f-2f4167c7657a";
 
         public static Array<String> rank2ChallengesArray = new Array<String>();
 
@@ -50,6 +51,7 @@ public class ChallengesResource {
             rank2ChallengesArray.add(perfectWanda);
             rank2ChallengesArray.add(perfectKugel);
             rank2ChallengesArray.add(arenaTrail);
+            rank2ChallengesArray.add(rank2TimeTrail);
         }
 
     }
@@ -59,12 +61,16 @@ public class ChallengesResource {
 
         public static String perfectBoomy = "5971c470-98af-463a-947a-b86db48b0e35";
         public static String perfectAjir = "536e9555-9beb-40fe-867e-d2999be26d32";
+        public static String rank3ArenaTrial = "0da6c488-ffd3-4d4d-aaef-3948bb10a47c";
+        public static String rank3TimeTrail = "c382bba7-752b-4f45-a7b6-d2d71600cd6b";
 
         public static Array<String> rank3ChallengesArray = new Array<String>();
 
         static {
             rank3ChallengesArray.add(perfectBoomy);
             rank3ChallengesArray.add(perfectAjir);
+            rank3ChallengesArray.add(rank3ArenaTrial);
+            rank3ChallengesArray.add(rank3TimeTrail);
         }
 
     }

@@ -63,9 +63,9 @@ public class BouncerFactory extends EnemyFactory {
         return bag;
     }
 
-    public ComponentBag largeBouncer(float x, float y){
+    public ComponentBag largeBouncer(float x, float y, boolean startsRight){
 
-        ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, random.nextBoolean());
+        ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, startsRight);
         BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
         bag.add(new LootComponent());
 

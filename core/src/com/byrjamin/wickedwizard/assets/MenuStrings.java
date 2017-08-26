@@ -61,13 +61,15 @@ public class MenuStrings {
     public static class Death {
 
 
-        public static final String[] DEATH_FLAVOR_TEXT = {"Oh dear, you seem to have died",
-        "Welp, that happened",
-        "You were probably really close",
-        "Ouch",
-        "Oh no! You got hit too much...",
-        "These controls suck",
-        "Good try, I guess"};
+        public static final String[] DEATH_FLAVOR_TEXT = {
+                "Oh dear, you seem to have died",
+                "Welp, that happened",
+                "You were probably really close",
+                "Ouch",
+                "Oh no! You got hit too much...",
+                "I think the controls were inverted",
+                "I'd blame myself, but I won't",
+                "Good try, I guess"};
 
 
 

@@ -104,9 +104,12 @@ public class ChallengeMaps extends AbstractFactory {
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectWanda, rank2ChallengeMaps.perfectWanda(ChallengesResource.Rank2Challenges.perfectWanda));
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectKugel, rank2ChallengeMaps.perfectKugel(ChallengesResource.Rank2Challenges.perfectKugel));
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.arenaTrail, rank2ChallengeMaps.rank2ArenaRace(ChallengesResource.Rank2Challenges.arenaTrail));
+        mapOfChallenges.put(ChallengesResource.Rank2Challenges.rank2TimeTrail, rank2ChallengeMaps.rank2TimeTrail(ChallengesResource.Rank2Challenges.rank2TimeTrail));
 
         mapOfChallenges.put(ChallengesResource.Rank3Challenges.perfectBoomy, rank3ChallengeMaps.perfectBoomy(ChallengesResource.Rank3Challenges.perfectBoomy));
         mapOfChallenges.put(ChallengesResource.Rank3Challenges.perfectAjir, rank3ChallengeMaps.perfectAjir(ChallengesResource.Rank3Challenges.perfectAjir));
+        mapOfChallenges.put(ChallengesResource.Rank3Challenges.rank3ArenaTrial, rank3ChallengeMaps.rank3ArenaRace(ChallengesResource.Rank3Challenges.rank3ArenaTrial));
+        mapOfChallenges.put(ChallengesResource.Rank3Challenges.rank3TimeTrail, rank3ChallengeMaps.timeTrial(ChallengesResource.Rank3Challenges.rank3TimeTrail));
 
         mapOfChallenges.put(ChallengesResource.Rank4Challenges.perfectWraith, rank4ChallengeMaps.perfectWraith(ChallengesResource.Rank4Challenges.perfectWraith));
         mapOfChallenges.put(ChallengesResource.Rank4Challenges.perfectAmalgama, rank4ChallengeMaps.perfectAmalgama(ChallengesResource.Rank4Challenges.perfectAmalgama));

@@ -69,7 +69,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(6, room72KnightsWidth2());
         ag.insert(7, room8LaserBouncersAndAWall());
         ag.insert(8, room9TrappedLaserBouncer());
-        ag.insert(9, room10Width3GrappleChallenge());
+        ag.insert(9, room10Width4GrappleChallenge());
         ag.insert(10,room11Width2STrapTwoKnights());
         ag.insert(11,room12TwoAlurmsOneChestOneKnight());
         ag.insert(12,room13largeBattleRoomWithArenaOnTopAndSpikeTreasureOnBottom());
@@ -267,7 +267,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public ArenaCreate room10Width3GrappleChallenge() {
+    public ArenaCreate room10Width4GrappleChallenge() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
