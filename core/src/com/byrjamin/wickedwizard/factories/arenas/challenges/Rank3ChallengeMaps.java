@@ -248,7 +248,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
     }
 
 
-    private Arena trialRoom1(MapCoords defaultCoords){
+    public Arena trialRoom1(MapCoords defaultCoords){
 
 
 
@@ -304,7 +304,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
     }
 
 
-    private Arena timeTrailRoom2(MapCoords defaultCoords){
+    public Arena timeTrailRoom2(MapCoords defaultCoords){
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -334,7 +334,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
         return arena;
     }
 
-    private Arena trailRoom3(MapCoords defaultCoords){
+    public Arena trailRoom3(MapCoords defaultCoords){
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -373,7 +373,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
     }
 
 
-    private Arena trailRoom4(MapCoords defaultCoords){
+    public Arena trailRoom4(MapCoords defaultCoords){
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
         ComponentBag bag = arenaEnemyPlacementFactory.turretFactory.fixedFlyByDoubleBombSentry(arena.getWidth() / 2, Measure.units(40f));

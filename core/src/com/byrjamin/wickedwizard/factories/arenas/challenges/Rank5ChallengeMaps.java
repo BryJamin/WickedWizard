@@ -35,10 +35,10 @@ import com.byrjamin.wickedwizard.utils.enums.Level;
 import java.util.Random;
 
 /**
- * Created by BB on 24/08/2017.
+ * Created by BB on 26/08/2017.
  */
 
-public class Rank4ChallengeMaps extends AbstractFactory {
+public class Rank5ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 45f;
@@ -56,7 +56,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     private Random random;
 
 
-    public Rank4ChallengeMaps(AssetManager assetManager, Random random) {
+    public Rank5ChallengeMaps(AssetManager assetManager, Random random) {
         super(assetManager);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
@@ -67,7 +67,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
-    public GameCreator perfectWraith(String id){
+    public GameCreator ultimateTimeTrail(String id) {
 
         Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords());
 
@@ -81,14 +81,22 @@ public class Rank4ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2, 0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BossRoomWraithCowl(assetManager, arenaSkin).wraithcowlArena().createArena(new MapCoords(1,0)),
+                new BossRoomWraithCowl(assetManager, arenaSkin).wraithcowlArena().createArena(new MapCoords(1, 0)),
                 endArena
         );
 
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
+
+
+
+
+
+        
+
+
 
         GameCreator gameCreator = new GameCreator();
         gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
@@ -99,9 +107,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
-
-
-    public GameCreator perfectAmalgama(String id){
+    public GameCreator perfectAmalgama(String id) {
 
         Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
 
@@ -116,9 +122,9 @@ public class Rank4ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7,0));
+        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7, 0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords(1,0)),
+                new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords(1, 0)),
                 endArena
         );
 
@@ -134,11 +140,9 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
+    public GameCreator rank4ArenaRace(String id) {
 
-
-    public GameCreator rank4ArenaRace(String id){
-
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0,0));
+        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -152,7 +156,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,-1));
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, -1));
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 
@@ -190,14 +194,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
-
-
-
-
-
-
-
-    public GameCreator timeTrial(String id){
+    public GameCreator timeTrial(String id) {
 
         Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords());
 
@@ -218,7 +215,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 room1,
-                trailRoomLargeRoomAndEnemies(new MapCoords(2,0)),
+                trailRoomLargeRoomAndEnemies(new MapCoords(2, 0)),
                 trialRoomLaserGauntlet(new MapCoords(3, -1)),
                 trailRoomPentaSentry(new MapCoords(7, 0)),
                 new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(6, 0))
@@ -236,38 +233,36 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
-    public Arena trialRoomLaserGauntlet(MapCoords defaultCoords){
+    private Arena trialRoomLaserGauntlet(MapCoords defaultCoords) {
 
 
-
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR, //upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        ArenaBuilder.wall.NONE ,
+                        ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
-                        ArenaBuilder.wall.NONE ,
+                        ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
-                        ArenaBuilder.wall.NONE ,
+                        ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 4, defaultCoords.getY()),
-                        ArenaBuilder.wall.NONE ,
+                        ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.GRAPPLE,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
                 .buildArena();
-
 
 
         LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
@@ -292,7 +287,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
-    public Arena trailRoomPentaSentry(MapCoords defaultCoords){
+    private Arena trailRoomPentaSentry(MapCoords defaultCoords) {
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
         ComponentBag bag = arenaEnemyPlacementFactory.turretFactory.movingPentaSentry(arena.getWidth() / 2, Measure.units(40f), true, true);
@@ -302,13 +297,13 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
-    public Arena timeTrailSwitchLaserRoom(MapCoords defaultCoords){
+    private Arena timeTrailSwitchLaserRoom(MapCoords defaultCoords) {
 
         Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
         arena.roomType = Arena.RoomType.TRAP;
 
 
-        arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f),2,
+        arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f), 2,
                 new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(4f))
                         .speedInDegrees(2f)
@@ -328,9 +323,9 @@ public class Rank4ChallengeMaps extends AbstractFactory {
         return arena;
     }
 
-    public Arena trailRoomLargeRoomAndEnemies(MapCoords defaultCoords){
+    private Arena trailRoomLargeRoomAndEnemies(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -361,7 +356,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
         //arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(110f)));
         arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
 
-        arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(90f), Measure.units(50f),4,
+        arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(90f), Measure.units(50f), 4,
                 new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(15f))
                         .speedInDegrees(-0.225f)
@@ -380,7 +375,5 @@ public class Rank4ChallengeMaps extends AbstractFactory {
     }
 
 
-
-
-
 }
+

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
@@ -39,6 +41,8 @@ public class SwitchFactory extends EnemyFactory{
     public ComponentBag switchBag(float x , float y, float rotation){
 
         ComponentBag bag = this.defaultEnemyBagNoLoot(new ComponentBag(), x, y, health);
+        BagSearch.removeObjectOfTypeClass(EnemyComponent.class,bag);
+        bag.add(new ArenaLockComponent());
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
 
@@ -62,25 +66,10 @@ public class SwitchFactory extends EnemyFactory{
     public ComponentBag fadeInswitchBag(float x , float y, float rotation){
 
         ComponentBag bag = switchBag(x,y,rotation);
-        final CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
-        BagSearch.removeObjectOfTypeClass(CollisionBoundComponent.class, bag);
 
         FadeComponent fc = new FadeComponent(true, 0.5f, false);
         fc.flicker = true;
-
         bag.add(fc);
-
-        bag.add(new ActionAfterTimeComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(cbc);
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }, 0.5f));
 
         return bag;
 

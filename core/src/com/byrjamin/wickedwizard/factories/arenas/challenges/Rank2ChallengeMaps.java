@@ -234,7 +234,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
 
     }
-    private Arena rank2TimeTrailRoom1(MapCoords defaultCoords){
+    public Arena rank2TimeTrailRoom1(MapCoords defaultCoords){
 
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
@@ -268,7 +268,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         return arena;
     }
 
-    private Arena rank2TimeTrailRoom2(MapCoords defaultCoords){
+    public Arena rank2TimeTrailRoom2(MapCoords defaultCoords){
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
         ComponentBag bag = arenaEnemyPlacementFactory.goatWizardFactory.goatWizard(arena.getWidth() / 2, Measure.units(40f), false, false);
@@ -279,7 +279,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
     }
 
 
-    private Arena rank2TimeTrailRoom3(MapCoords defaultCoords){
+    public Arena rank2TimeTrailRoom3(MapCoords defaultCoords){
 
 
 
@@ -355,7 +355,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
     }
 
 
-    private Arena rank2TimeTrailRoom4(MapCoords defaultCoords){
+    public Arena rank2TimeTrailRoom4(MapCoords defaultCoords){
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
         arena.addEntity(arenaEnemyPlacementFactory.kugelDuscheFactory.kugelDusche(arena.getWidth() / 2, Measure.units(27.5f), true));

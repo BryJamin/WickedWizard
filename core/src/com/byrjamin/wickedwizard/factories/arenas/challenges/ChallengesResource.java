@@ -81,15 +81,39 @@ public class ChallengesResource {
 
         public static String perfectAmalgama = "cb425f59-de30-4d19-b851-24e79b13bb0c";
         public static String perfectWraith = "320ce1ee-10fa-4617-a4df-e4cd385a8a5c";
+        public static String rank4Arena = "36ac759a-2fe1-45c4-b8b9-aa96cdfee696";
+        public static String rank4TimeTrail = "c84dc561-a417-4c73-bd48-ec65008009f0";
 
         public static Array<String> rank4ChallengesArray = new Array<String>();
 
         static {
             rank4ChallengesArray.add(perfectWraith);
             rank4ChallengesArray.add(perfectAmalgama);
+            rank4ChallengesArray.add(rank4Arena);
+            rank4ChallengesArray.add(rank4TimeTrail);
         }
 
     }
+
+
+    public static class Rank5Challenges {
+
+        public static String rank5UltimateTimeTrail = "6afbd6e8-2525-4b62-8798-57d9489c43f5";
+        public static String rank5NotUltimateArena = "104bb7fe-8756-4a64-895d-81691920ab3a";
+        public static String bossRush = "800ba671-257f-48dc-b169-4d6ebd7cdc90";
+        public static String perfectBossRush = "3db46e92-2e41-436b-8a7e-039726a97845\n";
+
+        public static Array<String> rank4ChallengesArray = new Array<String>();
+
+        static {
+            rank4ChallengesArray.add(rank5UltimateTimeTrail);
+            rank4ChallengesArray.add(rank5NotUltimateArena);
+            rank4ChallengesArray.add(bossRush);
+            rank4ChallengesArray.add(perfectBossRush);
+        }
+
+    }
+
 
 
 

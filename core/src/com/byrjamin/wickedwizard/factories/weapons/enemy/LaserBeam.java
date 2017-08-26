@@ -65,7 +65,7 @@ public class LaserBeam {
         private float activeLaserDisperseTime = 0.3f;
 
         //Determines when creating the larger laser to center the new laser by the width or by the height
-        private boolean useWidthAsCenter = true;
+        private boolean centerLaserUsingWidth = true;
 
         private int layer = TextureRegionComponent.PLAYER_LAYER_MIDDLE;
 
@@ -90,8 +90,8 @@ public class LaserBeam {
         public LaserBeamBuilder activeLaserTime(float val)
         { activeLaserTime = val; return this; }
 
-        public LaserBeamBuilder useWidthAsCenter(boolean val)
-        { useWidthAsCenter = val; return this;}
+        public LaserBeamBuilder centerLaserUsingWidth(boolean val)
+        { centerLaserUsingWidth = val; return this;}
 
         public LaserBeamBuilder layer(int val)
         { layer = val; return this;}
@@ -124,7 +124,7 @@ public class LaserBeam {
         this.activeLaserTime = lbb.activeLaserTime;
         this.chargingLaserTime = lbb.chargingLaserTime;
         this.activeLaserDisperseTime = lbb.activeLaserDisperseTime;
-        this.useWidthAsCenter = lbb.useWidthAsCenter;
+        this.useWidthAsCenter = lbb.centerLaserUsingWidth;
         this.layer = lbb.layer;
         this.color = lbb.color;
     }
@@ -226,8 +226,8 @@ public class LaserBeam {
 
                 e.edit().add(new HazardComponent());
                 PositionComponent pc = e.getComponent(PositionComponent.class);
-                pc.position.set(useWidthAsCenter ? pc.getX() - (activeLaserWidth / 2 - chargingLaserWidth / 2) : pc.getX(),
-                        useWidthAsCenter ? pc.getY() : pc.getY() - (activeLaserHeight / 2 - chargingLaserHeight / 2), 0);
+                pc.position.set(centerLaserUsingWidth ? pc.getX() - (activeLaserWidth / 2 - chargingLaserWidth / 2) : pc.getX(),
+                        centerLaserUsingWidth ? pc.getY() : pc.getY() - (activeLaserHeight / 2 - chargingLaserHeight / 2), 0);
                 e.edit().remove(CollisionBoundComponent.class);
                 e.edit().add(new CollisionBoundComponent(new Rectangle(pc.getX(), pc.getY(), activeLaserWidth, activeLaserHeight), true));
 

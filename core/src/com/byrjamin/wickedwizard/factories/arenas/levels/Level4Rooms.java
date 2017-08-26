@@ -850,7 +850,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .chargingLaserWidth(Measure.units(15f))
                         .activeLaserHeight(Measure.units(2.5f))
                         .activeLaserWidth(Measure.units(15f))
-                        .useWidthAsCenter(false)
+                        .centerLaserUsingWidth(false)
                         .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
                         .build();
 
@@ -1206,7 +1206,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .chargingLaserWidth(Measure.units(30f))
                         .activeLaserHeight(Measure.units(2.5f))
                         .activeLaserWidth(Measure.units(30f))
-                        .useWidthAsCenter(false)
+                        .centerLaserUsingWidth(false)
                         .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
                         .build();
 

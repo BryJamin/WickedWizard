@@ -416,7 +416,7 @@ public class BossAmalgama extends EnemyFactory {
                     .chargingLaserHeight(Measure.units(5f))
                     .activeLaserWidth(Measure.units(1000f))
                     .activeLaserHeight(Measure.units(7.5f))
-                    .useWidthAsCenter(false)
+                    .centerLaserUsingWidth(false)
                     .build();
 
             centerLasers = new LaserBeam.LaserBeamBuilder(assetManager)
@@ -424,7 +424,7 @@ public class BossAmalgama extends EnemyFactory {
                     .chargingLaserHeight(Measure.units(20f))
                     .activeLaserWidth(Measure.units(1000f))
                     .activeLaserHeight(Measure.units(25f))
-                    .useWidthAsCenter(false)
+                    .centerLaserUsingWidth(false)
                     .build();
 
         }

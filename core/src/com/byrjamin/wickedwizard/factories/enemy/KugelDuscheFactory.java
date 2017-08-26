@@ -128,7 +128,7 @@ public class KugelDuscheFactory extends EnemyFactory {
         bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask.LaserBuilder(assetManager)
                 .orbitalAndIntervalSize(Measure.units(5f))
                 .speedInDegrees(isLeft ? 1.25f : -1.25f)
-                .numberOfOrbitals(12)
+                .numberOfOrbitals(16)
                 .layer(TextureRegionComponent.ENEMY_LAYER_MIDDLE)
                 .chargeTime(1f)
                 .angles(0, 180)

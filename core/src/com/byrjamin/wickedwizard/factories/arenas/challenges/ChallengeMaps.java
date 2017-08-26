@@ -43,10 +43,6 @@ import java.util.Random;
 public class ChallengeMaps extends AbstractFactory {
 
 
-    private static final float ARENA_SPEEDRUN_TIMER = 35f;
-    private static final float TUTORIAL_SPEEDRUN_TIMER = 20f;
-
-
     private ArenaShellFactory arenaShellFactory;
     private ChestFactory chestFactory;
     private DecorFactory decorFactory;
@@ -54,9 +50,11 @@ public class ChallengeMaps extends AbstractFactory {
     private ItemFactory itemFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
+    private Rank1ChallengeMaps rank1ChallengeMaps;
     private Rank2ChallengeMaps rank2ChallengeMaps;
     private Rank3ChallengeMaps rank3ChallengeMaps;
     private Rank4ChallengeMaps rank4ChallengeMaps;
+    private Rank5ChallengeMaps rank5ChallengeMaps;
 
     ArenaSkin arenaSkin = new LightGraySkin();
 
@@ -77,6 +75,7 @@ public class ChallengeMaps extends AbstractFactory {
         this.portalFactory = new PortalFactory(assetManager);
         this.itemFactory = new ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
+        this.rank1ChallengeMaps = new Rank1ChallengeMaps(assetManager, random);
         this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
         this.rank3ChallengeMaps = new Rank3ChallengeMaps(assetManager, random);
         this.rank4ChallengeMaps = new Rank4ChallengeMaps(assetManager, random);
@@ -96,10 +95,10 @@ public class ChallengeMaps extends AbstractFactory {
 
 
     public void setUpMap(){
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectBlobba, perfectBlobba(ChallengesResource.Rank1Challenges.perfectBlobba));
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectAdoj, perfectAdoj(ChallengesResource.Rank1Challenges.perfectAdoj));
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.tutorialSpeedRun, tutorialSpeedRun(ChallengesResource.Rank1Challenges.tutorialSpeedRun));
-        mapOfChallenges.put(ChallengesResource.Rank1Challenges.arenaSpeedRun, arenaSpeedRun(ChallengesResource.Rank1Challenges.arenaSpeedRun));
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectBlobba, rank1ChallengeMaps.perfectBlobba(ChallengesResource.Rank1Challenges.perfectBlobba));
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.perfectAdoj, rank1ChallengeMaps.perfectAdoj(ChallengesResource.Rank1Challenges.perfectAdoj));
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.tutorialSpeedRun, rank1ChallengeMaps.tutorialSpeedRun(ChallengesResource.Rank1Challenges.tutorialSpeedRun));
+        mapOfChallenges.put(ChallengesResource.Rank1Challenges.arenaSpeedRun, rank1ChallengeMaps.arenaSpeedRun(ChallengesResource.Rank1Challenges.arenaSpeedRun));
 
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectWanda, rank2ChallengeMaps.perfectWanda(ChallengesResource.Rank2Challenges.perfectWanda));
         mapOfChallenges.put(ChallengesResource.Rank2Challenges.perfectKugel, rank2ChallengeMaps.perfectKugel(ChallengesResource.Rank2Challenges.perfectKugel));
@@ -113,6 +112,10 @@ public class ChallengeMaps extends AbstractFactory {
 
         mapOfChallenges.put(ChallengesResource.Rank4Challenges.perfectWraith, rank4ChallengeMaps.perfectWraith(ChallengesResource.Rank4Challenges.perfectWraith));
         mapOfChallenges.put(ChallengesResource.Rank4Challenges.perfectAmalgama, rank4ChallengeMaps.perfectAmalgama(ChallengesResource.Rank4Challenges.perfectAmalgama));
+        mapOfChallenges.put(ChallengesResource.Rank4Challenges.rank4Arena, rank4ChallengeMaps.rank4ArenaRace(ChallengesResource.Rank4Challenges.rank4Arena));
+        mapOfChallenges.put(ChallengesResource.Rank4Challenges.rank4TimeTrail, rank4ChallengeMaps.timeTrial(ChallengesResource.Rank4Challenges.rank4TimeTrail));
+
+        mapOfChallenges.put(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail, rank5ChallengeMaps.ultimateTimeTrail(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail));
 
     }
 
@@ -120,200 +123,6 @@ public class ChallengeMaps extends AbstractFactory {
     public GameCreator getChallenge(String id){
         return mapOfChallenges.get(id);
     }
-
-
-    public GameCreator perfectBlobba(String id){
-
-        updateArenaSkin(Level.ONE.getArenaSkin());
-
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.ONE.getMusic()).createArena(new MapCoords());
-
-        ComponentBag bag = startingArena.createArenaBag();
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
-                e.deleteFromWorld();
-            }
-        }));
-
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
-        ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BiggaBlobbaMap(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1,0)),
-                endArena
-                );
-
-        JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
-                .startingMap(arenaMap);
-
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-
-        return gameCreator;
-
-
-    }
-
-
-
-
-    public GameCreator perfectAdoj(String id){
-
-        updateArenaSkin(Level.ONE.getArenaSkin());
-
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.ONE.getMusic()).createArena(new MapCoords());
-
-        ComponentBag bag = startingArena.createArenaBag();
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
-                e.deleteFromWorld();
-            }
-        }));
-
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
-        ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BossRoomAdoj(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1,0)),
-                endArena
-        );
-
-        JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
-                .startingMap(arenaMap);
-
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-
-        return gameCreator;
-
-    }
-
-
-
-
-
-    public GameCreator tutorialSpeedRun(String id){
-
-        updateArenaSkin(Level.ONE.getArenaSkin());
-
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.ONE.getMusic()).createArena(new MapCoords());
-
-        ComponentBag bag = startingArena.createArenaBag();
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                e.deleteFromWorld();
-            }
-        }));
-        startingArena.addEntity(new OnLoadFactory().challengeTimer(TUTORIAL_SPEEDRUN_TIMER));
-
-
-        TutorialFactory tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
-
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7,3));
-        ArenaMap arenaMap = new ArenaMap(startingArena,
-                tutorialFactory.jumpTutorial(new MapCoords(1, 0)),
-                tutorialFactory.platformTutorial(new MapCoords(5,0)),
-                tutorialFactory.grappleTutorial(new MapCoords(6,0)),
-                tutorialFactory.enemyTurtorial(new MapCoords(6,3)),
-                endArena
-        );
-
-        JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
-                .startingMap(arenaMap);
-
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-
-        return gameCreator;
-
-    }
-
-
-
-
-    public GameCreator arenaSpeedRun(String id){
-
-        updateArenaSkin(Level.ONE.getArenaSkin());
-
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.ONE.getMusic()).createArena(new MapCoords());
-
-        ComponentBag bag = startingArena.createArenaBag();
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
-                e.deleteFromWorld();
-            }
-        }));
-
-
-        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new MapCoords(1,0));
-        arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
-
-
-
-
-        SpawnerFactory.SpawnerBuilder spawnerBuilder = new SpawnerFactory.SpawnerBuilder(assetManager, arenaSkin)
-                .resetTime(0.5f)
-                .life(5)
-                .spawners(new SpawnerFactory.Spawner() {
-                    @Override
-                    public Bag<Component> spawnBag(float x, float y) {
-                        return arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(x,y, true);
-                    }
-                });
-
-        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
-
-
-        spawnerBuilder = new SpawnerFactory.SpawnerBuilder(assetManager, arenaSkin)
-                .life(5)
-                .spawners(new SpawnerFactory.Spawner() {
-                    @Override
-                    public Bag<Component> spawnBag(float x, float y) {
-                        return arenaEnemyPlacementFactory.bouncerFactory.smallBouncer(x,y, false);
-                    }
-                });
-
-        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
-
-
-        arena.addWave(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4, Measure.units(45f), false),
-                arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4 * 3, Measure.units(45f), true));
-
-        arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
-
-
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2, 0));
-
-        ArenaMap arenaMap = new ArenaMap(startingArena,
-                arena,
-                endArena
-        );
-
-        JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
-                .startingMap(arenaMap);
-
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-
-        return gameCreator;
-
-    }
-
 
 
 

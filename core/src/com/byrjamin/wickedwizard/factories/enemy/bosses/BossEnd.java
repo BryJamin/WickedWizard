@@ -683,7 +683,7 @@ public class BossEnd extends EnemyFactory {
                     .chargingLaserHeight(Measure.units(100f))
                     .activeLaserWidth(Measure.units(12.5f))
                     .activeLaserHeight(Measure.units(100f))
-                    .useWidthAsCenter(true)
+                    .centerLaserUsingWidth(true)
                     .chargingLaserTime(1f)
                     .build();
 
@@ -692,7 +692,7 @@ public class BossEnd extends EnemyFactory {
                     .chargingLaserHeight(Measure.units(7.5f))
                     .activeLaserWidth(Measure.units(100f))
                     .activeLaserHeight(Measure.units(12.5f))
-                    .useWidthAsCenter(false)
+                    .centerLaserUsingWidth(false)
                     .chargingLaserTime(1f)
                     .build();
 
