@@ -98,6 +98,7 @@ public class ChallengeMaps extends AbstractFactory {
         mapOfChallenges.put(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail, rank5ChallengeMaps.ultimateTimeTrail(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail));
         mapOfChallenges.put(ChallengesResource.Rank5Challenges.bossRush, rank5ChallengeMaps.bossRush(ChallengesResource.Rank5Challenges.bossRush));
         mapOfChallenges.put(ChallengesResource.Rank5Challenges.perfectBossRush, rank5ChallengeMaps.perfectBossRush(ChallengesResource.Rank5Challenges.perfectBossRush));
+        mapOfChallenges.put(ChallengesResource.Rank5Challenges.rank5NotUltimateArena, rank5ChallengeMaps.rank5ArenaRace(ChallengesResource.Rank5Challenges.rank5NotUltimateArena));
 
     }
 

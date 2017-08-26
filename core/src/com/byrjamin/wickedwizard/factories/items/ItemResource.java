@@ -186,7 +186,7 @@ public class ItemResource {
                 .region("item/CriticalEye")
                 .name("Critical Eye")
                 .description(WORD_ACCURACY + "+++")
-                .challengeId(ChallengesResource.Rank1Challenges.perfectBlobba)
+                .challengeId(ChallengesResource.Rank3Challenges.rank3ArenaTrial)
                 .build();
 
         public static ItemValues KeenEye = new ItemValues.ItemValueBuilder("005e4ac8-81d8-11e7-bb31-be2e44b06b34")
@@ -223,6 +223,7 @@ public class ItemResource {
                 .region("enemy/blob", 2)
                 .name("Slime Coat")
                 .description("Eww..")
+                .challengeId(ChallengesResource.Rank1Challenges.perfectBlobba)
                 .build();
 
 

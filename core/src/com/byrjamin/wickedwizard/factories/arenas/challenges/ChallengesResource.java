@@ -106,8 +106,8 @@ public class ChallengesResource {
         public static Array<String> rank5ChallengesArray = new Array<String>();
 
         static {
-            rank5ChallengesArray.add(rank5UltimateTimeTrail);
             rank5ChallengesArray.add(rank5NotUltimateArena);
+            rank5ChallengesArray.add(rank5UltimateTimeTrail);
             rank5ChallengesArray.add(bossRush);
             rank5ChallengesArray.add(perfectBossRush);
         }
