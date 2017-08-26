@@ -208,9 +208,12 @@ public class EndGameMap extends AbstractFactory {
                 saveGame.add(new OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        if (!DataSave.isDataAvailable(bossRushid)) {
+
+                        if(!DataSave.isDataAvailable(bossRushid)){
                             DataSave.saveChallengeData(bossRushid);
-                            world.getSystem(MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
+                            world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
+                        } else {
+                            world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
                         }
                     }
                 }));
