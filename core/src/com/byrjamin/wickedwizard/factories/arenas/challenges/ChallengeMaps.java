@@ -1,38 +1,17 @@
 package com.byrjamin.wickedwizard.factories.arenas.challenges;
 
-import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.World;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.OrderedMap;
-import com.byrjamin.wickedwizard.ecs.components.StatComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
-import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
-import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
-import com.byrjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
-import com.byrjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
-import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -117,6 +96,8 @@ public class ChallengeMaps extends AbstractFactory {
         mapOfChallenges.put(ChallengesResource.Rank4Challenges.rank4TimeTrail, rank4ChallengeMaps.timeTrial(ChallengesResource.Rank4Challenges.rank4TimeTrail));
 
         mapOfChallenges.put(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail, rank5ChallengeMaps.ultimateTimeTrail(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail));
+        mapOfChallenges.put(ChallengesResource.Rank5Challenges.bossRush, rank5ChallengeMaps.bossRush(ChallengesResource.Rank5Challenges.bossRush));
+        mapOfChallenges.put(ChallengesResource.Rank5Challenges.perfectBossRush, rank5ChallengeMaps.perfectBossRush(ChallengesResource.Rank5Challenges.perfectBossRush));
 
     }
 

@@ -22,6 +22,8 @@ import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
@@ -29,10 +31,12 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.BrightWhiteSkin;
 import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
+import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -61,6 +65,11 @@ public class EndGameMap extends AbstractFactory {
     }
 
 
+    public ArenaMap endBossRushMap(String bossRushId) {
+        return new ArenaMap(endBossRushRoom(bossRushId).createArena(new MapCoords()));
+    }
+
+
     private ArenaCreate endRoom(){
 
 
@@ -81,10 +90,6 @@ public class EndGameMap extends AbstractFactory {
 
                 arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
-
-
-
-
 
 
                 ComponentBag saveGame = arena.createArenaBag();
@@ -139,13 +144,82 @@ public class EndGameMap extends AbstractFactory {
 
                 arena.addEntity(endFade);
 
-
                 return arena;
             }
         };
 
     }
 
+
+
+
+    private ArenaCreate endBossRushRoom(final String bossRushid){
+
+
+        return new ArenaCreate() {
+            @Override
+            public Arena createArena(MapCoords defaultCoords) {
+
+                ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin);
+
+                arenaBuilder.addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.NONE,
+                        ArenaBuilder.wall.FULL));
+
+                Arena arena = arenaBuilder.buildArena();
+
+
+                arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
+
+
+
+
+                arena.createArenaBag().add(new ActionAfterTimeComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+
+                        Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
+
+                        BagToEntity.bagToEntity(world.createEntity(), new PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(45f),
+
+                                new Action() {
+                                    @Override
+                                    public void performAction(World world, Entity e) {
+                                        world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                                            @Override
+                                            public void performAction(World world, Entity e) {
+                                                MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                                game.getScreen().dispose();
+                                                game.setScreen(new MenuScreen(game));
+                                            }
+                                        });
+                                    }
+                                }));
+
+
+
+                    }
+                }, 0.5f));
+
+                ComponentBag saveGame = arena.createArenaBag();
+                saveGame.add(new OnRoomLoadActionComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        if (!DataSave.isDataAvailable(bossRushid)) {
+                            DataSave.saveChallengeData(bossRushid);
+                            world.getSystem(MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
+                        }
+                    }
+                }));
+
+                return arena;
+            }
+        };
+
+    }
 
 
 

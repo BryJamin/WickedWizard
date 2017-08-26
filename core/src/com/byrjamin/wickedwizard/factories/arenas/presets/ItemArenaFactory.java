@@ -118,8 +118,6 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
                         ArenaBuilder.wall.DOOR)).buildArena();
 
 
-
-
         arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(32.5f), Measure.units(60f), Measure.units(5f)));
 
         arena.addEntity(decorFactory.decorativeBlock(Measure.units(25f), Measure.units(32.5f), DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
@@ -130,5 +128,28 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
         return arena;
     }
+
+
+
+
+    public Arena createBossRushItemRoom(MapCoords defaultCoords) {
+
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                .addRoomType(Arena.RoomType.NORMAL)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL))
+                .buildArena();
+
+        arena.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
+                Measure.units(10f), arenaSkin.getWallTint()));
+        return arena;
+    }
+
+
+
+
 
 }

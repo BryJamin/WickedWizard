@@ -16,7 +16,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -86,7 +86,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
         Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BiggaBlobbaMap(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1,0)),
+                new BossRoomBiggaBlobba(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 

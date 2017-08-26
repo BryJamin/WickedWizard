@@ -10,17 +10,19 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossWanda;
+import com.byrjamin.wickedwizard.factories.enemy.bosses.BiggaBlobbaBoss;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.Measure;
 
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
 
 /**
- * Created by Home on 27/05/2017.
+ * Created by Home on 30/06/2017.
  */
 
-public class WandaRoom extends AbstractFactory {
+public class BossRoomBiggaBlobba extends AbstractFactory {
+
 
     ArenaShellFactory arenaShellFactory;
     ChestFactory chestFactory;
@@ -29,7 +31,7 @@ public class WandaRoom extends AbstractFactory {
     ArenaSkin arenaSkin;
 
 
-    public WandaRoom(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public BossRoomBiggaBlobba(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
 
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
@@ -41,7 +43,7 @@ public class WandaRoom extends AbstractFactory {
     }
 
 
-    public ArenaCreate wandaArena() {
+    public ArenaCreate biggaBlobbaArena() {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -53,12 +55,14 @@ public class WandaRoom extends AbstractFactory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL)).buildArena();
 
-                arena.addEntity(new BossWanda(assetManager).wanda(arena.getWidth() / 2, arena.getHeight() / 2));
+                arena.addEntity(new BiggaBlobbaBoss(assetManager).biggaBlobbaBag(Measure.units(65f), Measure.units(10f)));
 
                 return arena;
             }
         };
     }
+
+
 
 
 }

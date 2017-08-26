@@ -51,7 +51,7 @@ public class BossRoomWraithCowl extends AbstractFactory{
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.FULL)).buildArena();
+                                ArenaBuilder.wall.DOOR)).buildArena();
 
                 arena.addEntity(new BossWraithCowl(assetManager).wraithCowl(arena.getWidth() / 2, arena.getHeight() / 2));
 

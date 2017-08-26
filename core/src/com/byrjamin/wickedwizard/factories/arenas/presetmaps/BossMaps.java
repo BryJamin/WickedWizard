@@ -17,15 +17,15 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.BossMapCreate;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BiggaBlobbaMap;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomEnd;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
@@ -177,7 +177,7 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        new BiggaBlobbaMap(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1, 0)));
+                        new BossRoomBiggaBlobba(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1, 0)));
             }
         };
     }
@@ -203,7 +203,7 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(3, -1),
                         btc,
-                        new GiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, -1)));
+                        new BossRoomGiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, -1)));
             }
         };
     }
@@ -216,7 +216,7 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        new WandaRoom(assetManager, arenaSkin).wandaArena().createArena(new MapCoords(1, 0)));
+                        new BossRoomWanda(assetManager, arenaSkin).wandaArena().createArena(new MapCoords(1, 0)));
             }
         };
     }
@@ -229,7 +229,7 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        new BoomyMap(assetManager, arenaSkin).boomyArena().createArena(new MapCoords(1, 0)));
+                        new BossRoomBoomyMap(assetManager, arenaSkin).boomyArena().createArena(new MapCoords(1, 0)));
             }
         };
     }
@@ -281,7 +281,7 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        new BossRoomEnd(assetManager, arenaSkin).endArena().createArena(new MapCoords(1, -20)));
+                        new BossRoomEnd(assetManager, arenaSkin).endStartingRoom().createArena(new MapCoords(1, 0)));
             }
         };
     }

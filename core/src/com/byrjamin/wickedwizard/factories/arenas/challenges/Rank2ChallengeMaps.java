@@ -1,9 +1,7 @@
 package com.byrjamin.wickedwizard.factories.arenas.challenges;
 
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -17,15 +15,14 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.GiantKugelRoom;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.WandaRoom;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -84,7 +81,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
         Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new WandaRoom(assetManager, arenaSkin).wandaArena().createArena(new MapCoords(1,0)),
+                new BossRoomWanda(assetManager, arenaSkin).wandaArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 
@@ -119,7 +116,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
         Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(3,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new GiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1,0)),
+                new BossRoomGiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 

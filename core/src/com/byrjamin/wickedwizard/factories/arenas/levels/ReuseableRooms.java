@@ -80,7 +80,7 @@ public class ReuseableRooms extends AbstractFactory {
     }
 
 
-    private void challengeRoadOnLoadActionEntity(Arena arena, final String challengeId){
+    public void challengeRoadOnLoadActionEntity(Arena arena, final String challengeId){
 
         ComponentBag bag = arena.createArenaBag();
         bag.add(new OnRoomLoadActionComponent(new Action() {

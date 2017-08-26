@@ -48,7 +48,7 @@ public class BossRoomAmalgama extends AbstractFactory {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.FULL))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,

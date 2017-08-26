@@ -19,7 +19,14 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomEnd;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -28,6 +35,8 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
+import com.byrjamin.wickedwizard.factories.arenas.presetmaps.EndGameMap;
+import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
@@ -210,9 +219,68 @@ public class Rank5ChallengeMaps extends AbstractFactory {
     }
 
 
-    public GameCreator perfectAmalgama(String id) {
+    public GameCreator bossRush(String id) {
 
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
+        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
+
+        ComponentBag bag = startingArena.createArenaBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 4;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 4;
+                e.deleteFromWorld();
+            }
+        }));
+
+
+        ArenaMap arenaMap = new ArenaMap(startingArena,
+                new BossRoomBiggaBlobba(assetManager, Level.ONE.getArenaSkin()).biggaBlobbaArena().createArena(new MapCoords(1, 0)),
+                new ItemArenaFactory(assetManager, Level.ONE.getArenaSkin()).createBossRushItemRoom(new MapCoords(2, 0)),
+
+                new BossRoomAdoj(assetManager, Level.ONE.getArenaSkin()).adojArena().createArena(new MapCoords(3, 0)),
+                new ItemArenaFactory(assetManager, Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(4, 0)),
+
+                new BossRoomGiantKugelRoom(assetManager, Level.TWO.getArenaSkin()).giantKugelArena().createArena(new MapCoords(5, 0)),
+                new ItemArenaFactory(assetManager, Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(7, 0)),
+
+                new BossRoomWanda(assetManager, Level.TWO.getArenaSkin()).wandaArena().createArena(new MapCoords(8, 0)),
+                new ItemArenaFactory(assetManager, Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(9, 0)),
+
+                new BossRoomBoomyMap(assetManager, Level.THREE.getArenaSkin()).boomyArena().createArena(new MapCoords(10, 0)),
+                new ItemArenaFactory(assetManager, Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(11, 0)),
+
+                new BossRoomAjir(assetManager, Level.THREE.getArenaSkin()).ajirArena().createArena(new MapCoords(12, 0)),
+                new ItemArenaFactory(assetManager, Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(13, 0)),
+
+                new BossRoomWraithCowl(assetManager, Level.FOUR.getArenaSkin()).wraithcowlArena().createArena(new MapCoords(14, 0)),
+                new ItemArenaFactory(assetManager, Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(15, 0)),
+
+                new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(16, 0)),
+                new BossRoomAmalgama(assetManager, Level.FOUR.getArenaSkin()).amalgamaArena().createArena(new MapCoords(16, -1)),
+                new ItemArenaFactory(assetManager, Level.FIVE.getArenaSkin()).createBossRushItemRoom(new MapCoords(22, -1)),
+
+
+                new BossRoomEnd(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new EndGameMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(23, -1))
+
+        );
+
+        JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
+                .startingMap(arenaMap);
+
+        GameCreator gameCreator = new GameCreator();
+        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
+
+        return gameCreator;
+
+
+    }
+
+
+
+    public GameCreator perfectBossRush(String id) {
+
+        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -220,15 +288,41 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
+                world.getSystem(LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7, 0));
+
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BossRoomAmalgama(assetManager, arenaSkin).amalgamaArena().createArena(new MapCoords(1, 0)),
-                endArena
+                new BossRoomBiggaBlobba(assetManager, Level.FIVE.getArenaSkin()).biggaBlobbaArena().createArena(new MapCoords(1, 0)),
+                //new ArenaShellFactory(assetManager, Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(2, 0)),
+
+                new BossRoomAdoj(assetManager, Level.FIVE.getArenaSkin()).adojArena().createArena(new MapCoords(2, 0)),
+                //new ItemArenaFactory(assetManager, Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(4, 0)),
+
+                new BossRoomGiantKugelRoom(assetManager, Level.FIVE.getArenaSkin()).giantKugelArena().createArena(new MapCoords(3, 0)),
+                //new ItemArenaFactory(assetManager, Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(7, 0)),
+
+                new BossRoomWanda(assetManager, Level.FIVE.getArenaSkin()).wandaArena().createArena(new MapCoords(5, 0)),
+                //new ItemArenaFactory(assetManager, Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(9, 0)),
+
+                new BossRoomBoomyMap(assetManager, Level.FIVE.getArenaSkin()).boomyArena().createArena(new MapCoords(6, 0)),
+                //new ItemArenaFactory(assetManager, Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(11, 0)),
+
+                new BossRoomAjir(assetManager, Level.FIVE.getArenaSkin()).ajirArena().createArena(new MapCoords(7, 0)),
+                //new ItemArenaFactory(assetManager, Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(13, 0)),
+
+                new BossRoomWraithCowl(assetManager, Level.FIVE.getArenaSkin()).wraithcowlArena().createArena(new MapCoords(8, 0)),
+                //new ItemArenaFactory(assetManager, Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(15, 0)),
+
+                //new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(16, 0)),
+                new BossRoomAmalgama(assetManager, Level.FIVE.getArenaSkin()).amalgamaArena().createArena(new MapCoords(8, -1)),
+                //new ItemArenaFactory(assetManager, Level.FIVE.getArenaSkin()).createBossRushItemRoom(new MapCoords(22, -1)),
+
+
+                new BossRoomEnd(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new EndGameMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(14, -1))
+
         );
 
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -83,9 +84,6 @@ public class BossEnd extends EnemyFactory {
     private static final float handCharingTime = 2.0f;
 
 
-    private static final float playerSummonTime = 2f;
-
-
     //Hand States
     private static final int FLOATING_STATE = 0;
     private static final int CHARGING_STATE = 2;
@@ -143,40 +141,11 @@ public class BossEnd extends EnemyFactory {
         bag.add(new OnDeathActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-
                 Entity flash = bossEndFlash(world);
 
                 flash.edit().add(new UnpackableComponent());
-                flash.edit().add(new ConditionalActionComponent(new Condition() {
-                    @Override
-                    public boolean condition(World world, Entity entity) {
-                        return entity.getComponent(FadeComponent.class).count <= 0;
-                    }
-                }, new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
 
-                        e.edit().remove(ConditionalActionComponent.class);
-
-                        RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
-
-                        rts.packRoom(world, rts.getCurrentArena());
-                        rts.setCurrentMap(new EndGameMap(assetManager).endGameMap());
-                        rts.unpackRoom(rts.getCurrentArena());
-
-                        Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
-
-                        PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
-                        pc.position.x = a.getWidth() / 2;
-                        pc.position.y = a.getHeight() / 2;
-
-                    }
-                }));
-
-
-                Entity deathclone = deathClone(world, e);
-
-                //world.getSystem(EndGameSystem.class).startCredits();
+                deathClone(world, e);
             }
         }));
 
@@ -195,10 +164,8 @@ public class BossEnd extends EnemyFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-
                 CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
                 PositionComponent playerPosition = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
-
                 CollisionBoundComponent endCbc = e.getComponent(CollisionBoundComponent.class);
 
 
@@ -213,29 +180,13 @@ public class BossEnd extends EnemyFactory {
 
                 world.getSystem(CameraSystem.class).snapCameraUpdate(playerCbc);
 
-
-                createWhiteFlash(world);
-
             }
-        }, playerSummonTime, true));
+        }, 0, true));
 
         return bag;
 
     }
 
-
-    public Entity createWhiteFlash(World world){
-        float width = ArenaShellFactory.SECTION_WIDTH * 3;
-        float height = ArenaShellFactory.SECTION_HEIGHT * 3;
-
-        Entity e = world.createEntity();
-        e.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
-        e.edit().add(new PositionComponent(0, 0));
-        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
-                new Color(Color.WHITE)));
-        e.edit().add(new ExpireComponent(0.2f));
-        return e;
-    }
 
 
     private ConditionalActionComponent summonArmsConditional() {
@@ -252,7 +203,7 @@ public class BossEnd extends EnemyFactory {
 
                 e.edit().add(new FadeComponent(true, 0.5f, false, e.getComponent(TextureRegionComponent.class).color.a, 1));
 
-                e.getComponent(CollisionBoundComponent.class).hitBoxes.add(new HitBox(new Rectangle(0,0, mainBodyWidth, mainBodyHeight)));
+                e.getComponent(CollisionBoundComponent.class).hitBoxes.add(new HitBox(new Rectangle(e.getComponent(PositionComponent.class).getX(),e.getComponent(PositionComponent.class).getY(), mainBodyWidth, mainBodyHeight)));
                 e.edit().remove(ConditionalActionComponent.class);
                 e.edit().add(new ActionAfterTimeComponent(new SummonArms(), 10f));
             }

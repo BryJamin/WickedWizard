@@ -6,7 +6,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
@@ -16,7 +15,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BoomyMap;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -25,7 +24,6 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -84,7 +82,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BoomyMap(assetManager, arenaSkin).boomyArena().createArena(new MapCoords(1,0)),
+                new BossRoomBoomyMap(assetManager, arenaSkin).boomyArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 

@@ -21,7 +21,7 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
  * Created by Home on 27/05/2017.
  */
 
-public class GiantKugelRoom extends AbstractFactory {
+public class BossRoomGiantKugelRoom extends AbstractFactory {
 
     ArenaShellFactory arenaShellFactory;
     ChestFactory chestFactory;
@@ -30,7 +30,7 @@ public class GiantKugelRoom extends AbstractFactory {
     ArenaSkin arenaSkin;
 
 
-    public GiantKugelRoom(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public BossRoomGiantKugelRoom(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
 
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);

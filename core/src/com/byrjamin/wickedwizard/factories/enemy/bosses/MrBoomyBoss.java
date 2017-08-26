@@ -112,7 +112,6 @@ public class MrBoomyBoss extends EnemyFactory {
 
 
         PhaseComponent pc = new PhaseComponent();
-        pc.addPhase(groundBomberPhaseTime, groundBomberPhase());
         pc.addPhase(airBomberPhaseTime , jumpingAirBomberPhase()); //, moveToPhaseTimingAndPositionCondition(airBomberPhaseTime));
         pc.addPhase(new Pair<Task, Condition>(dropAndExplode(), new Condition() {
             @Override
@@ -120,6 +119,7 @@ public class MrBoomyBoss extends EnemyFactory {
                 return entity.getComponent(CollisionBoundComponent.class).getRecentCollisions().contains(Collider.Collision.BOTTOM, true);
             }
         }));
+        pc.addPhase(groundBomberPhaseTime, groundBomberPhase());
         pc.addPhase(groundBomberPhaseTime, groundBomberPhase());
 
         bag.add(pc);
