@@ -115,28 +115,8 @@ public class RoomTransitionSystem extends EntitySystem {
             }
         }
 
-        for(Bag<Component> b : currentMap.getCurrentArena().getBagOfEntities()){
-            Entity e = world.createEntity();
-            for(Component c : b){
-                e.edit().add(c);
-            }
 
-            if(dm.has(e)){
-                placePlayerAfterTransition(dm.get(e),
-                        cbm.get(e),
-                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class),
-                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class),
-                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class),
-                        doorEntryPercentage);
-            }
-
-            if(onRoomLoadMapper.has(e)){
-                e.getComponent(OnRoomLoadActionComponent.class).action.performAction(world, e);
-            }
-
-
-
-        }
+        unpackRoom(currentMap.getCurrentArena());
 
         world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = false;
         world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class).reset();
@@ -286,10 +266,25 @@ public class RoomTransitionSystem extends EntitySystem {
     public void unpackRoom(Arena arena) {
 
         for(Bag<Component> b : arena.getBagOfEntities()) {
+
             Entity e = world.createEntity();
-            for (Component c : b) {
+            for(Component c : b){
                 e.edit().add(c);
             }
+
+            if(dm.has(e)){
+                placePlayerAfterTransition(dm.get(e),
+                        cbm.get(e),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class),
+                        doorEntryPercentage);
+            }
+
+            if(onRoomLoadMapper.has(e)){
+                e.getComponent(OnRoomLoadActionComponent.class).action.performAction(world, e);
+            }
+
 
         }
 

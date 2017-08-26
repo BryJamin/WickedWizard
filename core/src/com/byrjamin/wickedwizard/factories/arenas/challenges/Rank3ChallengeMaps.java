@@ -41,7 +41,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 80f;
-    private static final float TIME_TRIAL_SPEEDRUN_TIMER = 999f;
+    public static final float TIME_TRIAL_SPEEDRUN_TIMER = 27.5f;
 
 
     private ArenaShellFactory arenaShellFactory;
@@ -231,8 +231,6 @@ public class Rank3ChallengeMaps extends AbstractFactory {
                 timeTrailRoom2(new MapCoords(5, 0)),
                 trailRoom3(new MapCoords(6,0)),
                 trailRoom4(new MapCoords(6, 3)),
-                //trialRoom1(new MapCoords(2, 3)),
-                //rank2TimeTrailRoom4(new MapCoords(6, 3)),
                 new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(7, 3))
         );
 

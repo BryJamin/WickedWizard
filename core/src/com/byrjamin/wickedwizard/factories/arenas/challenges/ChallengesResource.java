@@ -103,13 +103,13 @@ public class ChallengesResource {
         public static String bossRush = "800ba671-257f-48dc-b169-4d6ebd7cdc90";
         public static String perfectBossRush = "3db46e92-2e41-436b-8a7e-039726a97845\n";
 
-        public static Array<String> rank4ChallengesArray = new Array<String>();
+        public static Array<String> rank5ChallengesArray = new Array<String>();
 
         static {
-            rank4ChallengesArray.add(rank5UltimateTimeTrail);
-            rank4ChallengesArray.add(rank5NotUltimateArena);
-            rank4ChallengesArray.add(bossRush);
-            rank4ChallengesArray.add(perfectBossRush);
+            rank5ChallengesArray.add(rank5UltimateTimeTrail);
+            rank5ChallengesArray.add(rank5NotUltimateArena);
+            rank5ChallengesArray.add(bossRush);
+            rank5ChallengesArray.add(perfectBossRush);
         }
 
     }

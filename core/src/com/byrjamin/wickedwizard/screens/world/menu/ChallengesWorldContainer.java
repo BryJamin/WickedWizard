@@ -16,7 +16,6 @@ import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
@@ -32,7 +31,6 @@ import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
-import com.byrjamin.wickedwizard.screens.world.AreYouSureWorld;
 import com.byrjamin.wickedwizard.screens.world.WorldContainer;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -158,6 +156,8 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
                 ChallengesResource.LEVEL_3_COMPLETE);
         count = createChallengeButtons(world, count, ChallengesResource.Rank4Challenges.rank4ChallengesArray,
                 ChallengesResource.LEVEL_4_COMPLETE);
+        count = createChallengeButtons(world, count, ChallengesResource.Rank5Challenges.rank5ChallengesArray,
+                ChallengesResource.LEVEL_5_COMPLETE);
 
     }
 

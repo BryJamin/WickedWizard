@@ -79,6 +79,7 @@ public class ChallengeMaps extends AbstractFactory {
         this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
         this.rank3ChallengeMaps = new Rank3ChallengeMaps(assetManager, random);
         this.rank4ChallengeMaps = new Rank4ChallengeMaps(assetManager, random);
+        this.rank5ChallengeMaps = new Rank5ChallengeMaps(assetManager, random);
 
         this.random = random;
         setUpMap();

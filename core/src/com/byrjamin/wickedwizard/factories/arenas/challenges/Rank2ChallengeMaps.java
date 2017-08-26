@@ -43,7 +43,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 50f;
-    private static final float TIME_TRIAL_SPEEDRUN_TIMER = 33f;
+    public static final float TIME_TRIAL_SPEEDRUN_TIMER = 33f;
 
 
     private ArenaShellFactory arenaShellFactory;

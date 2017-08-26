@@ -42,7 +42,7 @@ import java.util.Random;
 public class Rank1ChallengeMaps extends AbstractFactory{
 
     private static final float ARENA_SPEEDRUN_TIMER = 35f;
-    private static final float TUTORIAL_SPEEDRUN_TIMER = 20f;
+    public static final float TUTORIAL_SPEEDRUN_TIMER = 20f;
 
 
     private ArenaShellFactory arenaShellFactory;

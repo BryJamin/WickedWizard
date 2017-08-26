@@ -40,8 +40,8 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
 public class PortalFactory extends AbstractFactory {
 
 
-    private static final float mapPortalSize = Measure.units(10f);
-    private static final float levelPortalSize = Measure.units(20f);
+    public static final float mapPortalSize = Measure.units(10f);
+    public static final float levelPortalSize = Measure.units(20f);
 
 
     public PortalFactory(AssetManager assetManager) {

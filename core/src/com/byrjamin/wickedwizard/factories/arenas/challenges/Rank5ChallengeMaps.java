@@ -1,15 +1,19 @@
 package com.byrjamin.wickedwizard.factories.arenas.challenges;
 
+import com.artemis.BaseSystem;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
+import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
@@ -22,6 +26,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
+import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
@@ -42,7 +47,11 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 45f;
-    private static final float TIME_TRIAL_SPEEDRUN_TIMER = 52.5f;
+    private static final float TIME_TRIAL_SPEEDRUN_TIMER =
+            Rank4ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
+                    Rank3ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
+                    Rank2ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
+                    Rank1ChallengeMaps.TUTORIAL_SPEEDRUN_TIMER + 5f;
 
 
     private ArenaShellFactory arenaShellFactory;
@@ -55,6 +64,11 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     private Random random;
 
+    private Rank1ChallengeMaps rank1ChallengeMaps;
+    private Rank2ChallengeMaps rank2ChallengeMaps;
+    private Rank3ChallengeMaps rank3ChallengeMaps;
+    private Rank4ChallengeMaps rank4ChallengeMaps;
+
 
     public Rank5ChallengeMaps(AssetManager assetManager, Random random) {
         super(assetManager);
@@ -64,12 +78,17 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.beamTurretFactory = new BeamTurretFactory(assetManager, arenaSkin);
         this.random = random;
+        this.rank1ChallengeMaps = new Rank1ChallengeMaps(assetManager, random);
+        this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
+        this.rank3ChallengeMaps = new Rank3ChallengeMaps(assetManager, random);
+        this.rank4ChallengeMaps = new Rank4ChallengeMaps(assetManager, random);
+
     }
 
 
     public GameCreator ultimateTimeTrail(String id) {
 
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -77,32 +96,116 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
+                world.getSystem(LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();
             }
         }));
 
-        Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2, 0));
-        ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BossRoomWraithCowl(assetManager, arenaSkin).wraithcowlArena().createArena(new MapCoords(1, 0)),
-                endArena
+        Arena arena = rank1ChallengeMaps.timeTrailRoomOneJumpTutorial(new MapCoords(1, 0));
+        arena.addEntity(new OnLoadFactory().challengeTimer(TIME_TRIAL_SPEEDRUN_TIMER));
+
+        ArenaMap firstMap = new ArenaMap(startingArena,
+                arena,
+                rank1ChallengeMaps.timeTrailRoomTwoPlatformTutorial(new MapCoords(5,0)),
+                rank1ChallengeMaps.timeTrailRoomThreeGrappleTutorial(new MapCoords(6,0)),
+                rank1ChallengeMaps.timeTrialRoomFourEnemyTutorial(new MapCoords(6,3)),
+                nextLevelRoom(new MapCoords(7,3), Level.ONE.getArenaSkin())
         );
 
-        JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
-                .startingMap(arenaMap);
+        JigsawGeneratorConfig firstConfig = new JigsawGeneratorConfig(assetManager, random)
+                .startingMap(firstMap);
 
 
 
 
+        ArenaMap secondMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.TWO.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+                rank2ChallengeMaps.rank2TimeTrailRoom1(new MapCoords(1, 0)),
+                rank2ChallengeMaps.rank2TimeTrailRoom2(new MapCoords(1,3)),
+                rank2ChallengeMaps.rank2TimeTrailRoom3(new MapCoords(2,3)),
+                rank2ChallengeMaps.rank2TimeTrailRoom4(new MapCoords(6,3)),
+                nextLevelRoom(new MapCoords(7, 3), Level.TWO.getArenaSkin())
+        );
 
-        
+
+        JigsawGeneratorConfig secondConfig = new JigsawGeneratorConfig(assetManager, random)
+                .startingMap(secondMap);
+
+
+        ArenaMap thirdMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.THREE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+                rank3ChallengeMaps.trialRoom1(new MapCoords(1, 0)),
+                rank3ChallengeMaps.timeTrailRoom2(new MapCoords(5,0)),
+                rank3ChallengeMaps.trailRoom3(new MapCoords(6,0)),
+                rank3ChallengeMaps.trailRoom4(new MapCoords(6,3)),
+                nextLevelRoom(new MapCoords(7, 3), Level.THREE.getArenaSkin())
+        );
+
+
+        JigsawGeneratorConfig thirdConfig = new JigsawGeneratorConfig(assetManager, random)
+                .startingMap(thirdMap);
+
+
+        ArenaMap fourthMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+                rank4ChallengeMaps.timeTrailSwitchLaserRoom(new MapCoords(1, 0)),
+                rank4ChallengeMaps.trailRoomLargeRoomAndEnemies(new MapCoords(2,0)),
+                rank4ChallengeMaps.trialRoomLaserGauntlet(new MapCoords(3, -1)),
+                rank4ChallengeMaps.trailRoomPentaSentry(new MapCoords(7, 0)),
+                nextLevelRoom(new MapCoords(6, 0), Level.FOUR.getArenaSkin())
+        );
+
+
+        JigsawGeneratorConfig fourthConfig = new JigsawGeneratorConfig(assetManager, random)
+                .startingMap(fourthMap);
+
+
+        ArenaMap fifthMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+                new ReuseableRooms(assetManager, Level.FIVE.getArenaSkin()).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(1, 0))
+        );
+
+
+        JigsawGeneratorConfig fifthConfig = new JigsawGeneratorConfig(assetManager, random)
+                .startingMap(fifthMap);
 
 
 
         GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
+        gameCreator.add(new GameCreator.LevelCreator(firstConfig, false));
+        gameCreator.add(new GameCreator.LevelCreator(secondConfig, false));
+        gameCreator.add(new GameCreator.LevelCreator(thirdConfig, false));
+        gameCreator.add(new GameCreator.LevelCreator(fourthConfig, false));
+        gameCreator.add(new GameCreator.LevelCreator(fifthConfig, false));
 
         return gameCreator;
 
+
+    }
+
+
+    private Arena nextLevelRoom(MapCoords mapCoords, ArenaSkin arenaSkin){
+
+        Arena exitArena = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords);
+
+        exitArena.addEntity(new PortalFactory(assetManager).portal(exitArena.getWidth() / 2, Measure.units(32.5f), PortalFactory.levelPortalSize, PortalFactory.levelPortalSize, new Task() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(MapTeleportationSystem.class).createNewLevel();
+                        for(BaseSystem s: world.getSystems()){
+                            s.setEnabled(true);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+            }
+        }));
+
+        return exitArena;
 
     }
 

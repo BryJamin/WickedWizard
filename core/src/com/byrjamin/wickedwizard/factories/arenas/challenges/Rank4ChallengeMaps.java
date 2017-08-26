@@ -42,7 +42,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 45f;
-    private static final float TIME_TRIAL_SPEEDRUN_TIMER = 52.5f;
+    public static final float TIME_TRIAL_SPEEDRUN_TIMER = 52.5f;
 
 
     private ArenaShellFactory arenaShellFactory;
@@ -312,9 +312,9 @@ public class Rank4ChallengeMaps extends AbstractFactory {
                 new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(4f))
                         .speedInDegrees(2f)
-                        .numberOfOrbitals(20)
+                        .numberOfOrbitals(15)
                         .chargeTime(0.5f)
-                        .angles(70, 115, 160)
+                        .angles(0, 45, 90)
                         .build()));
 
 
@@ -372,8 +372,8 @@ public class Rank4ChallengeMaps extends AbstractFactory {
                         .build()));
 
 
-        arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(35f)));
-        arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(100f)));
+        arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedMultiSentry(arena.getWidth() / 2, Measure.units(35f)));
+        arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(100f)));
 
         return arena;
 
