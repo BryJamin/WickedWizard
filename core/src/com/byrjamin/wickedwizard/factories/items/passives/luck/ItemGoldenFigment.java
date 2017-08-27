@@ -17,7 +17,8 @@ public class ItemGoldenFigment implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).luck += PresetStatIncrease.massive;
+        player.getComponent(StatComponent.class).luck += PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).range += PresetStatIncrease.minor;
         return true;
     }
 

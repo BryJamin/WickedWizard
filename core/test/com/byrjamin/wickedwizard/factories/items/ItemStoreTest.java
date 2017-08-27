@@ -86,12 +86,12 @@ public class ItemStoreTest extends GameTest {
 
         ItemStore itemStore = new ItemStore(new Random());
 
-        for(ItemStore.ItemOptions i : itemStore.getItemOptionsArray()) {
-            Assert.assertTrue(i.item.getValues().region.getLeft()
+        for(Item item : ItemResource.allItems) {
+            Assert.assertTrue(item.getValues().region.getLeft()
                             + " index "
-                            + i.item.getValues().region.getRight()
+                            + item.getValues().region.getRight()
                             + " is not inside of the sprite atlas",
-                    atlas.findRegion(i.item.getValues().region.getLeft()) != null);
+                    atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()) != null);
         }
 
     }

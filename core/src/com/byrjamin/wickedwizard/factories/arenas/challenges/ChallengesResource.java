@@ -88,7 +88,7 @@ public class ChallengesResource {
 
         static {
             rank4ChallengesArray.add(perfectWraith);
-            rank4ChallengesArray.add(perfectAmalgama);
+            rank4ChallengesArray.add(perfectAmalgama); //Eyes of Amalgama
             rank4ChallengesArray.add(rank4Arena); //Mini Trebuchet
             rank4ChallengesArray.add(rank4TimeTrail); //Quickness
         }

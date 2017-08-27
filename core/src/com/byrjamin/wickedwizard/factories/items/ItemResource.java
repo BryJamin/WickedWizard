@@ -38,6 +38,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.health.ItemIronFragmen
 import com.byrjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
 import com.byrjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
 import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemEyesOfAmalgama;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
@@ -270,12 +271,12 @@ public class ItemResource {
         public static ItemValues vitaminC = new ItemValues.ItemValueBuilder("795d68be-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/VitaminC")
                 .name("Vitamin C")
-                .description("You no longer have Scurvy")
+                .description("Cures Scurvy")
                 .build();
 
 
         public static ItemValues wandasScarf = new ItemValues.ItemValueBuilder("4f4436bc-088d-49c0-b39d-2c5ab9a0e3fb")
-                .region("item/WandasScarf", 2)
+                .region("item/WandasScarf")
                 .name("Wanda's Scarf")
                 .description("She's like you, you know.")
                 .challengeId(ChallengesResource.Rank2Challenges.perfectWanda)
@@ -319,7 +320,7 @@ public class ItemResource {
         public static ItemValues miniTrebuchet = new ItemValues.ItemValueBuilder("9863aa8e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/MiniTrebuchet")
                 .name("Mini Trebuchet")
-                .description("Damage++ Range++")
+                .description("The drawing that could")
                 .challengeId(ChallengesResource.Rank4Challenges.rank4Arena)
                 .build();
 
@@ -448,11 +449,20 @@ public class ItemResource {
     public static class Luck {
 
         public static Item[] luckItems = {
+                new ItemEyesOfAmalgama(),
                 new ItemForgottenFigment(),
                 new ItemGoldenFigment(),
                 new ItemJadeFigment(),
                 new ItemThreeDimensionalGold(),
                 new ItemThreeLeafClover()};
+
+        public static ItemValues eyesOfAmalgama = new ItemValues.ItemValueBuilder("de5c3cf1-d510-4cb1-b4ce-63c99ab0832d")
+                .challengeId(ChallengesResource.Rank4Challenges.perfectAmalgama)
+                .region("item/EyesOfAmalgama")
+                .name("Eyes Of Amalgama")
+                .description("Strangely Pretty")
+                .build();
+
 
         public static ItemValues forgottenFigment = new ItemValues.ItemValueBuilder("6b37cd6e-81d9-11e7-bb31-be2e44b06b34")
                 .challengeId(ChallengesResource.Rank2Challenges.arenaTrail)
