@@ -19,6 +19,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.byrjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.BlockEnemyBulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.GrappleableComponent;
@@ -54,6 +55,7 @@ public class CollisionSystem extends EntityProcessingSystem {
     private Aspect.Builder playerWalls;
     private Aspect.Builder platforms;
     private Aspect.Builder enemyOnlyWalls;
+    private Aspect.Builder enemyBulletBlockWalls;
 
     @SuppressWarnings("unchecked")
     public  CollisionSystem() {
@@ -61,6 +63,8 @@ public class CollisionSystem extends EntityProcessingSystem {
         wall = Aspect.all(WallComponent.class).exclude(HealthComponent.class);
         destructibleWalls = Aspect.all(WallComponent.class, HealthComponent.class);
         enemyOnlyWalls = Aspect.all(CollisionBoundComponent.class, EnemyOnlyWallComponent.class);
+
+        enemyBulletBlockWalls = Aspect.all(CollisionBoundComponent.class, BlockEnemyBulletComponent.class);
         playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(GrappleableComponent.class);
         platforms = Aspect.all(PlatformComponent.class, CollisionBoundComponent.class);
     }
@@ -99,6 +103,11 @@ public class CollisionSystem extends EntityProcessingSystem {
 
         if(enemym.has(e)) {
             addNearByCollidableObjects(cbc.bound, collidableobjects, enemyOnlyWalls);
+
+            if(bulletm.has(e)){
+                addNearByCollidableObjects(cbc.bound, collidableobjects, enemyBulletBlockWalls);
+            }
+
         }
 
 

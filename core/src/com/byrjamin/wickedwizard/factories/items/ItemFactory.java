@@ -47,6 +47,7 @@ import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
@@ -90,7 +91,7 @@ public class ItemFactory extends AbstractFactory {
         return bag;
     }
 
-    public ComponentBag createIntangibleFollowingPickUpBag(float x, float y, PickUp pickUp){
+    public ComponentBag createMoneyPickUpBag(float x, float y, PickUp pickUp){
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
@@ -163,7 +164,10 @@ public class ItemFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
 
         bag.add(new PositionComponent());
-        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()), Measure.units(5), Measure.units(5), TextureRegionComponent.FOREGROUND_LAYER_FAR));
+        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
+                Measure.units(5), Measure.units(5),
+                TextureRegionComponent.FOREGROUND_LAYER_FAR,
+                item.getValues().textureColor));
         bag.add(followPositionComponent);
         ChildComponent c = new ChildComponent(pc);
         bag.add(c);
@@ -199,7 +203,7 @@ public class ItemFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
 
                 Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
-                item = new ItemCrownOfBiggaBlobba();
+                item = new ItemMiniSpinnyThingie();
                 e.getComponent(AltarComponent.class).pickUp = item;
 
                 BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(item, e.getComponent(ParentComponent.class),
@@ -220,11 +224,11 @@ public class ItemFactory extends AbstractFactory {
 
     public Array<ComponentBag> createShopItemBag(float x, float y, int money){
 
-        float width = Measure.units(10);
-        float height = Measure.units(10);
+        final float width = Measure.units(10);
+        final float height = Measure.units(10);
 
-        float textureWidth = Measure.units(5f);
-        float textureHeight = Measure.units(5f);
+        final float textureWidth = Measure.units(5f);
+        final float textureHeight = Measure.units(5f);
 
         float goldWidth = Measure.units(2.5f);
         float goldHeight = Measure.units(2.5f);
@@ -239,12 +243,6 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
-                (width / 2) - (textureWidth / 2),
-                (height / 2) - (textureHeight / 2),
-                textureWidth,
-                textureHeight,
-                TextureRegionComponent.FOREGROUND_LAYER_FAR));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent());
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
@@ -257,7 +255,17 @@ public class ItemFactory extends AbstractFactory {
 
                 Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
                 e.getComponent(AltarComponent.class).pickUp = item;
-                e.getComponent(TextureRegionComponent.class).region = atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight());
+
+
+
+
+                e.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
+                        (width / 2) - (textureWidth / 2),
+                        (height / 2) - (textureHeight / 2),
+                        textureWidth,
+                        textureHeight,
+                        TextureRegionComponent.FOREGROUND_LAYER_FAR,
+                        item.getValues().textureColor));
 
             }
         }));
@@ -310,7 +318,7 @@ public class ItemFactory extends AbstractFactory {
                 (height / 2) - (textureHeight / 2),
                 textureWidth,
                 textureHeight,
-                TextureRegionComponent.FOREGROUND_LAYER_FAR));
+                TextureRegionComponent.FOREGROUND_LAYER_FAR, pickUp.getValues().textureColor));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(pickUp));
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));

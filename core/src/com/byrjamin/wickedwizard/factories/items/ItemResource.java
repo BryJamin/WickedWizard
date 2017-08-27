@@ -1,25 +1,32 @@
 package com.byrjamin.wickedwizard.factories.items;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.byrjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEnergy;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemLensLessMonocle;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemAngrySlimeCoat;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemWandasScarf;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemLuckyShot;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapult;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemSmoulderingEmber;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemStability;
+import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemStatueOfAjir;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemStatueOfAdoj;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemMinorAccelerant;
@@ -34,6 +41,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemThreeDimensionalGold;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemClearSight;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemFireSight;
@@ -78,16 +86,7 @@ public class ItemResource {
     public static Array<Item> getAllItems() {
 
         Array<Item> all = new Array<Item>();
-        all.addAll(Accuracy.accuracyItems);
-        all.addAll(Armor.armorItems);
-        all.addAll(Damage.damageItems);
-        all.addAll(FireRate.fireRateItems);
-        all.addAll(Health.healthItems);
-        all.addAll(Luck.luckItems);
-        all.addAll(Range.rangeItems);
-        all.addAll(ShotSpeed.shotSpeedItems);
-        all.addAll(Speed.speedItems);
-
+        all.addAll(allItems);
         return all;
     }
 
@@ -100,6 +99,7 @@ public class ItemResource {
 
         public final String id;
         public final Pair<String, Integer> region;
+        public final Color textureColor;
         public final String name;
         public final String description;
         public final Array<ItemType> itemTypes;
@@ -113,6 +113,7 @@ public class ItemResource {
 
             //Optional
             private Pair<String, Integer> region = new Pair<String,Integer>("item/SarcasticLion", 0);
+            private Color textureColor = new Color(Color.WHITE);
             private String name = "Default Item";
             private String description = "You forgot to set this value";
             private Array<ItemType> itemTypes = new Array<ItemType>();
@@ -129,6 +130,10 @@ public class ItemResource {
 
             public ItemValueBuilder region(String s, int index)
             { region = new Pair<String, Integer>(s, index); return this; }
+
+
+            public ItemValueBuilder textureColor(Color val)
+            { textureColor = val; return this; }
 
             public ItemValueBuilder name(String val)
             { name = val; return this; }
@@ -156,6 +161,7 @@ public class ItemResource {
         public ItemValues(ItemValueBuilder ivb){
             this.id = ivb.id;
             this.region = ivb.region;
+            this.textureColor = ivb.textureColor;
             this.name = ivb.name;
             this.description = ivb.description;
             this.itemTypes = ivb.itemTypes;
@@ -174,9 +180,9 @@ public class ItemResource {
         public static Item[] accuracyItems = {
                 new ItemAce(),
                 new ItemAimAssist(),
+                new ItemBlockOfEnergy(),
                 new ItemCriticalEye(),
                 new ItemKeenEye(),
-                new ItemBlockOfEnergy(),
                 new ItemLensLessMonocle()};
 
 
@@ -223,10 +229,21 @@ public class ItemResource {
     public static class Armor {
 
         public static Item[] armorItems = {
+                new ItemAngrySlimeCoat(),
                 new ItemIronBody(),
                 new ItemSlimeCoat(),
                 new ItemSquareBuckler(),
-                new ItemVitaminC()};
+                new ItemVitaminC(),
+                new ItemWandasScarf()};
+
+        public static ItemValues angrySlimeCoat = new ItemValues.ItemValueBuilder("54d58ef6-3534-49bb-acac-3c484febff2a")
+                .challengeId(ChallengesResource.Rank3Challenges.rank3TimeTrail)
+                .region("enemy/blob", 2)
+                .textureColor(ColorResource.BLOB_RED)
+                .name("Slime Coat")
+                .description("Eww.. but also Grr..")
+                .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
+                .build();
 
 
         public static ItemValues ironBody = new ItemValues.ItemValueBuilder("795d5bee-81d8-11e7-bb31-be2e44b06b34")
@@ -237,6 +254,7 @@ public class ItemResource {
 
         public static ItemValues slimeCoat = new ItemValues.ItemValueBuilder("795d5ea0-81d8-11e7-bb31-be2e44b06b34")
                 .region("enemy/blob", 2)
+                .textureColor(ColorResource.BLOB_GREEN)
                 .name("Slime Coat")
                 .description("Eww..")
                 .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
@@ -256,6 +274,14 @@ public class ItemResource {
                 .build();
 
 
+        public static ItemValues wandasScarf = new ItemValues.ItemValueBuilder("4f4436bc-088d-49c0-b39d-2c5ab9a0e3fb")
+                .region("item/WandasScarf", 2)
+                .name("Wanda's Scarf")
+                .description("She's like you, you know.")
+                .challengeId(ChallengesResource.Rank2Challenges.perfectWanda)
+                .build();
+
+
     }
 
 
@@ -267,7 +293,8 @@ public class ItemResource {
                 new ItemMiniCatapult(),
                 new ItemMiniTrebuchet(),
                 new ItemSmoulderingEmber(),
-                new ItemStability()};
+                new ItemStability(),
+                new ItemStatueOfAjir()};
 
         public static ItemValues anger = new ItemValues.ItemValueBuilder("9863a17e-81d8-11e7-bb31-be2e44b06b34")
                 .itemTypes(ItemType.BOSS)
@@ -309,17 +336,25 @@ public class ItemResource {
                 .build();
 
 
+        public static ItemValues statueOfAjir = new ItemValues.ItemValueBuilder("e45f39f3-4ea3-493d-b985-c02527b4167d")
+                .challengeId(ChallengesResource.Rank3Challenges.perfectAjir)
+                .itemTypes(ItemType.BOSS)
+                .region("item/StatueOfAjir")
+                .name("Statue Of Ajir")
+                .description("Too Lifelike")
+                .build();
+
     }
 
 
     public static class FireRate {
 
         public static Item[] fireRateItems = {
-                new ItemStatueOfAdoj(),
                 new ItemElasticity(),
                 new ItemMinorAccelerant(),
                 new ItemRunedFragment(),
                 new ItemSwiftShot(),
+                new ItemStatueOfAdoj(),
                 new ItemTacticalKnitwear()};
 
         public static ItemValues statueOfAdoj = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
@@ -416,9 +451,11 @@ public class ItemResource {
                 new ItemForgottenFigment(),
                 new ItemGoldenFigment(),
                 new ItemJadeFigment(),
+                new ItemThreeDimensionalGold(),
                 new ItemThreeLeafClover()};
 
         public static ItemValues forgottenFigment = new ItemValues.ItemValueBuilder("6b37cd6e-81d9-11e7-bb31-be2e44b06b34")
+                .challengeId(ChallengesResource.Rank2Challenges.arenaTrail)
                 .region("item/ForgottenScarab")
                 .name("Forgotten Figment")
                 .description("Something feels off...")
@@ -442,6 +479,15 @@ public class ItemResource {
                 .name("Three Leaf Clover")
                 .description("Close Enough... Luck+")
                 .build();
+
+
+        public static ItemValues threeDimensionalGold = new ItemValues.ItemValueBuilder("36712291-d64c-4ea2-bea7-de3e8395d463")
+                .challengeId(ChallengesResource.Rank3Challenges.perfectBoomy)
+                .region("item/ThreeDimensionalGold")
+                .name("3-Dimensional Gold")
+                .description("Woah")
+                .build();
+
 
     }
 
@@ -550,9 +596,10 @@ public class ItemResource {
                 .build();
 
         public static ItemValues shinyFeather = new ItemValues.ItemValueBuilder("ad710358-81d9-11e7-bb31-be2e44b06b34")
+                .challengeId(ChallengesResource.Rank2Challenges.rank2TimeTrail)
                 .region("item/ShinyFeather")
                 .name("Shiny Feather")
-                .description("ShotSpeed++ Speed+")
+                .description("ShotSpeed++ Speed++")
                 .build();
 
 
@@ -566,6 +613,7 @@ public class ItemResource {
 
 
         public static ItemValues quickness = new ItemValues.ItemValueBuilder("ce6f7cce-81d9-11e7-bb31-be2e44b06b34").region("item/Quickness")
+                .challengeId(ChallengesResource.Rank4Challenges.rank4TimeTrail)
                 .name("Quickness")
                 .description("Speed+++")
                 .build();
@@ -578,7 +626,8 @@ public class ItemResource {
 
         public static Item[] companionItems = {
                 new ItemDangerDetector(),
-                new ItemCrownOfBiggaBlobba()
+                new ItemCrownOfBiggaBlobba(),
+                new ItemMiniSpinnyThingie()
         };
 
         public static ItemValues dangerDetector =  new ItemValues.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")
@@ -593,6 +642,14 @@ public class ItemResource {
                 .region("item/companion/CrownOfBiggaBlobba")
                 .name("Crown Of BiggaBlobba")
                 .description("Fits Nicely")
+                .build();
+
+
+        public static ItemValues miniSpinnyThingie =  new ItemValues.ItemValueBuilder("2200b179-33ee-4cd9-9853-515708bceda8")
+                .challengeId(ChallengesResource.Rank2Challenges.perfectKugel)
+                .region(TextureStrings.KUGELDUSCHE_LASER)
+                .name("Mini Spinny Thingie")
+                .description("A thingie that is mini and spinnys")
                 .build();
 
 

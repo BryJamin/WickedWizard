@@ -18,7 +18,7 @@ public class ItemVitaminC implements Item {
     public boolean applyEffect(World world, Entity player) {
 
         player.getComponent(StatComponent.class).armor += 1;
-        player.getComponent(StatComponent.class).speed += PresetStatIncrease.Speed.major;
+        player.getComponent(StatComponent.class).speed += PresetStatIncrease.Speed.minor;
         return true;
     }
 

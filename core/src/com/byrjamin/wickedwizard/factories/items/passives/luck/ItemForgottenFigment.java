@@ -16,7 +16,7 @@ public class ItemForgottenFigment implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).luck -= PresetStatIncrease.major;
+        player.getComponent(StatComponent.class).luck -= PresetStatIncrease.minor;
         player.getComponent(StatComponent.class).damage += PresetStatIncrease.major;
         player.getComponent(StatComponent.class).fireRate += PresetStatIncrease.minor;
         return true;

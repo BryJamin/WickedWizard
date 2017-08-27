@@ -1,28 +1,28 @@
-package com.byrjamin.wickedwizard.factories.items.passives.shotspeed;
+package com.byrjamin.wickedwizard.factories.items.passives.luck;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
-import com.byrjamin.wickedwizard.utils.Pair;
 
 /**
- * Created by Home on 06/08/2017.
+ * Created by BB on 27/08/2017.
  */
 
-public class ItemShinyFeather implements Item {
+public class ItemThreeDimensionalGold implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).shotSpeed += PresetStatIncrease.major;
-        player.getComponent(StatComponent.class).speed += PresetStatIncrease.Speed.major;
+        player.getComponent(CurrencyComponent.class).money = 15;
+        player.getComponent(StatComponent.class).luck += PresetStatIncrease.minor;
         return true;
     }
 
     @Override
     public ItemResource.ItemValues getValues() {
-        return ItemResource.ShotSpeed.shinyFeather;
+        return ItemResource.Luck.threeDimensionalGold;
     }
 }

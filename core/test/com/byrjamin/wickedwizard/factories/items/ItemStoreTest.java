@@ -11,6 +11,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.byrjamin.wickedwizard.GameTest;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
@@ -135,9 +136,11 @@ public class ItemStoreTest extends GameTest {
 
 
 
-        for(ItemStore.ItemOptions i : itemStore.getItemOptionsArray()) {
 
-            if(i.item instanceof Companion){
+
+        for(Item i : ItemResource.allItems) {
+
+            if(i instanceof Companion){
                 companion += 1;
                 total++;
                 continue;
@@ -145,10 +148,13 @@ public class ItemStoreTest extends GameTest {
 
             StatComponent pre = new StatComponent();
 
+            CurrencyComponent currency = new CurrencyComponent();
+
             Entity e = world.createEntity();
             e.edit().add(new StatComponent());
+            e.edit().add(currency);
 
-            i.item.applyEffect(world, e);
+            i.applyEffect(world, e);
 
             StatComponent after = e.getComponent(StatComponent.class);
 

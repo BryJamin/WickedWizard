@@ -167,7 +167,7 @@ public class LuckSystem extends BaseSystem {
     private void spawnMoney(float x, float y){
         Entity e = world.createEntity();
         ItemFactory itemFactory = new ItemFactory(world.getSystem(RenderingSystem.class).getAssetManager());
-        for(Component c : itemFactory.createIntangibleFollowingPickUpBag(x, y, new MoneyPlus1())) e.edit().add(c);
+        for(Component c : itemFactory.createMoneyPickUpBag(x, y, new MoneyPlus1())) e.edit().add(c);
     }
 
 

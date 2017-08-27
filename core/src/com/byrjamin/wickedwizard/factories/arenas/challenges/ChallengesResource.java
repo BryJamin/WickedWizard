@@ -48,10 +48,10 @@ public class ChallengesResource {
         public static Array<String> rank2ChallengesArray = new Array<String>();
 
         static {
-            rank2ChallengesArray.add(perfectWanda);
-            rank2ChallengesArray.add(perfectKugel);
-            rank2ChallengesArray.add(arenaTrail);
-            rank2ChallengesArray.add(rank2TimeTrail);
+            rank2ChallengesArray.add(rank2TimeTrail); //Shiny Feather
+            rank2ChallengesArray.add(arenaTrail); //Forgotten Figment
+            rank2ChallengesArray.add(perfectWanda); //Wanda's Scarf
+            rank2ChallengesArray.add(perfectKugel); //SpinnyThignie
         }
 
     }
@@ -59,18 +59,18 @@ public class ChallengesResource {
 
     public static class Rank3Challenges {
 
-        public static String perfectBoomy = "5971c470-98af-463a-947a-b86db48b0e35";
-        public static String perfectAjir = "536e9555-9beb-40fe-867e-d2999be26d32";
         public static String rank3ArenaTrial = "0da6c488-ffd3-4d4d-aaef-3948bb10a47c";
         public static String rank3TimeTrail = "c382bba7-752b-4f45-a7b6-d2d71600cd6b";
+        public static String perfectBoomy = "5971c470-98af-463a-947a-b86db48b0e35";
+        public static String perfectAjir = "536e9555-9beb-40fe-867e-d2999be26d32";
 
         public static Array<String> rank3ChallengesArray = new Array<String>();
 
         static {
-            rank3ChallengesArray.add(perfectBoomy);
+            rank3ChallengesArray.add(rank3ArenaTrial); //critical Eye
+            rank3ChallengesArray.add(rank3TimeTrail); //Angry Slime Coat
+            rank3ChallengesArray.add(perfectBoomy); //3D Gold
             rank3ChallengesArray.add(perfectAjir);
-            rank3ChallengesArray.add(rank3ArenaTrial);
-            rank3ChallengesArray.add(rank3TimeTrail);
         }
 
     }
@@ -89,8 +89,8 @@ public class ChallengesResource {
         static {
             rank4ChallengesArray.add(perfectWraith);
             rank4ChallengesArray.add(perfectAmalgama);
-            rank4ChallengesArray.add(rank4Arena);
-            rank4ChallengesArray.add(rank4TimeTrail);
+            rank4ChallengesArray.add(rank4Arena); //Mini Trebuchet
+            rank4ChallengesArray.add(rank4TimeTrail); //Quickness
         }
 
     }

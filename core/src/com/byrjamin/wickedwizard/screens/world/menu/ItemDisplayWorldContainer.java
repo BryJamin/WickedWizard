@@ -241,7 +241,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         boolean isItemCollected = DataSave.isItemCollected(item.getValues().id);
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
-                iconWidth, iconHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
+                iconWidth, iconHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE, item.getValues().textureColor);
 
         if(!isItemCollected) {
             trc.color = new Color(Color.BLACK);
