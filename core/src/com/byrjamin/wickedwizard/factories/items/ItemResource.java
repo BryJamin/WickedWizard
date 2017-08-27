@@ -20,7 +20,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapul
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemSmoulderingEmber;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemStability;
-import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemAdojEye;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemStatueOfAdoj;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemMinorAccelerant;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemRunedFragment;
@@ -315,17 +315,18 @@ public class ItemResource {
     public static class FireRate {
 
         public static Item[] fireRateItems = {
-                new ItemAdojEye(),
+                new ItemStatueOfAdoj(),
                 new ItemElasticity(),
                 new ItemMinorAccelerant(),
                 new ItemRunedFragment(),
                 new ItemSwiftShot(),
                 new ItemTacticalKnitwear()};
 
-        public static ItemValues adojsSecondEye = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
-                .region("item/AdojsSecondEye")
-                .name("Adoj's Second Eye")
-                .description("It probably wants it back")
+        public static ItemValues statueOfAdoj = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
+                .challengeId(ChallengesResource.Rank1Challenges.perfectAdoj)
+                .region("item/StatueOfAdoj")
+                .name("Statue Of Adoj")
+                .description("So Lifelike")
                 .build();
 
 

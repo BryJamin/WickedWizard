@@ -31,7 +31,7 @@ public class ChallengesResource {
             rank1ChallengesArray.add(tutorialSpeedRun); //SlimeCoat
             rank1ChallengesArray.add(arenaSpeedRun); //Anger
             rank1ChallengesArray.add(perfectBlobba); //CrownOfBlobba
-            rank1ChallengesArray.add(perfectAdoj); //
+            rank1ChallengesArray.add(perfectAdoj); //StatueOfAdoj
         }
 
     }

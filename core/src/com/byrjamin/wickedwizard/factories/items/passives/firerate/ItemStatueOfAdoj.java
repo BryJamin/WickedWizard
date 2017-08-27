@@ -11,7 +11,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
  * Created by BB on 27/08/2017.
  */
 
-public class ItemAdojEye implements Item {
+public class ItemStatueOfAdoj implements Item {
 
 
     @Override
@@ -23,7 +23,7 @@ public class ItemAdojEye implements Item {
 
     @Override
     public ItemResource.ItemValues getValues() {
-        return ItemResource.FireRate.elasticity;
+        return ItemResource.FireRate.statueOfAdoj;
     }
 
 }
