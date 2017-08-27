@@ -8,7 +8,7 @@ import com.artemis.Component;
 public class FiringAIComponent extends Component{
 
     public enum AI {
-        TARGET_PLAYER, UNTARGETED
+        TARGET_PLAYER, UNTARGETED, TARGET_ENEMY
     }
 
     public AI ai;

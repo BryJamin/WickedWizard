@@ -15,6 +15,7 @@ import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.byrjamin.wickedwizard.factories.PlayerFactory;
+import com.byrjamin.wickedwizard.utils.enums.ItemType;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,7 +37,8 @@ public class ItemStoreTest extends GameTest {
         ItemStore itemStore = new ItemStore(new Random());
         int i = itemStore.getItemOptionsArray().size;
         itemStore.generateItemRoomItem();
-        assertTrue(itemStore.getItemOptionsArray().size == i - 1);
+        assertTrue("Size is " + itemStore.getItemOptionsArray().size + " \n Previous size was " + i, itemStore.getItemOptionsArray().size == i - 1);
+
 
     }
 
@@ -60,17 +62,15 @@ public class ItemStoreTest extends GameTest {
         for(int i = 0; i < max; i++) {
             itemStore.generateItemRoomItem();
         }
-        assertTrue(itemStore.getItemOptionsArray().size == 1);
-        assertTrue(itemStore.getItemOptionsArray().first().availables.contains(ItemStore.Available.BOSS, true));
-        assertTrue(!itemStore.getItemOptionsArray().first().availables.contains(ItemStore.Available.ITEM, true));
-
+       // assertTrue(itemStore.getItemOptionsArray().size == 1);
+        for(ItemStore.ItemOptions io : itemStore.getItemOptionsArray()) {
+            assertTrue(io.item.getValues().itemTypes.contains(ItemType.BOSS, false));
+            assertTrue(!io.item.getValues().itemTypes.contains(ItemType.ITEM, false));
+        }
     }
 
     @Test
     public void testItemRegions() throws Exception {
-
-        System.out.println(Gdx.files.getLocalStoragePath());
-        System.out.println(Gdx.files.getExternalStoragePath());
 
 
         AssetManager assetManager = new AssetManager();
@@ -130,11 +130,18 @@ public class ItemStoreTest extends GameTest {
         int range = 0;
         int shotspeed = 0;
         int accuracy = 0;
+        int companion = 0;
 
 
 
 
         for(ItemStore.ItemOptions i : itemStore.getItemOptionsArray()) {
+
+            if(i.item instanceof Companion){
+                companion += 1;
+                total++;
+                continue;
+            }
 
             StatComponent pre = new StatComponent();
 
@@ -173,6 +180,7 @@ public class ItemStoreTest extends GameTest {
         System.out.println("Total Items increasing shotspeed: " + shotspeed);
         System.out.println("Total Items increasing accuracy: " + accuracy);
         System.out.println("Total Items increasing range: " + range);
+        System.out.println("Total Companions: " + companion);
 
     }
 

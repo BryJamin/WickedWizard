@@ -48,6 +48,7 @@ public class BulletSystem extends EntityProcessingSystem {
             CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
             if(pcbc.bound.overlaps(cbc.bound)){
 
+
                 BlinkOnHitComponent bc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(BlinkOnHitComponent.class);
 
                 if(!bc.isHit) {
@@ -59,10 +60,15 @@ public class BulletSystem extends EntityProcessingSystem {
 
             }
 
+            System.out.println("Inside unfriendly");
+
         } else if(fm.has(e)){
             EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, HealthComponent.class).exclude(PlayerComponent.class).one(EnemyComponent.class,OnlyPlayerBulletsComponent.class) );
             IntBag entityIds = subscription.getEntities();
             bulletScan(e, entityIds);
+
+            System.out.println("Inside friendly");
+
         }
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
@@ -82,7 +88,11 @@ public class BulletSystem extends EntityProcessingSystem {
             int entity = entityIds.get(i);
 
             for(HitBox hb : cbm.get(entity).hitBoxes){
+
                 if(hb.hitbox.overlaps(cbm.get(bullet).bound) && !cbm.get(entity).hitBoxDisabled){
+
+                    System.out.println("Applyin damage");
+
                     HealthComponent hc = hm.get(entity);
 
                     //System.out.println("Damage is " + bulm.get(bullet).damage);

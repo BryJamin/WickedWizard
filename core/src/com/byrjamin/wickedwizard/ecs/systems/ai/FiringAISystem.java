@@ -3,13 +3,22 @@ package com.byrjamin.wickedwizard.ecs.systems.ai;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
+import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
+import com.artemis.utils.IntBag;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.byrjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.factories.items.ItemResource;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 
 /**
@@ -26,11 +35,18 @@ public class FiringAISystem extends EntityProcessingSystem {
 
     ComponentMapper<WeaponComponent> wm;
     ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<FiringAIComponent> fm;
+
+    private Aspect.Builder enemyTargets;
+
+    private Vector2 start = new Vector2();
+    private Vector2 end = new Vector2();
 
     @SuppressWarnings("unchecked")
     public FiringAISystem() {
         super(Aspect.all(PositionComponent.class, WeaponComponent.class, FiringAIComponent.class));
+        enemyTargets = Aspect.all(EnemyComponent.class, HealthComponent.class, CollisionBoundComponent.class);
     }
 
     @Override
@@ -38,14 +54,24 @@ public class FiringAISystem extends EntityProcessingSystem {
 
 
         WeaponComponent wc = wm.get(e);
-        CollisionBoundComponent cbc = cbm.get(e);
+
 
         FiringAIComponent fc = fm.get(e);
 
         wc.timer.update(world.delta);
 
-        float x = cbc.getCenterX() + fc.offsetX;
-        float y = cbc.getCenterY() + fc.offsetY;
+        float x;
+        float y;
+
+        if(cbm.has(e)){
+            CollisionBoundComponent cbc = cbm.get(e);
+            x = cbc.getCenterX() + fc.offsetX;
+            y = cbc.getCenterY() + fc.offsetY;
+        } else {
+            x = pm.get(e).getX();
+            y = pm.get(e).getY();
+        }
+
 
         switch(fc.ai){
             case TARGET_PLAYER:
@@ -58,6 +84,17 @@ public class FiringAISystem extends EntityProcessingSystem {
                 }
 
                 break;
+
+            case TARGET_ENEMY:
+
+                if(wc.timer.isFinishedAndReset() && enemiesExist()){
+
+                    wc.weapon.fire(world, e, x, y, firingAngleToNearestEnemyInRadians(x, y));
+                    if(world.getMapper(AnimationStateComponent.class).has(e))
+                        e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
+                }
+
+
             case UNTARGETED:
 
                 if(wc.timer.isFinishedAndReset()){
@@ -84,6 +121,47 @@ public class FiringAISystem extends EntityProcessingSystem {
         CollisionBoundComponent playercbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         return BulletMath.angleOfTravel(x, y, playercbc.getCenterX(), playercbc.getCenterY());
     }
+
+
+    private boolean enemiesExist(){
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(enemyTargets);
+        IntBag entityIds = subscription.getEntities();
+
+        return entityIds.size() > 0;
+    }
+
+
+
+    private double firingAngleToNearestEnemyInRadians(float x, float y){
+
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(enemyTargets);
+        IntBag entityIds = subscription.getEntities();
+
+        if(entityIds.size() <= 0) return 0;
+
+        start.set(x, y);
+
+        float nearestDistance = start.dst(cbm.get(entityIds.get(0)).getCenterX(), cbm.get(entityIds.get(0)).getCenterY());
+        end.set(cbm.get(entityIds.get(0)).getCenterX(), cbm.get(entityIds.get(0)).getCenterY());
+
+
+        for(int i = 0; i < entityIds.size(); i++){
+
+            CollisionBoundComponent cbc = cbm.get(entityIds.get(i));
+            float distance = start.dst(cbc.getCenterX(), cbc.getCenterY());
+
+
+
+            if(distance < nearestDistance){
+                nearestDistance = distance;
+                end.set(cbc.getCenterX(), cbc.getCenterY());
+
+            }
+        }
+
+        return BulletMath.angleOfTravel(x, y, end.x, end.y);
+    }
+
 
 
 }

@@ -28,10 +28,10 @@ public class ChallengesResource {
         public static Array<String> rank1ChallengesArray = new Array<String>();
 
         static {
-            rank1ChallengesArray.add(tutorialSpeedRun);
-            rank1ChallengesArray.add(arenaSpeedRun);
-            rank1ChallengesArray.add(perfectBlobba);
-            rank1ChallengesArray.add(perfectAdoj);
+            rank1ChallengesArray.add(tutorialSpeedRun); //SlimeCoat
+            rank1ChallengesArray.add(arenaSpeedRun); //Anger
+            rank1ChallengesArray.add(perfectBlobba); //CrownOfBlobba
+            rank1ChallengesArray.add(perfectAdoj); //
         }
 
     }

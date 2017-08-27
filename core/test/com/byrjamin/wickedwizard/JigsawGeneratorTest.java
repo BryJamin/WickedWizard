@@ -60,7 +60,7 @@ public class JigsawGeneratorTest extends GameTest {
 
             //LevelItemSystem lis = new LevelItemSystem(new Random());
 
-            JigsawGenerator jg = new PresetGenerators().level1Configuration(assetManager, new LightGraySkin(atlas), random)
+            JigsawGenerator jg = new PresetGenerators().level1Configuration(assetManager, new LightGraySkin(), random)
                     .noBattleRooms(numberOfRooms).build();
             jg.generate();
             jg.cleanArenas();
@@ -146,7 +146,7 @@ public class JigsawGeneratorTest extends GameTest {
 
             System.out.println("Generating for a room size of " + numberOfRooms);
 
-            JigsawGenerator jg = new PresetGenerators().level2Configuration(assetManager, new LightGraySkin(atlas), random)
+            JigsawGenerator jg = new PresetGenerators().level2Configuration(assetManager, new LightGraySkin(), random)
                     .noBattleRooms(numberOfRooms).build();
             jg.generate();
             jg.cleanArenas();
@@ -218,7 +218,7 @@ public class JigsawGeneratorTest extends GameTest {
             System.out.println("Generating for a room size of " + numberOfRooms);
 
 
-            JigsawGenerator jg = new PresetGenerators().level3Configuration(assetManager, new LightGraySkin(atlas), random)
+            JigsawGenerator jg = new PresetGenerators().level3Configuration(assetManager, new LightGraySkin(), random)
                     .noBattleRooms(numberOfRooms).build();
             jg.generate();
             jg.cleanArenas();
@@ -294,7 +294,7 @@ public class JigsawGeneratorTest extends GameTest {
 
             int numberOfRooms = random.nextInt(95) + 5;
 
-            JigsawGenerator jg = new PresetGenerators().level4Configuration(assetManager, new LightGraySkin(atlas), random)
+            JigsawGenerator jg = new PresetGenerators().level4Configuration(assetManager, new LightGraySkin(), random)
                     .noBattleRooms(numberOfRooms).build();
             jg.setNoBattleRooms(numberOfRooms);
             jg.generate();
@@ -379,7 +379,7 @@ public class JigsawGeneratorTest extends GameTest {
 
 
 
-            JigsawGenerator jg = new PresetGenerators().level5Configuration(assetManager, new LightGraySkin(atlas), random)
+            JigsawGenerator jg = new PresetGenerators().level5Configuration(assetManager, new LightGraySkin(), random)
                     .noBattleRooms(numberOfRooms).build();
             jg.setNoBattleRooms(numberOfRooms);
             jg.generate();

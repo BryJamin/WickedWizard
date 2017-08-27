@@ -75,75 +75,12 @@ public class ItemStore {
     public ItemStore(Random random){
         this.random = random;
 
-        //Accuracy
 
-        for(Item i : ItemResource.Accuracy.accuracyItems){
+        for(Item i : ItemResource.allItems){
             if(DataSave.isDataAvailable(i.getValues().challengeId)) {
                 createItem(i);
             }
         }
-/*        createItem(new ItemAce());
-        createItem(new ItemAimAssist());
-        createItem(new ItemBlockOfEnergy());
-        createItem(new ItemCriticalEye());
-        createItem(new ItemKeenEye());*/
-
-
-        //Armor
-        createItem(new ItemIronBody());
-        createItem(new ItemSlimeCoat());
-        createItem(new ItemSquareBuckler());
-        createItem(new ItemVitaminC());
-
-        //Damage
-        createItem(new ItemAnger());
-        createItem(new ItemLuckyShot());
-        createItem(new ItemMiniCatapult());
-        createItem(new ItemSmoulderingEmber());
-        createItem(new ItemStability());
-
-        //Firerate
-        createItem(new ItemElasticity());
-        createItem(new ItemMinorAccelerant());
-        createItem(new ItemRunedFragment());
-        createItem(new ItemSwiftShot());
-        createItem(new ItemTacticalKnitwear());
-
-        //Health
-        createItem(new ItemHyperTrophy());
-        createItem(new ItemIronFragment());
-        createItem(new ItemSarcasticLion());
-        createItem(new ItemSootheNote());
-        createItem(new Medicine());
-
-        //Luck
-        createItem(new ItemForgottenFigment());
-        createItem(new ItemGoldenFigment());
-        createItem(new ItemJadeFigment());
-        createItem(new ItemThreeLeafClover());
-
-        //Range
-        createItem(new ItemClearSight());
-        createItem(new ItemFireSight());
-        createItem(new ItemLaserScope());
-        createItem(new ItemLostLettersRangeFireRate());
-        createItem(new ItemNeatCube());
-        createItem(new ItemQuadonometry());
-        createItem(new ItemScope());
-
-        //shotspeed
-        createItem(new ItemBoringRock());
-        createItem(new ItemBubble());
-        createItem(new ItemDullFeather());
-        createItem(new ItemLostLettersShotSpeedAccuracy());
-        createItem(new ItemMomentum());
-        createItem(new ItemShinyFeather());
-
-        //Speed
-        createItem(new ItemQuickness());
-
-        //Other
-
     }
 
     private void createItem(Item item){
@@ -168,7 +105,7 @@ public class ItemStore {
         Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
 
         for(ItemOptions io : this.itemOptionsArray){
-            if(Arrays.asList(io.item.getValues().itemTypes).contains(itemType)) itemOptionsArray.add(io);
+            if(io.item.getValues().itemTypes.contains(itemType, true)) itemOptionsArray.add(io);
         }
 
         Item item;

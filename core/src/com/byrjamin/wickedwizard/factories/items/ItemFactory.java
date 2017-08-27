@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.BackPackComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -47,6 +46,7 @@ import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.byrjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
@@ -199,6 +199,7 @@ public class ItemFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
 
                 Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
+                item = new ItemCrownOfBiggaBlobba();
                 e.getComponent(AltarComponent.class).pickUp = item;
 
                 BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(item, e.getComponent(ParentComponent.class),

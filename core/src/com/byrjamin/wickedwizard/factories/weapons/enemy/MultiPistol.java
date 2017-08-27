@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
@@ -71,7 +72,7 @@ public class MultiPistol implements Weapon {
         private float fireRate = 1.5f;
         private float shotSpeed = Measure.units(50);
         private float expireRange = Measure.units(100f);
-        private float damage = 0f;
+        private float damage = 1f;
 
         private boolean gravity = false;
         private boolean expire = false;
@@ -104,7 +105,7 @@ public class MultiPistol implements Weapon {
         { expireRange = val; expire(true); return this; }
 
         public PistolBuilder damage(float val)
-        { expireRange = val; expire(true); return this; }
+        { damage = val; expire(true); return this; }
 
         public PistolBuilder gravity(boolean val)
         { gravity = val; return this; }
@@ -199,6 +200,8 @@ public class MultiPistol implements Weapon {
                         color)) {
                     bullet.edit().add(c);
                 }
+
+                bullet.getComponent(BulletComponent.class).damage = this.damage;
 
                 bullet.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeed, angleOfTravel),
                         BulletMath.velocityY(shotSpeed, angleOfTravel)));

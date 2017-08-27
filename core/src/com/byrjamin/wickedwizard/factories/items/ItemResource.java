@@ -2,11 +2,14 @@ package com.byrjamin.wickedwizard.factories.items;
 
 import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEnergy;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
+import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemLensLessMonocle;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.byrjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
@@ -17,6 +20,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapul
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemSmoulderingEmber;
 import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemStability;
+import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemAdojEye;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemMinorAccelerant;
 import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemRunedFragment;
@@ -40,12 +44,12 @@ import com.byrjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemScope;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
+import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemDisappointment;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeather;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
 import com.byrjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
-import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.utils.Pair;
 import com.byrjamin.wickedwizard.utils.enums.ItemType;
 
@@ -67,7 +71,8 @@ public class ItemResource {
         allItems.addAll(Luck.luckItems);
         allItems.addAll(Range.rangeItems);
         allItems.addAll(ShotSpeed.shotSpeedItems);
-        allItems.addAll(Speed.shotSpeedItems);
+        allItems.addAll(Speed.speedItems);
+        allItems.addAll(Companion.companionItems);
     }
 
     public static Array<Item> getAllItems() {
@@ -81,7 +86,7 @@ public class ItemResource {
         all.addAll(Luck.luckItems);
         all.addAll(Range.rangeItems);
         all.addAll(ShotSpeed.shotSpeedItems);
-        all.addAll(Speed.shotSpeedItems);
+        all.addAll(Speed.speedItems);
 
         return all;
     }
@@ -97,7 +102,7 @@ public class ItemResource {
         public final Pair<String, Integer> region;
         public final String name;
         public final String description;
-        public final ItemType[] itemTypes;
+        public final Array<ItemType> itemTypes;
         public final String challengeId;
 
 
@@ -110,12 +115,13 @@ public class ItemResource {
             private Pair<String, Integer> region = new Pair<String,Integer>("item/SarcasticLion", 0);
             private String name = "Default Item";
             private String description = "You forgot to set this value";
-            private ItemType[] itemTypes = {ItemType.BOSS, ItemType.ITEM, ItemType.SHOP};
+            private Array<ItemType> itemTypes = new Array<ItemType>();
             private String challengeId = ChallengesResource.TUTORIAL_COMPLETE;
 
 
             public ItemValueBuilder(String id){
                 this.id = id;
+                this.itemTypes.addAll(ItemType.BOSS, ItemType.ITEM, ItemType.SHOP);
             }
 
             public ItemValueBuilder region(String s)
@@ -130,8 +136,11 @@ public class ItemResource {
             public ItemValueBuilder description(String val)
             { description = val; return this; }
 
-            public ItemValueBuilder itemTypes(ItemType... val)
-            { itemTypes = val; return this; }
+            public ItemValueBuilder itemTypes(ItemType... val) {
+                itemTypes.clear();
+                itemTypes.addAll(val);
+                return this;
+            }
 
             public ItemValueBuilder challengeId(String val)
             { challengeId = val; return this; }
@@ -167,7 +176,8 @@ public class ItemResource {
                 new ItemAimAssist(),
                 new ItemCriticalEye(),
                 new ItemKeenEye(),
-                new ItemBlockOfEnergy()};
+                new ItemBlockOfEnergy(),
+                new ItemLensLessMonocle()};
 
 
         public static ItemValues Ace = new ItemValues.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
@@ -201,6 +211,12 @@ public class ItemResource {
                 .description("Accuracy+ FireRate+")
                 .build();
 
+        public static ItemValues lensLessMagnifyingGlass = new ItemValues.ItemValueBuilder("b0c88615-51fb-4bd3-ac6d-3b5cc362d8e8")
+                .region("item/LensLessMagnifyingGlass")
+                .name("Lensless Magnifying Glass")
+                .description("This somehow improves Accuracy")
+                .build();
+
     }
 
 
@@ -223,7 +239,7 @@ public class ItemResource {
                 .region("enemy/blob", 2)
                 .name("Slime Coat")
                 .description("Eww..")
-                .challengeId(ChallengesResource.Rank1Challenges.perfectBlobba)
+                .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
                 .build();
 
 
@@ -254,6 +270,8 @@ public class ItemResource {
                 new ItemStability()};
 
         public static ItemValues anger = new ItemValues.ItemValueBuilder("9863a17e-81d8-11e7-bb31-be2e44b06b34")
+                .itemTypes(ItemType.BOSS)
+                .challengeId(ChallengesResource.Rank1Challenges.arenaSpeedRun)
                 .region("item/Anger")
                 .name("Anger")
                 .description("Damage++")
@@ -275,6 +293,7 @@ public class ItemResource {
                 .region("item/MiniTrebuchet")
                 .name("Mini Trebuchet")
                 .description("Damage++ Range++")
+                .challengeId(ChallengesResource.Rank4Challenges.rank4Arena)
                 .build();
 
         public static ItemValues smoulderingEmber = new ItemValues.ItemValueBuilder("9863abce-81d8-11e7-bb31-be2e44b06b34")
@@ -296,11 +315,18 @@ public class ItemResource {
     public static class FireRate {
 
         public static Item[] fireRateItems = {
+                new ItemAdojEye(),
                 new ItemElasticity(),
                 new ItemMinorAccelerant(),
                 new ItemRunedFragment(),
                 new ItemSwiftShot(),
                 new ItemTacticalKnitwear()};
+
+        public static ItemValues adojsSecondEye = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
+                .region("item/AdojsSecondEye")
+                .name("Adoj's Second Eye")
+                .description("It probably wants it back")
+                .build();
 
 
         public static ItemValues elasticity = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
@@ -479,6 +505,7 @@ public class ItemResource {
         public static Item[] shotSpeedItems = {
                 new ItemBoringRock(),
                 new ItemBubble(),
+                new ItemDisappointment(),
                 new ItemDullFeather(),
                 new ItemLostLettersShotSpeedAccuracy(),
                 new ItemMomentum(),
@@ -495,6 +522,12 @@ public class ItemResource {
                 .region("item/Bubble")
                 .name("Bubble")
                 .description("ShotSpeed++")
+                .build();
+
+        public static ItemValues disappointment = new ItemValues.ItemValueBuilder("edbd9f26-1b15-4f8d-a15d-f620066e0154")
+                .region("item/Disappointment")
+                .name("Disappointment")
+                .description("...")
                 .build();
 
         public static ItemValues dullFeather = new ItemValues.ItemValueBuilder("ad70ff34-81d9-11e7-bb31-be2e44b06b34")
@@ -527,7 +560,7 @@ public class ItemResource {
 
     public static class Speed {
 
-        public static Item[] shotSpeedItems = {
+        public static Item[] speedItems = {
                 new ItemQuickness()};
 
 
@@ -535,6 +568,36 @@ public class ItemResource {
                 .name("Quickness")
                 .description("Speed+++")
                 .build();
+
+
+    }
+
+
+    public static class Companion {
+
+        public static Item[] companionItems = {
+                new ItemDangerDetector(),
+                new ItemCrownOfBiggaBlobba()
+        };
+
+        public static ItemValues dangerDetector =  new ItemValues.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")
+                .region("item/companion/DangerDetector")
+                .name("Danger Detector")
+                .description("Detects Danger apparently")
+                .build();
+
+
+        public static ItemValues crownOfBiggaBlobba =  new ItemValues.ItemValueBuilder("8a6a0e43-10fc-4939-880e-5e69b48173f8")
+                .challengeId(ChallengesResource.Rank1Challenges.perfectBlobba)
+                .region("item/companion/CrownOfBiggaBlobba")
+                .name("Crown Of BiggaBlobba")
+                .description("Fits Nicely")
+                .build();
+
+
+
+
+
 
 
     }
