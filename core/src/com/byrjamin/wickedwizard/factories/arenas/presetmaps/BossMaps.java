@@ -90,9 +90,8 @@ public class BossMaps extends AbstractFactory {
 
         btc.offsetX = Measure.units(25f);
 
-        Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords);
+        Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.BOSS);
         bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
-        bossRoom.roomType = Arena.RoomType.BOSS;
         bossRoom.addEntity(portalFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
 
         return bossRoom;
@@ -109,7 +108,7 @@ public class BossMaps extends AbstractFactory {
 
         btc.offsetY = -Measure.units(15f);
 
-        Arena startingArena = arenaShellFactory.createSmallArena(mapCoords, false, true, false, false);
+        Arena startingArena = arenaShellFactory.createSmallArena(mapCoords, Arena.ArenaType.NORMAL, false, true, false, false);
         startingArena.addEntity(portalFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f), btc));
         return startingArena;
     }
@@ -122,7 +121,7 @@ public class BossMaps extends AbstractFactory {
      * @return - Returns the arena
      */
     public Arena bossMapExitArena(MapCoords mapCoords){
-        Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords);
+        Arena exitArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.NORMAL);
         exitArena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
 
 

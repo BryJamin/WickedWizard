@@ -16,7 +16,6 @@ import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.byrjamin.wickedwizard.ecs.components.audio.HitSoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChestComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
@@ -137,7 +136,7 @@ public class ChestFactory extends AbstractFactory {
                 chestDeathAction().performAction(world, e);
 
                 Arena arena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
-                arena.roomType = Arena.RoomType.TRAP;
+                arena.arenaType = Arena.ArenaType.TRAP;
 
             }
         });

@@ -150,7 +150,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,1));
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,1), Arena.ArenaType.NORMAL);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 
@@ -248,7 +248,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
 
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.MANDATORYDOOR,
                         ArenaBuilder.wall.NONE,
@@ -302,7 +302,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
     public Arena timeTrailRoom2(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.MANDATORYDOOR,
                         ArenaBuilder.wall.MANDATORYDOOR,
@@ -314,9 +314,6 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         arena.addEntity(decorFactory.wallBag(leftPosX, Measure.units(20f), Measure.units(20f), Measure.units(35f)));
         arena.addEntity(decorFactory.wallBag(Measure.units(55f), Measure.units(10f), Measure.units(20f), Measure.units(35f)));
-
-        //arena.addEntity(decorFactory.grapplePointBag(Measure.units(50f), Measure.units(50f)));
-        //arena.addEntity(decorFactory.grapplePointBag(Measure.units(15f), Measure.units(50f)));
 
         BombFactory bf = new BombFactory(assetManager);
 
@@ -332,7 +329,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
     public Arena trailRoom3(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -371,7 +368,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
     public Arena trailRoom4(MapCoords defaultCoords){
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
         ComponentBag bag = arenaEnemyPlacementFactory.turretFactory.fixedFlyByDoubleBombSentry(arena.getWidth() / 2, Measure.units(40f));
         arena.addEntity(bag);
         return arena;

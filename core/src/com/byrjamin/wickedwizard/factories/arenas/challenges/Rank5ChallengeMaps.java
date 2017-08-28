@@ -8,7 +8,6 @@ import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Task;
-import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
@@ -16,7 +15,6 @@ import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
@@ -40,8 +38,6 @@ import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell;
-import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
-import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -130,9 +126,9 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
 
-        ArenaMap secondMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.TWO.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+        ArenaMap secondMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.TWO.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
                 rank2ChallengeMaps.rank2TimeTrailRoom1(new MapCoords(1, 0)),
-                rank2ChallengeMaps.rank2TimeTrailRoom2(new MapCoords(1,3)),
+                rank2ChallengeMaps.rank2TimeTrailRoom2GoatWizard(new MapCoords(1,3)),
                 rank2ChallengeMaps.rank2TimeTrailRoom3(new MapCoords(2,3)),
                 rank2ChallengeMaps.rank2TimeTrailRoom4(new MapCoords(6,3)),
                 nextLevelRoom(new MapCoords(7, 3), Level.TWO.getArenaSkin())
@@ -143,7 +139,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 .startingMap(secondMap);
 
 
-        ArenaMap thirdMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.THREE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+        ArenaMap thirdMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.THREE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
                 rank3ChallengeMaps.trialRoom1(new MapCoords(1, 0)),
                 rank3ChallengeMaps.timeTrailRoom2(new MapCoords(5,0)),
                 rank3ChallengeMaps.trailRoom3(new MapCoords(6,0)),
@@ -156,7 +152,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 .startingMap(thirdMap);
 
 
-        ArenaMap fourthMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+        ArenaMap fourthMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
                 rank4ChallengeMaps.timeTrailSwitchLaserRoom(new MapCoords(1, 0)),
                 rank4ChallengeMaps.trailRoomLargeRoomAndEnemies(new MapCoords(2,0)),
                 rank4ChallengeMaps.trialRoomLaserGauntlet(new MapCoords(3, -1)),
@@ -169,7 +165,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 .startingMap(fourthMap);
 
 
-        ArenaMap fifthMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0)),
+        ArenaMap fifthMap = new ArenaMap(new ArenaShellFactory(assetManager, Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
                 new ReuseableRooms(assetManager, Level.FIVE.getArenaSkin()).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(1, 0))
         );
 
@@ -194,7 +190,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     private Arena nextLevelRoom(MapCoords mapCoords, ArenaSkin arenaSkin){
 
-        Arena exitArena = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords);
+        Arena exitArena = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.NORMAL);
 
         exitArena.addEntity(new PortalFactory(assetManager).portal(exitArena.getWidth() / 2, Measure.units(32.5f), PortalFactory.levelPortalSize, PortalFactory.levelPortalSize, new Task() {
             @Override
@@ -259,7 +255,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 new BossRoomWraithCowl(assetManager, Level.FOUR.getArenaSkin()).wraithcowlArena().createArena(new MapCoords(14, 0)),
                 new ItemArenaFactory(assetManager, Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(15, 0)),
 
-                new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(16, 0)),
+                new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(16, 0), Arena.ArenaType.NORMAL),
                 new BossRoomAmalgama(assetManager, Level.FOUR.getArenaSkin()).amalgamaArena().createArena(new MapCoords(16, -1)),
                 new ItemArenaFactory(assetManager, Level.FIVE.getArenaSkin()).createBossRushItemRoom(new MapCoords(22, -1)),
 
@@ -297,7 +293,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         }));
 
 
-        Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0));
+        Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0), Arena.ArenaType.NORMAL);
         iWishYouWell.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
                 Measure.units(10f), arenaSkin.getWallTint(), new ItemIWishYouWell()));
 
@@ -307,30 +303,20 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
                 new BossRoomBiggaBlobba(assetManager, Level.FIVE.getArenaSkin()).biggaBlobbaArena().createArena(new MapCoords(1, 0)),
-                //new ArenaShellFactory(assetManager, Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(2, 0)),
 
                 new BossRoomAdoj(assetManager, Level.FIVE.getArenaSkin()).adojArena().createArena(new MapCoords(2, 0)),
-                //new ItemArenaFactory(assetManager, Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(4, 0)),
 
                 new BossRoomGiantKugelRoom(assetManager, Level.FIVE.getArenaSkin()).giantKugelArena().createArena(new MapCoords(3, 0)),
-                //new ItemArenaFactory(assetManager, Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(7, 0)),
 
                 new BossRoomWanda(assetManager, Level.FIVE.getArenaSkin()).wandaArena().createArena(new MapCoords(5, 0)),
-                //new ItemArenaFactory(assetManager, Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(9, 0)),
 
                 new BossRoomBoomyMap(assetManager, Level.FIVE.getArenaSkin()).boomyArena().createArena(new MapCoords(6, 0)),
-                //new ItemArenaFactory(assetManager, Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(11, 0)),
 
                 new BossRoomAjir(assetManager, Level.FIVE.getArenaSkin()).ajirArena().createArena(new MapCoords(7, 0)),
-                //new ItemArenaFactory(assetManager, Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(13, 0)),
 
                 new BossRoomWraithCowl(assetManager, Level.FIVE.getArenaSkin()).wraithcowlArena().createArena(new MapCoords(8, 0)),
-                //new ItemArenaFactory(assetManager, Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(15, 0)),
 
-                //new ArenaShellFactory(assetManager, Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(16, 0)),
                 new BossRoomAmalgama(assetManager, Level.FIVE.getArenaSkin()).amalgamaArena().createArena(new MapCoords(8, -1)),
-                //new ItemArenaFactory(assetManager, Level.FIVE.getArenaSkin()).createBossRushItemRoom(new MapCoords(22, -1)),
-
 
                 new BossRoomEnd(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new EndGameMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(14, -1))
 
@@ -364,7 +350,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(-1, 0));
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(-1, 0), Arena.ArenaType.NORMAL);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
         arena.addWave(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, Measure.units(45f)));

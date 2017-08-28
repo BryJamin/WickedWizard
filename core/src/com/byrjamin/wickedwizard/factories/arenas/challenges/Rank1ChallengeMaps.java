@@ -47,7 +47,6 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     private ArenaShellFactory arenaShellFactory;
     private DecorFactory decorFactory;
-    private ItemFactory itemFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
     private ArenaSkin arenaSkin = Level.ONE.getArenaSkin();
@@ -59,7 +58,6 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         super(assetManager);
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
-        this.itemFactory = new ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.random = random;
     }
@@ -182,7 +180,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     public Arena timeTrailRoomOneJumpTutorial(MapCoords defaultCoords){
 
-        Arena arena = new ArenaBuilder(assetManager, arenaSkin).addSection(
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL).addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -215,7 +213,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     public Arena timeTrailRoomTwoPlatformTutorial(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -255,7 +253,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     public Arena timeTrailRoomThreeGrappleTutorial(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
@@ -287,8 +285,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
 
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.TRAP)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                 .addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
@@ -323,7 +320,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         }));
 
 
-        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new MapCoords(1,0));
+        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new MapCoords(1,0), Arena.ArenaType.NORMAL);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 

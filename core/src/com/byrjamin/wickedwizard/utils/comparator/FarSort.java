@@ -81,7 +81,7 @@ public class FarSort {
     public Comparator<DoorComponent> RIGHTMOST_DISTANCE_DOORS = new Comparator<DoorComponent>() {
         @Override
         public int compare(DoorComponent dc1, DoorComponent dc2) {
-            return LEFTMOST_DISTANCE.compare(dc1.leaveCoords, dc2.leaveCoords);
+            return RIGHTMOST_DISTANCE.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
 

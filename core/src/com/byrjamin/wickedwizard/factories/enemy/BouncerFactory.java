@@ -46,20 +46,12 @@ public class BouncerFactory extends EnemyFactory {
     private static final float speed = Measure.units(25f);
 
     public ComponentBag smallBouncer(float x, float y){
-
-        x = x - width / 2;
-        y = y - height / 2;
         ComponentBag bag = basicBouncer(x, y, width, height, speed, random.nextBoolean());
-
         return bag;
     }
 
     public ComponentBag smallBouncer(float x, float y, boolean startsLeft){
-
-        x = x - width / 2;
-        y = y - height / 2;
         ComponentBag bag = basicBouncer(x, y, width, height, speed, startsLeft);
-
         return bag;
     }
 

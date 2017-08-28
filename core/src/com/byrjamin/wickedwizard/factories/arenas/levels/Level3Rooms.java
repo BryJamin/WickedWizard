@@ -1,14 +1,9 @@
 package com.byrjamin.wickedwizard.factories.arenas.levels;
 
 import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.BombFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
@@ -23,7 +18,6 @@ import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.byrjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
-import com.byrjamin.wickedwizard.utils.BagToEntity;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -106,10 +100,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, Measure.units(45f)));
-                arena.roomType = Arena.RoomType.TRAP;
                 return arena;
             }
         };
@@ -119,9 +111,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
-                arena.roomType = Arena.RoomType.TRAP;
                 return arena;
             }
         };
@@ -131,9 +122,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnLaserKugel(arena.getWidth() / 2, arena.getHeight() / 2, random.nextBoolean()));
-                arena.roomType = Arena.RoomType.TRAP;
                 return arena;
             }
         };
@@ -144,7 +134,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
@@ -152,7 +142,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.MANDATORYDOOR))
                         .buildArena();
 
-                arena.roomType = Arena.RoomType.TRAP;
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(60f), Measure.units(10f), Measure.units(35f), Measure.units(15f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(20f), Measure.units(35f), Measure.units(5)));
@@ -170,10 +159,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(bf.mine(Measure.units(62.5f), Measure.units(40f), 0));
                 arena.addEntity(bf.mine(Measure.units(70f), Measure.units(40f), 0));
 
-
-                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(15f), Measure.units(40f)));
-
-
                 return arena;
             }
         };
@@ -184,9 +169,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
-                arena.roomType = Arena.RoomType.TRAP;
                 return arena;
             }
         };
@@ -197,7 +181,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -209,8 +193,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
                         .buildArena();
-
-                arena.roomType = Arena.RoomType.TRAP;
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 4, arena.getHeight() / 2));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 4 * 3, arena.getHeight() / 2));
@@ -226,13 +208,10 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-
-                arena.roomType = Arena.RoomType.TRAP;
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(30f), Measure.units(10), Measure.units(5f)));
 
-                //arena.addEntity(decorFactory.platform(Measure.units(5f), Measure.units(30f), Measure.units(15f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(30f), Measure.units(10), Measure.units(5f)));
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 4, Measure.units(45f)));
@@ -250,7 +229,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.NONE,
@@ -280,11 +259,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(100f), Measure.units(10f), Measure.units(5f), Measure.units(35f), 0));
                 arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(195f), Measure.units(10f), Measure.units(5f), Measure.units(35f), 180));
-                //arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(35f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
 
-     /*           arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 4, Measure.units(17.5f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
-*/
+
                 arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, Measure.units(45f)),
                         arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
 
@@ -307,7 +283,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.NONE,
@@ -344,7 +320,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         .chargeTime(0)
                         .angles(0, 180).build()));
 
-                arena.addEntity(chestFactory.chestBag(Measure.units(145f), Measure.units(10f)));
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(145f), Measure.units(10f)));
 
 
                 return arena;
@@ -357,10 +333,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                final Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
 
-
-                arena.roomType = Arena.RoomType.TRAP;
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
@@ -394,7 +368,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
@@ -452,10 +426,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-
-                arena.roomType = Arena.RoomType.TRAP;
-
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 BombFactory bf = new BombFactory(assetManager);
                 arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
@@ -463,8 +434,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, arena.getHeight() / 2));
-                //arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
-
 
                 return arena;
             }
@@ -477,10 +446,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-
-                arena.roomType = Arena.RoomType.TRAP;
-
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
@@ -493,8 +459,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, Measure.units(45f)));
-                //arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
-
 
                 return arena;
             }
@@ -509,7 +473,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
                 arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
                 arena.addWave(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15), Measure.units(50f)),
                         arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, arena.getHeight() / 2),
@@ -528,7 +492,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
 
                 boolean variation = random.nextBoolean();
 
@@ -571,7 +535,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -586,7 +550,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 //LEFT
                 arena.addEntity(decorFactory.wallBag(0, Measure.units(30f), Measure.units(75f), Measure.units(5f),arenaSkin));
-                //arena.addEntity(decorFactory.platform(Measure.units(50f), Measure.units(30f), Measure.units(30f)));
 
                 //RIGHT
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(75f), Measure.units(30f), Measure.units(75f), Measure.units(5f),arenaSkin));
@@ -599,8 +562,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() - Measure.units(20f) , Measure.units(20f)));
 
-                //arena.addEntity(decorFactory.wallBag(Measure.units(80f), Measure.units(30f), Measure.units(40f),Measure.units(5), arenaSkin));
-
                 return arena;
             }
         };
@@ -612,7 +573,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
@@ -620,13 +581,8 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.MANDATORYDOOR))
                         .buildArena();
 
-                //arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(10f), Measure.units(15f), Measure.units(5f), 0));
-                //arena.addEntity(decorFactory.spikeWall(arena.getWidth() - Measure.units(20f), Measure.units(10f), Measure.units(15f), Measure.units(5f), 0));
                 arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 270));
                 arena.addEntity(decorFactory.spikeWall(Measure.units(90f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 90));
-
-
-                arena.roomType = Arena.RoomType.TRAP;
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, Measure.units(45f)));
 
@@ -656,7 +612,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.MANDATORYDOOR,
@@ -667,9 +623,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(10f), Measure.units(20f), Measure.units(35f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(55f), Measure.units(20f), Measure.units(20f), Measure.units(35f)));
-
-                //arena.addEntity(decorFactory.grapplePointBag(Measure.units(50f), Measure.units(50f)));
-                //arena.addEntity(decorFactory.grapplePointBag(Measure.units(15f), Measure.units(50f)));
 
                 BombFactory bf = new BombFactory(assetManager);
 
@@ -696,7 +649,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
 
                 boolean isTri = random.nextBoolean();
                 boolean isTreasureOnLeft = random.nextBoolean();
@@ -725,9 +678,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-
-                arena.roomType = Arena.RoomType.TRAP;
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(45f)));
 
@@ -751,7 +702,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -792,7 +743,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.MANDATORYDOOR,
@@ -824,7 +775,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
@@ -860,7 +811,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
@@ -887,10 +838,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                             }
                         }));
 
-      /*          arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(Measure.units(20f), arena.getHeight() / 2 + Measure.units(2.5f), bool));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(arena.getWidth() - Measure.units(20f) ,arena.getHeight() / 2 + Measure.units(2.5f), !bool));
-*/
-
                 return arena;
             }
         };
@@ -905,7 +852,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.NONE,
@@ -922,8 +869,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
                         .buildArena();
-
-                //TODO is there better way to do this?
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
 
@@ -969,7 +914,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
@@ -1016,9 +961,9 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                arena.roomType = Arena.RoomType.TRAP;
+                arena.arenaType = Arena.ArenaType.TRAP;
 
                 final boolean isLeft = random.nextBoolean();
 
@@ -1044,9 +989,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
-
-                arena.roomType = Arena.RoomType.TRAP;
+                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 arena.addEntity(decorFactory.platform(Measure.units(35f), Measure.units(25f), Measure.units(30f)));
 
@@ -1078,9 +1021,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
-
-                arena.roomType = Arena.RoomType.TRAP;
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, Measure.units(40f)));
 
@@ -1095,13 +1036,15 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
+
+    //TODO maybe make chests more rare here?
     public ArenaCreate room30LargeRoomWithTreasureInTheCenter() {
 
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -1132,8 +1075,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(35), Measure.units(10f), Measure.units(5f), Measure.units(40f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(35f), Measure.units(5f)));
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(50f)));
-
-                //arena.addEntity(decorFactory.grapplePointBag(Measure.units()));
 
 
                 //RightSide
@@ -1171,10 +1112,6 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(40f)));
                 arena.addEntity(decorFactory.spikeWall(Measure.units(30f), Measure.units(0f),arena.getWidth(), Measure.units(5f), 0));
-
-
-                //TODO add if neccessary
-                //arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(75f)));
 
                 return arena;
             }

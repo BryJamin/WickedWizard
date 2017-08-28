@@ -149,7 +149,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,1));
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,1), Arena.ArenaType.NORMAL);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
         arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 270));
         arena.addEntity(decorFactory.spikeWall(Measure.units(90f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 90));
@@ -215,7 +215,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 room1,
-                rank2TimeTrailRoom2(new MapCoords(1, 3)),
+                rank2TimeTrailRoom2GoatWizard(new MapCoords(1, 3)),
                 rank2TimeTrailRoom3(new MapCoords(2, 3)),
                 rank2TimeTrailRoom4(new MapCoords(6, 3)),
                 new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(7, 3))
@@ -234,8 +234,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
     public Arena rank2TimeTrailRoom1(MapCoords defaultCoords){
 
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.NORMAL)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -265,9 +264,9 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         return arena;
     }
 
-    public Arena rank2TimeTrailRoom2(MapCoords defaultCoords){
+    public Arena rank2TimeTrailRoom2GoatWizard(MapCoords defaultCoords){
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
         ComponentBag bag = arenaEnemyPlacementFactory.goatWizardFactory.goatWizard(arena.getWidth() / 2, Measure.units(40f), false, false);
         BagSearch.removeObjectOfTypeClass(VelocityComponent.class, bag);
         arena.addEntity(bag);
@@ -280,8 +279,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
 
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.NORMAL)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -354,7 +352,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
     public Arena rank2TimeTrailRoom4(MapCoords defaultCoords){
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
         arena.addEntity(arenaEnemyPlacementFactory.kugelDuscheFactory.kugelDusche(arena.getWidth() / 2, Measure.units(27.5f), true));
         return arena;
 

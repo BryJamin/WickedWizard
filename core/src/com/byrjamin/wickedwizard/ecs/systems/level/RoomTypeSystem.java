@@ -2,9 +2,6 @@ package com.byrjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
-import com.artemis.Component;
-import com.artemis.Entity;
-import com.artemis.utils.Bag;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -24,7 +21,7 @@ public class RoomTypeSystem extends BaseSystem {
         Arena current = world.getSystem(com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena();
 
 
-        switch(current.roomType){
+        switch(current.arenaType){
             case TRAP:
             case BOSS:
                 if(world.getAspectSubscriptionManager().get(Aspect.one(EnemyComponent.class, ArenaLockComponent.class).exclude(BulletComponent.class)).getEntities().size() <= 0){

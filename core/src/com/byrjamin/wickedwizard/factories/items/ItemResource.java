@@ -8,6 +8,7 @@ import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.byrjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
 import com.byrjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
 import com.byrjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEnergy;
@@ -669,7 +670,8 @@ public class ItemResource {
         public static Item[] companionItems = {
                 new ItemDangerDetector(),
                 new ItemCrownOfBiggaBlobba(),
-                new ItemMiniSpinnyThingie()
+                new ItemMiniSpinnyThingie(),
+                new ItemMyVeryOwnStalker()
         };
 
         public static ItemValues dangerDetector =  new ItemValues.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")

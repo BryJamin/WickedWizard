@@ -22,23 +22,11 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
 
 public class BossRoomBoomyMap extends AbstractFactory{
 
-
-    ArenaShellFactory arenaShellFactory;
-    ChestFactory chestFactory;
-    DecorFactory decorFactory;
-    ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
-    ArenaSkin arenaSkin;
-
+    private ArenaSkin arenaSkin;
 
     public BossRoomBoomyMap(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
-
-        this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
-        this.chestFactory = new ChestFactory(assetManager);
-        //this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
-        this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.arenaSkin = arenaSkin;
-
     }
 
 
@@ -47,13 +35,7 @@ public class BossRoomBoomyMap extends AbstractFactory{
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new Arena(arenaSkin, defaultCoords);
-                arena.roomType = Arena.RoomType.TRAP;
-
-                arena.setWidth(SECTION_WIDTH);
-                arena.setHeight(SECTION_HEIGHT);
-
-                arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,

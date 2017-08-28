@@ -3,25 +3,13 @@ package com.byrjamin.wickedwizard;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.OrderedSet;
-import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.byrjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
-import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
-import com.byrjamin.wickedwizard.factories.arenas.levels.ArenaRepostiory;
-import com.byrjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
 import com.byrjamin.wickedwizard.factories.arenas.levels.PresetGenerators;
-import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
-import com.byrjamin.wickedwizard.utils.MapCoords;
 
 import org.junit.Test;
 
-import java.util.Comparator;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -81,11 +69,11 @@ public class JigsawGeneratorTest extends GameTest {
             boolean bossRoom = false;
 
             for (Arena a : arenas) {
-/*                System.out.println(a.roomType);
+/*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.roomType == Arena.RoomType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -97,7 +85,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean itemRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.ITEM) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -108,7 +96,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean shopRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.SHOP) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -156,7 +144,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean bossRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -168,7 +156,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean itemRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.ITEM) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -179,7 +167,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean shopRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.SHOP) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -229,11 +217,11 @@ public class JigsawGeneratorTest extends GameTest {
             boolean bossRoom = false;
 
             for (Arena a : arenas) {
-/*                System.out.println(a.roomType);
+/*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.roomType == Arena.RoomType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -245,7 +233,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean itemRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.ITEM) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -256,7 +244,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean shopRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.SHOP) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -310,11 +298,11 @@ public class JigsawGeneratorTest extends GameTest {
             boolean bossRoom = false;
 
             for (Arena a : arenas) {
-/*                System.out.println(a.roomType);
+/*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.roomType == Arena.RoomType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -326,7 +314,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean itemRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.ITEM) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -337,7 +325,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean shopRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.SHOP) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -392,11 +380,11 @@ public class JigsawGeneratorTest extends GameTest {
             boolean bossRoom = false;
 
             for (Arena a : arenas) {
-/*                System.out.println(a.roomType);
+/*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.roomType == Arena.RoomType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -408,7 +396,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean itemRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.ITEM) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -419,7 +407,7 @@ public class JigsawGeneratorTest extends GameTest {
             boolean shopRoom = false;
 
             for (Arena a : arenas) {
-                if (a.roomType == Arena.RoomType.SHOP) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }

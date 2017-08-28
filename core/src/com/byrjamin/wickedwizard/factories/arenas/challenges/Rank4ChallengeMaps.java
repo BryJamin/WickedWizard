@@ -152,7 +152,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,-1));
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,-1), Arena.ArenaType.NORMAL);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 
@@ -240,11 +240,11 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
 
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.DOOR, //upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE ,
@@ -254,17 +254,17 @@ public class Rank4ChallengeMaps extends AbstractFactory {
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE ,
                         ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE ,
                         ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
                 .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 4, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE ,
                         ArenaBuilder.wall.FULL,
-                        ArenaBuilder.wall.GRAPPLE,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.GRAPPLE,
                         ArenaBuilder.wall.FULL))
                 .buildArena();
 
@@ -294,7 +294,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
     public Arena trailRoomPentaSentry(MapCoords defaultCoords){
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
         ComponentBag bag = arenaEnemyPlacementFactory.turretFactory.movingPentaSentry(arena.getWidth() / 2, Measure.units(40f), true, true);
         arena.addEntity(bag);
         return arena;
@@ -304,8 +304,8 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
     public Arena timeTrailSwitchLaserRoom(MapCoords defaultCoords){
 
-        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
-        arena.roomType = Arena.RoomType.TRAP;
+        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.TRAP);
+        arena.arenaType = Arena.ArenaType.TRAP;
 
 
         arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f),2,
@@ -330,7 +330,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
     public Arena trailRoomLargeRoomAndEnemies(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -355,10 +355,10 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
         arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(50f)));
         arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(95f)));
-        // arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(110f)));
+
         arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(50f)));
         arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(95f)));
-        //arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(110f)));
+
         arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
 
         arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(90f), Measure.units(50f),4,

@@ -1,7 +1,6 @@
 package com.byrjamin.wickedwizard.factories.arenas.decor;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
@@ -12,8 +11,6 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
-
-import java.util.Random;
 
 /**
  * Created by Home on 18/03/2017.
@@ -36,9 +33,9 @@ public class  ArenaShellFactory extends AbstractFactory {
 
     public final float WALLWIDTH = Measure.units(5);
 
-    public Arena createOmniArenaSquareCenter(MapCoords defaultCoords) {
+    public Arena createOmniArenaSquareCenter(MapCoords defaultCoords, Arena.ArenaType arenaType) {
 
-        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -51,9 +48,9 @@ public class  ArenaShellFactory extends AbstractFactory {
         return arena;
     }
 
-    public Arena createSmallArenaNoGrapple(MapCoords defaultCoords) {
+    public Arena createSmallArenaNoGrapple(MapCoords defaultCoords, Arena.ArenaType arenaType) {
 
-        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -65,9 +62,9 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
 
-    public Arena createSmallArenaNoGrapple(MapCoords defaultCoords, int doorToNotSpawn) {
+    public Arena createSmallArenaNoGrapple(MapCoords defaultCoords, int doorToNotSpawn, Arena.ArenaType arenaType) {
 
-        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         doorToNotSpawn != 0 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                         doorToNotSpawn != 1 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
@@ -77,9 +74,9 @@ public class  ArenaShellFactory extends AbstractFactory {
         return arena;
     }
 
-    public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords) {
+    public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords, Arena.ArenaType arenaType) {
 
-        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -100,11 +97,11 @@ public class  ArenaShellFactory extends AbstractFactory {
         return arena;
     }
 
-    public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords, int doorToNotSpawn) {
+    public Arena createOmniArenaHiddenGrapple(MapCoords defaultCoords, int doorToNotSpawn, Arena.ArenaType arenaType) {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-        arena = new ArenaBuilder(assetManager, arenaSkin)
+        arena = new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         doorToNotSpawn != 0 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                         doorToNotSpawn != 1 ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
@@ -118,11 +115,11 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
 
-    public Arena createSmallArena(MapCoords defaultCoords, boolean leftDoor, boolean rightDoor, boolean ceilingDoor, boolean topDoor) {
+    public Arena createSmallArena(MapCoords defaultCoords, Arena.ArenaType arenaType, boolean leftDoor, boolean rightDoor, boolean ceilingDoor, boolean topDoor) {
 
         Arena arena = new Arena(arenaSkin, defaultCoords);
 
-        arena = new ArenaBuilder(assetManager, arenaSkin)
+        arena = new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         leftDoor ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                         rightDoor ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
@@ -134,7 +131,7 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
 
-    public Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
+    public Arena createWidth2DeadEndArena(MapCoords defaultCoords, boolean deadEndOnLeft, Arena.ArenaType arenaType) {
 
         ArenaBuilder.Section left;
         ArenaBuilder.Section right;
@@ -165,7 +162,7 @@ public class  ArenaShellFactory extends AbstractFactory {
                     ArenaBuilder.wall.FULL);
         }
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(left)
                 .addSection(right).buildArena();
 
@@ -173,7 +170,7 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
 
-    public Arena createEitherNoLeftOrNoRightArena(MapCoords defaultCoords, boolean deadEndOnLeft) {
+    public Arena createEitherNoLeftOrNoRightArena(MapCoords defaultCoords, Arena.ArenaType arenaType, boolean deadEndOnLeft) {
 
         ArenaBuilder.wall left;
         ArenaBuilder.wall right;
@@ -187,7 +184,7 @@ public class  ArenaShellFactory extends AbstractFactory {
             right = ArenaBuilder.wall.FULL;
         }
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         left,
                         right,
@@ -198,31 +195,12 @@ public class  ArenaShellFactory extends AbstractFactory {
     }
 
 
-    public Arena createWidth2WithAllDoorsArena(MapCoords defaultCoords){
 
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addSection(new ArenaBuilder.Section(defaultCoords,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.GRAPPLE,
-                        ArenaBuilder.wall.DOOR))
-                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
-                        ArenaBuilder.wall.NONE,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.GRAPPLE,
-                        ArenaBuilder.wall.DOOR)).buildArena();
-
-        return arena;
-
-    }
+    public Arena createLetterIArena(MapCoords defaultCoords, Arena.ArenaType arenaType) {
 
 
-
-    public Arena createLetterIArena(MapCoords defaultCoords) {
-
-
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, arenaType)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,

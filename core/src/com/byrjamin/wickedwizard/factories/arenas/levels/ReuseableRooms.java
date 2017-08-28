@@ -58,7 +58,7 @@ public class ReuseableRooms extends AbstractFactory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
                 arena.addEntity(new OnLoadFactory().largeMessageBag(level.getName()));
                 arena.addEntity(new OnLoadFactory().startMusicEntity(level.getMusic()));
                 return arena;
@@ -71,7 +71,7 @@ public class ReuseableRooms extends AbstractFactory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
 
                 arena.addEntity(new OnLoadFactory().startMusicEntity(mix));
                 return arena;
@@ -110,7 +110,7 @@ public class ReuseableRooms extends AbstractFactory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.NORMAL);
                 challengeRoadOnLoadActionEntity(arena, challengeId);
 
                 arena.addEntity(new PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 4 * 3, Measure.units(32.5f),
@@ -139,7 +139,7 @@ public class ReuseableRooms extends AbstractFactory {
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords);
+                Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.NORMAL);
                 challengeRoadOnLoadActionEntity(arena, challengeId);
 
                 arena.addEntity(new PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(32.5f),

@@ -19,7 +19,6 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ShopSkin;
 import com.byrjamin.wickedwizard.factories.items.pickups.PickUpArmorUp;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
 import com.byrjamin.wickedwizard.factories.items.pickups.PickUpHalfHealthUp;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -55,8 +54,7 @@ public class ShopFactory extends AbstractFactory {
 
     public Arena createShop(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.SHOP)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.SHOP)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,

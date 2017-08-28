@@ -77,7 +77,7 @@ public class EndGameMap extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin);
+                ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP);
 
                 arenaBuilder.addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.NONE,
@@ -160,7 +160,7 @@ public class EndGameMap extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin);
+                ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP);
 
                 arenaBuilder.addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.NONE,

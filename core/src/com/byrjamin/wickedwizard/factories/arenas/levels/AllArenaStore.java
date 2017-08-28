@@ -36,7 +36,7 @@ public class AllArenaStore extends AbstractFactory {
         this.blank = new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
-                return new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords());
+                return new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords(), Arena.ArenaType.NORMAL);
             }
         };
 

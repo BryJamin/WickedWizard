@@ -22,22 +22,11 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
 
 public class BossRoomWraithCowl extends AbstractFactory{
 
-    private ArenaShellFactory arenaShellFactory;
-    private ChestFactory chestFactory;
-    private DecorFactory decorFactory;
-    private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
     private ArenaSkin arenaSkin;
-
 
     public BossRoomWraithCowl(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
-
-        this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
-        this.chestFactory = new ChestFactory(assetManager);
-        //this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
-        this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.arenaSkin = arenaSkin;
-
     }
 
 
@@ -46,7 +35,7 @@ public class BossRoomWraithCowl extends AbstractFactory{
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,

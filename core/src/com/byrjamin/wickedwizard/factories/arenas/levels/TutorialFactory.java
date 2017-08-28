@@ -111,7 +111,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena groundMovementTutorial(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
@@ -144,7 +144,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena platformTutorial(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -190,7 +190,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena jumpTutorial(MapCoords defaultCoords){
 
-        Arena arena = new ArenaBuilder(assetManager, arenaSkin).addSection(
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL).addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
@@ -315,7 +315,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena enemyTurtorial(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin).addSection(
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP).addSection(
                 new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
@@ -368,7 +368,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena grappleTutorial(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
@@ -409,7 +409,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
     public Arena endTutorial(MapCoords defaultCoords){
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
@@ -443,7 +443,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                                     game.setScreen(new MenuScreen(game));
 
                                 } else {
-                                    
+
                                     DataSave.saveChallengeData(ChallengesResource.TUTORIAL_COMPLETE);
                                     game.getScreen().dispose();
                                     game.setScreen(new PlayScreen(game));

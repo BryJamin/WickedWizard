@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
@@ -186,17 +185,17 @@ public class ArenaGUI {
             if((diffX < range && diffX > -range) &&  (diffY < range && diffY > -range)) {
                 batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
 
-                if (arena.roomType == Arena.RoomType.BOSS) {
+                if (arena.arenaType == Arena.ArenaType.BOSS) {
                     batch.setColor(bossRoomColor);
                     batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
-                if (arena.roomType == Arena.RoomType.ITEM) {
+                if (arena.arenaType == Arena.ArenaType.ITEM) {
                     batch.setColor(itemRoomColor);
                     batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
-                if (arena.roomType == Arena.RoomType.SHOP) {
+                if (arena.arenaType == Arena.ArenaType.SHOP) {
                     batch.setColor(shopRoomColor);
                     batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }

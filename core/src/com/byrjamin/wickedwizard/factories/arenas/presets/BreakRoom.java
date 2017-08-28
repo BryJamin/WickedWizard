@@ -45,7 +45,7 @@ public class BreakRoom extends AbstractFactory {
 
     public Arena createBreakRoom(){
 
-        Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(new MapCoords(),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,

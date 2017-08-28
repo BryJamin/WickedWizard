@@ -2,17 +2,12 @@ package com.byrjamin.wickedwizard.factories.arenas;
 
 import com.artemis.Component;
 import com.artemis.utils.Bag;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
-import com.byrjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-
-import java.util.Stack;
 
 /**
  * Created by Home on 13/03/2017.
@@ -23,11 +18,11 @@ public class Arena {
     private float width;
     private float height;
 
-    public enum RoomType {
+    public enum ArenaType {
         TRAP, BOSS, ITEM, SHOP, NORMAL
     }
 
-    public RoomType roomType;
+    public ArenaType arenaType;
 
     private MapCoords startingCoords;
 
@@ -41,10 +36,10 @@ public class Arena {
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
 
     public Arena(ArenaSkin arenaSkin, MapCoords... mapCoords) {
-        this(RoomType.NORMAL, arenaSkin, mapCoords);
+        this(ArenaType.NORMAL, arenaSkin, mapCoords);
     }
 
-    public Arena(RoomType roomType, ArenaSkin arenaSkin, MapCoords... mapCoords) {
+    public Arena(ArenaType arenaType, ArenaSkin arenaSkin, MapCoords... mapCoords) {
 
         startingCoords = mapCoords[0];
 
@@ -52,11 +47,11 @@ public class Arena {
             this.cotainingCoords.add(m);
         }
 
-        this.roomType = roomType;
+        this.arenaType = arenaType;
         this.arenaSkin = arenaSkin;
     }
 
-    public Arena(RoomType roomType, ArenaSkin arenaSkin, Array<MapCoords> mapCoords) {
+    public Arena(ArenaType arenaType, ArenaSkin arenaSkin, Array<MapCoords> mapCoords) {
 
         startingCoords = mapCoords.get(0);
 
@@ -64,7 +59,7 @@ public class Arena {
             this.cotainingCoords.add(m);
         }
 
-        this.roomType = roomType;
+        this.arenaType = arenaType;
         this.arenaSkin = arenaSkin;
     }
 

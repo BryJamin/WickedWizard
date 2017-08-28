@@ -17,7 +17,6 @@ import com.byrjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ShopFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -108,9 +107,9 @@ public class JigsawGenerator {
 
         for(Arena a : arenas){
 
-            if(a.roomType != Arena.RoomType.BOSS &&
-                    a.roomType != Arena.RoomType.ITEM &&
-                    a.roomType != Arena.RoomType.SHOP) {
+            if(a.arenaType != Arena.ArenaType.BOSS &&
+                    a.arenaType != Arena.ArenaType.ITEM &&
+                    a.arenaType != Arena.ArenaType.SHOP) {
 
                 for (DoorComponent dc : a.doors) {
                     if (findRoom(dc.leaveCoords, protectionFromIteratorError) == null) {
@@ -380,6 +379,8 @@ public class JigsawGenerator {
         } else {
             adc.shuffle();
         }
+
+        //adc.sort(farSort.DOOR_FAR_MAPCOORDS);
        // adc.shuffle();
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
 

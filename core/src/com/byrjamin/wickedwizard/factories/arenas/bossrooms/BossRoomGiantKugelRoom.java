@@ -14,31 +14,20 @@ import com.byrjamin.wickedwizard.factories.enemy.bosses.BossGurner;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
-import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
-import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
-
 /**
  * Created by Home on 27/05/2017.
  */
 
 public class BossRoomGiantKugelRoom extends AbstractFactory {
 
-    ArenaShellFactory arenaShellFactory;
-    ChestFactory chestFactory;
-    DecorFactory decorFactory;
-    ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
-    ArenaSkin arenaSkin;
+    private DecorFactory decorFactory;
+    private ArenaSkin arenaSkin;
 
 
     public BossRoomGiantKugelRoom(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
-
-        this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
-        this.chestFactory = new ChestFactory(assetManager);
-        //this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
-        this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
         this.arenaSkin = arenaSkin;
-
     }
 
 
@@ -47,7 +36,7 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -74,11 +63,9 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
 
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(50f)));
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(80f)));
-               // arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(110f)));
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(50f)));
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(80f)));
-               //arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(110f)));
 
 
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(50f), Measure.units(100)));
@@ -86,12 +73,8 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(100f)));
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(55), Measure.units(100f)));
-                //arena.addEntity(decorFactory.grapplePointBag(Measure.units(50f), Measure.units(60f)));
 
-
-                //arena.addEntity(decorFactory.platform(0, arena.getHeight() - Measure.units(35f), arena.getWidth()));
-
-                arena.roomType = Arena.RoomType.TRAP;
+                arena.arenaType = Arena.ArenaType.TRAP;
 
                 return arena;
             }

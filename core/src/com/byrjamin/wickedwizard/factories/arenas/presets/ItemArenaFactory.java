@@ -1,23 +1,14 @@
 package com.byrjamin.wickedwizard.factories.arenas.presets;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.utils.MapCoords;
-import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
-import com.byrjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
-import com.byrjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
-import com.byrjamin.wickedwizard.factories.items.Item;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
-import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
-import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-
-import java.util.Random;
 
 import static com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory.DECORATIVE_BEAM_WIDTH;
 
@@ -35,8 +26,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
     //TODO actually make the rareItem rare.
     public Arena createItemRoom(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.ITEM)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
@@ -55,8 +45,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createLeftItemRoom(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.ITEM)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
@@ -72,8 +61,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createRightItemRoom(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.ITEM)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
@@ -90,8 +78,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createUpItemRoom(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.ITEM)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
@@ -110,7 +97,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createDownItemRoom(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
@@ -134,8 +121,7 @@ public class ItemArenaFactory extends com.byrjamin.wickedwizard.factories.arenas
 
     public Arena createBossRushItemRoom(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin)
-                .addRoomType(Arena.RoomType.NORMAL)
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,

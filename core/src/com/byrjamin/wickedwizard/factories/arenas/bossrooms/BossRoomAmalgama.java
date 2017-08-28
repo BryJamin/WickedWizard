@@ -22,20 +22,12 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
 
 public class BossRoomAmalgama extends AbstractFactory {
 
-    private ChestFactory chestFactory;
-    private DecorFactory decorFactory;
-    private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
     private ArenaSkin arenaSkin;
 
 
     public BossRoomAmalgama(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
-
-        this.chestFactory = new ChestFactory(assetManager);
-        //this.arenaEnemyPlacementFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory(assetManager, arenaSkin);
-        this.decorFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.arenaSkin = arenaSkin;
-
     }
 
 
@@ -44,7 +36,7 @@ public class BossRoomAmalgama extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                Arena arena = new ArenaBuilder(assetManager, arenaSkin)
+                Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,

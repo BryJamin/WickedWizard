@@ -40,7 +40,7 @@ public class ArenaBuilder {
     private Array<Section> sections = new Array<Section>();
 
 
-    private Arena.RoomType roomType = Arena.RoomType.TRAP;
+    private Arena.ArenaType arenaType = Arena.ArenaType.TRAP;
 
     private AssetManager assetManager;
     private TextureAtlas atlas;
@@ -48,9 +48,10 @@ public class ArenaBuilder {
     private BackgroundFactory bf = new BackgroundFactory();
     private DecorFactory decorFactory;
 
-    public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin, Section... sections){
+    public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin, Arena.ArenaType arenaType, Section... sections){
         this.assetManager = assetManager;
         this.arenaSkin = arenaSkin;
+        this.arenaType = arenaType;
         atlas = this.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
 
@@ -63,10 +64,6 @@ public class ArenaBuilder {
         return this;
     }
 
-    public ArenaBuilder addRoomType(Arena.RoomType val){
-        this.roomType = val;
-        return this;
-    }
 
 
 
@@ -118,7 +115,7 @@ public class ArenaBuilder {
             mapCoordses.add(s.coords);
         }
 
-        Arena arena = new Arena(roomType, arenaSkin, mapCoordses);
+        Arena arena = new Arena(arenaType, arenaSkin, mapCoordses);
         defaultCoords = sections.first().coords;
         setWidthAndHeight(arena, sections);
 
