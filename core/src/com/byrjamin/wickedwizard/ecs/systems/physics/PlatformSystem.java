@@ -29,7 +29,7 @@ public class PlatformSystem extends EntitySystem {
     ComponentMapper<CollisionBoundComponent> cbm;
 
 
-    private static float inputRadius = Measure.units(15f);
+    private static float inputRadius = Measure.units(20f);
 
     @SuppressWarnings("unchecked")
     public PlatformSystem() {
@@ -100,9 +100,9 @@ public class PlatformSystem extends EntitySystem {
 
         //TODO make take in an input parameter and check whether or not to fall through the platform (Distance of like Measure.units 20f or something?
 
-        boolean bool = x >= playerBound.bound.getX() - inputRadius && x <= playerBound.bound.getX() + inputRadius;
+        boolean withinRadius = x >= playerBound.bound.getX() - inputRadius && x <= playerBound.bound.getX() + inputRadius;
 
-        if(!bool) return false;
+        if(!withinRadius) return false;
 
         for(Entity e : this.getEntities()) {
 

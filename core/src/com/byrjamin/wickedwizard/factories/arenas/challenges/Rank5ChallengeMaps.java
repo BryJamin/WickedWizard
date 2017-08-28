@@ -39,6 +39,7 @@ import com.byrjamin.wickedwizard.factories.arenas.presetmaps.EndGameMap;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -236,6 +237,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
+
                 new BossRoomBiggaBlobba(assetManager, Level.ONE.getArenaSkin()).biggaBlobbaArena().createArena(new MapCoords(1, 0)),
                 new ItemArenaFactory(assetManager, Level.ONE.getArenaSkin()).createBossRushItemRoom(new MapCoords(2, 0)),
 
@@ -281,7 +283,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     public GameCreator perfectBossRush(String id) {
 
-        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
+        Arena startingArena = new ReuseableRooms(assetManager, Level.FIVE.getArenaSkin()).challengeStartingArena(Level.FIVE.getMusic()).createArena(new MapCoords(-1, 0));
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -295,7 +297,15 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         }));
 
 
+        Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0));
+        iWishYouWell.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
+                Measure.units(10f), arenaSkin.getWallTint(), new ItemIWishYouWell()));
+
         ArenaMap arenaMap = new ArenaMap(startingArena,
+
+                iWishYouWell,
+
+
                 new BossRoomBiggaBlobba(assetManager, Level.FIVE.getArenaSkin()).biggaBlobbaArena().createArena(new MapCoords(1, 0)),
                 //new ArenaShellFactory(assetManager, Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(2, 0)),
 

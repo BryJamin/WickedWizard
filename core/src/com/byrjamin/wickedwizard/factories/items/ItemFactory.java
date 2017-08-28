@@ -180,9 +180,13 @@ public class ItemFactory extends AbstractFactory {
     }
 
 
-
-
     public ComponentBag createItemAltarBag(float x, float y, Color color){
+        return createItemAltarBag(x, y, color, null);
+    }
+
+
+
+    public ComponentBag createItemAltarBag(float x, float y, Color color, final Item item){
 
         PositionComponent positionComponent = new PositionComponent(x,y);
 
@@ -204,11 +208,17 @@ public class ItemFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
-                item = new ItemCannonCube();
-                e.getComponent(AltarComponent.class).pickUp = item;
+                Item altarItem;
 
-                BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(item, e.getComponent(ParentComponent.class),
+                if(item == null){
+                    altarItem = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
+                } else {
+                    altarItem = item;
+                }
+
+                e.getComponent(AltarComponent.class).pickUp = altarItem;
+
+                BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(altarItem, e.getComponent(ParentComponent.class),
                         new FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
 
             }

@@ -106,10 +106,10 @@ public class ChallengesResource {
         public static Array<String> rank5ChallengesArray = new Array<String>();
 
         static {
-            rank5ChallengesArray.add(rank5NotUltimateArena);
+            rank5ChallengesArray.add(rank5NotUltimateArena); //CannonCube
             rank5ChallengesArray.add(rank5UltimateTimeTrail); //Momentum
-            rank5ChallengesArray.add(bossRush);
-            rank5ChallengesArray.add(perfectBossRush);
+            rank5ChallengesArray.add(bossRush); //I wish you well
+            rank5ChallengesArray.add(perfectBossRush); // ??
         }
 
     }

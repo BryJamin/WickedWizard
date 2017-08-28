@@ -95,10 +95,6 @@ public class ItemResource {
     }
 
 
-
-
-    public static String WORD_ACCURACY = "Accuracy";
-
     public static class ItemValues {
 
         public final String id;
@@ -193,26 +189,26 @@ public class ItemResource {
         public static ItemValues Ace = new ItemValues.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/Ace")
                 .name("Ace")
-                .description(WORD_ACCURACY + "+ Luck+")
+                .description("Accuracy+ Luck+")
                 .build();
 
         public static ItemValues aimAssist = new ItemValues.ItemValueBuilder("005e4604-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/AimAssist")
                 .name("Aim Assist")
-                .description(WORD_ACCURACY + "++ Range+")
+                .description("Accuracy++ Range+")
                 .build();
 
         public static ItemValues CriticalEye = new ItemValues.ItemValueBuilder("005e4712-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/CriticalEye")
                 .name("Critical Eye")
-                .description(WORD_ACCURACY + "+++")
+                .description("Accuracy+++")
                 .challengeId(ChallengesResource.Rank3Challenges.rank3ArenaTrial)
                 .build();
 
         public static ItemValues KeenEye = new ItemValues.ItemValueBuilder("005e4ac8-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/KeenEye")
                 .name("Keen Eye")
-                .description(WORD_ACCURACY + "+")
+                .description("Accuracy++")
                 .build();
 
         public static ItemValues blockOfEnergy = new ItemValues.ItemValueBuilder("005e4e60-81d8-11e7-bb31-be2e44b06b34")
@@ -479,6 +475,14 @@ public class ItemResource {
                 .region("item/GoldenScarab")
                 .name("Golden Figment")
                 .description("Luck+++")
+                .build();
+
+
+        public static ItemValues iWishYouWell = new ItemValues.ItemValueBuilder("818c03ae-3c90-46f7-9d9a-5bd110b93648")
+                .challengeId(ChallengesResource.Rank5Challenges.bossRush)
+                .region("item/IWishYouWell")
+                .name("I Wish You Well")
+                .description("I Sincerely do")
                 .build();
 
 

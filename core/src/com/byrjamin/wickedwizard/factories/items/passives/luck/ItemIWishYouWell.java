@@ -17,14 +17,13 @@ public class ItemIWishYouWell implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).luck += PresetStatIncrease.major;
-        player.getComponent(StatComponent.class).crit += 3.5f;
+        player.getComponent(StatComponent.class).crit += 5f;
         return true;
     }
 
     @Override
     public ItemResource.ItemValues getValues() {
-        return ItemResource.Luck.eyesOfAmalgama;
+        return ItemResource.Luck.iWishYouWell;
     }
 
 
