@@ -333,7 +333,7 @@ public class AdventureWorld {
         world.getSystem(MusicSystem.class).pauseMusic();
 
         for (BaseSystem s : world.getSystems()) {
-            if (!(s instanceof RenderingSystem || s instanceof UISystem)) {
+            if (!(s instanceof RenderingSystem || s instanceof UISystem || s instanceof SoundSystem)) {
                 s.setEnabled(false);
             }
         }

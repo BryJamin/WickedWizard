@@ -21,7 +21,7 @@ import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAmalgama;
-import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomEnd;
+import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossArenaEndBoss;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
 import com.byrjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
@@ -280,7 +280,7 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        new BossRoomEnd(assetManager, arenaSkin).endStartingRoom().createArena(new MapCoords(1, 0)));
+                        new BossArenaEndBoss(assetManager, arenaSkin).endStartingRoom().createArena(new MapCoords(1, 0)));
             }
         };
     }

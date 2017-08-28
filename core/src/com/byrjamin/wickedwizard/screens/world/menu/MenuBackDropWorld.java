@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
@@ -26,13 +25,13 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.byrjamin.wickedwizard.screens.MenuButton;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
 import com.byrjamin.wickedwizard.screens.world.WorldContainer;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
@@ -129,9 +128,14 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
         musicSetting.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                boolean musicOn = settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
-                settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, !musicOn).flush();
-                setUpMusicEntity(e, !musicOn);
+                boolean musicOn = !settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
+                settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, musicOn).flush();
+
+
+                e.getComponent(AnimationComponent.class).animations.put(AnimationStateComponent.DEFAULT,
+                        new Animation<TextureRegion>(0.15f / 1f, musicOn ?
+                                atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) :
+                                atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
             }
         }));
 
@@ -155,9 +159,15 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
         soundSetting.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                boolean soundOn = settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
-                settings.putBoolean(PreferenceStrings.SETTINGS_SOUND, !soundOn).flush();
-                setUpSoundEntity(e, !soundOn);
+                boolean soundOn = !settings.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
+
+                settings.putBoolean(PreferenceStrings.SETTINGS_SOUND, soundOn).flush();
+                SoundSystem.SOUNDON = soundOn;
+
+                e.getComponent(AnimationComponent.class).animations.put(AnimationStateComponent.DEFAULT,
+                        new Animation<TextureRegion>(0.15f / 1f, soundOn ?
+                                atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) :
+                                atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
             }
         }));
 
@@ -220,20 +230,6 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
 
     }
 
-
-    public void setUpMusicEntity(Entity musicEntity, boolean musicOn) {
-        musicEntity.getComponent(AnimationComponent.class).animations.put(AnimationStateComponent.DEFAULT,
-                new Animation<TextureRegion>(0.15f / 1f, musicOn ?
-                        atlas.findRegions(TextureStrings.SETTINGS_MUSIC_ON) :
-                        atlas.findRegions(TextureStrings.SETTINGS_MUSIC_OFF), Animation.PlayMode.LOOP));
-    }
-
-    public void setUpSoundEntity(Entity soundEntity, boolean soundOn) {
-        soundEntity.getComponent(AnimationComponent.class).animations.put(AnimationStateComponent.DEFAULT,
-                new Animation<TextureRegion>(0.15f / 1f, soundOn ?
-                        atlas.findRegions(TextureStrings.SETTINGS_SOUND_ON) :
-                        atlas.findRegions(TextureStrings.SETTINGS_SOUND_OFF), Animation.PlayMode.LOOP));
-    }
 
 
     @Override

@@ -151,7 +151,7 @@ public class LaserBeam {
         //beam.edit().add(new HazardComponent());
         beam.edit().add(new FadeComponent(true, 0.5f, false, 0, 0.3f));
 
-        beam.edit().add(new SoundEmitterComponent(SoundFileStrings.quietLaserMix));
+        beam.edit().add(new SoundEmitterComponent(SoundFileStrings.quietLaserMix, 2.0f));
 
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), chargingLaserWidth, chargingLaserHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
@@ -169,7 +169,7 @@ public class LaserBeam {
 
                 Entity activeBeam = world.createEntity();
                 activeBeam.edit().add(new HazardComponent());
-                activeBeam.edit().add(new SoundEmitterComponent(SoundFileStrings.laserMix));
+                activeBeam.edit().add(new SoundEmitterComponent(SoundFileStrings.laserMix, 2.0f));
 
 
                 PositionComponent oldPC = e.getComponent(PositionComponent.class);
@@ -213,51 +213,6 @@ public class LaserBeam {
 
             }
         }, chargingLaserTime));
-
-
-
-     /*   beam.edit().add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                Entity activeBeam = world.createEntity();
-
-                e.edit().remove(FadeComponent.class);
-
-                e.edit().add(new HazardComponent());
-                PositionComponent pc = e.getComponent(PositionComponent.class);
-                pc.position.set(centerLaserUsingWidth ? pc.getX() - (activeLaserWidth / 2 - chargingLaserWidth / 2) : pc.getX(),
-                        centerLaserUsingWidth ? pc.getY() : pc.getY() - (activeLaserHeight / 2 - chargingLaserHeight / 2), 0);
-                e.edit().remove(CollisionBoundComponent.class);
-                e.edit().add(new CollisionBoundComponent(new Rectangle(pc.getX(), pc.getY(), activeLaserWidth, activeLaserHeight), true));
-
-                TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
-                trc.width = activeLaserWidth;
-                trc.height = activeLaserHeight;
-                trc.layer = layer;
-                //TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
-                trc.color.a = 1;
-
-                e.edit().add(new ExpireComponent(activeLaserTime));
-
-                e.edit().add(new OnDeathActionComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-
-                        PositionComponent pc = e.getComponent(PositionComponent.class);
-
-                        Entity fadingBeam = world.createEntity();
-                        fadingBeam.edit().add(e.getComponent(PositionComponent.class));
-                        fadingBeam.edit().add(e.getComponent(TextureRegionComponent.class));
-                        fadingBeam.edit().add(new FadeComponent(false, activeLaserDisperseTime, false));
-                        fadingBeam.edit().add(new ExpireComponent(activeLaserDisperseTime + 0.1f));
-                    }
-                }));
-            }
-        }, chargingLaserTime));
-
-
-*/
 
 
         return beam;

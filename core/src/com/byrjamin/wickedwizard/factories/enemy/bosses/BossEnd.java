@@ -668,7 +668,7 @@ public class BossEnd extends EnemyFactory {
                         //sideBeam.createBeam(world, 0, Measure.units(15f));
 
                         if(isTopHorizontalBeam){
-                            sideBeam.createBeam(world, 0, Measure.units(35f));
+                           // sideBeam.createBeam(world, 0, Measure.units(35f));
                             isTopHorizontalBeam = !isTopHorizontalBeam;
 
                             if(random.nextBoolean()){

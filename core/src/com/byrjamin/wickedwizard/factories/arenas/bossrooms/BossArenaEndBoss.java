@@ -39,7 +39,7 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
  * Created by Home on 09/07/2017.
  */
 
-public class BossRoomEnd extends AbstractFactory {
+public class BossArenaEndBoss extends AbstractFactory {
 
 
     private ArenaShellFactory arenaShellFactory;
@@ -52,7 +52,7 @@ public class BossRoomEnd extends AbstractFactory {
     private static final float playerSummonTime = 2f;
 
 
-    public BossRoomEnd(AssetManager assetManager, ArenaSkin arenaSkin) {
+    public BossArenaEndBoss(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
 
         this.arenaShellFactory = new com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
@@ -106,7 +106,7 @@ public class BossRoomEnd extends AbstractFactory {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
                         .buildArena();
 
