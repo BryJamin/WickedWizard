@@ -11,12 +11,12 @@ import com.byrjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
  * Created by BB on 28/08/2017.
  */
 
-public class CannonCube implements Item {
+public class ItemCannonCube implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
         player.getComponent(StatComponent.class).damage += PresetStatIncrease.massive;
-        player.getComponent(StatComponent.class).shotSize += PresetStatIncrease.major;
+        player.getComponent(StatComponent.class).shotSize += PresetStatIncrease.massive;
 
 
         player.getComponent(StatComponent.class).fireRate -= PresetStatIncrease.minor;
@@ -28,6 +28,6 @@ public class CannonCube implements Item {
 
     @Override
     public ItemResource.ItemValues getValues() {
-        return ItemResource.Range.quadonometry;
+        return ItemResource.ShotSize.cannonCube;
     }
 }

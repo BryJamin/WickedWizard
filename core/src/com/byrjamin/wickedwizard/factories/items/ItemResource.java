@@ -41,6 +41,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemEyesOfAmalgama;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
+import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemThreeDimensionalGold;
 import com.byrjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
@@ -51,6 +52,7 @@ import com.byrjamin.wickedwizard.factories.items.passives.range.ItemLostLettersR
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
 import com.byrjamin.wickedwizard.factories.items.passives.range.ItemScope;
+import com.byrjamin.wickedwizard.factories.items.passives.shotsize.ItemCannonCube;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
 import com.byrjamin.wickedwizard.factories.items.passives.shotspeed.ItemDisappointment;
@@ -79,6 +81,7 @@ public class ItemResource {
         allItems.addAll(Health.healthItems);
         allItems.addAll(Luck.luckItems);
         allItems.addAll(Range.rangeItems);
+        allItems.addAll(ShotSize.shotSizeItems);
         allItems.addAll(ShotSpeed.shotSpeedItems);
         allItems.addAll(Speed.speedItems);
         allItems.addAll(Companion.companionItems);
@@ -452,6 +455,7 @@ public class ItemResource {
                 new ItemEyesOfAmalgama(),
                 new ItemForgottenFigment(),
                 new ItemGoldenFigment(),
+                new ItemIWishYouWell(),
                 new ItemJadeFigment(),
                 new ItemThreeDimensionalGold(),
                 new ItemThreeLeafClover()};
@@ -563,8 +567,13 @@ public class ItemResource {
     public static class ShotSize {
 
 
+        public static Item[] shotSizeItems = {
+                new ItemCannonCube()};
+
+
         public static ItemValues cannonCube = new ItemValues.ItemValueBuilder("275fcafa-661a-4a5e-a50a-14217a5ef7be")
-                .region("item/shotsize/CannonCube")
+                .challengeId(ChallengesResource.Rank5Challenges.rank5NotUltimateArena)
+                .region("item/CannonCube")
                 .name("CannonCube")
                 .description("More destructive, Less Aerodynamic")
                 .build();

@@ -38,6 +38,10 @@ public class PlayerPistol implements Weapon{
 
     private static final float range = Measure.units(50f);
 
+
+    private static final float defaultShotScale = 2;
+    private static final float shotScaleMultiplier = 0.5f;
+
     private StatComponent playerStats;
 
 
@@ -54,7 +58,11 @@ public class PlayerPistol implements Weapon{
         boolean isCrit = CritCalculator.isCrit(playerStats.crit, playerStats.accuracy, playerStats.luck);
 
         Entity bullet = world.createEntity();
-        for(Component c : bulletFactory.basicBulletBag(x,y,2, isCrit ? new Color(0,0,0,1) : new Color(1,1,1,1))){
+
+        float shotscale = defaultShotScale + (playerStats.shotSize * shotScaleMultiplier);
+        if(shotscale >= 4.5f) shotscale = 4.5f;
+
+        for(Component c : bulletFactory.basicBulletBag(x,y, shotscale, isCrit ? new Color(0,0,0,1) : new Color(1,1,1,1))){
             bullet.edit().add(c);
         }
         bullet.edit().add(new FriendlyComponent());

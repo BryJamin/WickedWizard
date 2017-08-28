@@ -205,12 +205,12 @@ public class PauseWorld implements WorldContainer {
 
 
         String[][] stats = new String[][]{
-                {MenuStrings.Stats.DAMAGE, String.format(Locale.getDefault(), "+%.0f", playerStats.damage)},
-                {MenuStrings.Stats.FIRERATE, String.format(Locale.getDefault(), "+%.0f", playerStats.fireRate)},
-                {MenuStrings.Stats.SHOTSPEED, String.format(Locale.getDefault(), "+%.0f", playerStats.shotSpeed)},
-                {MenuStrings.Stats.RANGE, String.format(Locale.getDefault(), "+%.0f", playerStats.range)},
-                {MenuStrings.Stats.ACCURACY, String.format(Locale.getDefault(), "+%.0f", playerStats.accuracy)},
-                {MenuStrings.Stats.LUCK, String.format(Locale.getDefault(), "+%.0f", playerStats.luck)},
+                {MenuStrings.Stats.DAMAGE, plusMinusStatText(playerStats.damage)},
+                {MenuStrings.Stats.FIRERATE, plusMinusStatText(playerStats.fireRate)},
+                {MenuStrings.Stats.SHOTSPEED, plusMinusStatText(playerStats.shotSpeed)},
+                {MenuStrings.Stats.RANGE, plusMinusStatText(playerStats.range)},
+                {MenuStrings.Stats.ACCURACY, plusMinusStatText(playerStats.accuracy)},
+                {MenuStrings.Stats.LUCK, plusMinusStatText(playerStats.luck)},
                 {MenuStrings.Stats.SPEED, String.format(Locale.getDefault(), "%.0f", 100 + playerStats.speed * 100) + "%"},
                 {MenuStrings.Stats.CRIT, String.format(Locale.getDefault(), "%.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%"},
         };
@@ -240,6 +240,12 @@ public class PauseWorld implements WorldContainer {
         itemText.edit().add(new TextureFontComponent(Assets.medium, MenuStrings.ITEMS, Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
     }
+
+
+    private String plusMinusStatText(float stat){
+        return String.format(Locale.getDefault(), (stat >= 0 ? "+" : "") + "%.0f", stat);
+    }
+
 
     private void statsText(World world, String text, float x, float y, int align){
         Entity damage = world.createEntity();
