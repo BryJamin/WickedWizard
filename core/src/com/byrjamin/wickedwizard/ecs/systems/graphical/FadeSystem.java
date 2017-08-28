@@ -61,6 +61,7 @@ public class FadeSystem extends EntityProcessingSystem {
 
             } else {
                 fc.alpha = fc.minAlpha;
+                fc.alphaTimer = 0;
             }
         } else if (fc.alpha >= fc.maxAlpha) {
             if(fc.isEndless || fc.count > 0) {
@@ -70,6 +71,7 @@ public class FadeSystem extends EntityProcessingSystem {
 
             } else {
                 fc.alpha = fc.maxAlpha;
+                fc.alphaTimer = fc.alphaTimeLimit;
             }
         }
 

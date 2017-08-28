@@ -21,7 +21,7 @@ public class ItemMyVeryOwnStalker implements Companion {
     public boolean applyEffect(World world, Entity player) {
 
         BagToEntity.bagToEntity(world.createEntity(), new CompanionFactory(world.getSystem(RenderingSystem.class).assetManager)
-                .dangerSensorCompanion(
+                .myVeryOwnStalker(
                         player.getComponent(ParentComponent.class),
                         player.getComponent(PositionComponent.class),
                         player.getComponent(CollisionBoundComponent.class)));
@@ -31,7 +31,7 @@ public class ItemMyVeryOwnStalker implements Companion {
 
     @Override
     public ItemResource.ItemValues getValues() {
-        return ItemResource.Companion.dangerDetector;
+        return ItemResource.Companion.myVeryOwnStalker;
     }
 
 }

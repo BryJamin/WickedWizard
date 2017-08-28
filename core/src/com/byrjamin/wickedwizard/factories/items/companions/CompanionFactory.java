@@ -3,6 +3,7 @@ package com.byrjamin.wickedwizard.factories.items.companions;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -26,6 +27,7 @@ import com.byrjamin.wickedwizard.ecs.components.object.BlockEnemyBulletComponent
 import com.byrjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
@@ -180,12 +182,12 @@ public class CompanionFactory extends AbstractFactory {
 
         bag.add(new PositionComponent(x, y));
         bag.add(new BlockEnemyBulletComponent());
+
         bag.add(new OrbitComponent(positionc.position, orbitRadius, orbitalSpeedInDegrees, 0, cbc.bound.width / 2, cbc.bound.height / 2));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, orbitalSize, orbitalSize)));
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.KUGELDUSCHE_LASER), orbitalSize, orbitalSize, TextureRegionComponent.PLAYER_LAYER_NEAR));
         bag.add(new FriendlyComponent());
         bag.add(new IntangibleComponent());
-
 
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -194,13 +196,98 @@ public class CompanionFactory extends AbstractFactory {
 
         bag.add(new AnimationComponent(animMap));
 
-
-
         return bag;
 
     }
 
 
+
+
+    public ComponentBag myVeryOwnStalker(ParentComponent parentc, PositionComponent positionc, CollisionBoundComponent cbc) {
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new ChildComponent(parentc));
+
+        float x = cbc.getCenterX();
+        float y = cbc.getCenterY();
+
+        bag.add(new PositionComponent(x, y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, orbitalSize, orbitalSize)));
+        bag.add(new FollowPositionComponent(positionc.position, CenterMath.offsetX(cbc.bound.getWidth(), crownWidth),  cbc.bound.height * 1.8f));
+        bag.add(new TextureRegionComponent(atlas.findRegion(ItemResource.Companion.myVeryOwnStalker.region.getLeft()), orbitalSize, orbitalSize, TextureRegionComponent.PLAYER_LAYER_NEAR,
+                new Color(1,1,1,0)));
+        bag.add(new FriendlyComponent());
+        bag.add(new IntangibleComponent());
+        bag.add(new FiringAIComponent(FiringAIComponent.AI.TARGET_ENEMY));
+
+        FadeComponent fc = new FadeComponent(false, 0.5f, false);
+        bag.add(fc);
+
+      //  bag.add(new FadeComponent(false, 0.5f, false));
+
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
+        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1f / 14f,
+                atlas.findRegions(ItemResource.Companion.myVeryOwnStalker.region.getLeft()), Animation.PlayMode.LOOP_REVERSED));
+
+
+        bag.add(new AnimationComponent(animMap));
+
+
+
+
+
+
+        bag.add(new InCombatActionComponent(new Task() {
+
+            WeaponComponent weaponComponent;
+
+            @Override
+            public void performAction(World world, Entity e) {
+
+
+               // e.getComponent(FadeComponent.class).isEndless = true;
+                e.getComponent(FadeComponent.class).fadeIn = true;
+
+
+
+
+
+                if(weaponComponent == null){
+                    weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(world.getSystem(RenderingSystem.class).assetManager)
+                            .damage(1f)
+                            .expireRange(Measure.units(85f))
+                            .color(ColorResource.GHOST_BULLET_COLOR)
+                            .shotScale(1.5f)
+                            .shotSpeed(Measure.units(75f))
+                            .intangible(true)
+                            .enemy(false)
+                            .friendly(true)
+                            .fireRate(0.75f)
+                            .angles(0)
+                            .build());
+                }
+
+                e.edit().add(weaponComponent);
+
+            }
+
+            @Override
+            public void cleanUpAction(World world, Entity e) {
+
+                e.edit().remove(WeaponComponent.class);
+                //e.getComponent(FadeComponent.class).isEndless = false;
+                e.getComponent(FadeComponent.class).fadeIn = false;
+
+            }
+        }));
+
+
+
+
+        return bag;
+
+    }
 
 
 

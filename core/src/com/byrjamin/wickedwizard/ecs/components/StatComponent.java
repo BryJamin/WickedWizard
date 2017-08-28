@@ -37,6 +37,9 @@ public class StatComponent extends Component {
     //How fast bullets travel
     public float shotSpeed = 0;
 
+    //How big bullets are (Also is a hidden stat as it is more cosmetic than anything)
+    public float shotSize = 0;
+
     //Crit Chance
     public float accuracy = 0;
 

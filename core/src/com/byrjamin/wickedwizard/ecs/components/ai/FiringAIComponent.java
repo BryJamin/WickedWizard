@@ -25,6 +25,12 @@ public class FiringAIComponent extends Component{
         ai = AI.TARGET_PLAYER;
     }
 
+
+    public FiringAIComponent(AI ai){
+        this.ai = ai;
+    }
+
+
     public FiringAIComponent(AI ai, float offsetX, float offsetY){
         this.ai = ai;
         this.offsetX = offsetX;

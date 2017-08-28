@@ -557,6 +557,24 @@ public class ItemResource {
 
     }
 
+
+
+
+    public static class ShotSize {
+
+
+        public static ItemValues cannonCube = new ItemValues.ItemValueBuilder("275fcafa-661a-4a5e-a50a-14217a5ef7be")
+                .region("item/shotsize/CannonCube")
+                .name("CannonCube")
+                .description("More destructive, Less Aerodynamic")
+                .build();
+
+
+
+    }
+
+
+
     public static class ShotSpeed {
 
         public static Item[] shotSpeedItems = {
@@ -600,6 +618,7 @@ public class ItemResource {
                 .build();
 
         public static ItemValues momentum = new ItemValues.ItemValueBuilder("ad7101fa-81d9-11e7-bb31-be2e44b06b34")
+                .challengeId(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail)
                 .region("item/Momentum")
                 .name("Momentum")
                 .description("ShotSpeed++ Speed+ Damage+")
@@ -662,6 +681,13 @@ public class ItemResource {
                 .description("A thingie that is mini and spinnys")
                 .build();
 
+
+        public static ItemValues myVeryOwnStalker =  new ItemValues.ItemValueBuilder("05324bec-c14d-403e-b034-df7536d10d2c")
+                .challengeId(ChallengesResource.Rank4Challenges.perfectWraith)
+                .region("item/companion/MyVeryOwnStalker")
+                .name("Your Very Own Stalker")
+                .description("A chill runs down your square")
+                .build();
 
 
 

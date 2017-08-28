@@ -18,7 +18,7 @@ public class ItemMomentum implements Item {
     public boolean applyEffect(World world, Entity player) {
         player.getComponent(StatComponent.class).shotSpeed += PresetStatIncrease.major;
         player.getComponent(StatComponent.class).speed += PresetStatIncrease.Speed.minor;
-        player.getComponent(StatComponent.class).damage += PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).damage += PresetStatIncrease.major;
         return true;
     }
     @Override
