@@ -30,6 +30,7 @@ public class PlatformSystem extends EntitySystem {
 
 
     private static float inputRadius = Measure.units(20f);
+    private static final float platformPushDown = Measure.units(0.2f);
 
     @SuppressWarnings("unchecked")
     public PlatformSystem() {
@@ -52,10 +53,7 @@ public class PlatformSystem extends EntitySystem {
 
             if(platform.canPassThrough){
 
-                platform.timer -= world.delta;
-
-                if(playerBound.bound.getY() >= cbc.bound.getY() + cbc.bound.getHeight() + Measure.units(1) && !playerBound.bound.overlaps(cbc.bound)
-                        || platform.timer <= 0) {
+                if(playerBound.bound.getY() >= cbc.bound.getY() + cbc.bound.getHeight() && !playerBound.bound.overlaps(cbc.bound)) {
                     platform.canPassThrough = false;
                 }
 
@@ -121,9 +119,8 @@ public class PlatformSystem extends EntitySystem {
 
                 if(c == Collider.Collision.BOTTOM) {
                     platform.canPassThrough = true;
-                    platform.timer = PlatformComponent.FALLTHROUGH_TIME;
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.y -= platformPushDown;
                     return true;
-                    //PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 }
 
             }
