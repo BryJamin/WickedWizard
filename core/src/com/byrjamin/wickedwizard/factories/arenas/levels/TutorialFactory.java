@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -35,12 +36,15 @@ import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.byrjamin.wickedwizard.screens.DataSave;
+import com.byrjamin.wickedwizard.screens.MenuScreen;
 import com.byrjamin.wickedwizard.screens.PlayScreen;
+import com.byrjamin.wickedwizard.screens.QuickSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
@@ -426,15 +430,26 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                     @Override
                     public void performAction(World world, Entity e) {
 
-                        DataSave.saveChallengeData(ChallengesResource.TUTORIAL_COMPLETE);
-
                         world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
 
+
                                 MainGame game = world.getSystem(EndGameSystem.class).getGame();
-                                game.getScreen().dispose();
-                                game.setScreen(new PlayScreen(game));
+
+                                if(DataSave.isDataAvailable(ChallengesResource.TUTORIAL_COMPLETE)){
+
+                                    game.getScreen().dispose();
+                                    game.setScreen(new MenuScreen(game));
+
+                                } else {
+                                    
+                                    DataSave.saveChallengeData(ChallengesResource.TUTORIAL_COMPLETE);
+                                    game.getScreen().dispose();
+                                    game.setScreen(new PlayScreen(game));
+
+                                }
+
                             }
                         });
                     }

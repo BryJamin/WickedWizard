@@ -95,6 +95,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
 import com.byrjamin.wickedwizard.screens.QuickSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
@@ -145,11 +146,8 @@ public class AdventureWorld {
         this.gameCreator = gameCreator;
         playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
         playerCurrency = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
-
         this.currencyFont = assetManager.get(Assets.small, BitmapFont.class);// font size 12 pixels
-
         createAdventureWorld();
-
     }
 
     public ComponentBag getPlayer() {
@@ -255,11 +253,14 @@ public class AdventureWorld {
 
         world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
 
-        if (!Gdx.app.getPreferences(
-                PreferenceStrings.DATA_PREF_KEY).getString(
-                PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)
-                .equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
-            QuickSave.loadQuickSave(world);
+        if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
+
+            String quickSaveString = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY).getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+
+            if (!quickSaveString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+                QuickSave.loadQuickSave(world);
+            }
+
         }
 
         Entity entity = world.createEntity();

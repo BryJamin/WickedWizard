@@ -16,7 +16,7 @@ public class ItemThreeDimensionalGold implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(CurrencyComponent.class).money = 15;
+        player.getComponent(CurrencyComponent.class).money += 15;
         player.getComponent(StatComponent.class).luck += PresetStatIncrease.minor;
         return true;
     }
