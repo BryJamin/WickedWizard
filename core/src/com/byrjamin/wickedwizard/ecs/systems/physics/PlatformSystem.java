@@ -30,7 +30,7 @@ public class PlatformSystem extends EntitySystem {
 
 
     private static float inputRadius = Measure.units(20f);
-    private static final float platformPushDown = Measure.units(0.2f);
+    private static final float platformPushDown = Measure.units(0.5f);
 
     @SuppressWarnings("unchecked")
     public PlatformSystem() {
@@ -59,7 +59,7 @@ public class PlatformSystem extends EntitySystem {
 
             } else {
 
-                if(playerBound.bound.getY() < cbc.bound.getY() + cbc.bound.getHeight() - Measure.units(1)) {
+                if(playerBound.bound.getY() < cbc.bound.getY() + cbc.bound.getHeight() - platformPushDown) {
                     platform.canPassThrough = true;
                 }
 
