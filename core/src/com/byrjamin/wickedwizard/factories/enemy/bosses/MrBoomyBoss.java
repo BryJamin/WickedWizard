@@ -263,7 +263,7 @@ public class MrBoomyBoss extends EnemyFactory {
                 isBomb = !isBomb;
             }
 
-            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
         }
 
         @Override
@@ -305,7 +305,7 @@ public class MrBoomyBoss extends EnemyFactory {
                 isLeft = !isLeft;
             }
 
-            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
 
         }
 

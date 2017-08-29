@@ -234,7 +234,7 @@ public class MultiPistol implements Weapon {
         }
 
 
-        world.getSystem(SoundSystem.class).playSound(SoundFileStrings.enemyFireMix);
+        world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
 
 
     }

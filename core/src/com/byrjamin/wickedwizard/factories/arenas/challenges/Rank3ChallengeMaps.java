@@ -150,7 +150,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,1), Arena.ArenaType.NORMAL);
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0,1), Arena.ArenaType.TRAP);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 

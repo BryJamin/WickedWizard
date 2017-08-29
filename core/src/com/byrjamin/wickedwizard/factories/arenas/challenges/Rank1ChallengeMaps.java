@@ -155,8 +155,6 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         startingArena.addEntity(new OnLoadFactory().challengeTimer(TUTORIAL_SPEEDRUN_TIMER));
 
 
-        TutorialFactory tutorialFactory = new TutorialFactory(assetManager, arenaSkin);
-
         Arena endArena = new ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7,3));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 timeTrailRoomOneJumpTutorial(new MapCoords(1, 0)),
@@ -320,7 +318,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         }));
 
 
-        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new MapCoords(1,0), Arena.ArenaType.NORMAL);
+        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new MapCoords(1,0), Arena.ArenaType.TRAP);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 

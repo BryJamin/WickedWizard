@@ -12,6 +12,7 @@ import com.artemis.World;
 public class OnRoomLoadActionComponent extends Component {
 
     public Action action;
+    public boolean repeat = false;
 
     public OnRoomLoadActionComponent (){
         action = new Action() {

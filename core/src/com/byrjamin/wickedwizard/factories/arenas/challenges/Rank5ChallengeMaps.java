@@ -350,7 +350,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(-1, 0), Arena.ArenaType.NORMAL);
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(-1, 0), Arena.ArenaType.TRAP);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
         arena.addWave(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, Measure.units(45f)));

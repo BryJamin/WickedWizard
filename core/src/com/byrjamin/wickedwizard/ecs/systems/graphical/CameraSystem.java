@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
@@ -56,8 +57,8 @@ public class CameraSystem extends EntitySystem {
 
     //TODO add acceleration?
 
-    private static final float fixedAcceleration = Measure.units(2.5f);
-    private static final float centerFollowAcceleration = Measure.units(10f);
+    private static final float fixedCameraLerpSpeed = 5.5f;
+    private static final float followCameraLerpSpeed = 8.0f;
 
 
     private float acceleration = Measure.units(5f);
@@ -102,12 +103,16 @@ public class CameraSystem extends EntitySystem {
         gamecam.position.set(cbc.getCenterX(), offsetY * ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f), 0);
     }
 
+    private void lerp(Camera gamecam, float targetY){
+        Vector3 position = gamecam.position;
+        float lerp = cameraMode == CameraMode.FIXED ? fixedCameraLerpSpeed : followCameraLerpSpeed;
+        //position.x += (Obj.x - position.x) * lerp * world.delta;
+        position.y += (targetY - position.y) * lerp * world.delta;
+    }
+
     //TODO need to break this method up. It is too large and confusing.
     public void updateGamecam() {
         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-
-        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
-
 
         Arena currentArena = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
 
@@ -119,87 +124,34 @@ public class CameraSystem extends EntitySystem {
         }
 
 
-        if(cameraMode == CameraMode.CENTER_FOLLOW){
-            if(cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= this.currentArena.getHeight()
-                    || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
-                cameraMode = CameraMode.FIXED;
-                acceleration = fixedAcceleration;
-            }
-        }
+        boolean isWithinFixedCameraBounds =  (cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= this.currentArena.getHeight()
+                || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f));
 
-        if(cameraMode == CameraMode.FIXED) {
-            if (cbc.bound.y + ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= this.currentArena.getHeight()
-                    || cbc.bound.y - ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f)) {
 
+        cameraMode  = isWithinFixedCameraBounds ? CameraMode.FIXED : CameraMode.CENTER_FOLLOW;
+
+        switch (cameraMode){
+            case FIXED:
                 int offsetY = (int) cbc.bound.getY() / (int) ArenaShellFactory.SECTION_HEIGHT;
-                targetY = offsetY * ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f);
-            } else {
-                cameraMode = CameraMode.CENTER_FOLLOW;
-                acceleration = centerFollowAcceleration;
-                transitioning = true;
-            }
+                targetY = offsetY * ArenaShellFactory.SECTION_HEIGHT + Measure.units(25) + MainGame.GAME_BORDER;
+                break;
+            case CENTER_FOLLOW:
+                targetY = cbc.getCenterY();
+                break;
         }
 
-        if(cameraMode == CameraMode.CENTER_FOLLOW){
-            targetY = cbc.getCenterY();
-        }
 
+        lerp(gamecam, targetY);
 
         //TODO transitioning boolean goes here.
 
-        if(transitioning || cameraMode == CameraMode.FIXED) {
-            if (gamecam.position.y >= targetY) {
-                cameraVelocity.y = (cameraVelocity.y > 0) ? 0 : cameraVelocity.y;
-                cameraVelocity.y = (cameraVelocity.y - acceleration <= -cameradefaultMaxVelocity) ?
-                        -cameradefaultMaxVelocity : cameraVelocity.y - acceleration;
 
-                boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta < targetY);
-/*
-                System.out.println("Upper on target " + onTarget);
-                System.out.println(cameraVelocity.y);
-                System.out.println(targetY);*/
-
-                gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
-
-                if(onTarget) transitioning = false;
-
-            } else {
-
-                cameraVelocity.y = (cameraVelocity.y < 0) ? 0 : cameraVelocity.y;
-
-                cameraVelocity.y = (cameraVelocity.y + acceleration >= cameradefaultMaxVelocity) ?
-                        cameradefaultMaxVelocity : cameraVelocity.y + acceleration;
-
-                boolean onTarget = (gamecam.position.y + cameraVelocity.y * world.delta > targetY);
-                gamecam.position.y = onTarget ? targetY : gamecam.position.y + cameraVelocity.y * world.delta;
-
-                if(onTarget) transitioning = false;
-            }
-        }
-
-/*        System.out.println("Transitioning is currenty " + transitioning);
-        System.out.println("Target Y is " + targetY);*/
-
-        //System.out.println(transitioning);
-
-        if(cameraMode == CameraMode.CENTER_FOLLOW && !transitioning) {
-            gamecam.position.y = cbc.getCenterY();
-
-        }
-
-
-        //Camera max height and minium height bounds.
         if(gamecam.position.y <= Measure.units(30f)) {
             gamecam.position.y = Measure.units(30f);
+            cameraMode = CameraMode.FIXED;
         } else if (gamecam.position.y + MainGame.GAME_BORDER >= this.currentArena.getHeight() - MainGame.GAME_HEIGHT -MainGame.GAME_UNITS+ Measure.units(30f)) {
-            //System.out.println("INSIDE IF");
-            if(!transitioning) {
-                //gamecam.position.y = this.currentArena.getHeight() - MainGame.GAME_HEIGHT + Measure.units(30f) -MainGame.GAME_UNITS;
-                cameraMode = CameraMode.FIXED;
-            }
+            cameraMode = CameraMode.FIXED;
         }
-
-
 
 
         // calculating the X position of the camera

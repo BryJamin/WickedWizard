@@ -36,8 +36,25 @@ public class SoundFileStrings {
     public static final Mix grappleFireMix = new Mix(playerFire, 0.05f);
 
 
+
+
     public static final String enemyFire = "audio/sounds/laser2.wav";
-    public static final Mix enemyFireMix = new Mix(enemyFire, 0.025f);
+
+    public static final Mix enemyFireMix1 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.825f).build();
+    public static final Mix enemyFireMix2 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.85f).build();
+    public static final Mix enemyFireMix3 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.875f).build();
+    public static final Mix enemyFireMix4 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.9f).build();
+    public static final Mix enemyFireMix5 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.925f).build();
+    public static final Mix enemyFireMix6 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.95f).build();
+    public static final Mix enemyFireMix7 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.975f).build();
+    public static final Mix enemyFireMix8 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(1.0f).build();
+
+    public static final Mix[] enemyFireMegaMix = new Mix[]{enemyFireMix1, enemyFireMix2, enemyFireMix3, enemyFireMix4,
+            enemyFireMix5,
+            enemyFireMix6,
+            enemyFireMix7,
+            enemyFireMix8
+    };
 
 
     public static final Mix jumpMix = new Mix.MixMaker("audio/sounds/jump/1_jump.ogg").volume(0.2f).build();
@@ -121,8 +138,6 @@ public class SoundFileStrings {
         assetManager.load(coinPickUp, Sound.class);
         assetManager.load(jumpMix.getFileName(), Sound.class);
 
-        assetManager.load(quietLaser, Music.class);
-        assetManager.load(laser, Music.class);
 
         assetManager.load(itemPickUp, Sound.class);
         assetManager.load(spawning, Sound.class);

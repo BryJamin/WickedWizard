@@ -40,6 +40,8 @@ public class SoundSystem extends EntitySystem {
 
     private Array<Mix> upcomingMixes = new Array<Mix>();
 
+    private Array<Mix[]> upcomingMixesMixes = new Array<Mix[]>();
+
 
 
     private OrderedMap<SoundEmitterComponent, Entity> activeEmitterMap = new OrderedMap<SoundEmitterComponent, Entity>();
@@ -129,6 +131,7 @@ public class SoundSystem extends EntitySystem {
         }
 
         upcomingMixes.clear();
+        upcomingMixesMixes.clear();
 
     }
 
@@ -188,7 +191,11 @@ public class SoundSystem extends EntitySystem {
      * @param mixes - Array of mixes
      */
     public void playRandomSound(Mix... mixes){
-        playSound(mixes[MathUtils.random.nextInt(mixes.length)]);
+
+        if(!upcomingMixesMixes.contains(mixes, true)) {
+            playSound(mixes[MathUtils.random.nextInt(mixes.length)]);
+            upcomingMixesMixes.add(mixes);
+        }
     }
 
     @Override

@@ -282,7 +282,13 @@ public class RoomTransitionSystem extends EntitySystem {
             }
 
             if(onRoomLoadMapper.has(e)){
-                e.getComponent(OnRoomLoadActionComponent.class).action.performAction(world, e);
+
+                OnRoomLoadActionComponent onRoomLoadActionComponent = e.getComponent(OnRoomLoadActionComponent.class);
+                onRoomLoadActionComponent.action.performAction(world, e);
+                if(!onRoomLoadActionComponent.repeat){
+                    e.edit().remove(onRoomLoadActionComponent);
+                }
+
             }
 
 

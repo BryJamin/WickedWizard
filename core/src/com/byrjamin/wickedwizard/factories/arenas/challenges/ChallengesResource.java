@@ -67,10 +67,10 @@ public class ChallengesResource {
         public static Array<String> rank3ChallengesArray = new Array<String>();
 
         static {
-            rank3ChallengesArray.add(rank3ArenaTrial); //critical Eye
             rank3ChallengesArray.add(rank3TimeTrail); //Angry Slime Coat
+            rank3ChallengesArray.add(rank3ArenaTrial); //critical Eye
             rank3ChallengesArray.add(perfectBoomy); //3D Gold
-            rank3ChallengesArray.add(perfectAjir);
+            rank3ChallengesArray.add(perfectAjir); //statue of ajir
         }
 
     }
@@ -87,10 +87,10 @@ public class ChallengesResource {
         public static Array<String> rank4ChallengesArray = new Array<String>();
 
         static {
+            rank4ChallengesArray.add(rank4TimeTrail); //Quickness
+            rank4ChallengesArray.add(rank4Arena); //Mini Trebuchet
             rank4ChallengesArray.add(perfectWraith); //Your Very Own Stalker
             rank4ChallengesArray.add(perfectAmalgama); //Eyes of Amalgama
-            rank4ChallengesArray.add(rank4Arena); //Mini Trebuchet
-            rank4ChallengesArray.add(rank4TimeTrail); //Quickness
         }
 
     }
@@ -106,8 +106,8 @@ public class ChallengesResource {
         public static Array<String> rank5ChallengesArray = new Array<String>();
 
         static {
-            rank5ChallengesArray.add(rank5NotUltimateArena); //CannonCube
             rank5ChallengesArray.add(rank5UltimateTimeTrail); //Momentum
+            rank5ChallengesArray.add(rank5NotUltimateArena); //CannonCube
             rank5ChallengesArray.add(bossRush); //I wish you well
             rank5ChallengesArray.add(perfectBossRush); // ??
         }

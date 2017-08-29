@@ -338,7 +338,7 @@ public class BossWanda extends EnemyFactory {
                         0), angles[i], new Color(Color.RED));
             }
 
-            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
 
         }
 
@@ -384,7 +384,7 @@ public class BossWanda extends EnemyFactory {
                     vc.velocity.x = BulletMath.velocityX(Measure.units(80f), Math.toRadians(startAngle));
                     vc.velocity.y = BulletMath.velocityY(Measure.units(80f), Math.toRadians(startAngle));
 
-                    world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+                    world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
                 }
 
                 @Override
@@ -414,7 +414,7 @@ public class BossWanda extends EnemyFactory {
                 angles[i] += 22.5f;
             }
 
-            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMix);
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
 
 
 
