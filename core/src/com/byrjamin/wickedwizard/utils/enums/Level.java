@@ -6,7 +6,6 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.Bourbon;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.DarkPurpleAndBrown;
-import com.byrjamin.wickedwizard.factories.arenas.skins.FieldSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.FoundarySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.InfernalSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
@@ -23,7 +22,7 @@ public enum Level {
             switch (this){
                 case ONE:
                 default:
-                    return new FieldSkin();
+                    return new LightGraySkin();
                 case TWO: return new FoundarySkin();
                 case THREE: return new DarkPurpleAndBrown();
                 case FOUR: return new DarkGraySkin();

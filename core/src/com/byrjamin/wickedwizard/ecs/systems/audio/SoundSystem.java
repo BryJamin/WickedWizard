@@ -136,7 +136,7 @@ public class SoundSystem extends EntitySystem {
 
 
         for(SoundEmitterComponent sec : soundFadeArray){
-            
+
             sec.currentVolume -= world.delta * sec.volumeFadeFactor;
 
             if(sec.currentVolume <= 0){
@@ -145,7 +145,7 @@ public class SoundSystem extends EntitySystem {
                 sec.music.dispose();
                 soundFadeArray.removeValue(sec, true);
             } else {
-                sec.music.setVolume(sec.currentVolume);
+                sec.music.setVolume(SOUNDON ? sec.currentVolume : 0);
             }
 
 

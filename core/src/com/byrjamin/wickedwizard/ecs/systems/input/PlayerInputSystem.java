@@ -119,15 +119,15 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                 if (Gdx.input.isTouched(playerInput.movementInputPoll)) {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
-                    if (input.y <= movementArea.y + movementArea.getHeight()) {
+                    if (input.y <= movementArea.y + movementArea.getHeight() && !mtc.hasTarget()) {
                         ac.accelX = Measure.units(15f) * (1 + sc.speed);
                         ac.maxX = Measure.units(80f) * (1 + sc.speed);
                         GrappleSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
 
-                        if(mtc.hasTarget()) {
+                /*        if(mtc.hasTarget()) {
                             mtc.reset();
                         }
-
+*/
                     }
                 }
             }
@@ -239,6 +239,16 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
         ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
+        MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
+        VelocityComponent velocityComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+        JumpComponent jumpComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
+
+        if(mtc.hasTarget()){
+
+            velocityComponent.velocity.y = 0;
+            velocityComponent.velocity.x = 0;
+            mtc.reset();
+        }
 
         Entity e = world.createEntity();
         for(Component c : pf.wings(parc, pc, true)) {
@@ -250,8 +260,13 @@ public class PlayerInputSystem extends EntityProcessingSystem {
             e.edit().add(c);
         }
 
+
+        velocityComponent.velocity.y = Measure.units(80f);
+        jumpComponent.jumps--;
+
         glc.gliding = true;
         glc.active = true;
+
 
     }
 

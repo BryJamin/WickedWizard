@@ -200,7 +200,7 @@ public class EnemyFactory extends AbstractFactory {
 
 
 
-    ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
+    public ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
 
         fillbag = defaultEnemyBagNoLootNoDeath(fillbag, x, y, health);
 

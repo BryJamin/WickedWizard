@@ -145,8 +145,6 @@ public class PlayerInput extends InputAdapter {
 
                         if (input.y > cbc.getCenterY()) {
                             if (jc.jumps > 0) {
-                                vc.velocity.y = Measure.units(80f);
-                                jc.jumps--;
                                 world.getSystem(PlayerInputSystem.class).turnOffGlide();
                                 world.getSystem(PlayerInputSystem.class).turnOnGlide();
                                 world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.jumpMegaMix);

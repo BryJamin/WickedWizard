@@ -38,6 +38,7 @@ import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.byrjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.enemy.BlobFactory;
@@ -50,6 +51,7 @@ import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_NEAR;
 
@@ -96,6 +98,10 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         Array<Arena> placedArenas = new Array<Arena>();
 
         Arena startingArena = groundMovementTutorial(new MapCoords(0,0));
+
+
+        startingArena.addEntity(new OnLoadFactory().startMusicEntity(Level.ONE.getMusic()));
+
         placedArenas.add(startingArena);
         placedArenas.add(jumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(platformTutorial(new MapCoords(5,0)));

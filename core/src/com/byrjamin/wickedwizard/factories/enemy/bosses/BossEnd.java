@@ -358,7 +358,7 @@ public class BossEnd extends EnemyFactory {
 
         Entity hand = world.createEntity();
 
-        for(Component c : this.defaultEnemyBag(new ComponentBag(), tempPos, tempPos, handHealth)){
+        for(Component c : this.defaultEnemyBagNoLoot(new ComponentBag(), tempPos, tempPos, handHealth)){
             hand.edit().add(c);
         }
 

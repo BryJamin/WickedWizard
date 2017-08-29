@@ -142,7 +142,6 @@ public class CollisionSystem extends EntityProcessingSystem {
 
                 if(bulletm.has(e) || grapplem.has(e)){
 
-                    System.out.println("Killing a bullet");
 
                     world.getSystem(OnDeathSystem.class).kill(e);
                 }
