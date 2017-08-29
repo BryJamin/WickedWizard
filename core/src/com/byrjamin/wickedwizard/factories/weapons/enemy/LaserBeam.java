@@ -151,7 +151,7 @@ public class LaserBeam {
         //beam.edit().add(new HazardComponent());
         beam.edit().add(new FadeComponent(true, 0.5f, false, 0, 0.3f));
 
-        beam.edit().add(new SoundEmitterComponent(SoundFileStrings.quietLaserMix, 2.0f));
+        beam.edit().add(new SoundEmitterComponent(SoundFileStrings.quietLaserMix, 0.5f));
 
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), chargingLaserWidth, chargingLaserHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
@@ -169,7 +169,7 @@ public class LaserBeam {
 
                 Entity activeBeam = world.createEntity();
                 activeBeam.edit().add(new HazardComponent());
-                activeBeam.edit().add(new SoundEmitterComponent(SoundFileStrings.laserMix, 2.0f));
+                activeBeam.edit().add(new SoundEmitterComponent(SoundFileStrings.laserMix, 0.5f));
 
 
                 PositionComponent oldPC = e.getComponent(PositionComponent.class);

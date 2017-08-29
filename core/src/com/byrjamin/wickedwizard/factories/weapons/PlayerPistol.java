@@ -102,7 +102,7 @@ public class PlayerPistol implements Weapon{
         }
 
 
-        world.getSystem(SoundSystem.class).playSound(SoundFileStrings.playerFireMix);
+        world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.playerFireMegaMix);
         //world.getSystem(FindPlayerSystem.class)
     }
 

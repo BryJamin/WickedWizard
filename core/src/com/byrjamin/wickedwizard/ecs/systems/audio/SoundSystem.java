@@ -7,6 +7,7 @@ import com.artemis.EntitySystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -40,7 +41,8 @@ public class SoundSystem extends EntitySystem {
     private Array<Mix> upcomingMixes = new Array<Mix>();
 
 
-    private OrderedMap<SoundEmitterComponent, Entity> emitterEntityIds = new OrderedMap<SoundEmitterComponent, Entity>();
+
+    private OrderedMap<SoundEmitterComponent, Entity> activeEmitterMap = new OrderedMap<SoundEmitterComponent, Entity>();
 
 
     Array<Entity> copyEntityArray = new Array<Entity>();
@@ -66,7 +68,7 @@ public class SoundSystem extends EntitySystem {
     }
 
 
-    @Override
+/*    @Override
     public void inserted(Entity e) {
         SoundEmitterComponent soundEmitterComponent = e.getComponent(SoundEmitterComponent.class);
         Mix m = soundEmitterComponent.mix;
@@ -76,19 +78,49 @@ public class SoundSystem extends EntitySystem {
         boolean soundOn = preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
         soundEmitterComponent.soundId =  sound.loop(soundOn ? m.getVolume() : 0, m.getPitch(), 0);
-        emitterEntityIds.put(soundEmitterComponent, e);
+        activeEmitterMap.put(soundEmitterComponent, e);
 
 
         System.out.println("INSIDE INSERTED OF SOUND SYSTEM ");
         System.out.println("sound on is" + soundOn);
 
-    }
+    }*/
 
 
     @Override
     protected void processSystem() {
 
-        emitterCheck();
+
+
+        for(Entity e : this.getEntities()){
+
+            SoundEmitterComponent soundEmitterComponent = e.getComponent(SoundEmitterComponent.class);
+
+            boolean isNewSound = true;
+
+            for(SoundEmitterComponent sec : activeEmitterMap.orderedKeys()){
+
+                if(soundEmitterComponent.mix.equals(sec.mix) || soundEmitterComponent.equals(sec)){
+                    isNewSound = false;
+                }
+
+            }
+
+            if(isNewSound) {
+                Music loopedSound = Gdx.audio.newMusic(Gdx.files.internal(soundEmitterComponent.mix.getFileName()));
+                loopedSound.setLooping(true);
+                loopedSound.setVolume(SOUNDON ? soundEmitterComponent.mix.getVolume() : 0);
+                loopedSound.play();
+
+                System.out.println("soundEmitterComponent mix volume is " +  soundEmitterComponent.mix.getVolume());
+                System.out.println("Volume is: + " + loopedSound.getVolume());
+
+                soundEmitterComponent.music = loopedSound;
+                activeEmitterMap.put(soundEmitterComponent, e);
+            }
+
+        }
+
         soundFadeOut();
 
         for(Mix m : upcomingMixes){
@@ -103,20 +135,17 @@ public class SoundSystem extends EntitySystem {
     private void soundFadeOut(){
 
 
-
         for(SoundEmitterComponent sec : soundFadeArray){
+            
+            sec.currentVolume -= world.delta * sec.volumeFadeFactor;
 
-            sec.mix.setVolume(sec.mix.getVolume() - (world.delta * sec.volumeFadeFactor));
-            System.out.println(sec.mix.getVolume());
-
-
-
-            if(sec.mix.getVolume() <= 0){
-                sound.setVolume(sec.soundId, 0);
-                sound.stop(sec.soundId);
+            if(sec.currentVolume <= 0){
+                sec.music.setVolume(0);
+                sec.music.stop();
+                sec.music.dispose();
                 soundFadeArray.removeValue(sec, true);
             } else {
-                sound.setVolume(sec.soundId, sec.mix.getVolume());
+                sec.music.setVolume(sec.currentVolume);
             }
 
 
@@ -126,27 +155,14 @@ public class SoundSystem extends EntitySystem {
     }
 
 
-    /**
-     * Checks to see if the entities who are emitting sound are still alive
-     * If they aren't alive they are removed from the array of entities and added to
-     * a soundfadeArray
-     */
-    private void emitterCheck(){
+    @Override
+    public void removed(Entity e) {
 
-        copyEntityArray.addAll(emitterEntityIds.values().toArray());
-
-        for(Entity e : copyEntityArray){
-            if(!this.getEntities().contains(e)){
-                if(emitterEntityIds.containsValue(e, false)) {
-                    SoundEmitterComponent soundEmitterComponent = emitterEntityIds.findKey(e, false);
-                    soundFadeArray.add(soundEmitterComponent);
-                    //sound.stop(l);
-                    emitterEntityIds.remove(soundEmitterComponent);
-                }
-            }
+        if(activeEmitterMap.containsValue(e, false)){
+            SoundEmitterComponent soundEmitterComponent = activeEmitterMap.findKey(e, false);
+            soundFadeArray.add(soundEmitterComponent);
+            activeEmitterMap.remove(soundEmitterComponent);
         }
-
-        copyEntityArray.clear();
 
     }
 
@@ -180,5 +196,6 @@ public class SoundSystem extends EntitySystem {
 
         super.dispose();
         sound.stop();
+
     }
 }

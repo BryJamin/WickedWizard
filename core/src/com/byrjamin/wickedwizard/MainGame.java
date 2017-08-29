@@ -45,16 +45,7 @@ public class MainGame extends Game {
 		//Gdx.input.setCursorPosition(0, 0);
 		assetManager.load(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
-		assetManager.load(MusicStrings.BG_MAIN_MENU.getFileName(), Music.class);
-		assetManager.load(MusicStrings.BG_LEVEL_ONE.getFileName(), Music.class);
-		assetManager.load(MusicStrings.BG_LEVEL_TWO.getFileName(), Music.class);
-		assetManager.load(MusicStrings.BG_LEVEL_THREE.getFileName(), Music.class);
-		assetManager.load(MusicStrings.BG_LEVEL_FOUR.getFileName(), Music.class);
-		assetManager.load(MusicStrings.BG_LEVEL_FIVE.getFileName(), Music.class);
-
-
 		SoundFileStrings.loadSoundsToManager(assetManager);
-
 
 		FileHandleResolver resolver = new InternalFileHandleResolver();
 		assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));

@@ -26,7 +26,6 @@ import com.byrjamin.wickedwizard.utils.enums.Level;
  */
 public class MusicSystem extends BaseSystem {
 
-    private AssetManager assetManager;
 
     private static Music currentMusic;
     private static Music upcomingMusic;
@@ -54,7 +53,7 @@ public class MusicSystem extends BaseSystem {
 
 
     public MusicSystem(AssetManager assetManager){
-        this.assetManager = assetManager;
+
     }
 
     @Override
@@ -165,7 +164,7 @@ public class MusicSystem extends BaseSystem {
 
         currentMix = mix;
 
-        if(assetManager.isLoaded(mix.getFileName(), Music.class)){
+        if(Gdx.files.internal(mix.getFileName()).exists()) {
             currentMusic = Gdx.audio.newMusic(Gdx.files.internal(mix.getFileName()));
             currentMusic.setLooping(true);
             currentMusic.setVolume(0);
@@ -175,7 +174,7 @@ public class MusicSystem extends BaseSystem {
     public void changeMix(Mix mix){
         if(mix.equals(currentMix)) return;
 
-        if(assetManager.isLoaded(mix.getFileName(), Music.class)){
+        if(Gdx.files.internal(mix.getFileName()).exists()) {
             upComingMix = mix;
         }
     }

@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.assets;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 /**
@@ -12,6 +13,24 @@ public class SoundFileStrings {
 
     public static final String playerFire = "audio/sounds/laser.wav";
     public static final Mix playerFireMix = new Mix(playerFire, 0.05f);
+
+
+    public static final Mix playerFireMix1 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(0.925f).build();
+    public static final Mix playerFireMix2 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(0.95f).build();
+    public static final Mix playerFireMix3 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(0.975f).build();
+    public static final Mix playerFireMix4 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(1.0f).build();
+    public static final Mix playerFireMix5 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(1.025f).build();
+    public static final Mix playerFireMix6 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(1.05f).build();
+    public static final Mix playerFireMix7 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(1.075f).build();
+    public static final Mix playerFireMix8 = new Mix.MixMaker(playerFire).volume(0.05f).pitch(1.1f).build();
+
+    public static final Mix[] playerFireMegaMix = new Mix[]{playerFireMix1, playerFireMix2, playerFireMix3, playerFireMix4,
+            playerFireMix5,
+            playerFireMix6,
+            playerFireMix7,
+            playerFireMix8
+    };
+
 
     public static final String grappleFire = "audio/sounds/laser.wav";
     public static final Mix grappleFireMix = new Mix(playerFire, 0.05f);
@@ -102,8 +121,8 @@ public class SoundFileStrings {
         assetManager.load(coinPickUp, Sound.class);
         assetManager.load(jumpMix.getFileName(), Sound.class);
 
-        assetManager.load(quietLaser, Sound.class);
-        assetManager.load(laser, Sound.class);
+        assetManager.load(quietLaser, Music.class);
+        assetManager.load(laser, Music.class);
 
         assetManager.load(itemPickUp, Sound.class);
         assetManager.load(spawning, Sound.class);
