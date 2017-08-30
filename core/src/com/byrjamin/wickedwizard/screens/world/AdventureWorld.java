@@ -330,6 +330,8 @@ public class AdventureWorld {
 
         if(playerStats.health <= 0 && !isGameOver){
             countDown = 1f;
+            world.getSystem(PlayerInputSystem.class).setEnabled(false);
+            world.getSystem(CameraSystem.class).setEnabled(false);
             isGameOver = true;
         }
 

@@ -20,6 +20,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.utils.BagToEntity;
+import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -183,10 +184,11 @@ public class Giblets extends AbstractFactory implements Action {
         Bag<ComponentBag> bags = new Bag<ComponentBag>();
 
         for(int i = 0; i < numberOfGibletPairs; i++) {
-            float vx = random.nextFloat() * (maxSpeed - minSpeed) + minSpeed;
-            float vy = random.nextFloat() * (maxSpeed - minSpeed) + minSpeed;
-            vx = random.nextBoolean() ? vx : -vx;
-            vy = random.nextBoolean() ? vy : -vy;
+
+            float speed = random.nextFloat() * (maxSpeed - minSpeed) + minSpeed;
+            float angle = random.nextFloat() * 360;
+            float vx = BulletMath.velocityX(speed, Math.toRadians(angle));
+            float vy = BulletMath.velocityY(speed, Math.toRadians(angle));
             bags.add(createGiblet(x, y, new VelocityComponent(vx, vy), expiryTime, size, colors[random.nextInt(colors.length)]));
             bags.add(createGiblet(x, y, new VelocityComponent(-vx, -vy), expiryTime, size, colors[random.nextInt(colors.length)]));
         }
