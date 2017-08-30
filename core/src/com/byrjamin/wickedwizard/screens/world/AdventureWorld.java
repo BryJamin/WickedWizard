@@ -284,7 +284,7 @@ public class AdventureWorld {
         }
 
         world.process();
-        
+
         IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(OnRoomLoadActionComponent.class)).getEntities();
         for(int i = 0; i < intBag.size(); i++) {
             world.getEntity(intBag.get(i)).getComponent(OnRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));

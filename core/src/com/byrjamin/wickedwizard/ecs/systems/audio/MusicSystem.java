@@ -27,9 +27,9 @@ import com.byrjamin.wickedwizard.utils.enums.Level;
 public class MusicSystem extends BaseSystem {
 
 
-    private static Music currentMusic;
-    private static Music upcomingMusic;
+    private static final float MASTER_VOLUME = 1.0f;
 
+    private static Music currentMusic;
 
     private static final float rateOfVolumeDecrease = 0.02f;
 
@@ -84,9 +84,9 @@ public class MusicSystem extends BaseSystem {
 
                         volume = currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease
                                 >= currentMix.getVolume() ? currentMix.getVolume() : currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease;
-                        currentMusic.setVolume(volume);
+                        currentMusic.setVolume(volume * MASTER_VOLUME);
 
-                        if(currentMusic.getVolume() == currentMix.getVolume()) fadeState = FadeState.NORMAL;
+                        if(currentMusic.getVolume() * MASTER_VOLUME == currentMix.getVolume() * MASTER_VOLUME) fadeState = FadeState.NORMAL;
 
                         break;
 
@@ -94,7 +94,7 @@ public class MusicSystem extends BaseSystem {
 
                         volume = currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease
                                 <= 0 ? 0 : currentMusic.getVolume() - currentMix.getVolume() * rateOfVolumeDecrease;
-                        currentMusic.setVolume(volume);
+                        currentMusic.setVolume(volume * MASTER_VOLUME);
 
                         if(currentMusic.getVolume() <= 0) musicState = MusicState.WAITING;
 

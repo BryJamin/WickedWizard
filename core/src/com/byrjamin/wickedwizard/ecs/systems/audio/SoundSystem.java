@@ -34,7 +34,8 @@ import com.byrjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 
 public class SoundSystem extends EntitySystem {
 
-    private ComponentMapper<SoundEmitterComponent> soundMapper;
+
+    private static final float MASTER_VOLUME = 1.0f;
 
     private AssetManager assetManager;
 
@@ -42,14 +43,8 @@ public class SoundSystem extends EntitySystem {
 
     private Array<Mix[]> upcomingMixesMixes = new Array<Mix[]>();
 
-
-
     private OrderedMap<SoundEmitterComponent, Entity> activeEmitterMap = new OrderedMap<SoundEmitterComponent, Entity>();
     private OrderedMap<SoundEmitterComponent, Music> activeLoopedMusic = new OrderedMap<SoundEmitterComponent, Music>();
-
-
-    Array<Entity> copyEntityArray = new Array<Entity>();
-
 
     private Array<SoundEmitterComponent> soundFadeArray = new Array<SoundEmitterComponent>();
 
@@ -69,25 +64,6 @@ public class SoundSystem extends EntitySystem {
         SOUNDON =  preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
 
     }
-
-
-/*    @Override
-    public void inserted(Entity e) {
-        SoundEmitterComponent soundEmitterComponent = e.getComponent(SoundEmitterComponent.class);
-        Mix m = soundEmitterComponent.mix;
-        sound = assetManager.get(m.getFileName(), Sound.class);
-
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
-        boolean soundOn = preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
-
-        soundEmitterComponent.soundId =  sound.loop(soundOn ? m.getVolume() : 0, m.getPitch(), 0);
-        activeEmitterMap.put(soundEmitterComponent, e);
-
-
-        System.out.println("INSIDE INSERTED OF SOUND SYSTEM ");
-        System.out.println("sound on is" + soundOn);
-
-    }*/
 
 
     @Override
@@ -128,15 +104,11 @@ public class SoundSystem extends EntitySystem {
 
             if(isNewSound) {
 
-                System.out.println("INSIDE NEW SOUND");
-
                 Music loopedSound = Gdx.audio.newMusic(Gdx.files.internal(soundEmitterComponent.mix.getFileName()));
                 loopedSound.setLooping(true);
-                loopedSound.setVolume(SOUNDON ? soundEmitterComponent.mix.getVolume() : 0);
+                loopedSound.setVolume(SOUNDON ? soundEmitterComponent.mix.getVolume() * MASTER_VOLUME : 0);
                 loopedSound.play();
 
-                System.out.println("soundEmitterComponent mix volume is " +  soundEmitterComponent.mix.getVolume());
-                System.out.println("Volume is: + " + loopedSound.getVolume());
 
                 activeLoopedMusic.put(soundEmitterComponent, loopedSound);
                 activeEmitterMap.put(soundEmitterComponent, e);
@@ -148,7 +120,7 @@ public class SoundSystem extends EntitySystem {
 
         for(Mix m : upcomingMixes){
             Sound s = assetManager.get(m.getFileName(), Sound.class);
-            s.play(SOUNDON ? m.getVolume() : 0, m.getPitch(), 0);
+            s.play(SOUNDON ? m.getVolume() * MASTER_VOLUME : 0, m.getPitch(), 0);
         }
 
         upcomingMixes.clear();
@@ -162,7 +134,7 @@ public class SoundSystem extends EntitySystem {
         for(SoundEmitterComponent sec : soundFadeArray){
 
 
-            sec.currentVolume -= world.delta * sec.volumeFadeFactor;
+            sec.currentVolume -= world.delta * sec.volumeFadeFactor * MASTER_VOLUME;
 
             if(sec.currentVolume <= 0){
                 Music m = activeLoopedMusic.get(sec);
@@ -173,7 +145,7 @@ public class SoundSystem extends EntitySystem {
                 activeLoopedMusic.remove(sec);
             } else {
                 Music m = activeLoopedMusic.get(sec);
-                m.setVolume(SOUNDON ? sec.currentVolume : 0);
+                m.setVolume(SOUNDON ? sec.currentVolume * MASTER_VOLUME : 0);
             }
 
 
