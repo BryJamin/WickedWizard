@@ -48,6 +48,8 @@ public class DeathScreenWorld {
     private static final float buttonWidth = Measure.units(50f);
     private static final float buttonHeight = Measure.units(15f);
 
+    private static final float screenFadeTime = 4.0f;
+
     public DeathScreenWorld(MainGame game, Viewport gameport){
         this.game = game;
         this.atlas  = game.assetManager.get(FileLocationStrings.spriteAtlas);
@@ -76,7 +78,7 @@ public class DeathScreenWorld {
 
         world = new World(config);
 
-        FadeComponent fc = new FadeComponent(2.0f, false);
+        FadeComponent fc = new FadeComponent(screenFadeTime, false);
         fc.fadeIn = true;
 
         Entity restartEntity = createRestartTextEntity(world, fc);

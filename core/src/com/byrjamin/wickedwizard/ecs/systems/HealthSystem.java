@@ -70,6 +70,7 @@ public class HealthSystem extends EntityProcessingSystem {
 
         if(hc.health <= 0){
             world.getSystem(com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
+            System.out.println("?????");
         }
     }
 

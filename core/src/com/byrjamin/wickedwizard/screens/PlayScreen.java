@@ -311,7 +311,7 @@ public class PlayScreen extends AbstractScreen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
 
-        if(adventureWorld.isGameOver()) adventureWorld.pauseWorld();
+        //if(adventureWorld.isGameOver()) adventureWorld.pauseWorld();
 
         handleInput(delta);
         adventureWorld.process(delta);
@@ -328,12 +328,8 @@ public class PlayScreen extends AbstractScreen {
         if(adventureWorld.isGameOver() && deathScreenWorld != null) deathScreenWorld.process(delta);
 
         if(!adventureWorld.isGameOver()) {
-
             if(!game.batch.isDrawing()) game.batch.begin();
-
             game.batch.end();
-
-
         }
 
         gamecam.update();

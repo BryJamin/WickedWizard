@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BackPackComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -43,6 +44,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
@@ -116,6 +118,41 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(trc);
 
         bag.add(new DirectionalComponent());
+
+
+
+
+        bag.add(new ConditionalActionComponent(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return entity.getComponent(StatComponent.class).health <= 0;
+            }
+        }, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                new Giblets.GibletBuilder(assetManager)
+                        .numberOfGibletPairs(20)
+                        .expiryTime(1.0f)
+                        .maxSpeed(Measure.units(80f))
+                        .minSpeed(Measure.units(10f))
+                        .mixes(SoundFileStrings.explosionMegaMix)
+                        .size(Measure.units(0.75f))
+                        .intangible(true)
+                        .colors(new Color(Color.BLACK), new Color(Color.DARK_GRAY), new Color(Color.WHITE))
+                        .build().performAction(world, e);
+
+                e.getComponent(TextureRegionComponent.class).color.a = 0;
+                e.getComponent(TextureRegionComponent.class).DEFAULT.a = 0;
+
+                world.getSystem(OnDeathSystem.class).killChildComponents(e.getComponent(ParentComponent.class));
+                e.edit().remove(ConditionalActionComponent.class);
+
+
+            }
+        }));
+
+
 
         return bag;
     }

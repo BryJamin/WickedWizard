@@ -91,6 +91,23 @@ public class SoundSystem extends EntitySystem {
 
 
     @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+
+        if(!enabled){
+            sound.stop();
+            for(Music m : activeLoopedMusic.values().toArray()){
+                m.pause();
+            }
+        } else {
+            for(Music m : activeLoopedMusic.values().toArray()){
+                m.play();
+            }
+        }
+
+    }
+
+    @Override
     protected void processSystem() {
 
 

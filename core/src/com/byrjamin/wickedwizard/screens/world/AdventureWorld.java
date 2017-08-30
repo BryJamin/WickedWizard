@@ -120,6 +120,9 @@ public class AdventureWorld {
     private final static float playerStartPositonX = Measure.units(47.5f);
     private final static float playerStartPositonY = Measure.units(30f);
 
+
+    private boolean isGameOver;
+
     private ArenaGUI arenaGUI;
     public World world;
 
@@ -134,6 +137,8 @@ public class AdventureWorld {
     private GameCreator gameCreator;
 
     private BitmapFont currencyFont;
+
+    private float countDown;
 
     public AdventureWorld(MainGame game, Viewport gameport, GameCreator gameCreator, Random random) {
         this.game = game;
@@ -323,6 +328,20 @@ public class AdventureWorld {
             world.setDelta(0.017f);
         }
 
+        if(playerStats.health <= 0 && !isGameOver){
+            countDown = 1f;
+            isGameOver = true;
+        }
+
+        if(isGameOver){
+
+            countDown -= delta;
+            if(countDown <= 0){
+                pauseWorld();
+            }
+
+        }
+
         world.process();
 
     }
@@ -333,11 +352,13 @@ public class AdventureWorld {
         world.getSystem(MusicSystem.class).pauseMusic();
 
         for (BaseSystem s : world.getSystems()) {
-            if (!(s instanceof RenderingSystem || s instanceof UISystem || s instanceof SoundSystem)) {
+            if (!(s instanceof RenderingSystem || s instanceof UISystem)) {
                 s.setEnabled(false);
             }
         }
     }
+
+
 
     public void unPauseWorld() {
 
@@ -350,7 +371,7 @@ public class AdventureWorld {
 
 
     public boolean isGameOver() {
-        return playerStats.health <= 0;
+        return isGameOver;
     }
 
 
