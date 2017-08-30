@@ -8,11 +8,11 @@ public class MusicStrings {
 
     public static final Mix BG_MAIN_MENU = new Mix.MixMaker("audio/music/Contemplation-03.ogg").build();
 
-    public static final Mix BG_LEVEL_ONE = new Mix.MixMaker("audio/music/Field.ogg").build();
+    public static final Mix BG_LEVEL_ONE = new Mix.MixMaker("audio/music/Field-02.ogg").build();
 
-    public static final Mix BG_LEVEL_TWO = new Mix.MixMaker("audio/music/SecondStep.ogg").volume(0.7f).build();
+    public static final Mix BG_LEVEL_TWO = new Mix.MixMaker("audio/music/SecondStep-01.ogg").volume(0.7f).build();
 
-    public static final Mix BG_LEVEL_THREE = new Mix.MixMaker("audio/music/SittingAloneInMyRoomAndThisIsAllICouldComeUpWith-02.ogg").build();
+    public static final Mix BG_LEVEL_THREE = new Mix.MixMaker("audio/music/SittingAloneInMyRoomAndThisIsAllICouldComeUpWith-03.ogg").build();
 
     public static final Mix BG_LEVEL_FOUR = new Mix.MixMaker("audio/music/Mire.ogg").build();
 
