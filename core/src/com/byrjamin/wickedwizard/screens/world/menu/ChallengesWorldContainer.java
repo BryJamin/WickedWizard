@@ -111,22 +111,22 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
 
         Entity backToMainMenu = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30f))
-                .height(buttonHeight)
+                .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(0, 0, 0, 0))
+                .backgroundColor(new Color(Color.WHITE))
                 .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        MenuScreen menuScreen = (MenuScreen) game.getScreen();
-                        menuScreen.setMenuType(MenuScreen.MenuType.MAIN);
+                        MenuScreen.setMenuType(MenuScreen.MenuType.MAIN);
                     }
                 })
                 .build()
                 .createButton(
                         world,
-                        MenuStrings.BACK_TO_MAIN_MENU,
+                        MenuStrings.MAIN_MENU,
                         MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
                         , Measure.units(5f));
+
 
 
         MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))

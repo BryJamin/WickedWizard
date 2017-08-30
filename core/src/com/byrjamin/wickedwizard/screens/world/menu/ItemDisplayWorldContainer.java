@@ -59,9 +59,6 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
     private static final float iconWidth = Measure.units(7.5f);
     private static final float iconHeight = Measure.units(7.5f);
 
-    private static final Color buttonForeground = new Color(Color.BLACK);
-    private static final Color buttonBackground = new Color(Color.WHITE);
-
     private static final float buttonWidth = Measure.units(7.5f);
     private static final float buttonHeight = Measure.units(7.5f);
 
@@ -119,33 +116,24 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
                 .width(Measure.units(30f))
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(0, 0, 0, 0))
+                .backgroundColor(new Color(Color.WHITE))
                 .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        MenuScreen menuScreen = (MenuScreen) game.getScreen();
-                        menuScreen.setMenuType(MenuScreen.MenuType.MAIN);
+                        MenuScreen.setMenuType(MenuScreen.MenuType.MAIN);
                     }
                 })
                 .build()
                 .createButton(
                         world,
-                        MenuStrings.BACK_TO_MAIN_MENU,
+                        MenuStrings.MAIN_MENU,
                         MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
                         , Measure.units(5f));
 
 
-
-
-        final ChallengeMaps challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
-
         int count = 0;
-
-
         float startY = Measure.units(40f);
-
         float buttonGap = Measure.units(2.5f);
-
 
         int maxColumns = 8;
         int maxRows = 3;
@@ -191,12 +179,8 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
         currentlyShownItems = BagToEntity.bagsToEntities(world, itemComponentBagArray.get(currentlyShownIndex));
 
-
-
         arrowEntity(world, Measure.units(90f), CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), false);
         arrowEntity(world, Measure.units(5f), CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), true);
-
-
 
     }
 
@@ -204,7 +188,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         Entity arrow = world.createEntity();
 
         arrow.edit().add(new PositionComponent(x, y));
-        arrow.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+        arrow.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.CHEVRON),
                 arrowSize, arrowSize, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
         arrow.edit().add(new CollisionBoundComponent(new Rectangle(x, y, arrowSize, arrowSize)));
         arrow.edit().add(new ActionOnTouchComponent(new Action() {
@@ -246,7 +230,6 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         if(!isItemCollected) {
             trc.color = new Color(Color.BLACK);
             trc.DEFAULT = new Color(Color.BLACK);
-            //trc.region = atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK);
         }
 
         if(!DataSave.isDataAvailable(item.getValues().challengeId)){

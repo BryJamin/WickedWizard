@@ -110,11 +110,11 @@ public class SoundFileStrings {
 
     //Laser
     public static final String quietLaser = "audio/sounds/laser/1_highlaserAud.ogg";
-    public static final Mix quietLaserMix = new Mix.MixMaker(quietLaser).volume(0.3f).pitch(0.9f).build();
+    public static final Mix quietLaserMix = new Mix.MixMaker(quietLaser).volume(0.1f).pitch(0.9f).build();
 
 
     public static final String laser = "audio/sounds/laser/1_highlaser.ogg";
-    public static final Mix laserMix = new Mix.MixMaker(quietLaser).volume(0.5f).pitch(1.1f).build();
+    public static final Mix laserMix = new Mix.MixMaker(quietLaser).volume(0.3f).pitch(1.1f).build();
 
 
     public static final String spawning = "audio/sounds/spawning/1_spawnSFX.ogg";

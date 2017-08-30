@@ -38,6 +38,8 @@ import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.byrjamin.wickedwizard.utils.GameDelta;
 import com.byrjamin.wickedwizard.utils.Measure;
 
+import java.awt.Menu;
+
 /**
  * Created by BB on 20/08/2017.
  */
@@ -183,18 +185,13 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
         goToSettings.edit().add(trc);
         goToSettings.edit().add(new ActionOnTouchComponent(new Action() {
 
-            private MenuScreen.MenuType previousMenuType = MenuScreen.MenuType.MAIN;
-
             @Override
             public void performAction(World world, Entity e) {
 
-                MenuScreen menuScreen = (MenuScreen) game.getScreen();
-
-                if(menuScreen.getMenuType() != MenuScreen.MenuType.SETTING){
-                    previousMenuType = menuScreen.getMenuType();
-                    menuScreen.setMenuType(MenuScreen.MenuType.SETTING);
+                if(MenuScreen.getMenuType() != MenuScreen.MenuType.SETTING){
+                    MenuScreen.setMenuType(MenuScreen.MenuType.SETTING);
                 } else {
-                    menuScreen.setMenuType(previousMenuType);
+                    MenuScreen.resetMenuType();
                 }
 
             }
@@ -211,18 +208,13 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
         goToItems.edit().add(trc);
         goToItems.edit().add(new ActionOnTouchComponent(new Action() {
 
-            private MenuScreen.MenuType previousMenuType = MenuScreen.MenuType.MAIN;
-
             @Override
             public void performAction(World world, Entity e) {
 
-                MenuScreen menuScreen = (MenuScreen) game.getScreen();
-
-                if(menuScreen.getMenuType() != MenuScreen.MenuType.ITEMS){
-                    previousMenuType = menuScreen.getMenuType();
-                    menuScreen.setMenuType(MenuScreen.MenuType.ITEMS);
+                if(MenuScreen.getMenuType() != MenuScreen.MenuType.ITEMS){
+                    MenuScreen.setMenuType(MenuScreen.MenuType.ITEMS);
                 } else {
-                    menuScreen.setMenuType(previousMenuType);
+                    MenuScreen.resetMenuType();
                 }
 
             }

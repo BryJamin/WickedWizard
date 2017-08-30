@@ -38,8 +38,8 @@ public class MenuStrings {
 
     public static final String NEW_TRAILS = "New Challenges Unlocked";
 
-    public static final String TRAILS = "Trials";
-    public static final String TRAIL_COMPLETE = "Trial Complete";
+    public static final String TRAILS = "Challenges";
+    public static final String TRAIL_COMPLETE = "Challenge Complete";
     public static final String TRAIL_NEW_ITEM = "New Item Unlocked";
     public static final String TRAIL_OLD_ITEM = "The previously unlocked item is still unlocked";
 

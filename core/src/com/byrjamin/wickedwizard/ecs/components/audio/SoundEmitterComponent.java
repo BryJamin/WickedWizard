@@ -12,8 +12,6 @@ import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 public class SoundEmitterComponent extends Component {
 
     public Mix mix;
-    public Music music;
-
 
     public float volumeFadeTime  = 1;
 

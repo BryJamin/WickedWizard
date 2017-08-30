@@ -45,6 +45,7 @@ public class SoundSystem extends EntitySystem {
 
 
     private OrderedMap<SoundEmitterComponent, Entity> activeEmitterMap = new OrderedMap<SoundEmitterComponent, Entity>();
+    private OrderedMap<SoundEmitterComponent, Music> activeLoopedMusic = new OrderedMap<SoundEmitterComponent, Music>();
 
 
     Array<Entity> copyEntityArray = new Array<Entity>();
@@ -109,6 +110,9 @@ public class SoundSystem extends EntitySystem {
             }
 
             if(isNewSound) {
+
+                System.out.println("INSIDE NEW SOUND");
+
                 Music loopedSound = Gdx.audio.newMusic(Gdx.files.internal(soundEmitterComponent.mix.getFileName()));
                 loopedSound.setLooping(true);
                 loopedSound.setVolume(SOUNDON ? soundEmitterComponent.mix.getVolume() : 0);
@@ -117,7 +121,7 @@ public class SoundSystem extends EntitySystem {
                 System.out.println("soundEmitterComponent mix volume is " +  soundEmitterComponent.mix.getVolume());
                 System.out.println("Volume is: + " + loopedSound.getVolume());
 
-                soundEmitterComponent.music = loopedSound;
+                activeLoopedMusic.put(soundEmitterComponent, loopedSound);
                 activeEmitterMap.put(soundEmitterComponent, e);
             }
 
@@ -140,15 +144,19 @@ public class SoundSystem extends EntitySystem {
 
         for(SoundEmitterComponent sec : soundFadeArray){
 
+
             sec.currentVolume -= world.delta * sec.volumeFadeFactor;
 
             if(sec.currentVolume <= 0){
-                sec.music.setVolume(0);
-                sec.music.stop();
-                sec.music.dispose();
+                Music m = activeLoopedMusic.get(sec);
+                m.setVolume(0);
+                m.stop();
+                m.dispose();
                 soundFadeArray.removeValue(sec, true);
+                activeLoopedMusic.remove(sec);
             } else {
-                sec.music.setVolume(SOUNDON ? sec.currentVolume : 0);
+                Music m = activeLoopedMusic.get(sec);
+                m.setVolume(SOUNDON ? sec.currentVolume : 0);
             }
 
 

@@ -88,7 +88,8 @@ public class MenuScreen extends AbstractScreen {
         MAIN, DEV, SETTING, CHALLENGES, ITEMS;
     }
 
-    private MenuType menuType;
+    private static MenuType menuType;
+    private static MenuType defaultMenuType = MenuType.MAIN;
 
 
     //TODO IF you ever click in the deck area don't cast any spells
@@ -98,9 +99,15 @@ public class MenuScreen extends AbstractScreen {
 
         devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
         preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
 
-        menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
+        if(menuType == null) {
+            String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
+            menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
+            defaultMenuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
+        } else {
+            menuType = defaultMenuType;
+        }
+
 
         gestureDetector = new GestureDetector(new MainMenuGestures());
         manager = game.assetManager;
@@ -145,7 +152,7 @@ public class MenuScreen extends AbstractScreen {
             case ITEMS: multiplexer.addProcessor(itemsDisplayWorldDectector);
                 break;
         }
-        //multiplexer.addProcessor(gestureDetector);
+
         Gdx.input.setInputProcessor(multiplexer);
     }
 
@@ -210,13 +217,22 @@ public class MenuScreen extends AbstractScreen {
     }
 
 
-    public MenuType getMenuType() {
+    public static MenuType getMenuType() {
         return menuType;
     }
 
-    public void setMenuType(MenuType menuType) {
-        this.menuType = menuType;
+    public static void setMenuType(MenuType menuType) {
+        if(menuType == MenuType.CHALLENGES || menuType == MenuType.MAIN){
+            MenuScreen.defaultMenuType = menuType;
+        }
+        MenuScreen.menuType = menuType;
     }
+
+
+    public static void resetMenuType() {
+        MenuScreen.menuType = (MenuScreen.defaultMenuType != null) ? defaultMenuType : MenuType.MAIN;
+    }
+
 
     private void setUpMenuScreenStartAndTutorial() {
 
@@ -246,18 +262,19 @@ public class MenuScreen extends AbstractScreen {
                 .build().createButton(world,
                         quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START,
                         CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f)),
-                        MainGame.GAME_HEIGHT / 2 + Measure.units(5f));
+                        Measure.units(37.5f));
 
         Entity trails = menuButtonBuilder
                 .action((new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         menuType = MenuType.CHALLENGES;
+                        defaultMenuType = MenuType.CHALLENGES;
                     }
                 }))
                 .build()
                 .createButton(world, MenuStrings.TRAILS, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
-                ,MainGame.GAME_HEIGHT / 2 - Measure.units(10f));
+                ,Measure.units(22.5f));
 
 
         Entity startTutorial = menuButtonBuilder
