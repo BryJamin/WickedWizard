@@ -1,6 +1,7 @@
 package com.byrjamin.wickedwizard.screens;
 
 import com.artemis.Aspect;
+import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -11,11 +12,14 @@ import com.badlogic.gdx.utils.SerializationException;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.factories.items.Item;
 
 /**
  * Created by Home on 29/07/2017.
@@ -87,10 +91,27 @@ public class QuickSave {
 
         try {
 
-            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
+/*            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
 
             StatComponent s = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
-            s.applyStats(json.fromJson(StatComponent.class, saveData.getStatComponentJSON()));
+            s.applyStats(json.fromJson(StatComponent.class, saveData.getStatComponentJSON()));*/
+
+
+            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
+            final StatComponent s = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
+            final StatComponent savedStats = json.fromJson(StatComponent.class, saveData.getStatComponentJSON());
+
+            world.createEntity().edit().add(new OnRoomLoadActionComponent(new Action() {
+                @Override
+                public void performAction(World world, Entity e) {
+                    for(Item i : savedStats.collectedItems){
+                        i.applyEffect(world, world.getSystem(FindPlayerSystem.class).getPlayerEntity());
+                    }
+
+                    s.applyStats(savedStats);
+                }
+            }));
+
 
             CurrencyComponent currencyComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class);
             currencyComponent.updateCurrency(json.fromJson(CurrencyComponent.class, saveData.getCurrencyJSON()));

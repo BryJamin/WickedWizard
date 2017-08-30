@@ -12,6 +12,8 @@ import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.BackPackComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -43,11 +45,13 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.GrappleSystem;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.factories.weapons.PlayerPistol;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -78,6 +82,8 @@ public class PlayerFactory extends AbstractFactory {
 
 
         ComponentBag bag = new ComponentBag();
+
+
        // bag.add(new CameraShakeComponent(1f));
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
@@ -187,6 +193,25 @@ public class PlayerFactory extends AbstractFactory {
         ChildComponent cc = new ChildComponent();
         parc.children.add(cc);
 
+
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                Entity parent = world.getSystem(FindChildSystem.class).findParentEntity(e.getComponent(ChildComponent.class));
+
+                if(parent != null){
+                    TextureRegionComponent parentTexture = parent.getComponent(TextureRegionComponent.class);
+
+                    if(parentTexture != null){
+                        e.getComponent(TextureRegionComponent.class).color.a = parentTexture.color.a;
+                    }
+                }
+
+            }
+        }, 0, true));
+
+
         bag.add(cc);
 
         return bag;
@@ -204,6 +229,8 @@ public class PlayerFactory extends AbstractFactory {
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
+
+
 
 
         //TODO I should switch this to the moveto component which should also use the way the moveToPlayerAI works

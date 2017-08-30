@@ -177,7 +177,6 @@ public class ScreenWipeSystem extends BaseSystem {
         if(transition != Transition.NONE) {
 
             transitionEntity = world.createEntity();
-
             transitionEntity.edit().add(new PositionComponent());
             transitionEntity.edit().add(new MoveToPositionComponent());
             transitionEntity.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));

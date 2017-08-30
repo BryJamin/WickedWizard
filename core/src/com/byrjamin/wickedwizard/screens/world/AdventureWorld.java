@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.screens.world;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
@@ -7,6 +8,7 @@ import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -97,6 +99,7 @@ import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
+import com.byrjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.byrjamin.wickedwizard.screens.QuickSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -273,19 +276,20 @@ public class AdventureWorld {
             entity.edit().add(comp);
         }
 
-        world.process();
-
         for (Bag<Component> bag : world.getSystem(RoomTransitionSystem.class).getCurrentArena().getBagOfEntities()) {
             entity = world.createEntity();
             for (Component comp : bag) {
                 entity.edit().add(comp);
             }
-
-            if(world.getMapper(OnRoomLoadActionComponent.class).has(entity)){
-                entity.getComponent(OnRoomLoadActionComponent.class).action.performAction(world, entity);
-            }
-
         }
+
+        world.process();
+        
+        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(OnRoomLoadActionComponent.class)).getEntities();
+        for(int i = 0; i < intBag.size(); i++) {
+            world.getEntity(intBag.get(i)).getComponent(OnRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));
+        }
+
 
 
 
