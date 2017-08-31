@@ -216,8 +216,6 @@ public class ItemFactory extends AbstractFactory {
                     altarItem = item;
                 }
 
-                altarItem = new ItemCrownOfBiggaBlobba();
-
                 e.getComponent(AltarComponent.class).pickUp = altarItem;
 
                 BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(altarItem, e.getComponent(ParentComponent.class),

@@ -41,6 +41,8 @@ public class TextureStrings {
     public static final String SETTINGS_ITEM = "settings/item";
     public static final String SETTINGS_LOCK = "settings/lock";
 
+    public static final String ICON_ARROW = "settings/arrow";
+
     public static final String GO_TO_SETTINGS = "settings/settings_goto";
 
     public static final String ICON_PAUSE = "pause";

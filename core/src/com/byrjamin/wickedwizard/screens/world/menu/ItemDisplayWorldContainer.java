@@ -54,7 +54,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
     private final TextureAtlas atlas;
 
 
-    private static final float arrowSize = Measure.units(5f);
+    private static final float arrowSize = Measure.units(7.5f);
 
     private static final float iconWidth = Measure.units(7.5f);
     private static final float iconHeight = Measure.units(7.5f);
@@ -179,8 +179,8 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
         currentlyShownItems = BagToEntity.bagsToEntities(world, itemComponentBagArray.get(currentlyShownIndex));
 
-        arrowEntity(world, Measure.units(90f), CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), false);
-        arrowEntity(world, Measure.units(5f), CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), true);
+        arrowEntity(world, startX + (iconWidth * maxColumns + 1) + buttonGap * maxColumns + 1, CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), false);
+        arrowEntity(world, startX + (iconWidth * - 1) + buttonGap * -1, CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), true);
 
     }
 
@@ -188,8 +188,15 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         Entity arrow = world.createEntity();
 
         arrow.edit().add(new PositionComponent(x, y));
-        arrow.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.CHEVRON),
-                arrowSize, arrowSize, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
+
+
+        TextureRegionComponent textureRegionComponent = new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_ARROW),
+                arrowSize, arrowSize, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+
+        textureRegionComponent.rotation = isLeft ? 90 : 270;
+
+        arrow.edit().add(textureRegionComponent);
+
         arrow.edit().add(new CollisionBoundComponent(new Rectangle(x, y, arrowSize, arrowSize)));
         arrow.edit().add(new ActionOnTouchComponent(new Action() {
             @Override

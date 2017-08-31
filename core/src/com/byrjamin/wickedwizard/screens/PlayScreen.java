@@ -76,8 +76,6 @@ public class PlayScreen extends AbstractScreen {
     private GestureDetector gestureDetector;
 
     private Random random;
-    private JigsawGenerator jg;
-
     private AdventureWorld adventureWorld;
 
 
@@ -131,7 +129,6 @@ public class PlayScreen extends AbstractScreen {
 
                 try {
 
-
                     if (playScreenConfig.roomid >= 0) {
                         arenaCreates.add(allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid));
                         boolean hasMandatory = allArenaStore.getArenaGen(playScreenConfig.id, playScreenConfig.roomid).createArena(new MapCoords()).mandatoryDoors.size > 0;
@@ -184,7 +181,6 @@ public class PlayScreen extends AbstractScreen {
         //gameport.setScreenPosition(-(int)MainGame.GAME_BORDER, -(int)MainGame.GAME_BORDER);
 
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        //Moves the gamecamer to the (0,0) position instead of being in the center.
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
         gamecam.update();
         random = new Random();
@@ -270,29 +266,6 @@ public class PlayScreen extends AbstractScreen {
             stats.fireRate = 99f;
             stats.speed = 0.5f;
             stats.luck = 99f;
-/*            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemLostLettersShotSpeedAccuracy());
-            stats.collectedItems.add(new ItemSootheNote());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemVitaminC());
-            stats.collectedItems.add(new ItemNeatCube());
-            stats.collectedItems.add(new ItemLostLettersShotSpeedAccuracy());*/
-
         };
 
     }

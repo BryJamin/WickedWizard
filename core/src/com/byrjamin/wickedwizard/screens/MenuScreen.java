@@ -5,6 +5,8 @@ import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
@@ -129,6 +131,7 @@ public class MenuScreen extends AbstractScreen {
         backDropDetector = new GestureDetector(menuBackDropWorld);
         trailsWorldDectector = new GestureDetector(challengesWorldContainer);
         itemsDisplayWorldDectector = new GestureDetector(itemDisplayWorldContainer);
+
         Gdx.input.setCatchBackKey(false);
 
     }
@@ -152,6 +155,32 @@ public class MenuScreen extends AbstractScreen {
             case ITEMS: multiplexer.addProcessor(itemsDisplayWorldDectector);
                 break;
         }
+
+
+        multiplexer.addProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+
+                if(menuType !=  MenuType.MAIN) {
+
+                    Gdx.input.setCatchBackKey(true);
+
+                    if (keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE) {
+                        MenuScreen.setMenuType(MenuType.MAIN);
+                    }
+
+                    Gdx.input.setCatchBackKey(true);
+
+                }
+
+                return super.keyDown(keycode);
+            }
+        });
+
+
+
+
+
 
         Gdx.input.setInputProcessor(multiplexer);
     }

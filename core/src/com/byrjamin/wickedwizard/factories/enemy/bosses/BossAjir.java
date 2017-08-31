@@ -157,7 +157,7 @@ public class BossAjir extends EnemyFactory{
 
         PhaseComponent phaseComponent = new PhaseComponent();
         phaseComponent.addPhase(bulletSplitterWeaponPhase, new AjirSplitterWeaponPhase(random));
-        phaseComponent.addPhase(deathFromAbovePhase, new AjirDeathFromAbovePhase(random));
+        phaseComponent.addPhase(deathFromAbovePhase, new AjirDeathFromAboveLaserPhase(random));
 
         bag.add(phaseComponent);
 
@@ -174,7 +174,7 @@ public class BossAjir extends EnemyFactory{
         private AjirSplitterWeapon ajirSplitterWeapon;
 
         //TODO change these to different angles once the art is finalized (Directly below is not fair)
-        private int[] possibleAngles = new int[]{0, 45, 90, 135, 180};
+        private Integer[] possibleAngles = new Integer[]{0, 45, 90, 135, 180};
         private Array<Integer> angleArrayToBeShuffle = new Array<Integer>();
 
         public AjirSplitterWeaponPhase(Random random){
@@ -186,14 +186,31 @@ public class BossAjir extends EnemyFactory{
         @Override
         public void performAction(World world, Entity e) {
 
-            e.edit().add(new WeaponComponent(ajirSplitterWeapon, 0.5f));
-            e.edit().add(new FiringAIComponent(Math.toRadians(possibleAngles[random.nextInt(possibleAngles.length)])));
+            e.edit().add(new WeaponComponent(ajirSplitterWeapon, timeBetweenSplitAction * 2));
+            e.edit().add(new FiringAIComponent(FiringAIComponent.AI.UNTARGETED));
 
             e.edit().add(new ActionAfterTimeComponent(new Action() {
+
+                Array<Integer> angleArray = new Array<Integer>();
+
+
                 @Override
                 public void performAction(World world, Entity e) {
-                    e.getComponent(FiringAIComponent.class).firingAngleInRadians = Math.toRadians(possibleAngles[random.nextInt(possibleAngles.length)]);
+
+                    if(angleArray.size <= 0){
+                        angleArray.addAll(possibleAngles);
+                        angleArray.shuffle();
+                    }
+
+                    e.getComponent(FiringAIComponent.class).firingAngleInRadians = Math.toRadians(angleArray.pop());
+
                 }
+
+
+
+
+
+
             }, timeBetweenSplitAction, true));
         }
 
@@ -208,13 +225,13 @@ public class BossAjir extends EnemyFactory{
 
 
 
-    private class AjirDeathFromAbovePhase implements Task {
+    private class AjirDeathFromAboveLaserPhase implements Task {
 
         private Random random;
 
         private LaserBeam laserBeam;
 
-        public AjirDeathFromAbovePhase(Random random){
+        public AjirDeathFromAboveLaserPhase(Random random){
             this.random = random;
 
             laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
@@ -328,7 +345,7 @@ public class BossAjir extends EnemyFactory{
                     .build();
 
             this.giantBulletThatSplits = new MultiPistol.PistolBuilder(assetManager)
-                    .shotScale(10)
+                    .shotScale(6)
                     .shotSpeed(shotSpeed)
                     .customOnDeathAction(new OnDeathActionComponent(new Action() {
                         @Override
