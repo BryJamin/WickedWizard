@@ -24,7 +24,7 @@ import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.byrjamin.wickedwizard.factories.arenas.presetmaps.EndGameMap;
+import com.byrjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.byrjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
@@ -32,7 +32,6 @@ import com.byrjamin.wickedwizard.factories.enemy.bosses.BossEnd;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
-import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
 import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH;
 
 /**
@@ -138,7 +137,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
 
     public ArenaCreate endStartingRoom() {
-        return endStartingRoom(new EndGameMap(assetManager).endGameMap());
+        return endStartingRoom(new GalleryAtTheEndMap(assetManager).endGameMap());
     }
 
 

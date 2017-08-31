@@ -45,13 +45,13 @@ import com.byrjamin.wickedwizard.utils.Measure;
  * Created by Home on 28/07/2017.
  */
 
-public class EndGameMap extends AbstractFactory {
+public class GalleryAtTheEndMap extends AbstractFactory {
 
     private ArenaShellFactory arenaShellFactory;
     private DecorFactory decorFactory;
     private ArenaSkin arenaSkin;
 
-    public EndGameMap(AssetManager assetManager) {
+    public GalleryAtTheEndMap(AssetManager assetManager) {
         super(assetManager);
         this.arenaSkin = new BrightWhiteSkin();
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);

@@ -4,14 +4,12 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
-import com.byrjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -40,10 +38,6 @@ import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.factories.arenas.Arena;
-import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
-import com.byrjamin.wickedwizard.factories.arenas.presetmaps.EndGameMap;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
@@ -96,7 +90,7 @@ public class BossEnd extends EnemyFactory {
     private static final float firstSplitterRange = Measure.units(25f);
     private static final float secondSplitterSpeed = Measure.units(20f);
     private static final float secondSplitterRange = Measure.units(15f);
-    private static final float finalSplitterSpeed = Measure.units(50f);;
+    private static final float finalSplitterSpeed = Measure.units(40f);;
 
 
     private static final float fauxPhaseTime = 100f;
@@ -106,7 +100,7 @@ public class BossEnd extends EnemyFactory {
 
     //LaserDancePhase
     private static final float numberOfLasersFired = 4;
-    private static final float timeBetweenLaserFiredForDance = 1.25f;
+    private static final float timeBetweenLaserFiredForDance = 1.75f;
 
 
     //PhaseTimers
@@ -520,7 +514,7 @@ public class BossEnd extends EnemyFactory {
         private Random random;
 
 
-        private float offSetFromBoss = Measure.units(10f);
+        private float offSetFromBoss = Measure.units(2.5f);
 
         //TODO this weapon should take in the bosses position and then use it when centering the lasers
         //TODO as the player should be stuck in the middle of the boss
@@ -531,15 +525,15 @@ public class BossEnd extends EnemyFactory {
         public EndDeathFromAboveLasers(AssetManager assetManager, Random random){
 
             laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
-                    .chargingLaserWidth(Measure.units(5f))
+                    .chargingLaserWidth(Measure.units(7.5f))
                     .chargingLaserHeight(Measure.units(200f))
-                    .activeLaserWidth(Measure.units(7.5f))
+                    .activeLaserWidth(Measure.units(10f))
                     .activeLaserHeight(Measure.units(200f))
                     .chargingLaserTime(4f)
                     .layer(TextureRegionComponent.FOREGROUND_LAYER_NEAR)
                     .build();
             this.random = random;
-            positionIndentifierArray.addAll(0,1,2,3,4,5,6,7,8,9,10);
+            positionIndentifierArray.addAll(1,2,3,4,5,6,7,8,9,10);
 
         }
 
@@ -548,10 +542,16 @@ public class BossEnd extends EnemyFactory {
         @Override
         public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
-
-            //e.getComponent(AnimationStateComponent.class).queueAnimationState(FIRING_STATE);
-
+            positionIndentifierArray.clear();
+            positionIndentifierArray.addAll(1,2,3,4,5,6,7,8);
             positionIndentifierArray.shuffle();
+            positionIndentifierArray.pop();
+            positionIndentifierArray.addAll(0, 9);
+            positionIndentifierArray.shuffle();
+
+
+
+
             Entity entityForLaserAction = world.createEntity();
 
             entityForLaserAction.edit().add(new ExpireComponent(20f));
@@ -560,8 +560,14 @@ public class BossEnd extends EnemyFactory {
                 int count = 0;
                 @Override
                 public void performAction(World world, Entity e) {
-                    if(count < 10) {
-                        laserBeam.createBeam(world, offSetFromBoss + Measure.units(positionIndentifierArray.get(count) * 7.5f), -Measure.units(50f));
+/*
+
+                    laserBeam.createBeam(world, offSetFromBoss + Measure.units(0 * 10f), -Measure.units(50f));
+                    laserBeam.createBeam(world, offSetFromBoss + Measure.units(8 * 10f), -Measure.units(50f));
+*/
+
+                    if(count < positionIndentifierArray.size) {
+                        laserBeam.createBeam(world, offSetFromBoss + Measure.units(positionIndentifierArray.get(count) * 10f), -Measure.units(50f));
                         count++;
                     }
                 }
@@ -620,7 +626,7 @@ public class BossEnd extends EnemyFactory {
         private LaserBeam verticalBeam;
         private Random random;
 
-        private boolean isTopHorizontalBeam = false;
+        private boolean isTopHorizontalBeam = true;
         private boolean isHorizontalBeamPhase = false;
 
 
@@ -635,7 +641,7 @@ public class BossEnd extends EnemyFactory {
                     .activeLaserWidth(Measure.units(12.5f))
                     .activeLaserHeight(Measure.units(100f))
                     .centerLaserUsingWidth(true)
-                    .chargingLaserTime(1f)
+                    .chargingLaserTime(1.5f)
                     .build();
 
             sideBeam = new LaserBeam.LaserBeamBuilder(assetManager)
@@ -644,7 +650,7 @@ public class BossEnd extends EnemyFactory {
                     .activeLaserWidth(Measure.units(100f))
                     .activeLaserHeight(Measure.units(12.5f))
                     .centerLaserUsingWidth(false)
-                    .chargingLaserTime(1f)
+                    .chargingLaserTime(1.5f)
                     .build();
 
             this.random = random;
@@ -678,7 +684,7 @@ public class BossEnd extends EnemyFactory {
                             }
 
                         } else {
-                            sideBeam.createBeam(world, 0, Measure.units(15f));
+                            sideBeam.createBeam(world, 0, Measure.units(10f));
                             isTopHorizontalBeam = !isTopHorizontalBeam;
                         }
 

@@ -33,7 +33,7 @@ import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.byrjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
-import com.byrjamin.wickedwizard.factories.arenas.presetmaps.EndGameMap;
+import com.byrjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.byrjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.items.ItemFactory;
@@ -260,7 +260,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 new ItemArenaFactory(assetManager, Level.FIVE.getArenaSkin()).createBossRushItemRoom(new MapCoords(22, -1)),
 
 
-                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new EndGameMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(23, -1))
+                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(23, -1))
 
         );
 
@@ -318,7 +318,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
                 new BossRoomAmalgama(assetManager, Level.FIVE.getArenaSkin()).amalgamaArena().createArena(new MapCoords(8, -1)),
 
-                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new EndGameMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(14, -1))
+                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(14, -1))
 
         );
 
