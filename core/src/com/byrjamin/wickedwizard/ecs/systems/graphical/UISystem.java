@@ -172,7 +172,7 @@ public class UISystem extends EntitySystem {
 
         float screenoffset = Measure.units(10f);
 
-        for(int i = 0; i < healthRegions.size; i++) {
+        for(int i = 0; i < ((healthRegions.size < 14) ? healthRegions.size : 14); i++) {
             batch.draw(healthRegions.get(i),
                     gamecam.position.x - (gamecam.viewportWidth / 2) + screenoffset + (105 * i),
                     gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(5f) + CenterMath.offsetY(Measure.units(5), Measure.units(4f)),

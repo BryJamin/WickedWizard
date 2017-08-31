@@ -108,7 +108,7 @@ public class BossMaps extends AbstractFactory {
 
         btc.offsetY = -Measure.units(15f);
 
-        Arena startingArena = arenaShellFactory.createSmallArena(mapCoords, Arena.ArenaType.NORMAL, false, true, false, false);
+        Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.NORMAL);
         startingArena.addEntity(portalFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f), btc));
         return startingArena;
     }
