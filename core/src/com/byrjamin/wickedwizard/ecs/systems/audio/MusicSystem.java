@@ -50,7 +50,7 @@ public class MusicSystem extends BaseSystem {
     private FadeState fadeState = FadeState.FADE_IN;
 
 
-    public MusicSystem(AssetManager assetManager){
+    public MusicSystem(){
 
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
         MUSIC_ON =  preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
@@ -82,8 +82,6 @@ public class MusicSystem extends BaseSystem {
                         volume = currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease
                                 >= currentMix.getVolume() ? currentMix.getVolume() : currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease;
 
-                        System.out.println(volume);
-
                         currentMusic.setVolume(volume * MASTER_VOLUME);
 
                         if(currentMusic.getVolume() == currentMix.getVolume() * MASTER_VOLUME) fadeState = FadeState.NORMAL;
@@ -113,10 +111,6 @@ public class MusicSystem extends BaseSystem {
                 }
 
         }
-
-
-        System.out.println(currentMusic.getVolume());
-        System.out.println(fadeState);
 
         if(currentMusic == null) return;
 

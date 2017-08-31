@@ -199,7 +199,7 @@ public class MenuScreen extends AbstractScreen {
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RenderingSystem(game.batch, manager, gameport),
                         new BoundsDrawingSystem(),
-                        new MusicSystem(manager)
+                        new MusicSystem()
 
                 )
                 .build();

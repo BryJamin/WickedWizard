@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -60,6 +61,9 @@ public class RenderingSystem extends EntitySystem {
     private GlyphLayout glyphLayout = new GlyphLayout();
 
 
+    PerformanceCounter performanceCounter = new PerformanceCounter("Rendering System Counter");
+
+
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, AssetManager assetManager, Viewport gameport) {
         super(Aspect.all(PositionComponent.class).exclude(UIComponent.class).one(
@@ -90,6 +94,10 @@ public class RenderingSystem extends EntitySystem {
         if(!batch.isDrawing()) {
             batch.begin();
         }
+
+
+        performanceCounter.start();
+
     }
 
     @Override
@@ -231,6 +239,24 @@ public class RenderingSystem extends EntitySystem {
     @Override
     protected void end() {
         batch.end();
+
+
+
+
+        performanceCounter.stop();
+        performanceCounter.tick();
+
+/*        System.out.println("\n BLOCK");
+        System.out.println(performanceCounter.name + " BLOCK");
+        System.out.println("MAX " + performanceCounter.time.max);
+        System.out.println("AVERAGE " + performanceCounter.time.average);
+        System.out.println("LATEST " + performanceCounter.time.latest);*/
+
+/*        System.out.println("Render call:" + batch.renderCalls);
+
+
+        System.out.println("Render call:" + batch.maxSpritesInBatch);*/
+
     }
 
 

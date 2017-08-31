@@ -8,6 +8,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.byrjamin.wickedwizard.ecs.components.HealthComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
@@ -57,6 +58,9 @@ public class CollisionSystem extends EntityProcessingSystem {
     private Aspect.Builder enemyOnlyWalls;
     private Aspect.Builder enemyBulletBlockWalls;
 
+
+    PerformanceCounter performanceCounter = new PerformanceCounter("Collision System Counter");
+
     @SuppressWarnings("unchecked")
     public  CollisionSystem() {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
@@ -67,12 +71,17 @@ public class CollisionSystem extends EntityProcessingSystem {
         enemyBulletBlockWalls = Aspect.all(CollisionBoundComponent.class, BlockEnemyBulletComponent.class);
         playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(GrappleableComponent.class);
         platforms = Aspect.all(PlatformComponent.class, CollisionBoundComponent.class);
+
+
+
     }
 
 
     @Override
     protected void begin() {
         super.begin();
+
+        performanceCounter.start();
     }
 
     @Override
@@ -118,7 +127,6 @@ public class CollisionSystem extends EntityProcessingSystem {
 
 
         futureRectangle.set(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight());
-        //System.out.println(futureRectangle.getX());
 
         if(!bulletm.has(e)) {
             futureRectangle.x += (vc.velocity.x * world.delta);
@@ -131,7 +139,15 @@ public class CollisionSystem extends EntityProcessingSystem {
 
         //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
 
+        if(bulletm.has(e)) {
+            System.out.println(collidableobjects.size);
+        }
+
         for(Rectangle r : collidableobjects) {
+
+            if(bulletm.has(e)) {
+                System.out.println("Not even going to do anything");
+            }
 
             Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, r);
 
@@ -192,5 +208,19 @@ public class CollisionSystem extends EntityProcessingSystem {
     }
 
 
+    @Override
+    protected void end() {
+        super.end();
 
+        performanceCounter.stop();
+        performanceCounter.tick();
+
+/*        System.out.println("\n BLOCK");
+        System.out.println(performanceCounter.name + " BLOCK");
+        System.out.println("MAX " + performanceCounter.time.max);
+        System.out.println("AVERAGE " + performanceCounter.time.average);
+        System.out.println("LATEST " + performanceCounter.time.latest);*/
+       // System.out.println(performanceCounter.time.max);
+
+    }
 }

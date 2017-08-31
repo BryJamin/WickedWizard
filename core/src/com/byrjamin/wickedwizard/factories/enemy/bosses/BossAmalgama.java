@@ -107,13 +107,16 @@ public class BossAmalgama extends EnemyFactory {
     public BossAmalgama(AssetManager assetManager) {
         super(assetManager);
 
+        Color gibletColor = new Color(Color.BLACK);
+
+
         this.gibletBuilder = new Giblets.GibletBuilder(assetManager)
-                .numberOfGibletPairs(3)
+                .numberOfGibletPairs(2)
                 .size(Measure.units(0.5f))
                 .minSpeed(Measure.units(10f))
                 .maxSpeed(Measure.units(20f))
-                .colors(new Color(Color.BLACK))
-                .intangible(false)
+                .colors(gibletColor)
+                .intangible(true)
                 .expiryTime(0.2f);
 
     }

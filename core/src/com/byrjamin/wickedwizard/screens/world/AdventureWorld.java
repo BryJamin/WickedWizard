@@ -241,7 +241,7 @@ public class AdventureWorld {
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
                         new LevelItemSystem(new ItemStore(random), random),
-                        new MusicSystem(assetManager),
+                        new MusicSystem(),
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(gameCreator, jigsawGenerator),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),

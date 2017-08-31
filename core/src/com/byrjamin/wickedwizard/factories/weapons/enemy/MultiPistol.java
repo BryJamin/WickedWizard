@@ -176,7 +176,7 @@ public class MultiPistol implements Weapon {
                 .maxSpeed(Measure.units(20f))
                 //.mixes(SoundFileStrings.queitExplosionMegaMix)
                 .colors(color)
-                .intangible(false)
+                .intangible(true)
                 .expiryTime(0.2f)
                 .build();
 

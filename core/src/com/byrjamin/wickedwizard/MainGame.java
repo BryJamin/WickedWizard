@@ -38,7 +38,7 @@ public class MainGame extends Game {
 
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
+		batch = new SpriteBatch(700);
 		//Gdx.input.setCursorCatched(true);
 		//Gdx.input.setCursorPosition(0, 0);
 		assetManager.load(FileLocationStrings.spriteAtlas, TextureAtlas.class);
