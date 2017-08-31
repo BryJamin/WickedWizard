@@ -5,12 +5,9 @@ import com.byrjamin.wickedwizard.factories.AbstractFactory;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.byrjamin.wickedwizard.factories.arenas.ArenaCreate;
-import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
-import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.byrjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossGurner;
+import com.byrjamin.wickedwizard.factories.enemy.bosses.BossKugelDusc;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -59,7 +56,7 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
                                 ArenaBuilder.wall.NONE)).buildArena();
 
 
-                arena.addEntity(new BossGurner(assetManager).giantKugelDusche(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(10f)));
+                arena.addEntity(new BossKugelDusc(assetManager).giantKugelDusche(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(10f)));
 
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(50f)));
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(80f)));

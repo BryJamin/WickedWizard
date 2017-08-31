@@ -102,9 +102,18 @@ public class RenderingSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
+
+        int count = 0;
+
         for (int i = 0; orderedEntities.size() > i; i++) {
-            process(orderedEntities.get(i));
+            if(process(orderedEntities.get(i))){
+                count++;
+            };
         }
+
+
+        System.out.println("ENTITES DRAWN = " + count);
+        System.out.println("ENTITES AVALIABLE = " + orderedEntities.size());
     }
 
     protected boolean applyShaderForBlinkOnHitComponent(Entity e){
@@ -131,9 +140,14 @@ public class RenderingSystem extends EntitySystem {
         batch.begin();
     }
 
-    protected void process(Entity e) {
+    protected boolean process(Entity e) {
 
         PositionComponent pc = pm.get(e);
+
+        if(cbm.has(e)) {
+            if (!CameraSystem.isOnCamera(cbm.get(e).bound, gameport.getCamera())) return false;
+        }
+
 
         boolean shaderOn = applyShaderForBlinkOnHitComponent(e);
 
@@ -219,7 +233,7 @@ public class RenderingSystem extends EntitySystem {
 
         batch.setColor(batchColor);
 
-
+        return true;
 
     }
 
@@ -252,10 +266,10 @@ public class RenderingSystem extends EntitySystem {
         System.out.println("AVERAGE " + performanceCounter.time.average);
         System.out.println("LATEST " + performanceCounter.time.latest);*/
 
-/*        System.out.println("Render call:" + batch.renderCalls);
+        System.out.println("Render calls:" + batch.renderCalls);
 
 
-        System.out.println("Render call:" + batch.maxSpritesInBatch);*/
+        System.out.println("Max sprites In batch:" + batch.maxSpritesInBatch);
 
     }
 

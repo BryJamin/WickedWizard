@@ -31,7 +31,7 @@ import java.util.Random;
  * Created by Home on 27/05/2017.
  */
 
-public class BossGurner extends EnemyFactory{
+public class BossKugelDusc extends EnemyFactory{
 
     private static final float width = Measure.units(30f);
     private static final float height = Measure.units(30f);
@@ -50,13 +50,13 @@ public class BossGurner extends EnemyFactory{
 
 
     //LaserPhase
-    private static final float laserSquareSize = Measure.units(7.5f);
+    private static final float laserSquareSize = Measure.units(8.5f);
     private static final float speedInDegrees = 0.5f;
 
     private static final float laserPhaseTime = 12.5f;
 
 
-    public BossGurner(AssetManager assetManager) {
+    public BossKugelDusc(AssetManager assetManager) {
         super(assetManager);
     }
 
