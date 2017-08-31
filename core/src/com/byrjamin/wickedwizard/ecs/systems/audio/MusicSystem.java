@@ -6,14 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.Array;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
-import com.byrjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
-import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.utils.enums.Level;
 
 /**
@@ -37,6 +32,9 @@ public class MusicSystem extends BaseSystem {
     private static Mix upComingMix = new Mix("");
 
 
+    public static boolean MUSIC_ON = false;
+
+
 
     private enum MusicState {
         PLAYING, PAUSED, WAITING
@@ -54,14 +52,13 @@ public class MusicSystem extends BaseSystem {
 
     public MusicSystem(AssetManager assetManager){
 
+        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
+        MUSIC_ON =  preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
     }
 
     @Override
     protected void processSystem() {
 
-/*
-        System.out.println(fadeState);
-        System.out.println(musicState);*/
 
         switch(musicState){
 
@@ -84,9 +81,12 @@ public class MusicSystem extends BaseSystem {
 
                         volume = currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease
                                 >= currentMix.getVolume() ? currentMix.getVolume() : currentMusic.getVolume() + currentMix.getVolume() * rateOfVolumeDecrease;
+
+                        System.out.println(volume);
+
                         currentMusic.setVolume(volume * MASTER_VOLUME);
 
-                        if(currentMusic.getVolume() * MASTER_VOLUME == currentMix.getVolume() * MASTER_VOLUME) fadeState = FadeState.NORMAL;
+                        if(currentMusic.getVolume() == currentMix.getVolume() * MASTER_VOLUME) fadeState = FadeState.NORMAL;
 
                         break;
 
@@ -100,6 +100,12 @@ public class MusicSystem extends BaseSystem {
 
                         break;
 
+                    case NORMAL:
+
+                        if(currentMusic.getVolume() != currentMix.getVolume() * MASTER_VOLUME && MUSIC_ON){
+                            currentMusic.setVolume(currentMix.getVolume() * MASTER_VOLUME);
+                        }
+
                 }
 
                 if((fadeState == FadeState.NORMAL || fadeState == FadeState.FADE_IN) && upComingMix != null){
@@ -109,18 +115,19 @@ public class MusicSystem extends BaseSystem {
         }
 
 
+        System.out.println(currentMusic.getVolume());
+        System.out.println(fadeState);
+
         if(currentMusic == null) return;
 
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
-        boolean musicOn = preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
-
-        if(currentMusic.isPlaying() && !musicOn){
-            stopMusic();
+        if(!MUSIC_ON){
+            if(currentMusic.getVolume() != 0) currentMusic.setVolume(0);
+        } else {
+            if(!currentMusic.isPlaying()) {
+                currentMusic.play();
+            }
         }
 
-        if(musicOn && !currentMusic.isPlaying()) {
-            currentMusic.play();
-        }
 
     }
 
@@ -148,18 +155,9 @@ public class MusicSystem extends BaseSystem {
 
         if(mix.equals(currentMix)) return;
 
-
-        System.out.println(mix.equals(currentMix));
-
         if(currentMusic != null){
-
-
-            upComingMix = mix;
-
-            if(currentMusic.isPlaying()) {
-                currentMusic.stop();
-                currentMusic.dispose();
-            }
+            currentMusic.stop();
+            currentMusic.dispose();
         }
 
         currentMix = mix;
@@ -208,9 +206,10 @@ public class MusicSystem extends BaseSystem {
     }
 
 
-    public void stopMusic(){
+    public void muteMusic(){
         if(currentMusic != null) {
-            currentMusic.stop();
+            currentMusic.setVolume(0);
+            MUSIC_ON = false;
         }
     }
 
@@ -230,10 +229,7 @@ public class MusicSystem extends BaseSystem {
         musicState = prePuaseState;
         if(currentMusic != null){
 
-            Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
-            boolean musicOn = preferences.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
-
-            if(musicOn) {
+            if(MUSIC_ON) {
                 currentMusic.play();
             }
         }
@@ -244,6 +240,6 @@ public class MusicSystem extends BaseSystem {
     @Override
     protected void dispose() {
         super.dispose();
-        //stopMusic();
+        //muteMusic();
     }
 }

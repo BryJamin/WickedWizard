@@ -25,6 +25,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
@@ -133,6 +134,7 @@ public class MenuBackDropWorld extends AbstractGestureDectector implements World
                 boolean musicOn = !settings.getBoolean(PreferenceStrings.SETTINGS_MUSIC, false);
                 settings.putBoolean(PreferenceStrings.SETTINGS_MUSIC, musicOn).flush();
 
+                MusicSystem.MUSIC_ON = musicOn;
 
                 e.getComponent(AnimationComponent.class).animations.put(AnimationStateComponent.DEFAULT,
                         new Animation<TextureRegion>(0.15f / 1f, musicOn ?
