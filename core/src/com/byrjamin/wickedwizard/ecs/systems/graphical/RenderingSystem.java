@@ -107,13 +107,13 @@ public class RenderingSystem extends EntitySystem {
 
         for (int i = 0; orderedEntities.size() > i; i++) {
             if(process(orderedEntities.get(i))){
-                count++;
+               // count++;
             };
         }
 
-
+/*
         System.out.println("ENTITES DRAWN = " + count);
-        System.out.println("ENTITES AVALIABLE = " + orderedEntities.size());
+        System.out.println("ENTITES AVALIABLE = " + orderedEntities.size());*/
     }
 
     protected boolean applyShaderForBlinkOnHitComponent(Entity e){
@@ -266,11 +266,11 @@ public class RenderingSystem extends EntitySystem {
         System.out.println("AVERAGE " + performanceCounter.time.average);
         System.out.println("LATEST " + performanceCounter.time.latest);*/
 
-        System.out.println("Render calls:" + batch.renderCalls);
+     /*   System.out.println("Render calls:" + batch.renderCalls);
 
 
         System.out.println("Max sprites In batch:" + batch.maxSpritesInBatch);
-
+*/
     }
 
 

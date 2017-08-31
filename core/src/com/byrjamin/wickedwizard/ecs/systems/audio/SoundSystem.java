@@ -189,10 +189,10 @@ public class SoundSystem extends EntitySystem {
      */
     public void playRandomSound(Mix... mixes){
 
-        if(!upcomingMixesMixes.contains(mixes, true)) {
+       // if(!upcomingMixesMixes.contains(mixes, true)) {
             playSound(mixes[MathUtils.random.nextInt(mixes.length)]);
-            upcomingMixesMixes.add(mixes);
-        }
+         //   upcomingMixesMixes.add(mixes);
+       // }
     }
 
     @Override

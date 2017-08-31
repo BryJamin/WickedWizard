@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.byrjamin.wickedwizard.ecs.systems.level.ArenaMap;
@@ -43,7 +44,7 @@ public class ArenaGUI {
     private Color locationBlinkColor = new Color (1,1,1,1f);
     private Color bossRoomColor = new Color(238f / 255f, 53f / 255f , 50f / 255f, 1f);
     private Color itemRoomColor = new Color (101 / 255f, 88f / 255f, 245 / 255f, 1f);
-    private Color shopRoomColor = new Color (234f / 255f, 185f / 255f, 157f / 255f, 1);
+    private Color shopRoomColor =  ColorResource.RGBtoColor(216, 123, 66, 1);
 
     private float mapBlinker;
 

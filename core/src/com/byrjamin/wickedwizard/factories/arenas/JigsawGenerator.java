@@ -324,7 +324,7 @@ public class JigsawGenerator {
         itemRooms.shuffle();
 
         for(Arena itemRoom : itemRooms) {
-            if (placeRoomUsingDoors(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)) {
+            if (placeRoomUsingDoorsRandomly(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)) {
                 placedArenas.add(itemRoom);
                 cleanArena(itemRoom, placedArenas);
                 return true;
@@ -342,7 +342,7 @@ public class JigsawGenerator {
     public boolean placeShopRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
         Arena shopRoom = shopFactory.createShop(new MapCoords());
-        if(placeRoomUsingDoors(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
+        if(placeRoomUsingDoorsRandomly(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(shopRoom);
             cleanArena(shopRoom, placedArenas);
             return true;
@@ -382,6 +382,13 @@ public class JigsawGenerator {
 
         //adc.sort(farSort.DOOR_FAR_MAPCOORDS);
        // adc.shuffle();
+        return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
+
+    }
+
+    public boolean placeRoomUsingDoorsRandomly(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+        Array<DoorComponent> adc = avaliableDoorsSet.orderedItems();
+            adc.shuffle();
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
 
     }

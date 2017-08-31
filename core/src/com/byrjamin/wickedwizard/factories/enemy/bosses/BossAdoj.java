@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -64,7 +65,7 @@ public class BossAdoj extends EnemyFactory {
     private static final float fastPistolFireRate = 0.1f;
     private static final float speed = Measure.units(40f);
 
-    private static final float tommyReload = 0.6f;
+    private static final float tommyReload = 1f;
     private static final float tommyFiringTime = 0.3f;
 
 
@@ -104,13 +105,13 @@ public class BossAdoj extends EnemyFactory {
         PhaseComponent pc = new PhaseComponent();
         OnTargetXCondition onTargetXCondition = new OnTargetXCondition();
 
-        pc.addPhase(6f, new TommyGunPhase(tommyReload));
+        pc.addPhase(20f, new TommyGunPhase(tommyReload));
         pc.addPhase(new MoveToPhase(Direction.UP), onTargetXCondition);
-        pc.addPhase(9f, new TommySpreadGunPhase(false));
+        pc.addPhase(20f, new TommySpreadGunPhase(false));
         pc.addPhase(new MoveToPhase(Direction.LEFT), onTargetXCondition);
-        pc.addPhase(6f, new TommyGunPhase(tommyReload));
+        pc.addPhase(20f, new TommyGunPhase(tommyReload));
         pc.addPhase(new MoveToPhase(Direction.UP), onTargetXCondition);
-        pc.addPhase(9f, new TommySpreadGunPhase(true));
+        pc.addPhase(20f, new TommySpreadGunPhase(true));
         pc.addPhase(new MoveToPhase(Direction.RIGHT), onTargetXCondition);
 
 
@@ -181,12 +182,14 @@ public class BossAdoj extends EnemyFactory {
             e.edit().add(new WeaponComponent(tommyGun));
             e.edit().add(new ActionAfterTimeComponent(new Action() {
 
-                private boolean flip;
+                private boolean hasBullets = true;
+
+                int count = 0;
 
                 @Override
                 public void performAction(World world, Entity e) {
                    // e.getComponent(WeaponComponent.class).addChargeTime(reloadTime);
-                    if(flip) {
+                    if(hasBullets) {
                         CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
                         CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
@@ -200,12 +203,19 @@ public class BossAdoj extends EnemyFactory {
                     } else {
                         e.edit().remove(FiringAIComponent.class);
                         e.getComponent(ActionAfterTimeComponent.class).resetTime = tommyReload;
+
+
+                        count++;
+
+                        if(count >= 3){
+                            world.getSystem(PhaseSystem.class).startNextPhase(e);
+                        }
                     }
 
-                    flip = !flip;
+                    hasBullets = !hasBullets;
 
                 }
-            }, tommyReload, true));
+            }, tommyReload / 2, true));
         }
 
         @Override
@@ -252,8 +262,8 @@ public class BossAdoj extends EnemyFactory {
                     @Override
                     public void performAction(World world, Entity e) {
                         FiringAIComponent faic = e.getComponent(FiringAIComponent.class);
-                        faic.firingAngleInRadians += Math.toRadians(6);
-                        if(faic.firingAngleInRadians > Math.toRadians(200)){
+                        faic.firingAngleInRadians += Math.toRadians(5);
+                        if(faic.firingAngleInRadians > Math.toRadians(180)){
                             world.getSystem(PhaseSystem.class).startNextPhase(e);
                         }
                     }
@@ -265,8 +275,8 @@ public class BossAdoj extends EnemyFactory {
                     @Override
                     public void performAction(World world, Entity e) {
                         FiringAIComponent faic = e.getComponent(FiringAIComponent.class);
-                        faic.firingAngleInRadians -= Math.toRadians(6);
-                        if(faic.firingAngleInRadians < Math.toRadians(-20)){
+                        faic.firingAngleInRadians -= Math.toRadians(5);
+                        if(faic.firingAngleInRadians < Math.toRadians(0)){
                             world.getSystem(PhaseSystem.class).startNextPhase(e);
                         }
                     }

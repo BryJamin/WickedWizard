@@ -9,6 +9,8 @@ public class TextureStrings {
 
     public static final  String BLOCK_WALK = "block_walk";
 
+    public static final  String BLOCK_BLINK = "block_blink";
+
 
     public static final String MAIN_MENU_BACKDROP = "backgrounds/menu_backdrop";
 

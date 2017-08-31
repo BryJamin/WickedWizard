@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -35,11 +36,13 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
+import com.byrjamin.wickedwizard.utils.collider.Collider;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
@@ -62,10 +65,10 @@ public class KnightFactory extends EnemyFactory {
     private static final float hitboxOffsetY = Measure.units(7.5f);
     private static final float hitboxWidth = Measure.units(7);
 
-    private static final float health = 20;
+    private static final float health = 25;
 
-    private static final float vSpeed = Measure.units(10f);
-    private static final float hSpeed = Measure.units(20f);
+    private static final float vSpeed = Measure.units(15f);
+    private static final float hSpeed = Measure.units(25f);
 
 
     public KnightFactory(AssetManager assetManager) {
@@ -161,7 +164,7 @@ public class KnightFactory extends EnemyFactory {
 
             if(isShield) {
                 for (float f : angles) {
-                    createBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, f, new Color(Color.BLACK));
+                    createBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, f, new Color(ColorResource.ENEMY_BULLET_COLOR));
                 }
                 isShield = false;
             } else {
@@ -171,9 +174,10 @@ public class KnightFactory extends EnemyFactory {
 
                     if(child == null) continue;
 
-                    OrbitComponent oc = child.getComponent(OrbitComponent.class);
+                    CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                    CollisionBoundComponent bulletCbc = child.getComponent(CollisionBoundComponent.class);
 
-                    double angle = Math.toRadians(oc.currentAngleInDegrees);
+                    double angle = BulletMath.angleOfTravel(bulletCbc.getCenterX(), bulletCbc.getCenterY(), playerCbc.getCenterX(), playerCbc.getCenterY());
 
                     child.edit().add(new VelocityComponent(
                             BulletMath.velocityX(Measure.units(75f), angle),
@@ -212,12 +216,13 @@ public class KnightFactory extends EnemyFactory {
             e.edit().add(new PositionComponent(x,y));
             e.edit().add(new CollisionBoundComponent(new Rectangle(x,y, size, size), true));
             e.edit().add(new EnemyComponent());
-            e.edit().add(new OrbitComponent(centerOfOrbit, radius, 4, startAngle, width / 2, height / 2));
-            e.edit().add(new BlinkOnHitComponent());
-            e.edit().add(new HealthComponent(3));
+            e.edit().add(new OrbitComponent(centerOfOrbit, radius, 3.5f, startAngle, width / 2, height / 2));
             e.edit().add(new FadeComponent(true, 1, false));
             //e.edit().add(new VelocityComponent());
             //e.edit().add(new BulletComponent());
+
+
+
             e.edit().add(new OnDeathActionComponent(new Giblets.GibletBuilder(assetManager)
                     .numberOfGibletPairs(3)
                     .size(Measure.units(0.5f))

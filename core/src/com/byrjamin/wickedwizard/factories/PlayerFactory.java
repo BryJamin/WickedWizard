@@ -104,7 +104,7 @@ public class PlayerFactory extends AbstractFactory {
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
         k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
-        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 10, atlas.findRegions(TextureStrings.BLOCK_WALK)));
+        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.BLOCK_BLINK)));
         bag.add(new AnimationComponent(k));
 
 

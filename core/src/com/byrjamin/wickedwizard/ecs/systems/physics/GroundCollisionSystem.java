@@ -65,12 +65,21 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
 
         if((cbc.getRecentCollisions().contains(Collider.Collision.TOP, true) && !leftOrRight)) {
 
-            System.out.println("INSIDE");
+            //System.out.println("INSIDE");
 
              vc.velocity.y = 0;
         }
 
         if(cbc.getRecentCollisions().contains(Collider.Collision.LEFT, true) || cbc.getRecentCollisions().contains(Collider.Collision.RIGHT, true)){
+
+/*
+            System.out.println("Velocity X is 0 hombre \n");
+
+
+            for(Collider.Collision c : cbc.getRecentCollisions()){
+                System.out.println("Collision is " + c + "\n");
+            }*/
+
             vc.velocity.x = 0;
         }
 

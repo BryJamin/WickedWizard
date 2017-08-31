@@ -107,9 +107,12 @@ public class BossWraithCowl extends EnemyFactory {
 
 
     //Orbit Phase
-    private static final float orbitCenterWidth = Measure.units(30f);
+    private static final float orbitCenterWidth = Measure.units(5f);
+
+
+    private static final float radiusOfOrbit = Measure.units(60f);
     private static final float orbitCenterHeight = Measure.units(5f);
-    private static final float speedOfInvisibleCenter = Measure.units(30f);
+    private static final float speedOfInvisibleCenter = Measure.units(40f);
     private static final float changeInDegrees = 1.5f;
     private static final float startingDegrees = 0;
 
@@ -120,9 +123,6 @@ public class BossWraithCowl extends EnemyFactory {
 
 
     private static int texturelayer = TextureRegionComponent.FOREGROUND_LAYER_MIDDLE;
-
-
-    private static final float radius = Measure.units(45f);
 
     private Random random = MathUtils.random; //TODO pull in the global random
 
@@ -186,20 +186,6 @@ public class BossWraithCowl extends EnemyFactory {
 
 
 
-
-    private class FadeOutPhase implements Task {
-
-        @Override
-        public void performAction(World world, Entity e) {
-            e.edit().add(new FadeComponent(false, 0.5f, false));
-        }
-
-        @Override
-        public void cleanUpAction(World world, Entity e) {
-            e.edit().remove(FadeComponent.class);
-        }
-    }
-
     private class FadeInPhaseLeft implements Task {
 
 
@@ -225,9 +211,9 @@ public class BossWraithCowl extends EnemyFactory {
 
             higherWeapon = new MultiPistol.PistolBuilder(assetManager)
                     .fireRate(2f)
-                    .angles(0)
+                    .angles(0, 45, 90, 135, 180, 225, 270, 315)
                     .shotScale(8)
-                    .shotSpeed(Measure.units(50f))
+                    .shotSpeed(Measure.units(35f))
                     .intangible(true)
                     .color(ColorResource.GHOST_BULLET_COLOR)
                     .enemy(true)
@@ -266,6 +252,7 @@ public class BossWraithCowl extends EnemyFactory {
             switch (positionInRoom){
 
                 case LEFT:
+
                     pc.position.set(wraithLeftPosition, 0);
 
                     for(int i = 0; i < 9; i++){
@@ -273,12 +260,14 @@ public class BossWraithCowl extends EnemyFactory {
                     }
 
                     world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.set(playerLeftPosition, 0);
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.set(0, 0);
                     e.edit().add(new VelocityComponent(0, random.nextBoolean() ? speed : -speed));
                     e.edit().add(new FiringAIComponent(0));
                     e.edit().add(new WeaponComponent(ghostMeapon, 0.5f));
 
                     break;
                 case RIGHT:
+
                     pc.position.set(wraithRightPosition, 0);
 
 
@@ -287,6 +276,8 @@ public class BossWraithCowl extends EnemyFactory {
                     }
 
                     world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.set(playerRightPosition, 0);
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.set(0, 0);
+
                     e.edit().add(new VelocityComponent(0, random.nextBoolean() ? speed : -speed));
                     e.edit().add(new FiringAIComponent(180));
                     e.edit().add(new WeaponComponent(ghostMeapon, 1f));
@@ -296,13 +287,12 @@ public class BossWraithCowl extends EnemyFactory {
 
                     pc.position.set(wraithUpPosition, 0);
 
-                    for(int i = 0; i < 18; i++){
-                        createBlock(world, e.getComponent(ParentComponent.class), wallUpPosition.x + Measure.units((i * 5)), wallUpPosition.y, 270, new Color(Color.BLACK));
-                    }
-
                     world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.set(playerUpPosition, 0);
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.set(0, 0);
+
+
                     e.edit().add(new VelocityComponent(random.nextBoolean() ? speed : -speed, 0));
-                    e.edit().add(new FiringAIComponent());
+                    e.edit().add(new FiringAIComponent(0));
                     e.edit().add(new WeaponComponent(higherWeapon, 0.5f));
 
             }
@@ -449,22 +439,22 @@ public class BossWraithCowl extends EnemyFactory {
             //Wraith
             e.edit().add(new FadeComponent(true, 0.5f, false));
             e.edit().add(new IntangibleComponent());
-            e.edit().add(new OrbitComponent(centerPosition.position, radius, changeInDegrees, startAngleInDegrees, orbitOffsetX, orbitOffsetY));
+            e.edit().add(new OrbitComponent(centerPosition.position, radiusOfOrbit, changeInDegrees, startAngleInDegrees, orbitOffsetX, orbitOffsetY));
 
 
             //Fake Wraiths
-            for(int i = 40; i < 360; i+=40) {
+            for(int i = 30; i < 360; i+=30) {
 
 
                 Entity fakeWraith = world.createEntity();
                 fakeWraith.edit().add(new PositionComponent());
                 fakeWraith.edit().add(new CollisionBoundComponent(new Rectangle(-100, -100, width, height),
-                        new HitBox(new Rectangle(-100,-100,hitBoxwidth, hitBoxheight),
+                        new HitBox(new Rectangle(-1000,-1000,hitBoxwidth, hitBoxheight),
                                 CenterMath.offsetX(width, hitBoxwidth),
                                 CenterMath.offsetY(height, hitBoxheight))));
                 fakeWraith.edit().add(new EnemyComponent());
                 fakeWraith.edit().add(new EnemyComponent());
-                fakeWraith.edit().add(new OrbitComponent(centerPosition.position, radius, changeInDegrees, startAngleInDegrees + i, orbitOffsetX, orbitOffsetY));
+                fakeWraith.edit().add(new OrbitComponent(centerPosition.position, radiusOfOrbit, changeInDegrees, startAngleInDegrees + i, orbitOffsetX, orbitOffsetY));
                 TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.COWL), width, height,
                         texturelayer);
                 trc.color.a = 0;
@@ -489,9 +479,11 @@ public class BossWraithCowl extends EnemyFactory {
 
             CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class)
                     .getPlayerComponent(CollisionBoundComponent.class);
-            playerCbc.setCenter(arena.getWidth() / 2, arena.getHeight() / 2);
+            playerCbc.setCenter(arena.getWidth() / 2, arena.getHeight() / 4);
             world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class)
                     .position.set(playerCbc.bound.x, playerCbc.bound.y, 0);
+
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.set(0, 0);
 
 
 
