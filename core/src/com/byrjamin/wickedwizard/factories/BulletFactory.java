@@ -35,35 +35,6 @@ public class BulletFactory extends AbstractFactory {
     private float width = Measure.units(1);
     private float height = Measure.units(1);
 
-    public Entity createEnemyBullet(World world, float x, float y, double angleOfTravel){
-        Entity e = world.createEntity();
-        for(Component c : basicEnemyBulletBag(x,y,4)){
-            e.edit().add(c);
-        }
-        e.edit().add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
-        return e;
-    }
-
-    public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, double angleOfTravel) {
-        return enemyBulletBag(fill,x,y,4,angleOfTravel);
-    }
-
-
-
-    public ComponentBag enemyBulletBag(ComponentBag fill, float x, float y, float scale, double angleOfTravel) {
-        for(Component c : basicEnemyBulletBag(x,y,scale)){
-            fill.add(c);
-        }
-        fill.add(new VelocityComponent((float) (Measure.units(50) * Math.cos(angleOfTravel)), (float) (Measure.units(50) * Math.sin(angleOfTravel))));
-        //fill.add(new ExpiryRangeComponent(new Vector3(BagSearch.getObjectOfTypeClass(PositionComponent.class, fill).position), Measure.units(1f)));
-
-        return fill;
-    }
-
-
-
-
-
 
     public ComponentBag basicBulletBag(float x, float y, float scale) {
         return basicBulletBag(x ,y ,scale ,atlas.findRegion(TextureStrings.BLOCK), new Color(1,1,1,1));

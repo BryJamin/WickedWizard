@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.ColorResource;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -325,9 +326,9 @@ public class BossAmalgama extends EnemyFactory {
                 public void performAction(World world, Entity e) {
 
                     for(int j = 0; j < 4; j++) {
-                        for (int i = 0; i < 12; i++) {
+                        for (int i = 0; i < 9; i++) {
                             createBlock(world, e.getComponent(ParentComponent.class),
-                                    e.getComponent(PositionComponent.class).getX() + e.getComponent(CollisionBoundComponent.class).bound.getWidth() + (wallDistance + j * Measure.units(5f)) , Measure.units(0f) + Measure.units(i * 5), 180, new Color(0, 0, 0, 0));
+                                    e.getComponent(PositionComponent.class).getX() + e.getComponent(CollisionBoundComponent.class).bound.getWidth() + (wallDistance + j * Measure.units(5f)) , Measure.units(10f) + Measure.units(i * 5), 180, new Color(0, 0, 0, 0));
                         }
                     }
                 }
@@ -420,6 +421,7 @@ public class BossAmalgama extends EnemyFactory {
                     .activeLaserWidth(Measure.units(1000f))
                     .activeLaserHeight(Measure.units(7.5f))
                     .centerLaserUsingWidth(false)
+                    .layer(TextureRegionComponent.ENEMY_LAYER_NEAR)
                     .build();
 
             centerLasers = new LaserBeam.LaserBeamBuilder(assetManager)
@@ -428,6 +430,7 @@ public class BossAmalgama extends EnemyFactory {
                     .activeLaserWidth(Measure.units(1000f))
                     .activeLaserHeight(Measure.units(25f))
                     .centerLaserUsingWidth(false)
+                    .layer(TextureRegionComponent.ENEMY_LAYER_NEAR)
                     .build();
 
         }
@@ -478,6 +481,8 @@ public class BossAmalgama extends EnemyFactory {
         public BulletSpreadPhase(){
             spreadWeapon = new MultiPistol.PistolBuilder(assetManager)
                     .enemy(true)
+                    .color(ColorResource.GHOST_BULLET_COLOR)
+                    .intangible(true)
                     .angles(80, 60, 40, 20, 0, -20, -40, -60, -80)
                     .shotScale(2.5f)
                     .build();

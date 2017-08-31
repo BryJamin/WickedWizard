@@ -241,7 +241,7 @@ public class ItemResource {
                 .challengeId(ChallengesResource.Rank3Challenges.rank3TimeTrail)
                 .region("enemy/blob", 2)
                 .textureColor(ColorResource.BLOB_RED)
-                .name("Slime Coat")
+                .name("Angry Slime Coat")
                 .description("Eww.. but also Grr..")
                 .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
                 .build();

@@ -24,10 +24,12 @@ import static com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory
 public class BossRoomAjir extends AbstractFactory {
 
     private ArenaSkin arenaSkin;
+    private DecorFactory decorFactory;
 
     public BossRoomAjir(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager);
         this.arenaSkin = arenaSkin;
+        this.decorFactory = new DecorFactory(assetManager, arenaSkin);
     }
 
     public ArenaCreate ajirArena() {
@@ -39,10 +41,14 @@ public class BossRoomAjir extends AbstractFactory {
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
-                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL)).buildArena();
 
-                arena.addEntity(new BossAjir(assetManager).ajir(arena.getWidth() / 2, Measure.units(35f)));
+
+                arena.addEntity(decorFactory.wallBag(0, arena.getHeight(), arena.getWidth(), Measure.units(5f)));
+                arena.addEntity(new BossAjir(assetManager).ajir(arena.getWidth() / 2, Measure.units(40f)));
+
+
 
 
                 return arena;
