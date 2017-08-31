@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -62,7 +62,7 @@ public class UISystem extends EntitySystem {
 
         this.assetManager = game.assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        this.currencyFont = assetManager.get(Assets.small, BitmapFont.class);// font size 12 pixels
+        this.currencyFont = assetManager.get(FontAssets.small, BitmapFont.class);// font size 12 pixels
 
         this.playerStats = playerStats;
         this.playerCurrency = playerCurrency;

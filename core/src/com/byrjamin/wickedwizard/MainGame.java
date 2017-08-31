@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,9 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
-import com.byrjamin.wickedwizard.assets.MusicStrings;
 import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.screens.LoadingScreen;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -61,7 +59,7 @@ public class MainGame extends Game {
 		size1Params.fontParameters.magFilter = Texture.TextureFilter.Linear;
 		//size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
-		assetManager.load(Assets.small, BitmapFont.class, size1Params);
+		assetManager.load(FontAssets.small, BitmapFont.class, size1Params);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size2Params.fontFileName = "fonts/Roboto-Black.ttf";
@@ -72,7 +70,7 @@ public class MainGame extends Game {
 		size2Params.fontParameters.magFilter = Texture.TextureFilter.Linear;
 		//size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
-        assetManager.load(Assets.medium, BitmapFont.class, size2Params);
+        assetManager.load(FontAssets.medium, BitmapFont.class, size2Params);
 
 
 		setScreen(new LoadingScreen(this));

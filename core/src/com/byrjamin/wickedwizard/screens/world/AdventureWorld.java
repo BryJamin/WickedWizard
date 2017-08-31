@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -99,7 +99,6 @@ import com.byrjamin.wickedwizard.factories.arenas.GameCreator;
 import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.byrjamin.wickedwizard.factories.arenas.PresetGames;
 import com.byrjamin.wickedwizard.factories.items.ItemStore;
-import com.byrjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.byrjamin.wickedwizard.screens.QuickSave;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
@@ -154,7 +153,7 @@ public class AdventureWorld {
         this.gameCreator = gameCreator;
         playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
         playerCurrency = BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
-        this.currencyFont = assetManager.get(Assets.small, BitmapFont.class);// font size 12 pixels
+        this.currencyFont = assetManager.get(FontAssets.small, BitmapFont.class);// font size 12 pixels
         createAdventureWorld();
     }
 

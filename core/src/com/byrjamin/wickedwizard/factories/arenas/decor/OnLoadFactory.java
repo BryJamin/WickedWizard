@@ -3,12 +3,11 @@ package com.byrjamin.wickedwizard.factories.arenas.decor;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.Color;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
@@ -24,7 +23,6 @@ import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Locale;
 
@@ -92,7 +90,7 @@ public class OnLoadFactory {
 
                 timer.edit().add(new FadeComponent(false, 0.5f, true));
                 timer.edit().add(new ChildComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(ParentComponent.class)));
-                timer.edit().add(new TextureFontComponent(Assets.small,
+                timer.edit().add(new TextureFontComponent(FontAssets.small,
                         String.format(Locale.getDefault(), "%.0f", timeLimit), TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.WHITE)));
                 timer.edit().add(new ChallengeTimerComponent(timeLimit));
                 timer.edit().add(new ActionAfterTimeComponent(new Action() {

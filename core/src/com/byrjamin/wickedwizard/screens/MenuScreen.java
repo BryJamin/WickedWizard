@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -36,7 +37,6 @@ import com.byrjamin.wickedwizard.screens.world.menu.MenuBackDropWorld;
 import com.byrjamin.wickedwizard.screens.world.menu.SettingsWorld;
 import com.byrjamin.wickedwizard.screens.world.menu.ChallengesWorldContainer;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.assets.Assets;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.MovementSystem;
@@ -114,7 +114,6 @@ public class MenuScreen extends AbstractScreen {
         gestureDetector = new GestureDetector(new MainMenuGestures());
         manager = game.assetManager;
         atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        Assets.initialize(game.assetManager);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
@@ -133,6 +132,8 @@ public class MenuScreen extends AbstractScreen {
         itemsDisplayWorldDectector = new GestureDetector(itemDisplayWorldContainer);
 
         Gdx.input.setCatchBackKey(false);
+
+        Gdx.input.setCatchBackKey(true);
 
     }
 
@@ -163,14 +164,12 @@ public class MenuScreen extends AbstractScreen {
 
                 if(menuType !=  MenuType.MAIN) {
 
-                    Gdx.input.setCatchBackKey(true);
-
                     if (keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE) {
                         MenuScreen.setMenuType(MenuType.MAIN);
                     }
 
-                    Gdx.input.setCatchBackKey(true);
-
+                } else {
+                    Gdx.app.exit();
                 }
 
                 return super.keyDown(keycode);
@@ -224,7 +223,7 @@ public class MenuScreen extends AbstractScreen {
 
     private void setUpMenuScreenOnlyTutorial(){
 
-        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -273,7 +272,7 @@ public class MenuScreen extends AbstractScreen {
         final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
 
 
-        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)

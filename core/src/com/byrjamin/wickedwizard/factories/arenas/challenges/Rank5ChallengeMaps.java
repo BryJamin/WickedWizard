@@ -95,7 +95,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     public GameCreator ultimateTimeTrail(String id) {
 
-        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FIVE.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -219,7 +219,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     public GameCreator bossRush(String id) {
 
-        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FOUR.getMusic()).createArena(new MapCoords(0, 0));
+        Arena startingArena = new ReuseableRooms(assetManager, Level.ONE.getArenaSkin()).challengeStartingArena(Level.FIVE.getMusic()).createArena(new MapCoords(0, 0));
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
@@ -106,7 +106,7 @@ public class CreditsWorld {
 
 
 
-        Entity mainMenuTrigger = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+        Entity mainMenuTrigger = new MenuButton.MenuButtonBuilder(FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(skipWidth)
                 .height(skipHeight)
                 .foregroundColor(Color.WHITE)
@@ -191,7 +191,7 @@ public class CreditsWorld {
         mainMenuTrigger.edit().add(new PositionComponent(gameport.getCamera().position.x,
                 gameport.getCamera().position.y - Measure.units(20f)));
 
-        mainMenuTrigger.edit().add(new TextureFontComponent(Assets.small, skipText,0, skipOffsetY, skipWidth, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(Color.WHITE)));
+        mainMenuTrigger.edit().add(new TextureFontComponent(FontAssets.small, skipText,0, skipOffsetY, skipWidth, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(Color.WHITE)));
 
         mainMenuTrigger.edit().add(new CollisionBoundComponent(new Rectangle(mainMenuTrigger.getComponent(PositionComponent.class).getX(),
                 mainMenuTrigger.getComponent(PositionComponent.class).getY(), skipWidth, skipHeight)));
@@ -225,7 +225,7 @@ public class CreditsWorld {
 
         bag.add(pc);
         //bag.add(new VelocityComponent(0, creditsSpeed));
-        bag.add(new TextureFontComponent(Assets.small, text,
+        bag.add(new TextureFontComponent(FontAssets.small, text,
                 MainGame.GAME_WIDTH,
                 TextureRegionComponent.BACKGROUND_LAYER_FAR,
                 new Color(Color.WHITE)));
@@ -253,7 +253,7 @@ public class CreditsWorld {
 
         e.edit().add(pc);
         //bag.add(new VelocityComponent(0, creditsSpeed));
-        e.edit().add(new TextureFontComponent(Assets.small, text,
+        e.edit().add(new TextureFontComponent(FontAssets.small, text,
                 MainGame.GAME_WIDTH,
                 TextureRegionComponent.BACKGROUND_LAYER_FAR,
                 new Color(Color.WHITE)));

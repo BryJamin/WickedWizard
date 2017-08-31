@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
@@ -97,7 +97,7 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
         world = new World(config);
 
 
-        Entity title = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        Entity title = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(new Color(Color.BLACK))
@@ -109,7 +109,7 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
                         Measure.units(50f));
 
 
-        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(Assets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30f))
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
@@ -129,7 +129,7 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
 
 
 
-        MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -167,7 +167,7 @@ public class ChallengesWorldContainer extends AbstractGestureDectector implement
     public int createChallengeButtons(World world, int startCount, Array<String> challengeIds, String unlockString){
 
 
-        MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder challengeButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)

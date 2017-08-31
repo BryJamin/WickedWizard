@@ -37,8 +37,7 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.byrjamin.wickedwizard.screens.world.*;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.assets.Assets;
-import com.byrjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
@@ -175,7 +174,7 @@ public class PlayScreen extends AbstractScreen {
         gestureDetector = new GestureDetector(new PlayScreenGestures());
         manager = game.assetManager;
         atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        Assets.initialize(game.assetManager);
+
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
         //gameport.setScreenPosition(-(int)MainGame.GAME_BORDER, -(int)MainGame.GAME_BORDER);

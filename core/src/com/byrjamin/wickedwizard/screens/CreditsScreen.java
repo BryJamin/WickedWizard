@@ -19,7 +19,7 @@ import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.screens.world.CreditsWorld;
 import com.byrjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 
 //TODO
 
@@ -67,7 +67,6 @@ public class CreditsScreen extends AbstractScreen {
         gestureDetector = new GestureDetector(new CreditsScreenGestures());
         manager = game.assetManager;
         atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-        Assets.initialize(game.assetManager);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);

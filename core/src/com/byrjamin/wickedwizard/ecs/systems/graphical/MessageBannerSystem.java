@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BannerComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
@@ -134,7 +134,7 @@ public class MessageBannerSystem extends EntitySystem {
         ExpireComponent ec = new ExpireComponent(10f);
 
 
-        TextureFontComponent trc = new TextureFontComponent(Assets.medium, message);
+        TextureFontComponent trc = new TextureFontComponent(FontAssets.medium, message);
         trc.color.a = 0;
         trc.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
         createBannerText(0,  levelBannerTextOffsetY, trc, parentComponent, fc, ec);

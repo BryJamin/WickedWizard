@@ -10,12 +10,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
@@ -82,7 +81,7 @@ public class DevModeMenuWorld implements WorldContainer {
         Color background = Color.BLACK;
 
 
-        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30))
                 .height(Measure.units(10f))
                 .foregroundColor(foreground)
@@ -123,13 +122,13 @@ public class DevModeMenuWorld implements WorldContainer {
     private void createBossAndRoomSelectors(){
 
 
-        MenuButton.MenuButtonBuilder startButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder startButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(10f))
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
                 .backgroundColor(new Color(Color.WHITE));
 
-        MenuButton.MenuButtonBuilder selectorButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder selectorButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(7.5f))
                 .height(Measure.units(7.5f))
                 .foregroundColor(new Color(Color.WHITE))

@@ -136,7 +136,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
     public GameCreator rank3ArenaRace(String id){
 
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.TWO.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -207,7 +207,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
     public GameCreator timeTrial(String id){
 
-        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.TWO.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {

@@ -12,13 +12,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.byrjamin.wickedwizard.MainGame;
-import com.byrjamin.wickedwizard.assets.Assets;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.FileLocationStrings;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.StatComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
-import com.byrjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -155,7 +154,7 @@ public class PauseWorld implements WorldContainer {
         float camY = gamecam.position.y - gamecam.viewportHeight / 2 + MainGame.GAME_BORDER;
 
 
-        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(Assets.small, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
@@ -200,7 +199,7 @@ public class PauseWorld implements WorldContainer {
 
         Entity statText = world.createEntity();
         statText.edit().add(new PositionComponent(camX + statsTitleOffsetX, camY + statsTitleOffsetY));
-        TextureFontComponent tfc = new TextureFontComponent(Assets.medium, MenuStrings.STATS, Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR);
+        TextureFontComponent tfc = new TextureFontComponent(FontAssets.medium, MenuStrings.STATS, Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR);
         statText.edit().add(tfc);
 
 
@@ -237,7 +236,7 @@ public class PauseWorld implements WorldContainer {
 
         Entity itemText = world.createEntity();
         itemText.edit().add(new PositionComponent(camX + itemTitleOffsetX, camY + itemTitleOffsetY));
-        itemText.edit().add(new TextureFontComponent(Assets.medium, MenuStrings.ITEMS, Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        itemText.edit().add(new TextureFontComponent(FontAssets.medium, MenuStrings.ITEMS, Measure.units(15f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
     }
 
@@ -250,7 +249,7 @@ public class PauseWorld implements WorldContainer {
     private void statsText(World world, String text, float x, float y, int align){
         Entity damage = world.createEntity();
         damage.edit().add(new PositionComponent(x, y));
-        damage.edit().add(new TextureFontComponent(Assets.medium, text, Measure.units(20f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
+        damage.edit().add(new TextureFontComponent(FontAssets.medium, text, Measure.units(20f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
         damage.getComponent(TextureFontComponent.class).align = align;
     }
 
