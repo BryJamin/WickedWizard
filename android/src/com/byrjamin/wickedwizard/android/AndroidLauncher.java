@@ -1,5 +1,6 @@
 package com.byrjamin.wickedwizard.android;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,6 @@ public class AndroidLauncher extends AndroidApplication {
 
 		config.hideStatusBar = true;
 		config.useImmersiveMode = true;
-
 	}
 
 	@Override

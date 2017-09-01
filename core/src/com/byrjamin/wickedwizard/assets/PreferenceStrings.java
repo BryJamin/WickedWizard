@@ -20,6 +20,8 @@ public class PreferenceStrings {
 
     public final static String DEV_MODE_PREF_KEY = "com.benjamin.wickedwizard.dev";
 
+
+    public final static String DEV_MENU_ID = "f65addd8-441d-4cb3-afd7-89cda2703be9";
     public final static String DEV_MENU_IS_DEV = "menu_is_dev";
     public final static String DEV_BOSS_NUMBER = "boss_number";
     public final static String DEV_ROOM_LEVEL = "room_level";

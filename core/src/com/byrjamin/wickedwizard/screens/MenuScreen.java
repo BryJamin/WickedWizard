@@ -31,6 +31,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.byrjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.byrjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.byrjamin.wickedwizard.factories.arenas.levels.PresetGenerators;
 import com.byrjamin.wickedwizard.screens.world.menu.DevModeMenuWorld;
 import com.byrjamin.wickedwizard.screens.world.menu.ItemDisplayWorldContainer;
 import com.byrjamin.wickedwizard.screens.world.menu.MenuBackDropWorld;
@@ -74,7 +75,6 @@ public class MenuScreen extends AbstractScreen {
     private GestureDetector trailsWorldDectector;
     private GestureDetector itemsDisplayWorldDectector;
 
-    private Preferences devSettings;
     private Preferences preferences;
 
     private static final float buttonWidth = Measure.units(30f);
@@ -99,13 +99,18 @@ public class MenuScreen extends AbstractScreen {
     public MenuScreen(MainGame game) {
         super(game);
 
-        devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
         preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
 
         if(menuType == null) {
-            String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
-            menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
-            defaultMenuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
+
+            if(isDevDevice()) {
+                String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
+                menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
+                defaultMenuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
+            } else {
+                menuType = MenuType.MAIN;
+                defaultMenuType = MenuType.MAIN;
+            }
         } else {
             menuType = defaultMenuType;
         }
@@ -121,7 +126,8 @@ public class MenuScreen extends AbstractScreen {
 
         createMenu();
 
-        devModeMenuWorld = new DevModeMenuWorld(game, gameport);
+        if(MenuScreen.isDevDevice()) devModeMenuWorld = new DevModeMenuWorld(game, gameport);
+
         settingsWorld = new SettingsWorld(game, gameport);
         menuBackDropWorld = new MenuBackDropWorld(game, gameport);
         challengesWorldContainer = new ChallengesWorldContainer(game, gameport);
@@ -130,8 +136,6 @@ public class MenuScreen extends AbstractScreen {
         backDropDetector = new GestureDetector(menuBackDropWorld);
         trailsWorldDectector = new GestureDetector(challengesWorldContainer);
         itemsDisplayWorldDectector = new GestureDetector(itemDisplayWorldContainer);
-
-        Gdx.input.setCatchBackKey(false);
 
         Gdx.input.setCatchBackKey(true);
 
@@ -384,6 +388,7 @@ public class MenuScreen extends AbstractScreen {
                 case MAIN:
                     return world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
                 case DEV:
+                    if(!isDevDevice()) return false;
                     devModeMenuWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
                     return world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
 
@@ -395,6 +400,11 @@ public class MenuScreen extends AbstractScreen {
 
         @Override
         public boolean longPress(float x, float y) {
+
+            if(!MenuScreen.isDevDevice()) return false;
+
+
+            Preferences devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
 
             switch(menuType) {
                 case DEV: menuType = MenuType.MAIN;
@@ -409,6 +419,13 @@ public class MenuScreen extends AbstractScreen {
 
             return true;
         }
+    }
+
+
+
+
+    public static boolean isDevDevice(){
+        return Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_ID).equals(PreferenceStrings.DEV_MENU_ID);
     }
 
 }
