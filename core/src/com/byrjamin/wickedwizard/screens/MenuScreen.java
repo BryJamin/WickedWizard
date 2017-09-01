@@ -79,14 +79,15 @@ public class MenuScreen extends AbstractScreen {
 
     private Preferences preferences;
 
-    private static final float logoStartX = Measure.units(4.5f);
-    private static final float logoStartY = Measure.units(35f);
-    private static final float logoWidth = Measure.units(25f);
-    private static final float logoHeight = Measure.units(25f);
+    private static final float logoStartX = Measure.units(4f);
+    private static final float logoStartY = Measure.units(32.5f);
+    private static final float logoWidth = Measure.units(30f);
+    private static final float logoHeight = Measure.units(30f);
 
 
     private static final float buttonWidth = Measure.units(30f);
     private static final float buttonHeight = Measure.units(10f);
+    private static final float buttonStartX = CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth);
 
 
     private static final Color buttonForeground = new Color(Color.BLACK);
@@ -258,7 +259,7 @@ public class MenuScreen extends AbstractScreen {
                 .createButton(
                         world,
                         MenuStrings.START,
-                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth)
+                        buttonStartX
                         ,CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight));
 
     }
@@ -308,8 +309,8 @@ public class MenuScreen extends AbstractScreen {
                 })
                 .build().createButton(world,
                         quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START,
-                        CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f)),
-                        Measure.units(37.5f));
+                        buttonStartX,
+                        Measure.units(35f));
 
         Entity trails = menuButtonBuilder
                 .action((new Action() {
@@ -320,8 +321,8 @@ public class MenuScreen extends AbstractScreen {
                     }
                 }))
                 .build()
-                .createButton(world, MenuStrings.TRAILS, CenterMath.offsetX(MainGame.GAME_WIDTH, Measure.units(30f))
-                ,Measure.units(22.5f));
+                .createButton(world, MenuStrings.TRAILS, buttonStartX
+                ,Measure.units(20f));
 
 
         Entity startTutorial = menuButtonBuilder

@@ -73,6 +73,13 @@ enemy/switch
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
+  index: 5
+enemy/switch
+  rotate: false
+  xy: 529, 659
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
   index: 7
 enemy/switch
   rotate: false
@@ -81,13 +88,6 @@ enemy/switch
   orig: 64, 64
   offset: 0, 0
   index: 6
-enemy/switch
-  rotate: false
-  xy: 529, 659
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
 block
   rotate: false
   xy: 199, 263
@@ -102,146 +102,125 @@ decor/block_door
   orig: 64, 64
   offset: 0, 0
   index: 8
-block_blink
-  rotate: false
-  xy: 265, 329
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-block_blink
-  rotate: false
-  xy: 265, 329
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-block_walk
-  rotate: false
-  xy: 265, 329
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-block_walk
-  rotate: false
-  xy: 265, 329
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-block_blink
+block_door
   rotate: false
   xy: 331, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-block_blink
-  rotate: false
-  xy: 397, 461
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-block_walk
-  rotate: false
-  xy: 397, 461
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-block_blink
+block_door
   rotate: false
   xy: 463, 527
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
-block_walk
-  rotate: false
-  xy: 463, 527
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
+  index: 2
 block_door
   rotate: false
   xy: 595, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 3
 block_door
   rotate: false
   xy: 727, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
+  index: 4
 block_door
   rotate: false
   xy: 133, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
+  index: 5
 block_door
   rotate: false
   xy: 265, 263
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 4
+  index: 6
 block_door
   rotate: false
   xy: 397, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 5
+  index: 7
 block_door
   rotate: false
   xy: 529, 527
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 6
-block_door
-  rotate: false
-  xy: 661, 659
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 7
-block_door
-  rotate: false
-  xy: 793, 791
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 8
 block_door
   rotate: false
-  xy: 859, 857
+  xy: 595, 593
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 9
 block_door
   rotate: false
-  xy: 133, 65
+  xy: 661, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 10
+block_firing
+  rotate: false
+  xy: 727, 725
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+block_firing
+  rotate: false
+  xy: 793, 791
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+block_firing
+  rotate: false
+  xy: 859, 857
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+block_walk
+  rotate: false
+  xy: 859, 857
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+block_firing
+  rotate: false
+  xy: 133, 65
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+block_walk
+  rotate: false
+  xy: 133, 65
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
 block_walk
   rotate: false
   xy: 199, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 2
 bomb
   rotate: false
   xy: 265, 197
@@ -384,77 +363,77 @@ decor/altar
   index: 0
 decor/block_door
   rotate: false
-  xy: 529, 593
+  xy: 265, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 block_door
   rotate: false
-  xy: 529, 593
+  xy: 265, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/pylon_spawning
   rotate: false
-  xy: 529, 593
+  xy: 265, 329
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/pylon_spawning
+  rotate: false
+  xy: 265, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-enemy/pylon_spawning
+decor/block_door
+  rotate: false
+  xy: 397, 461
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+decor/block_door
   rotate: false
   xy: 529, 593
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/block_door
-  rotate: false
-  xy: 661, 725
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/block_door
-  rotate: false
-  xy: 793, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 decor/block_door
   rotate: false
-  xy: 199, 197
+  xy: 661, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 decor/block_door
   rotate: false
-  xy: 331, 329
+  xy: 793, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 decor/block_door
   rotate: false
-  xy: 463, 461
+  xy: 199, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 decor/block_door
   rotate: false
-  xy: 595, 593
+  xy: 331, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 decor/block_door
   rotate: false
-  xy: 727, 725
+  xy: 463, 461
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -1718,14 +1697,14 @@ enemy/modon_heavy_jump
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
+  index: 1
 enemy/modon_heavy_jump
   rotate: false
   xy: 991, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 2
 enemy/modon_heavy_in_air
   rotate: false
   xy: 1057, 461

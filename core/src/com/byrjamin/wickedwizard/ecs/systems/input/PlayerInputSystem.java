@@ -159,7 +159,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                         }
                     }
 
-                    StatComponent statComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
 
                     if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate())) {
                         asc.queueAnimationState(AnimationStateComponent.FIRING);
@@ -167,6 +166,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     }
                 }
             } else {
+                wc.timer.setResetTime(wc.defaultStartTime);
+                wc.timer.reset();
                 if (asc.getDefaultState() != 0) {
                     asc.setDefaultState(0);
                 }

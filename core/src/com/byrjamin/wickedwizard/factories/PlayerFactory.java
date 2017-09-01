@@ -66,6 +66,7 @@ public class PlayerFactory extends AbstractFactory {
 
 
     private static final int startingMoney = 0;
+    private static final float pauseBeforeShooting = 0.15f;
 
 
     public PlayerFactory(AssetManager assetManager) {
@@ -99,11 +100,11 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(0);
+        sc.setDefaultState(AnimationStateComponent.DEFAULT);
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(0, new Animation<TextureRegion>(1/10f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
+        k.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
         k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.BLOCK_BLINK)));
         bag.add(new AnimationComponent(k));
 
@@ -111,7 +112,7 @@ public class PlayerFactory extends AbstractFactory {
         StatComponent statComponent = new StatComponent();
 
         bag.add(statComponent);
-        WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager, statComponent), 0.3f);
+        WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager, statComponent), pauseBeforeShooting);
         bag.add(wc);
         bag.add(new HealthComponent(6));
         bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));
