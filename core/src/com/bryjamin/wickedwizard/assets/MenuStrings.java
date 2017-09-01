@@ -66,10 +66,12 @@ public class MenuStrings {
                 "Welp, that happened",
                 "You were probably really close",
                 "Ouch",
+                "Ow",
+                "That looked painful",
                 "Oh no! You got hit too much...",
-                "I think the controls were inverted",
-                "I'd blame myself, but I won't",
-                "Good try, I guess"};
+                "Did I miss anything? Oh.",
+                "Good try, I guess",
+                "You did better than the last one. I hope."};
 
 
 
