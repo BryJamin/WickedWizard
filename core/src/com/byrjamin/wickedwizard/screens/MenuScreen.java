@@ -25,6 +25,8 @@ import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.PreferenceStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.byrjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
@@ -77,6 +79,12 @@ public class MenuScreen extends AbstractScreen {
 
     private Preferences preferences;
 
+    private static final float logoStartX = Measure.units(4.5f);
+    private static final float logoStartY = Measure.units(35f);
+    private static final float logoWidth = Measure.units(25f);
+    private static final float logoHeight = Measure.units(25f);
+
+
     private static final float buttonWidth = Measure.units(30f);
     private static final float buttonHeight = Measure.units(10f);
 
@@ -98,6 +106,7 @@ public class MenuScreen extends AbstractScreen {
 
     public MenuScreen(MainGame game) {
         super(game);
+
 
         preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
 
@@ -221,6 +230,12 @@ public class MenuScreen extends AbstractScreen {
         } else {
             setUpMenuScreenOnlyTutorial();
         }
+
+
+        Entity logo = world.createEntity();
+        logo.edit().add(new PositionComponent(logoStartX, logoStartY));
+        logo.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_LOGO), logoWidth, logoHeight));
+
 
 
     }

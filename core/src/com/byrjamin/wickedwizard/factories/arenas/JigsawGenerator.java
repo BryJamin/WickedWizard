@@ -83,11 +83,11 @@ public class JigsawGenerator {
 
 
         this.typeOfSortRoller = new WeightedRoll<Comparator<DoorComponent>>(random);
-        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 0));
-        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.RIGHTMOST_DISTANCE_DOORS, 0));
         typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 20));
-        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LOWEST_Y, 0));
-        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(null, 0));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.RIGHTMOST_DISTANCE_DOORS, 20));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 20));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LOWEST_Y, 20));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(null, 200));
 
         this.typeOfSort = typeOfSortRoller.roll();
     }

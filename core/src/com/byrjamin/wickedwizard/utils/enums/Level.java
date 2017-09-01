@@ -36,11 +36,11 @@ public enum Level {
         switch (this){
             case ONE:
             default:
-                return "Field";
-            case TWO: return "Tundra";
-            case THREE: return "Cave";
-            case FOUR: return "Mire";
-            case FIVE: return "Finale";
+                return "I";
+            case TWO: return "II";
+            case THREE: return "III";
+            case FOUR: return "IV";
+            case FIVE: return "V";
         }
     }
 

@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -124,6 +125,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         Bag<Component> textBag = new Bag<Component>();
         textBag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
         TextureFontComponent text = new TextureFontComponent(moveTutorialString1, arenaSkin.getWallTint());
+        text.layer = BACKGROUND_LAYER_MIDDLE;
         textBag.add(text);
         arena.addEntity(textBag);
 
@@ -263,6 +265,8 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                 FadeComponent fadeComponent = new FadeComponent(true, 1f, false);
 
 
+                //MESSAGE BOX
+
                 Entity text = world.createEntity();
                 text.edit().add(new PositionComponent(gamecam.position.x, gamecam.position.y + Measure.units(19.5f)));
                 text.edit().add(new FollowPositionComponent(gamecam.position, 0, Measure.units(19f)));
@@ -328,7 +332,11 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1000));
-        bag.add(new TextureFontComponent(enemyTutorialString, arenaSkin.getWallTint()));
+
+        TextureFontComponent text = new TextureFontComponent(enemyTutorialString, arenaSkin.getWallTint());
+        text.layer = BACKGROUND_LAYER_MIDDLE;
+        bag.add(text);
+
         arena.addEntity(bag);
 
         float HEIGHT = arena.getHeight();
@@ -396,7 +404,12 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
-        bag.add(new TextureFontComponent(grappleTutorialString, arenaSkin.getWallTint()));
+
+        TextureFontComponent text = new TextureFontComponent(grappleTutorialString, arenaSkin.getWallTint());
+        text.layer = BACKGROUND_LAYER_MIDDLE;
+        bag.add(text);
+
+
         arena.addEntity(bag);
 
 
@@ -423,7 +436,11 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         Bag<Component> bag = new Bag<Component>();
 
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(47.5f)));
-        bag.add(new TextureFontComponent(endString, arenaSkin.getWallTint()));
+
+        TextureFontComponent text = new TextureFontComponent(endString, arenaSkin.getWallTint());
+        text.layer = BACKGROUND_LAYER_MIDDLE;
+        bag.add(text);
+
         arena.addEntity(bag);
 
 
@@ -449,9 +466,9 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
                                 } else {
 
                                     DataSave.saveChallengeData(ChallengesResource.TUTORIAL_COMPLETE);
-                                    game.getScreen().dispose();
+                                    Screen s = game.getScreen();
                                     game.setScreen(new PlayScreen(game));
-
+                                    s.dispose();
                                 }
 
                             }

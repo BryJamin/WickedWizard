@@ -5,13 +5,19 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Rectangle;
 import com.byrjamin.wickedwizard.MainGame;
+import com.byrjamin.wickedwizard.assets.FontAssets;
 import com.byrjamin.wickedwizard.assets.MenuStrings;
 import com.byrjamin.wickedwizard.assets.Mix;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
+import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
@@ -27,10 +33,13 @@ import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
 import com.byrjamin.wickedwizard.screens.DataSave;
 import com.byrjamin.wickedwizard.screens.MenuScreen;
+import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 import com.byrjamin.wickedwizard.utils.enums.Level;
+
+import java.util.Comparator;
 
 /**
  * Created by BB on 19/08/2017.
@@ -59,7 +68,23 @@ public class ReuseableRooms extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
-                arena.addEntity(new OnLoadFactory().largeMessageBag(level.getName()));
+
+                float width = Measure.units(10f);
+                float height = Measure.units(10f);
+
+                float x = CenterMath.offsetX(arena.getWidth(), width);
+                float y = CenterMath.offsetY(arena.getHeight() - Measure.units(15f), height) + Measure.units(10f);
+
+                ComponentBag bag = arena.createArenaBag();
+                bag.add(new PositionComponent(x, y));
+                bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
+
+                TextureFontComponent textureFontComponent = new TextureFontComponent(FontAssets.medium, level.getName(), level.getArenaSkin().getWallTint());
+                textureFontComponent.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
+                bag.add(textureFontComponent);
+
+
+
                 arena.addEntity(new OnLoadFactory().startMusicEntity(level.getMusic()));
                 return arena;
             }
