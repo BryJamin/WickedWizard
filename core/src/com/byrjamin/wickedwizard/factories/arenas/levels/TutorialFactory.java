@@ -49,6 +49,7 @@ import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.collider.HitBox;
 import com.byrjamin.wickedwizard.utils.enums.Level;
 
+import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.BACKGROUND_LAYER_MIDDLE;
 import static com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_NEAR;
 
 /**
@@ -122,7 +123,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Bag<Component> textBag = new Bag<Component>();
         textBag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
-        TextureFontComponent text = new TextureFontComponent(moveTutorialString1);
+        TextureFontComponent text = new TextureFontComponent(moveTutorialString1, arenaSkin.getWallTint());
         textBag.add(text);
         arena.addEntity(textBag);
 
@@ -178,7 +179,8 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         //arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
         for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(17.5f), Measure.units(17.5f + (i * 25f)), 0));
 
-        TextureFontComponent tfc = new TextureFontComponent(platformString);
+        TextureFontComponent tfc = new TextureFontComponent(platformString, arenaSkin.getWallTint());
+        tfc.layer = BACKGROUND_LAYER_MIDDLE;
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1500));
         bag.add(tfc);
@@ -225,14 +227,14 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Bag<Component> jumpTutorialTextbag = new Bag<Component>();
         jumpTutorialTextbag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
-        TextureFontComponent jump = new TextureFontComponent(jumpTutorialString);
+        TextureFontComponent jump = new TextureFontComponent(jumpTutorialString, arenaSkin.getWallTint());
         jump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
         jumpTutorialTextbag.add(jump);
         arena.addEntity(jumpTutorialTextbag);
 
         Bag<Component> doubleJumpTutorialTextbag = new Bag<Component>();
         doubleJumpTutorialTextbag.add(new PositionComponent(wall2PosX - Measure.units(5f), 1000));
-        TextureFontComponent doubleJump = new TextureFontComponent(doubleJumpTutorialString);
+        TextureFontComponent doubleJump = new TextureFontComponent(doubleJumpTutorialString, arenaSkin.getWallTint());
         doubleJump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
         doubleJumpTutorialTextbag.add(doubleJump);
         arena.addEntity(doubleJumpTutorialTextbag);
@@ -326,7 +328,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1000));
-        bag.add(new TextureFontComponent(enemyTutorialString));
+        bag.add(new TextureFontComponent(enemyTutorialString, arenaSkin.getWallTint()));
         arena.addEntity(bag);
 
         float HEIGHT = arena.getHeight();
@@ -394,7 +396,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
 
         bag = new Bag<Component>();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
-        bag.add(new TextureFontComponent(grappleTutorialString));
+        bag.add(new TextureFontComponent(grappleTutorialString, arenaSkin.getWallTint()));
         arena.addEntity(bag);
 
 
@@ -421,7 +423,7 @@ public class TutorialFactory extends com.byrjamin.wickedwizard.factories.arenas.
         Bag<Component> bag = new Bag<Component>();
 
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(47.5f)));
-        bag.add(new TextureFontComponent(endString));
+        bag.add(new TextureFontComponent(endString, arenaSkin.getWallTint()));
         arena.addEntity(bag);
 
 

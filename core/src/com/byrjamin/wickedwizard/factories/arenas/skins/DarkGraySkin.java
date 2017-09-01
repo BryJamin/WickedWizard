@@ -17,7 +17,7 @@ public class DarkGraySkin extends AbstractSkin{
 
     @Override
     public Color getWallTint() {
-        return new Color(0.2f,0.2f,0.2f,1);
+        return  new Color(0.2f,0.2f,0.2f,1);
     }
 
 }

@@ -43,6 +43,7 @@ import com.byrjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.utils.BagSearch;
 import com.byrjamin.wickedwizard.utils.MapCoords;
+import com.byrjamin.wickedwizard.utils.enums.Level;
 
 
 import java.util.Random;
@@ -95,7 +96,7 @@ public class PlayScreen extends AbstractScreen {
         switch (playScreenConfig.spawn){
             case TUTORIAL:
             default:
-                TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, new LightGraySkin());
+                TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, Level.ONE.getArenaSkin());
                 gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
                         .startingMap(tutorialFactory.tutorialMap()), false));
                 break;

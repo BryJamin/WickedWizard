@@ -11,7 +11,7 @@ import com.badlogic.gdx.audio.Sound;
 public class SoundFileStrings {
 
 
-    public static final String playerFire = "audio/sounds/laser.wav";
+    public static final String playerFire = "audio/sounds/projectile/laser.ogg";
     public static final Mix playerFireMix = new Mix(playerFire, 0.05f);
 
 
@@ -31,14 +31,10 @@ public class SoundFileStrings {
             playerFireMix8
     };
 
-
-    public static final String grappleFire = "audio/sounds/laser.wav";
     public static final Mix grappleFireMix = new Mix(playerFire, 0.05f);
 
 
-
-
-    public static final String enemyFire = "audio/sounds/laser2.wav";
+    public static final String enemyFire = "audio/sounds/projectile/laser2.ogg";
 
     public static final Mix enemyFireMix1 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.825f).build();
     public static final Mix enemyFireMix2 = new Mix.MixMaker(enemyFire).volume(0.05f).pitch(0.85f).build();
@@ -83,20 +79,6 @@ public class SoundFileStrings {
 
     public static final Mix[] queitExplosionMegaMix = new Mix[]{quietExplosionMix1, quietExplosionMix2, quietExplosionMix3, quietExplosionMix4};
 
-
-    ////Hit
-
-    public static final Mix hitMix1 = new Mix.MixMaker("audio/sounds/Hit_Hurt118.wav").volume(0.1f).build();
-    public static final Mix hitMix2 = new Mix.MixMaker("audio/sounds/Hit_Hurt119.wav").volume(0.1f).build();
-    public static final Mix hitMix3 = new Mix.MixMaker("audio/sounds/Hit_Hurt120.wav").volume(0.1f).build();
-    public static final Mix hitMix4 = new Mix.MixMaker("audio/sounds/Hit_Hurt121.wav").volume(0.1f).build();
-    public static final Mix hitMix5 = new Mix.MixMaker("audio/sounds/Hit_Hurt122.wav").volume(0.1f).build();
-    public static final Mix hitMix6 = new Mix.MixMaker("audio/sounds/Hit_Hurt123.wav").volume(0.1f).build();
-
-    public static final Mix[] hitMegaMix = new Mix[]{hitMix1, hitMix2, hitMix3, hitMix4, hitMix5, hitMix6};
-
-
-
     public static final String coinPickUp = "audio/sounds/diing-01.ogg";
     public static final Mix coinPickUpMix = new Mix(coinPickUp, 0.1f);
 
@@ -132,7 +114,6 @@ public class SoundFileStrings {
         assetManager.load(enemyFire, Sound.class);
 
         for(String s : SoundFileStrings.explosionStrings) assetManager.load(s, Sound.class);
-        for(Mix m : SoundFileStrings.hitMegaMix) assetManager.load(m.getFileName(), Sound.class);
         for(Mix m : SoundFileStrings.jumpMegaMix) assetManager.load(m.getFileName(), Sound.class);
 
         assetManager.load(coinPickUp, Sound.class);

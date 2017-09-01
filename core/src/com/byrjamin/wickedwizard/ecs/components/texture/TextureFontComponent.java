@@ -51,6 +51,12 @@ public class TextureFontComponent extends TextureRegionComponent {
         this(FontAssets.small, text);
     }
 
+
+
+    public TextureFontComponent(String text, Color color){
+        this(FontAssets.small, text, color);
+    }
+
     public TextureFontComponent(String font, String text){
         this.font = font;
         this.text = text;

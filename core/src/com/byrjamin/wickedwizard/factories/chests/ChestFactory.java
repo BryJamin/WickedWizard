@@ -123,7 +123,7 @@ public class ChestFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 giblets.performAction(world, e);
-                world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.hitMegaMix);
+                world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.explosionMegaMix);
             }
         };
     }
