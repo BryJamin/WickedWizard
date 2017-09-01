@@ -42,129 +42,36 @@ import com.byrjamin.wickedwizard.utils.Measure;
 
 public class EnemyFactory extends AbstractFactory {
 
+    protected boolean loudDeathSound = false;
+
     public EnemyFactory(AssetManager assetManager) {
         super(assetManager);
     }
 
     protected ComponentBag defaultEnemyBag (ComponentBag fillbag, float x, float y, float health) {
+        return enemyBag(fillbag, x, y, health, true, true);
+    }
+
+    protected ComponentBag defaultEnemyBagNoLootNoDeath (ComponentBag fillbag, float x, float y, float health) {
+        return enemyBag(fillbag, x, y, health, false, false);
+    }
+
+    public ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
+        return enemyBag(fillbag, x, y, health, false, true);
+    }
+
+
+    private ComponentBag enemyBag(ComponentBag fillbag, float x, float y, float health, boolean loot, boolean deathAction){
         fillbag.add(new PositionComponent(x, y));
-        fillbag.add(new LootComponent());
         fillbag.add(new HealthComponent(health));
         fillbag.add(new BlinkOnHitComponent());
         fillbag.add(new EnemyComponent());
-        fillbag.add(new OnDeathActionComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                new Giblets.GibletBuilder(assetManager)
-                        .intangible(false)
-                        .minSpeed(Measure.units(10f))
-                        .maxSpeed(Measure.units(50f))
-                        .expiryTime(0.6f)
-                        .fadeChance(0.75f)
-                        .intangible(true)
-                        .numberOfGibletPairs(5)
-                        .size(Measure.units(1f))
-                        .build().performAction(world, e);
-
-
-
-/*
-
-                gibletFactory.giblets(5, 0.4f,
-                        Measure.units(20f), Measure.units(100f), Measure.units(1f), new Color(Color.WHITE)).performAction(world, e);*/
-                world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.explosionMegaMix);
-            }
-        }));
-
-      //  fillbag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
-
+        if(loot) fillbag.add(new LootComponent());
+        if(deathAction)  fillbag.add(new OnDeathActionComponent(defaultDeathAction()));
         return fillbag;
-
     }
 
 
-    protected ComponentBag defaultBossBag (final ComponentBag fillbag, float x, float y, float health) {
-        fillbag.add(new PositionComponent(x, y));
-        //fillbag.add(new LootComponent());
-        fillbag.add(new HealthComponent(health));
-        fillbag.add(new BlinkOnHitComponent());
-        fillbag.add(new BossComponent());
-        fillbag.add(new EnemyComponent());
-        fillbag.add(new OnDeathActionComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                deathClone(world, e);
-                clearBullets(world);
-                Entity flash = bossEndFlash(world);
-            }
-        }));
-
-        return fillbag;
-
-    }
-
-
-    protected Entity deathClone(World world, Entity e){
-
-        Entity deathClone = world.createEntity();
-        deathClone.edit().add(e.getComponent(PositionComponent.class));
-        deathClone.edit().add(e.getComponent(TextureRegionComponent.class));
-        deathClone.edit().add(e.getComponent(CollisionBoundComponent.class));
-        deathClone.edit().add(new ExpireComponent(1.45f));
-        deathClone.edit().add(new CameraShakeComponent(0.75f));
-        deathClone.edit().add(new ArenaLockComponent());
-
-        deathClone.edit().add(new ActionAfterTimeComponent(new Action() {
-
-            Giblets giblets = new Giblets.GibletBuilder(assetManager)
-                    .intangible(false)
-                    .minSpeed(Measure.units(10f))
-                    .maxSpeed(Measure.units(100f))
-                    .expiryTime(0.6f)
-                    .fadeChance(0.75f)
-                    .intangible(true)
-                    .numberOfGibletPairs(8)
-                    .mixes(SoundFileStrings.explosionMegaMix)
-                    .size(Measure.units(1f))
-                    .colors(new Color(new Color(Color.RED)), new Color(ColorResource.BOMB_ORANGE), new Color(Color.BLACK))
-                    .build();
-
-            @Override
-            public void performAction(World world, Entity e) {
-                giblets.performAction(world, e);
-            }
-        }, 0.1f, true));
-
-        return deathClone;
-
-    }
-
-    protected void clearBullets(World world){
-
-        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(EnemyComponent.class, BulletComponent.class)).getEntities();
-        for(int i = 0; i < intBag.size(); i++){
-            world.getSystem(OnDeathSystem.class).kill(world.getEntity(intBag.get(i)));
-        }
-
-
-    }
-
-    protected Entity bossEndFlash(World world){
-
-        float width = ArenaShellFactory.SECTION_WIDTH * 3;
-        float height = ArenaShellFactory.SECTION_HEIGHT * 3;
-
-        Entity flash = world.createEntity();
-        flash.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
-        flash.edit().add(new PositionComponent(0, 0));
-        flash.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
-                new Color(Color.WHITE)));
-        flash.edit().add(new FadeComponent(true, 1.4f, 1));
-        flash.edit().add(new ExpireComponent(4f));
-
-        return flash;
-    }
 
     protected Action defaultDeathAction(){
 
@@ -179,56 +86,14 @@ public class EnemyFactory extends AbstractFactory {
                         .expiryTime(0.6f)
                         .fadeChance(0.75f)
                         .intangible(true)
+                        .mixes(loudDeathSound ? SoundFileStrings.bigExplosionMegaMix : SoundFileStrings.explosionMegaMix)
                         .numberOfGibletPairs(5)
                         .size(Measure.units(1f))
                         .build().performAction(world, e);
-
-                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.explosionMix1);
-
             }
         };
     }
 
-    protected ComponentBag defaultEnemyBagNoLootNoDeath (ComponentBag fillbag, float x, float y, float health) {
-        fillbag.add(new PositionComponent(x, y));
-        fillbag.add(new HealthComponent(health));
-        fillbag.add(new BlinkOnHitComponent());
-        fillbag.add(new EnemyComponent());
-        return fillbag;
-    }
-
-
-
-
-    public ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
-
-        fillbag = defaultEnemyBagNoLootNoDeath(fillbag, x, y, health);
-
-        fillbag.add(new OnDeathActionComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                new Giblets.GibletBuilder(assetManager)
-                        .intangible(false)
-                        .minSpeed(Measure.units(10f))
-                        .maxSpeed(Measure.units(50f))
-                        .expiryTime(0.6f)
-                        .fadeChance(0.75f)
-                        .intangible(true)
-                        .numberOfGibletPairs(5)
-                        .size(Measure.units(1f))
-                        .build().performAction(world, e);
-
-                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.explosionMix1);
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-
-            }
-        }));
-        return fillbag;
-    }
 
 
 }

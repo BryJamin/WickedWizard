@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -32,6 +33,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
@@ -118,90 +120,6 @@ public class GoatWizardFactory extends EnemyFactory {
 
 
 
-    public ComponentBag goatSorcerer(float x, float y){
-
-        float boundx = x;
-        float boundy = y;
-
-        x = x - width / 2;
-        y = y - height / 2;
-
-
-        ComponentBag bag = new ComponentBag();
-        bag = defaultEnemyBag(bag, x, y, 15);
-
-        bag.add(new VelocityComponent(Measure.units(10f), Measure.units(5f)));
-        bag.add(new BounceComponent());
-
-
-        CollisionBoundComponent cbc = new CollisionBoundComponent();
-
-        cbc.bound = new Rectangle(x , y , width, height);
-        cbc.hitBoxes.add(new HitBox(new Rectangle(x, y, Measure.units(7), Measure.units(7)), Measure.units(6.5f), Measure.units(7.5f)));
-
-        bag.add(cbc);
-
-        bag.add(new AnimationStateComponent(0));
-        IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f,
-                atlas.findRegions(TextureStrings.GOAT_WIZARD), Animation.PlayMode.LOOP_RANDOM));
-        bag.add(new AnimationComponent(animMap));
-
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
-                (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
-
-        trc.color = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
-        trc.DEFAULT = new Color(91f / 255f,50f / 255f,86f / 255f, 1);
-
-        bag.add(trc);
-
-
-        bag.add(new WeaponComponent(new Weapon() {
-
-            GoatWeapon first = new GoatWeapon(Measure.units(7.5f));
-            GoatWeapon second = new GoatWeapon(Measure.units(12.5f));
-
-            @Override
-            public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-                first.fire(world, e, x, y, angleInRadians);
-                second.fire(world, e, x,y,angleInRadians);
-            }
-
-            @Override
-            public float getBaseFireRate() {
-                return 2;
-            }
-
-            @Override
-            public float getBaseDamage() {
-                return 0;
-            }
-        }, 0));
-
-
-        bag.add(new ProximityTriggerAIComponent(new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-                e.edit().add(new FiringAIComponent());
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-                e.edit().remove(FiringAIComponent.class);
-            }
-        }, true));
-        bag.add(new ParentComponent());
-
-        return bag;
-
-    }
-
-
-
-
-
-
-
     private class GoatWeapon implements Weapon {
 
 
@@ -219,6 +137,9 @@ public class GoatWizardFactory extends EnemyFactory {
 
         @Override
         public void fire(World world, Entity e, float x, float y, double angleInRadians) {
+
+
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
 
             if(isShield) {
                 int count = 0;

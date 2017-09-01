@@ -31,7 +31,7 @@ import java.util.Random;
  * Created by Home on 27/05/2017.
  */
 
-public class BossKugelDusc extends EnemyFactory{
+public class BossKugelDusc extends BossFactory {
 
     private static final float width = Measure.units(30f);
     private static final float height = Measure.units(30f);

@@ -15,13 +15,13 @@ public class ItemDisappointment implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).shotSpeed += PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).maxHealth += PresetStatIncrease.Health.increase(1);
         return true;
     }
 
     @Override
     public ItemResource.ItemValues getValues() {
-        return ItemResource.ShotSpeed.disappointment;
+        return ItemResource.Health.disappointment;
     }
 
 

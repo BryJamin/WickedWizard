@@ -50,7 +50,7 @@ import java.util.Random;
  * Created by Home on 27/05/2017.
  */
 
-public class BossWanda extends EnemyFactory {
+public class BossWanda extends BossFactory {
 
     private static final float width = Measure.units(7.5f);
     private static final float height = Measure.units(7.5f);
@@ -83,7 +83,6 @@ public class BossWanda extends EnemyFactory {
                 .minSpeed(Measure.units(10f))
                 .maxSpeed(Measure.units(20f))
                 .colors(new Color(Color.RED))
-                .mixes(SoundFileStrings.queitExplosionMegaMix)
                 .intangible(false)
                 .expiryTime(0.2f);
 

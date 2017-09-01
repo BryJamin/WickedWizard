@@ -43,6 +43,9 @@ public class SoundSystem extends EntitySystem {
 
     private Array<Mix[]> upcomingMixesMixes = new Array<Mix[]>();
 
+
+    private Array<Music> musicToBeDisposed = new Array<Music>();
+
     private OrderedMap<SoundEmitterComponent, Entity> activeEmitterMap = new OrderedMap<SoundEmitterComponent, Entity>();
     private OrderedMap<SoundEmitterComponent, Music> activeLoopedMusic = new OrderedMap<SoundEmitterComponent, Music>();
 
@@ -51,6 +54,8 @@ public class SoundSystem extends EntitySystem {
 
     public static boolean SOUNDON = false;
 
+    public float silenceSoundId;
+
 
 
     private Sound sound;
@@ -58,11 +63,10 @@ public class SoundSystem extends EntitySystem {
     public SoundSystem(AssetManager assetManager){
         super(Aspect.all(SoundEmitterComponent.class));
         this.assetManager = assetManager;
-        sound = assetManager.get(SoundFileStrings.coinPickUp, Sound.class);
-
+        sound = assetManager.get(SoundFileStrings.soundOfSilence, Sound.class);
+        silenceSoundId = sound.loop(0f);
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.SETTINGS);
         SOUNDON =  preferences.getBoolean(PreferenceStrings.SETTINGS_SOUND, false);
-
     }
 
 
@@ -126,6 +130,10 @@ public class SoundSystem extends EntitySystem {
         upcomingMixes.clear();
         upcomingMixesMixes.clear();
 
+        if(musicToBeDisposed.size > 5){
+            this.disposeMusic();
+        }
+
     }
 
     private void soundFadeOut(){
@@ -137,10 +145,11 @@ public class SoundSystem extends EntitySystem {
             sec.currentVolume -= world.delta * sec.volumeFadeFactor * MASTER_VOLUME;
 
             if(sec.currentVolume <= 0){
-                Music m = activeLoopedMusic.get(sec);
+                Music m = Gdx.audio.newMusic(Gdx.files.internal(sec.mix.getFileName())); //activeLoopedMusic.get(sec);
                 m.setVolume(0);
                 m.stop();
                 m.dispose();
+                //musicToBeDisposed.add(m);
                 soundFadeArray.removeValue(sec, true);
                 activeLoopedMusic.remove(sec);
             } else {
@@ -166,6 +175,13 @@ public class SoundSystem extends EntitySystem {
 
     }
 
+    public void disposeMusic(){
+        for(Music m : musicToBeDisposed){
+            m.dispose();
+        }
+        musicToBeDisposed.clear();
+    }
+
 
     /**
      * Queues up a Mix to be played in the process of the SoundSystem
@@ -189,17 +205,15 @@ public class SoundSystem extends EntitySystem {
      */
     public void playRandomSound(Mix... mixes){
 
-       // if(!upcomingMixesMixes.contains(mixes, true)) {
+        if(!upcomingMixesMixes.contains(mixes, true)) {
             playSound(mixes[MathUtils.random.nextInt(mixes.length)]);
-         //   upcomingMixesMixes.add(mixes);
-       // }
+            upcomingMixesMixes.add(mixes);
+        }
     }
 
     @Override
     protected void dispose() {
-
         super.dispose();
         sound.stop();
-
     }
 }

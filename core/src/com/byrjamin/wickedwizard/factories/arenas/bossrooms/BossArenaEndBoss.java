@@ -28,7 +28,7 @@ import com.byrjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.byrjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
 import com.byrjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.byrjamin.wickedwizard.factories.chests.ChestFactory;
-import com.byrjamin.wickedwizard.factories.enemy.bosses.BossEnd;
+import com.byrjamin.wickedwizard.factories.enemy.bosses.BossTheEnd;
 import com.byrjamin.wickedwizard.utils.MapCoords;
 import com.byrjamin.wickedwizard.utils.Measure;
 
@@ -162,7 +162,7 @@ public class BossArenaEndBoss extends AbstractFactory {
                                 new AllBlackSkin()))
                         .buildArena();
 
-                arena.addEntity(new BossEnd(assetManager).end(SECTION_WIDTH / 2, Measure.units(35f)));
+                arena.addEntity(new BossTheEnd(assetManager).end(SECTION_WIDTH / 2, Measure.units(35f)));
 
                 return arena;
             }

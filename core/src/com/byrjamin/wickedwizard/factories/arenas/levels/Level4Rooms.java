@@ -679,8 +679,11 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 boolean bool = random.nextBoolean() ;
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnKnight(bool ? arena.getWidth() / 4 : arena.getWidth() / 4 * 3, Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnGoatWizard(bool ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4, Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(bool ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4, Measure.units(45f)));
+
+
+                arena.addWave(arenaEnemyPlacementFactory.spawnKnight(bool ? arena.getWidth() / 4 : arena.getWidth() / 4 * 3, Measure.units(45f)));
+
 
                 arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
 

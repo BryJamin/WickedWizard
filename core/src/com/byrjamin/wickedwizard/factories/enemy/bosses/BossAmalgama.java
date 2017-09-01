@@ -51,7 +51,7 @@ import com.byrjamin.wickedwizard.utils.Pair;
  * Created by Home on 08/07/2017.
  */
 
-public class BossAmalgama extends EnemyFactory {
+public class BossAmalgama extends BossFactory {
 
     private static final float health = 100;
 

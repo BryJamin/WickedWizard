@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.byrjamin.wickedwizard.assets.ColorResource;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -37,6 +38,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.weapons.Giblets;
 import com.byrjamin.wickedwizard.utils.BulletMath;
 import com.byrjamin.wickedwizard.utils.CenterMath;
@@ -162,12 +164,16 @@ public class KnightFactory extends EnemyFactory {
         @Override
         public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
+
+            world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
+
             if(isShield) {
                 for (float f : angles) {
                     createBlock(world, e.getComponent(ParentComponent.class), e.getComponent(PositionComponent.class).position, f, new Color(ColorResource.ENEMY_BULLET_COLOR));
                 }
                 isShield = false;
             } else {
+
 
                 for(ChildComponent c : e.getComponent(ParentComponent.class).children){
                     Entity child = world.getSystem(FindChildSystem.class).findChildEntity(c);

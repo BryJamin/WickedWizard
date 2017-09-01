@@ -3,20 +3,18 @@ package com.byrjamin.wickedwizard.factories.enemy;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.byrjamin.wickedwizard.ecs.components.ai.Action;
 import com.byrjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.byrjamin.wickedwizard.ecs.components.ai.Task;
 import com.byrjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -24,11 +22,11 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.byrjamin.wickedwizard.utils.CenterMath;
 import com.byrjamin.wickedwizard.utils.ComponentBag;
 import com.byrjamin.wickedwizard.utils.Measure;
-import com.byrjamin.wickedwizard.utils.collider.HitBox;
 
 /**
  * Created by Home on 17/06/2017.
@@ -56,6 +54,7 @@ public class ModonFactory extends EnemyFactory{
 
     public ModonFactory(AssetManager assetManager) {
         super(assetManager);
+        this.loudDeathSound = true;
     }
 
 
@@ -96,14 +95,8 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
-                boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
-
-                e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
-                e.getComponent(VelocityComponent.class).velocity.y = Measure.units(85);
-
+                jump(world, e);
 
                 e.getComponent(AnimationStateComponent.class).setDefaultState(AnimationStateComponent.FIRING);
                 e.getComponent(AnimationStateComponent.class).stateTime = 0;
@@ -121,6 +114,18 @@ public class ModonFactory extends EnemyFactory{
 
     }
 
+
+    private void jump(World world, Entity e){
+
+        CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+
+        boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
+
+        e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
+        e.getComponent(VelocityComponent.class).velocity.y = Measure.units(85);
+
+    }
 
 
     public ComponentBag heavyModon(float x, float y){
@@ -161,13 +166,8 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
-                boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
-
-                e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
-                e.getComponent(VelocityComponent.class).velocity.y = Measure.units(85);
+                jump(world, e);
 
                 e.getComponent(AnimationStateComponent.class).setDefaultState(HEAVY_MODON_IN_AIR_STATE);
                 e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
@@ -205,9 +205,7 @@ public class ModonFactory extends EnemyFactory{
                 mp.fire(world, e, cbc.getCenterX(), cbc.getCenterY() - Measure.units(5f), 0);
                 e.edit().remove(OnCollisionActionComponent.class);
 
-                Entity shaker = world.createEntity();
-                shaker.edit().add(new ExpireComponent(stompShakeTime));
-                shaker.edit().add(new CameraShakeComponent(stompIntensity));
+                screenShakeLanding(world, e);
 
             }
         };
@@ -225,15 +223,23 @@ public class ModonFactory extends EnemyFactory{
             @Override
             public void performAction(World world, Entity e) {
                 e.edit().remove(OnCollisionActionComponent.class);
-                Entity shaker = world.createEntity();
-                shaker.edit().add(new ExpireComponent(stompShakeTime));
-                shaker.edit().add(new CameraShakeComponent(stompIntensity));
+
+                screenShakeLanding(world, e);
+
             }
         };
 
 
         return ocac;
 
+    }
+
+
+    private void screenShakeLanding(World world, Entity e){
+        Entity shaker = world.createEntity();
+        shaker.edit().add(new ExpireComponent(stompShakeTime));
+        shaker.edit().add(new CameraShakeComponent(stompIntensity));
+        world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyJumpLandingMegaMix);
     }
 
 

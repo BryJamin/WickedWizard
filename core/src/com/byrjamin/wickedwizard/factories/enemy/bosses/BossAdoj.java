@@ -42,7 +42,7 @@ import com.byrjamin.wickedwizard.utils.enums.Direction;
  * Created by Home on 03/07/2017.
  */
 
-public class BossAdoj extends EnemyFactory {
+public class BossAdoj extends BossFactory {
 
 
     private static final float height = Measure.units(24f);

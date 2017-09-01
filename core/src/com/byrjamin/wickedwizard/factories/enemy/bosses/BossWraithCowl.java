@@ -65,7 +65,7 @@ import java.util.Random;
  * Created by Home on 05/07/2017.
  */
 
-public class BossWraithCowl extends EnemyFactory {
+public class BossWraithCowl extends BossFactory {
 
     private static final float width = Measure.units(20f);
     private static final float height = Measure.units(20f);

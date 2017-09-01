@@ -29,6 +29,7 @@ import com.byrjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.byrjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.byrjamin.wickedwizard.factories.arenas.Arena;
 import com.byrjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
@@ -88,6 +89,9 @@ public class RoomTransitionSystem extends EntitySystem {
                         s.setEnabled(true);
                     }
                 }
+
+                //world.getSystem(SoundSystem.class).disposeMusic();
+
             }
         });
 

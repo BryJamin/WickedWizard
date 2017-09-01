@@ -63,7 +63,7 @@ public class FarSort {
     public Comparator<DoorComponent> LEFTMOST_DISTANCE_DOORS = new Comparator<DoorComponent>() {
         @Override
         public int compare(DoorComponent dc1, DoorComponent dc2) {
-            return LEFTMOST_DISTANCE.compare(dc1.leaveCoords, dc2.leaveCoords);
+            return BIGGEST_Y_VALUE_SORT.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
 
@@ -82,6 +82,44 @@ public class FarSort {
         @Override
         public int compare(DoorComponent dc1, DoorComponent dc2) {
             return RIGHTMOST_DISTANCE.compare(dc1.leaveCoords, dc2.leaveCoords);
+        }
+    };
+
+
+
+    public Comparator<MapCoords> BIGGEST_Y_VALUE_SORT = new Comparator<MapCoords>() {
+        @Override
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
+            Integer i1 = mapCoords1.getY();
+            Integer i2 = mapCoords2.getY();
+            return i1 > i2?-1:(i1.equals(i2) ?0:1);
+        }
+    };
+
+
+    public Comparator<DoorComponent> SORT_DOORS_BY_LARGEST_Y = new Comparator<DoorComponent>() {
+        @Override
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
+            return BIGGEST_Y_VALUE_SORT.compare(dc1.leaveCoords, dc2.leaveCoords);
+        }
+    };
+
+
+
+    public Comparator<MapCoords> SORT_COORDS_BY_LOWEST_Y = new Comparator<MapCoords>() {
+        @Override
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
+            Integer i1 = mapCoords1.getY();
+            Integer i2 = mapCoords2.getY();
+            return i1 < i2?-1:(i1.equals(i2) ?0:1);
+        }
+    };
+
+
+    public Comparator<DoorComponent> SORT_DOORS_BY_LOWEST_Y = new Comparator<DoorComponent>() {
+        @Override
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
+            return SORT_COORDS_BY_LOWEST_Y.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
 

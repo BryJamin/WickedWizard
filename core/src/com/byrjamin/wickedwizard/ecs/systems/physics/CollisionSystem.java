@@ -137,17 +137,7 @@ public class CollisionSystem extends EntityProcessingSystem {
             futureRectangle.y += (vc.velocity.y / 5 * world.delta);
         }
 
-        //BoundsDrawer.drawBounds(world.getSystem(RenderingSystem.class).batch, futureRectangle);
-
-        if(bulletm.has(e)) {
-            System.out.println(collidableobjects.size);
-        }
-
         for(Rectangle r : collidableobjects) {
-
-            if(bulletm.has(e)) {
-                System.out.println("Not even going to do anything");
-            }
 
             Collider.Collision c = Collider.collision(cbc.bound, futureRectangle, r);
 

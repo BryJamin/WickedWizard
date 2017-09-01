@@ -190,6 +190,7 @@ public class ItemResource {
         public static ItemValues Ace = new ItemValues.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/Ace")
                 .name("Ace")
+                .itemTypes(ItemType.ITEM)
                 .description("Accuracy+ Luck+")
                 .build();
 
@@ -298,7 +299,7 @@ public class ItemResource {
                 new ItemStatueOfAjir()};
 
         public static ItemValues anger = new ItemValues.ItemValueBuilder("9863a17e-81d8-11e7-bb31-be2e44b06b34")
-                .itemTypes(ItemType.BOSS)
+                .itemTypes(ItemType.BOSS, ItemType.ITEM)
                 .challengeId(ChallengesResource.Rank1Challenges.arenaSpeedRun)
                 .region("item/Anger")
                 .name("Anger")
@@ -404,6 +405,7 @@ public class ItemResource {
     public static class Health {
 
         public static Item[] healthItems = {
+                new ItemDisappointment(),
                 new ItemHyperTrophy(),
                 new ItemIronFragment(),
                 new ItemSarcasticLion(),
@@ -442,6 +444,13 @@ public class ItemResource {
                 .description("Health+")
                 .build();
 
+        public static ItemValues disappointment = new ItemValues.ItemValueBuilder("edbd9f26-1b15-4f8d-a15d-f620066e0154")
+                .region("item/Disappointment")
+                .name("Disappointment")
+                .description("...")
+                .build();
+
+
 
     }
 
@@ -461,7 +470,7 @@ public class ItemResource {
                 .challengeId(ChallengesResource.Rank4Challenges.perfectAmalgama)
                 .region("item/EyesOfAmalgama")
                 .name("Eyes Of Amalgama")
-                .description("Strangely Pretty")
+                .description("Random stat increase")
                 .build();
 
 
@@ -503,6 +512,7 @@ public class ItemResource {
         public static ItemValues threeDimensionalGold = new ItemValues.ItemValueBuilder("36712291-d64c-4ea2-bea7-de3e8395d463")
                 .challengeId(ChallengesResource.Rank3Challenges.perfectBoomy)
                 .region("item/ThreeDimensionalGold")
+                .itemTypes(ItemType.ITEM)
                 .name("3-Dimensional Gold")
                 .description("Woah")
                 .build();
@@ -537,6 +547,7 @@ public class ItemResource {
         public static ItemValues laserScope = new ItemValues.ItemValueBuilder("8074d1ae-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/LaserScope")
                 .name("Laser Scope")
+                .challengeId(ChallengesResource.LEVEL_3_COMPLETE)
                 .description("Range+++")
                 .build();
 
@@ -594,7 +605,6 @@ public class ItemResource {
         public static Item[] shotSpeedItems = {
                 new ItemBoringRock(),
                 new ItemBubble(),
-                new ItemDisappointment(),
                 new ItemDullFeather(),
                 new ItemLostLettersShotSpeedAccuracy(),
                 new ItemMomentum(),
@@ -611,12 +621,6 @@ public class ItemResource {
                 .region("item/Bubble")
                 .name("Bubble")
                 .description("ShotSpeed++")
-                .build();
-
-        public static ItemValues disappointment = new ItemValues.ItemValueBuilder("edbd9f26-1b15-4f8d-a15d-f620066e0154")
-                .region("item/Disappointment")
-                .name("Disappointment")
-                .description("...")
                 .build();
 
         public static ItemValues dullFeather = new ItemValues.ItemValueBuilder("ad70ff34-81d9-11e7-bb31-be2e44b06b34")

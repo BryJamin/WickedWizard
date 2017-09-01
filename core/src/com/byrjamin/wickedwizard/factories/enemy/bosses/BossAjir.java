@@ -45,7 +45,7 @@ import java.util.Random;
  * Created by Home on 07/07/2017.
  */
 
-public class BossAjir extends EnemyFactory{
+public class BossAjir extends BossFactory {
 
 
     private static final float width = Measure.units(25f);
@@ -117,7 +117,7 @@ public class BossAjir extends EnemyFactory{
         x = x - width / 2;
         y = y - height / 2;
 
-        ComponentBag bag = this.defaultEnemyBagNoLootNoDeath(new ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBagNoDeath(new ComponentBag(), x, y, health);
         bag.add(new BossComponent());
 
         bag.add(new OnDeathActionComponent(new Action() {

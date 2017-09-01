@@ -151,7 +151,6 @@ public class LuckSystem extends BaseSystem {
 
 
             } else {
-
                 System.out.println("OH NO I'M OUT!" + totalChance);
                 break;
             }

@@ -45,7 +45,7 @@ import java.util.Random;
  * Created by Home on 02/07/2017.
  */
 
-public class MrBoomyBoss extends EnemyFactory {
+public class MrBoomyBoss extends BossFactory {
 
     private static final float height = Measure.units(12f);
     private static final float width = Measure.units(12f);

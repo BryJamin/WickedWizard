@@ -13,6 +13,7 @@ import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.BossComponent;
 import com.byrjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.byrjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.byrjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.byrjamin.wickedwizard.ecs.components.Weapon;
 import com.byrjamin.wickedwizard.ecs.components.WeaponComponent;
@@ -53,7 +54,10 @@ import java.util.Random;
  * Created by Home on 09/07/2017.
  */
 
-public class BossEnd extends EnemyFactory {
+public class BossTheEnd extends BossFactory {
+
+
+    private EnemyFactory enemyFactory;
 
     private static final float mainBodyHeight = Measure.units(24f);
     private static final float mainBodyWidth = Measure.units(24f);
@@ -107,15 +111,16 @@ public class BossEnd extends EnemyFactory {
     private static final float splitterPhase = 5.0f;
     private static final float deathFromAbovePhase = 7.5f;
     private static final float laserDancePhase = (numberOfLasersFired + 1) * timeBetweenLaserFiredForDance;
-    private static final float gatlingPhase = 7.5f;
+    private static final float gatlingPhase = 5f;
 
 
 
 
     private static final Random random = new Random();
 
-    public BossEnd(AssetManager assetManager) {
+    public BossTheEnd(AssetManager assetManager) {
         super(assetManager);
+        this.enemyFactory = new EnemyFactory(assetManager);
     }
 
 
@@ -131,6 +136,7 @@ public class BossEnd extends EnemyFactory {
         BagSearch.removeObjectOfTypeClass(BossComponent.class, bag);
         BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
         bag.add(new ArenaLockComponent());
+        bag.add(new OnlyPlayerBulletsComponent());
 
         bag.add(new OnDeathActionComponent(new Action() {
             @Override
@@ -352,7 +358,7 @@ public class BossEnd extends EnemyFactory {
 
         Entity hand = world.createEntity();
 
-        for(Component c : this.defaultEnemyBagNoLoot(new ComponentBag(), tempPos, tempPos, handHealth)){
+        for(Component c : enemyFactory.defaultEnemyBagNoLoot(new ComponentBag(), tempPos, tempPos, handHealth)){
             hand.edit().add(c);
         }
 
@@ -543,10 +549,10 @@ public class BossEnd extends EnemyFactory {
         public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
             positionIndentifierArray.clear();
-            positionIndentifierArray.addAll(1,2,3,4,5,6,7,8);
+            positionIndentifierArray.addAll(1,2,7,8);
             positionIndentifierArray.shuffle();
             positionIndentifierArray.pop();
-            positionIndentifierArray.addAll(0, 9);
+            positionIndentifierArray.addAll(0, 9, 4, 5, 6, 3);
             positionIndentifierArray.shuffle();
 
 

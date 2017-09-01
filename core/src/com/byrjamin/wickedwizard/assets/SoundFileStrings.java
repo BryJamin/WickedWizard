@@ -58,10 +58,11 @@ public class SoundFileStrings {
     public static final Mix jumpMix3 = new Mix.MixMaker("audio/sounds/jump/3_jump.ogg").volume(0.2f).build();
     public static final Mix[] jumpMegaMix = new Mix[]{jumpMix, jumpMix2, jumpMix3};
 
-    public static final String explosion1 = "audio/sounds/explosion-01.ogg";
-    public static final String explosion2 = "audio/sounds/explosion-02.ogg";
-    public static final String explosion3 = "audio/sounds/explosion-03.ogg";
-    public static final String explosion4 = "audio/sounds/explosion-04.ogg";
+
+    public static final String explosion1 = "audio/sounds/explosions/1_Explosion.ogg";
+    public static final String explosion2 = "audio/sounds/explosions/2_Explosion.ogg";
+    public static final String explosion3 = "audio/sounds/explosions/3_Explosion.ogg";
+    public static final String explosion4 = "audio/sounds/explosions/4_Explosion.ogg";
 
     public static final String[] explosionStrings = new String[]{explosion1, explosion2, explosion3, explosion4};
 
@@ -71,6 +72,21 @@ public class SoundFileStrings {
     public static final Mix explosionMix4 = new Mix.MixMaker(explosion4).volume(0.1f).build();
 
     public static final Mix[] explosionMegaMix = new Mix[]{explosionMix1, explosionMix2, explosionMix3, explosionMix4};
+
+    public static final Mix bigExplosionMix1 = new Mix.MixMaker(explosion1).volume(0.1f).pitch(0.5f).build();
+    public static final Mix bigExplosionMix2 = new Mix.MixMaker(explosion2).volume(0.1f).pitch(0.5f).build();
+    public static final Mix bigExplosionMix3 = new Mix.MixMaker(explosion3).volume(0.1f).pitch(0.5f).build();
+    public static final Mix bigExplosionMix4 = new Mix.MixMaker(explosion4).volume(0.1f).pitch(0.5f).build();
+
+    public static final Mix[] bigExplosionMegaMix = new Mix[]{bigExplosionMix1, bigExplosionMix2, bigExplosionMix3, bigExplosionMix4};
+
+    public static final Mix enemyJumpMix = new Mix.MixMaker(explosion1).volume(0.1f).pitch(0.5f).build();
+    public static final Mix enemyJumpMix2 = new Mix.MixMaker(explosion2).volume(0.1f).pitch(0.5f).build();
+    public static final Mix enemyJumpMix3 = new Mix.MixMaker(explosion1).volume(0.1f).pitch(0.65f).build();
+    public static final Mix enemyJumpMix4 = new Mix.MixMaker(explosion2).volume(0.1f).pitch(0.65f).build();
+    public static final Mix[] enemyJumpLandingMegaMix = new Mix[]{enemyJumpMix3, enemyJumpMix2, enemyJumpMix, enemyJumpMix4};
+
+
 
     public static final Mix quietExplosionMix1 = new Mix.MixMaker(explosion1).volume(0.005f).build();
     public static final Mix quietExplosionMix2 = new Mix.MixMaker(explosion2).volume(0.005f).build();
@@ -83,6 +99,8 @@ public class SoundFileStrings {
     public static final Mix coinPickUpMix = new Mix(coinPickUp, 0.1f);
 
 
+    public static final String soundOfSilence = "audio/sounds/twosecondsilence.ogg";
+
 
     public static final String itemPickUp = "audio/sounds/itempickup.ogg";
     public static final Mix itemPickUpMix1 = new Mix.MixMaker(itemPickUp).volume(0.2f).build();
@@ -91,7 +109,7 @@ public class SoundFileStrings {
 
 
     //Laser
-    public static final String quietLaser = "audio/sounds/laser/1_highlaserAud.ogg";
+    public static final String quietLaser = "audio/sounds/laser/1_lowlaser.ogg";
     public static final Mix quietLaserMix = new Mix.MixMaker(quietLaser).volume(0.1f).pitch(0.9f).build();
 
 
@@ -112,6 +130,8 @@ public class SoundFileStrings {
 
         assetManager.load(playerFire, Sound.class);
         assetManager.load(enemyFire, Sound.class);
+        assetManager.load(soundOfSilence, Sound.class);
+
 
         for(String s : SoundFileStrings.explosionStrings) assetManager.load(s, Sound.class);
         for(Mix m : SoundFileStrings.jumpMegaMix) assetManager.load(m.getFileName(), Sound.class);

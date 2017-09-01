@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.byrjamin.wickedwizard.assets.SoundFileStrings;
 import com.byrjamin.wickedwizard.assets.TextureStrings;
 import com.byrjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.byrjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
@@ -30,6 +31,7 @@ import com.byrjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.byrjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.byrjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.byrjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.byrjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.byrjamin.wickedwizard.factories.enemy.EnemyFactory;
 import com.byrjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
@@ -44,7 +46,7 @@ import com.byrjamin.wickedwizard.utils.collider.HitBox;
  * Created by Home on 30/06/2017.
  */
 
-public class BiggaBlobbaBoss extends EnemyFactory {
+public class BiggaBlobbaBoss extends BossFactory {
 
     private static final float width = Measure.units(25);
     private static final float height = Measure.units(25);
@@ -238,6 +240,7 @@ public class BiggaBlobbaBoss extends EnemyFactory {
             public void cleanUpAction(World world, Entity e) {
                 e.getComponent(VelocityComponent.class).velocity.y = 0;
                 e.edit().remove(BounceComponent.class);
+                e.edit().remove(OnCollisionActionComponent.class);
             }
         };
     }
@@ -302,10 +305,14 @@ public class BiggaBlobbaBoss extends EnemyFactory {
         ocac.bottom = new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.edit().remove(OnCollisionActionComponent.class);
+
+                if(e.getComponent(BounceComponent.class) == null) {
+                    e.edit().remove(OnCollisionActionComponent.class);
+                }
                 Entity shaker = world.createEntity();
                 shaker.edit().add(new ExpireComponent(stompShakeTime));
                 shaker.edit().add(new CameraShakeComponent(stompIntensity));
+                world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyJumpLandingMegaMix);
             }
         };
         return ocac;

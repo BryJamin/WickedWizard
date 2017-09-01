@@ -87,7 +87,7 @@ public class PauseWorld implements WorldContainer {
     private static final float buttonWidth = Measure.units(37.5f);
 
     //Resume
-    private static final float resumeOffsetX = Measure.units(65f);
+    private static final float resumeOffsetX = Measure.units(60f);
     private static final float resumeOffsetY = Measure.units(0);
 
     //Mainmenu

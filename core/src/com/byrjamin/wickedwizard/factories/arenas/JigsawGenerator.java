@@ -26,6 +26,7 @@ import com.byrjamin.wickedwizard.utils.comparator.FarSort;
 import com.byrjamin.wickedwizard.utils.enums.Direction;
 import com.byrjamin.wickedwizard.utils.enums.Level;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -59,6 +60,9 @@ public class JigsawGenerator {
     private DecorFactory decorFactory;
 
 
+    private WeightedRoll<Comparator<DoorComponent>> typeOfSortRoller;
+    private Comparator<DoorComponent> typeOfSort;
+
     public JigsawGenerator(JigsawGeneratorConfig jigsawGeneratorConfig){
         this.assetManager = jigsawGeneratorConfig.assetManager;
         this.random = jigsawGeneratorConfig.random;
@@ -75,6 +79,17 @@ public class JigsawGenerator {
         this.arenaSkin = jigsawGeneratorConfig.level.getArenaSkin();
         this.level = jigsawGeneratorConfig.level;
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+
+
+
+        this.typeOfSortRoller = new WeightedRoll<Comparator<DoorComponent>>(random);
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 0));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.RIGHTMOST_DISTANCE_DOORS, 0));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 20));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LOWEST_Y, 0));
+        typeOfSortRoller.addWeightedObject(new WeightedObject<Comparator<DoorComponent>>(null, 0));
+
+        this.typeOfSort = typeOfSortRoller.roll();
     }
 
 
@@ -370,18 +385,12 @@ public class JigsawGenerator {
     public boolean placeRoomUsingDoors(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
         Array<DoorComponent> adc = avaliableDoorsSet.orderedItems();
 
-        int i = rand.nextInt(3);
-
-        if(i == 0) {
-            adc.sort(farSort.LEFTMOST_DISTANCE_DOORS);
-        } else if(i == 1) {
-            adc.sort(farSort.RIGHTMOST_DISTANCE_DOORS);
-        } else {
+        if(typeOfSort == null){
             adc.shuffle();
+        } else {
+            adc.sort(typeOfSort);
         }
 
-        //adc.sort(farSort.DOOR_FAR_MAPCOORDS);
-       // adc.shuffle();
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
 
     }
