@@ -1,6 +1,9 @@
 <resources>
 
-    <style name="GdxTheme" parent="android:Theme">
+    <color name="custom_theme_color">#b0b0ff</color>
+
+
+    <style name="GdxTheme" parent="@android:style/Theme.Holo.Light">
 		<item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
