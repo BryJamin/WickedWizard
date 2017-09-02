@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
@@ -25,6 +26,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.BulletMath;
@@ -102,7 +104,7 @@ public class PlayerFactory extends AbstractFactory {
 
 
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
+        bag.add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).health <= 0;
@@ -126,7 +128,8 @@ public class PlayerFactory extends AbstractFactory {
                 e.getComponent(TextureRegionComponent.class).DEFAULT.a = 0;
 
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).killChildComponents(e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class));
-                e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent.class);
+                e.edit().remove(ConditionalActionComponent.class);
+                e.edit().remove(BlinkOnHitComponent.class);
 
 
             }
@@ -236,7 +239,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent());
 
 
-        com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent cac = new com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
+        ConditionalActionComponent cac = new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
 
@@ -284,7 +287,7 @@ public class PlayerFactory extends AbstractFactory {
 
                 e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
 
-                e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent.class);
+                e.edit().remove(ConditionalActionComponent.class);
 
                 e.edit().add(new ExpireComponent(1f));
                 e.edit().add(new FadeComponent(false, 1f, false));
