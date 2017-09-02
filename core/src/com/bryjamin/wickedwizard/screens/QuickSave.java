@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.SerializationException;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.bryjamin.wickedwizard.factories.items.Item;
@@ -28,7 +29,7 @@ public class QuickSave {
     public static void saveGame(World world){
 
         SaveData saveData = new SaveData();
-        saveData.setStatComponentJSON(json.toJson(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class)));
+        saveData.setStatComponentJSON(json.toJson(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class)));
         saveData.setLevelJSON(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.class).getGameCreator().position + "");
         saveData.setCurrencyJSON(json.toJson(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class)));
         saveData.setItemPoolJSON(json.toJson(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.class).getJigsawGenerator().getItemStore().getItemStringArray()));
@@ -56,7 +57,7 @@ public class QuickSave {
 
         try {
             SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
-            json.fromJson(com.bryjamin.wickedwizard.ecs.components.StatComponent.class, saveData.getStatComponentJSON());
+            json.fromJson(StatComponent.class, saveData.getStatComponentJSON());
             json.fromJson(CurrencyComponent.class, saveData.getCurrencyJSON());
             json.fromJson(Array.class, saveData.getItemPoolJSON());
 
@@ -91,8 +92,8 @@ public class QuickSave {
 
 
             SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
-            final com.bryjamin.wickedwizard.ecs.components.StatComponent s = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class);
-            final com.bryjamin.wickedwizard.ecs.components.StatComponent savedStats = json.fromJson(com.bryjamin.wickedwizard.ecs.components.StatComponent.class, saveData.getStatComponentJSON());
+            final com.bryjamin.wickedwizard.ecs.components.StatComponent s = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
+            final com.bryjamin.wickedwizard.ecs.components.StatComponent savedStats = json.fromJson(StatComponent.class, saveData.getStatComponentJSON());
 
             world.createEntity().edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
                 @Override

@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.factories.items.passives.luck;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
 
 /**
@@ -13,7 +14,7 @@ public class ItemIWishYouWell implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).crit += 5f;
+        player.getComponent(StatComponent.class).crit += 5f;
         return true;
     }
 

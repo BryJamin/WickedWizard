@@ -107,7 +107,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
-                return entity.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).health <= 0;
+                return entity.getComponent(StatComponent.class).health <= 0;
             }
         }, new Action() {
             @Override

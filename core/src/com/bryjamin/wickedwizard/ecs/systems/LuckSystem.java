@@ -4,6 +4,7 @@ import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.badlogic.gdx.utils.Array;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.factories.items.PickUp;
 import com.bryjamin.wickedwizard.factories.items.pickups.PickUpArmorUp;
@@ -58,7 +59,7 @@ public class LuckSystem extends BaseSystem {
 
     @Override
     protected void processSystem() {
-        luck = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).luck;
+        luck = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).luck;
     }
 
 

@@ -12,18 +12,22 @@ import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.AltarComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
@@ -384,13 +388,13 @@ public class ItemFactory extends AbstractFactory {
 
 
 
-    private com.bryjamin.wickedwizard.ecs.components.ai.Task activeAltar (){
+    private Task activeAltar (){
 
-        return new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
+        return new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
-                com.bryjamin.wickedwizard.ecs.components.object.AltarComponent ac = e.getComponent(com.bryjamin.wickedwizard.ecs.components.object.AltarComponent.class);
+                com.bryjamin.wickedwizard.ecs.components.object.AltarComponent ac = e.getComponent(AltarComponent.class);
 
                 if(ac.pickUp instanceof Item) {
 
@@ -398,9 +402,9 @@ public class ItemFactory extends AbstractFactory {
 
                     if (ac.hasItem) {
 
-                        Entity player = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerEntity();
+                        Entity player = world.getSystem(FindPlayerSystem.class).getPlayerEntity();
                         item.applyEffect(world, player);
-                        player.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).collectedItems.add(item);
+                        player.getComponent(StatComponent.class).collectedItems.add(item);
 
 
 
