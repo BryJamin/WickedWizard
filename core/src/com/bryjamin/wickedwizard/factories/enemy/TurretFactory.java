@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 26/03/2017.
@@ -32,7 +33,7 @@ public class TurretFactory extends EnemyFactory {
     private final static float pentaHealth = 30;
     private final static float doubleFlyByHealth = 30;
 
-    private final static float turretSpeed = com.bryjamin.wickedwizard.utils.Measure.units(15f);
+    private final static float turretSpeed = Measure.units(15f);
 
     private final static float turretWeaponFireRate = 2.0f;
 
@@ -41,13 +42,13 @@ public class TurretFactory extends EnemyFactory {
         bombFactory = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
     }
 
-    final float width = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    final float height = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    final float width = Measure.units(10f);
+    final float height = Measure.units(10f);
 
-    final float upgradeWidth = com.bryjamin.wickedwizard.utils.Measure.units(15f);
-    final float upgradeHeight = com.bryjamin.wickedwizard.utils.Measure.units(15f);
+    final float upgradeWidth = Measure.units(15f);
+    final float upgradeHeight = Measure.units(15f);
 
-    private float upgradeSpeed = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    private float upgradeSpeed = Measure.units(10f);
 
     public Bag<Component> fixedLockOnTurret(float x, float y){
         x = x - width / 2;
@@ -183,8 +184,8 @@ public class TurretFactory extends EnemyFactory {
 
                 //TODO maybe improve this? should bp,bs just drop vertically and not be aimed?
 
-                newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = BulletMath.velocityY(com.bryjamin.wickedwizard.utils.Measure.units(75f), angleInRadians);
-                newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = BulletMath.velocityX(com.bryjamin.wickedwizard.utils.Measure.units(75f), angleInRadians);
+                newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = BulletMath.velocityY(Measure.units(75f), angleInRadians);
+                newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = BulletMath.velocityX(Measure.units(75f), angleInRadians);
             }
 
             @Override
@@ -296,8 +297,8 @@ public class TurretFactory extends EnemyFactory {
                     fc.airFriction = false;
                     newEntity.edit().add(fc);
                     //TODO maybe improve this? should bp,bs just drop vertically and not be aimed?
-                    newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = BulletMath.velocityY(com.bryjamin.wickedwizard.utils.Measure.units(75f), angleInRadians + Math.toRadians(i));
-                    newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = BulletMath.velocityX(com.bryjamin.wickedwizard.utils.Measure.units(75f), angleInRadians + Math.toRadians(i));
+                    newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = BulletMath.velocityY(Measure.units(75f), angleInRadians + Math.toRadians(i));
+                    newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = BulletMath.velocityX(Measure.units(75f), angleInRadians + Math.toRadians(i));
 
                 }
             }

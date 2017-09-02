@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.screens.PlayScreenConfig;
 import com.bryjamin.wickedwizard.utils.GameDelta;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 28/07/2017.
@@ -70,8 +71,8 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
 
 
         com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
-                .width(com.bryjamin.wickedwizard.utils.Measure.units(30))
-                .height(com.bryjamin.wickedwizard.utils.Measure.units(10f))
+                .width(Measure.units(30))
+                .height(Measure.units(10f))
                 .foregroundColor(foreground)
                 .backgroundColor(background);
 
@@ -86,7 +87,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world,  isBound ? "Bounds on" : "Bounds off", com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(30));
+                .createButton(world,  isBound ? "Bounds on" : "Bounds off", Measure.units(5f), Measure.units(30));
 
         Entity godOption = menuButtonBuilder
                 .action(new Action() {
@@ -101,7 +102,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world,  isGod ? "GodMode on" : "GodMode off", com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(20));
+                .createButton(world,  isGod ? "GodMode on" : "GodMode off", Measure.units(5f), Measure.units(20));
 
         createBossAndRoomSelectors();
 
@@ -111,14 +112,14 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
 
 
         com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder startButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
-                .width(com.bryjamin.wickedwizard.utils.Measure.units(10f))
-                .height(com.bryjamin.wickedwizard.utils.Measure.units(10f))
+                .width(Measure.units(10f))
+                .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
                 .backgroundColor(new Color(Color.WHITE));
 
         com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder selectorButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
-                .width(com.bryjamin.wickedwizard.utils.Measure.units(7.5f))
-                .height(com.bryjamin.wickedwizard.utils.Measure.units(7.5f))
+                .width(Measure.units(7.5f))
+                .height(Measure.units(7.5f))
                 .foregroundColor(new Color(Color.WHITE))
                 .backgroundColor(new Color(Color.WHITE));
 
@@ -132,7 +133,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_BOSS_NUMBER, "0"), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(45f));
+                .createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_BOSS_NUMBER, "0"), Measure.units(20f), Measure.units(45f));
 
         Entity bossSelecterButtonUp = selectorButtonBuilder
                 .action(new Action() {
@@ -146,7 +147,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, "", com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(50));
+                .createButton(world, "", Measure.units(10f), Measure.units(50));
 
 
         Entity bossSelecterButtonDown = selectorButtonBuilder
@@ -160,7 +161,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, "", com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(40f));
+                .createButton(world, "", Measure.units(10f), Measure.units(40f));
 
 
 
@@ -178,7 +179,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_ROOM_LEVEL, "0"), com.bryjamin.wickedwizard.utils.Measure.units(80f), com.bryjamin.wickedwizard.utils.Measure.units(45f));
+                .createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_ROOM_LEVEL, "0"), Measure.units(80f), Measure.units(45f));
 
 
         Entity levelSelecterButtonUp = selectorButtonBuilder
@@ -194,7 +195,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, "", com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(50));
+                .createButton(world, "", Measure.units(70f), Measure.units(50));
 
 
 
@@ -211,7 +212,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, "", com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(40f));
+                .createButton(world, "", Measure.units(70f), Measure.units(40f));
 
 
         final Entity roomStartbutton = startButtonBuilder
@@ -227,7 +228,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_ROOM_NUMBER, "0"), com.bryjamin.wickedwizard.utils.Measure.units(80f), com.bryjamin.wickedwizard.utils.Measure.units(27.5f));
+                .createButton(world, devToolPrefs.getString(PreferenceStrings.DEV_ROOM_NUMBER, "0"), Measure.units(80f), Measure.units(27.5f));
 
 
         Entity roomSelecterButtonUp = selectorButtonBuilder
@@ -244,7 +245,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, "", com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(30f));
+                .createButton(world, "", Measure.units(70f), Measure.units(30f));
 
 
 
@@ -261,7 +262,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     }
                 })
                 .build()
-                .createButton(world, "", com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(20f));
+                .createButton(world, "", Measure.units(70f), Measure.units(20f));
 
     }
 

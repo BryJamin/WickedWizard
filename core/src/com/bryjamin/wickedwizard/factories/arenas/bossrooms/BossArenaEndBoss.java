@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.bosses.BossTheEnd;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 09/07/2017.
@@ -150,7 +151,7 @@ public class BossArenaEndBoss extends AbstractFactory {
                                 new AllBlackSkin()))
                         .buildArena();
 
-                arena.addEntity(new BossTheEnd(assetManager).end(com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH / 2, com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+                arena.addEntity(new BossTheEnd(assetManager).end(com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH / 2, Measure.units(35f)));
 
                 return arena;
             }

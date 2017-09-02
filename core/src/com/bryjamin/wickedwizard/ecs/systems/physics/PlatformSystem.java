@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.math.Rectangle;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 29/04/2017.
@@ -20,8 +21,8 @@ public class PlatformSystem extends EntitySystem {
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
 
 
-    private static float inputRadius = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-    private static final float platformPushDown = com.bryjamin.wickedwizard.utils.Measure.units(0.5f);
+    private static float inputRadius = Measure.units(20f);
+    private static final float platformPushDown = Measure.units(0.5f);
 
     @SuppressWarnings("unchecked")
     public PlatformSystem() {

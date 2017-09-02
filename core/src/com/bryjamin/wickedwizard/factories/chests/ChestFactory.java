@@ -10,17 +10,18 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChestComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created on 22/04/2017.
@@ -39,19 +40,19 @@ public class ChestFactory extends AbstractFactory {
                 .numberOfGibletPairs(5)
                 .expiryTime(0.4f)
                 .minSpeed(5f)
-                .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(40))
-                .size(com.bryjamin.wickedwizard.utils.Measure.units(1f))
+                .maxSpeed(Measure.units(40))
+                .size(Measure.units(1f))
                 .colors(new Color(Color.BROWN), new Color(ColorResource.BOMB_YELLOW)) //Maybe change the color of this?
                 .build();
 
 
     }
 
-    public final float width = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    public final float height = com.bryjamin.wickedwizard.utils.Measure.units(7f);
+    public final float width = Measure.units(10f);
+    public final float height = Measure.units(7f);
 
-    public final float texWidth = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    public final float texHeight = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    public final float texWidth = Measure.units(10f);
+    public final float texHeight = Measure.units(10f);
 
 
     public com.bryjamin.wickedwizard.utils.ComponentBag chestBag(float x, float y){

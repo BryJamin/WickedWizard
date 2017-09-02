@@ -9,6 +9,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Locale;
 
@@ -72,7 +73,7 @@ public class OnLoadFactory {
                 timer.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(player.getComponent(CollisionBoundComponent.class).getCenterX(), player.getComponent(CollisionBoundComponent.class).getCenterY()));
                 timer.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(
                         world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position,
-                        player.getComponent(CollisionBoundComponent.class).bound.width / 2, com.bryjamin.wickedwizard.utils.Measure.units(10)));
+                        player.getComponent(CollisionBoundComponent.class).bound.width / 2, Measure.units(10)));
 
                 timer.edit().add(new FadeComponent(false, 0.5f, true));
                 timer.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class)));

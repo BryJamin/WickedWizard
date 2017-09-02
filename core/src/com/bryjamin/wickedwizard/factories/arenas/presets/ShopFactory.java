@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 18/04/2017.
@@ -46,31 +47,31 @@ public class ShopFactory extends com.bryjamin.wickedwizard.factories.AbstractFac
                         com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
                 .buildArena();
 
-        for(Bag<Component> b : itemFactory.createShopPickUpBag(com.bryjamin.wickedwizard.utils.Measure.units(20), com.bryjamin.wickedwizard.utils.Measure.units(37.5f), new com.bryjamin.wickedwizard.factories.items.pickups.PickUpHalfHealthUp(), pickUpPrice)) {
+        for(Bag<Component> b : itemFactory.createShopPickUpBag(Measure.units(20), Measure.units(37.5f), new com.bryjamin.wickedwizard.factories.items.pickups.PickUpHalfHealthUp(), pickUpPrice)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopPickUpBag(com.bryjamin.wickedwizard.utils.Measure.units(40), com.bryjamin.wickedwizard.utils.Measure.units(37.5f), new com.bryjamin.wickedwizard.factories.items.pickups.PickUpArmorUp(), pickUpPrice)) {
+        for(Bag<Component> b : itemFactory.createShopPickUpBag(Measure.units(40), Measure.units(37.5f), new com.bryjamin.wickedwizard.factories.items.pickups.PickUpArmorUp(), pickUpPrice)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(com.bryjamin.wickedwizard.utils.Measure.units(60), com.bryjamin.wickedwizard.utils.Measure.units(37.5f), itemPrice)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(60), Measure.units(37.5f), itemPrice)) {
             arena.addEntity(b);
         }
 
-        for(Bag<Component> b : itemFactory.createShopItemBag(com.bryjamin.wickedwizard.utils.Measure.units(80), com.bryjamin.wickedwizard.utils.Measure.units(37.5f), itemPrice)) {
+        for(Bag<Component> b : itemFactory.createShopItemBag(Measure.units(80), Measure.units(37.5f), itemPrice)) {
             arena.addEntity(b);
         }
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(com.bryjamin.wickedwizard.utils.Measure.units(67.5f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(Measure.units(67.5f), Measure.units(10f)));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, 0));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0,  new Animation<TextureRegion>(0.1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SHOPKEEPER), Animation.PlayMode.LOOP));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent(animMap));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SHOPKEEPER),
-                0, 0, com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(15f),
+                0, 0, Measure.units(15f), Measure.units(15f),
                 com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 

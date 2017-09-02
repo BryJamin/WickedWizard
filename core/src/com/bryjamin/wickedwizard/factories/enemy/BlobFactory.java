@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 26/03/2017.
@@ -25,16 +26,16 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 public class BlobFactory extends EnemyFactory {
 
     //TODO should just make it ten
-    private final float width = com.bryjamin.wickedwizard.utils.Measure.units(9);
-    private final float height = com.bryjamin.wickedwizard.utils.Measure.units(9);
+    private final float width = Measure.units(9);
+    private final float height = Measure.units(9);
 
-    private final float textureWidth = com.bryjamin.wickedwizard.utils.Measure.units(11);
-    private final float textureHeight = com.bryjamin.wickedwizard.utils.Measure.units(11);
+    private final float textureWidth = Measure.units(11);
+    private final float textureHeight = Measure.units(11);
 
-    private final float textureOffsetX = -com.bryjamin.wickedwizard.utils.Measure.units(1f);
+    private final float textureOffsetX = -Measure.units(1f);
     private final float textureOffsetY = 0;
 
-    private float speed = com.bryjamin.wickedwizard.utils.Measure.units(15f);
+    private float speed = Measure.units(15f);
 
 
     public BlobFactory(AssetManager assetManager) {
@@ -78,22 +79,22 @@ public class BlobFactory extends EnemyFactory {
 
 
     public com.bryjamin.wickedwizard.utils.ComponentBag blobBag(float x, float y, boolean startsRight){
-        return blob(x,y,1, com.bryjamin.wickedwizard.utils.Measure.units(15f), 10, startsRight, ColorResource.BLOB_GREEN);
+        return blob(x,y,1, Measure.units(15f), 10, startsRight, ColorResource.BLOB_GREEN);
     }
 
     public com.bryjamin.wickedwizard.utils.ComponentBag angryBlobBag(float x, float y, boolean startsRight){
-        return blob(x,y,1, com.bryjamin.wickedwizard.utils.Measure.units(30f), 15, startsRight, ColorResource.BLOB_RED);
+        return blob(x,y,1, Measure.units(30f), 15, startsRight, ColorResource.BLOB_RED);
     }
 
     public Bag<Component> smallblobBag(float x, float y,  boolean startsRight){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = blob(x,y,0.5f, com.bryjamin.wickedwizard.utils.Measure.units(30f), 2, startsRight, ColorResource.BLOB_GREEN);
+        com.bryjamin.wickedwizard.utils.ComponentBag bag = blob(x,y,0.5f, Measure.units(30f), 2, startsRight, ColorResource.BLOB_GREEN);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.ExploderComponent());
         return bag;
     }
 
     public com.bryjamin.wickedwizard.utils.ComponentBag angrySmallBag(float x, float y, boolean startsRight){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = blob(x,y,0.5f, com.bryjamin.wickedwizard.utils.Measure.units(45f), 3, startsRight, ColorResource.BLOB_RED);
+        com.bryjamin.wickedwizard.utils.ComponentBag bag = blob(x,y,0.5f, Measure.units(45f), 3, startsRight, ColorResource.BLOB_RED);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.ExploderComponent());
         return bag;

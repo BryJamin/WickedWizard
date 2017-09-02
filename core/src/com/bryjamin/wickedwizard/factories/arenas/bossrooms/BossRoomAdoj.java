@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.arenas.bossrooms;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 03/07/2017.
@@ -32,7 +33,7 @@ public class BossRoomAdoj extends AbstractFactory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL)).buildArena();
 
-                arena.addEntity(new com.bryjamin.wickedwizard.factories.enemy.bosses.BossAdoj(assetManager).bossAdoj(com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(new com.bryjamin.wickedwizard.factories.enemy.bosses.BossAdoj(assetManager).bossAdoj(Measure.units(70f), Measure.units(10f)));
 
                 return arena;
             }

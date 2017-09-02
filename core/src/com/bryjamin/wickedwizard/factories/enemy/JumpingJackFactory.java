@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 28/06/2017.
@@ -23,15 +24,15 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 public class JumpingJackFactory extends EnemyFactory{
 
 
-    private static final float width = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    private static final float height = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    private static final float width = Measure.units(10f);
+    private static final float height = Measure.units(10f);
 
-    private static final float speed = com.bryjamin.wickedwizard.utils.Measure.units(40f);
-    private static final float tiredSpeed = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-    private static final float tiredjumpSpeed = com.bryjamin.wickedwizard.utils.Measure.units(20);
+    private static final float speed = Measure.units(40f);
+    private static final float tiredSpeed = Measure.units(20f);
+    private static final float tiredjumpSpeed = Measure.units(20);
     private static final float health = 25;
 
-    private static final float jumpSpeed = com.bryjamin.wickedwizard.utils.Measure.units(100);
+    private static final float jumpSpeed = Measure.units(100);
     private static final float airTime = 0.4f;
 
     private static final float tiredPhaseTime = 3.0f;
@@ -184,7 +185,7 @@ public class JumpingJackFactory extends EnemyFactory{
             int l = 80;
             com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder mp = new com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder(assetManager)
                     .shotScale(3)
-                    .shotSpeed(com.bryjamin.wickedwizard.utils.Measure.units(60f))
+                    .shotSpeed(Measure.units(60f))
                     .angles(i, j, k, l, i + 180, j + 180, k + 180, l + 180);
 
             weapon1 = mp.build();

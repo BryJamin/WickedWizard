@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by BB on 17/08/2017.
@@ -27,8 +28,8 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
     private final TextureAtlas atlas;
 
 
-    private static final float buttonWidth = com.bryjamin.wickedwizard.utils.Measure.units(30f);
-    private static final float buttonHeight = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    private static final float buttonWidth = Measure.units(30f);
+    private static final float buttonHeight = Measure.units(10f);
 
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
@@ -89,8 +90,8 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
                 menuButtonBuilder.build().createButton(
                         world,
                         MenuStrings.SETTINGS,
-                        com.bryjamin.wickedwizard.utils.Measure.units(0f),
-                        com.bryjamin.wickedwizard.utils.Measure.units(50f));
+                        Measure.units(0f),
+                        Measure.units(50f));
 
 
         menuButtonBuilder

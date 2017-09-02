@@ -9,6 +9,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -96,7 +97,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
                         .buildArena();
-                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedPentaSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedPentaSentry(arena.getWidth() / 2, Measure.units(45f)));
                 return arena;
             }
         };
@@ -113,7 +114,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
                         .buildArena();
-                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByDoubleBombSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByDoubleBombSentry(arena.getWidth() / 2, Measure.units(45f)));
                 return arena;
             }
         };
@@ -140,8 +141,8 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 ceilingIsLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL))
                         .buildArena();
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingPentaSentry(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByDoubleBombSentry(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingPentaSentry(arena.getWidth() / 4, Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByDoubleBombSentry(arena.getWidth() / 4 * 3, Measure.units(45f)));
 
                 return arena;
             }
@@ -158,8 +159,8 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
             public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingPentaSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingFlyByDoubleBombSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingPentaSentry(arena.getWidth() / 2, Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingFlyByDoubleBombSentry(arena.getWidth() / 2, Measure.units(45f)));
 
                 arena.shuffleWaves();
 
@@ -183,7 +184,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
             @Override
             public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
-                arena.addEntity(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, Measure.units(40f)));
                 return arena;
             }
         };
@@ -200,9 +201,9 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 boolean startsLeft = random.nextBoolean();
 
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f),
-                        new Vector3(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f), 0),
-                        com.bryjamin.wickedwizard.utils.Measure.units(5f),
+                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f),
+                        new Vector3(arena.getWidth() / 2, Measure.units(45f), 0),
+                        Measure.units(5f),
                         180, startsLeft));
                 return arena;
             }
@@ -219,9 +220,9 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 boolean isOnLeft = random.nextBoolean();
 
-                arena.addWave(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f),
-                        new Vector3(isOnLeft ? com.bryjamin.wickedwizard.utils.Measure.units(10f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(10f),  arena.getHeight() / 2, 0),
-                        com.bryjamin.wickedwizard.utils.Measure.units(10f),
+                arena.addWave(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f),
+                        new Vector3(isOnLeft ? Measure.units(10f) : arena.getWidth() - Measure.units(10f),  arena.getHeight() / 2, 0),
+                        Measure.units(10f),
                         isOnLeft ? 180 : 0, startsLeft));
 
 
@@ -237,7 +238,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
             @Override
             public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
-                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)));
                 return arena;
             }
         };
@@ -253,8 +254,8 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 boolean startsRight = random.nextBoolean();
                 boolean startsUp = random.nextBoolean();
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(40f), startsRight, startsUp));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(40f), !startsRight, startsUp));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4, Measure.units(40f), startsRight, startsUp));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4 * 3, Measure.units(40f), !startsRight, startsUp));
                 return arena;
             }
         };
@@ -269,23 +270,23 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 
                 com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalAndIntervalSize(com.bryjamin.wickedwizard.utils.Measure.units(3f))
+                        .orbitalAndIntervalSize(Measure.units(3f))
                         .speedInDegrees(1f)
                         .numberOfOrbitals(12)
                         .angles(0,180);
 
-                arena.addEntity(beamTurretFactory.inCombatLaserChain(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(25f),2,
+                arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(20f), Measure.units(25f),2,
                         lb.build()));
 
-                arena.addEntity(beamTurretFactory.inCombatLaserChain(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(25f),2,
+                arena.addEntity(beamTurretFactory.inCombatLaserChain(arena.getWidth() - Measure.units(30f), Measure.units(25f),2,
                         lb.speedInDegrees(-1f).build()));
 
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(40f), -90));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(40f), 90));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(27.5f), 90));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(27.5f), -90));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(27.5f), -90));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(com.bryjamin.wickedwizard.utils.Measure.units(65f), com.bryjamin.wickedwizard.utils.Measure.units(27.5f), 90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(5f), Measure.units(40f), -90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - Measure.units(10f), Measure.units(40f), 90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(15f), Measure.units(27.5f), 90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - Measure.units(20f), Measure.units(27.5f), -90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(30f), Measure.units(27.5f), -90));
+                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(65f), Measure.units(27.5f), 90));
                 return arena;
             }
         };
@@ -317,36 +318,36 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(130f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(35f), Measure.units(130f), Measure.units(5f)));
 
-                arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(135f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(30)));
+                arena.addEntity(decorFactory.platform(Measure.units(135f), Measure.units(35f), Measure.units(30)));
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(165f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(130f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(165f), Measure.units(35f), Measure.units(130f), Measure.units(5f)));
 
                 //left
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(15f), 0));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(15f), Measure.units(15f), 0));
+                arena.addEntity(decorFactory.wallBag(Measure.units(10f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(com.bryjamin.wickedwizard.utils.Measure.units(80f), com.bryjamin.wickedwizard.utils.Measure.units(15f), 0));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(75f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(80f), Measure.units(15f), 0));
+                arena.addEntity(decorFactory.wallBag(Measure.units(75f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
 
                 //right
 
 
 
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(com.bryjamin.wickedwizard.utils.Measure.units(215f), com.bryjamin.wickedwizard.utils.Measure.units(15f), 0));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(210f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(215f), Measure.units(15f), 0));
+                arena.addEntity(decorFactory.wallBag(Measure.units(210f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(com.bryjamin.wickedwizard.utils.Measure.units(280f), com.bryjamin.wickedwizard.utils.Measure.units(15f), 0));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(275f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-
-
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(com.bryjamin.wickedwizard.utils.Measure.units(145f), com.bryjamin.wickedwizard.utils.Measure.units(15f), 0));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(140f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(280f), Measure.units(15f), 0));
+                arena.addEntity(decorFactory.wallBag(Measure.units(275f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
 
 
-                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(45), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(245f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(145f), Measure.units(15f), 0));
+                arena.addEntity(decorFactory.wallBag(Measure.units(140f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
+
+
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(45), Measure.units(10f)));
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(245f), Measure.units(10f)));
 
 
                 return arena;
@@ -388,33 +389,33 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
 
                 com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalAndIntervalSize(com.bryjamin.wickedwizard.utils.Measure.units(20f))
+                        .orbitalAndIntervalSize(Measure.units(20f))
                         .numberOfOrbitals(7)
                         .expiryTime(1)
                         .angles(90);
 
-                arena.addEntity(beamTurretFactory.timedLaserChain(com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(25f), 6, 4f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(35f), Measure.units(25f), 6, 4f,
                         lb.build()));
 
-                arena.addEntity(beamTurretFactory.timedLaserChain(com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(160), 6, 4f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(35f), Measure.units(160), 6, 4f,
                         new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager).build()));
 
 
-                arena.addEntity(decorFactory.grapplePointBag(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(50f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(50f)));
 
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(100f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(20f), Measure.units(100f)));
 
 
-                arena.addEntity(decorFactory.grapplePointBag(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(150f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(150f)));
 
-                arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(156f), arena.getWidth()));
+                arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(156f), arena.getWidth()));
 
 
                 //TODO make one either a mimic or an explody chest?
 
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(35f), Measure.units(10f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(55f), Measure.units(10f)));
 
 
 
@@ -432,22 +433,22 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 
                 com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam laserBeam = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam.LaserBeamBuilder(assetManager)
-                        .chargingLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(50f))
-                        .chargingLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(3.5f))
-                        .activeLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(50f))
-                        .activeLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(5f))
+                        .chargingLaserHeight(Measure.units(50f))
+                        .chargingLaserWidth(Measure.units(3.5f))
+                        .activeLaserHeight(Measure.units(50f))
+                        .activeLaserWidth(Measure.units(5f))
                         .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
                         .build();
 
 
-                arena.addEntity(beamTurretFactory.inCombatTimedLaserBeam(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(52.5f), 1, -com.bryjamin.wickedwizard.utils.Measure.units(50f), 3f,
+                arena.addEntity(beamTurretFactory.inCombatTimedLaserBeam(Measure.units(20f), Measure.units(52.5f), 1, -Measure.units(50f), 3f,
                         laserBeam));
 
-                arena.addEntity(beamTurretFactory.inCombatTimedLaserBeam(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(52.5f), 1,-com.bryjamin.wickedwizard.utils.Measure.units(50f), 3f,
+                arena.addEntity(beamTurretFactory.inCombatTimedLaserBeam(arena.getWidth() - Measure.units(25f), Measure.units(52.5f), 1,-Measure.units(50f), 3f,
                         laserBeam));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 2, Measure.units(40f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)));
 
                 arena.shuffleWaves();
                 return arena;
@@ -475,9 +476,9 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
                         .buildArena();
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnKnight(com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnKnight(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnKnight(Measure.units(25f), Measure.units(25f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnKnight(arena.getWidth() - Measure.units(25f), Measure.units(25f)));
 
 
                 return arena;
@@ -495,9 +496,9 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, Measure.units(40f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(
-                        random.nextBoolean() ? com.bryjamin.wickedwizard.utils.Measure.units(20f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                        random.nextBoolean() ? Measure.units(20f) : arena.getWidth() - Measure.units(20f), Measure.units(45f)));
 
                 return arena;
             }
@@ -531,18 +532,18 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .numberOfOrbitals(5)
                         .angles(270)
                         .expiryTime(1.5f)
-                        .orbitalAndIntervalSize(com.bryjamin.wickedwizard.utils.Measure.units(20f));
+                        .orbitalAndIntervalSize(Measure.units(20f));
 
-                arena.addEntity(beamTurretFactory.timedLaserChain(com.bryjamin.wickedwizard.utils.Measure.units(65f), arena.getHeight() - com.bryjamin.wickedwizard.utils.Measure.units(15f), 6, 3f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(65f), arena.getHeight() - Measure.units(15f), 6, 3f,
                         lb.build()));
 
-                arena.addEntity(beamTurretFactory.timedLaserChain(com.bryjamin.wickedwizard.utils.Measure.units(105f), arena.getHeight() - com.bryjamin.wickedwizard.utils.Measure.units(15f), 6, 3f,
+                arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(105f), arena.getHeight() - Measure.units(15f), 6, 3f,
                         lb.build()));
 
 
-                arena.addEntity(chestFactory.chestBag(chestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(30f) : com.bryjamin.wickedwizard.utils.Measure.units(160f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(chestsAreLeft ? Measure.units(30f) : Measure.units(160f), Measure.units(10f), chestFactory.trapODAC()));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnFixedPentaSentry(chestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(35f) : com.bryjamin.wickedwizard.utils.Measure.units(165f), com.bryjamin.wickedwizard.utils.Measure.units(40f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnFixedPentaSentry(chestsAreLeft ? Measure.units(35f) : Measure.units(165f), Measure.units(40f)));
 
                 return arena;
             }
@@ -558,8 +559,8 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
             public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(random.nextBoolean() ? com.bryjamin.wickedwizard.utils.Measure.units(20f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(20f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(random.nextBoolean() ? Measure.units(20f) : arena.getWidth() - Measure.units(20f), Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(45f)));
 
                 return arena;
             }
@@ -586,9 +587,9 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
                         .buildArena();
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedPentaSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(Measure.units(20f), Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() - Measure.units(20f), Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedPentaSentry(arena.getWidth() / 2, Measure.units(40f)));
 
                 return arena;
             }
@@ -605,11 +606,11 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 arena.arenaType = com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP;
 
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(40f), -90));
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(40f), 90));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(5f), Measure.units(40f), -90));
+                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(arena.getWidth() - Measure.units(15f), Measure.units(40f), 90));
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(20f), Measure.units(5f), Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(20f), Measure.units(5f), Measure.units(25f)));
 
 
                 return arena;
@@ -634,12 +635,12 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 boolean bool = random.nextBoolean();
 
-                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f),
-                        new Vector3(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f), 0),
-                        com.bryjamin.wickedwizard.utils.Measure.units(5f),
+                arena.addEntity(arenaEnemyPlacementFactory.cowlFactory.cowl(arena.getWidth() / 2, Measure.units(40f),
+                        new Vector3(arena.getWidth() / 2, Measure.units(45f), 0),
+                        Measure.units(5f),
                         180, bool));
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(10f), Measure.units(30f), Measure.units(10f)));
 
 
                 return arena;
@@ -707,13 +708,13 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
                         .buildArena();
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(10f), Measure.units(25f), Measure.units(45f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(10f), Measure.units(25f), Measure.units(45f)));
 
 
                 arena.addEntity(random.nextBoolean() ?
-                        arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7) :
-                        arenaEnemyPlacementFactory.spawnRightSnake(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7));
+                        arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() / 2, Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7) :
+                        arenaEnemyPlacementFactory.spawnRightSnake(arena.getWidth() / 2, Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7));
                 return arena;
             }
         };
@@ -733,11 +734,11 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL))
                         .buildArena();
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(90f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(90f), Measure.units(25f)));
 
                 arena.addEntity(random.nextBoolean() ?
-                        arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(22.5f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7) :
-                        arenaEnemyPlacementFactory.spawnRightSnake(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(22.5f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7));
+                        arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() / 2, Measure.units(22.5f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7) :
+                        arenaEnemyPlacementFactory.spawnRightSnake(arena.getWidth() / 2, Measure.units(22.5f), com.bryjamin.wickedwizard.utils.enums.Direction.UP, 7));
                 return arena;
             }
         };
@@ -770,21 +771,21 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(95f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(95f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(95f), Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(100f), Measure.units(30f), Measure.units(95f), Measure.units(30f)));
 
-                arena.addEntity(decorFactory.appearInCombatWallPush(com.bryjamin.wickedwizard.utils.Measure.units(95f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(30f), 0));
-                arena.addEntity(decorFactory.appearInCombatWallPush(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(30f), 190));
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(95f), Measure.units(10f), Measure.units(5f), Measure.units(30f), 0));
+                arena.addEntity(decorFactory.appearInCombatWallPush(arena.getWidth() - Measure.units(100f), Measure.units(10f), Measure.units(5f), Measure.units(30f), 190));
 
 
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(132.5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(145f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(157.5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(Measure.units(132.5f), Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(Measure.units(145f), Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(Measure.units(157.5f), Measure.units(10f), chestFactory.trapODAC()));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnJumpingJack(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45), random.nextBoolean()));
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingPentaSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addWave(arenaEnemyPlacementFactory.spawnKnight(com.bryjamin.wickedwizard.utils.Measure.units(130f), com.bryjamin.wickedwizard.utils.Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnLaserus(com.bryjamin.wickedwizard.utils.Measure.units(170f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnJumpingJack(arena.getWidth() / 2, Measure.units(45), random.nextBoolean()));
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingPentaSentry(arena.getWidth() / 2, Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnKnight(Measure.units(130f), Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnLaserus(Measure.units(170f), Measure.units(45f)));
 
                 arena.shuffleWaves();
 
@@ -823,22 +824,22 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(30f), Measure.units(20f), Measure.units(5f)));
 
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(70f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(110f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(70f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(110f)));
 
                 //Left
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(55f), Measure.units(40f), Measure.units(35f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(40f), Measure.units(15f), Measure.units(25f)));
 
                 //Right
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(55f), Measure.units(40f), Measure.units(35f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(20f), Measure.units(40f), Measure.units(15f), Measure.units(25f)));
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(110f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(20f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(110f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(20f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(110f), Measure.units(20f), Measure.units(20f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(110f), Measure.units(20f), Measure.units(20f)));
 
 
                 return arena;
@@ -866,22 +867,22 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 boolean lockedChestsAreLeft = random.nextBoolean();
 
 
-                arena.addEntity(decorFactory.platform(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(31f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
-                arena.addEntity(decorFactory.wallBag(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(35f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(20f)));
+                arena.addEntity(decorFactory.platform(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(31f), Measure.units(30f)));
+                arena.addEntity(decorFactory.wallBag(lockedChestsAreLeft ? Measure.units(35f) : arena.getWidth() - Measure.units(40f), Measure.units(35f), Measure.units(5f), Measure.units(20f)));
 
 
-                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(7.5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(17.5f), com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(22.5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(32.5f), com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(70f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(80f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(40f)));
+                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(40f)));
+                arena.addEntity(chestFactory.chestBag(lockedChestsAreLeft ? Measure.units(70f) : arena.getWidth() - Measure.units(80f), Measure.units(10f), chestFactory.trapODAC()));
 
-                arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(75f)  : com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(lockedChestsAreLeft ? Measure.units(75f)  : Measure.units(25f), Measure.units(45f)));
 
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(70f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(lockedChestsAreLeft ? Measure.units(70f) : arena.getWidth() - Measure.units(70f), Measure.units(45f)));
 
-                arena.addEntity(decorFactory.appearInCombatWallPush(lockedChestsAreLeft ? com.bryjamin.wickedwizard.utils.Measure.units(5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(40f),
-                        com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(35f),
-                        com.bryjamin.wickedwizard.utils.Measure.units(25f),
+                arena.addEntity(decorFactory.appearInCombatWallPush(lockedChestsAreLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(40f),
+                        Measure.units(10f), Measure.units(35f),
+                        Measure.units(25f),
                         lockedChestsAreLeft ? 0 : 180));
 
 
@@ -903,13 +904,13 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 boolean bool = random.nextBoolean();
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)),
-                        bool ? arenaEnemyPlacementFactory.spawnRightSnake(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.LEFT,4)
-                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT, 4));
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)),
+                        bool ? arenaEnemyPlacementFactory.spawnRightSnake(Measure.units(20f), Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.LEFT,4)
+                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - Measure.units(20f), Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT, 4));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)),
-                        !bool ? arenaEnemyPlacementFactory.spawnRightSnake(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.LEFT,4)
-                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT, 4));
+                arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 2, Measure.units(40f)),
+                        !bool ? arenaEnemyPlacementFactory.spawnRightSnake(Measure.units(20f), Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.LEFT,4)
+                                : arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() - Measure.units(20f), Measure.units(35f), com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT, 4));
 
                 arena.shuffleWaves();
 
@@ -959,37 +960,37 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
 
                 com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalAndIntervalSize(com.bryjamin.wickedwizard.utils.Measure.units(5f))
+                        .orbitalAndIntervalSize(Measure.units(5f))
                         .numberOfOrbitals(6)
                         .angles(0);
 
                 com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder empty = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalAndIntervalSize(com.bryjamin.wickedwizard.utils.Measure.units(5f));
+                        .orbitalAndIntervalSize(Measure.units(5f));
 
                 for(int i = 0; i < 5; i++) {
 
-                    float y = com.bryjamin.wickedwizard.utils.Measure.units(40f + (i * 40f));
+                    float y = Measure.units(40f + (i * 40f));
 
-                    arena.addEntity(beamTurretFactory.laserChain(com.bryjamin.wickedwizard.utils.Measure.units(60f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(60f), y, 2,
                             lb.build()));
-                    arena.addEntity(beamTurretFactory.laserChain(com.bryjamin.wickedwizard.utils.Measure.units(85f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(85f), y, 2,
                             empty.build()));
 
-                    arena.addEntity(beamTurretFactory.laserChain(com.bryjamin.wickedwizard.utils.Measure.units(5f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(5f), y, 2,
                             lb.build()));
-                    arena.addEntity(beamTurretFactory.laserChain(com.bryjamin.wickedwizard.utils.Measure.units(30f), y, 2,
+                    arena.addEntity(beamTurretFactory.laserChain(Measure.units(30f), y, 2,
                             empty.build()));
 
                 }
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(85f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(125f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(45f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(85f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(125f)));
 
-                arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(15), com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(15f)));
-                arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(70), com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(15f)));
+                arena.addEntity(decorFactory.platform(Measure.units(15), Measure.units(125f), Measure.units(15f)));
+                arena.addEntity(decorFactory.platform(Measure.units(70), Measure.units(125f), Measure.units(15f)));
 
-                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(90f)));
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(5), Measure.units(90f)));
 
 
                 return arena;

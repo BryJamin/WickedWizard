@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 28/07/2017.
@@ -65,8 +66,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 Arena arena = arenaBuilder.buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(-com.bryjamin.wickedwizard.utils.Measure.units(5f), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
 
 
                 com.bryjamin.wickedwizard.utils.ComponentBag saveGame = arena.createArenaBag();
@@ -148,8 +149,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 Arena arena = arenaBuilder.buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(-com.bryjamin.wickedwizard.utils.Measure.units(5f), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
 
 
 
@@ -160,7 +161,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
                         Arena arena = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena();
 
-                        com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                        com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(45f),
 
                                 new Action() {
                                     @Override

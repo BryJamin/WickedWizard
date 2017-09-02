@@ -1,6 +1,7 @@
 package com.bryjamin.wickedwizard.factories.arenas.bossrooms;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 08/07/2017.
@@ -54,7 +55,7 @@ public class BossRoomAmalgama extends com.bryjamin.wickedwizard.factories.Abstra
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL)).buildArena();
 
-                arena.addEntity(new com.bryjamin.wickedwizard.factories.enemy.bosses.BossAmalgama(assetManager).amalgama(-com.bryjamin.wickedwizard.utils.Measure.units(80f), 0));
+                arena.addEntity(new com.bryjamin.wickedwizard.factories.enemy.bosses.BossAmalgama(assetManager).amalgama(-Measure.units(80f), 0));
 
 
                 return arena;

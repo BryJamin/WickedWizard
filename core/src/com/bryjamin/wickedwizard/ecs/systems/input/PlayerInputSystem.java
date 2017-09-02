@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
@@ -26,8 +25,10 @@ import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.Collider;
 
 /**
@@ -35,9 +36,9 @@ import com.bryjamin.wickedwizard.utils.collider.Collider;
  */
 public class PlayerInputSystem extends EntityProcessingSystem {
 
-    public float MAX_GRAPPLE_LAUNCH = com.bryjamin.wickedwizard.utils.Measure.units(60f);
-    private float MAX_GRAPPLE_MOVEMENT = com.bryjamin.wickedwizard.utils.Measure.units(150f);
-    private float GRAPPLE_MOVEMENT = com.bryjamin.wickedwizard.utils.Measure.units(15f);
+    public float MAX_GRAPPLE_LAUNCH = Measure.units(60f);
+    private float MAX_GRAPPLE_MOVEMENT = Measure.units(150f);
+    private float GRAPPLE_MOVEMENT = Measure.units(15f);
 
 
     ComponentMapper<PositionComponent> pm;
@@ -68,7 +69,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         this.gameport = gameport;
         movementArea = new Rectangle(gameport.getCamera().position.x - gameport.getWorldWidth() / 2,
                 gameport.getCamera().position.y - gameport.getWorldHeight() / 2,
-                MainGame.GAME_WIDTH, com.bryjamin.wickedwizard.utils.Measure.units(10f));
+                MainGame.GAME_WIDTH, Measure.units(10f));
 
         playerInput = new PlayerInput(world, gameport, movementArea);
     }
@@ -106,8 +107,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
                     if (input.y <= movementArea.y + movementArea.getHeight() && !mtc.hasTarget()) {
-                        ac.accelX = com.bryjamin.wickedwizard.utils.Measure.units(15f) * (1 + sc.speed);
-                        ac.maxX = com.bryjamin.wickedwizard.utils.Measure.units(80f) * (1 + sc.speed);
+                        ac.accelX = Measure.units(15f) * (1 + sc.speed);
+                        ac.maxX = Measure.units(80f) * (1 + sc.speed);
                         GrappleSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
 
                 /*        if(mtc.hasTarget()) {
@@ -248,7 +249,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         }
 
 
-        velocityComponent.velocity.y = com.bryjamin.wickedwizard.utils.Measure.units(80f);
+        velocityComponent.velocity.y = Measure.units(80f);
         jumpComponent.jumps--;
 
         glc.gliding = true;

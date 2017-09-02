@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Rectangle;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 04/03/2017.
@@ -15,7 +16,7 @@ public class WallComponent extends Component {
     }
 
     public WallComponent(){
-        this(new Rectangle(0,0, com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(5)));
+        this(new Rectangle(0,0, Measure.units(5), Measure.units(5)));
     }
 
 }

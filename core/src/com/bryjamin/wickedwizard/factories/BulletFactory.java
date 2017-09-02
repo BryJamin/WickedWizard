@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 29/03/2017.
@@ -19,8 +20,8 @@ public class BulletFactory extends AbstractFactory {
 
     }
 
-    private float width = com.bryjamin.wickedwizard.utils.Measure.units(1);
-    private float height = com.bryjamin.wickedwizard.utils.Measure.units(1);
+    private float width = Measure.units(1);
+    private float height = Measure.units(1);
 
 
     public com.bryjamin.wickedwizard.utils.ComponentBag basicBulletBag(float x, float y, float scale) {
@@ -36,9 +37,9 @@ public class BulletFactory extends AbstractFactory {
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(3)
-                .size(com.bryjamin.wickedwizard.utils.Measure.units(0.5f))
-                .minSpeed(com.bryjamin.wickedwizard.utils.Measure.units(10f))
-                .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(20f))
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
                 .colors(new Color(Color.RED))
                 .intangible(false)
                 .expiryTime(0.2f).build()));

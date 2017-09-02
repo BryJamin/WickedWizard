@@ -20,19 +20,18 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LockSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.bryjamin.wickedwizard.ecs.systems.PickUpSystem;
-import com.bryjamin.wickedwizard.ecs.systems.ai.ChallengeTimerSystem;
-import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.ChallengeTimerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.EnemyCollisionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ExpireSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
@@ -41,6 +40,7 @@ import com.bryjamin.wickedwizard.ecs.systems.ai.MoveToSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ProximitySystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraShakeSystem;
@@ -71,6 +71,7 @@ import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
 import com.bryjamin.wickedwizard.screens.QuickSave;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -87,8 +88,8 @@ public class AdventureWorld {
     private final Viewport gameport;
 
 
-    private final static float playerStartPositonX = com.bryjamin.wickedwizard.utils.Measure.units(47.5f);
-    private final static float playerStartPositonY = com.bryjamin.wickedwizard.utils.Measure.units(30f);
+    private final static float playerStartPositonX = Measure.units(47.5f);
+    private final static float playerStartPositonY = Measure.units(30f);
 
 
     private boolean isGameOver;
@@ -117,7 +118,7 @@ public class AdventureWorld {
         this.batch = game.batch;
         this.gameport = gameport;
         this.random = random;
-        this.player = new PlayerFactory(assetManager).playerBag(com.bryjamin.wickedwizard.utils.Measure.units(50f), com.bryjamin.wickedwizard.utils.Measure.units(45f));
+        this.player = new PlayerFactory(assetManager).playerBag(Measure.units(50f), Measure.units(45f));
         this.gameCreator = gameCreator;
         playerStats = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.StatComponent.class, player);
         playerCurrency = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
@@ -146,7 +147,7 @@ public class AdventureWorld {
 
 
         Arena startingArena = jigsawGenerator.getStartingRoom();
-        this.setPlayer(new PlayerFactory(game.assetManager).playerBag(startingArena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+        this.setPlayer(new PlayerFactory(game.assetManager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()
@@ -264,8 +265,8 @@ public class AdventureWorld {
 
 
 
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(4.5f);
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(4.5f);
+        float width = Measure.units(4.5f);
+        float height = Measure.units(4.5f);
 
         Entity pauseButton = world.createEntity();
         pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.texture.UIComponent());
@@ -275,7 +276,7 @@ public class AdventureWorld {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, com.bryjamin.wickedwizard.utils.Measure.units(32.5f), com.bryjamin.wickedwizard.utils.Measure.units(30.5f)));
+        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(32.5f), Measure.units(30.5f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());

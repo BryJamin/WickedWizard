@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.ecs.components.movement;
 import com.artemis.Component;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 04/03/2017.
@@ -36,7 +37,7 @@ public class CollisionBoundComponent extends Component{
     }
 
     public CollisionBoundComponent(){
-        this(new Rectangle(0,0, com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(5)));
+        this(new Rectangle(0,0, Measure.units(5), Measure.units(5)));
     }
 
     public float getCenterX() {
