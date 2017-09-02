@@ -18,6 +18,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 30/07/2017.
@@ -28,10 +29,10 @@ public class BreakRoom extends AbstractFactory {
     private ArenaSkin arenaSkin;
 
 
-    private static final float buttonWidth =  com.bryjamin.wickedwizard.utils.Measure.units(27.5f);
-    private static final float buttonHeight = com.bryjamin.wickedwizard.utils.Measure.units(20f);
+    private static final float buttonWidth =  Measure.units(27.5f);
+    private static final float buttonHeight = Measure.units(20f);
 
-    private static final float startY = com.bryjamin.wickedwizard.utils.Measure.units(25f);
+    private static final float startY = Measure.units(25f);
 
     public BreakRoom(AssetManager assetManager) {
         super(assetManager);
@@ -99,7 +100,7 @@ public class BreakRoom extends AbstractFactory {
                     }
                 });
 
-        Bag<com.bryjamin.wickedwizard.utils.ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.BREAK, com.bryjamin.wickedwizard.utils.Measure.units(10f), CenterMath.offsetY(arena.getHeight() - com.bryjamin.wickedwizard.utils.Measure.units(15f), buttonHeight) + com.bryjamin.wickedwizard.utils.Measure.units(10f));
+        Bag<com.bryjamin.wickedwizard.utils.ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.BREAK, Measure.units(10f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
 
 
         for(com.bryjamin.wickedwizard.utils.ComponentBag bag : bags){
@@ -120,7 +121,7 @@ public class BreakRoom extends AbstractFactory {
                             }
                         });
                     }
-                }).build().createButton(MenuStrings.CONTINUE, com.bryjamin.wickedwizard.utils.Measure.units(62.5f), CenterMath.offsetY(arena.getHeight() - com.bryjamin.wickedwizard.utils.Measure.units(15f), buttonHeight) + com.bryjamin.wickedwizard.utils.Measure.units(10f));
+                }).build().createButton(MenuStrings.CONTINUE, Measure.units(62.5f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
 
         for(com.bryjamin.wickedwizard.utils.ComponentBag bag : bags){
             arena.addEntity(bag);

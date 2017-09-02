@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 20/03/2017.
@@ -18,7 +19,7 @@ public class ArenaGUI {
     private float mapx;
     private float mapy;
 
-    private float SIZE = com.bryjamin.wickedwizard.utils.Measure.units(3f);
+    private float SIZE = Measure.units(3f);
 
     private Array<Arena> arenas;
     private Array<Arena> undiscoveredArenas;
@@ -54,7 +55,7 @@ public class ArenaGUI {
 
 
     public ArenaGUI(float x, float y, Array<Arena> arenas, Arena currentRoom, TextureAtlas atlas) {
-        this(x, y, com.bryjamin.wickedwizard.utils.Measure.units(3f), 3, arenas, currentRoom, atlas);
+        this(x, y, Measure.units(3f), 3, arenas, currentRoom, atlas);
     }
 
     public ArenaGUI(float x, float y, float size, int range, Array<Arena> arenas, Arena currentRoom, TextureAtlas atlas) {

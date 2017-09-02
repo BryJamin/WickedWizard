@@ -9,14 +9,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 21/06/2017.
@@ -24,8 +25,8 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 
 public class PylonFactory extends EnemyFactory {
 
-    public float width = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    public float height = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    public float width = Measure.units(10f);
+    public float height = Measure.units(10f);
 
     private final float health = 9f;
 
@@ -99,7 +100,7 @@ public class PylonFactory extends EnemyFactory {
                 .color(new Color(ColorResource.GHOST_BULLET_COLOR))
                 .intangible(true)
                 .expire(true)
-                .expireRange(com.bryjamin.wickedwizard.utils.Measure.units(100f))
+                .expireRange(Measure.units(100f))
                 .build();
 
         bag.add(spawningCondition(0, mp));

@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -135,15 +136,15 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(0,1), Arena.ArenaType.TRAP);
         arena.addEntity(new com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
-        arena.addEntity(decorFactory.spikeWall(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 270));
-        arena.addEntity(decorFactory.spikeWall(com.bryjamin.wickedwizard.utils.Measure.units(90f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 90));
+        arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 270));
+        arena.addEntity(decorFactory.spikeWall(Measure.units(90f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 90));
 
         arena.addWave(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2, arena.getHeight() / 2, true));
         arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, arena.getHeight() / 2, true, true));
 
         arena.addWave(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, arena.getHeight() / 2, true),
-                arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(35f), true),
-                arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(35f), false));
+                arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(35f), true),
+                arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, Measure.units(35f), false));
 
         arena.addWave(arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(0, arena.getHeight()),
         arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(arena.getWidth() / 2, arena.getHeight()),
@@ -240,10 +241,10 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         float evenPosX = arena.getWidth() / 4 * 3;
 
 
-        arena.addEntity(decorFactory.grapplePointBag(oddPosx, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-        arena.addEntity(decorFactory.grapplePointBag(evenPosX, com.bryjamin.wickedwizard.utils.Measure.units(75)));
-        arena.addEntity(decorFactory.grapplePointBag(oddPosx, com.bryjamin.wickedwizard.utils.Measure.units(105f)));
-        arena.addEntity(decorFactory.grapplePointBag(evenPosX, com.bryjamin.wickedwizard.utils.Measure.units(135f)));
+        arena.addEntity(decorFactory.grapplePointBag(oddPosx, Measure.units(45f)));
+        arena.addEntity(decorFactory.grapplePointBag(evenPosX, Measure.units(75)));
+        arena.addEntity(decorFactory.grapplePointBag(oddPosx, Measure.units(105f)));
+        arena.addEntity(decorFactory.grapplePointBag(evenPosX, Measure.units(135f)));
 
         return arena;
     }
@@ -251,7 +252,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
     public Arena rank2TimeTrailRoom2GoatWizard(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords){
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = arenaEnemyPlacementFactory.goatWizardFactory.goatWizard(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f), false, false);
+        com.bryjamin.wickedwizard.utils.ComponentBag bag = arenaEnemyPlacementFactory.goatWizardFactory.goatWizard(arena.getWidth() / 2, Measure.units(40f), false, false);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, bag);
         arena.addEntity(bag);
         return arena;
@@ -287,47 +288,47 @@ public class Rank2ChallengeMaps extends AbstractFactory {
                 .buildArena();
 
 
-        float firstSpikeBlockX = com.bryjamin.wickedwizard.utils.Measure.units(40f);
-        float firstSpikeWidth = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-        float firstSpikeBlockHeight = com.bryjamin.wickedwizard.utils.Measure.units(15f);
+        float firstSpikeBlockX = Measure.units(40f);
+        float firstSpikeWidth = Measure.units(20f);
+        float firstSpikeBlockHeight = Measure.units(15f);
 
-        arena.addEntity(decorFactory.wallBag(firstSpikeBlockX, com.bryjamin.wickedwizard.utils.Measure.units(5f), firstSpikeWidth, firstSpikeBlockHeight))
-                .addEntity(decorFactory.spikeWall(firstSpikeBlockX, firstSpikeBlockHeight + com.bryjamin.wickedwizard.utils.Measure.units(5f), firstSpikeWidth, com.bryjamin.wickedwizard.utils.Measure.units(5f), 0));
-
-
-        float secondSpikeBlockX = com.bryjamin.wickedwizard.utils.Measure.units(60f);
-        float secondSpikeWidth = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-        float secondSpikeBlockHeight = com.bryjamin.wickedwizard.utils.Measure.units(25f);
-
-        arena.addEntity(decorFactory.wallBag(secondSpikeBlockX, com.bryjamin.wickedwizard.utils.Measure.units(5f), secondSpikeWidth, secondSpikeBlockHeight))
-                .addEntity(decorFactory.spikeWall(secondSpikeBlockX, secondSpikeBlockHeight + com.bryjamin.wickedwizard.utils.Measure.units(5f), secondSpikeWidth, com.bryjamin.wickedwizard.utils.Measure.units(5f), 0));
+        arena.addEntity(decorFactory.wallBag(firstSpikeBlockX, Measure.units(5f), firstSpikeWidth, firstSpikeBlockHeight))
+                .addEntity(decorFactory.spikeWall(firstSpikeBlockX, firstSpikeBlockHeight + Measure.units(5f), firstSpikeWidth, Measure.units(5f), 0));
 
 
-        float bigBlockX = com.bryjamin.wickedwizard.utils.Measure.units(80f);
-        float bigBlockWidth = com.bryjamin.wickedwizard.utils.Measure.units(50f);
-        float bigBlockHeight = com.bryjamin.wickedwizard.utils.Measure.units(35f);
+        float secondSpikeBlockX = Measure.units(60f);
+        float secondSpikeWidth = Measure.units(20f);
+        float secondSpikeBlockHeight = Measure.units(25f);
 
-        arena.addEntity(decorFactory.wallBag(bigBlockX, com.bryjamin.wickedwizard.utils.Measure.units(5f), bigBlockWidth, bigBlockHeight));
+        arena.addEntity(decorFactory.wallBag(secondSpikeBlockX, Measure.units(5f), secondSpikeWidth, secondSpikeBlockHeight))
+                .addEntity(decorFactory.spikeWall(secondSpikeBlockX, secondSpikeBlockHeight + Measure.units(5f), secondSpikeWidth, Measure.units(5f), 0));
+
+
+        float bigBlockX = Measure.units(80f);
+        float bigBlockWidth = Measure.units(50f);
+        float bigBlockHeight = Measure.units(35f);
+
+        arena.addEntity(decorFactory.wallBag(bigBlockX, Measure.units(5f), bigBlockWidth, bigBlockHeight));
 
 
         float mediumBlockX = bigBlockX + bigBlockWidth;
-        float mediumWidth = com.bryjamin.wickedwizard.utils.Measure.units(150f);
-        float mediumHeight = com.bryjamin.wickedwizard.utils.Measure.units(20f);
+        float mediumWidth = Measure.units(150f);
+        float mediumHeight = Measure.units(20f);
 
-        arena.addEntity(decorFactory.wallBag(mediumBlockX, com.bryjamin.wickedwizard.utils.Measure.units(5f), mediumWidth, mediumHeight))
-                .addEntity(decorFactory.spikeWall(mediumBlockX, mediumHeight + com.bryjamin.wickedwizard.utils.Measure.units(5f), mediumWidth, com.bryjamin.wickedwizard.utils.Measure.units(5f), 0));
+        arena.addEntity(decorFactory.wallBag(mediumBlockX, Measure.units(5f), mediumWidth, mediumHeight))
+                .addEntity(decorFactory.spikeWall(mediumBlockX, mediumHeight + Measure.units(5f), mediumWidth, Measure.units(5f), 0));
 
 
 
-        float blockBlockX = mediumBlockX + mediumWidth + com.bryjamin.wickedwizard.utils.Measure.units(25f);
-        float blockBlockY = com.bryjamin.wickedwizard.utils.Measure.units(25f);
-        float blockBlockWidth = com.bryjamin.wickedwizard.utils.Measure.units(150f);
-        float blockBlockHeight = com.bryjamin.wickedwizard.utils.Measure.units(30f);
+        float blockBlockX = mediumBlockX + mediumWidth + Measure.units(25f);
+        float blockBlockY = Measure.units(25f);
+        float blockBlockWidth = Measure.units(150f);
+        float blockBlockHeight = Measure.units(30f);
 
         arena.addEntity(decorFactory.wallBag(blockBlockX, blockBlockY, blockBlockWidth, blockBlockHeight));
 
-        arena.addEntity(decorFactory.spikeWall(blockBlockX - com.bryjamin.wickedwizard.utils.Measure.units(5f), blockBlockY, com.bryjamin.wickedwizard.utils.Measure.units(5f), blockBlockHeight, 90f));
-        arena.addEntity(decorFactory.spikeWall(mediumBlockX + mediumWidth, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(5f), mediumHeight, 270f));
+        arena.addEntity(decorFactory.spikeWall(blockBlockX - Measure.units(5f), blockBlockY, Measure.units(5f), blockBlockHeight, 90f));
+        arena.addEntity(decorFactory.spikeWall(mediumBlockX + mediumWidth, Measure.units(5f), Measure.units(5f), mediumHeight, 270f));
 
         return arena;
 
@@ -337,7 +338,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
     public Arena rank2TimeTrailRoom4(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords){
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
-        arena.addEntity(arenaEnemyPlacementFactory.kugelDuscheFactory.kugelDusche(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(27.5f), true));
+        arena.addEntity(arenaEnemyPlacementFactory.kugelDuscheFactory.kugelDusche(arena.getWidth() / 2, Measure.units(27.5f), true));
         return arena;
 
     }

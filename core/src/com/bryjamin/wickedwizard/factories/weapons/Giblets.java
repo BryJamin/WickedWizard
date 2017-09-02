@@ -8,15 +8,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.assets.Mix;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -93,8 +94,8 @@ public class Giblets extends AbstractFactory implements Action {
         private float fadeChance = 0;
 
         private float minSpeed = 0;
-        private float maxSpeed = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-        private float size = com.bryjamin.wickedwizard.utils.Measure.units(0.5f);
+        private float maxSpeed = Measure.units(20f);
+        private float size = Measure.units(0.5f);
 
         private Color[] colors = new Color[] {new Color(Color.WHITE)};
         private Mix[] mixes = new Mix[]{};

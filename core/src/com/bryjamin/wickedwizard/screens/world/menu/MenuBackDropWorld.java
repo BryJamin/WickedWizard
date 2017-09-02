@@ -23,6 +23,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.utils.GameDelta;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by BB on 20/08/2017.
@@ -38,20 +39,20 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
     private Preferences settings;
 
 
-    private static final float musicButtonPosX = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-    private static final float musicButtonPosY = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+    private static final float musicButtonPosX = Measure.units(5f);
+    private static final float musicButtonPosY = Measure.units(5f);
 
-    private static final float soundButtonPosX = com.bryjamin.wickedwizard.utils.Measure.units(17.5f);
-    private static final float soundButtonPosY = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+    private static final float soundButtonPosX = Measure.units(17.5f);
+    private static final float soundButtonPosY = Measure.units(5f);
 
-    private static final float settingsButtonPosX = com.bryjamin.wickedwizard.utils.Measure.units(30f);
-    private static final float settingsButtonPosY = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+    private static final float settingsButtonPosX = Measure.units(30f);
+    private static final float settingsButtonPosY = Measure.units(5f);
 
 
-    private static final float itemsButtonPosX = com.bryjamin.wickedwizard.utils.Measure.units(42.5f);
-    private static final float itemsButtonPosY = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+    private static final float itemsButtonPosX = Measure.units(42.5f);
+    private static final float itemsButtonPosY = Measure.units(5f);
 
-    private static final float smallButtonSize = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    private static final float smallButtonSize = Measure.units(10f);
 
 
 

@@ -10,19 +10,20 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 08/07/2017.
@@ -32,21 +33,21 @@ public class BossAmalgama extends BossFactory {
 
     private static final float health = 100;
 
-    private static final float bodyWidth = com.bryjamin.wickedwizard.utils.Measure.units(70f);
-    private static final float bodyHeight = com.bryjamin.wickedwizard.utils.Measure.units(60f);
+    private static final float bodyWidth = Measure.units(70f);
+    private static final float bodyHeight = Measure.units(60f);
 
-    private static final float bodyTextureWidth = com.bryjamin.wickedwizard.utils.Measure.units(85f);
-    private static final float bodyTextureOffsetX = com.bryjamin.wickedwizard.utils.Measure.units(0f);
-    private static final float bodyTextureHeight = com.bryjamin.wickedwizard.utils.Measure.units(85f);
+    private static final float bodyTextureWidth = Measure.units(85f);
+    private static final float bodyTextureOffsetX = Measure.units(0f);
+    private static final float bodyTextureHeight = Measure.units(85f);
 
-    private static final float enrageDistance = com.bryjamin.wickedwizard.utils.Measure.units(550f);
+    private static final float enrageDistance = Measure.units(550f);
 
     private static final float quadShotFireRate = 0.5f;
 
     private static final float quadShotPhaseTime = 0.9f;
 
 
-    private static final float speed = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    private static final float speed = Measure.units(10f);
 
 
     //Gaps
@@ -67,7 +68,7 @@ public class BossAmalgama extends BossFactory {
 
 
     //Wall Phase
-    private static final float wallDistance = com.bryjamin.wickedwizard.utils.Measure.units(60f);
+    private static final float wallDistance = Measure.units(60f);
     private static final float timeTillWall = 0.5f;
     private static final float wallPhasetime = 6.5f;
 
@@ -90,9 +91,9 @@ public class BossAmalgama extends BossFactory {
 
         this.gibletBuilder = new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(2)
-                .size(com.bryjamin.wickedwizard.utils.Measure.units(0.5f))
-                .minSpeed(com.bryjamin.wickedwizard.utils.Measure.units(10f))
-                .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(20f))
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
                 .colors(gibletColor)
                 .intangible(true)
                 .expiryTime(0.2f);
@@ -238,8 +239,8 @@ public class BossAmalgama extends BossFactory {
                     @Override
                     public void performAction(World world, Entity e) {
                         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
-                        vc.velocity.x = BulletMath.velocityX(com.bryjamin.wickedwizard.utils.Measure.units(50f), Math.toRadians(pushAngleInDegrees));
-                        vc.velocity.y = BulletMath.velocityY(com.bryjamin.wickedwizard.utils.Measure.units(50f), Math.toRadians(pushAngleInDegrees));
+                        vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
+                        vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
                     }
                 },
                 new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
@@ -263,7 +264,7 @@ public class BossAmalgama extends BossFactory {
         BulletHurdlePhase(boolean isLower){
             weapon = new com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder(assetManager)
                     .enemy(true)
-                    .bulletOffsets(0, com.bryjamin.wickedwizard.utils.Measure.units(5f), -com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), -com.bryjamin.wickedwizard.utils.Measure.units(10f))
+                    .bulletOffsets(0, Measure.units(5f), -Measure.units(5f), Measure.units(10f), -Measure.units(10f))
                     .fireRate(0.25f)
                     .intangible(true)
                     .build();
@@ -277,7 +278,7 @@ public class BossAmalgama extends BossFactory {
             e.getComponent(AnimationStateComponent.class).setDefaultState(RED_EYE_STATE);
 
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(weapon));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent(com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.AI.UNTARGETED, 0, 0 , isLower ? -com.bryjamin.wickedwizard.utils.Measure.units(7.5f) : com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent(com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.AI.UNTARGETED, 0, 0 , isLower ? -Measure.units(7.5f) : Measure.units(10f)));
         }
 
         @Override
@@ -305,7 +306,7 @@ public class BossAmalgama extends BossFactory {
                     for(int j = 0; j < 4; j++) {
                         for (int i = 0; i < 9; i++) {
                             createBlock(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class),
-                                    e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX() + e.getComponent(CollisionBoundComponent.class).bound.getWidth() + (wallDistance + j * com.bryjamin.wickedwizard.utils.Measure.units(5f)) , com.bryjamin.wickedwizard.utils.Measure.units(10f) + com.bryjamin.wickedwizard.utils.Measure.units(i * 5), 180, new Color(0, 0, 0, 0));
+                                    e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX() + e.getComponent(CollisionBoundComponent.class).bound.getWidth() + (wallDistance + j * Measure.units(5f)) , Measure.units(10f) + Measure.units(i * 5), 180, new Color(0, 0, 0, 0));
                         }
                     }
                 }
@@ -321,8 +322,8 @@ public class BossAmalgama extends BossFactory {
 
         public void createBlock(World world, com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent pc, float x, float y, final float pushAngle, Color color){
 
-            float width = com.bryjamin.wickedwizard.utils.Measure.units(5);
-            float height = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+            float width = Measure.units(5);
+            float height = Measure.units(5f);
 
             Entity e = world.createEntity();
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x,y));
@@ -338,7 +339,7 @@ public class BossAmalgama extends BossFactory {
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), 0, 0,  com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
@@ -393,19 +394,19 @@ public class BossAmalgama extends BossFactory {
 
         public LaserPhase(){
             sideLasers = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam.LaserBeamBuilder(assetManager)
-                    .chargingLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(1000f))
-                    .chargingLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(5f))
-                    .activeLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(1000f))
-                    .activeLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(7.5f))
+                    .chargingLaserWidth(Measure.units(1000f))
+                    .chargingLaserHeight(Measure.units(5f))
+                    .activeLaserWidth(Measure.units(1000f))
+                    .activeLaserHeight(Measure.units(7.5f))
                     .centerLaserUsingWidth(false)
                     .layer(TextureRegionComponent.ENEMY_LAYER_NEAR)
                     .build();
 
             centerLasers = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam.LaserBeamBuilder(assetManager)
-                    .chargingLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(1000f))
-                    .chargingLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(20f))
-                    .activeLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(1000f))
-                    .activeLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(25f))
+                    .chargingLaserWidth(Measure.units(1000f))
+                    .chargingLaserHeight(Measure.units(20f))
+                    .activeLaserWidth(Measure.units(1000f))
+                    .activeLaserHeight(Measure.units(25f))
                     .centerLaserUsingWidth(false)
                     .layer(TextureRegionComponent.ENEMY_LAYER_NEAR)
                     .build();
@@ -427,14 +428,14 @@ public class BossAmalgama extends BossFactory {
 
                     if(switchbool) {
                         sideLasers.createBeam(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),
-                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + com.bryjamin.wickedwizard.utils.Measure.units(12.5f));
+                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + Measure.units(12.5f));
                         sideLasers.createBeam(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),
-                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + com.bryjamin.wickedwizard.utils.Measure.units(47.5f));
+                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + Measure.units(47.5f));
                         switchbool = !switchbool;
                     } else {
 
                         centerLasers.createBeam(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),
-                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + com.bryjamin.wickedwizard.utils.Measure.units(22.5f));
+                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + Measure.units(22.5f));
                         switchbool = !switchbool;
                     }
                 }
@@ -481,10 +482,10 @@ public class BossAmalgama extends BossFactory {
                     CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                     if(switchbool) {
-                        spreadWeapon.fire(world, e, cbc.bound.x + cbc.bound.width - com.bryjamin.wickedwizard.utils.Measure.units(5f), cbc.getCenterY() - com.bryjamin.wickedwizard.utils.Measure.units(7.5f), 0);
+                        spreadWeapon.fire(world, e, cbc.bound.x + cbc.bound.width - Measure.units(5f), cbc.getCenterY() - Measure.units(7.5f), 0);
                         switchbool = !switchbool;
                     } else {
-                        spreadWeapon.fire(world, e,  cbc.bound.x + cbc.bound.width - com.bryjamin.wickedwizard.utils.Measure.units(5f), cbc.getCenterY() + com.bryjamin.wickedwizard.utils.Measure.units(7.5f), 0);
+                        spreadWeapon.fire(world, e,  cbc.bound.x + cbc.bound.width - Measure.units(5f), cbc.getCenterY() + Measure.units(7.5f), 0);
                         switchbool = !switchbool;
                     }
                 }

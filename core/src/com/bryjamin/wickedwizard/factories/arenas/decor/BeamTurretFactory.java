@@ -5,9 +5,9 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
 
@@ -32,8 +33,8 @@ public class BeamTurretFactory extends AbstractFactory {
     }
 
     public com.bryjamin.wickedwizard.utils.ComponentBag laserChain(float x, float y, float scale, com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
         com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
@@ -46,8 +47,8 @@ public class BeamTurretFactory extends AbstractFactory {
 
 
     public com.bryjamin.wickedwizard.utils.ComponentBag inCombatLaserChain(float x, float y, float scale, com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
         com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
@@ -60,8 +61,8 @@ public class BeamTurretFactory extends AbstractFactory {
 
 
     public com.bryjamin.wickedwizard.utils.ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat, boolean isInstant, com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
         com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
@@ -78,8 +79,8 @@ public class BeamTurretFactory extends AbstractFactory {
 
 
     public com.bryjamin.wickedwizard.utils.ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final boolean isInstant, final com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
         com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
@@ -113,8 +114,8 @@ public class BeamTurretFactory extends AbstractFactory {
 
     public com.bryjamin.wickedwizard.utils.ComponentBag timedLaserBeam(float x, float y, float scale, final float offset, final float timeTillReapeat, final boolean isInstant, final LaserBeam laserBeam){
 
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
         com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
 
 
@@ -142,8 +143,8 @@ public class BeamTurretFactory extends AbstractFactory {
 
 
     public com.bryjamin.wickedwizard.utils.ComponentBag inCombatTimedLaserBeam(float x, float y, float scale, final float offset, final float timeTillReapeat, final boolean isInstant, final LaserBeam laserBeam){
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(5f) * scale;
+        float width = Measure.units(5f) * scale;
+        float height = Measure.units(5f) * scale;
         com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
 
 

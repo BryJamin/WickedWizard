@@ -10,18 +10,18 @@ import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
-import com.bryjamin.wickedwizard.utils.enums.Direction;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 13/03/2017.
@@ -149,7 +149,7 @@ public class RoomTransitionSystem extends EntitySystem {
                 case DOWN:
                     playerPosition.position.x = doorBoundary.getCenterX();
                     playerPosition.position.y = doorBoundary.bound.getY() + playerBoundary.bound.getHeight() * 2;
-                    playerVelocity.velocity.y = (playerVelocity.velocity.y < com.bryjamin.wickedwizard.utils.Measure.units(70f)) ? com.bryjamin.wickedwizard.utils.Measure.units(70f) : playerVelocity.velocity.y;
+                    playerVelocity.velocity.y = (playerVelocity.velocity.y < Measure.units(70f)) ? Measure.units(70f) : playerVelocity.velocity.y;
                     break;
             }
 

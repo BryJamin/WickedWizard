@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 10/04/2017.
@@ -38,12 +39,12 @@ public class FrictionSystem extends EntityProcessingSystem {
             com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent fc = frictionMapper.get(e);
 
 
-            float friction = com.bryjamin.wickedwizard.utils.Measure.units(7.5f);
-            float minSpeed = com.bryjamin.wickedwizard.utils.Measure.units(0f);
+            float friction = Measure.units(7.5f);
+            float minSpeed = Measure.units(0f);
 
             if(pm.has(e) && glidem.has(e)) {
                     if (!cbm.get(e).recentCollisions.contains(com.bryjamin.wickedwizard.utils.collider.Collider.Collision.BOTTOM, false) && !glidem.get(e).gliding) {
-                        minSpeed = com.bryjamin.wickedwizard.utils.Measure.units(20f);
+                        minSpeed = Measure.units(20f);
                     }
             }
 

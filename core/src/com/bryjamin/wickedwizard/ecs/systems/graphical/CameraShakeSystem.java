@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by BB on 12/08/2017.
@@ -47,9 +48,9 @@ public class CameraShakeSystem extends EntitySystem {
 
 
 
-        float x = MathUtils.random.nextFloat() * com.bryjamin.wickedwizard.utils.Measure.units(shakeIntensity * xMultiplier) - com.bryjamin.wickedwizard.utils.Measure.units(shakeIntensity) / 2;
+        float x = MathUtils.random.nextFloat() * Measure.units(shakeIntensity * xMultiplier) - Measure.units(shakeIntensity) / 2;
 
-        float y = MathUtils.random.nextFloat() * com.bryjamin.wickedwizard.utils.Measure.units(shakeIntensity) - com.bryjamin.wickedwizard.utils.Measure.units(shakeIntensity) / 2;
+        float y = MathUtils.random.nextFloat() * Measure.units(shakeIntensity) - Measure.units(shakeIntensity) / 2;
 
 
       //  System.out.println(gamecam.position.x);

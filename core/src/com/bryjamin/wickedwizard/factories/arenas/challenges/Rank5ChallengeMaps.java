@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFacto
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -169,7 +170,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
         Arena exitArena = new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.NORMAL);
 
-        exitArena.addEntity(new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).portal(exitArena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(32.5f), com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory.levelPortalSize, com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory.levelPortalSize, new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
+        exitArena.addEntity(new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).portal(exitArena.getWidth() / 2, Measure.units(32.5f), com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory.levelPortalSize, com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory.levelPortalSize, new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
@@ -271,8 +272,8 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
         Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(0, 0), Arena.ArenaType.NORMAL);
-        iWishYouWell.addEntity(itemFactory.createItemAltarBag(com.bryjamin.wickedwizard.utils.Measure.units(42.5f),
-                com.bryjamin.wickedwizard.utils.Measure.units(10f), arenaSkin.getWallTint(), new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell()));
+        iWishYouWell.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
+                Measure.units(10f), arenaSkin.getWallTint(), new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell()));
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
 
@@ -330,21 +331,21 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(-1, 0), Arena.ArenaType.TRAP);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
-        arena.addWave(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+        arena.addWave(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, Measure.units(45f)));
 
 
         arena.addWave(arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() / 2, arena.getHeight() / 2, com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT, 5),
                 arenaEnemyPlacementFactory.spawnLeftSnake(arena.getWidth() / 2, arena.getHeight() / 2, com.bryjamin.wickedwizard.utils.enums.Direction.LEFT, 5));
 
-        arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(40f), true, true),
-                arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(40f), false, true));
+        arena.addWave(arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4, Measure.units(40f), true, true),
+                arenaEnemyPlacementFactory.spawnLaserus(arena.getWidth() / 4 * 3, Measure.units(40f), false, true));
 
 
-        arena.addWave(arenaEnemyPlacementFactory.spawnJumpingJack(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f), false));
+        arena.addWave(arenaEnemyPlacementFactory.spawnJumpingJack(arena.getWidth() / 2, Measure.units(45f), false));
 
 
-        arena.addWave(arenaEnemyPlacementFactory.spawnFixedPentaSentry(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f)),
-                arenaEnemyPlacementFactory.spawnFixedFlyByDoubleBombSentry(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+        arena.addWave(arenaEnemyPlacementFactory.spawnFixedPentaSentry(arena.getWidth() / 4, Measure.units(45f)),
+                arenaEnemyPlacementFactory.spawnFixedFlyByDoubleBombSentry(arena.getWidth() / 4 * 3, Measure.units(45f)));
 
 
 

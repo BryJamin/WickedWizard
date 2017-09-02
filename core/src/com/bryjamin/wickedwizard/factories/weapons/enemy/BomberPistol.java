@@ -6,6 +6,7 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 02/07/2017.
@@ -36,8 +37,8 @@ public class BomberPistol implements Weapon{
         //Optional Parameters
         private float shotScale = 4;
         private float fireRate = 1.5f;
-        private float shotSpeedX = com.bryjamin.wickedwizard.utils.Measure.units(50);
-        private float shotSpeedY = com.bryjamin.wickedwizard.utils.Measure.units(50f);
+        private float shotSpeedX = Measure.units(50);
+        private float shotSpeedY = Measure.units(50f);
         private float bombLife = 1f;
 
         private int[] angles = new int[]{0};

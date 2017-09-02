@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.JigFactory;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -325,7 +326,7 @@ public class ArenaEnemyPlacementFactory extends com.bryjamin.wickedwizard.factor
                 return silverHeadFactory.silverHead(x,y);
             }
         });
-        return spawnerFactory.spawnerBag(x, y + com.bryjamin.wickedwizard.utils.Measure.units(2.5f), s);
+        return spawnerFactory.spawnerBag(x, y + Measure.units(2.5f), s);
     }
 
     public com.bryjamin.wickedwizard.utils.ComponentBag spawnBouncer(float x, float y){

@@ -9,18 +9,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -33,24 +34,24 @@ public class BossTheEnd extends BossFactory {
 
     private com.bryjamin.wickedwizard.factories.enemy.EnemyFactory enemyFactory;
 
-    private static final float mainBodyHeight = com.bryjamin.wickedwizard.utils.Measure.units(24f);
-    private static final float mainBodyWidth = com.bryjamin.wickedwizard.utils.Measure.units(24f);
+    private static final float mainBodyHeight = Measure.units(24f);
+    private static final float mainBodyWidth = Measure.units(24f);
 
     private static final float mainBodyHealth = 40;
 
     private static final float handHealth = 40;
 
-    private static final float handsHeight = com.bryjamin.wickedwizard.utils.Measure.units(12f);
-    private static final float handsWidth = com.bryjamin.wickedwizard.utils.Measure.units(12f);
+    private static final float handsHeight = Measure.units(12f);
+    private static final float handsWidth = Measure.units(12f);
 
-    private static final float handsTextureWidth = com.bryjamin.wickedwizard.utils.Measure.units(15f);
-    private static final float handsTextureHeight = com.bryjamin.wickedwizard.utils.Measure.units(15f);
+    private static final float handsTextureWidth = Measure.units(15f);
+    private static final float handsTextureHeight = Measure.units(15f);
 
-    private static final float bottomHandOffsetX = com.bryjamin.wickedwizard.utils.Measure.units(30f);
-    private static final float bottomHandOffsetY = -com.bryjamin.wickedwizard.utils.Measure.units(5);
+    private static final float bottomHandOffsetX = Measure.units(30f);
+    private static final float bottomHandOffsetY = -Measure.units(5);
 
-    private static final float upperHandOffsetX = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-    private static final float upperHandOffsetY = com.bryjamin.wickedwizard.utils.Measure.units(20f);
+    private static final float upperHandOffsetX = Measure.units(20f);
+    private static final float upperHandOffsetY = Measure.units(20f);
 
 
     private static final float handCharingTime = 2.0f;
@@ -64,11 +65,11 @@ public class BossTheEnd extends BossFactory {
 
 
     //SplitterWeapon
-    private static final float firstSplitterSpeed = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-    private static final float firstSplitterRange = com.bryjamin.wickedwizard.utils.Measure.units(25f);
-    private static final float secondSplitterSpeed = com.bryjamin.wickedwizard.utils.Measure.units(20f);
-    private static final float secondSplitterRange = com.bryjamin.wickedwizard.utils.Measure.units(15f);
-    private static final float finalSplitterSpeed = com.bryjamin.wickedwizard.utils.Measure.units(40f);;
+    private static final float firstSplitterSpeed = Measure.units(20f);
+    private static final float firstSplitterRange = Measure.units(25f);
+    private static final float secondSplitterSpeed = Measure.units(20f);
+    private static final float secondSplitterRange = Measure.units(15f);
+    private static final float finalSplitterSpeed = Measure.units(40f);;
 
 
     private static final float fauxPhaseTime = 100f;
@@ -494,7 +495,7 @@ public class BossTheEnd extends BossFactory {
         private Random random;
 
 
-        private float offSetFromBoss = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+        private float offSetFromBoss = Measure.units(2.5f);
 
         //TODO this weapon should take in the bosses position and then use it when centering the lasers
         //TODO as the player should be stuck in the middle of the boss
@@ -505,10 +506,10 @@ public class BossTheEnd extends BossFactory {
         public EndDeathFromAboveLasers(AssetManager assetManager, Random random){
 
             laserBeam = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam.LaserBeamBuilder(assetManager)
-                    .chargingLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(7.5f))
-                    .chargingLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(200f))
-                    .activeLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(10f))
-                    .activeLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(200f))
+                    .chargingLaserWidth(Measure.units(7.5f))
+                    .chargingLaserHeight(Measure.units(200f))
+                    .activeLaserWidth(Measure.units(10f))
+                    .activeLaserHeight(Measure.units(200f))
                     .chargingLaserTime(4f)
                     .layer(TextureRegionComponent.FOREGROUND_LAYER_NEAR)
                     .build();
@@ -547,7 +548,7 @@ public class BossTheEnd extends BossFactory {
 */
 
                     if(count < positionIndentifierArray.size) {
-                        laserBeam.createBeam(world, offSetFromBoss + com.bryjamin.wickedwizard.utils.Measure.units(positionIndentifierArray.get(count) * 10f), -com.bryjamin.wickedwizard.utils.Measure.units(50f));
+                        laserBeam.createBeam(world, offSetFromBoss + Measure.units(positionIndentifierArray.get(count) * 10f), -Measure.units(50f));
                         count++;
                     }
                 }
@@ -616,19 +617,19 @@ public class BossTheEnd extends BossFactory {
         public EndLaserDance(AssetManager assetManager, Random random){
 
             verticalBeam = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam.LaserBeamBuilder(assetManager)
-                    .chargingLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(7.5f))
-                    .chargingLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(100f))
-                    .activeLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(12.5f))
-                    .activeLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(100f))
+                    .chargingLaserWidth(Measure.units(7.5f))
+                    .chargingLaserHeight(Measure.units(100f))
+                    .activeLaserWidth(Measure.units(12.5f))
+                    .activeLaserHeight(Measure.units(100f))
                     .centerLaserUsingWidth(true)
                     .chargingLaserTime(1.5f)
                     .build();
 
             sideBeam = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam.LaserBeamBuilder(assetManager)
-                    .chargingLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(100f))
-                    .chargingLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(7.5f))
-                    .activeLaserWidth(com.bryjamin.wickedwizard.utils.Measure.units(100f))
-                    .activeLaserHeight(com.bryjamin.wickedwizard.utils.Measure.units(12.5f))
+                    .chargingLaserWidth(Measure.units(100f))
+                    .chargingLaserHeight(Measure.units(7.5f))
+                    .activeLaserWidth(Measure.units(100f))
+                    .activeLaserHeight(Measure.units(12.5f))
                     .centerLaserUsingWidth(false)
                     .chargingLaserTime(1.5f)
                     .build();
@@ -658,13 +659,13 @@ public class BossTheEnd extends BossFactory {
                             isTopHorizontalBeam = !isTopHorizontalBeam;
 
                             if(random.nextBoolean()){
-                                verticalBeam.createBeam(world, com.bryjamin.wickedwizard.utils.Measure.units(35f), 0);
+                                verticalBeam.createBeam(world, Measure.units(35f), 0);
                             } else {
-                                verticalBeam.createBeam(world, com.bryjamin.wickedwizard.utils.Measure.units(50f), 0);
+                                verticalBeam.createBeam(world, Measure.units(50f), 0);
                             }
 
                         } else {
-                            sideBeam.createBeam(world, 0, com.bryjamin.wickedwizard.utils.Measure.units(10f));
+                            sideBeam.createBeam(world, 0, Measure.units(10f));
                             isTopHorizontalBeam = !isTopHorizontalBeam;
                         }
 
@@ -738,10 +739,10 @@ public class BossTheEnd extends BossFactory {
         public EndGatlingGun(AssetManager assetManager, Random random){
             pistol = new com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder(assetManager)
                     .shotScale(1.5f)
-                    .shotSpeed(com.bryjamin.wickedwizard.utils.Measure.units(30f))
+                    .shotSpeed(Measure.units(30f))
                     .intangible(true)
-                    .bulletOffsets(com.bryjamin.wickedwizard.utils.Measure.units(2.5f))
-                    .expireRange(com.bryjamin.wickedwizard.utils.Measure.units(100f))
+                    .bulletOffsets(Measure.units(2.5f))
+                    .expireRange(Measure.units(100f))
                     .build();
             this.random = random;
         }

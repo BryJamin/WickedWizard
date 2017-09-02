@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 30/06/2017.
@@ -17,32 +18,32 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 
 public class BiggaBlobbaBoss extends BossFactory {
 
-    private static final float width = com.bryjamin.wickedwizard.utils.Measure.units(25);
-    private static final float height = com.bryjamin.wickedwizard.utils.Measure.units(25);
+    private static final float width = Measure.units(25);
+    private static final float height = Measure.units(25);
 
-    private static final float textureSize = com.bryjamin.wickedwizard.utils.Measure.units(32.5f);
+    private static final float textureSize = Measure.units(32.5f);
 
-    private static final float bottomWidth = com.bryjamin.wickedwizard.utils.Measure.units(25);
-    private static final float bottomHeight = com.bryjamin.wickedwizard.utils.Measure.units(10);
+    private static final float bottomWidth = Measure.units(25);
+    private static final float bottomHeight = Measure.units(10);
 
-    private static final float bottomMidWidth = com.bryjamin.wickedwizard.utils.Measure.units(20);
-    private static final float bottomMidHeight = com.bryjamin.wickedwizard.utils.Measure.units(7.5f);
+    private static final float bottomMidWidth = Measure.units(20);
+    private static final float bottomMidHeight = Measure.units(7.5f);
 
-    private static final float bottomTopWidth = com.bryjamin.wickedwizard.utils.Measure.units(12f);
-    private static final float bottomTopHeight = com.bryjamin.wickedwizard.utils.Measure.units(4.5f);
+    private static final float bottomTopWidth = Measure.units(12f);
+    private static final float bottomTopHeight = Measure.units(4.5f);
 
-    private static final float crownWidth = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-    private static final float crownHeight = com.bryjamin.wickedwizard.utils.Measure.units(4.5f);
+    private static final float crownWidth = Measure.units(5f);
+    private static final float crownHeight = Measure.units(4.5f);
 
-    private static final float gunOffsetY = com.bryjamin.wickedwizard.utils.Measure.units(12.5f);
+    private static final float gunOffsetY = Measure.units(12.5f);
 
     private static final float health = 65;
 
-    private static final float speed = com.bryjamin.wickedwizard.utils.Measure.units(60f);
+    private static final float speed = Measure.units(60f);
 
-    private static final float jumpTransitionVly = com.bryjamin.wickedwizard.utils.Measure.units(40f);
-    private static final float jumpVlx = com.bryjamin.wickedwizard.utils.Measure.units(45f);
-    private static final float jumpVly = com.bryjamin.wickedwizard.utils.Measure.units(75f);
+    private static final float jumpTransitionVly = Measure.units(40f);
+    private static final float jumpVlx = Measure.units(45f);
+    private static final float jumpVly = Measure.units(75f);
 
     private static final float stompShakeTime = 0.25f;
     private static final float stompIntensity = 0.5f;
@@ -104,7 +105,7 @@ public class BiggaBlobbaBoss extends BossFactory {
 
         com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder(assetManager)
                 .angles(20,40,60,80, 100, 120, 140, 160)
-                .shotSpeed(com.bryjamin.wickedwizard.utils.Measure.units(75f))
+                .shotSpeed(Measure.units(75f))
                 .gravity(true)
                 .build());
         bag.add(wc);

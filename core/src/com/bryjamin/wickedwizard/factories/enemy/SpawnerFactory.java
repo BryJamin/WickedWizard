@@ -16,6 +16,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 25/03/2017.
@@ -95,8 +96,8 @@ public class SpawnerFactory extends AbstractFactory {
 
 
 
-    private final float width = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    private final float height = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    private final float width = Measure.units(10f);
+    private final float height = Measure.units(10f);
 
     public com.bryjamin.wickedwizard.utils.ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners) {
         return spawnerBag(x,y, 1, 1.0f, 1.0f, 1, spawners);

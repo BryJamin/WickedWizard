@@ -8,11 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -22,8 +23,8 @@ import java.util.Random;
 
 public class BossKugelDusc extends BossFactory {
 
-    private static final float width = com.bryjamin.wickedwizard.utils.Measure.units(30f);
-    private static final float height = com.bryjamin.wickedwizard.utils.Measure.units(30f);
+    private static final float width = Measure.units(30f);
+    private static final float height = Measure.units(30f);
 
     private static final float health = 90;
 
@@ -33,13 +34,13 @@ public class BossKugelDusc extends BossFactory {
 
     private static final float weaponStartUpTime = 0.5f;
     private static final float changeInFiringAngleInDegrees = 25;
-    private static final float shotSpeed = com.bryjamin.wickedwizard.utils.Measure.units(35f);
+    private static final float shotSpeed = Measure.units(35f);
     private static final float fireRate = 0.5f;
 
 
 
     //LaserPhase
-    private static final float laserSquareSize = com.bryjamin.wickedwizard.utils.Measure.units(8.5f);
+    private static final float laserSquareSize = Measure.units(8.5f);
     private static final float speedInDegrees = 0.5f;
 
     private static final float laserPhaseTime = 12.5f;

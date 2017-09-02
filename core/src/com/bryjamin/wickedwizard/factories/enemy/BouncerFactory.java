@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -27,12 +28,12 @@ public class BouncerFactory extends EnemyFactory {
         super(assetManager);
     }
 
-    private static final float width = com.bryjamin.wickedwizard.utils.Measure.units(5);
-    private static final float height = com.bryjamin.wickedwizard.utils.Measure.units(5);
+    private static final float width = Measure.units(5);
+    private static final float height = Measure.units(5);
 
     private static final Random random = new Random();
 
-    private static final float speed = com.bryjamin.wickedwizard.utils.Measure.units(25f);
+    private static final float speed = Measure.units(25f);
 
     public com.bryjamin.wickedwizard.utils.ComponentBag smallBouncer(float x, float y){
         com.bryjamin.wickedwizard.utils.ComponentBag bag = basicBouncer(x, y, width, height, speed, random.nextBoolean());
@@ -119,7 +120,7 @@ public class BouncerFactory extends EnemyFactory {
                 .angles(0,30,60,90,120,150,180,210,240,270,300,330)
                 .shotScale(2)
                 .expire(true)
-                .expireRange(com.bryjamin.wickedwizard.utils.Measure.units(50f))
+                .expireRange(Measure.units(50f))
                 .build();
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(multiPistol, 0f));

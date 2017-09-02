@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by BB on 17/08/2017.
@@ -23,10 +24,10 @@ public class HealthBarSystem extends EntitySystem {
 
 
 
-    private static float initialHealthBarWidth = com.bryjamin.wickedwizard.utils.Measure.units(50f);
-    private static float initialHealthBarHeight = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+    private static float initialHealthBarWidth = Measure.units(50f);
+    private static float initialHealthBarHeight = Measure.units(2.5f);
 
-    private static float initialHealthBarOffsetY = com.bryjamin.wickedwizard.utils.Measure.units(61.5f);
+    private static float initialHealthBarOffsetY = Measure.units(61.5f);
 
     private static final float resetTime = 1.5f;
     private float countDownTime = resetTime;
@@ -34,8 +35,8 @@ public class HealthBarSystem extends EntitySystem {
     private float whiteHealthBarWidth;
     private float redHealthBarWidth;
 
-    private static final float whiteHealthBarSpeed = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    private static final float redHealthBarSpeed = com.bryjamin.wickedwizard.utils.Measure.units(80f);
+    private static final float whiteHealthBarSpeed = Measure.units(10f);
+    private static final float redHealthBarSpeed = Measure.units(80f);
 
     private float initialHealth = 10;
 

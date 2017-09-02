@@ -16,11 +16,11 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -29,6 +29,7 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -38,10 +39,10 @@ import java.util.Random;
 
 public class ItemFactory extends AbstractFactory {
 
-    private static final float altarWidth = com.bryjamin.wickedwizard.utils.Measure.units(15f);
-    private static final float altarHeight = com.bryjamin.wickedwizard.utils.Measure.units(15f);
-    private static final float altarItemWidth = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-    private static final float altarItemHeight = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+    private static final float altarWidth = Measure.units(15f);
+    private static final float altarHeight = Measure.units(15f);
+    private static final float altarItemWidth = Measure.units(5f);
+    private static final float altarItemHeight = Measure.units(5f);
 
     public ItemFactory(AssetManager assetManager) {
         super(assetManager);
@@ -54,11 +55,11 @@ public class ItemFactory extends AbstractFactory {
 
         Random random = new Random();
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(random.nextInt((int) com.bryjamin.wickedwizard.utils.Measure.units(60f)) - com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
+        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(random.nextInt((int) Measure.units(60f)) - Measure.units(30f), Measure.units(30f)));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.object.PickUpComponent(pickUp));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(5))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(5),
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
         bag.add(new FrictionComponent());
         return bag;
@@ -74,7 +75,7 @@ public class ItemFactory extends AbstractFactory {
 
         float angle = random.nextFloat() * (360);
 
-        float speed = random.nextFloat() * (com.bryjamin.wickedwizard.utils.Measure.units(100f) - com.bryjamin.wickedwizard.utils.Measure.units(50f)) + com.bryjamin.wickedwizard.utils.Measure.units(50f);
+        float speed = random.nextFloat() * (Measure.units(100f) - Measure.units(50f)) + Measure.units(50f);
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(BulletMath.velocityX(speed, Math.toRadians(angle)), BulletMath.velocityY(speed, Math.toRadians(angle))));
         //TODO the way tracking should work is similar to if (pos + velocity > target etc, then don't move there).
@@ -82,8 +83,8 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new IntangibleComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent(pickUp));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.object.PickUpComponent(pickUp));
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y, com.bryjamin.wickedwizard.utils.Measure.units(2), com.bryjamin.wickedwizard.utils.Measure.units(2))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), com.bryjamin.wickedwizard.utils.Measure.units(2), com.bryjamin.wickedwizard.utils.Measure.units(2),
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), Measure.units(2), Measure.units(2),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
 
@@ -95,9 +96,9 @@ public class ItemFactory extends AbstractFactory {
                 new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                         .numberOfGibletPairs(5)
                         .expiryTime(0.2f)
-                        .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(50f))
+                        .maxSpeed(Measure.units(50f))
                         .fadeChance(0.25f)
-                        .size(com.bryjamin.wickedwizard.utils.Measure.units(1f))
+                        .size(Measure.units(1f))
                         .mixes(SoundFileStrings.coinPickUpMix)
                         .colors(new Color(ColorResource.MONEY_YELLOW))
                         .build()
@@ -117,7 +118,7 @@ public class ItemFactory extends AbstractFactory {
             public void performAction(World world, Entity e) {
                 //e.edit().add(new VelocityComponent());
                 e.edit().add(new MoveToPlayerComponent());
-                e.edit().add(new AccelerantComponent(com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(125f)));
+                e.edit().add(new AccelerantComponent(Measure.units(125f), Measure.units(125f)));
                 e.edit().add(new IntangibleComponent());
                 e.edit().remove(FrictionComponent.class);
             }
@@ -138,7 +139,7 @@ public class ItemFactory extends AbstractFactory {
 
         bag.add(new PositionComponent());
         bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
-                com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(5),
+                Measure.units(5), Measure.units(5),
                 TextureRegionComponent.FOREGROUND_LAYER_FAR,
                 item.getValues().textureColor));
         bag.add(followPositionComponent);
@@ -190,7 +191,7 @@ public class ItemFactory extends AbstractFactory {
                 e.getComponent(com.bryjamin.wickedwizard.ecs.components.object.AltarComponent.class).pickUp = altarItem;
 
                 BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(altarItem, e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class),
-                        new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), com.bryjamin.wickedwizard.utils.Measure.units(5f))));
+                        new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
 
             }
         }));
@@ -207,14 +208,14 @@ public class ItemFactory extends AbstractFactory {
 
     public Array<com.bryjamin.wickedwizard.utils.ComponentBag> createShopItemBag(float x, float y, int money){
 
-        final float width = com.bryjamin.wickedwizard.utils.Measure.units(10);
-        final float height = com.bryjamin.wickedwizard.utils.Measure.units(10);
+        final float width = Measure.units(10);
+        final float height = Measure.units(10);
 
-        final float textureWidth = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-        final float textureHeight = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+        final float textureWidth = Measure.units(5f);
+        final float textureHeight = Measure.units(5f);
 
-        float goldWidth = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
-        float goldHeight = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+        float goldWidth = Measure.units(2.5f);
+        float goldHeight = Measure.units(2.5f);
 
 
         x = x - width / 2;
@@ -257,12 +258,12 @@ public class ItemFactory extends AbstractFactory {
 
 
         com.bryjamin.wickedwizard.utils.ComponentBag priceTag = new com.bryjamin.wickedwizard.utils.ComponentBag();
-        priceTag.add(new PositionComponent(x + com.bryjamin.wickedwizard.utils.Measure.units(2f), y - com.bryjamin.wickedwizard.utils.Measure.units(1.5f)));
+        priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
         priceTag.add(new TextureRegionComponent(atlas.findRegion(new com.bryjamin.wickedwizard.factories.items.pickups.MoneyPlus1().getValues().region.getLeft(), new com.bryjamin.wickedwizard.factories.items.pickups.MoneyPlus1().getValues().region.getRight()), goldWidth, goldHeight, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         TextureFontComponent tfc = new TextureFontComponent(""+money);
         //tfc.width = width / 2;
-        tfc.offsetX = com.bryjamin.wickedwizard.utils.Measure.units(5);
-        tfc.offsetY = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+        tfc.offsetX = Measure.units(5);
+        tfc.offsetY = Measure.units(2.5f);
         priceTag.add(tfc);
         com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent c = new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent();
         pc.children.add(c);
@@ -277,14 +278,14 @@ public class ItemFactory extends AbstractFactory {
 
     public Array<com.bryjamin.wickedwizard.utils.ComponentBag> createShopPickUpBag(float x, float y, PickUp pickUp, int money){
 
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(10);
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(10);
+        float width = Measure.units(10);
+        float height = Measure.units(10);
 
-        float textureWidth = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-        float textureHeight = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+        float textureWidth = Measure.units(5f);
+        float textureHeight = Measure.units(5f);
 
-        float goldWidth = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
-        float goldHeight = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+        float goldWidth = Measure.units(2.5f);
+        float goldHeight = Measure.units(2.5f);
 
 
         x = x - width / 2;
@@ -319,12 +320,12 @@ public class ItemFactory extends AbstractFactory {
 
 
         com.bryjamin.wickedwizard.utils.ComponentBag priceTag = new com.bryjamin.wickedwizard.utils.ComponentBag();
-        priceTag.add(new PositionComponent(x + com.bryjamin.wickedwizard.utils.Measure.units(2f), y - com.bryjamin.wickedwizard.utils.Measure.units(1.5f)));
+        priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
         priceTag.add(new TextureRegionComponent(atlas.findRegion(new com.bryjamin.wickedwizard.factories.items.pickups.MoneyPlus1().getValues().region.getLeft(), new com.bryjamin.wickedwizard.factories.items.pickups.MoneyPlus1().getValues().region.getRight()), goldWidth, goldHeight, TextureRegionComponent.FOREGROUND_LAYER_FAR));
         TextureFontComponent tfc = new TextureFontComponent(""+money);
         //tfc.width = width / 2;
-        tfc.offsetX = com.bryjamin.wickedwizard.utils.Measure.units(5);
-        tfc.offsetY = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+        tfc.offsetX = Measure.units(5);
+        tfc.offsetY = Measure.units(2.5f);
         priceTag.add(tfc);
         com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent c = new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent();
         pc.children.add(c);

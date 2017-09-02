@@ -19,6 +19,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -187,10 +188,10 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena();
 
-        arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(30f),  com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(40f), ArenaBuilder.WALLWIDTH * 2, arenaSkin));
-        arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(100f),  com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(40f), ArenaBuilder.WALLWIDTH * 2, arenaSkin));
-        float wall2PosX = com.bryjamin.wickedwizard.utils.Measure.units(290f);
-        arena.addEntity(decorFactory.wallBag(wall2PosX,  com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(60f), ArenaBuilder.WALLWIDTH * 6, arenaSkin));
+        arena.addEntity(decorFactory.wallBag(Measure.units(30f),  Measure.units(10f), Measure.units(40f), ArenaBuilder.WALLWIDTH * 2, arenaSkin));
+        arena.addEntity(decorFactory.wallBag(Measure.units(100f),  Measure.units(10f), Measure.units(40f), ArenaBuilder.WALLWIDTH * 2, arenaSkin));
+        float wall2PosX = Measure.units(290f);
+        arena.addEntity(decorFactory.wallBag(wall2PosX,  Measure.units(10f), Measure.units(60f), ArenaBuilder.WALLWIDTH * 6, arenaSkin));
         return arena;
 
     }
@@ -211,24 +212,24 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                         ArenaBuilder.wall.NONE)).buildArena();
 
         //Blocker
-        arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(50f), arenaSkin));
+        arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(10f), Measure.units(20f), Measure.units(50f), arenaSkin));
 
         //Left platforms
-        arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-        arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+        arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(30f), Measure.units(35f)));
+        arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(55f), Measure.units(35f)));
 
 
 
         //Right platforms
-        arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(60f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-        arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(60f), com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+        arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(30f), Measure.units(35f)));
+        arena.addEntity(decorFactory.platform(Measure.units(60f), Measure.units(55f), Measure.units(35f)));
 
         //Arrows
-        for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(27.5f), com.bryjamin.wickedwizard.utils.Measure.units(17.5f + (i * 25f)), 180));
+        for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(arena.getWidth() - Measure.units(27.5f), Measure.units(17.5f + (i * 25f)), 180));
 
         //arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), 0));
         //arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
-        for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(com.bryjamin.wickedwizard.utils.Measure.units(17.5f), com.bryjamin.wickedwizard.utils.Measure.units(17.5f + (i * 25f)), 0));
+        for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(17.5f), Measure.units(17.5f + (i * 25f)), 0));
 
         return arena;
 
@@ -255,10 +256,10 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE)).buildArena();
 
-        arena.addEntity(decorFactory.platform(0, arena.getHeight() - com.bryjamin.wickedwizard.utils.Measure.units(35), arena.getWidth()));
+        arena.addEntity(decorFactory.platform(0, arena.getHeight() - Measure.units(35), arena.getWidth()));
 
         for(int i = 0; i < 5; i ++) {
-            arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(50 + (i * 30))));
+            arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50 + (i * 30))));
         }
 
         return arena;
@@ -278,7 +279,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR)).buildArena();
 
-        arena.addEntity(new BlobFactory(assetManager).blob(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(12), com.bryjamin.wickedwizard.utils.Measure.units(30f),1, 0, 8, true, ColorResource.BLOB_GREEN));
+        arena.addEntity(new BlobFactory(assetManager).blob(arena.getWidth() - Measure.units(12), Measure.units(30f),1, 0, 8, true, ColorResource.BLOB_GREEN));
 
         return arena;
 
@@ -321,7 +322,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                     }
                 });
 
-        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(2.5f)));
+        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
 
 
         spawnerBuilder = new SpawnerFactory.SpawnerBuilder(assetManager, arenaSkin)
@@ -333,11 +334,11 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                     }
                 });
 
-        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(2.5f)));
+        arena.addWave(spawnerBuilder.build().spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
 
 
-        arena.addWave(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f), false),
-                arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f), true));
+        arena.addWave(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4, Measure.units(45f), false),
+                arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 4 * 3, Measure.units(45f), true));
 
         arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
 

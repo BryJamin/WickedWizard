@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 17/06/2017.
@@ -23,11 +24,11 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 public class ModonFactory extends EnemyFactory{
 
 
-    private final float width = com.bryjamin.wickedwizard.utils.Measure.units(17.5f);
-    private final float height = com.bryjamin.wickedwizard.utils.Measure.units(17.5f);
+    private final float width = Measure.units(17.5f);
+    private final float height = Measure.units(17.5f);
 
-    private final float textureWidth = com.bryjamin.wickedwizard.utils.Measure.units(22.5f);
-    private final float textureHeight = com.bryjamin.wickedwizard.utils.Measure.units(22.5f);
+    private final float textureWidth = Measure.units(22.5f);
+    private final float textureHeight = Measure.units(22.5f);
 
     private static final float health = 20;
     private static final float heavyHealth = 30;
@@ -110,8 +111,8 @@ public class ModonFactory extends EnemyFactory{
 
         boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
 
-        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = isLeftOfPlayer ? com.bryjamin.wickedwizard.utils.Measure.units(25f) : -com.bryjamin.wickedwizard.utils.Measure.units(25f);
-        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = com.bryjamin.wickedwizard.utils.Measure.units(85);
+        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
+        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = Measure.units(85);
 
     }
 
@@ -186,11 +187,11 @@ public class ModonFactory extends EnemyFactory{
                 com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol mp = new com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder(assetManager)
                         .angles(70,80,90,100,110)
                         .shotScale(3)
-                        .shotSpeed(com.bryjamin.wickedwizard.utils.Measure.units(110f))
+                        .shotSpeed(Measure.units(110f))
                         .gravity(true)
                         .build();
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                mp.fire(world, e, cbc.getCenterX(), cbc.getCenterY() - com.bryjamin.wickedwizard.utils.Measure.units(5f), 0);
+                mp.fire(world, e, cbc.getCenterX(), cbc.getCenterY() - Measure.units(5f), 0);
                 e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent.class);
 
                 screenShakeLanding(world, e);

@@ -8,19 +8,28 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.ecs.components.BackPackComponent;
+import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 06/04/2017.
@@ -37,31 +46,31 @@ public class PlayerFactory extends AbstractFactory {
         super(assetManager);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag playerBag(float x , float y){
+    public ComponentBag playerBag(float x , float y){
 
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+        float width = Measure.units(5f);
+        float height = Measure.units(5f);
 
         x = x - width / 2;
         y = y - height / 2;
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
 
 
        // bag.add(new CameraShakeComponent(1f));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x,y));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, 0));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.BackPackComponent());
+        bag.add(new PositionComponent(x,y));
+        bag.add(new VelocityComponent(0, 0));
+        bag.add(new PlayerComponent());
+        bag.add(new BackPackComponent());
         bag.add(new FrictionComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent());
+        bag.add(new GravityComponent());
+        bag.add(new MoveToComponent());
         bag.add(new CurrencyComponent(startingMoney));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent());
-        bag.add(new AccelerantComponent(com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(80f), com.bryjamin.wickedwizard.utils.Measure.units(80f)));
+        bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
 
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(AnimationStateComponent.DEFAULT);
@@ -73,7 +82,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new AnimationComponent(k));
 
 
-        com.bryjamin.wickedwizard.ecs.components.StatComponent statComponent = new com.bryjamin.wickedwizard.ecs.components.StatComponent();
+        StatComponent statComponent = new com.bryjamin.wickedwizard.ecs.components.StatComponent();
 
         bag.add(statComponent);
         com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new com.bryjamin.wickedwizard.factories.weapons.PlayerPistol(assetManager, statComponent), pauseBeforeShooting);
@@ -105,10 +114,10 @@ public class PlayerFactory extends AbstractFactory {
                 new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                         .numberOfGibletPairs(20)
                         .expiryTime(1.0f)
-                        .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(80f))
-                        .minSpeed(com.bryjamin.wickedwizard.utils.Measure.units(10f))
+                        .maxSpeed(Measure.units(80f))
+                        .minSpeed(Measure.units(10f))
                         .mixes(com.bryjamin.wickedwizard.assets.SoundFileStrings.explosionMegaMix)
-                        .size(com.bryjamin.wickedwizard.utils.Measure.units(0.75f))
+                        .size(Measure.units(0.75f))
                         .intangible(true)
                         .colors(new Color(Color.BLACK), new Color(Color.DARK_GRAY), new Color(Color.WHITE))
                         .build().performAction(world, e);
@@ -139,7 +148,7 @@ public class PlayerFactory extends AbstractFactory {
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(pc.getX(), pc.getY()));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(pc.position, isLeft ? com.bryjamin.wickedwizard.utils.Measure.units(4) : -com.bryjamin.wickedwizard.utils.Measure.units(4), -com.bryjamin.wickedwizard.utils.Measure.units(1)));
+        bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(pc.position, isLeft ? Measure.units(4) : -Measure.units(4), -Measure.units(1)));
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(0);
         bag.add(sc);
@@ -149,7 +158,7 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(ac);
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.WINGS),
-                -com.bryjamin.wickedwizard.utils.Measure.units(0.5f), 0, com.bryjamin.wickedwizard.utils.Measure.units(6), com.bryjamin.wickedwizard.utils.Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
+                -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.scaleX = isLeft ? 1 : -1;
         bag.add(trc);
 
@@ -185,8 +194,8 @@ public class PlayerFactory extends AbstractFactory {
     public com.bryjamin.wickedwizard.utils.ComponentBag grappleShot(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, float x, float y, final float targetX, final float targetY, double angle){
 
 
-        float width = com.bryjamin.wickedwizard.utils.Measure.units(2);
-        float height = com.bryjamin.wickedwizard.utils.Measure.units(2);
+        float width = Measure.units(2);
+        float height = Measure.units(2);
 
         x = x - width / 2;
         y = y - height / 2;
@@ -199,7 +208,7 @@ public class PlayerFactory extends AbstractFactory {
 
 
         //TODO I should switch this to the moveto component which should also use the way the moveToPlayerAI works
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(BulletMath.velocityX(com.bryjamin.wickedwizard.utils.Measure.units(200f), angle), BulletMath.velocityY(com.bryjamin.wickedwizard.utils.Measure.units(200f), angle)));
+        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(BulletMath.velocityX(Measure.units(200f), angle), BulletMath.velocityY(Measure.units(200f), angle)));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         //bag.add(new IntangibleComponent());
         //bag.add(new BulletComponent());
@@ -209,9 +218,9 @@ public class PlayerFactory extends AbstractFactory {
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(3)
-                .size(com.bryjamin.wickedwizard.utils.Measure.units(0.5f))
-                .minSpeed(com.bryjamin.wickedwizard.utils.Measure.units(10f))
-                .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(20f))
+                .size(Measure.units(0.5f))
+                .minSpeed(Measure.units(10f))
+                .maxSpeed(Measure.units(20f))
                 .colors(new Color(Color.BLACK))
                 .intangible(false)
                 .expiryTime(0.2f)
@@ -262,11 +271,11 @@ public class PlayerFactory extends AbstractFactory {
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.input.GrappleSystem.class).flyToNoPathCheck(
                         BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), x, y),
                         x, y,
-                        com.bryjamin.wickedwizard.utils.Measure.units(150f),
+                        Measure.units(150f),
                         mtc, cbc);
 
                 mtc.endSpeedX = 0;
-                mtc.maxEndSpeedY = com.bryjamin.wickedwizard.utils.Measure.units(80f);//150f = MAXGRAPPLEMOVEMENT
+                mtc.maxEndSpeedY = Measure.units(80f);//150f = MAXGRAPPLEMOVEMENT
 
 
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem.class).playRandomSound(com.bryjamin.wickedwizard.assets.SoundFileStrings.grappleFireMix);

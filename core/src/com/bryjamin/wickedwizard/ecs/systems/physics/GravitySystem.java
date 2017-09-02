@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 04/03/2017.
@@ -15,7 +16,7 @@ public class GravitySystem extends EntityProcessingSystem {
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gm;
     ComponentMapper<GlideComponent> glidem;
 
-    private static final float MAXGRAVITY = -com.bryjamin.wickedwizard.utils.Measure.units(110f);
+    private static final float MAXGRAVITY = -Measure.units(110f);
 
     @SuppressWarnings("unchecked")
     public GravitySystem() {

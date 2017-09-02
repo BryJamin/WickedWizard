@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by BB on 23/03/2017.
@@ -49,9 +50,9 @@ public class CameraSystem extends EntitySystem {
     private static final float followCameraLerpSpeed = 8.0f;
 
 
-    private float acceleration = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-    private float cameramaxVelocity = com.bryjamin.wickedwizard.utils.Measure.units(30f);
-    private float cameradefaultMaxVelocity = com.bryjamin.wickedwizard.utils.Measure.units(100f);
+    private float acceleration = Measure.units(5f);
+    private float cameramaxVelocity = Measure.units(30f);
+    private float cameradefaultMaxVelocity = Measure.units(100f);
     private Vector2 cameraVelocity;
 
     private float targetX;
@@ -88,7 +89,7 @@ public class CameraSystem extends EntitySystem {
      */
     public void snapCameraUpdate(CollisionBoundComponent cbc){
         int offsetY = (int) cbc.bound.getY() / (int) com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
-        gamecam.position.set(cbc.getCenterX(), offsetY * com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT + com.bryjamin.wickedwizard.utils.Measure.units(30f), 0);
+        gamecam.position.set(cbc.getCenterX(), offsetY * com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f), 0);
     }
 
     private void lerp(Camera gamecam, float targetY){
@@ -108,12 +109,12 @@ public class CameraSystem extends EntitySystem {
         if(this.currentArena != currentArena){
             this.currentArena = currentArena;
             int offsetY = (int) cbc.bound.getY() / (int) com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
-            gamecam.position.set(cbc.getCenterX(), offsetY * com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT + com.bryjamin.wickedwizard.utils.Measure.units(30f), 0);
+            gamecam.position.set(cbc.getCenterX(), offsetY * com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT + Measure.units(30f), 0);
         }
 
 
-        boolean isWithinFixedCameraBounds =  (cbc.bound.y + com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT - com.bryjamin.wickedwizard.utils.Measure.units(10f) >= this.currentArena.getHeight()
-                || cbc.bound.y - com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT <= -com.bryjamin.wickedwizard.utils.Measure.units(30f));
+        boolean isWithinFixedCameraBounds =  (cbc.bound.y + com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT - Measure.units(10f) >= this.currentArena.getHeight()
+                || cbc.bound.y - com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT <= -Measure.units(30f));
 
 
         cameraMode  = isWithinFixedCameraBounds ? CameraMode.FIXED : CameraMode.CENTER_FOLLOW;
@@ -121,7 +122,7 @@ public class CameraSystem extends EntitySystem {
         switch (cameraMode){
             case FIXED:
                 int offsetY = (int) cbc.bound.getY() / (int) com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT;
-                targetY = offsetY * com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT + com.bryjamin.wickedwizard.utils.Measure.units(25) + com.bryjamin.wickedwizard.MainGame.GAME_BORDER;
+                targetY = offsetY * com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT + Measure.units(25) + com.bryjamin.wickedwizard.MainGame.GAME_BORDER;
                 break;
             case CENTER_FOLLOW:
                 targetY = cbc.getCenterY();
@@ -134,10 +135,10 @@ public class CameraSystem extends EntitySystem {
         //TODO transitioning boolean goes here.
 
 
-        if(gamecam.position.y <= com.bryjamin.wickedwizard.utils.Measure.units(30f)) {
-            gamecam.position.y = com.bryjamin.wickedwizard.utils.Measure.units(30f);
+        if(gamecam.position.y <= Measure.units(30f)) {
+            gamecam.position.y = Measure.units(30f);
             cameraMode = CameraMode.FIXED;
-        } else if (gamecam.position.y + com.bryjamin.wickedwizard.MainGame.GAME_BORDER >= this.currentArena.getHeight() - com.bryjamin.wickedwizard.MainGame.GAME_HEIGHT - com.bryjamin.wickedwizard.MainGame.GAME_UNITS+ com.bryjamin.wickedwizard.utils.Measure.units(30f)) {
+        } else if (gamecam.position.y + com.bryjamin.wickedwizard.MainGame.GAME_BORDER >= this.currentArena.getHeight() - com.bryjamin.wickedwizard.MainGame.GAME_HEIGHT - com.bryjamin.wickedwizard.MainGame.GAME_UNITS+ Measure.units(30f)) {
             cameraMode = CameraMode.FIXED;
         }
 
