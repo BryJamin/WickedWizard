@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
@@ -164,9 +165,9 @@ public class BossTheEnd extends BossFactory {
 
 
 
-    private com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent summonArmsConditional() {
+    private ConditionalActionComponent summonArmsConditional() {
 
-        return new com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
+        return new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).children.size <= 0;
@@ -179,7 +180,7 @@ public class BossTheEnd extends BossFactory {
                 e.edit().add(new FadeComponent(true, 0.5f, false, e.getComponent(TextureRegionComponent.class).color.a, 1));
 
                 e.getComponent(CollisionBoundComponent.class).hitBoxes.add(new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY(), mainBodyWidth, mainBodyHeight)));
-                e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent.class);
+                e.edit().remove(ConditionalActionComponent.class);
                 e.edit().add(new ActionAfterTimeComponent(new SummonArms(), 10f));
             }
         });
