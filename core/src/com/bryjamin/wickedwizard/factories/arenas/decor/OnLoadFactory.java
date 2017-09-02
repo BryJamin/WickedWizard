@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.Color;
 import com.bryjamin.wickedwizard.assets.Mix;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -91,7 +92,7 @@ public class OnLoadFactory {
                         textureFontComponent.text = String.format(Locale.getDefault(), "%.0f", challengeTimerComponent.time);
 
                         if(challengeTimerComponent.time <= 0){
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).health = -1;
+                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = -1;
                             e.deleteFromWorld();
                         }
 

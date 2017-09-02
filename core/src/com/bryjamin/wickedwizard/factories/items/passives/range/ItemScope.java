@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.factories.items.passives.range;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
 
 /**
@@ -12,7 +13,7 @@ public class ItemScope implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).range += com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease.major;
+        player.getComponent(StatComponent.class).range += com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease.major;
         return true;
     }
 

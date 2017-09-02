@@ -153,7 +153,7 @@ public class ItemStoreTest extends GameTest {
 
             i.applyEffect(world, e);
 
-            com.bryjamin.wickedwizard.ecs.components.StatComponent after = e.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class);
+            com.bryjamin.wickedwizard.ecs.components.StatComponent after = e.getComponent(StatComponent.class);
 
             health += (after.health > pre.health) ? 1 : 0;
             maxHealth += (after.maxHealth > pre.maxHealth) ? 1 : 0;

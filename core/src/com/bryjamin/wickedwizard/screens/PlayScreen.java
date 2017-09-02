@@ -20,10 +20,14 @@ import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
@@ -34,13 +38,9 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
-import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Level;
-
 
 import java.util.Random;
 
@@ -254,7 +254,7 @@ public class PlayScreen extends AbstractScreen {
         adventureWorld = new com.bryjamin.wickedwizard.screens.world.AdventureWorld(game, gameport,gameCreator, random);
 
 
-        com.bryjamin.wickedwizard.ecs.components.StatComponent stats = BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.StatComponent.class, adventureWorld.getPlayer());
+        com.bryjamin.wickedwizard.ecs.components.StatComponent stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
 
         if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false)) {
             stats.damage = 99f;
@@ -319,7 +319,7 @@ public class PlayScreen extends AbstractScreen {
         isPaused = true;
         //pause();
         pauseWorld = new com.bryjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
-                adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class));
+                adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
         //QuickSave.saveGame(world);
     }
 
