@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -274,7 +275,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
             if(onRoomLoadMapper.has(e)){
 
-                com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent onRoomLoadActionComponent = e.getComponent(com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent.class);
+                OnRoomLoadActionComponent onRoomLoadActionComponent = e.getComponent(OnRoomLoadActionComponent.class);
                 onRoomLoadActionComponent.action.performAction(world, e);
                 if(!onRoomLoadActionComponent.repeat){
                     e.edit().remove(onRoomLoadActionComponent);
@@ -311,7 +312,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
     /**
      * Calcuates the current player position in Map Co-ordinates using the position of the player
-     * This is to show in real time the player position in rooms of size larger than 1 square
+     * This is to show in real spawnTime the player position in rooms of size larger than 1 square
      * @return - The Player's position in map co-ordinates
      */
     public com.bryjamin.wickedwizard.utils.MapCoords getCurrentPlayerLocation(){

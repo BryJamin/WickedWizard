@@ -1,7 +1,6 @@
 package com.bryjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
 
@@ -19,15 +18,11 @@ public class SpawnerComponent extends Component{
 
     public int life = 1;
 
-    public float time;
+    public float spawnTime;
     public float resetTime;
 
     public float offsetX = 0;
     public float offsetY = 0;
-
-
-
-    private Bag<Component> spawnedEntity;
 
     private Array<SpawnerFactory.Spawner> spawner = new Array<SpawnerFactory.Spawner>();
 
@@ -35,32 +30,27 @@ public class SpawnerComponent extends Component{
 
     }
 
-    public SpawnerComponent(Bag<Component> spawnedEntity, float time){
-        this.spawnedEntity = spawnedEntity;
-        this.time = time;
-        this.resetTime = time;
-    }
-
-    public SpawnerComponent(Array<SpawnerFactory.Spawner> spawner, float time){
+    public SpawnerComponent(Array<SpawnerFactory.Spawner> spawner, float spawnTime){
         this.spawner = spawner;
-        this.time = time;
-        this.resetTime = time;
+        this.spawnTime = spawnTime;
+        this.resetTime = spawnTime;
     }
 
-    public SpawnerComponent(float time, SpawnerFactory.Spawner... spawners){
+    public SpawnerComponent(float spawnTime, SpawnerFactory.Spawner... spawners){
         for(SpawnerFactory.Spawner s : spawners){
             spawner.add(s);
         }
-        this.time = time;
-        this.resetTime = time;
-    }
-
-    public Bag<Component> getSpawnedEntity() {
-        return spawnedEntity;
+        this.spawnTime = spawnTime;
+        this.resetTime = spawnTime;
     }
 
     public Array<SpawnerFactory.Spawner> getSpawner() {
         return spawner;
+    }
+
+
+    public void addToSpawner(SpawnerFactory.Spawner spawner){
+        this.spawner.add(spawner);
     }
 
 }

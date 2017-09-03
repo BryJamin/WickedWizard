@@ -21,7 +21,7 @@ public class Reloader {
     /**
      *
      * @param reloadSpeed - How long it takes to reload.
-     * @param initialDelay - How long to wait before you can shoot for the first time.
+     * @param initialDelay - How long to wait before you can shoot for the first spawnTime.
      */
     public Reloader(float reloadSpeed, float initialDelay){
         this.reload = initialDelay;

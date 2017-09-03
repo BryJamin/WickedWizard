@@ -9,7 +9,7 @@ import com.artemis.World;
  *
  * Component used in the Action After Time System.
  *
- * Stores the action to perform after a period of time
+ * Stores the action to perform after a period of spawnTime
  */
 
 public class ActionAfterTimeComponent extends Component {

@@ -42,10 +42,15 @@ import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
 public class BombFactory extends AbstractFactory {
 
+    public static final float BOMB_LIFE = 1f;
+
 
     private Giblets.GibletBuilder gibletBuilder;
 
     private static final float mineSpeed = Measure.units(10f);
+
+
+
 
     private static final float defaultExplosionSize = Measure.units(20f);
 

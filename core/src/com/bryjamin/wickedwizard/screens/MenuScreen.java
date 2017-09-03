@@ -105,6 +105,8 @@ public class MenuScreen extends AbstractScreen {
     public MenuScreen(MainGame game) {
         super(game);
 
+        Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).putString(PreferenceStrings.DEV_MENU_ID, PreferenceStrings.DEV_MENU_ID).flush();
+
 
         preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
 

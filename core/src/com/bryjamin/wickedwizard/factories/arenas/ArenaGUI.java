@@ -41,6 +41,7 @@ public class ArenaGUI {
     private Color bossRoomColor = new Color(238f / 255f, 53f / 255f , 50f / 255f, 1f);
     private Color itemRoomColor = new Color (101 / 255f, 88f / 255f, 245 / 255f, 1f);
     private Color shopRoomColor =  ColorResource.RGBtoColor(216, 123, 66, 1);
+    private Color randomizerRoomColor =  ColorResource.RGBtoColor(113, 238, 184, 1);
 
     private float mapBlinker;
 
@@ -194,6 +195,11 @@ public class ArenaGUI {
 
                 if (arena.arenaType == Arena.ArenaType.SHOP) {
                     batch.setColor(shopRoomColor);
+                    batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+                }
+
+                if (arena.arenaType == Arena.ArenaType.RANDOMIZER) {
+                    batch.setColor(randomizerRoomColor);
                     batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 

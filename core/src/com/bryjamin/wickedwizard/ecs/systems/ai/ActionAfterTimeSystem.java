@@ -9,7 +9,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 /**
  * Created by BB on 27/05/2017.
  *
- * Performs Action after a period of time for all entities with an ActionAfterTimeComponent.
+ * Performs Action after a period of spawnTime for all entities with an ActionAfterTimeComponent.
  *
  * Resets and repeats action if the repeat boolean is set.
  *

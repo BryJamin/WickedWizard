@@ -16,7 +16,7 @@ public class Arena {
     private float height;
 
     public enum ArenaType {
-        TRAP, BOSS, ITEM, SHOP, NORMAL
+        TRAP, BOSS, ITEM, SHOP, NORMAL, RANDOMIZER
     }
 
     public ArenaType arenaType;

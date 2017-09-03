@@ -28,6 +28,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.DoorSystem;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LockSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.bryjamin.wickedwizard.ecs.systems.PickUpSystem;
@@ -71,6 +72,7 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
+import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.screens.QuickSave;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -185,7 +187,7 @@ public class AdventureWorld {
                         new ProximitySystem(),
                         new com.bryjamin.wickedwizard.ecs.systems.FindChildSystem(),
                         new PickUpSystem(),
-                        new LuckSystem(random),
+                        new LuckSystem(assetManager, random),
                         new com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem(),
                         new com.bryjamin.wickedwizard.ecs.systems.level.RoomTypeSystem(),
                         new MoveToSystem(),
@@ -262,10 +264,6 @@ public class AdventureWorld {
 
 
 
-
-
-
-
         float width = Measure.units(4.5f);
         float height = Measure.units(4.5f);
 
@@ -284,7 +282,32 @@ public class AdventureWorld {
         pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
+
+
+        if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false) && MenuScreen.isDevDevice()) {
+            turnOnGodMode(playerStats, world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class));
+        }
+
+
+
         return world;
+
+
+
+
+
+    }
+
+
+
+    public void turnOnGodMode(StatComponent stats, CurrencyComponent currencyComponent){
+        stats.damage = 99f;
+        stats.accuracy = 99f;
+        stats.fireRate = 99f;
+        stats.speed = 0.5f;
+ //       stats.luck = 99f;
+
+        currencyComponent.money = 99;
 
     }
 

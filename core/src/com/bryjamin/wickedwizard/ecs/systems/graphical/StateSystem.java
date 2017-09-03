@@ -9,7 +9,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 /**
  * Created by BB on 07/03/2017.
  *
- * Adds animation state time to all Entities with a AnimationStateComponent
+ * Adds animation state spawnTime to all Entities with a AnimationStateComponent
  *
  */
 public class StateSystem extends EntityProcessingSystem {
