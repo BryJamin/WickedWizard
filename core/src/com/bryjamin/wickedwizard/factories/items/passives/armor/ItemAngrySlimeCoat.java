@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
+import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
 /**
  * Created by BB on 27/08/2017.
@@ -15,8 +16,8 @@ public class ItemAngrySlimeCoat implements Item {
     public boolean applyEffect(World world, Entity player) {
 
         player.getComponent(StatComponent.class).armor += 2;
-        player.getComponent(StatComponent.class).speed += com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease.Speed.minor;
-        player.getComponent(StatComponent.class).damage += com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease.Speed.minor;
+        player.getComponent(StatComponent.class).speed += PresetStatIncrease.Speed.minor;
+        player.getComponent(StatComponent.class).damage += PresetStatIncrease.Speed.minor;
         return true;
     }
 
