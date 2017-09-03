@@ -2,6 +2,12 @@ package com.bryjamin.wickedwizard.factories.arenas;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
+import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.bryjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
+import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
+import com.bryjamin.wickedwizard.factories.items.ItemStore;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -13,16 +19,18 @@ public class JigsawGeneratorConfig {
 
     public int noBattleRooms = 0;
 
-    public final Random random;
-    public com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap startingMap;
 
+    public int noRandomizerRooms = 1;
+
+
+    public final Random random;
     public final AssetManager assetManager;
 
-    public com.bryjamin.wickedwizard.utils.enums.Level level = com.bryjamin.wickedwizard.utils.enums.Level.ONE;
+    public Level level = com.bryjamin.wickedwizard.utils.enums.Level.ONE;
 
 
-    public com.bryjamin.wickedwizard.factories.items.ItemStore itemStore;
-
+    public ItemStore itemStore;
+    public ArenaMap startingMap;
     public Array<ArenaCreate> arenaGens;
     public Array<BossMapCreate> bossMapGens;
 
@@ -30,18 +38,21 @@ public class JigsawGeneratorConfig {
     public JigsawGeneratorConfig(AssetManager assetManager, Random random){
         this.assetManager = assetManager;
         this.random = random;
-        this.startingMap = new com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, level.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(), Arena.ArenaType.NORMAL));
-        this.arenaGens = new com.bryjamin.wickedwizard.factories.arenas.levels.Level1Rooms(assetManager, level.getArenaSkin(), random).getLevel1RoomArray();
+        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, level.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(), Arena.ArenaType.NORMAL));
+        this.arenaGens = new Level1Rooms(assetManager, level.getArenaSkin(), random).getLevel1RoomArray();
         this.itemStore = new com.bryjamin.wickedwizard.factories.items.ItemStore(random);
         bossMapGens = new Array<BossMapCreate>();
-        bossMapGens.add(new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(assetManager, level.getArenaSkin()).blobbaMapCreate());
-        bossMapGens.add(new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(assetManager, level.getArenaSkin()).adojMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, level.getArenaSkin()).blobbaMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, level.getArenaSkin()).adojMapCreate());
 
     }
 
 
     public JigsawGeneratorConfig noBattleRooms(int val)
     { noBattleRooms = val; return this; }
+
+    public JigsawGeneratorConfig noRandomizerRooms(int val)
+    { noRandomizerRooms = val; return this; }
 
     public JigsawGeneratorConfig startingMap(com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap val)
     { startingMap = val; return this; }
