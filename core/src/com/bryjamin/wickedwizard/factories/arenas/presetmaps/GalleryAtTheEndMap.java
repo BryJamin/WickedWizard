@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -39,12 +40,12 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
     public ArenaMap endGameMap() {
-        return new ArenaMap(endRoom().createArena(new com.bryjamin.wickedwizard.utils.MapCoords()));
+        return new ArenaMap(endRoom().createArena(new MapCoords()));
     }
 
 
     public ArenaMap endBossRushMap(String bossRushId) {
-        return new ArenaMap(endBossRushRoom(bossRushId).createArena(new com.bryjamin.wickedwizard.utils.MapCoords()));
+        return new ArenaMap(endBossRushRoom(bossRushId).createArena(new MapCoords()));
     }
 
 
@@ -53,7 +54,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP);
 
@@ -136,7 +137,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP);
 

@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFacto
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -74,7 +75,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator ultimateTimeTrail(String id) {
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords());
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new MapCoords());
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -88,15 +89,15 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = rank1ChallengeMaps.timeTrailRoomOneJumpTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0));
+        Arena arena = rank1ChallengeMaps.timeTrailRoomOneJumpTutorial(new MapCoords(1, 0));
         arena.addEntity(new OnLoadFactory().challengeTimer(TIME_TRIAL_SPEEDRUN_TIMER));
 
         ArenaMap firstMap = new ArenaMap(startingArena,
                 arena,
-                rank1ChallengeMaps.timeTrailRoomTwoPlatformTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(5,0)),
-                rank1ChallengeMaps.timeTrailRoomThreeGrappleTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(6,0)),
-                rank1ChallengeMaps.timeTrialRoomFourEnemyTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(6,3)),
-                nextLevelRoom(new com.bryjamin.wickedwizard.utils.MapCoords(7,3), com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin())
+                rank1ChallengeMaps.timeTrailRoomTwoPlatformTutorial(new MapCoords(5,0)),
+                rank1ChallengeMaps.timeTrailRoomThreeGrappleTutorial(new MapCoords(6,0)),
+                rank1ChallengeMaps.timeTrialRoomFourEnemyTutorial(new MapCoords(6,3)),
+                nextLevelRoom(new MapCoords(7,3), com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin())
         );
 
         JigsawGeneratorConfig firstConfig = new JigsawGeneratorConfig(assetManager, random)
@@ -105,12 +106,12 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
 
-        ArenaMap secondMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(0,0), Arena.ArenaType.NORMAL),
-                rank2ChallengeMaps.rank2TimeTrailRoom1(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0)),
-                rank2ChallengeMaps.rank2TimeTrailRoom2GoatWizard(new com.bryjamin.wickedwizard.utils.MapCoords(1,3)),
-                rank2ChallengeMaps.rank2TimeTrailRoom3(new com.bryjamin.wickedwizard.utils.MapCoords(2,3)),
-                rank2ChallengeMaps.rank2TimeTrailRoom4(new com.bryjamin.wickedwizard.utils.MapCoords(6,3)),
-                nextLevelRoom(new com.bryjamin.wickedwizard.utils.MapCoords(7, 3), com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin())
+        ArenaMap secondMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
+                rank2ChallengeMaps.rank2TimeTrailRoom1(new MapCoords(1, 0)),
+                rank2ChallengeMaps.rank2TimeTrailRoom2GoatWizard(new MapCoords(1,3)),
+                rank2ChallengeMaps.rank2TimeTrailRoom3(new MapCoords(2,3)),
+                rank2ChallengeMaps.rank2TimeTrailRoom4(new MapCoords(6,3)),
+                nextLevelRoom(new MapCoords(7, 3), com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin())
         );
 
 
@@ -118,12 +119,12 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 .startingMap(secondMap);
 
 
-        ArenaMap thirdMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(0,0), Arena.ArenaType.NORMAL),
-                rank3ChallengeMaps.trialRoom1(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0)),
-                rank3ChallengeMaps.timeTrailRoom2(new com.bryjamin.wickedwizard.utils.MapCoords(5,0)),
-                rank3ChallengeMaps.trailRoom3(new com.bryjamin.wickedwizard.utils.MapCoords(6,0)),
-                rank3ChallengeMaps.trailRoom4(new com.bryjamin.wickedwizard.utils.MapCoords(6,3)),
-                nextLevelRoom(new com.bryjamin.wickedwizard.utils.MapCoords(7, 3), com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin())
+        ArenaMap thirdMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
+                rank3ChallengeMaps.trialRoom1(new MapCoords(1, 0)),
+                rank3ChallengeMaps.timeTrailRoom2(new MapCoords(5,0)),
+                rank3ChallengeMaps.trailRoom3(new MapCoords(6,0)),
+                rank3ChallengeMaps.trailRoom4(new MapCoords(6,3)),
+                nextLevelRoom(new MapCoords(7, 3), com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin())
         );
 
 
@@ -131,12 +132,12 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 .startingMap(thirdMap);
 
 
-        ArenaMap fourthMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(0,0), Arena.ArenaType.NORMAL),
-                rank4ChallengeMaps.timeTrailSwitchLaserRoom(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0)),
-                rank4ChallengeMaps.trailRoomLargeRoomAndEnemies(new com.bryjamin.wickedwizard.utils.MapCoords(2,0)),
-                rank4ChallengeMaps.trialRoomLaserGauntlet(new com.bryjamin.wickedwizard.utils.MapCoords(3, -1)),
-                rank4ChallengeMaps.trailRoomPentaSentry(new com.bryjamin.wickedwizard.utils.MapCoords(7, 0)),
-                nextLevelRoom(new com.bryjamin.wickedwizard.utils.MapCoords(6, 0), com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin())
+        ArenaMap fourthMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
+                rank4ChallengeMaps.timeTrailSwitchLaserRoom(new MapCoords(1, 0)),
+                rank4ChallengeMaps.trailRoomLargeRoomAndEnemies(new MapCoords(2,0)),
+                rank4ChallengeMaps.trialRoomLaserGauntlet(new MapCoords(3, -1)),
+                rank4ChallengeMaps.trailRoomPentaSentry(new MapCoords(7, 0)),
+                nextLevelRoom(new MapCoords(6, 0), com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin())
         );
 
 
@@ -144,8 +145,8 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 .startingMap(fourthMap);
 
 
-        ArenaMap fifthMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(0,0), Arena.ArenaType.NORMAL),
-                new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).challengeEndArenaMiddlePortal(id).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0))
+        ArenaMap fifthMap = new ArenaMap(new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(0,0), Arena.ArenaType.NORMAL),
+                new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(1, 0))
         );
 
 
@@ -167,7 +168,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
     }
 
 
-    private Arena nextLevelRoom(com.bryjamin.wickedwizard.utils.MapCoords mapCoords, ArenaSkin arenaSkin){
+    private Arena nextLevelRoom(MapCoords mapCoords, ArenaSkin arenaSkin){
 
         Arena exitArena = new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.NORMAL);
 
@@ -198,7 +199,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator bossRush(String id) {
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(0, 0));
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new MapCoords(0, 0));
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -213,33 +214,33 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).biggaBlobbaArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(2, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).biggaBlobbaArena().createArena(new MapCoords(1, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).createBossRushItemRoom(new MapCoords(2, 0)),
 
-                new BossRoomAdoj(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).adojArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(3, 0)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(4, 0)),
+                new BossRoomAdoj(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin()).adojArena().createArena(new MapCoords(3, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(4, 0)),
 
-                new BossRoomGiantKugelRoom(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).giantKugelArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(5, 0)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(7, 0)),
+                new BossRoomGiantKugelRoom(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).giantKugelArena().createArena(new MapCoords(5, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).createBossRushItemRoom(new MapCoords(7, 0)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).wandaArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(8, 0)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(9, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin()).wandaArena().createArena(new MapCoords(8, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(9, 0)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).boomyArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(10, 0)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(11, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).boomyArena().createArena(new MapCoords(10, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).createBossRushItemRoom(new MapCoords(11, 0)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).ajirArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(12, 0)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(13, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin()).ajirArena().createArena(new MapCoords(12, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(13, 0)),
 
-                new BossRoomWraithCowl(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).wraithcowlArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(14, 0)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(15, 0)),
+                new BossRoomWraithCowl(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).wraithcowlArena().createArena(new MapCoords(14, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createBossRushItemRoom(new MapCoords(15, 0)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(16, 0), Arena.ArenaType.NORMAL),
-                new BossRoomAmalgama(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).amalgamaArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(16, -1)),
-                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).createBossRushItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords(22, -1)),
+                new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(16, 0), Arena.ArenaType.NORMAL),
+                new BossRoomAmalgama(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin()).amalgamaArena().createArena(new MapCoords(16, -1)),
+                new com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).createBossRushItemRoom(new MapCoords(22, -1)),
 
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossArenaEndBoss(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(id)).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(23, -1))
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossArenaEndBoss(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(23, -1))
 
         );
 
@@ -258,7 +259,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator perfectBossRush(String id) {
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(-1, 0));
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new MapCoords(-1, 0));
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -272,7 +273,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         }));
 
 
-        Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(0, 0), Arena.ArenaType.NORMAL);
+        Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0), Arena.ArenaType.NORMAL);
         iWishYouWell.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
                 Measure.units(10f), arenaSkin.getWallTint(), new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell()));
 
@@ -281,23 +282,23 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 iWishYouWell,
 
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).biggaBlobbaArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).biggaBlobbaArena().createArena(new MapCoords(1, 0)),
 
-                new BossRoomAdoj(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).adojArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(2, 0)),
+                new BossRoomAdoj(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).adojArena().createArena(new MapCoords(2, 0)),
 
-                new BossRoomGiantKugelRoom(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).giantKugelArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(3, 0)),
+                new BossRoomGiantKugelRoom(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).giantKugelArena().createArena(new MapCoords(3, 0)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).wandaArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(5, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).wandaArena().createArena(new MapCoords(5, 0)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).boomyArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(6, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).boomyArena().createArena(new MapCoords(6, 0)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).ajirArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(7, 0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).ajirArena().createArena(new MapCoords(7, 0)),
 
-                new BossRoomWraithCowl(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).wraithcowlArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(8, 0)),
+                new BossRoomWraithCowl(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).wraithcowlArena().createArena(new MapCoords(8, 0)),
 
-                new BossRoomAmalgama(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).amalgamaArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(8, -1)),
+                new BossRoomAmalgama(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).amalgamaArena().createArena(new MapCoords(8, -1)),
 
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossArenaEndBoss(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(id)).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(14, -1))
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossArenaEndBoss(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(id)).createArena(new MapCoords(14, -1))
 
         );
 
@@ -315,7 +316,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator rank5ArenaRace(String id) {
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(0, 0));
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getMusic()).createArena(new MapCoords(0, 0));
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -329,7 +330,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             }
         }));
 
-        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(-1, 0), Arena.ArenaType.TRAP);
+        Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(-1, 0), Arena.ArenaType.TRAP);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
         arena.addWave(arenaEnemyPlacementFactory.spawnHeavyModon(arena.getWidth() / 2, Measure.units(45f)));
@@ -354,7 +355,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 arena,
-                new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(id).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(-2, 0))
+                new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(-2, 0))
         );
 
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)

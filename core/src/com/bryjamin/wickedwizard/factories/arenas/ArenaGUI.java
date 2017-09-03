@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -25,7 +26,7 @@ public class ArenaGUI {
     private Array<Arena> undiscoveredArenas;
 
     private Arena currentRoom;
-    private com.bryjamin.wickedwizard.utils.MapCoords currentCoords;
+    private MapCoords currentCoords;
 
     private Color currentRoomColor = new Color(0.7f, 0.7f, 0.7f, 0.8f);
     private Color roomColor = new Color(0.7f, 0.7f, 0.7f, 0.8f);
@@ -82,7 +83,7 @@ public class ArenaGUI {
         this.block = atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK);
     }
 
-    public void update(float dt, float x, float y, ArenaMap arenaMap, com.bryjamin.wickedwizard.utils.MapCoords currentCoords){
+    public void update(float dt, float x, float y, ArenaMap arenaMap, MapCoords currentCoords){
 
         this.currentRoom = arenaMap.getCurrentArena();
         this.currentCoords = currentCoords;
@@ -175,7 +176,7 @@ public class ArenaGUI {
 
     public void drawArenaSquare(SpriteBatch batch, Arena arena, Color roomColor){
 
-        for(com.bryjamin.wickedwizard.utils.MapCoords m : arena.cotainingCoords) {
+        for(MapCoords m : arena.cotainingCoords) {
             batch.setColor(roomColor);
             int diffX = m.getX() - currentCoords.getX();
             int diffY = m.getY() - currentCoords.getY();
@@ -232,7 +233,7 @@ public class ArenaGUI {
 
     public void drawArenaBorder(SpriteBatch batch, Arena arena){
 
-        for(com.bryjamin.wickedwizard.utils.MapCoords m : arena.cotainingCoords) {
+        for(MapCoords m : arena.cotainingCoords) {
             batch.setColor(borderColor);
             int diffX = m.getX() - currentCoords.getX();
             int diffY = m.getY() - currentCoords.getY();
@@ -254,21 +255,21 @@ public class ArenaGUI {
                 }*/
 
                 //Left Line
-                if (!arena.cotainingCoords.contains(new com.bryjamin.wickedwizard.utils.MapCoords(m.getX() - 1, m.getY()), false)) {
+                if (!arena.cotainingCoords.contains(new MapCoords(m.getX() - 1, m.getY()), false)) {
                     drawLeftLine(batch, x, y, LINE_THICKNESS, SIZE);
                 }
                 //Right Line
-                if (!arena.cotainingCoords.contains(new com.bryjamin.wickedwizard.utils.MapCoords(m.getX() + 1, m.getY()), false)) {
+                if (!arena.cotainingCoords.contains(new MapCoords(m.getX() + 1, m.getY()), false)) {
                     drawRightLine(batch, x + SIZE, y, LINE_THICKNESS, SIZE);
                 }
 
                 //Top Line
-                if (!arena.cotainingCoords.contains(new com.bryjamin.wickedwizard.utils.MapCoords(m.getX(), m.getY() + 1), false)) {
+                if (!arena.cotainingCoords.contains(new MapCoords(m.getX(), m.getY() + 1), false)) {
                     drawTopLine(batch, x, y + SIZE, SIZE, LINE_THICKNESS);
                 }
 
                 //Bottom Line
-                if (!arena.cotainingCoords.contains(new com.bryjamin.wickedwizard.utils.MapCoords(m.getX(), m.getY() - 1), false)) {
+                if (!arena.cotainingCoords.contains(new MapCoords(m.getX(), m.getY() - 1), false)) {
                     drawBottomLine(batch, x, y, SIZE, LINE_THICKNESS);
                 }
             }

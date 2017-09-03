@@ -7,6 +7,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.levels.Level1Rooms;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
@@ -38,7 +39,7 @@ public class JigsawGeneratorConfig {
     public JigsawGeneratorConfig(AssetManager assetManager, Random random){
         this.assetManager = assetManager;
         this.random = random;
-        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, level.getArenaSkin()).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(), Arena.ArenaType.NORMAL));
+        this.startingMap = new ArenaMap(new ArenaShellFactory(assetManager, level.getArenaSkin()).createOmniArenaHiddenGrapple(new MapCoords(), Arena.ArenaType.NORMAL));
         this.arenaGens = new Level1Rooms(assetManager, level.getArenaSkin(), random).getLevel1RoomArray();
         this.itemStore = new com.bryjamin.wickedwizard.factories.items.ItemStore(random);
         bossMapGens = new Array<BossMapCreate>();
