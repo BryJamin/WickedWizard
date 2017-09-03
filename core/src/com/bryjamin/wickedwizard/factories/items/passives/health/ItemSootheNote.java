@@ -6,6 +6,7 @@ import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
+
 /**
  * Created by Home on 06/08/2017.
  */
