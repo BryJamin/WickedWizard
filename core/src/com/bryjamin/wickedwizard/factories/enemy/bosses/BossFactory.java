@@ -16,6 +16,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -30,7 +31,7 @@ public class BossFactory extends AbstractFactory {
     }
 
 
-    protected com.bryjamin.wickedwizard.utils.ComponentBag defaultBossBag (final com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health) {
+    protected ComponentBag defaultBossBag (final ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
@@ -49,7 +50,7 @@ public class BossFactory extends AbstractFactory {
 
     }
 
-    protected com.bryjamin.wickedwizard.utils.ComponentBag defaultBossBagNoDeath (final com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health) {
+    protected ComponentBag defaultBossBagNoDeath (final ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());

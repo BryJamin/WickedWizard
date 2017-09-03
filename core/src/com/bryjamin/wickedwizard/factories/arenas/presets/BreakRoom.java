@@ -18,6 +18,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -71,7 +72,7 @@ public class BreakRoom extends AbstractFactory {
         }));
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag componentBag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag componentBag = new ComponentBag();
         componentBag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -101,10 +102,10 @@ public class BreakRoom extends AbstractFactory {
                     }
                 });
 
-        Bag<com.bryjamin.wickedwizard.utils.ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.BREAK, Measure.units(10f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
+        Bag<ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.BREAK, Measure.units(10f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
 
 
-        for(com.bryjamin.wickedwizard.utils.ComponentBag bag : bags){
+        for(ComponentBag bag : bags){
             arena.addEntity(bag);
         }
 
@@ -124,7 +125,7 @@ public class BreakRoom extends AbstractFactory {
                     }
                 }).build().createButton(MenuStrings.CONTINUE, Measure.units(62.5f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
 
-        for(com.bryjamin.wickedwizard.utils.ComponentBag bag : bags){
+        for(ComponentBag bag : bags){
             arena.addEntity(bag);
         }
 

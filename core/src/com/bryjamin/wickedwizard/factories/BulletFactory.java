@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -24,16 +25,16 @@ public class BulletFactory extends AbstractFactory {
     private float height = Measure.units(1);
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag basicBulletBag(float x, float y, float scale) {
+    public ComponentBag basicBulletBag(float x, float y, float scale) {
         return basicBulletBag(x ,y ,scale ,atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), new Color(1,1,1,1));
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag basicBulletBag(float x, float y, float scale, Color color) {
+    public ComponentBag basicBulletBag(float x, float y, float scale, Color color) {
         return basicBulletBag(x ,y ,scale ,atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), color);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK) , new Color(Color.RED));
+    public ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
+        ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK) , new Color(Color.RED));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(3)
@@ -47,8 +48,8 @@ public class BulletFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+    public ComponentBag basicBulletBag(float x, float y, float scale, TextureRegion textureRegion, Color color) {
+        ComponentBag bag = new ComponentBag();
 
         float width = this.width * scale;
         float height = this.height * scale;

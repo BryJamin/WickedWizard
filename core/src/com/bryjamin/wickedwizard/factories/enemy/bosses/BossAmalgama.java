@@ -23,6 +23,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -103,9 +104,9 @@ public class BossAmalgama extends BossFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag amalgama(final float x, final float y){
+    public ComponentBag amalgama(final float x, final float y){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, bodyWidth, bodyHeight), true));
 

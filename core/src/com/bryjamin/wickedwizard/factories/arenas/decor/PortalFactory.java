@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -28,6 +28,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presets.BreakRoom;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
@@ -48,9 +49,9 @@ public class PortalFactory extends AbstractFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag mapPortal (float x, float y, BossTeleporterComponent btc){
+    public ComponentBag mapPortal (float x, float y, BossTeleporterComponent btc){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
+        ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(MapTeleportationSystem.class).goFromSourceToDestination(e.getComponent(BossTeleporterComponent.class));
@@ -69,9 +70,9 @@ public class PortalFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag endGamePortal(float x, float y){
+    public ComponentBag endGamePortal(float x, float y){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
+        ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -93,9 +94,9 @@ public class PortalFactory extends AbstractFactory {
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag endChallengePortal(float x, float y, final String id){
+    public ComponentBag endChallengePortal(float x, float y, final String id){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
+        ComponentBag bag = portal(x,y, mapPortalSize, mapPortalSize, new Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -119,7 +120,7 @@ public class PortalFactory extends AbstractFactory {
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag customSmallPortal(float x, float y, final Action action){
+    public ComponentBag customSmallPortal(float x, float y, final Action action){
 
         return portal(x, y, mapPortalSize, mapPortalSize, new Task() {
             @Override
@@ -137,12 +138,12 @@ public class PortalFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag portal(float x, float y, float width, float height, Task task){
+    public ComponentBag portal(float x, float y, float width, float height, Task task){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
 
 
@@ -167,7 +168,7 @@ public class PortalFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag levelPortal(float x, float y){
+    public ComponentBag levelPortal(float x, float y){
 
         return portal(x,y, levelPortalSize, levelPortalSize, new Task() {
             @Override

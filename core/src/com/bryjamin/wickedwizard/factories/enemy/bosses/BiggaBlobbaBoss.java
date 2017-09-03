@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -64,7 +65,7 @@ public class BiggaBlobbaBoss extends BossFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag centeredBlobbaBag(float x, float y){
+    public ComponentBag centeredBlobbaBag(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
@@ -72,9 +73,9 @@ public class BiggaBlobbaBoss extends BossFactory {
         return biggaBlobbaBag(x, y);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag biggaBlobbaBag(float x, float y){
+    public ComponentBag biggaBlobbaBag(float x, float y){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, 0));
 
         com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = new com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent(new Rectangle(x, y, width, height));

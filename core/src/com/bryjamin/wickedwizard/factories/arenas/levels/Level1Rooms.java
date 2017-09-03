@@ -11,6 +11,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFacto
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -501,7 +502,7 @@ public class Level1Rooms extends AbstractFactory implements ArenaRepostiory {
                         arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(15), Measure.units(50f)),
                         arenaEnemyPlacementFactory.spawnFixedSentry(arena.getWidth() / 2, arena.getHeight() / 2));
 
-                com.bryjamin.wickedwizard.utils.ComponentBag bag = new ChestFactory(assetManager).chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC());
+                ComponentBag bag = new ChestFactory(assetManager).chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC());
                 arena.addEntity(bag);
 
                 return arena;

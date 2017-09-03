@@ -60,6 +60,7 @@ import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
 
+
 /**
  * Created by Home on 09/04/2017.
  */
@@ -311,7 +312,7 @@ public class ItemFactory extends AbstractFactory {
 
     public ComponentBag priceTag(float x, float y, int money, ParentComponent parentComponent){
 
-        ComponentBag priceTag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
         priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getValues().region.getLeft(), new MoneyPlus1().getValues().region.getRight()),
                 goldWidth,
@@ -336,7 +337,7 @@ public class ItemFactory extends AbstractFactory {
         x = x - width / 2;
         y = y - height / 2;
 
-        Array<ComponentBag> bags =  new Array<com.bryjamin.wickedwizard.utils.ComponentBag>();
+        Array<ComponentBag> bags =  new Array<ComponentBag>();
 
         ParentComponent pc = new ParentComponent();
 

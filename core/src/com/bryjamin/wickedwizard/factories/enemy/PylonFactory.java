@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -38,9 +39,9 @@ public class PylonFactory extends EnemyFactory {
     }
 
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag basePylonBag(float x, float y, float rotationInDegrees, Color color){
+    private ComponentBag basePylonBag(float x, float y, float rotationInDegrees, Color color){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
 
@@ -68,9 +69,9 @@ public class PylonFactory extends EnemyFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag pylonBag(float x, float y, float rotationInDegrees){
+    public ComponentBag pylonBag(float x, float y, float rotationInDegrees){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.ENEMY_BULLET_COLOR);
+        ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.ENEMY_BULLET_COLOR);
 
         int[] ints = new int[] {0,45,90,135,180};
         for(int i = 0; i < ints.length; i++) ints[i] = ints[i] + (int) rotationInDegrees;
@@ -87,9 +88,9 @@ public class PylonFactory extends EnemyFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag ghostPylonBag(float x, float y, float rotationInDegrees){
+    public ComponentBag ghostPylonBag(float x, float y, float rotationInDegrees){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.GHOST_BULLET_COLOR);
+        ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.GHOST_BULLET_COLOR);
 
         int[] ints = new int[] {0,45,90,135,180};
         for(int i = 0; i < ints.length; i++) ints[i] = ints[i] + (int) rotationInDegrees;

@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -47,12 +48,12 @@ public class ModonFactory extends EnemyFactory{
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag modon(float x, float y){
+    public ComponentBag modon(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
@@ -117,12 +118,12 @@ public class ModonFactory extends EnemyFactory{
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag heavyModon(float x, float y){
+    public ComponentBag heavyModon(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, heavyHealth);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, heavyHealth);
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());

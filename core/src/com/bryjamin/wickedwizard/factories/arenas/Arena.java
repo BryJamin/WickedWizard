@@ -5,6 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 
 /**
@@ -191,8 +192,8 @@ public class Arena {
         return arenaSkin;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag createArenaBag(){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+    public ComponentBag createArenaBag(){
+        ComponentBag bag = new ComponentBag();
         this.addEntity(bag);
         return bag;
     }

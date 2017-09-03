@@ -74,6 +74,7 @@ import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.screens.QuickSave;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -100,7 +101,7 @@ public class AdventureWorld {
     private ArenaGUI arenaGUI;
     public World world;
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag player;
+    private ComponentBag player;
     private com.bryjamin.wickedwizard.ecs.components.StatComponent playerStats;
     private CurrencyComponent playerCurrency;
 
@@ -129,11 +130,11 @@ public class AdventureWorld {
         createAdventureWorld();
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag getPlayer() {
+    public ComponentBag getPlayer() {
         return player;
     }
 
-    public void setPlayer(com.bryjamin.wickedwizard.utils.ComponentBag player) {
+    public void setPlayer(ComponentBag player) {
         this.player = player;
         playerStats = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(StatComponent.class, player);
         playerCurrency = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);

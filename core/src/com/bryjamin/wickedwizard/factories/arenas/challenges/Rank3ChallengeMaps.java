@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFacto
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Level;
@@ -61,7 +62,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords());
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
+        ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -96,7 +97,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords(0, 0));
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
+        ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -130,7 +131,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords());
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
+        ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -201,7 +202,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(Level.THREE.getMusic()).createArena(new MapCoords());
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
+        ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -361,7 +362,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
     public Arena trailRoom4(MapCoords defaultCoords){
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = arenaEnemyPlacementFactory.turretFactory.fixedFlyByDoubleBombSentry(arena.getWidth() / 2, Measure.units(40f));
+        ComponentBag bag = arenaEnemyPlacementFactory.turretFactory.fixedFlyByDoubleBombSentry(arena.getWidth() / 2, Measure.units(40f));
         arena.addEntity(bag);
         return arena;
 

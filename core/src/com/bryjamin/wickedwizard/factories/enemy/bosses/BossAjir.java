@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -95,12 +96,12 @@ public class BossAjir extends BossFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag ajir(float x, float y){
+    public ComponentBag ajir(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBagNoDeath(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBagNoDeath(new ComponentBag(), x, y, health);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent());
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new Action() {

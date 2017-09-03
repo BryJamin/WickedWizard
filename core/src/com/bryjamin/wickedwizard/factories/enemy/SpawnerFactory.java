@@ -104,11 +104,11 @@ public class SpawnerFactory extends AbstractFactory {
     private final float width = Measure.units(10f);
     private final float height = Measure.units(10f);
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners) {
+    public ComponentBag spawnerBag(float x, float y, Array<Spawner> spawners) {
         return spawnerBag(x,y, 1, 1.0f, 1.0f, 1, spawners);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag spawnerBag(float x, float y, int life, float spawnTime, float scale, Array<Spawner> spawners) {
+    public ComponentBag spawnerBag(float x, float y, int life, float spawnTime, float scale, Array<Spawner> spawners) {
         return spawnerBag(x,y,life,spawnTime,spawnTime, scale, spawners);
     }
 
@@ -123,7 +123,7 @@ public class SpawnerFactory extends AbstractFactory {
         y = y - height  / 2;
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
@@ -160,7 +160,7 @@ public class SpawnerFactory extends AbstractFactory {
         y = y - height  / 2;
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
