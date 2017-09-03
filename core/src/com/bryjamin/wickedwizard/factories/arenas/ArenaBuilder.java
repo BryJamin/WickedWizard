@@ -142,21 +142,12 @@ public class ArenaBuilder {
             }
 
             if(isRightMostWall(arena, posX)){
-
                 arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
-
-                //arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
             }
 
 
             if(isCeiling(arena, posY)){
-
                 arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT + posY, SECTION_WIDTH, WALLWIDTH * 4, arenaSkin));
-
-
-              //  arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
-
-                //arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
             }
 
 

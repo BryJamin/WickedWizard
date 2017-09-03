@@ -57,6 +57,7 @@ public class PlayerPistol implements Weapon{
 
         float shotscale = defaultShotScale + (playerStats.shotSize * shotScaleMultiplier);
         if(shotscale >= 4.5f) shotscale = 4.5f;
+        if(shotscale <= 1f) shotscale = 1f;
 
         for(Component c : bulletFactory.basicBulletBag(x,y, shotscale, isCrit ? new Color(0,0,0,1) : new Color(1,1,1,1))){
             bullet.edit().add(c);

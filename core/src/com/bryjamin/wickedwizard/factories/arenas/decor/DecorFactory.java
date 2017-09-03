@@ -265,7 +265,7 @@ public class DecorFactory extends AbstractFactory {
 
     public ComponentBag defaultDoorBag(float x, float y, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
 
-        float width = isVertical ? Measure.units(5) : Measure.units(20);
+        float width = isVertical ? Measure.units(5.0f) : Measure.units(20);
         float height = isVertical ? Measure.units(20) : Measure.units(5);
 
         return doorBag(x, y, width, height, isVertical, current, leaveCoords, exitDirection);
@@ -300,10 +300,8 @@ public class DecorFactory extends AbstractFactory {
                 isVertical ? 0 : CenterMath.offsetX(height, width),
                 isVertical ? width : height,
                 isVertical ? height : width,
-                PLAYER_LAYER_FAR);
-
-        trc.color = arenaSkin.getWallTint();
-        trc.DEFAULT = arenaSkin.getWallTint();
+                PLAYER_LAYER_FAR,
+                arenaSkin.getWallTint());
 
         trc.rotation = isVertical ? 0 : 90;
 
