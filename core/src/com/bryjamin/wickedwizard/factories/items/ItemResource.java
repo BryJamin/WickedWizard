@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalE
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemAngrySlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSmoulderingArmor;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
@@ -216,6 +217,7 @@ public class ItemResource {
                 new ItemAngrySlimeCoat(),
                 new com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody(),
                 new ItemSlimeCoat(),
+                new ItemSmoulderingArmor(),
                 new ItemSquareBuckler(),
                 new ItemVitaminC(),
                 new com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWandasScarf()};
@@ -244,9 +246,9 @@ public class ItemResource {
                 .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
                 .build();
 
-        public static ItemValues smoulderingArmor = new ItemValues.ItemValueBuilder("f48b95ec-ec77-4407-8d5b-2f83ba1517fb")
-                .region("item/SmoulderingArmor")
-                .name("Smouldering Armor")
+        public static ItemValues smoulderingHelm = new ItemValues.ItemValueBuilder("f48b95ec-ec77-4407-8d5b-2f83ba1517fb")
+                .region("item/SmoulderingHelm")
+                .name("Smouldering Helm")
                 .description("Damage+")
                 .build();
 
