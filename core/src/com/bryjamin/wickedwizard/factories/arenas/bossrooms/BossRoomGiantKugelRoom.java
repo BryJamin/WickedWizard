@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.arenas.bossrooms;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -25,7 +26,7 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate giantKugelArena(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena =  new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -33,17 +34,17 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,

@@ -9,6 +9,7 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.BombFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -90,7 +91,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room1Kugel(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 
@@ -103,7 +104,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room2GoatWizardCenter(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2,(arena.getHeight() / 2)));
@@ -116,7 +117,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room3OneTurretTwoLargeBouncers(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
                 com.bryjamin.wickedwizard.factories.arenas.Arena a = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
                 a.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(a.getWidth() / 2, a.getHeight() / 2));
                 a.addEntity(arenaEnemyPlacementFactory.spawnLargeBouncer(a.getWidth() - Measure.units(20), a.getHeight() - Measure.units(15f)));
@@ -131,7 +132,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room4Width2RoomOnlyVerticalExits(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
                 //TODO need to add change mandatory doors
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena =  new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
@@ -140,7 +141,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
@@ -169,7 +170,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room5trapAmoeba(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL);
 
@@ -199,7 +200,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room6largeRoomWithSentries(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena =  new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -207,17 +208,17 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                         com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                         com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                         com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
@@ -256,7 +257,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -264,7 +265,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYGRAPPLE,
@@ -301,7 +302,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL);
 
@@ -355,7 +356,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -385,8 +386,8 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room10JigCenter() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
-                com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
+                com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, Measure.units(40f)));
                 return arena;
             }
@@ -398,7 +399,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room11Height2Treasure() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -406,7 +407,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
@@ -444,8 +445,8 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room12WallTurretsAndBouncers() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
-                com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
+                com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, arena.getHeight() / 2));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedSentry(arena.getWidth() / 2, arena.getHeight() / 4 * 3));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, arena.getHeight() / 2));
@@ -467,7 +468,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room13GoatWizardAndBlobs() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena =  new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -475,7 +476,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
@@ -494,7 +495,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room14WalkingThroughRoom() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 boolean isLeft = random.nextBoolean();
 
@@ -521,7 +522,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room15JigAndTurretWithGuard() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -547,7 +548,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room16TrapTreasureTwoGoatWizards() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
 
                 boolean chestsAreLeft = random.nextBoolean();
@@ -558,7 +559,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 chestsAreLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 chestsAreLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
                                 chestsAreLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 chestsAreLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 chestsAreLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 chestsAreLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
@@ -591,7 +592,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room17ChestInCenterTwoTurretsOnWalls() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -625,7 +626,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room18TwoSilverheadsOnPlatforms() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
@@ -651,8 +652,8 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room19MultiWaveRoomEndsInGoatAndChest() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
-                com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(), random.nextInt(4), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
+                com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(), random.nextInt(4), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() / 2, Measure.units(40f)),
                         arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, Measure.units(40f)),
@@ -677,7 +678,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room20MultiWaveRoomEndsInJigAndChest() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 
@@ -702,7 +703,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room21Width3GroundWallTurretsAndThreeExits() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
@@ -711,12 +712,12 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
@@ -749,7 +750,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room22VerticalThroughRoomWithSpikeonWalls() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -786,7 +787,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room23HeightTwoWithChestSpawnsJigAndBomb() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
 
                 boolean isLeft = random.nextBoolean();
@@ -797,7 +798,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 isLeft ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYGRAPPLE,
@@ -837,7 +838,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room24BombSpawn() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -879,7 +880,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room25BombTrap() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
@@ -913,7 +914,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room26largeBattleRoomWithTreasureTrove(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena =  new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -921,17 +922,17 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
@@ -971,7 +972,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room27FastAmoebas(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena =  new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -996,7 +997,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room28SmallTurnersAndAChest(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena =  new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder(assetManager, arenaSkin, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP)
                         .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
@@ -1022,7 +1023,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room29Height3GrappleTreasureAndTurner(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 boolean isLeftAbove = random.nextBoolean();
 
@@ -1032,12 +1033,12 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                                 isLeftAbove ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.DOOR))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.NONE))
-                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                        .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                                 isLeftAbove ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL,
                                 isLeftAbove ? com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.FULL : com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.MANDATORYDOOR,
                                 com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.wall.GRAPPLE,
@@ -1072,7 +1073,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room30BlobsAndAmoebasAndTurrets(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public com.bryjamin.wickedwizard.factories.arenas.Arena createArena(MapCoords defaultCoords) {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.TRAP);
 

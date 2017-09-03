@@ -1,5 +1,7 @@
 package com.bryjamin.wickedwizard.utils.comparator;
 
+import com.bryjamin.wickedwizard.utils.MapCoords;
+
 import java.util.Comparator;
 
 /**
@@ -8,9 +10,9 @@ import java.util.Comparator;
 
 public class FarSort {
 
-    private com.bryjamin.wickedwizard.utils.MapCoords center;
+    private MapCoords center;
 
-    public FarSort(com.bryjamin.wickedwizard.utils.MapCoords center){
+    public FarSort(MapCoords center){
         this.center = center;
     }
 
@@ -20,9 +22,9 @@ public class FarSort {
     /**
      * Sorts MapCoords by highest to lowest distance from the center co-ordinate
      */
-    public Comparator<com.bryjamin.wickedwizard.utils.MapCoords> HIGHEST_TO_LOWEST_DIST = new Comparator<com.bryjamin.wickedwizard.utils.MapCoords>() {
+    public Comparator<MapCoords> HIGHEST_TO_LOWEST_DIST = new Comparator<MapCoords>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.utils.MapCoords mapCoords1, com.bryjamin.wickedwizard.utils.MapCoords mapCoords2) {
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
             Integer i1 = getHighestDistance(mapCoords1);
             Integer i2 = getHighestDistance(mapCoords2);
             return i1 > i2?-1:(i1.equals(i2) ?0:1);
@@ -38,7 +40,7 @@ public class FarSort {
     };
 
 
-    public int getHighestDistance(com.bryjamin.wickedwizard.utils.MapCoords mapCoords){
+    public int getHighestDistance(MapCoords mapCoords){
         int x = Math.abs(mapCoords.getX() - center.getX());
         int y = Math.abs(mapCoords.getY() - center.getY());
         return x >= y  ? x : y;
@@ -47,9 +49,9 @@ public class FarSort {
 
 
 
-    public Comparator<com.bryjamin.wickedwizard.utils.MapCoords> LEFTMOST_DISTANCE = new Comparator<com.bryjamin.wickedwizard.utils.MapCoords>() {
+    public Comparator<MapCoords> LEFTMOST_DISTANCE = new Comparator<MapCoords>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.utils.MapCoords mapCoords1, com.bryjamin.wickedwizard.utils.MapCoords mapCoords2) {
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
             Integer i1 = mapCoords1.getX();
             Integer i2 = mapCoords2.getX();
             return i1 < i2?-1:(i1.equals(i2) ?0:1);
@@ -65,9 +67,9 @@ public class FarSort {
     };
 
 
-    public Comparator<com.bryjamin.wickedwizard.utils.MapCoords> RIGHTMOST_DISTANCE = new Comparator<com.bryjamin.wickedwizard.utils.MapCoords>() {
+    public Comparator<MapCoords> RIGHTMOST_DISTANCE = new Comparator<MapCoords>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.utils.MapCoords mapCoords1, com.bryjamin.wickedwizard.utils.MapCoords mapCoords2) {
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
             Integer i1 = mapCoords1.getX();
             Integer i2 = mapCoords2.getX();
             return i1 > i2?-1:(i1.equals(i2) ?0:1);
@@ -84,9 +86,9 @@ public class FarSort {
 
 
 
-    public Comparator<com.bryjamin.wickedwizard.utils.MapCoords> BIGGEST_Y_VALUE_SORT = new Comparator<com.bryjamin.wickedwizard.utils.MapCoords>() {
+    public Comparator<MapCoords> BIGGEST_Y_VALUE_SORT = new Comparator<MapCoords>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.utils.MapCoords mapCoords1, com.bryjamin.wickedwizard.utils.MapCoords mapCoords2) {
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
             Integer i1 = mapCoords1.getY();
             Integer i2 = mapCoords2.getY();
             return i1 > i2?-1:(i1.equals(i2) ?0:1);
@@ -103,9 +105,9 @@ public class FarSort {
 
 
 
-    public Comparator<com.bryjamin.wickedwizard.utils.MapCoords> SORT_COORDS_BY_LOWEST_Y = new Comparator<com.bryjamin.wickedwizard.utils.MapCoords>() {
+    public Comparator<MapCoords> SORT_COORDS_BY_LOWEST_Y = new Comparator<MapCoords>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.utils.MapCoords mapCoords1, com.bryjamin.wickedwizard.utils.MapCoords mapCoords2) {
+        public int compare(MapCoords mapCoords1, MapCoords mapCoords2) {
             Integer i1 = mapCoords1.getY();
             Integer i2 = mapCoords2.getY();
             return i1 < i2?-1:(i1.equals(i2) ?0:1);

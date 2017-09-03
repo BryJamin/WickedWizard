@@ -5,6 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 
 /**
  * Created by Home on 13/03/2017.
@@ -21,26 +22,26 @@ public class Arena {
 
     public ArenaType arenaType;
 
-    private com.bryjamin.wickedwizard.utils.MapCoords startingCoords;
+    private MapCoords startingCoords;
 
     private ArenaSkin arenaSkin;
 
-    public Array<com.bryjamin.wickedwizard.utils.MapCoords> cotainingCoords = new Array<com.bryjamin.wickedwizard.utils.MapCoords>();
+    public Array<MapCoords> cotainingCoords = new Array<MapCoords>();
 
     public Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> doors = new Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
     public Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> mandatoryDoors = new Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
 
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
 
-    public Arena(ArenaSkin arenaSkin, com.bryjamin.wickedwizard.utils.MapCoords... mapCoords) {
+    public Arena(ArenaSkin arenaSkin, MapCoords... mapCoords) {
         this(ArenaType.NORMAL, arenaSkin, mapCoords);
     }
 
-    public Arena(ArenaType arenaType, ArenaSkin arenaSkin, com.bryjamin.wickedwizard.utils.MapCoords... mapCoords) {
+    public Arena(ArenaType arenaType, ArenaSkin arenaSkin, MapCoords... mapCoords) {
 
         startingCoords = mapCoords[0];
 
-        for(com.bryjamin.wickedwizard.utils.MapCoords m : mapCoords) {
+        for(MapCoords m : mapCoords) {
             this.cotainingCoords.add(m);
         }
 
@@ -48,11 +49,11 @@ public class Arena {
         this.arenaSkin = arenaSkin;
     }
 
-    public Arena(ArenaType arenaType, ArenaSkin arenaSkin, Array<com.bryjamin.wickedwizard.utils.MapCoords> mapCoords) {
+    public Arena(ArenaType arenaType, ArenaSkin arenaSkin, Array<MapCoords> mapCoords) {
 
         startingCoords = mapCoords.get(0);
 
-        for(com.bryjamin.wickedwizard.utils.MapCoords m : mapCoords) {
+        for(MapCoords m : mapCoords) {
             this.cotainingCoords.add(m);
         }
 
@@ -61,7 +62,7 @@ public class Arena {
     }
 
 
-    public void addCoords(com.bryjamin.wickedwizard.utils.MapCoords coords) {
+    public void addCoords(MapCoords coords) {
         if(!this.cotainingCoords.contains(coords, false)) this.cotainingCoords.add(coords);
     }
 
@@ -70,7 +71,7 @@ public class Arena {
         return bagOfEntities;
     }
 
-    public Array<com.bryjamin.wickedwizard.utils.MapCoords> getCotainingCoords() {
+    public Array<MapCoords> getCotainingCoords() {
         return cotainingCoords;
     }
 
@@ -173,11 +174,11 @@ public class Arena {
     }
 
 
-    public void setStartingCoords(com.bryjamin.wickedwizard.utils.MapCoords startingCoords) {
+    public void setStartingCoords(MapCoords startingCoords) {
         this.startingCoords = startingCoords;
     }
 
-    public com.bryjamin.wickedwizard.utils.MapCoords getStartingCoords() {
+    public MapCoords getStartingCoords() {
         return startingCoords;
     }
 

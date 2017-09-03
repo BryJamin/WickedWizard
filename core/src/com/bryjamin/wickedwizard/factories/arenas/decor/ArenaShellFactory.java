@@ -7,8 +7,8 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 /**

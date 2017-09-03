@@ -104,8 +104,8 @@ public class JigsawGenerator {
         this.noBattleRooms = noBattleRooms;
     }
 
-    public ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> createUnavaliableMapCoords(Array<Arena> arenas){
-        ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords = new ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords>();
+    public ObjectSet<MapCoords> createUnavaliableMapCoords(Array<Arena> arenas){
+        ObjectSet<MapCoords> unavaliableMapCoords = new ObjectSet<MapCoords>();
         for(Arena a : arenas){
             unavaliableMapCoords.addAll(a.getCotainingCoords());
         }
@@ -145,7 +145,7 @@ public class JigsawGenerator {
 
         Array<Arena> placedArenas = new Array<Arena>();
         placedArenas.addAll(presetRooms);
-        ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(presetRooms);
+        ObjectSet<MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(presetRooms);
 
 
         WeightedRoll<ArenaCreate> roll = new WeightedRoll<ArenaCreate>(random);
@@ -182,7 +182,7 @@ public class JigsawGenerator {
                         boolean placedRoom = false;
                         while(tries <= 10){
                             com.bryjamin.wickedwizard.utils.WeightedObject<ArenaCreate> weightedArenaGen = roll.rollForWeight();
-                            Arena nextInnerRoomToBePlaced = weightedArenaGen.obj().createArena(new com.bryjamin.wickedwizard.utils.MapCoords());
+                            Arena nextInnerRoomToBePlaced = weightedArenaGen.obj().createArena(new MapCoords());
                             if(nextInnerRoomToBePlaced.mandatoryDoors.size == 0) {
                                 if (fillMandatoryDoor(nextInnerRoomToBePlaced, dc, mockPlacedArenas, mockAvaliableDoorSet)) {
                                     weightedArenaGen.setWeight((weightedArenaGen.getWeight() / 10 > 0) ? weightedArenaGen.getWeight() / 10 : 1);
@@ -241,7 +241,7 @@ public class JigsawGenerator {
         OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> doors = new OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
         doors.add(mandatoryDoor);
 
-        ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(placedArenas);
+        ObjectSet<MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(placedArenas);
 
         int tries = 0;
         while(tries < 15) {
@@ -266,12 +266,12 @@ public class JigsawGenerator {
      * @param unavaliableMapCoords - co-ordinates that are unavailiable for an arena inside of
      * @param avaliableDoorsSet - Set of doors that are avaliable for arenas to be attached to.
      */
-    public void addArenaToMap(Arena roomToBePlaced, Array<Arena> placedArenas, ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet) {
+    public void addArenaToMap(Arena roomToBePlaced, Array<Arena> placedArenas, ObjectSet<MapCoords> unavaliableMapCoords, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet) {
         placedArenas.add(roomToBePlaced);
         updateUnavaliableCoordsAndLeaveDoors(roomToBePlaced, unavaliableMapCoords, avaliableDoorsSet);
     }
 
-    public void updateUnavaliableCoordsAndLeaveDoors(Arena roomToBePlaced, ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet){
+    public void updateUnavaliableCoordsAndLeaveDoors(Arena roomToBePlaced, ObjectSet<MapCoords> unavaliableMapCoords, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet){
         unavaliableMapCoords.addAll(roomToBePlaced.getCotainingCoords());
         for (com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc : roomToBePlaced.getDoors()) {
             if(!unavaliableMapCoords.contains(dc.leaveCoords)) {
@@ -338,10 +338,10 @@ public class JigsawGenerator {
     public boolean placeItemRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
         Array<Arena> itemRooms = new Array<Arena>();
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createDownItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords()));
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createLeftItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords()));
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createRightItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords()));
-        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createUpItemRoom(new com.bryjamin.wickedwizard.utils.MapCoords()));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createDownItemRoom(new MapCoords()));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createLeftItemRoom(new MapCoords()));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createRightItemRoom(new MapCoords()));
+        itemRooms.add(new ItemArenaFactory(assetManager, arenaSkin).createUpItemRoom(new MapCoords()));
 
         itemRooms.shuffle();
 
@@ -363,7 +363,7 @@ public class JigsawGenerator {
 
     public boolean placeShopRoom(Array<Arena> placedArenas, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoors) {
 
-        Arena shopRoom = shopFactory.createShop(new com.bryjamin.wickedwizard.utils.MapCoords());
+        Arena shopRoom = shopFactory.createShop(new MapCoords());
         if(placeRoomUsingDoorsRandomly(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(shopRoom);
             cleanArena(shopRoom, placedArenas);
@@ -402,7 +402,7 @@ public class JigsawGenerator {
     }
 
 
-    public boolean placeRoomUsingDoors(Arena room, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet, ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords, Random rand){
+    public boolean placeRoomUsingDoors(Arena room, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
         Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> adc = avaliableDoorsSet.orderedItems();
 
         if(typeOfSort == null){
@@ -415,7 +415,7 @@ public class JigsawGenerator {
 
     }
 
-    public boolean placeRoomUsingDoorsRandomly(Arena room, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet, ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords, Random rand){
+    public boolean placeRoomUsingDoorsRandomly(Arena room, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
         Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> adc = avaliableDoorsSet.orderedItems();
             adc.shuffle();
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
@@ -423,7 +423,7 @@ public class JigsawGenerator {
     }
 
 
-    public boolean placeRoomUsingDoorsInOrder(Arena room, Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> availableDoorsArray, ObjectSet<com.bryjamin.wickedwizard.utils.MapCoords> unavaliableMapCoords, Random rand){
+    public boolean placeRoomUsingDoorsInOrder(Arena room, Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> availableDoorsArray, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
 
         Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> temporaryDoorsArray = new Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
         temporaryDoorsArray.addAll(availableDoorsArray);
@@ -458,10 +458,10 @@ public class JigsawGenerator {
 
                 linkableDoorsArray.removeIndex(linkableExitsSelector);
 
-                com.bryjamin.wickedwizard.utils.MapCoords shiftCoords = generateShiftCoords(selectedAvaliableDoor.leaveCoords, selectedLinkableDoor.currentCoords);
+                MapCoords shiftCoords = generateShiftCoords(selectedAvaliableDoor.leaveCoords, selectedLinkableDoor.currentCoords);
 
                 //Mocks moving the room
-                Array<com.bryjamin.wickedwizard.utils.MapCoords> mockCoords = mockShiftCoordinatePosition(room, shiftCoords);
+                Array<MapCoords> mockCoords = mockShiftCoordinatePosition(room, shiftCoords);
 
                 roomPlaced = true;
 
@@ -523,10 +523,10 @@ public class JigsawGenerator {
      * @param oldPosition - The current positition of the room
      * @return - Returns A MapCoord object containing the x and y value needed to move the room
      */
-    public com.bryjamin.wickedwizard.utils.MapCoords generateShiftCoords(com.bryjamin.wickedwizard.utils.MapCoords newPosition, com.bryjamin.wickedwizard.utils.MapCoords oldPosition) {
+    public MapCoords generateShiftCoords(MapCoords newPosition, MapCoords oldPosition) {
         int diffX = newPosition.getX() - oldPosition.getX();
         int diffY = newPosition.getY() - oldPosition.getY();
-        return new com.bryjamin.wickedwizard.utils.MapCoords(diffX, diffY);
+        return new MapCoords(diffX, diffY);
     }
 
 
@@ -538,18 +538,18 @@ public class JigsawGenerator {
      * @return - An array of new co-ordinates that the arena potentially can move to assuming no other arena is
      * taking up that spot
      */
-    public Array<com.bryjamin.wickedwizard.utils.MapCoords> mockShiftCoordinatePosition(Arena a, com.bryjamin.wickedwizard.utils.MapCoords shiftCoords){
+    public Array<MapCoords> mockShiftCoordinatePosition(Arena a, MapCoords shiftCoords){
 
         int diffX = shiftCoords.getX();
         int diffY = shiftCoords.getY();
 
-        Array<com.bryjamin.wickedwizard.utils.MapCoords> mockCoords = new Array<com.bryjamin.wickedwizard.utils.MapCoords>();
+        Array<MapCoords> mockCoords = new Array<MapCoords>();
 
-        for(com.bryjamin.wickedwizard.utils.MapCoords mc : a.getCotainingCoords()) {
-            mockCoords.add(new com.bryjamin.wickedwizard.utils.MapCoords(mc));
+        for(MapCoords mc : a.getCotainingCoords()) {
+            mockCoords.add(new MapCoords(mc));
         }
 
-        for(com.bryjamin.wickedwizard.utils.MapCoords m : mockCoords) {
+        for(MapCoords m : mockCoords) {
             m.addX(diffX);
             m.addY(diffY);
         }
@@ -562,12 +562,12 @@ public class JigsawGenerator {
      * @param a - Arena to be shifted
      * @param shiftCoords - Mapcoords holding the x and y value to move the Arena by.
      */
-    public void shiftCoordinatePosition(Arena a, com.bryjamin.wickedwizard.utils.MapCoords shiftCoords){
+    public void shiftCoordinatePosition(Arena a, MapCoords shiftCoords){
 
         int diffX = shiftCoords.getX();
         int diffY = shiftCoords.getY();
 
-        for(com.bryjamin.wickedwizard.utils.MapCoords m : a.getCotainingCoords()) {
+        for(MapCoords m : a.getCotainingCoords()) {
             m.addX(diffX);
             m.addY(diffY);
         }
@@ -673,7 +673,7 @@ public class JigsawGenerator {
      * @param arenas - The array of arenas
      * @return - Returns an Arena if an Arena is found otherwise returns a null value
      */
-    public static Arena findRoom(com.bryjamin.wickedwizard.utils.MapCoords mc, Array<Arena> arenas){
+    public static Arena findRoom(MapCoords mc, Array<Arena> arenas){
         for(Arena a : arenas){
             //System.out.println("Find room " + a.cotainingCoords.contains(mc, false));
             if(a.cotainingCoords.contains(mc, false)){

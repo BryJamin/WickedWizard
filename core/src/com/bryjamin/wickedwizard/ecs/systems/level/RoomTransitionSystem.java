@@ -22,6 +22,7 @@ import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -51,9 +52,9 @@ public class RoomTransitionSystem extends EntitySystem {
     private com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap currentMap;
 
     private boolean processingFlag = false;
-    private com.bryjamin.wickedwizard.utils.MapCoords destination;
-    private com.bryjamin.wickedwizard.utils.MapCoords previousDestination;
-    private com.bryjamin.wickedwizard.utils.MapCoords playerLocation = new com.bryjamin.wickedwizard.utils.MapCoords(0,0);
+    private MapCoords destination;
+    private MapCoords previousDestination;
+    private MapCoords playerLocation = new MapCoords(0,0);
     private com.bryjamin.wickedwizard.ecs.components.object.DoorComponent currentDoor;
     private float doorEntryPercentage;
 
@@ -165,7 +166,7 @@ public class RoomTransitionSystem extends EntitySystem {
      * @param destination
      * @return
      */
-    public Arena findRoom(com.bryjamin.wickedwizard.utils.MapCoords destination){
+    public Arena findRoom(MapCoords destination){
         for(Arena a : currentMap.getRoomArray()) {
             if(a.cotainingCoords.contains(destination, false)){
                 return a;
@@ -315,7 +316,7 @@ public class RoomTransitionSystem extends EntitySystem {
      * This is to show in real spawnTime the player position in rooms of size larger than 1 square
      * @return - The Player's position in map co-ordinates
      */
-    public com.bryjamin.wickedwizard.utils.MapCoords getCurrentPlayerLocation(){
+    public MapCoords getCurrentPlayerLocation(){
         CollisionBoundComponent pBound = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         playerLocation.setX(currentMap.getCurrentArena().getStartingCoords().getX() + (int) (pBound.getCenterX() / com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH));
         playerLocation.setY(currentMap.getCurrentArena().getStartingCoords().getY() + (int) (pBound.getCenterY() / com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT));

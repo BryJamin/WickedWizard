@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.ecs.systems.level;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 
 /**
  * Created by Home on 28/05/2017.
@@ -46,7 +47,7 @@ public class ArenaMap {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.Arena getArenaByMapCoords(com.bryjamin.wickedwizard.utils.MapCoords mapCoords){
+    public com.bryjamin.wickedwizard.factories.arenas.Arena getArenaByMapCoords(MapCoords mapCoords){
 
         for(com.bryjamin.wickedwizard.factories.arenas.Arena a : roomArray){
             if(a.getCotainingCoords().contains(mapCoords, false)) {

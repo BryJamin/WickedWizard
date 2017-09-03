@@ -8,6 +8,7 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 
+
 /**
  * Created by Home on 02/07/2017.
  */

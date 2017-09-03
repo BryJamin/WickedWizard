@@ -1,6 +1,7 @@
 package com.bryjamin.wickedwizard.ecs.components.object;
 
 import com.artemis.Component;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.Comparator;
@@ -11,8 +12,8 @@ import java.util.Comparator;
 
 public class DoorComponent extends Component {
 
-    public com.bryjamin.wickedwizard.utils.MapCoords currentCoords;
-    public com.bryjamin.wickedwizard.utils.MapCoords leaveCoords;
+    public MapCoords currentCoords;
+    public MapCoords leaveCoords;
 
     public boolean ignore = false;
 
@@ -24,7 +25,7 @@ public class DoorComponent extends Component {
 
     }
 
-    public DoorComponent(com.bryjamin.wickedwizard.utils.MapCoords currentCoords, com.bryjamin.wickedwizard.utils.MapCoords leaveCoords, Direction exit) {
+    public DoorComponent(MapCoords currentCoords, MapCoords leaveCoords, Direction exit) {
         this.currentCoords = currentCoords;
         this.leaveCoords = leaveCoords;
         this.exit = exit;

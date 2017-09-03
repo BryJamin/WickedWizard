@@ -18,6 +18,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -44,7 +45,7 @@ public class BreakRoom extends AbstractFactory {
     public Arena createBreakRoom(){
 
         Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
-                .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(),
+                .addSection(new ArenaBuilder.Section(new MapCoords(),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,

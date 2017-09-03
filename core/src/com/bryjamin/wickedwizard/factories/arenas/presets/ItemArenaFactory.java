@@ -7,6 +7,7 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 public class ItemArenaFactory extends ArenaShellFactory {
@@ -21,7 +22,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
     }
 
     //TODO actually make the rareItem rare.
-    public Arena createItemRoom(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+    public Arena createItemRoom(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -40,7 +41,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
     }
 
 
-    public Arena createLeftItemRoom(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+    public Arena createLeftItemRoom(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -56,7 +57,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
     }
 
 
-    public Arena createRightItemRoom(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+    public Arena createRightItemRoom(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -73,7 +74,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
 
 
 
-    public Arena createUpItemRoom(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+    public Arena createUpItemRoom(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -92,7 +93,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
     }
 
 
-    public Arena createDownItemRoom(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+    public Arena createDownItemRoom(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -116,7 +117,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
 
 
 
-    public Arena createBossRushItemRoom(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+    public Arena createBossRushItemRoom(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,

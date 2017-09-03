@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -58,7 +59,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator perfectBlobba(String id){
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords());
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new MapCoords());
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -71,9 +72,9 @@ public class Rank1ChallengeMaps extends AbstractFactory{
             }
         }));
 
-        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(2,0));
+        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba(assetManager, arenaSkin).biggaBlobbaArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(1,0)),
+                new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba(assetManager, arenaSkin).biggaBlobbaArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 
@@ -94,7 +95,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator perfectAdoj(String id){
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords());
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new MapCoords());
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -107,9 +108,9 @@ public class Rank1ChallengeMaps extends AbstractFactory{
             }
         }));
 
-        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(2,0));
+        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                new BossRoomAdoj(assetManager, arenaSkin).adojArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(1,0)),
+                new BossRoomAdoj(assetManager, arenaSkin).adojArena().createArena(new MapCoords(1,0)),
                 endArena
         );
 
@@ -130,7 +131,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator tutorialSpeedRun(String id){
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords());
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new MapCoords());
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -144,12 +145,12 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         startingArena.addEntity(new OnLoadFactory().challengeTimer(TUTORIAL_SPEEDRUN_TIMER));
 
 
-        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(7,3));
+        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7,3));
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                timeTrailRoomOneJumpTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(1, 0)),
-                timeTrailRoomTwoPlatformTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(5,0)),
-                timeTrailRoomThreeGrappleTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(6,0)),
-                timeTrialRoomFourEnemyTutorial(new com.bryjamin.wickedwizard.utils.MapCoords(6,3)),
+                timeTrailRoomOneJumpTutorial(new MapCoords(1, 0)),
+                timeTrailRoomTwoPlatformTutorial(new MapCoords(5,0)),
+                timeTrailRoomThreeGrappleTutorial(new MapCoords(6,0)),
+                timeTrialRoomFourEnemyTutorial(new MapCoords(6,3)),
                 endArena
         );
 
@@ -165,7 +166,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
     }
 
 
-    public Arena timeTrailRoomOneJumpTutorial(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords){
+    public Arena timeTrailRoomOneJumpTutorial(MapCoords defaultCoords){
 
         Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL).addSection(
                 new ArenaBuilder.Section(defaultCoords,
@@ -173,17 +174,17 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
-                .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
-                .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL))
-                .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.FULL,
@@ -198,7 +199,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
     }
 
 
-    public Arena timeTrailRoomTwoPlatformTutorial(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords){
+    public Arena timeTrailRoomTwoPlatformTutorial(MapCoords defaultCoords){
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -206,7 +207,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL))
-                .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
@@ -238,7 +239,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
 
 
-    public Arena timeTrailRoomThreeGrappleTutorial(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords){
+    public Arena timeTrailRoomThreeGrappleTutorial(MapCoords defaultCoords){
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                 .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -246,12 +247,12 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.FULL))
-                .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  1),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.NONE,
                         ArenaBuilder.wall.NONE))
-                .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2),
+                .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() +  2),
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR,
@@ -268,7 +269,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
     }
 
 
-    public Arena timeTrialRoomFourEnemyTutorial(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords){
+    public Arena timeTrialRoomFourEnemyTutorial(MapCoords defaultCoords){
 
 
 
@@ -293,7 +294,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
 
     public com.bryjamin.wickedwizard.factories.arenas.GameCreator arenaSpeedRun(String id){
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new com.bryjamin.wickedwizard.utils.MapCoords());
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()).createArena(new MapCoords());
 
         com.bryjamin.wickedwizard.utils.ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -307,7 +308,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         }));
 
 
-        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(1,0), Arena.ArenaType.TRAP);
+        Arena arena = arenaShellFactory.createSmallArenaNoGrapple(new MapCoords(1,0), Arena.ArenaType.TRAP);
         arena.addEntity(new OnLoadFactory().challengeTimer(ARENA_SPEEDRUN_TIMER));
 
 
@@ -344,7 +345,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
 
 
-        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new com.bryjamin.wickedwizard.utils.MapCoords(2, 0));
+        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2, 0));
 
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 arena,
