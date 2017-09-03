@@ -143,10 +143,10 @@ public class BossAmalgama extends BossFactory {
         phaseComponent.addPhase(spreadPhasetime, new BulletSpreadPhase());
         phaseComponent.addPhase(wallPhasetime, new BlockingWallPhase());
         phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(true));
-        //empty phase to add some time between hurdles
+        //empty phase to add some spawnTime between hurdles
         phaseComponent.addPhase(quadShotGap, emptyTask());
         phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(false));
-        //empty phase to add some time between hurdles
+        //empty phase to add some spawnTime between hurdles
         //phaseComponent.addPhase(0.2f,emptyTask());
         bag.add(phaseComponent);
 
@@ -194,7 +194,7 @@ public class BossAmalgama extends BossFactory {
                 phaseComponent.addPhase(spreadPhasetime, new BulletSpreadPhase());
                 //phaseComponent.addPhase(wallPhasetime, new BlockingWallPhase());
                 phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(true));
-                //empty phase to add some time between hurdles
+                //empty phase to add some spawnTime between hurdles
                 phaseComponent.addPhase(quadShotGap, emptyTask());
                 phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(false));
 

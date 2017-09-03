@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
+import com.bryjamin.wickedwizard.factories.BombFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -821,7 +822,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(85f),
                         new com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return new com.bryjamin.wickedwizard.factories.BombFactory(assetManager).bomb(x,y, 1f);
+                                return new com.bryjamin.wickedwizard.factories.BombFactory(assetManager).bomb(x,y, BombFactory.BOMB_LIFE);
                             }
                         }));
 

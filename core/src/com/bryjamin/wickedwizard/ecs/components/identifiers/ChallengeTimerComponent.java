@@ -6,7 +6,7 @@ import com.artemis.Component;
 /**
  * Created by BB on 22/08/2017.
  *
- * Component that counts down time
+ * Component that counts down spawnTime
  *
  */
 

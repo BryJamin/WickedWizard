@@ -255,7 +255,7 @@ public class BossTheEnd extends BossFactory {
             e.getComponent(PhaseComponent.class).currentPhaseTime = fauxPhaseTime - handAction.getHandPhaseTime();
             //TODO select next hand
             //if hand has no firing component, fire weapon
-            //if hadn has firing componenet add firing component and remove it after some time
+            //if hadn has firing componenet add firing component and remove it after some spawnTime
             //get class of weapon and decidew what to do?
         }
 

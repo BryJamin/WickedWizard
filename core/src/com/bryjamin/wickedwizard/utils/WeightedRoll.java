@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class WeightedRoll<T> {
 
-    private Array<WeightedObject<T>> weightedObjects;
+    private Array<WeightedObject<T>> weightedObjects = new Array<WeightedObject<T>>();
 
 
     private Random random;
@@ -26,8 +26,12 @@ public class WeightedRoll<T> {
         this.random = random;
     }
 
-    public WeightedRoll(WeightedRoll<T> weightedRoll){
+    public WeightedRoll(Random random, WeightedObject<T>... weightedObjects){
+        this.weightedObjects.addAll(weightedObjects);
+        this.random = random;
+    }
 
+    public WeightedRoll(WeightedRoll<T> weightedRoll){
         //TODO this isn't really a copy constructor as the weights aren't changed
         this.weightedObjects = new Array<WeightedObject<T>>();
         this.getWeightedObjects().addAll(weightedRoll.getWeightedObjects());

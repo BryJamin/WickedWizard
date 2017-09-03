@@ -42,7 +42,7 @@ public class FadeSystem extends EntityProcessingSystem {
 
         fc.alphaTimer = fc.fadeIn ? fc.alphaTimer + world.delta : fc.alphaTimer - world.delta;
 
-        //TODO Currently converted this to use the maxAlpha and time so this may have affected a bunch
+        //TODO Currently converted this to use the maxAlpha and spawnTime so this may have affected a bunch
         //TODO of fades in the game. Need to review them.
         //TODO note: code previously was: fc.alpha = (fc.alphaTimer / fc.alphaTimeLimit)
         //TODO note: if it was also using the min value it'd be (fc.maxAlpha - fc.minAlpha) + fc.minAlpha

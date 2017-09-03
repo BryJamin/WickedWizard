@@ -63,7 +63,7 @@ due to the way the future bound is used.
     - If you have an item it should be removed from the pool of items that can be generated 
     - Items that reveal the map and change your weapon 
     
-- Time Limit to complete the game, if you run out of time you die. (Casual game mode if you do not want to do that)
+- Time Limit to complete the game, if you run out of spawnTime you die. (Casual game mode if you do not want to do that)
 
 - New Bosses 
     - Prince and Princess box for a face. Two enemies that when one dies the other tries to ressurect
@@ -74,7 +74,7 @@ due to the way the future bound is used.
     
 - Explosives and Lasers
 
-- Add in a Time Limit of sorts where we die if you run out of time. *probably won't*
+- Add in a Time Limit of sorts where we die if you run out of spawnTime. *probably won't*
 
 - Create TextureLoader Parameter. For usages in tests
 - Improve message banner to have an offset so you can change where it shows up.

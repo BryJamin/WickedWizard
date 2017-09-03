@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
-import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
@@ -38,7 +37,6 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Level;
 
@@ -252,18 +250,6 @@ public class PlayScreen extends AbstractScreen {
     public void createWorlds(GameCreator gameCreator){
 
         adventureWorld = new com.bryjamin.wickedwizard.screens.world.AdventureWorld(game, gameport,gameCreator, random);
-
-
-        com.bryjamin.wickedwizard.ecs.components.StatComponent stats = BagSearch.getObjectOfTypeClass(StatComponent.class, adventureWorld.getPlayer());
-
-        if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false)) {
-            stats.damage = 99f;
-            stats.accuracy = 99f;
-            stats.fireRate = 99f;
-            stats.speed = 0.5f;
-            stats.luck = 99f;
-        };
-
     }
 
     @Override

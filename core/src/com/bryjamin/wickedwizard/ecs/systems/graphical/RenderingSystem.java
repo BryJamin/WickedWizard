@@ -256,9 +256,9 @@ public class RenderingSystem extends EntitySystem {
 
 /*        System.out.println("\n BLOCK");
         System.out.println(performanceCounter.name + " BLOCK");
-        System.out.println("MAX " + performanceCounter.time.max);
-        System.out.println("AVERAGE " + performanceCounter.time.average);
-        System.out.println("LATEST " + performanceCounter.time.latest);*/
+        System.out.println("MAX " + performanceCounter.spawnTime.max);
+        System.out.println("AVERAGE " + performanceCounter.spawnTime.average);
+        System.out.println("LATEST " + performanceCounter.spawnTime.latest);*/
 
      /*   System.out.println("Render calls:" + batch.renderCalls);
 

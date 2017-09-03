@@ -18,7 +18,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemLuckyShot;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapult;
-import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
+import com.bryjamin.wickedwizard.factories.items.passives.damage.rankTwo.ItemMiniTrebuchet;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemSmoulderingEmber;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemStability;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemStatueOfAjir;
@@ -242,6 +242,12 @@ public class ItemResource {
                 .name("Slime Coat")
                 .description("Eww..")
                 .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
+                .build();
+
+        public static ItemValues smoulderingArmor = new ItemValues.ItemValueBuilder("f48b95ec-ec77-4407-8d5b-2f83ba1517fb")
+                .region("item/SmoulderingArmor")
+                .name("Smouldering Armor")
+                .description("Damage+")
                 .build();
 
 

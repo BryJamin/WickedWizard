@@ -10,6 +10,7 @@ import com.artemis.World;
 
 public class ActionOnTouchComponent extends Component {
     public Action action;
+    public boolean isEnabled = true;
 
     public ActionOnTouchComponent() {
         action = new Action() {

@@ -62,7 +62,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(11, room12MinesTriSentryAndBouncers());
         ag.insert(12,room13FlyByMinesAndBouncers());
         ag.insert(13, room14TrapRoomTriAndTwoBouncers());
-        ag.insert(14, room15TreasureTrapRoomWithPotentialOfFiveChests()); //Nerfed it has the potential for 5 but not all the time
+        ag.insert(14, room15TreasureTrapRoomWithPotentialOfFiveChests()); //Nerfed it has the potential for 5 but not all the spawnTime
         ag.insert(15,room16Width2RedBlobs());
         ag.insert(16,room17SpikesOnBothSideMultiArenaWithTreasure()); //Up for debate
         ag.insert(17,room18LeftToRightMineGauntlet());
