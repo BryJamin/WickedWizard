@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -47,13 +48,13 @@ public class JumpingJackFactory extends EnemyFactory{
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag jumpingJack(float x, float y, boolean startsRight) {
+    public ComponentBag jumpingJack(float x, float y, boolean startsRight) {
 
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 

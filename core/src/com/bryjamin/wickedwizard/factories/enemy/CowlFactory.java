@@ -11,15 +11,15 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
@@ -27,6 +27,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.bryjamin.wickedwizard.utils.BagSearch;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -53,12 +54,12 @@ public class CowlFactory extends EnemyFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag cowl(float x, float y, final Vector3 orbitCenter, final float radius, final float startingAngleInDegrees, final boolean startsLeft){
+    public ComponentBag cowl(float x, float y, final Vector3 orbitCenter, final float radius, final float startingAngleInDegrees, final boolean startsLeft){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x , y, cowlHealth);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, cowlHealth);
         BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
 
 /*        FadeComponent fc = new FadeComponent(false, 0.5f, true);

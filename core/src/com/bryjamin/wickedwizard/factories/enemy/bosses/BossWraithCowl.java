@@ -13,9 +13,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
-import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
@@ -27,6 +24,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -34,11 +32,13 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -51,6 +51,7 @@ import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.HitBox;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
@@ -127,12 +128,12 @@ public class BossWraithCowl extends BossFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag wraithCowl(float x, float y){
+    public ComponentBag wraithCowl(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
         BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
 
         bag.add(new ArenaLockComponent());

@@ -12,6 +12,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -54,12 +55,12 @@ public class SilverHeadFactory extends EnemyFactory {
                 .build();
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag silverHead(float x, float y){
+    public ComponentBag silverHead(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x , y,health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y,health);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());

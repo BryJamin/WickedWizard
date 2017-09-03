@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -16,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -24,6 +24,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
@@ -64,9 +65,9 @@ public class BossAdoj extends BossFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag bossAdoj(float x, float y){
+    public ComponentBag bossAdoj(float x, float y){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y,health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y,health);
 
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),

@@ -57,7 +57,7 @@ public class PlayerFactory extends AbstractFactory {
         y = y - height / 2;
 
 
-        ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
 
 
        // bag.add(new CameraShakeComponent(1f));
@@ -147,9 +147,9 @@ public class PlayerFactory extends AbstractFactory {
      * @param isLeft - Whether or not the wing is a left or right wing
      * @return - Returns a bag of components used to create an Entity
      */
-    public com.bryjamin.wickedwizard.utils.ComponentBag wings(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc, boolean isLeft){
+    public ComponentBag wings(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc, boolean isLeft){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(pc.getX(), pc.getY()));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(pc.position, isLeft ? Measure.units(4) : -Measure.units(4), -Measure.units(1)));
         AnimationStateComponent sc = new AnimationStateComponent();
@@ -194,7 +194,7 @@ public class PlayerFactory extends AbstractFactory {
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag grappleShot(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, float x, float y, final float targetX, final float targetY, double angle){
+    public ComponentBag grappleShot(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, float x, float y, final float targetX, final float targetY, double angle){
 
 
         float width = Measure.units(2);
@@ -204,7 +204,7 @@ public class PlayerFactory extends AbstractFactory {
         y = y - height / 2;
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
 
 

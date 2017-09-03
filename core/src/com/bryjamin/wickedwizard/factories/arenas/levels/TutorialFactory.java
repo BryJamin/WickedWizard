@@ -31,6 +31,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -167,7 +168,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
         TextureFontComponent tfc = new TextureFontComponent(platformString, arenaSkin.getWallTint());
         tfc.layer = BACKGROUND_LAYER_MIDDLE;
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1500));
         bag.add(tfc);
 
@@ -228,7 +229,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag messageBoxTrigger = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag messageBoxTrigger = new ComponentBag();
         messageBoxTrigger.add(new PositionComponent(Measure.units(55f), 0));
 
         Rectangle rectangle = new Rectangle(Measure.units(55f), 0, Measure.units(160f), Measure.units(70f));
@@ -337,7 +338,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
         for(int i = 0; i < 3; i ++)  {
 
-            com.bryjamin.wickedwizard.utils.ComponentBag chevron = decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90);
+            ComponentBag chevron = decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90);
             com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, chevron).color.a = 0;
             chevron.add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
                 @Override
@@ -465,17 +466,17 @@ public class TutorialFactory extends ArenaShellFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag createTutorialHighlight(Rectangle r) {
+    public ComponentBag createTutorialHighlight(Rectangle r) {
         return createTutorialHighlight(r.x, r.y, r.width, r.height);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag createTutorialHighlight(float x, float y, float width, float height) {
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = createTutorialHighlight(x, y, width, height, new Color(Color.WHITE));
+    public ComponentBag createTutorialHighlight(float x, float y, float width, float height) {
+        ComponentBag bag = createTutorialHighlight(x, y, width, height, new Color(Color.WHITE));
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag createTutorialHighlight(float x, float y, float width, float height, Color c) {
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+    public ComponentBag createTutorialHighlight(float x, float y, float width, float height, Color c) {
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR, c);
         bag.add(trc);

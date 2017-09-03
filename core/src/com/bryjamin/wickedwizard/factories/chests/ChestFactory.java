@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -55,9 +56,9 @@ public class ChestFactory extends AbstractFactory {
     public final float texHeight = Measure.units(10f);
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag chestBag(float x, float y){
+    public ComponentBag chestBag(float x, float y){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
 
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
@@ -85,13 +86,13 @@ public class ChestFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag centeredChestBag(float x, float y) {
+    public ComponentBag centeredChestBag(float x, float y) {
         x = x - width / 2;
         y = y- height / 2;
         return chestBag(x, y);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag centeredChestBag(float x, float y, OnDeathActionComponent odac){
+    public ComponentBag centeredChestBag(float x, float y, OnDeathActionComponent odac){
         x = x - width / 2;
         y = y- height / 2;
         return chestBag(x,y,odac);
@@ -99,8 +100,8 @@ public class ChestFactory extends AbstractFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag chestBag(float x, float y, OnDeathActionComponent odac) {
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = chestBag(x, y);
+    public ComponentBag chestBag(float x, float y, OnDeathActionComponent odac) {
+        ComponentBag bag = chestBag(x, y);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
         bag.add(odac);
         return bag;

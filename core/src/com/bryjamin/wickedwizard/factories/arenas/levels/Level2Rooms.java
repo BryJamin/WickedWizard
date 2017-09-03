@@ -9,6 +9,7 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.BombFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -174,7 +175,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 com.bryjamin.wickedwizard.factories.arenas.Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.NORMAL);
 
-                com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.factories.chests.ChestFactory(assetManager).chestBag(Measure.units(45f), Measure.units(25f), chestFactory.trapODAC());
+                        ComponentBag bag = new com.bryjamin.wickedwizard.factories.chests.ChestFactory(assetManager).chestBag(Measure.units(45f), Measure.units(25f), chestFactory.trapODAC());
 
                 Bag<Bag<Component>> bags = new Bag<Bag<Component>>();
 

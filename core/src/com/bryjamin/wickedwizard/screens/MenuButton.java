@@ -6,13 +6,14 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -129,9 +130,9 @@ public class MenuButton {
     }
 
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag textBag(String text, float x, float y){
+    private ComponentBag textBag(String text, float x, float y){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag textBag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag textBag = new ComponentBag();
         textBag.add(new PositionComponent(x, y));
         TextureFontComponent tfc = new TextureFontComponent(font, text, textOffSetX, textOffSetY, width,
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE,
@@ -145,8 +146,8 @@ public class MenuButton {
 
     }
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag backingBag(float x, float y){
-        com.bryjamin.wickedwizard.utils.ComponentBag backingBag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+    private ComponentBag backingBag(float x, float y){
+        ComponentBag backingBag = new ComponentBag();
         backingBag.add(new PositionComponent(x, y));
         TextureRegionComponent trc = new TextureRegionComponent(buttonTexture, width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR,
                 backgroundColor);
@@ -156,9 +157,9 @@ public class MenuButton {
     }
 
 
-    public Bag<com.bryjamin.wickedwizard.utils.ComponentBag> createButton(String text, float x, float y){
+    public Bag<ComponentBag> createButton(String text, float x, float y){
 
-        Bag<com.bryjamin.wickedwizard.utils.ComponentBag> bags = new Bag<com.bryjamin.wickedwizard.utils.ComponentBag>();
+        Bag<ComponentBag> bags = new Bag<ComponentBag>();
         bags.add(textBag(text, x, y));
         bags.add(backingBag(x, y));
 

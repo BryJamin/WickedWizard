@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -39,12 +40,12 @@ public class JigFactory extends EnemyFactory{
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag stationaryJig(float x, float y){
+    public ComponentBag stationaryJig(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         this.defaultEnemyBag(bag, x,y,health);
 
 
@@ -98,9 +99,9 @@ public class JigFactory extends EnemyFactory{
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag movingJig(float x, float y, boolean startsRight){
+    public ComponentBag movingJig(float x, float y, boolean startsRight){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = stationaryJig(x,y);
+        ComponentBag bag = stationaryJig(x,y);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? speed : -speed, 0));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
 

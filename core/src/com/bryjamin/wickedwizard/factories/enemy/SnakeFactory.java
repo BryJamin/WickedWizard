@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.Collider;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
@@ -47,13 +48,13 @@ public class SnakeFactory extends EnemyFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag rightSnake(float x, float y, Direction direction){
+    public ComponentBag rightSnake(float x, float y, Direction direction){
 
 
         x = x - width / 2;
         y = y - width / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag  = this.defaultEnemyBagNoLoot(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, 5);
+        ComponentBag bag  = this.defaultEnemyBagNoLoot(new ComponentBag(), x, y, 5);
 
         CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x,y,width,height));
         cbc.hitBoxes.add(new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(x, y, hitboxWidth, hitboxHeight), (width / 2) - (hitboxWidth / 2), (height / 2) - (hitboxHeight / 2)));
@@ -101,13 +102,13 @@ public class SnakeFactory extends EnemyFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag leftSnake(float x, float y, Direction direction){
+    public ComponentBag leftSnake(float x, float y, Direction direction){
 
 
         x = x - width / 2;
         y = y - width / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag  = this.defaultEnemyBagNoLoot(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, 5);
+        ComponentBag bag  = this.defaultEnemyBagNoLoot(new ComponentBag(), x, y, 5);
 
         CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x,y,width,height));
         cbc.hitBoxes.add(new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(x, y, hitboxWidth, hitboxHeight), (width / 2) - (hitboxWidth / 2), (height / 2) - (hitboxHeight / 2)));

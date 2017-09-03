@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -205,7 +206,7 @@ public class ArenaBuilder {
 
                 if(s.ceiling == wall.GRAPPLE || s.ceiling == wall.MANDATORYGRAPPLE){
 
-                    com.bryjamin.wickedwizard.utils.ComponentBag bag = decorFactory.hiddenGrapplePointBag(posX + SECTION_WIDTH / 2, posY + ((SECTION_HEIGHT / 4) * 3));
+                    ComponentBag bag = decorFactory.hiddenGrapplePointBag(posX + SECTION_WIDTH / 2, posY + ((SECTION_HEIGHT / 4) * 3));
                     com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc = new com.bryjamin.wickedwizard.ecs.components.object.DoorComponent(
                             new MapCoords(coordX, coordY),
                             new MapCoords(coordX, coordY + 1),

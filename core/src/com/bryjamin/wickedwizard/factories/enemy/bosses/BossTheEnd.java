@@ -22,6 +22,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -101,12 +102,12 @@ public class BossTheEnd extends BossFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag end(float x, float y){
+    public ComponentBag end(float x, float y){
 
         x = x - mainBodyWidth / 2;
         y = y - mainBodyHeight / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, mainBodyHealth);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, mainBodyHealth);
         com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent.class, bag);
@@ -334,7 +335,7 @@ public class BossTheEnd extends BossFactory {
 
         Entity hand = world.createEntity();
 
-        for(Component c : enemyFactory.defaultEnemyBagNoLoot(new com.bryjamin.wickedwizard.utils.ComponentBag(), tempPos, tempPos, handHealth)){
+        for(Component c : enemyFactory.defaultEnemyBagNoLoot(new ComponentBag(), tempPos, tempPos, handHealth)){
             hand.edit().add(c);
         }
 

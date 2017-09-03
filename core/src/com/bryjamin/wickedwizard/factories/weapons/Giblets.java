@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -141,9 +142,9 @@ public class Giblets extends AbstractFactory implements Action {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag createGiblet(float x, float y, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc, float expiryTime, float size, Color color){
+    public ComponentBag createGiblet(float x, float y, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc, float expiryTime, float size, Color color){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
 
 
         float cx = x - size / 2;
@@ -174,9 +175,9 @@ public class Giblets extends AbstractFactory implements Action {
     }
 
 
-    public Bag<com.bryjamin.wickedwizard.utils.ComponentBag> giblets(float x, float y){
+    public Bag<ComponentBag> giblets(float x, float y){
 
-        Bag<com.bryjamin.wickedwizard.utils.ComponentBag> bags = new Bag<com.bryjamin.wickedwizard.utils.ComponentBag>();
+        Bag<ComponentBag> bags = new Bag<ComponentBag>();
 
         for(int i = 0; i < numberOfGibletPairs; i++) {
 

@@ -7,6 +7,7 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
@@ -85,7 +86,7 @@ public class  ArenaShellFactory extends AbstractFactory {
 
         //TODO in order to clean up this grapple if a top route doesn't exist a mark it with a door.
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = decorFactory.hiddenGrapplePointBag(arena.getWidth() / 2, (arena.getHeight() / 4) * 3);
+        ComponentBag bag = decorFactory.hiddenGrapplePointBag(arena.getWidth() / 2, (arena.getHeight() / 4) * 3);
         DoorComponent dc = new DoorComponent(new MapCoords(defaultCoords.getX(), defaultCoords.getY()),
                 new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1), Direction.UP);
         dc.ignore = true;

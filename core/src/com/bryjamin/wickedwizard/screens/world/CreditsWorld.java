@@ -209,10 +209,10 @@ public class CreditsWorld {
     };
 
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag createCreditsBag(String text){
+    private ComponentBag createCreditsBag(String text){
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
 
         PositionComponent pc = new PositionComponent(gameport.getCamera().position.x - MainGame.GAME_WIDTH / 2,
                 -Measure.units(5f));
@@ -230,7 +230,7 @@ public class CreditsWorld {
 
     }
 
-    private com.bryjamin.wickedwizard.utils.Pair<ComponentBag, Float> createCreditsPart (com.bryjamin.wickedwizard.utils.ComponentBag bag, float distanceTravelledTillNextInLine){
+    private com.bryjamin.wickedwizard.utils.Pair<ComponentBag, Float> createCreditsPart (ComponentBag bag, float distanceTravelledTillNextInLine){
         return new com.bryjamin.wickedwizard.utils.Pair<ComponentBag, Float>(bag, distanceTravelledTillNextInLine);
     }
 

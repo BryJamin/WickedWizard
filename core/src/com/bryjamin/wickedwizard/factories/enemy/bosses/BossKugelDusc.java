@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -51,18 +52,18 @@ public class BossKugelDusc extends BossFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag giantKugelDusche(float x, float y) {
+    public ComponentBag giantKugelDusche(float x, float y) {
         return giantKugelDusche(x, y, new Random().nextBoolean());
     };
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag giantKugelDusche(float x, float y, boolean isLeft){
+    public ComponentBag giantKugelDusche(float x, float y, boolean isLeft){
 
         final boolean left = isLeft;
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x , y, health);
+        ComponentBag bag = this.defaultBossBag(new ComponentBag(), x , y, health);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 

@@ -46,6 +46,7 @@ import com.bryjamin.wickedwizard.utils.enums.Direction;
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_NEAR;
 
+
 /**
  * Created by Home on 04/03/2017.
  */

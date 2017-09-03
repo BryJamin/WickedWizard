@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -71,7 +72,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
 
 
-                com.bryjamin.wickedwizard.utils.ComponentBag saveGame = arena.createArenaBag();
+                ComponentBag saveGame = arena.createArenaBag();
                 saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -84,7 +85,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
 
-                com.bryjamin.wickedwizard.utils.ComponentBag endFade = new com.bryjamin.wickedwizard.utils.ComponentBag();
+                ComponentBag endFade = new ComponentBag();
                 endFade.add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -183,7 +184,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                     }
                 }, 0.5f));
 
-                com.bryjamin.wickedwizard.utils.ComponentBag saveGame = arena.createArenaBag();
+                ComponentBag saveGame = arena.createArenaBag();
                 saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
