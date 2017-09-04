@@ -214,5 +214,14 @@ public class SoundSystem extends EntitySystem {
     protected void dispose() {
         super.dispose();
         sound.stop();
+
+
+        for(Music m : activeLoopedMusic.values().toArray()){
+            m.stop();
+            m.dispose();
+        }
+
+
+
     }
 }

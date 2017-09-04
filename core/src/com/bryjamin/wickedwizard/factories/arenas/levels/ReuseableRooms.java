@@ -10,6 +10,7 @@ import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.Mix;
+import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
@@ -17,6 +18,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
@@ -113,6 +115,8 @@ public class ReuseableRooms extends AbstractFactory {
                 for(int i = 0; i < intBag.size(); i++){
                     world.getEntity(intBag.get(i)).deleteFromWorld();
                 }
+
+                world.getSystem(SoundSystem.class).playSound(SoundFileStrings.itemPickUpMix1);
 
                 if(!DataSave.isDataAvailable(challengeId)){
                     DataSave.saveChallengeData(challengeId);

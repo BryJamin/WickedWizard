@@ -108,14 +108,14 @@ public class TutorialFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL)).buildArena();
 
         Bag<Component> textBag = new Bag<Component>();
-        textBag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
+        textBag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(40f)));
         TextureFontComponent text = new TextureFontComponent(moveTutorialString1, arenaSkin.getWallTint());
         text.layer = BACKGROUND_LAYER_MIDDLE;
         textBag.add(text);
         arena.addEntity(textBag);
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(arena.getWidth() / 2, 125));
+        bag.add(new PositionComponent(arena.getWidth() / 2, Measure.units(6.25f)));
         TextureFontComponent tfc = new TextureFontComponent(moveTutorialString2);
         tfc.layer = FOREGROUND_LAYER_NEAR;
         tfc.setColor(1,1,1,1);
@@ -169,7 +169,7 @@ public class TutorialFactory extends ArenaShellFactory {
         TextureFontComponent tfc = new TextureFontComponent(platformString, arenaSkin.getWallTint());
         tfc.layer = BACKGROUND_LAYER_MIDDLE;
         ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1500));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(75f)));
         bag.add(tfc);
 
         arena.addEntity(bag);
@@ -213,14 +213,14 @@ public class TutorialFactory extends ArenaShellFactory {
 
 
         Bag<Component> jumpTutorialTextbag = new Bag<Component>();
-        jumpTutorialTextbag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
+        jumpTutorialTextbag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(40f)));
         TextureFontComponent jump = new TextureFontComponent(jumpTutorialString, arenaSkin.getWallTint());
         jump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
         jumpTutorialTextbag.add(jump);
         arena.addEntity(jumpTutorialTextbag);
 
         Bag<Component> doubleJumpTutorialTextbag = new Bag<Component>();
-        doubleJumpTutorialTextbag.add(new PositionComponent(wall2PosX - Measure.units(5f), 1000));
+        doubleJumpTutorialTextbag.add(new PositionComponent(wall2PosX - Measure.units(5f), Measure.units(50f)));
         TextureFontComponent doubleJump = new TextureFontComponent(doubleJumpTutorialString, arenaSkin.getWallTint());
         doubleJump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
         doubleJumpTutorialTextbag.add(doubleJump);
@@ -316,7 +316,7 @@ public class TutorialFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.DOOR)).buildArena();
 
         Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 1000));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(50f)));
 
         TextureFontComponent text = new TextureFontComponent(enemyTutorialString, arenaSkin.getWallTint());
         text.layer = BACKGROUND_LAYER_MIDDLE;
@@ -388,7 +388,7 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(decorFactory.platform(0, arena.getHeight() - Measure.units(35), arena.getWidth()));
 
         bag = new Bag<Component>();
-        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, 800));
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(40f)));
 
         TextureFontComponent text = new TextureFontComponent(grappleTutorialString, arenaSkin.getWallTint());
         text.layer = BACKGROUND_LAYER_MIDDLE;

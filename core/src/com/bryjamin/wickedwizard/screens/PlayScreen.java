@@ -300,7 +300,7 @@ public class PlayScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         gameport.update(width, height);
-        gamecam.position.set(gamecam.viewportWidth/2,gamecam.viewportHeight/2,0);
+       // gamecam.position.set(gamecam.viewportWidth/2,gamecam.viewportHeight/2,0);
     }
 
     @Override

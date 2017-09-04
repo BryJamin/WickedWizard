@@ -498,10 +498,6 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(100f)));
 
-                boolean bool = random.nextBoolean();
-
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(Measure.units(20f), Measure.units(95f), bool));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() - Measure.units(20f), Measure.units(95f), !bool));
 
 
                 return arena;
