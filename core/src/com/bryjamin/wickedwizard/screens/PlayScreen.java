@@ -172,10 +172,12 @@ public class PlayScreen extends AbstractScreen {
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
+       // gameport = new StretchViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
+        gameport.apply();
         //gameport.setScreenPosition(-(int)MainGame.GAME_BORDER, -(int)MainGame.GAME_BORDER);
-
+        gamecam.setToOrtho(false);
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
+       // gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
         gamecam.update();
         random = new Random();
         MathUtils.random = random;
@@ -264,6 +266,7 @@ public class PlayScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
         game.batch.setProjectionMatrix(gamecam.combined);
 
         //if(adventureWorld.isGameOver()) adventureWorld.pauseWorld();
@@ -297,6 +300,7 @@ public class PlayScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         gameport.update(width, height);
+        gamecam.position.set(gamecam.viewportWidth/2,gamecam.viewportHeight/2,0);
     }
 
     @Override

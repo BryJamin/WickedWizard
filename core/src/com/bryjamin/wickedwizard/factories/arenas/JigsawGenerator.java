@@ -6,10 +6,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
@@ -618,10 +620,10 @@ public class JigsawGenerator {
 
     }
 
-    private void replaceDoorWithWall(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc, Arena arena){
+    private void replaceDoorWithWall(DoorComponent dc, Arena arena){
 
         Bag<Component> bag = arena.findBag(dc);
-        if (com.bryjamin.wickedwizard.utils.BagSearch.contains(com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent.class, bag)) {
+        if (BagSearch.contains(GrappleableComponent.class, bag) && BagSearch.contains(InCombatActionComponent.class, bag)) {
             arena.getBagOfEntities().remove(bag);
         } else {
             CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
