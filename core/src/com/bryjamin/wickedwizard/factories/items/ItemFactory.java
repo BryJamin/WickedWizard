@@ -18,6 +18,8 @@ import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
+import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
@@ -310,7 +312,7 @@ public class ItemFactory extends AbstractFactory {
         return bags;
     }
 
-    public ComponentBag priceTag(float x, float y, int money, ParentComponent parentComponent){
+    public ComponentBag priceTag(float x, float y, final int money, ParentComponent parentComponent){
 
         ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
@@ -325,6 +327,42 @@ public class ItemFactory extends AbstractFactory {
         priceTag.add(tfc);
         ChildComponent c = new ChildComponent(parentComponent);
         priceTag.add(c);
+
+
+        final Color affordColor = new Color(Color.WHITE);
+        final Color expensiveColor = new Color(Color.RED);
+
+
+        ConditionalActionComponent conditionalActionComponent = new ConditionalActionComponent();
+
+        conditionalActionComponent.add(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return money <= world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class).money;
+            }
+        }, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(TextureFontComponent.class).color = affordColor;
+                e.getComponent(TextureFontComponent.class).DEFAULT = affordColor;
+            }
+        });
+
+
+        conditionalActionComponent.add(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return money > world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class).money;
+            }
+        }, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                e.getComponent(TextureFontComponent.class).color = expensiveColor;
+                e.getComponent(TextureFontComponent.class).DEFAULT = expensiveColor;
+            }
+        });
+
+        priceTag.add(conditionalActionComponent);
 
         return priceTag;
 

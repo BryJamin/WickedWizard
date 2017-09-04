@@ -33,7 +33,7 @@ import java.util.Random;
 public class Rank1ChallengeMaps extends AbstractFactory{
 
     private static final float ARENA_SPEEDRUN_TIMER = 35f;
-    public static final float TUTORIAL_SPEEDRUN_TIMER = 20f;
+    public static final float TUTORIAL_SPEEDRUN_TIMER = 22f;
 
 
     private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
@@ -143,12 +143,16 @@ public class Rank1ChallengeMaps extends AbstractFactory{
                 e.deleteFromWorld();
             }
         }));
-        startingArena.addEntity(new OnLoadFactory().challengeTimer(TUTORIAL_SPEEDRUN_TIMER));
+        //startingArena.addEntity(new OnLoadFactory().challengeTimer(TUTORIAL_SPEEDRUN_TIMER));
 
 
         Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(7,3));
+
+        Arena firstRoom =  timeTrailRoomOneJumpTutorial(new MapCoords(1, 0));
+        firstRoom.addEntity(new OnLoadFactory().challengeTimer(TUTORIAL_SPEEDRUN_TIMER));
+
         ArenaMap arenaMap = new ArenaMap(startingArena,
-                timeTrailRoomOneJumpTutorial(new MapCoords(1, 0)),
+                firstRoom,
                 timeTrailRoomTwoPlatformTutorial(new MapCoords(5,0)),
                 timeTrailRoomThreeGrappleTutorial(new MapCoords(6,0)),
                 timeTrialRoomFourEnemyTutorial(new MapCoords(6,3)),

@@ -19,6 +19,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -30,6 +31,7 @@ import com.bryjamin.wickedwizard.factories.PlayerFactory;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.Collider;
+import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by Home on 04/03/2017.
@@ -133,17 +135,11 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
 
                     if (angleOfTravel >= 0) {
-                        if (angleOfTravel <= (Math.PI / 2)) {
-                            DirectionalSystem.changeDirection(world, e, com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.HIGH);
-                        } else {
-                            DirectionalSystem.changeDirection(world, e, com.bryjamin.wickedwizard.utils.enums.Direction.LEFT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.HIGH);
-                        }
+                        DirectionalSystem.changeDirection(world, e,
+                                    angleOfTravel <= (Math.PI / 2) ? Direction.RIGHT : Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
                     } else {
-                        if (angleOfTravel >= -(Math.PI / 2)) {
-                            DirectionalSystem.changeDirection(world, e, com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.HIGH);
-                        } else {
-                            DirectionalSystem.changeDirection(world, e, com.bryjamin.wickedwizard.utils.enums.Direction.LEFT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.HIGH);
-                        }
+                        DirectionalSystem.changeDirection(world, e,
+                                angleOfTravel >= -(Math.PI / 2) ? Direction.RIGHT : Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
                     }
 
 
