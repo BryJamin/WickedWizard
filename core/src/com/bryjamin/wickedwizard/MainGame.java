@@ -18,13 +18,13 @@ import com.bryjamin.wickedwizard.utils.Measure;
 
 public class MainGame extends Game {
 
-	public static final float GAME_HEIGHT = 1200;
-	public static final float GAME_WIDTH = 2000;
-	public static final float GAME_BORDER = 100;
+	public static final float GAME_HEIGHT = 2400;
+	public static final float GAME_WIDTH = 4000;
+	public static final float GAME_BORDER = 200;
 
 
 
-	public static final int GAME_UNITS = 20;
+	public static final int GAME_UNITS = 40;
 
 	//This means there are 96 tiles wide,
 	//60 tiles high

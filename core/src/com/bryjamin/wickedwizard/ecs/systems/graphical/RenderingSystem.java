@@ -84,7 +84,11 @@ public class RenderingSystem extends EntitySystem {
 
     @Override
     protected void begin() {
+
+        gameport.getCamera().update();
+
         batch.setProjectionMatrix(gameport.getCamera().combined);
+
         if(!batch.isDrawing()) {
             batch.begin();
         }
@@ -97,8 +101,14 @@ public class RenderingSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        int count = 0;
+      //  int count = 0;
 
+
+     /*   System.out.println("Gdx :" + Gdx.graphics.getWidth());
+
+        System.out.println(gameport.getScreenWidth());
+        System.out.println(gameport.getCamera().viewportWidth);
+*/
         for (int i = 0; orderedEntities.size() > i; i++) {
             if(process(orderedEntities.get(i))){
                // count++;

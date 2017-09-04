@@ -46,7 +46,7 @@ public class ArenaGUI {
 
     private float mapBlinker;
 
-    private static final float LINE_THICKNESS = 4;
+    private static final float LINE_THICKNESS = Measure.units(0.2f);
 
     private boolean blink;
 

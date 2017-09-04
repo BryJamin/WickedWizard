@@ -102,7 +102,6 @@ public class BossAjir extends BossFactory {
         y = y - height / 2;
 
         ComponentBag bag = this.defaultBossBagNoDeath(new ComponentBag(), x, y, health);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent());
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new Action() {
             @Override

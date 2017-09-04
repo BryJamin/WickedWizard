@@ -71,6 +71,7 @@ public class LockSystem extends EntitySystem {
                 if(sm.has(e)){
                     sm.get(e).setDefaultState(AnimationStateComponent.State.UNLOCKED.getState());
                 }
+
             }
         }
     }

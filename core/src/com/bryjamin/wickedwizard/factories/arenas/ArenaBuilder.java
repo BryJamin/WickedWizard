@@ -22,7 +22,7 @@ public class ArenaBuilder {
 /*    public static final float WIDTH = MainGame.GAME_WIDTH;
     public static final float HEIGHT = MainGame.GAME_HEIGHT;*/
 
-    public static final float WALLWIDTH = Measure.units(5);
+    public static final float WALLWIDTH = Measure.units(5.0f);
 
     public enum wall {
         FULL, DOOR, MANDATORYDOOR, NONE, GRAPPLE, MANDATORYGRAPPLE; //TODO waaaaay too hackkkkkyy

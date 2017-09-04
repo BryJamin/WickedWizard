@@ -5,7 +5,7 @@ package com.bryjamin.wickedwizard.assets;
  */
 public class TextureStrings {
 
-    public static final  String BLOCK = "block";
+    public static final  String BLOCK = "blocktiny";
 
     public static final  String BLOCK_WALK = "block_walk";
 
@@ -153,7 +153,7 @@ public class TextureStrings {
 
     public static final String CIRCLE = "circle";
 
-    public static final String GRAPPLE = "grapple";
+    public static final String GRAPPLE = "decor/grapple";
 
 
     //SWITCH

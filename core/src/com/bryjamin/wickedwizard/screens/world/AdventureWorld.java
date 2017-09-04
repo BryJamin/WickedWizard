@@ -27,6 +27,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.bryjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LockSystem;
@@ -50,7 +51,9 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
@@ -208,8 +211,8 @@ public class AdventureWorld {
                         new CameraShakeSystem(gameport),
                         new FollowPositionSystem(),
                         new FadeSystem(), //Applies any fade before render
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem(batch, assetManager, gameport),
-                        new com.bryjamin.wickedwizard.ecs.systems.BulletSystem(),
+                        new RenderingSystem(batch, assetManager, gameport),
+                        new BulletSystem(),
                         new ScreenWipeSystem(batch, assetManager, (OrthographicCamera) gameport.getCamera()),
                         new BoundsDrawingSystem(),
                         new DoorSystem(),
@@ -220,7 +223,7 @@ public class AdventureWorld {
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
                         new EndGameSystem(game),
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem(game, gameport,
+                        new UISystem(game, gameport,
                                 arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
                                 playerStats,
                                 playerCurrency),
