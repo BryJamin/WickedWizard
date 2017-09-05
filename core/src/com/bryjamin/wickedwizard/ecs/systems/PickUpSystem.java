@@ -6,12 +6,13 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 09/04/2017.
@@ -65,7 +66,7 @@ public class PickUpSystem extends EntityProcessingSystem {
         itemHoverAffect.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(player.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position,
                 0, pBound.bound.getHeight() + pBound.bound.getHeight() / 4));
         itemHoverAffect.edit().add(new TextureRegionComponent(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem.class).atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
-                com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
+                Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));
         itemHoverAffect.edit().add(new ExpireComponent(1.2f));
 
         FadeComponent fc = new FadeComponent(false, 1.0f, false);

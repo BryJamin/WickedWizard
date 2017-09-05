@@ -23,6 +23,7 @@ import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by BB on 20/08/2017.
@@ -35,16 +36,16 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
     private final TextureAtlas atlas;
 
 
-    private static final float buttonWidth = com.bryjamin.wickedwizard.utils.Measure.units(7.5f);
-    private static final float buttonHeight = com.bryjamin.wickedwizard.utils.Measure.units(7.5f);
-    private static final float buttonGap = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+    private static final float buttonWidth = Measure.units(7.5f);
+    private static final float buttonHeight = Measure.units(7.5f);
+    private static final float buttonGap = Measure.units(2.5f);
 
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
 
     private static final int maxColumns = 9;
 
-    private static final float startY = com.bryjamin.wickedwizard.utils.Measure.units(40f);
+    private static final float startY = Measure.units(40f);
     private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (buttonWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
 
     private ChallengeMaps challengeMaps;
@@ -93,12 +94,12 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                 .createButton(world,
                         MenuStrings.TRAILS,
                         CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
-                        com.bryjamin.wickedwizard.utils.Measure.units(50f));
+                        Measure.units(50f));
 
 
         Entity backToMainMenu = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
-                .width(com.bryjamin.wickedwizard.utils.Measure.units(30f))
-                .height(com.bryjamin.wickedwizard.utils.Measure.units(10f))
+                .width(Measure.units(30f))
+                .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
                 .backgroundColor(new Color(Color.WHITE))
                 .action(new Action() {
@@ -111,8 +112,8 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                 .createButton(
                         world,
                         MenuStrings.MAIN_MENU,
-                        MainGame.GAME_WIDTH - com.bryjamin.wickedwizard.utils.Measure.units(30f) - com.bryjamin.wickedwizard.utils.Measure.units(5f)
-                        , com.bryjamin.wickedwizard.utils.Measure.units(5f));
+                        MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
+                        , Measure.units(5f));
 
 
 
@@ -125,9 +126,9 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
         int count = 0;
 
 
-        float startY = com.bryjamin.wickedwizard.utils.Measure.units(40f);
+        float startY = Measure.units(40f);
 
-        float buttonGap = com.bryjamin.wickedwizard.utils.Measure.units(2.5f);
+        float buttonGap = Measure.units(2.5f);
 
 
         int maxColumns = 9;

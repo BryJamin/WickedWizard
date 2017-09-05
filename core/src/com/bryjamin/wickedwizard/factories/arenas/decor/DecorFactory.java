@@ -10,26 +10,26 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
-import com.bryjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
-import com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent;
-import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.LockComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.BackgroundFactory;
@@ -39,12 +39,13 @@ import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
-import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_FAR;
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.PLAYER_LAYER_NEAR;
+
 
 /**
  * Created by Home on 04/03/2017.
@@ -264,7 +265,7 @@ public class DecorFactory extends AbstractFactory {
 
     public ComponentBag defaultDoorBag(float x, float y, boolean isVertical, MapCoords current, MapCoords leaveCoords, Direction exitDirection){
 
-        float width = isVertical ? Measure.units(5) : Measure.units(20);
+        float width = isVertical ? Measure.units(5.0f) : Measure.units(20);
         float height = isVertical ? Measure.units(20) : Measure.units(5);
 
         return doorBag(x, y, width, height, isVertical, current, leaveCoords, exitDirection);
@@ -299,10 +300,8 @@ public class DecorFactory extends AbstractFactory {
                 isVertical ? 0 : CenterMath.offsetX(height, width),
                 isVertical ? width : height,
                 isVertical ? height : width,
-                PLAYER_LAYER_FAR);
-
-        trc.color = arenaSkin.getWallTint();
-        trc.DEFAULT = arenaSkin.getWallTint();
+                PLAYER_LAYER_FAR,
+                arenaSkin.getWallTint());
 
         trc.rotation = isVertical ? 0 : 90;
 

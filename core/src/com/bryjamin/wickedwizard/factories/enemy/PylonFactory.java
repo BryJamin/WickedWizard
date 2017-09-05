@@ -9,14 +9,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 21/06/2017.
@@ -24,8 +26,8 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 
 public class PylonFactory extends EnemyFactory {
 
-    public float width = com.bryjamin.wickedwizard.utils.Measure.units(10f);
-    public float height = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    public float width = Measure.units(10f);
+    public float height = Measure.units(10f);
 
     private final float health = 9f;
 
@@ -37,9 +39,9 @@ public class PylonFactory extends EnemyFactory {
     }
 
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag basePylonBag(float x, float y, float rotationInDegrees, Color color){
+    private ComponentBag basePylonBag(float x, float y, float rotationInDegrees, Color color){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
 
@@ -67,9 +69,9 @@ public class PylonFactory extends EnemyFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag pylonBag(float x, float y, float rotationInDegrees){
+    public ComponentBag pylonBag(float x, float y, float rotationInDegrees){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.ENEMY_BULLET_COLOR);
+        ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.ENEMY_BULLET_COLOR);
 
         int[] ints = new int[] {0,45,90,135,180};
         for(int i = 0; i < ints.length; i++) ints[i] = ints[i] + (int) rotationInDegrees;
@@ -86,9 +88,9 @@ public class PylonFactory extends EnemyFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag ghostPylonBag(float x, float y, float rotationInDegrees){
+    public ComponentBag ghostPylonBag(float x, float y, float rotationInDegrees){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.GHOST_BULLET_COLOR);
+        ComponentBag bag = basePylonBag(x, y, rotationInDegrees, ColorResource.GHOST_BULLET_COLOR);
 
         int[] ints = new int[] {0,45,90,135,180};
         for(int i = 0; i < ints.length; i++) ints[i] = ints[i] + (int) rotationInDegrees;
@@ -99,7 +101,7 @@ public class PylonFactory extends EnemyFactory {
                 .color(new Color(ColorResource.GHOST_BULLET_COLOR))
                 .intangible(true)
                 .expire(true)
-                .expireRange(com.bryjamin.wickedwizard.utils.Measure.units(100f))
+                .expireRange(Measure.units(100f))
                 .build();
 
         bag.add(spawningCondition(0, mp));

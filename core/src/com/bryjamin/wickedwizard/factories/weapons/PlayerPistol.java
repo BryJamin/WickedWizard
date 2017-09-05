@@ -7,11 +7,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
+import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
-import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.BulletFactory;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -56,6 +57,7 @@ public class PlayerPistol implements Weapon{
 
         float shotscale = defaultShotScale + (playerStats.shotSize * shotScaleMultiplier);
         if(shotscale >= 4.5f) shotscale = 4.5f;
+        if(shotscale <= 1f) shotscale = 1f;
 
         for(Component c : bulletFactory.basicBulletBag(x,y, shotscale, isCrit ? new Color(0,0,0,1) : new Color(1,1,1,1))){
             bullet.edit().add(c);
@@ -89,10 +91,10 @@ public class PlayerPistol implements Weapon{
                     .colors(new Color(Color.WHITE))
                     .build()));
         }
-        if(world.getMapper(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).has(e)) {
+        if(world.getMapper(StatComponent.class).has(e)) {
             bullet.getComponent(BulletComponent.class).damage = (!isCrit) ?
-                    baseDamage * (1 + e.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).damage * 0.1f) :
-                    baseDamage * ((1 + (e.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).damage * 0.1f)) * 2f);  //crit multiplier
+                    baseDamage * (1 + e.getComponent(StatComponent.class).damage * 0.1f) :
+                    baseDamage * ((1 + (e.getComponent(StatComponent.class).damage * 0.1f)) * 2f);  //crit multiplier
            // System.out.println("Bullet damage" + bullet.getComponent(BulletComponent.class).damage);
         }
 

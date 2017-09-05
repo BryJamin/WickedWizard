@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 11/04/2017.
@@ -24,22 +26,22 @@ public class SilverHeadFactory extends EnemyFactory {
     private final static int OPENING = 4;
     private final static int CHARING = 8;
 
-    private final static float width = com.bryjamin.wickedwizard.utils.Measure.units(9);
-    private final static float height = com.bryjamin.wickedwizard.utils.Measure.units(9f);
+    private final static float width = Measure.units(9);
+    private final static float height = Measure.units(9f);
 
     private final static float health = 11f;
 
-    private final static float textureWidth = com.bryjamin.wickedwizard.utils.Measure.units(9);
-    private final static float textureHeight = com.bryjamin.wickedwizard.utils.Measure.units(9);
+    private final static float textureWidth = Measure.units(9);
+    private final static float textureHeight = Measure.units(9);
 
     private final static float textureOffsetX = 0;
     private final static float textureOffsetY = 0;
 
-    private final static float accelX = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-    private final static float maxX = com.bryjamin.wickedwizard.utils.Measure.units(20f);
+    private final static float accelX = Measure.units(5f);
+    private final static float maxX = Measure.units(20f);
 
-    private final static float chargeAccelX = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-    private final static float chargeMaxX = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+    private final static float chargeAccelX = Measure.units(5f);
+    private final static float chargeMaxX = Measure.units(5f);
 
     private com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol silverHeadWeapon;
 
@@ -47,18 +49,18 @@ public class SilverHeadFactory extends EnemyFactory {
         super(assetManager);
         silverHeadWeapon = new com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder(assetManager)
                 .angles(0,30,60,80,100,120,150,180)
-                .shotSpeed(com.bryjamin.wickedwizard.utils.Measure.units(75f))
+                .shotSpeed(Measure.units(75f))
                 .shotScale(3)
                 .gravity(true)
                 .build();
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag silverHead(float x, float y){
+    public ComponentBag silverHead(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x , y,health);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y,health);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());

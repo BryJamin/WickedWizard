@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 08/07/2017.
@@ -49,11 +50,11 @@ public class LaserBeam {
         private final AssetManager assetManager;
 
         //Optional Parameters
-        private float chargingLaserWidth =  com.bryjamin.wickedwizard.utils.Measure.units(5f);
-        private float chargingLaserHeight = com.bryjamin.wickedwizard.utils.Measure.units(50f);
+        private float chargingLaserWidth =  Measure.units(5f);
+        private float chargingLaserHeight = Measure.units(50f);
 
-        private float activeLaserWidth = com.bryjamin.wickedwizard.utils.Measure.units(7.5f);
-        private float activeLaserHeight = com.bryjamin.wickedwizard.utils.Measure.units(50f);
+        private float activeLaserWidth = Measure.units(7.5f);
+        private float activeLaserHeight = Measure.units(50f);
 
         private float activeLaserTime = 0.4f;
         private float chargingLaserTime = 0.8f;

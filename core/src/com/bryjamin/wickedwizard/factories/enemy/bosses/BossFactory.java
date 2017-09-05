@@ -16,6 +16,8 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by BB on 01/09/2017.
@@ -29,7 +31,7 @@ public class BossFactory extends AbstractFactory {
     }
 
 
-    protected com.bryjamin.wickedwizard.utils.ComponentBag defaultBossBag (final com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health) {
+    protected ComponentBag defaultBossBag (final ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
@@ -48,7 +50,7 @@ public class BossFactory extends AbstractFactory {
 
     }
 
-    protected com.bryjamin.wickedwizard.utils.ComponentBag defaultBossBagNoDeath (final com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health) {
+    protected ComponentBag defaultBossBagNoDeath (final ComponentBag fillbag, float x, float y, float health) {
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
@@ -73,14 +75,14 @@ public class BossFactory extends AbstractFactory {
 
             com.bryjamin.wickedwizard.factories.weapons.Giblets giblets = new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                     .intangible(false)
-                    .minSpeed(com.bryjamin.wickedwizard.utils.Measure.units(10f))
-                    .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(100f))
+                    .minSpeed(Measure.units(10f))
+                    .maxSpeed(Measure.units(100f))
                     .expiryTime(0.6f)
                     .fadeChance(0.75f)
                     .intangible(true)
                     .numberOfGibletPairs(8)
                     .mixes(SoundFileStrings.bigExplosionMegaMix)
-                    .size(com.bryjamin.wickedwizard.utils.Measure.units(1f))
+                    .size(Measure.units(1f))
                     .colors(new Color(new Color(Color.RED)), new Color(ColorResource.BOMB_ORANGE), new Color(Color.BLACK))
                     .build();
 

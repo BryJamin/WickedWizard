@@ -17,6 +17,9 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 28/07/2017.
@@ -38,12 +41,12 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
     public ArenaMap endGameMap() {
-        return new ArenaMap(endRoom().createArena(new com.bryjamin.wickedwizard.utils.MapCoords()));
+        return new ArenaMap(endRoom().createArena(new MapCoords()));
     }
 
 
     public ArenaMap endBossRushMap(String bossRushId) {
-        return new ArenaMap(endBossRushRoom(bossRushId).createArena(new com.bryjamin.wickedwizard.utils.MapCoords()));
+        return new ArenaMap(endBossRushRoom(bossRushId).createArena(new MapCoords()));
     }
 
 
@@ -52,7 +55,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP);
 
@@ -65,11 +68,11 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 Arena arena = arenaBuilder.buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(-com.bryjamin.wickedwizard.utils.Measure.units(5f), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
 
 
-                com.bryjamin.wickedwizard.utils.ComponentBag saveGame = arena.createArenaBag();
+                ComponentBag saveGame = arena.createArenaBag();
                 saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -82,7 +85,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
 
-                com.bryjamin.wickedwizard.utils.ComponentBag endFade = new com.bryjamin.wickedwizard.utils.ComponentBag();
+                ComponentBag endFade = new ComponentBag();
                 endFade.add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -135,7 +138,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP);
 
@@ -148,8 +151,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 Arena arena = arenaBuilder.buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(-com.bryjamin.wickedwizard.utils.Measure.units(5f), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
 
 
 
@@ -160,7 +163,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
                         Arena arena = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena();
 
-                        com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                        com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(45f),
 
                                 new Action() {
                                     @Override
@@ -181,7 +184,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                     }
                 }, 0.5f));
 
-                com.bryjamin.wickedwizard.utils.ComponentBag saveGame = arena.createArenaBag();
+                ComponentBag saveGame = arena.createArenaBag();
                 saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {

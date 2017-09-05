@@ -105,7 +105,6 @@ public class MenuScreen extends AbstractScreen {
     public MenuScreen(MainGame game) {
         super(game);
 
-
         preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
 
         if(menuType == null) {
@@ -180,7 +179,11 @@ public class MenuScreen extends AbstractScreen {
                     }
 
                 } else {
-                    Gdx.app.exit();
+
+                    if (keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE) {
+                        Gdx.app.exit();
+                    }
+
                 }
 
                 return super.keyDown(keycode);

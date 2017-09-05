@@ -8,13 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -46,12 +47,12 @@ public class KugelDuscheFactory extends EnemyFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag kugelDusche(float x, float y, final boolean isLeft){
+    public ComponentBag kugelDusche(float x, float y, final boolean isLeft){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x , y, kugelHealth);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, kugelHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 
@@ -93,12 +94,12 @@ public class KugelDuscheFactory extends EnemyFactory {
 
 
     //TODO since this changes this should be a different animation
-    public com.bryjamin.wickedwizard.utils.ComponentBag laserKugel(float x, float y, boolean isLeft){
+    public ComponentBag laserKugel(float x, float y, boolean isLeft){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x , y, laserKugelHealth);
+        ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, laserKugelHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
 

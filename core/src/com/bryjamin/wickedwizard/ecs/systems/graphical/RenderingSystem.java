@@ -20,7 +20,9 @@ import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
@@ -60,21 +62,26 @@ public class RenderingSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, AssetManager assetManager, Viewport gameport) {
-        super(Aspect.all(PositionComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.texture.UIComponent.class).one(
+
+
+        super(Aspect.all(PositionComponent.class).exclude(UIComponent.class).one(
                 TextureRegionComponent.class,
-                com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent.class,
+                TextureRegionBatchComponent.class,
                 TextureFontComponent.class
         ));
         this.batch = batch;
         this.gameport = gameport;
         this.assetManager = assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-
         orderedEntities = new ArrayList<Entity>();
-
         loadShader();
 
+
+
+
     }
+
+
 
     public void loadShader() {
         whiteShaderProgram = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
@@ -84,7 +91,11 @@ public class RenderingSystem extends EntitySystem {
 
     @Override
     protected void begin() {
+
+        gameport.getCamera().update();
+
         batch.setProjectionMatrix(gameport.getCamera().combined);
+
         if(!batch.isDrawing()) {
             batch.begin();
         }
@@ -97,11 +108,17 @@ public class RenderingSystem extends EntitySystem {
     @Override
     protected void processSystem() {
 
-        int count = 0;
+      //  int count = 0;
 
+
+     /*   System.out.println("Gdx :" + Gdx.graphics.getWidth());
+
+        System.out.println(gameport.getScreenWidth());
+        System.out.println(gameport.getCamera().viewportWidth);
+*/
         for (int i = 0; orderedEntities.size() > i; i++) {
             if(process(orderedEntities.get(i))){
-               // count++;
+                // count++;
             };
         }
 
@@ -256,9 +273,9 @@ public class RenderingSystem extends EntitySystem {
 
 /*        System.out.println("\n BLOCK");
         System.out.println(performanceCounter.name + " BLOCK");
-        System.out.println("MAX " + performanceCounter.time.max);
-        System.out.println("AVERAGE " + performanceCounter.time.average);
-        System.out.println("LATEST " + performanceCounter.time.latest);*/
+        System.out.println("MAX " + performanceCounter.spawnTime.max);
+        System.out.println("AVERAGE " + performanceCounter.spawnTime.average);
+        System.out.println("LATEST " + performanceCounter.spawnTime.latest);*/
 
      /*   System.out.println("Render calls:" + batch.renderCalls);
 

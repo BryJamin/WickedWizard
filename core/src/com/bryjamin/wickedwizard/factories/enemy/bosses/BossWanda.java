@@ -12,17 +12,17 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
-import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -34,6 +34,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
@@ -83,13 +84,13 @@ public class BossWanda extends BossFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag wanda(float x, float y) {
+    public ComponentBag wanda(float x, float y) {
 
         x = x - width / 2;
         y = y - height / 2;
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = defaultBossBag(new com.bryjamin.wickedwizard.utils.ComponentBag(), x , y, 75);
+        ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, 75);
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
 

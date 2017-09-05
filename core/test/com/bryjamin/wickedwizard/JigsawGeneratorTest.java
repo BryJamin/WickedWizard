@@ -3,13 +3,14 @@ package com.bryjamin.wickedwizard;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
 
 import org.junit.Test;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Home on 14/02/2017.
@@ -51,7 +52,7 @@ public class JigsawGeneratorTest extends GameTest {
             jg.cleanArenas();
 
 
-            Array<com.bryjamin.wickedwizard.factories.arenas.Arena> arenas = jg.getStartingMap().getRoomArray();
+            Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
 
 /*            OrderedSet<DoorComponent> dcs = jg.createAvaliableDoorSet(arenas);
@@ -65,12 +66,12 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean bossRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
+            for (Arena a : arenas) {
 /*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -81,8 +82,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean itemRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.ITEM) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -92,8 +93,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean shopRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.SHOP) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -136,12 +137,12 @@ public class JigsawGeneratorTest extends GameTest {
             jg.generate();
             jg.cleanArenas();
 
-            Array<com.bryjamin.wickedwizard.factories.arenas.Arena> arenas = jg.getStartingMap().getRoomArray();
+            Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
             boolean bossRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.BOSS) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -152,8 +153,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean itemRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.ITEM) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -163,8 +164,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean shopRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.SHOP) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -209,16 +210,16 @@ public class JigsawGeneratorTest extends GameTest {
             jg.cleanArenas();
 
 
-            Array<com.bryjamin.wickedwizard.factories.arenas.Arena> arenas = jg.getStartingMap().getRoomArray();
+            Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
             boolean bossRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
+            for (Arena a : arenas) {
 /*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -229,8 +230,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean itemRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.ITEM) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -240,8 +241,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean shopRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.SHOP) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -286,7 +287,7 @@ public class JigsawGeneratorTest extends GameTest {
             jg.cleanArenas();
 
 
-            Array<com.bryjamin.wickedwizard.factories.arenas.Arena> arenas = jg.getStartingMap().getRoomArray();
+            Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
 
             System.out.println("Number of rooms is " + numberOfRooms);
@@ -294,12 +295,12 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean bossRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
+            for (Arena a : arenas) {
 /*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -310,8 +311,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean itemRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.ITEM) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -321,8 +322,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean shopRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.SHOP) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }
@@ -372,16 +373,16 @@ public class JigsawGeneratorTest extends GameTest {
 
             System.out.println("Number of rooms is " + numberOfRooms);
 
-            Array<com.bryjamin.wickedwizard.factories.arenas.Arena> arenas = jg.getStartingMap().getRoomArray();
+            Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
             boolean bossRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
+            for (Arena a : arenas) {
 /*                System.out.println(a.arenaType);
                 for(MapCoords mc : a.cotainingCoords){
                     System.out.println(mc);
                 }*/
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.BOSS) {
+                if (a.arenaType == Arena.ArenaType.BOSS) {
                     bossRoom = true;
                     break;
                 }
@@ -392,8 +393,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean itemRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.ITEM) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.ITEM) {
                     itemRoom = true;
                     break;
                 }
@@ -403,8 +404,8 @@ public class JigsawGeneratorTest extends GameTest {
 
             boolean shopRoom = false;
 
-            for (com.bryjamin.wickedwizard.factories.arenas.Arena a : arenas) {
-                if (a.arenaType == com.bryjamin.wickedwizard.factories.arenas.Arena.ArenaType.SHOP) {
+            for (Arena a : arenas) {
+                if (a.arenaType == Arena.ArenaType.SHOP) {
                     shopRoom = true;
                     break;
                 }

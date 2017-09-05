@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.bryjamin.wickedwizard.GameTest;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
@@ -153,7 +154,7 @@ public class ItemStoreTest extends GameTest {
 
             i.applyEffect(world, e);
 
-            com.bryjamin.wickedwizard.ecs.components.StatComponent after = e.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class);
+            com.bryjamin.wickedwizard.ecs.components.StatComponent after = e.getComponent(StatComponent.class);
 
             health += (after.health > pre.health) ? 1 : 0;
             maxHealth += (after.maxHealth > pre.maxHealth) ? 1 : 0;

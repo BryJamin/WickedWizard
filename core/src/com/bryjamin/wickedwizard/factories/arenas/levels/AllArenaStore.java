@@ -6,6 +6,7 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
@@ -33,8 +34,8 @@ public class AllArenaStore extends AbstractFactory {
         allLevels.add(new com.bryjamin.wickedwizard.factories.arenas.levels.Level5Rooms(assetManager, Level.FIVE.getArenaSkin(), random));
         this.blank = new ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
-                return new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new com.bryjamin.wickedwizard.utils.MapCoords(), Arena.ArenaType.NORMAL);
+            public Arena createArena(MapCoords defaultCoords) {
+                return new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(new MapCoords(), Arena.ArenaType.NORMAL);
             }
         };
 

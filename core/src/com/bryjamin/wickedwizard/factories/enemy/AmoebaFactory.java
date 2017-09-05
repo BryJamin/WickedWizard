@@ -7,15 +7,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExploderComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -37,7 +38,7 @@ public class AmoebaFactory extends EnemyFactory {
 
     private static final float fastSpeed = Measure.units(20f);
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag fastamoeba(float x , float y){
+    public ComponentBag fastamoeba(float x , float y){
         x = x - width / 2;
         y = y - height / 2;
         return amoebaBag(x,y, fastSpeed, new Color(ColorResource.AMOEBA_FAST_PURPLE));
@@ -45,9 +46,9 @@ public class AmoebaFactory extends EnemyFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag amoebaBag(float x, float y, float speed, Color color){
+    public ComponentBag amoebaBag(float x, float y, float speed, Color color){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         //bag.add(new PositionComponent(x,y));
         this.defaultEnemyBagNoLoot(bag, x, y, 1);
 
@@ -86,7 +87,7 @@ public class AmoebaFactory extends EnemyFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag amoeba(float x, float y) {
+    public ComponentBag amoeba(float x, float y) {
 
         x = x - width / 2;
         y = y - height / 2;

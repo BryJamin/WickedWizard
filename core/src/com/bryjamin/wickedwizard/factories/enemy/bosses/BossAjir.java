@@ -11,15 +11,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -30,29 +32,29 @@ import java.util.Random;
 public class BossAjir extends BossFactory {
 
 
-    private static final float width = com.bryjamin.wickedwizard.utils.Measure.units(25f);
-    private static final float height = com.bryjamin.wickedwizard.utils.Measure.units(25f);
+    private static final float width = Measure.units(25f);
+    private static final float height = Measure.units(25f);
 
-    private static final float textureWidth = com.bryjamin.wickedwizard.utils.Measure.units(25);
-    private static final float textureHeight = com.bryjamin.wickedwizard.utils.Measure.units(25f);
+    private static final float textureWidth = Measure.units(25);
+    private static final float textureHeight = Measure.units(25f);
 
 
-    private static final float bodyHitBoxWidth = com.bryjamin.wickedwizard.utils.Measure.units(7f);
-    private static final float bodyHitBoxHeight = com.bryjamin.wickedwizard.utils.Measure.units(20f);
+    private static final float bodyHitBoxWidth = Measure.units(7f);
+    private static final float bodyHitBoxHeight = Measure.units(20f);
 
-    private static final float armsHitBoxWidth = com.bryjamin.wickedwizard.utils.Measure.units(14);
-    private static final float armsHitBoxHeight = com.bryjamin.wickedwizard.utils.Measure.units(5);
-    private static final float armsHitBoxOffsetY = com.bryjamin.wickedwizard.utils.Measure.units(12.5f);
+    private static final float armsHitBoxWidth = Measure.units(14);
+    private static final float armsHitBoxHeight = Measure.units(5);
+    private static final float armsHitBoxOffsetY = Measure.units(12.5f);
 
-    private static final float chargingLaserWidth = com.bryjamin.wickedwizard.utils.Measure.units(5f);
-    private static final float chargingLaserHeight = com.bryjamin.wickedwizard.utils.Measure.units(100f);
-    private static final float activeLaserWidth = com.bryjamin.wickedwizard.utils.Measure.units(7.5f);
-    private static final float activeLaserHeight = com.bryjamin.wickedwizard.utils.Measure.units(100f);
+    private static final float chargingLaserWidth = Measure.units(5f);
+    private static final float chargingLaserHeight = Measure.units(100f);
+    private static final float activeLaserWidth = Measure.units(7.5f);
+    private static final float activeLaserHeight = Measure.units(100f);
 
     private static final float activeLaserTime = 0.4f;
     private static final float chargingLaserTime = 1.6f;
 
-    private static final float speed = com.bryjamin.wickedwizard.utils.Measure.units(10f);
+    private static final float speed = Measure.units(10f);
 
 
 
@@ -61,7 +63,7 @@ public class BossAjir extends BossFactory {
     private static final float timeBetweenSplitAction = 1.0f;
     private static final float timeBetweenLasers = 1.3f;
 
-    private static final float shotSpeed = com.bryjamin.wickedwizard.utils.Measure.units(25f);
+    private static final float shotSpeed = Measure.units(25f);
 
     //Phase
     private static final float deathFromAbovePhase = 10.0f;
@@ -84,23 +86,22 @@ public class BossAjir extends BossFactory {
 
         this.splitterWeaponGiblets = new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(6)
-                .size(com.bryjamin.wickedwizard.utils.Measure.units(0.75f))
+                .size(Measure.units(0.75f))
                 .fadeChance(0.5f)
-                .minSpeed(com.bryjamin.wickedwizard.utils.Measure.units(30f))
-                .maxSpeed(com.bryjamin.wickedwizard.utils.Measure.units(40f))
+                .minSpeed(Measure.units(30f))
+                .maxSpeed(Measure.units(40f))
                 .colors(new Color(Color.RED))
                 .intangible(false)
                 .expiryTime(0.4f);
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag ajir(float x, float y){
+    public ComponentBag ajir(float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultBossBagNoDeath(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent());
+        ComponentBag bag = this.defaultBossBagNoDeath(new ComponentBag(), x, y, health);
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new Action() {
             @Override
@@ -277,11 +278,11 @@ public class BossAjir extends BossFactory {
 
                     //Multiples the choices by the gap between positions.  To convert the single digit number
                     //into a position in the arena.
-                    positions.add(com.bryjamin.wickedwizard.utils.Measure.units(10f + (choice * gapBetweenPositions)));
-                    positions.add(com.bryjamin.wickedwizard.utils.Measure.units(10f + (secondChoice * gapBetweenPositions)));
+                    positions.add(Measure.units(10f + (choice * gapBetweenPositions)));
+                    positions.add(Measure.units(10f + (secondChoice * gapBetweenPositions)));
 
                     for(Float f : positions) {
-                        laserBeam.createBeam(world, f, com.bryjamin.wickedwizard.utils.Measure.units(10f));
+                        laserBeam.createBeam(world, f, Measure.units(10f));
 
                         //createBeam(world, f, Measure.units(10f));
                     }

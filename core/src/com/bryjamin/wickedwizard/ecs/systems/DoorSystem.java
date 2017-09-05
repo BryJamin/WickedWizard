@@ -6,8 +6,13 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.LockComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
+import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 
 /**
  * Created by Home on 13/03/2017.
@@ -16,11 +21,11 @@ import com.bryjamin.wickedwizard.ecs.components.object.LockComponent;
 public class DoorSystem extends EntityProcessingSystem {
 
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> dm;
+    ComponentMapper<DoorComponent> dm;
     ComponentMapper<LockComponent> lm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent> em;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent> fm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent> bm;
+    ComponentMapper<EnemyComponent> em;
+    ComponentMapper<FriendlyComponent> fm;
+    ComponentMapper<BlinkOnHitComponent> bm;
 
     @SuppressWarnings("unchecked")
     public DoorSystem() {
@@ -51,7 +56,7 @@ public class DoorSystem extends EntityProcessingSystem {
                             float doorEntryPercentage = ((cbm.get(e).bound.y - cbc.bound.getY()) /
                                     (cbc.bound.getHeight()));
 
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).goFromSourceDoorToDestinationDoor(
+                            world.getSystem(RoomTransitionSystem.class).goFromSourceDoorToDestinationDoor(
                                     dm.get(doorEntity),
                                     doorEntryPercentage);
                         }

@@ -7,13 +7,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -27,26 +29,26 @@ public class BouncerFactory extends EnemyFactory {
         super(assetManager);
     }
 
-    private static final float width = com.bryjamin.wickedwizard.utils.Measure.units(5);
-    private static final float height = com.bryjamin.wickedwizard.utils.Measure.units(5);
+    private static final float width = Measure.units(5);
+    private static final float height = Measure.units(5);
 
     private static final Random random = new Random();
 
-    private static final float speed = com.bryjamin.wickedwizard.utils.Measure.units(25f);
+    private static final float speed = Measure.units(25f);
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag smallBouncer(float x, float y){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basicBouncer(x, y, width, height, speed, random.nextBoolean());
+    public ComponentBag smallBouncer(float x, float y){
+        ComponentBag bag = basicBouncer(x, y, width, height, speed, random.nextBoolean());
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag smallBouncer(float x, float y, boolean startsLeft){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basicBouncer(x, y, width, height, speed, startsLeft);
+    public ComponentBag smallBouncer(float x, float y, boolean startsLeft){
+        ComponentBag bag = basicBouncer(x, y, width, height, speed, startsLeft);
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag largeBouncer(float x, float y, boolean startsRight){
+    public ComponentBag largeBouncer(float x, float y, boolean startsRight){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, startsRight);
+        ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, startsRight);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
         bag.add(new LootComponent());
 
@@ -67,13 +69,13 @@ public class BouncerFactory extends EnemyFactory {
         return bag;
     }
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag basicBouncer(float x, float y, float width, float height, float speed, boolean startsRight) {
+    private ComponentBag basicBouncer(float x, float y, float width, float height, float speed, boolean startsRight) {
 
         x = x -width / 2;
         y = y - height / 2;
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
 
         this.defaultEnemyBagNoLoot(bag, x, y, 3);
@@ -94,10 +96,10 @@ public class BouncerFactory extends EnemyFactory {
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag laserBouncer(float x, float y, boolean startsRight){
+    public ComponentBag laserBouncer(float x, float y, boolean startsRight){
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = basicBouncer(x,y,width,height,speed, startsRight);
+        ComponentBag bag = basicBouncer(x,y,width,height,speed, startsRight);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(TextureRegionComponent.class, bag);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(AnimationStateComponent.class, bag);
         com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(AnimationComponent.class, bag);
@@ -119,7 +121,7 @@ public class BouncerFactory extends EnemyFactory {
                 .angles(0,30,60,90,120,150,180,210,240,270,300,330)
                 .shotScale(2)
                 .expire(true)
-                .expireRange(com.bryjamin.wickedwizard.utils.Measure.units(50f))
+                .expireRange(Measure.units(50f))
                 .build();
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(multiPistol, 0f));

@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.ecs.systems.input;
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
+import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 
 /**
@@ -48,8 +49,9 @@ public class ActionOnTouchSystem extends EntitySystem {
      */
     public boolean touch(float x, float y){
         for(Entity e : this.getEntities()) {
+            if(!e.getComponent(ActionOnTouchComponent.class).isEnabled) continue;
             if (e.getComponent(CollisionBoundComponent.class).bound.contains(x, y)) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent.class).action.performAction(world, e);
+                e.getComponent(ActionOnTouchComponent.class).action.performAction(world, e);
                 return true;
             }
         }

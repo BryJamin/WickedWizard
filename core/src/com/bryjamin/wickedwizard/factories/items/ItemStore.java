@@ -1,6 +1,8 @@
 package com.bryjamin.wickedwizard.factories.items;
 
 import com.badlogic.gdx.utils.Array;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 import java.util.Random;
 
@@ -55,7 +57,25 @@ public class ItemStore {
         return generateRoomItem(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS);
     }
 
-    private Item generateRoomItem(com.bryjamin.wickedwizard.utils.enums.ItemType itemType){
+
+    public Item generateAnyItem(){
+
+        Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>(this.itemOptionsArray);
+
+        Item item;
+        if(itemOptionsArray.size > 0) {
+            int i = random.nextInt(itemOptionsArray.size);
+            item = itemOptionsArray.get(i).item;
+            if(!itemOptionsArray.get(i).repeatable) {
+                this.itemOptionsArray.removeValue(itemOptionsArray.get(i), true);
+            }
+        } else {
+            item = new ItemVitaminC();
+        }
+        return item;
+    }
+
+    private Item generateRoomItem(ItemType itemType){
 
         Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
 
@@ -71,7 +91,7 @@ public class ItemStore {
                 this.itemOptionsArray.removeValue(itemOptionsArray.get(i), true);
             }
         } else {
-            item = new com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC();
+            item = new ItemVitaminC();
         }
         return item;
     }

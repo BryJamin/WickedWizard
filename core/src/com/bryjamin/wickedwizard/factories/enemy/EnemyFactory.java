@@ -11,6 +11,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -25,20 +26,20 @@ public class EnemyFactory extends AbstractFactory {
         super(assetManager);
     }
 
-    protected com.bryjamin.wickedwizard.utils.ComponentBag defaultEnemyBag (com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health) {
+    protected ComponentBag defaultEnemyBag (ComponentBag fillbag, float x, float y, float health) {
         return enemyBag(fillbag, x, y, health, true, true);
     }
 
-    protected com.bryjamin.wickedwizard.utils.ComponentBag defaultEnemyBagNoLootNoDeath (com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health) {
+    protected ComponentBag defaultEnemyBagNoLootNoDeath (ComponentBag fillbag, float x, float y, float health) {
         return enemyBag(fillbag, x, y, health, false, false);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag defaultEnemyBagNoLoot (com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health) {
+    public ComponentBag defaultEnemyBagNoLoot (ComponentBag fillbag, float x, float y, float health) {
         return enemyBag(fillbag, x, y, health, false, true);
     }
 
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag enemyBag(com.bryjamin.wickedwizard.utils.ComponentBag fillbag, float x, float y, float health, boolean loot, boolean deathAction){
+    private ComponentBag enemyBag(ComponentBag fillbag, float x, float y, float health, boolean loot, boolean deathAction){
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());

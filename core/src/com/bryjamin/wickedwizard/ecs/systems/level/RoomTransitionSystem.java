@@ -10,18 +10,20 @@ import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
-import com.bryjamin.wickedwizard.utils.enums.Direction;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
+import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 13/03/2017.
@@ -50,9 +52,9 @@ public class RoomTransitionSystem extends EntitySystem {
     private com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap currentMap;
 
     private boolean processingFlag = false;
-    private com.bryjamin.wickedwizard.utils.MapCoords destination;
-    private com.bryjamin.wickedwizard.utils.MapCoords previousDestination;
-    private com.bryjamin.wickedwizard.utils.MapCoords playerLocation = new com.bryjamin.wickedwizard.utils.MapCoords(0,0);
+    private MapCoords destination;
+    private MapCoords previousDestination;
+    private MapCoords playerLocation = new MapCoords(0,0);
     private com.bryjamin.wickedwizard.ecs.components.object.DoorComponent currentDoor;
     private float doorEntryPercentage;
 
@@ -149,7 +151,7 @@ public class RoomTransitionSystem extends EntitySystem {
                 case DOWN:
                     playerPosition.position.x = doorBoundary.getCenterX();
                     playerPosition.position.y = doorBoundary.bound.getY() + playerBoundary.bound.getHeight() * 2;
-                    playerVelocity.velocity.y = (playerVelocity.velocity.y < com.bryjamin.wickedwizard.utils.Measure.units(70f)) ? com.bryjamin.wickedwizard.utils.Measure.units(70f) : playerVelocity.velocity.y;
+                    playerVelocity.velocity.y = (playerVelocity.velocity.y < Measure.units(70f)) ? Measure.units(70f) : playerVelocity.velocity.y;
                     break;
             }
 
@@ -164,7 +166,7 @@ public class RoomTransitionSystem extends EntitySystem {
      * @param destination
      * @return
      */
-    public Arena findRoom(com.bryjamin.wickedwizard.utils.MapCoords destination){
+    public Arena findRoom(MapCoords destination){
         for(Arena a : currentMap.getRoomArray()) {
             if(a.cotainingCoords.contains(destination, false)){
                 return a;
@@ -274,7 +276,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
             if(onRoomLoadMapper.has(e)){
 
-                com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent onRoomLoadActionComponent = e.getComponent(com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent.class);
+                OnRoomLoadActionComponent onRoomLoadActionComponent = e.getComponent(OnRoomLoadActionComponent.class);
                 onRoomLoadActionComponent.action.performAction(world, e);
                 if(!onRoomLoadActionComponent.repeat){
                     e.edit().remove(onRoomLoadActionComponent);
@@ -311,10 +313,10 @@ public class RoomTransitionSystem extends EntitySystem {
 
     /**
      * Calcuates the current player position in Map Co-ordinates using the position of the player
-     * This is to show in real time the player position in rooms of size larger than 1 square
+     * This is to show in real spawnTime the player position in rooms of size larger than 1 square
      * @return - The Player's position in map co-ordinates
      */
-    public com.bryjamin.wickedwizard.utils.MapCoords getCurrentPlayerLocation(){
+    public MapCoords getCurrentPlayerLocation(){
         CollisionBoundComponent pBound = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         playerLocation.setX(currentMap.getCurrentArena().getStartingCoords().getX() + (int) (pBound.getCenterX() / com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH));
         playerLocation.setY(currentMap.getCurrentArena().getStartingCoords().getY() + (int) (pBound.getCenterY() / com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT));

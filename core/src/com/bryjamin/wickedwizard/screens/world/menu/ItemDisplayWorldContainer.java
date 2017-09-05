@@ -32,6 +32,7 @@ import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -54,7 +55,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
     private static final float buttonWidth = Measure.units(7.5f);
     private static final float buttonHeight = Measure.units(7.5f);
 
-    private Array<Bag<com.bryjamin.wickedwizard.utils.ComponentBag>> itemComponentBagArray = new Array<Bag<com.bryjamin.wickedwizard.utils.ComponentBag>>();
+    private Array<Bag<ComponentBag>> itemComponentBagArray = new Array<Bag<ComponentBag>>();
 
     private Bag<Entity> currentlyShownItems;
     private int currentlyShownIndex = 0;
@@ -140,14 +141,14 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         while(allItems.size > 0) {
 
             Array<Item> copyArray = new Array<Item>();
-            Bag<com.bryjamin.wickedwizard.utils.ComponentBag> bagArray = new Bag<com.bryjamin.wickedwizard.utils.ComponentBag>();
+            Bag<ComponentBag> bagArray = new Bag<ComponentBag>();
 
             for (int i = 0; i < allItems.size; i++) {
 
                 int mod = i % maxColumns;
                 int div = i / maxColumns;
 
-                com.bryjamin.wickedwizard.utils.ComponentBag item = itemIcon(allItems.get(i), startX + iconWidth * mod + buttonGap * mod,
+                ComponentBag item = itemIcon(allItems.get(i), startX + iconWidth * mod + buttonGap * mod,
                         startY - (div * iconHeight) - (div * buttonGap));
 
                 bagArray.add(item);
@@ -217,8 +218,8 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
     }
 
-    private com.bryjamin.wickedwizard.utils.ComponentBag itemIcon(Item item, float x, float y){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+    private ComponentBag itemIcon(Item item, float x, float y){
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
 
         boolean isItemCollected = DataSave.isItemCollected(item.getValues().id);

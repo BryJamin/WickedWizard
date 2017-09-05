@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.ecs.components.movement;
 
 import com.artemis.Component;
 import com.badlogic.gdx.math.Vector3;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 16/05/2017.
@@ -22,7 +23,7 @@ public class OrbitComponent extends Component {
 
     public OrbitComponent(){
         centerOfOrbit = new Vector3();
-        radius = com.bryjamin.wickedwizard.utils.Measure.units(5f);
+        radius = Measure.units(5f);
         speedInDegrees = 1;
     }
 

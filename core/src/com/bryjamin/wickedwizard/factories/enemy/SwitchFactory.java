@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.BagSearch;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -32,9 +33,9 @@ public class SwitchFactory extends EnemyFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag switchBag(float x , float y, float rotation){
+    public ComponentBag switchBag(float x , float y, float rotation){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = this.defaultEnemyBagNoLoot(new com.bryjamin.wickedwizard.utils.ComponentBag(), x, y, health);
+        ComponentBag bag = this.defaultEnemyBagNoLoot(new ComponentBag(), x, y, health);
         BagSearch.removeObjectOfTypeClass(EnemyComponent.class,bag);
         bag.add(new ArenaLockComponent());
 
@@ -57,9 +58,9 @@ public class SwitchFactory extends EnemyFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag fadeInswitchBag(float x , float y, float rotation){
+    public ComponentBag fadeInswitchBag(float x , float y, float rotation){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = switchBag(x,y,rotation);
+        ComponentBag bag = switchBag(x,y,rotation);
 
         FadeComponent fc = new FadeComponent(true, 0.5f, false);
         fc.flicker = true;

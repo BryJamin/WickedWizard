@@ -21,6 +21,8 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.bosses.BossTheEnd;
+import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 09/07/2017.
@@ -54,7 +56,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
     public ArenaMap theEndMapAdventureMode(final ArenaMap destinationMapAfterBossKill){
 
-        Arena arena = endArena().createArena(new com.bryjamin.wickedwizard.utils.MapCoords(0,0));
+        Arena arena = endArena().createArena(new MapCoords(0,0));
 
         arena.createArenaBag().add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
@@ -87,7 +89,7 @@ public class BossArenaEndBoss extends AbstractFactory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate endStartingRoom(final ArenaMap destinationMapAfterBossKill) {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -133,7 +135,7 @@ public class BossArenaEndBoss extends AbstractFactory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate endArena() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -142,7 +144,7 @@ public class BossArenaEndBoss extends AbstractFactory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 new AllBlackSkin()))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 20),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 20),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
@@ -150,7 +152,7 @@ public class BossArenaEndBoss extends AbstractFactory {
                                 new AllBlackSkin()))
                         .buildArena();
 
-                arena.addEntity(new BossTheEnd(assetManager).end(com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH / 2, com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+                arena.addEntity(new BossTheEnd(assetManager).end(com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH / 2, Measure.units(35f)));
 
                 return arena;
             }

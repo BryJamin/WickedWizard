@@ -144,7 +144,7 @@ public class SoundSystem extends EntitySystem {
             sec.currentVolume -= world.delta * sec.volumeFadeFactor * MASTER_VOLUME;
 
             if(sec.currentVolume <= 0){
-                Music m = Gdx.audio.newMusic(Gdx.files.internal(sec.mix.getFileName())); //activeLoopedMusic.get(sec);
+                Music m = activeLoopedMusic.get(sec); //Gdx.audio.newMusic(Gdx.files.internal(sec.mix.getFileName())); //activeLoopedMusic.get(sec);
                 m.setVolume(0);
                 m.stop();
                 m.dispose();
@@ -214,5 +214,14 @@ public class SoundSystem extends EntitySystem {
     protected void dispose() {
         super.dispose();
         sound.stop();
+
+
+        for(Music m : activeLoopedMusic.values().toArray()){
+            m.stop();
+            m.dispose();
+        }
+
+
+
     }
 }

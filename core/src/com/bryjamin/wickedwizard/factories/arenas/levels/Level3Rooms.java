@@ -12,6 +12,8 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.bryjamin.wickedwizard.factories.enemy.TurretFactory;
+import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
@@ -61,7 +63,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(11, room12MinesTriSentryAndBouncers());
         ag.insert(12,room13FlyByMinesAndBouncers());
         ag.insert(13, room14TrapRoomTriAndTwoBouncers());
-        ag.insert(14, room15TreasureTrapRoomWithPotentialOfFiveChests()); //Nerfed it has the potential for 5 but not all the time
+        ag.insert(14, room15TreasureTrapRoomWithPotentialOfFiveChests()); //Nerfed it has the potential for 5 but not all the spawnTime
         ag.insert(15,room16Width2RedBlobs());
         ag.insert(16,room17SpikesOnBothSideMultiArenaWithTreasure()); //Up for debate
         ag.insert(17,room18LeftToRightMineGauntlet());
@@ -90,10 +92,10 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room1MultiShot() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, Measure.units(45f)));
                 return arena;
             }
         };
@@ -102,9 +104,9 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room2FlyBy() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
                 return arena;
             }
         };
@@ -113,7 +115,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room3LaserKugel() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnLaserKugel(arena.getWidth() / 2, arena.getHeight() / 2, random.nextBoolean()));
                 return arena;
@@ -125,7 +127,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room4MineRun() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.FULL,
@@ -135,21 +137,21 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         .buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(60f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(15f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(5)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(5)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(60f), Measure.units(10f), Measure.units(35f), Measure.units(15f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(20f), Measure.units(35f), Measure.units(5)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(35f), Measure.units(70f), Measure.units(5)));
 
 
                 //arena.addEntity(arenaEnemyPlacementFactory.spawnLaserKugel(arena.getWidth() / 2, arena.getHeight() / 2, random.nextBoolean()));
 
                 com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
-                for(int i = 0; i < 9; i++) arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(27.5f + (i * 7.5f)), com.bryjamin.wickedwizard.utils.Measure.units(25f), 0));
+                for(int i = 0; i < 9; i++) arena.addEntity(bf.mine(Measure.units(27.5f + (i * 7.5f)), Measure.units(25f), 0));
 
-                arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(12.5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
-                arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
+                arena.addEntity(bf.mine(Measure.units(12.5f), Measure.units(10f), 0));
+                arena.addEntity(bf.mine(Measure.units(20f), Measure.units(10f), 0));
 
-                arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(62.5f), com.bryjamin.wickedwizard.utils.Measure.units(40f), 0));
-                arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(40f), 0));
+                arena.addEntity(bf.mine(Measure.units(62.5f), Measure.units(40f), 0));
+                arena.addEntity(bf.mine(Measure.units(70f), Measure.units(40f), 0));
 
                 return arena;
             }
@@ -160,7 +162,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room5Modon() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
                 return arena;
@@ -171,7 +173,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room6WidthTwoTwoModonOneTri() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -179,7 +181,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
@@ -188,7 +190,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 4, arena.getHeight() / 2));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 4 * 3, arena.getHeight() / 2));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, Measure.units(45f)));
 
                 return arena;
             }
@@ -199,15 +201,15 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room7DoubleFlyBy() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(10), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(30f), Measure.units(10), Measure.units(5f)));
 
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(10), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(30f), Measure.units(10), Measure.units(5f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 4, Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() / 4 * 3, Measure.units(45f)));
 
                 return arena;
             }
@@ -219,7 +221,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room8Width3CenterTreaureTrapTriAndFlyBy() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -227,12 +229,12 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.GRAPPLE,
@@ -242,27 +244,27 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
                 //arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(25f), Measure.units(15f), Measure.units(5f)));
-                arena.addEntity(decorFactory.outOfCombatPlatform(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(5f), arena.getWidth()));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(-5f), arena.getWidth(), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.spikeWall(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(0), arena.getWidth(), com.bryjamin.wickedwizard.utils.Measure.units(5f), 0));
+                arena.addEntity(decorFactory.outOfCombatPlatform(Measure.units(5f), Measure.units(5f), arena.getWidth()));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(-5f), arena.getWidth(), Measure.units(5f)));
+                arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(0), arena.getWidth(), Measure.units(5f), 0));
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(195f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(100f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(195f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
 
-                arena.addEntity(decorFactory.appearInCombatWallPush(com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(35f), 0));
-                arena.addEntity(decorFactory.appearInCombatWallPush(com.bryjamin.wickedwizard.utils.Measure.units(195f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(35f), 180));
-
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(com.bryjamin.wickedwizard.utils.Measure.units(120), com.bryjamin.wickedwizard.utils.Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(120), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(100f), Measure.units(10f), Measure.units(5f), Measure.units(35f), 0));
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(195f), Measure.units(10f), Measure.units(5f), Measure.units(35f), 180));
 
 
+                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
 
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(140f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(155f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(Measure.units(120), Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnMovingSentry(arena.getWidth() - Measure.units(120), Measure.units(45f)));
+
+
+
+                arena.addEntity(chestFactory.chestBag(Measure.units(140f), Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(Measure.units(155f), Measure.units(10f), chestFactory.trapODAC()));
 
                 return arena;
             }
@@ -273,7 +275,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room9Width3LaserCenterThing() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -281,12 +283,12 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.GRAPPLE,
@@ -295,24 +297,24 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(195f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(195f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(100f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(195f), Measure.units(45f), Measure.units(5f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(100f), Measure.units(10f), Measure.units(5f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(195f), Measure.units(10f), Measure.units(5f), Measure.units(10f)));
 
 
                 arena.addEntity(beamTurretFactory.laserChain(
-                        com.bryjamin.wickedwizard.utils.Measure.units(145f),
-                        com.bryjamin.wickedwizard.utils.Measure.units(25f),
+                        Measure.units(145f),
+                        Measure.units(25f),
                         2,
                         new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalAndIntervalSize(com.bryjamin.wickedwizard.utils.Measure.units(5f))
+                        .orbitalAndIntervalSize(Measure.units(5f))
                         .speedInDegrees(random.nextBoolean() ? 1f : -1f)
                         .numberOfOrbitals(10)
                         .chargeTime(0)
                         .angles(0, 180).build()));
 
-                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(145f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(145f), Measure.units(10f)));
 
 
                 return arena;
@@ -324,25 +326,25 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room10AmoebaSpawns() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(x,y);
                             }
                         }, 3));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(x,y);
                             }
                         }, 3));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4 * 3, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(x,y);
@@ -358,7 +360,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room11Height3TripMine() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -366,12 +368,12 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.MANDATORYDOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.MANDATORYGRAPPLE,
@@ -379,32 +381,32 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         .buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(50f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(65f), com.bryjamin.wickedwizard.utils.Measure.units(50f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(30f), Measure.units(20f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(15f), Measure.units(50f), Measure.units(20f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(65f), Measure.units(50f), Measure.units(20f), Measure.units(5f)));
 
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(70f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(15f), com.bryjamin.wickedwizard.utils.Measure.units(90f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(65f), com.bryjamin.wickedwizard.utils.Measure.units(90f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(70f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(15f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(65f), Measure.units(90f), Measure.units(20f), Measure.units(5f)));
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(110f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(110f)));
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(125f), Measure.units(20f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(125f), Measure.units(20f), Measure.units(5f)));
 
 
                 com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
 
-                arena.addEntity(bf.multiDirectionalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(50f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(20f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - Measure.units(20f), Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(50f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
 
-                arena.addEntity(bf.multiDirectionalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(100f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4 , com.bryjamin.wickedwizard.utils.Measure.units(140f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(140f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(100f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4 , Measure.units(140f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4 * 3, Measure.units(140f), random.nextBoolean(), random.nextBoolean()));
 
                 return arena;
             }
@@ -416,15 +418,15 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room12MinesTriSentryAndBouncers() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
                 com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
-                arena.addEntity(bf.multiDirectionalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - Measure.units(20f), Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, Measure.units(45f)));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 2, arena.getHeight() / 2));
 
                 return arena;
@@ -436,21 +438,21 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room13FlyByMinesAndBouncers() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
 
 
                 com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
-                arena.addEntity(bf.multiDirectionalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
-                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
+                arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - Measure.units(20f), Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4, Measure.units(45f)));
 
                 return arena;
             }
@@ -463,13 +465,13 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room14TrapRoomTriAndTwoBouncers() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
-                arena.addWave(arenaEnemyPlacementFactory.spawnBouncer(com.bryjamin.wickedwizard.utils.Measure.units(15), com.bryjamin.wickedwizard.utils.Measure.units(50f)),
+                arena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f), chestFactory.trapODAC()));
+                arena.addWave(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(15), Measure.units(50f)),
                         arenaEnemyPlacementFactory.spawnFixedTriSentry(arena.getWidth() / 2, arena.getHeight() / 2),
-                        arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(15), com.bryjamin.wickedwizard.utils.Measure.units(50f)));
+                        arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(15), Measure.units(50f)));
 
 
                 return arena;
@@ -482,7 +484,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room15TreasureTrapRoomWithPotentialOfFiveChests() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
 
@@ -490,30 +492,30 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 //Right
                 if(variation) {
-                    arena.addEntity(decorFactory.platform(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(26f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
-                    arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(67.5f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
-                    arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(82.5f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
+                    arena.addEntity(decorFactory.platform(arena.getWidth() - Measure.units(35f), Measure.units(26f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(67.5f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(82.5f), Measure.units(30f)));
 
-                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(Measure.units(20f), Measure.units(25f)));
 
                 } else {
-                    arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                    arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(arena.getWidth() - Measure.units(20f), Measure.units(45f)));
                 }
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(30f), Measure.units(5f), Measure.units(25f)));
 
 
                 //Left
                 if(!variation) {
-                    arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(5), com.bryjamin.wickedwizard.utils.Measure.units(26f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
-                    arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(7.5f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
-                    arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(22.5f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
+                    arena.addEntity(decorFactory.platform(Measure.units(5), Measure.units(26f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(7.5f), Measure.units(30f)));
+                    arena.addEntity(chestFactory.chestBag(Measure.units(22.5f), Measure.units(30f)));
 
-                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                    arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(arena.getWidth() - Measure.units(20f), Measure.units(25f)));
 
                 } else {
-                    arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                    arena.addEntity(arenaEnemyPlacementFactory.turretFactory.fixedFlyByBombSentry(Measure.units(20f), Measure.units(45f)));
                 }
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(30f), Measure.units(5f), Measure.units(25f)));
 
 
                 return arena;
@@ -525,7 +527,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room16Width2RedBlobs() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -533,7 +535,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
@@ -541,18 +543,18 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         .buildArena();
 
                 //LEFT
-                arena.addEntity(decorFactory.wallBag(0, com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(75f), com.bryjamin.wickedwizard.utils.Measure.units(5f),arenaSkin));
+                arena.addEntity(decorFactory.wallBag(0, Measure.units(30f), Measure.units(75f), Measure.units(5f),arenaSkin));
 
                 //RIGHT
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(75f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(75f), com.bryjamin.wickedwizard.utils.Measure.units(5f),arenaSkin));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(75f), Measure.units(30f), Measure.units(75f), Measure.units(5f),arenaSkin));
 
-                arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(75f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(50f)));
+                arena.addEntity(decorFactory.platform(Measure.units(75f), Measure.units(30f), Measure.units(50f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() / 2 , com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() / 2 , Measure.units(45f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(com.bryjamin.wickedwizard.utils.Measure.units(20f) , com.bryjamin.wickedwizard.utils.Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(Measure.units(20f) , Measure.units(20f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f) , com.bryjamin.wickedwizard.utils.Measure.units(20f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() - Measure.units(20f) , Measure.units(20f)));
 
                 return arena;
             }
@@ -563,7 +565,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room17SpikesOnBothSideMultiArenaWithTreasure() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -573,12 +575,12 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.MANDATORYDOOR))
                         .buildArena();
 
-                arena.addEntity(decorFactory.spikeWall(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 270));
-                arena.addEntity(decorFactory.spikeWall(com.bryjamin.wickedwizard.utils.Measure.units(90f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 90));
+                arena.addEntity(decorFactory.spikeWall(Measure.units(5f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 270));
+                arena.addEntity(decorFactory.spikeWall(Measure.units(90f), Measure.units(10f), Measure.units(5f), Measure.units(50f), 90));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() / 2, Measure.units(45f)));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(45f)));
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
                         new SpawnerFactory.Spawner() {
@@ -602,7 +604,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room18LeftToRightMineGauntlet() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -613,17 +615,17 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         .buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(10f), Measure.units(20f), Measure.units(35f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(55f), Measure.units(20f), Measure.units(20f), Measure.units(35f)));
 
                 com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
 
-                for(int i = 0; i < 4; i++) arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(47.5f + (i * 7.5f)), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
+                for(int i = 0; i < 4; i++) arena.addEntity(bf.mine(Measure.units(47.5f + (i * 7.5f)), Measure.units(10f), 0));
 
-                for(int i = 0; i < 5; i++) arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(10f + (i * 7.5f)), -90));
-                for(int i = 0; i < 5; i++) arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(50f), com.bryjamin.wickedwizard.utils.Measure.units(20f + (i * 7.5f)), 90));
+                for(int i = 0; i < 5; i++) arena.addEntity(bf.mine(Measure.units(45f), Measure.units(10f + (i * 7.5f)), -90));
+                for(int i = 0; i < 5; i++) arena.addEntity(bf.mine(Measure.units(50f), Measure.units(20f + (i * 7.5f)), 90));
 
-                for(int i = 0; i < 3; i++) arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(25f + (i * 7.5f)), com.bryjamin.wickedwizard.utils.Measure.units(45f), 0));
+                for(int i = 0; i < 3; i++) arena.addEntity(bf.mine(Measure.units(25f + (i * 7.5f)), Measure.units(45f), 0));
 
 
 
@@ -639,7 +641,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
 
@@ -647,15 +649,15 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 boolean isTreasureOnLeft = random.nextBoolean();
 
                 arena.addEntity(arenaEnemyPlacementFactory.hoarderFactory.hoarder(
-                        isTreasureOnLeft ? com.bryjamin.wickedwizard.utils.Measure.units(20f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f),
-                        com.bryjamin.wickedwizard.utils.Measure.units(47.5f)));
+                        isTreasureOnLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f),
+                        Measure.units(47.5f)));
 
 
-                arena.addEntity(decorFactory.wallBag(isTreasureOnLeft ? com.bryjamin.wickedwizard.utils.Measure.units(5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(5)));
-                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? com.bryjamin.wickedwizard.utils.Measure.units(7.5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(17.5f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? com.bryjamin.wickedwizard.utils.Measure.units(22.5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(32.5f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-                arena.addEntity(isTri ? turretFactory.fixedMultiSentry(isTreasureOnLeft ? com.bryjamin.wickedwizard.utils.Measure.units(85f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(85f), com.bryjamin.wickedwizard.utils.Measure.units(45f)) :
-                        turretFactory.fixedFlyByBombSentry(isTreasureOnLeft ? com.bryjamin.wickedwizard.utils.Measure.units(85f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(85f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(decorFactory.wallBag(isTreasureOnLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5)));
+                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(7.5f) : arena.getWidth() - Measure.units(17.5f), Measure.units(35f)));
+                arena.addEntity(chestFactory.chestBag(isTreasureOnLeft ? Measure.units(22.5f) : arena.getWidth() - Measure.units(32.5f), Measure.units(35f)));
+                arena.addEntity(isTri ? turretFactory.fixedMultiSentry(isTreasureOnLeft ? Measure.units(85f) : arena.getWidth() - Measure.units(85f), Measure.units(45f)) :
+                        turretFactory.fixedFlyByBombSentry(isTreasureOnLeft ? Measure.units(85f) : arena.getWidth() - Measure.units(85f), Measure.units(45f)));
 
 
                 return arena;
@@ -668,17 +670,17 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnGoatWizard(arena.getWidth() / 2, Measure.units(45f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(Measure.units(20f), Measure.units(35f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() - Measure.units(20f), Measure.units(35f)));
 
-                arena.addEntity(decorFactory.inCombatfixedWallTurret(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 180, 1.5f, 1.5f));
-                arena.addEntity(decorFactory.inCombatfixedWallTurret(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 180, 1.5f, 1.5f));
+                arena.addEntity(decorFactory.inCombatfixedWallTurret(Measure.units(20f), Measure.units(50f), 180, 1.5f, 1.5f));
+                arena.addEntity(decorFactory.inCombatfixedWallTurret(arena.getWidth() - Measure.units(25f), Measure.units(50f), 180, 1.5f, 1.5f));
 
 
                 return arena;
@@ -692,7 +694,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -700,17 +702,17 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
                         .buildArena();
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnGoatWizard(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(35f)),
-                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(20f)),
-                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(20f))
+                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnGoatWizard(Measure.units(20f), Measure.units(35f)),
+                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(Measure.units(20f), Measure.units(20f)),
+                        arenaEnemyPlacementFactory.spawnSmallAngryBlob(arena.getWidth() - Measure.units(20f), Measure.units(20f))
                 );
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
@@ -733,7 +735,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -743,12 +745,12 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL))
                         .buildArena();
 
-                for(int i = 0; i < 4; i++) arena.addEntity(decorFactory.inCombatfixedWallTurret(com.bryjamin.wickedwizard.utils.Measure.units(40f + (i * 5f)), com.bryjamin.wickedwizard.utils.Measure.units(50f), 180, 1.5f, 1.5f));
+                for(int i = 0; i < 4; i++) arena.addEntity(decorFactory.inCombatfixedWallTurret(Measure.units(40f + (i * 5f)), Measure.units(50f), 180, 1.5f, 1.5f));
 
                 boolean isLeft = random.nextBoolean();
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnFixedTriSentry(!isLeft ? com.bryjamin.wickedwizard.utils.Measure.units(20f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
-                arena.addWave(arenaEnemyPlacementFactory.spawnFixedTriSentry(isLeft ? com.bryjamin.wickedwizard.utils.Measure.units(20f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnFixedTriSentry(!isLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f), Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnFixedTriSentry(isLeft ? Measure.units(20f) : arena.getWidth() - Measure.units(20f), Measure.units(45f)));
 
                 return arena;
             }
@@ -765,7 +767,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -776,17 +778,17 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         .buildArena();
 
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(40), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(45), com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(15f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40), Measure.units(20f), Measure.units(20f), Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(45), Measure.units(25f), Measure.units(10f), Measure.units(15f)));
 
                 boolean bool = random.nextBoolean();
 
                 if(random.nextBoolean()) {
-                    arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(com.bryjamin.wickedwizard.utils.Measure.units(20f), arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(2.5f), bool));
-                    arena.addEntity(arenaEnemyPlacementFactory.spawnVertivalMovingFlyByBombSentry(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(2.5f), !bool));
+                    arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(Measure.units(20f), arena.getHeight() / 2 + Measure.units(2.5f), bool));
+                    arena.addEntity(arenaEnemyPlacementFactory.spawnVertivalMovingFlyByBombSentry(arena.getWidth() - Measure.units(20f), arena.getHeight() / 2 + Measure.units(2.5f), !bool));
                 } else {
-                    arena.addEntity(arenaEnemyPlacementFactory.spawnVertivalMovingFlyByBombSentry(com.bryjamin.wickedwizard.utils.Measure.units(20f), arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(2.5f), bool));
-                    arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(2.5f), !bool));
+                    arena.addEntity(arenaEnemyPlacementFactory.spawnVertivalMovingFlyByBombSentry(Measure.units(20f), arena.getHeight() / 2 + Measure.units(2.5f), bool));
+                    arena.addEntity(arenaEnemyPlacementFactory.spawnMovingVerticalTriSentry(arena.getWidth() - Measure.units(20f), arena.getHeight() / 2 + Measure.units(2.5f), !bool));
                 }
 
 
@@ -801,7 +803,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -816,11 +818,11 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(5f)));
 
                 arena.addWave(bf.fadeInSeaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
                         bf.fadeInSeaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()),
-                        arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, arena.getHeight() / 2 + com.bryjamin.wickedwizard.utils.Measure.units(2.5f)));
+                        arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(2.5f)));
 
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, arena.getHeight() / 2,
@@ -842,7 +844,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -850,12 +852,12 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.FULL,
@@ -864,34 +866,34 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnModon(arena.getWidth() / 2, arena.getHeight() / 2));
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(32.5f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnkugelDusche(arena.getWidth() / 2, Measure.units(32.5f)));
 
 
-                arena.addWave(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(32.5f)),
-                        arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addWave(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() / 2, Measure.units(32.5f)),
+                        arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(Measure.units(125f), Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnMovingFlyByBombSentry(arena.getWidth() - Measure.units(125f), Measure.units(45f)));
 
                 arena.addWave(
-                        arenaEnemyPlacementFactory.spawnMovingTriSentry(com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(45f)),
-                        arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(125f), com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                        arenaEnemyPlacementFactory.spawnMovingTriSentry(Measure.units(125f), Measure.units(45f)),
+                        arenaEnemyPlacementFactory.spawnMovingTriSentry(arena.getWidth() - Measure.units(125f), Measure.units(45f)));
 
                 arena.shuffleWaves();
 
 
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(132.5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(145f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(157.5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(Measure.units(132.5f), Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(Measure.units(145f), Measure.units(10f), chestFactory.trapODAC()));
+                arena.addEntity(chestFactory.chestBag(Measure.units(157.5f), Measure.units(10f), chestFactory.trapODAC()));
 
                 //left
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(35f), Measure.units(10f), Measure.units(10f), Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(45f), Measure.units(10f), Measure.units(55f), Measure.units(35f)));
 
-                arena.addEntity(decorFactory.appearInCombatWallPush(com.bryjamin.wickedwizard.utils.Measure.units(95f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
-                arena.addEntity(decorFactory.appearInCombatWallPush(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 180));
+                arena.addEntity(decorFactory.appearInCombatWallPush(Measure.units(95f), Measure.units(45f), Measure.units(5f), Measure.units(10f), 0));
+                arena.addEntity(decorFactory.appearInCombatWallPush(arena.getWidth() - Measure.units(100f), Measure.units(45f), Measure.units(5f), Measure.units(10f), 180));
 
 
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(25f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(100f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(35f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(45f), Measure.units(10f), Measure.units(10f), Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(100f), Measure.units(10f), Measure.units(55f), Measure.units(35f)));
 
                 return arena;
             }
@@ -904,7 +906,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -912,12 +914,12 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.MANDATORYDOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.MANDATORYGRAPPLE,
@@ -929,13 +931,13 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
 
                 for(int i = 0; i < 4; i++) {
-                    arena.addEntity(decorFactory.grapplePointBag( i % 2 == (bool ? 0 : 1) ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f + (i * 30))));
+                    arena.addEntity(decorFactory.grapplePointBag( i % 2 == (bool ? 0 : 1) ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4, Measure.units(45f + (i * 30))));
                 }
 
                 int zeroOrOne = random.nextBoolean() ? 0 : 1;
 
                 for(int i = 0; i < 5; i++) {
-                    arena.addEntity(bf.horizontalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(25f + (i * 30)), i % 2 == zeroOrOne));
+                    arena.addEntity(bf.horizontalSeaMine(Measure.units(45f), Measure.units(25f + (i * 30)), i % 2 == zeroOrOne));
                 }
 
 
@@ -951,7 +953,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
@@ -959,10 +961,10 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 final boolean isLeft = random.nextBoolean();
 
-                arena.addEntity(decorFactory.wallBag(isLeft ? com.bryjamin.wickedwizard.utils.Measure.units(5f) : arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(65f), com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(60f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(isLeft ? Measure.units(5f) : arena.getWidth() - Measure.units(65f), Measure.units(30f), Measure.units(60f), Measure.units(5f)));
 
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(isLeft ? arena.getWidth() / 4 : arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(isLeft ? arena.getWidth() / 4 : arena.getWidth() / 4 * 3, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.blobFactory.angrySmallBag(x,y, !isLeft); //This is so it heads towards the wall first
@@ -979,22 +981,22 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(30f)));
+                arena.addEntity(decorFactory.platform(Measure.units(35f), Measure.units(25f), Measure.units(30f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnSilverHead(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(45f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnSilverHead(arena.getWidth() / 2, Measure.units(45f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(x,y);
                             }
                         }, 3));
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4 * 3, com.bryjamin.wickedwizard.utils.Measure.units(45f),
+                arena.addEntity(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4 * 3, Measure.units(45f),
                         new SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
                                 return arenaEnemyPlacementFactory.amoebaFactory.fastamoeba(x,y);
@@ -1011,14 +1013,14 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
+                arena.addEntity(arenaEnemyPlacementFactory.spawnMovingJig(arena.getWidth() / 2, Measure.units(40f)));
 
-                arena.addEntity(decorFactory.inCombatfixedWallTurret(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 180, 1.5f, 1.5f));
-                arena.addEntity(decorFactory.inCombatfixedWallTurret(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(25f), com.bryjamin.wickedwizard.utils.Measure.units(50f), 180, 1.5f, 1.5f));
+                arena.addEntity(decorFactory.inCombatfixedWallTurret(Measure.units(20f), Measure.units(50f), 180, 1.5f, 1.5f));
+                arena.addEntity(decorFactory.inCombatfixedWallTurret(arena.getWidth() - Measure.units(25f), Measure.units(50f), 180, 1.5f, 1.5f));
 
 
                 return arena;
@@ -1034,7 +1036,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -1042,38 +1044,38 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE)).buildArena();
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(0f), com.bryjamin.wickedwizard.utils.Measure.units(-5f), arena.getWidth(), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(0f), Measure.units(-5f), arena.getWidth(), Measure.units(5f)));
 
 
 
                 //LeftSide
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(0), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(35), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.grapplePointBag(com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(50f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(0), Measure.units(35f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(35), Measure.units(10f), Measure.units(5f), Measure.units(40f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(40f), Measure.units(45f), Measure.units(35f), Measure.units(5f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(50f)));
 
 
                 //RightSide
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(0), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(40f), com.bryjamin.wickedwizard.utils.Measure.units(10f), com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(75f), com.bryjamin.wickedwizard.utils.Measure.units(45f), com.bryjamin.wickedwizard.utils.Measure.units(35f), com.bryjamin.wickedwizard.utils.Measure.units(5f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(50f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(0), Measure.units(35f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(40f), Measure.units(10f), Measure.units(5f), Measure.units(40f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(75f), Measure.units(45f), Measure.units(35f), Measure.units(5f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(20f), Measure.units(50f)));
 
 
 
@@ -1082,28 +1084,28 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
 
                 //Center
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(50f), com.bryjamin.wickedwizard.utils.Measure.units(0f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(50f), Measure.units(0f), Measure.units(20f), Measure.units(10f)));
                 if(leftHasMines) {
-                    arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(50f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
-                    arena.addEntity(bf.mine(com.bryjamin.wickedwizard.utils.Measure.units(65f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
+                    arena.addEntity(bf.mine(Measure.units(50f), Measure.units(10f), 0));
+                    arena.addEntity(bf.mine(Measure.units(65f), Measure.units(10f), 0));
                 }
-                arena.addEntity(chestFactory.chestBag(com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addEntity(decorFactory.wallBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(0f), com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(chestFactory.chestBag(Measure.units(55f), Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(70f), Measure.units(0f), Measure.units(20f), Measure.units(10f)));
                 if(!leftHasMines) {
-                    arena.addEntity(bf.mine(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(70f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
-                    arena.addEntity(bf.mine(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(10f), 0));
+                    arena.addEntity(bf.mine(arena.getWidth() - Measure.units(70f), Measure.units(10f), 0));
+                    arena.addEntity(bf.mine(arena.getWidth() - Measure.units(55f), Measure.units(10f), 0));
                 }
-                arena.addEntity(chestFactory.chestBag(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(65f), com.bryjamin.wickedwizard.utils.Measure.units(10f)));
+                arena.addEntity(chestFactory.chestBag(arena.getWidth() - Measure.units(65f), Measure.units(10f)));
 
 
                 boolean bool = random.nextBoolean();
 
-                arena.addEntity(bf.horizontalSeaMine(com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(20f), bool));
-                arena.addEntity(bf.horizontalSeaMine(arena.getWidth() - com.bryjamin.wickedwizard.utils.Measure.units(55f), com.bryjamin.wickedwizard.utils.Measure.units(30f), bool));
+                arena.addEntity(bf.horizontalSeaMine(Measure.units(55f), Measure.units(20f), bool));
+                arena.addEntity(bf.horizontalSeaMine(arena.getWidth() - Measure.units(55f), Measure.units(30f), bool));
 
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, com.bryjamin.wickedwizard.utils.Measure.units(40f)));
-                arena.addEntity(decorFactory.spikeWall(com.bryjamin.wickedwizard.utils.Measure.units(30f), com.bryjamin.wickedwizard.utils.Measure.units(0f),arena.getWidth(), com.bryjamin.wickedwizard.utils.Measure.units(5f), 0));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(40f)));
+                arena.addEntity(decorFactory.spikeWall(Measure.units(30f), Measure.units(0f),arena.getWidth(), Measure.units(5f), 0));
 
                 return arena;
             }

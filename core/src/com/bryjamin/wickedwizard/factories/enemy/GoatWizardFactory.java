@@ -10,8 +10,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
-import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
@@ -20,15 +18,18 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -58,13 +59,13 @@ public class GoatWizardFactory extends EnemyFactory {
         this.gibletBuilder = new Giblets.GibletBuilder(assetManager);
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag goatWizard(float x, float y, boolean startsRight, boolean startsUp){
+    public ComponentBag goatWizard(float x, float y, boolean startsRight, boolean startsUp){
 
         x = x - width / 2;
         y = y - height / 2;
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag = defaultEnemyBag(bag, x, y, 15);
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? Measure.units(10f) : -Measure.units(10f), startsUp ? Measure.units(5f) : -Measure.units(5f)));

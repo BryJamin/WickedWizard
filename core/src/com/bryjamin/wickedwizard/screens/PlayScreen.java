@@ -19,11 +19,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
-import com.bryjamin.wickedwizard.assets.PreferenceStrings;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
@@ -34,13 +37,8 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
-import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Level;
-
 
 import java.util.Random;
 
@@ -174,10 +172,12 @@ public class PlayScreen extends AbstractScreen {
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gameport = new FitViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
+       // gameport = new StretchViewport(MainGame.GAME_WIDTH + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT + MainGame.GAME_BORDER * 2, gamecam);
+        gameport.apply();
         //gameport.setScreenPosition(-(int)MainGame.GAME_BORDER, -(int)MainGame.GAME_BORDER);
-
+        gamecam.setToOrtho(false);
         //TODO Decide whetehr to have heath on the screen or have health off in like black space.
-        gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
+       // gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
         gamecam.update();
         random = new Random();
         MathUtils.random = random;
@@ -252,18 +252,6 @@ public class PlayScreen extends AbstractScreen {
     public void createWorlds(GameCreator gameCreator){
 
         adventureWorld = new com.bryjamin.wickedwizard.screens.world.AdventureWorld(game, gameport,gameCreator, random);
-
-
-        com.bryjamin.wickedwizard.ecs.components.StatComponent stats = BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.StatComponent.class, adventureWorld.getPlayer());
-
-        if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false)) {
-            stats.damage = 99f;
-            stats.accuracy = 99f;
-            stats.fireRate = 99f;
-            stats.speed = 0.5f;
-            stats.luck = 99f;
-        };
-
     }
 
     @Override
@@ -311,6 +299,7 @@ public class PlayScreen extends AbstractScreen {
     @Override
     public void resize(int width, int height) {
         gameport.update(width, height);
+       // gamecam.position.set(gamecam.viewportWidth/2,gamecam.viewportHeight/2,0);
     }
 
     @Override
@@ -319,7 +308,7 @@ public class PlayScreen extends AbstractScreen {
         isPaused = true;
         //pause();
         pauseWorld = new com.bryjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
-                adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class));
+                adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
         //QuickSave.saveGame(world);
     }
 

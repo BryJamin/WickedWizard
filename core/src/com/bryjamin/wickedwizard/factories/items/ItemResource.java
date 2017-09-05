@@ -13,15 +13,16 @@ import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalE
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemAngrySlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSmoulderingArmor;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemLuckyShot;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapult;
-import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemMiniTrebuchet;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemSmoulderingEmber;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemStability;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemStatueOfAjir;
+import com.bryjamin.wickedwizard.factories.items.passives.damage.rankTwo.ItemMiniTrebuchet;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemTacticalKnitwear;
@@ -30,14 +31,20 @@ import com.bryjamin.wickedwizard.factories.items.passives.health.ItemIronFragmen
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
 import com.bryjamin.wickedwizard.factories.items.passives.health.Medicine;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEyesOfAmalgama;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemPatternedOpal;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeDimensionalGold;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemScope;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemCannonCube;
+import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemLeafCutter;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDisappointment;
@@ -46,6 +53,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLett
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
 import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
+import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 /**
  * Created by Home on 06/08/2017.
@@ -216,6 +224,7 @@ public class ItemResource {
                 new ItemAngrySlimeCoat(),
                 new com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody(),
                 new ItemSlimeCoat(),
+                new ItemSmoulderingArmor(),
                 new ItemSquareBuckler(),
                 new ItemVitaminC(),
                 new com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWandasScarf()};
@@ -242,6 +251,12 @@ public class ItemResource {
                 .name("Slime Coat")
                 .description("Eww..")
                 .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
+                .build();
+
+        public static ItemValues smoulderingHelm = new ItemValues.ItemValueBuilder("f48b95ec-ec77-4407-8d5b-2f83ba1517fb")
+                .region("item/SmoulderingHelm")
+                .name("Smouldering Helm")
+                .description("Damage+")
                 .build();
 
 
@@ -396,6 +411,7 @@ public class ItemResource {
 
 
         public static ItemValues hypertrophy = new ItemValues.ItemValueBuilder("5085bada-81d9-11e7-bb31-be2e44b06b34")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/Hypertrophy")
                 .name("Hypertrophy")
                 .description("Health+ Damage+ Speed-")
@@ -440,13 +456,14 @@ public class ItemResource {
     public static class Luck {
 
         public static Item[] luckItems = {
-                new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEyesOfAmalgama(),
+                new ItemEyesOfAmalgama(),
                 new ItemForgottenFigment(),
-                new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment(),
+                new ItemGoldenFigment(),
                 new ItemIWishYouWell(),
-                new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment(),
+                new ItemJadeFigment(),
+                new ItemPatternedOpal(),
                 new ItemThreeDimensionalGold(),
-                new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover()};
+                new ItemThreeLeafClover()};
 
         public static ItemValues eyesOfAmalgama = new ItemValues.ItemValueBuilder("de5c3cf1-d510-4cb1-b4ce-63c99ab0832d")
                 .challengeId(ChallengesResource.Rank4Challenges.perfectAmalgama)
@@ -482,6 +499,14 @@ public class ItemResource {
                 .region("item/JadeScarab")
                 .name("Jade Figment")
                 .description("Luck++")
+                .build();
+
+
+        public static ItemValues patternedOpal = new ItemValues.ItemValueBuilder("642722ee-18f8-4b34-bf95-a6c21243af63")
+                .itemTypes(ItemType.ITEM)
+                .region("item/PatternedOpal")
+                .name("Patterened Opal")
+                .description("Luck+")
                 .build();
 
         public static ItemValues threeLeafClover = new ItemValues.ItemValueBuilder("6b37d250-81d9-11e7-bb31-be2e44b06b34")
@@ -566,7 +591,10 @@ public class ItemResource {
 
 
         public static Item[] shotSizeItems = {
-                new ItemCannonCube()};
+                new ItemCannonCube(),
+                new ItemLeafCutter()
+
+        };
 
 
         public static ItemValues cannonCube = new ItemValues.ItemValueBuilder("275fcafa-661a-4a5e-a50a-14217a5ef7be")
@@ -575,6 +603,15 @@ public class ItemResource {
                 .name("CannonCube")
                 .description("More destructive, Less Aerodynamic")
                 .build();
+
+
+        public static ItemValues leafCutter = new ItemValues.ItemValueBuilder("af0bc30b-e11e-49dc-a82f-fe1762c7d770")
+                .challengeId(ChallengesResource.LEVEL_2_COMPLETE)
+                .region("item/LeafCutter")
+                .name("Leaf Cutter")
+                .description("Shots like the breeze")
+                .build();
+
 
 
 

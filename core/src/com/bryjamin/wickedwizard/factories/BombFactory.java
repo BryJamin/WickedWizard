@@ -11,18 +11,18 @@ import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
-import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ExplosionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -33,6 +33,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
@@ -42,10 +43,15 @@ import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
 public class BombFactory extends AbstractFactory {
 
+    public static final float BOMB_LIFE = 1f;
+
 
     private Giblets.GibletBuilder gibletBuilder;
 
     private static final float mineSpeed = Measure.units(10f);
+
+
+
 
     private static final float defaultExplosionSize = Measure.units(20f);
 
@@ -57,13 +63,13 @@ public class BombFactory extends AbstractFactory {
 
     //TODO bouncey bomb that is a different color
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag mine(float x, float y, float angleInDegrees){
+    public ComponentBag mine(float x, float y, float angleInDegrees){
 
         float width = Measure.units(5);
         float height = Measure.units(5);
 
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.MINE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
@@ -95,15 +101,15 @@ public class BombFactory extends AbstractFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag gravMine(float x, float y){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = mine(x , y, 0);
+    public ComponentBag gravMine(float x, float y){
+        ComponentBag bag = mine(x , y, 0);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
         bag.add(new FrictionComponent(true, false, false));
         return bag;
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag fadeInSeaMine(float x, float y, boolean startsLeft, boolean starsUp){
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = multiDirectionalSeaMine(x, y, startsLeft, starsUp);
+    public ComponentBag fadeInSeaMine(float x, float y, boolean startsLeft, boolean starsUp){
+        ComponentBag bag = multiDirectionalSeaMine(x, y, startsLeft, starsUp);
         bag.add(new FadeComponent(true, 0.5f, false));
         TextureRegionComponent trc = BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag);
         if(trc != null) trc.color.a = 0f;
@@ -112,12 +118,12 @@ public class BombFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag stationarySeaMine(float x, float y){
+    public ComponentBag stationarySeaMine(float x, float y){
 
         float width = Measure.units(10);
         float height = Measure.units(10);
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x,y));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AIR_MINE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
@@ -146,9 +152,9 @@ public class BombFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag horizontalSeaMine(float x, float y, boolean startsRight){
+    public ComponentBag horizontalSeaMine(float x, float y, boolean startsRight){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = stationarySeaMine(x, y);
+        ComponentBag bag = stationarySeaMine(x, y);
         bag.add(new BounceComponent());
         bag.add(new VelocityComponent(startsRight ? mineSpeed : -mineSpeed, 0));
 
@@ -156,9 +162,9 @@ public class BombFactory extends AbstractFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag verticalSeaMine(float x, float y, boolean startsUp){
+    public ComponentBag verticalSeaMine(float x, float y, boolean startsUp){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = stationarySeaMine(x, y);
+        ComponentBag bag = stationarySeaMine(x, y);
         bag.add(new BounceComponent());
         bag.add(new VelocityComponent(0, startsUp ? mineSpeed : -mineSpeed));
 
@@ -166,9 +172,9 @@ public class BombFactory extends AbstractFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag multiDirectionalSeaMine(float x, float y, boolean startsLeft, boolean startsUp){
+    public ComponentBag multiDirectionalSeaMine(float x, float y, boolean startsLeft, boolean startsUp){
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = stationarySeaMine(x, y);
+        ComponentBag bag = stationarySeaMine(x, y);
         bag.add(new BounceComponent());
         bag.add(new VelocityComponent(startsLeft ? mineSpeed : - mineSpeed, startsUp ? mineSpeed : -mineSpeed));
 
@@ -176,7 +182,7 @@ public class BombFactory extends AbstractFactory {
 
     }
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag bomb(float x, float y, float life){
+    public ComponentBag bomb(float x, float y, float life){
 
         float width = Measure.units(5);
         float height = Measure.units(5);
@@ -184,7 +190,7 @@ public class BombFactory extends AbstractFactory {
         x = x - width / 2;
         y = y - width / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
 
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height)));
@@ -250,12 +256,12 @@ public class BombFactory extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.ComponentBag bombExplosion(float x, float y, float width, float height) {
+    public ComponentBag bombExplosion(float x, float y, float width, float height) {
 
         x = x - width / 2;
         y = y - height / 2;
 
-        com.bryjamin.wickedwizard.utils.ComponentBag bag = new com.bryjamin.wickedwizard.utils.ComponentBag();
+        ComponentBag bag = new ComponentBag();
         bag.add(new ExplosionComponent(1));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
         bag.add(new PositionComponent(x, y));

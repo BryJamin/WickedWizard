@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.factories.items.passives.armor;
 
 import com.artemis.Entity;
 import com.artemis.World;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
 
 /**
@@ -13,7 +14,7 @@ public class ItemSquareBuckler implements Item {
     @Override
     public boolean applyEffect(World world, Entity player) {
 
-        player.getComponent(com.bryjamin.wickedwizard.ecs.components.StatComponent.class).armor += 2;
+        player.getComponent(StatComponent.class).armor += 2;
         return true;
     }
 

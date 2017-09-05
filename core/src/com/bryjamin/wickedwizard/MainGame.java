@@ -13,17 +13,18 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 
 public class MainGame extends Game {
 
-	public static final float GAME_HEIGHT = 1200;
-	public static final float GAME_WIDTH = 2000;
-	public static final float GAME_BORDER = 100;
+	public static final float GAME_HEIGHT = 1800;
+	public static final float GAME_WIDTH = 3000;
+	public static final float GAME_BORDER = 150;
 
 
 
-	public static final int GAME_UNITS = 20;
+	public static final int GAME_UNITS = 30;
 
 	//This means there are 96 tiles wide,
 	//60 tiles high
@@ -48,7 +49,7 @@ public class MainGame extends Game {
 
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size1Params.fontFileName = "fonts/Roboto-Black.ttf";
-		size1Params.fontParameters.size = (int) com.bryjamin.wickedwizard.utils.Measure.units(3f);
+		size1Params.fontParameters.size = (int) Measure.units(3f);
 		size1Params.fontParameters.borderColor = new Color(Color.BLACK);
 		size1Params.fontParameters.borderWidth = 0;
 		size1Params.fontParameters.minFilter = Texture.TextureFilter.Linear;
@@ -59,7 +60,7 @@ public class MainGame extends Game {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size2Params.fontFileName = "fonts/Roboto-Black.ttf";
-        size2Params.fontParameters.size = (int) com.bryjamin.wickedwizard.utils.Measure.units(4f);
+        size2Params.fontParameters.size = (int) Measure.units(4f);
         size2Params.fontParameters.borderColor = new Color(Color.BLACK);
         size2Params.fontParameters.borderWidth = 0;
 		size2Params.fontParameters.minFilter = Texture.TextureFilter.Linear;

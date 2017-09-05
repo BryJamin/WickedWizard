@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
+import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -93,7 +94,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room1LaserBouncers() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnLaserBouncer(arena.getWidth() / 4, Measure.units(45f), random.nextBoolean()));
                 arena.addEntity(arenaEnemyPlacementFactory.spawnBouncer(arena.getWidth() / 4 * 3, Measure.units(45f)));
@@ -106,7 +107,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room2FlyByAndPylons() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(arena.getWidth() - Measure.units(15f), Measure.units(30f), 90));
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(Measure.units(5f), Measure.units(30f), -90));
@@ -122,7 +123,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room3BouncersAndVerticalPylons() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(arena.getWidth() - Measure.units(25f), arena.getHeight() - Measure.units(15f), 180));
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(Measure.units(15f), arena.getHeight() - Measure.units(15f), 180));
@@ -137,7 +138,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room4FixedTriAndVerticalPylons() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(arena.getWidth() - Measure.units(25f), arena.getHeight() - Measure.units(15f), 180));
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.pylonBag(Measure.units(15f), arena.getHeight() - Measure.units(15f), 180));
@@ -152,7 +153,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room5Alurm() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnAlurm(arena.getWidth() / 2, Measure.units(45f)));
                 return arena;
@@ -165,7 +166,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room6Knight() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
                 arena.addEntity(arenaEnemyPlacementFactory.spawnKnight(arena.getWidth() / 2, Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
                 return arena;
@@ -178,7 +179,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room72KnightsWidth2() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP,
                         new ArenaBuilder.Section(defaultCoords,
@@ -186,7 +187,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR),
-                        new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
@@ -206,7 +207,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room8LaserBouncersAndAWall() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords, Arena.ArenaType.TRAP);
 
@@ -224,7 +225,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room9TrappedLaserBouncer() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt(), Arena.ArenaType.NORMAL);
 
@@ -247,7 +248,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room10Width4GrappleChallenge() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -255,17 +256,17 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL, //upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE ,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE ,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 3, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE ,
                                 ArenaBuilder.wall.MANDATORYDOOR,
                                 ArenaBuilder.wall.FULL,//!upperDoorIsLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
@@ -303,7 +304,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room11Width2STrapTwoKnights() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
 
                 boolean chestsAreLeft = random.nextBoolean();
@@ -314,7 +315,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 chestsAreLeft ? ArenaBuilder.wall.NONE : ArenaBuilder.wall.NONE,
                                 chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.GRAPPLE,
                                 chestsAreLeft ? ArenaBuilder.wall.FULL : ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 chestsAreLeft ? ArenaBuilder.wall.NONE : ArenaBuilder.wall.NONE,
                                 chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL,
                                 chestsAreLeft ? ArenaBuilder.wall.GRAPPLE : ArenaBuilder.wall.FULL,
@@ -346,7 +347,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room12TwoAlurmsOneChestOneKnight() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
                 arena.addWave(
@@ -372,7 +373,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room13largeBattleRoomWithArenaOnTopAndSpikeTreasureOnBottom(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -380,17 +381,17 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.GRAPPLE,
@@ -446,7 +447,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room14LargeBattleRoomWithEnemiesOnTopAndAMassiveLaser(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -454,17 +455,17 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.DOOR,
@@ -497,10 +498,6 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 arena.addEntity(arenaEnemyPlacementFactory.spawnFixedFlyByBombSentry(arena.getWidth() / 2, Measure.units(100f)));
 
-                boolean bool = random.nextBoolean();
-
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(Measure.units(20f), Measure.units(95f), bool));
-                arena.addEntity(arenaEnemyPlacementFactory.spawnAngryBlob(arena.getWidth() - Measure.units(20f), Measure.units(95f), !bool));
 
 
                 return arena;
@@ -512,7 +509,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room15SmallBattleRoomBlobAndLaser(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
@@ -539,7 +536,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room16SwitchAndLasers(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
@@ -568,7 +565,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room17Height2SwitchAndLasers(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -576,7 +573,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.MANDATORYDOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.MANDATORYDOOR,
@@ -631,7 +628,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room18SwitchsAndLasersAgain(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
@@ -667,7 +664,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room19GoatWizardAndKnight(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
@@ -690,7 +687,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room20AlurmAndFlyBy(){
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
@@ -710,7 +707,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room21LaserArenaWithIntermittantLasters() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
@@ -742,7 +739,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -785,7 +782,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
@@ -839,7 +836,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -885,7 +882,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 boolean chestsAreLeft = random.nextBoolean();
 
@@ -950,7 +947,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
 
                 Arena arena = arenaShellFactory.createOmniArenaSquareCenter(defaultCoords, Arena.ArenaType.TRAP);
@@ -972,7 +969,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
@@ -981,7 +978,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
@@ -1022,7 +1019,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
@@ -1031,12 +1028,12 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.MANDATORYDOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.MANDATORYDOOR,
@@ -1085,7 +1082,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -1093,7 +1090,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,
@@ -1165,7 +1162,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
-            public Arena createArena(com.bryjamin.wickedwizard.utils.MapCoords defaultCoords) {
+            public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.NORMAL)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
@@ -1173,7 +1170,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.DOOR))
-                        .addSection(new ArenaBuilder.Section(new com.bryjamin.wickedwizard.utils.MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.GRAPPLE,

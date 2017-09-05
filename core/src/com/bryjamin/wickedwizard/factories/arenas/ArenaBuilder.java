@@ -6,6 +6,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
  * Created by Home on 16/04/2017.
@@ -19,13 +22,13 @@ public class ArenaBuilder {
 /*    public static final float WIDTH = MainGame.GAME_WIDTH;
     public static final float HEIGHT = MainGame.GAME_HEIGHT;*/
 
-    public static final float WALLWIDTH = com.bryjamin.wickedwizard.utils.Measure.units(5);
+    public static final float WALLWIDTH = Measure.units(5.0f);
 
     public enum wall {
         FULL, DOOR, MANDATORYDOOR, NONE, GRAPPLE, MANDATORYGRAPPLE; //TODO waaaaay too hackkkkkyy
     }
 
-    private com.bryjamin.wickedwizard.utils.MapCoords defaultCoords;
+    private MapCoords defaultCoords;
     private Array<Section> sections = new Array<Section>();
 
 
@@ -96,9 +99,9 @@ public class ArenaBuilder {
 
     public Arena buildArena(){
 
-        if(sections.size <= 0) return new Arena(new com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin(), new com.bryjamin.wickedwizard.utils.MapCoords());
+        if(sections.size <= 0) return new Arena(new com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin(), new MapCoords());
 
-        Array<com.bryjamin.wickedwizard.utils.MapCoords> mapCoordses = new Array<com.bryjamin.wickedwizard.utils.MapCoords>();
+        Array<MapCoords> mapCoordses = new Array<MapCoords>();
 
         for(Section s : sections){
             mapCoordses.add(s.coords);
@@ -139,21 +142,12 @@ public class ArenaBuilder {
             }
 
             if(isRightMostWall(arena, posX)){
-
                 arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
-
-                //arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
             }
 
 
             if(isCeiling(arena, posY)){
-
                 arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT + posY, SECTION_WIDTH, WALLWIDTH * 4, arenaSkin));
-
-
-              //  arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
-
-                //arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
             }
 
 
@@ -165,11 +159,11 @@ public class ArenaBuilder {
                 arena.addEntity(decorFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT, arenaSkin));
             } else if(s.left == wall.DOOR || s.left == wall.MANDATORYDOOR){
                 arena.addEntity(decorFactory.wallBag(0 + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT - WALLWIDTH * 4, arenaSkin));
-                arena.addEntity(decorFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, com.bryjamin.wickedwizard.utils.Measure.units(10f), arenaSkin));
-                arena.addDoor(decorFactory.defaultDoorBag(0 + posX, com.bryjamin.wickedwizard.utils.Measure.units(10) + posY,
+                arena.addEntity(decorFactory.wallBag(0 + posX, 0 + posY, WALLWIDTH, Measure.units(10f), arenaSkin));
+                arena.addDoor(decorFactory.defaultDoorBag(0 + posX, Measure.units(10) + posY,
                         true,
-                        new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY),
-                        new com.bryjamin.wickedwizard.utils.MapCoords(coordX - 1, coordY),
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX - 1, coordY),
                         com.bryjamin.wickedwizard.utils.enums.Direction.LEFT), s.left == wall.MANDATORYDOOR);
             }
             //Right
@@ -177,11 +171,11 @@ public class ArenaBuilder {
                 arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, SECTION_HEIGHT, arenaSkin));
             } else if(s.right == wall.DOOR || s.right == wall.MANDATORYDOOR){
                 arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, WALLWIDTH * 6 + posY, WALLWIDTH, SECTION_HEIGHT -  WALLWIDTH * 4, arenaSkin));
-                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, com.bryjamin.wickedwizard.utils.Measure.units(10f)));
-                arena.addDoor(decorFactory.defaultDoorBag(SECTION_WIDTH - WALLWIDTH + posX, com.bryjamin.wickedwizard.utils.Measure.units(10) + posY,
+                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH - WALLWIDTH + posX, 0 + posY, WALLWIDTH, Measure.units(10f)));
+                arena.addDoor(decorFactory.defaultDoorBag(SECTION_WIDTH - WALLWIDTH + posX, Measure.units(10) + posY,
                         true,
-                        new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY),
-                        new com.bryjamin.wickedwizard.utils.MapCoords(coordX + 1, coordY),
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX + 1, coordY),
                         com.bryjamin.wickedwizard.utils.enums.Direction.RIGHT), s.right == wall.MANDATORYDOOR);
             }
 
@@ -191,22 +185,22 @@ public class ArenaBuilder {
 
             } else if(s.ceiling == wall.DOOR || s.ceiling == wall.MANDATORYDOOR ||s.ceiling == wall.GRAPPLE || s.ceiling == wall.MANDATORYGRAPPLE) {
 
-                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, com.bryjamin.wickedwizard.utils.Measure.units(40f), WALLWIDTH, arenaSkin));
+                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
 
-                arena.addDoor(decorFactory.defaultDoorBag(com.bryjamin.wickedwizard.utils.Measure.units(40f) + posX, SECTION_HEIGHT - WALLWIDTH + posY,
+                arena.addDoor(decorFactory.defaultDoorBag(Measure.units(40f) + posX, SECTION_HEIGHT - WALLWIDTH + posY,
                         false,
-                        new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY),
-                        new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY + 1),
+                        new MapCoords(coordX, coordY),
+                        new MapCoords(coordX, coordY + 1),
                         com.bryjamin.wickedwizard.utils.enums.Direction.UP), (s.ceiling == wall.MANDATORYDOOR || s.ceiling == wall.MANDATORYGRAPPLE));
 
-                arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, com.bryjamin.wickedwizard.utils.Measure.units(40f), WALLWIDTH, arenaSkin));
+                arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  SECTION_HEIGHT - WALLWIDTH + posY, Measure.units(40f), WALLWIDTH, arenaSkin));
 
                 if(s.ceiling == wall.GRAPPLE || s.ceiling == wall.MANDATORYGRAPPLE){
 
-                    com.bryjamin.wickedwizard.utils.ComponentBag bag = decorFactory.hiddenGrapplePointBag(posX + SECTION_WIDTH / 2, posY + ((SECTION_HEIGHT / 4) * 3));
+                    ComponentBag bag = decorFactory.hiddenGrapplePointBag(posX + SECTION_WIDTH / 2, posY + ((SECTION_HEIGHT / 4) * 3));
                     com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc = new com.bryjamin.wickedwizard.ecs.components.object.DoorComponent(
-                            new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY),
-                            new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY + 1),
+                            new MapCoords(coordX, coordY),
+                            new MapCoords(coordX, coordY + 1),
                             com.bryjamin.wickedwizard.utils.enums.Direction.UP);
                     dc.ignore = true;
                     bag.add(dc);
@@ -224,7 +218,7 @@ public class ArenaBuilder {
             arena.addEntity(bf.backgroundBags(0 + posX,0 + posY,
                     SECTION_WIDTH,
                     SECTION_HEIGHT,
-                    com.bryjamin.wickedwizard.utils.Measure.units(20f),
+                    Measure.units(20f),
                     atlas.findRegions(arenaSkin.getBackgroundTextures()),
                     arenaSkin));
 
@@ -286,29 +280,29 @@ public class ArenaBuilder {
 
         } else if(s.floor == wall.DOOR || s.floor == wall.MANDATORYDOOR) {
 
-            arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, com.bryjamin.wickedwizard.utils.Measure.units(40f), WALLWIDTH * 2, arenaSkin));
+            arena.addEntity(decorFactory.wallBag(0 + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
 
 
-            arena.addDoor(decorFactory.unTexturedDoorBag(com.bryjamin.wickedwizard.utils.Measure.units(40f) + posX, 0 + posY,
-                    com.bryjamin.wickedwizard.utils.Measure.units(20f),
-                    com.bryjamin.wickedwizard.utils.Measure.units(5f),
-                    new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY),
-                    new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY - 1),
+            arena.addDoor(decorFactory.unTexturedDoorBag(Measure.units(40f) + posX, 0 + posY,
+                    Measure.units(20f),
+                    Measure.units(5f),
+                    new MapCoords(coordX, coordY),
+                    new MapCoords(coordX, coordY - 1),
                     com.bryjamin.wickedwizard.utils.enums.Direction.DOWN));
 
-            Bag<Component> bag = decorFactory.doorBag(com.bryjamin.wickedwizard.utils.Measure.units(40f) + posX, 0 + posY, com.bryjamin.wickedwizard.utils.Measure.units(20f), com.bryjamin.wickedwizard.utils.Measure.units(10f),
+            Bag<Component> bag = decorFactory.doorBag(Measure.units(40f) + posX, 0 + posY, Measure.units(20f), Measure.units(10f),
                     false,
-                    new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY),
-                    new com.bryjamin.wickedwizard.utils.MapCoords(coordX, coordY - 1),
+                    new MapCoords(coordX, coordY),
+                    new MapCoords(coordX, coordY - 1),
                     com.bryjamin.wickedwizard.utils.enums.Direction.DOWN);
 
             com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent.class, bag).ignore = true;
 
-            arena.addEntity(decorFactory.platform(com.bryjamin.wickedwizard.utils.Measure.units(40f) + posX, com.bryjamin.wickedwizard.utils.Measure.units(5f), com.bryjamin.wickedwizard.utils.Measure.units(20f)));
+            arena.addEntity(decorFactory.platform(Measure.units(40f) + posX, Measure.units(5f), Measure.units(20f)));
 
             arena.addDoor(bag);
 
-            arena.addEntity(decorFactory.wallBag(com.bryjamin.wickedwizard.utils.Measure.units(60) + posX,  0 + posY, com.bryjamin.wickedwizard.utils.Measure.units(40f), WALLWIDTH * 2, arenaSkin));
+            arena.addEntity(decorFactory.wallBag(Measure.units(60) + posX,  0 + posY, Measure.units(40f), WALLWIDTH * 2, arenaSkin));
 
         }
     }
@@ -316,7 +310,7 @@ public class ArenaBuilder {
 
 
 
-    public Section findSection(com.bryjamin.wickedwizard.utils.MapCoords mapCoords) {
+    public Section findSection(MapCoords mapCoords) {
         for(Section s : sections) {
             if(s.coords.equals(mapCoords)) {
                 return s;
@@ -333,7 +327,7 @@ public class ArenaBuilder {
 
     public static class Section {
 
-        public com.bryjamin.wickedwizard.utils.MapCoords coords;
+        public MapCoords coords;
         public wall left;
         public wall right;
         public wall ceiling;
@@ -343,11 +337,11 @@ public class ArenaBuilder {
 
 
         public Section(){
-            this(new com.bryjamin.wickedwizard.utils.MapCoords(), wall.DOOR, wall.DOOR, wall.DOOR, wall.DOOR);
+            this(new MapCoords(), wall.DOOR, wall.DOOR, wall.DOOR, wall.DOOR);
         }
 
 
-        public Section(com.bryjamin.wickedwizard.utils.MapCoords coords, wall left, wall right, wall ceiling, wall floor){
+        public Section(MapCoords coords, wall left, wall right, wall ceiling, wall floor){
             this.coords = coords;
             this.left = left;
             this.right = right;
@@ -355,7 +349,7 @@ public class ArenaBuilder {
             this.floor = floor;
         }
 
-        public Section(com.bryjamin.wickedwizard.utils.MapCoords coords, wall left, wall right, wall ceiling, wall floor, ArenaSkin arenaSkin){
+        public Section(MapCoords coords, wall left, wall right, wall ceiling, wall floor, ArenaSkin arenaSkin){
             this.coords = coords;
             this.left = left;
             this.right = right;
