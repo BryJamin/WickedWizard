@@ -39,9 +39,9 @@ public class MovementSystem extends EntityProcessingSystem {
 
             if(dm.has(e)) {
                 if (vc.velocity.x < 0)
-                    DirectionalSystem.changeDirection(world, e, Direction.LEFT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.LOW);
+                    DirectionalSystem.changeDirection(e, Direction.LEFT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.LOW);
                 else if (vc.velocity.x > 0)
-                    DirectionalSystem.changeDirection(world, e, Direction.RIGHT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.LOW);
+                    DirectionalSystem.changeDirection(e, Direction.RIGHT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.LOW);
             }
 
         }
