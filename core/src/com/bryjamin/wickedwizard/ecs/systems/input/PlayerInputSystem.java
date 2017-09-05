@@ -26,7 +26,6 @@ import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -44,6 +43,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
 
     ComponentMapper<PositionComponent> pm;
+    ComponentMapper<DirectionalComponent> dm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent> parm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent> cm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
@@ -64,6 +64,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public Rectangle movementArea;
 
+    public boolean hasStartedFiring = false;
+
 
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(Viewport gameport) {
@@ -73,7 +75,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                 gameport.getCamera().position.y - gameport.getWorldHeight() / 2,
                 MainGame.GAME_WIDTH, Measure.units(10f));
 
-        playerInput = new PlayerInput(world, gameport, movementArea);
+        playerInput = new PlayerInput(world, gameport, movementArea, this);
     }
 
 
@@ -133,22 +135,23 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     float y = pc.getY() + (cbc.bound.getHeight() / 2);
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
-
-                    if (angleOfTravel >= 0) {
-                        DirectionalSystem.changeDirection(world, e,
-                                    angleOfTravel <= (Math.PI / 2) ? Direction.RIGHT : Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
-                    } else {
-                        DirectionalSystem.changeDirection(world, e,
-                                angleOfTravel >= -(Math.PI / 2) ? Direction.RIGHT : Direction.LEFT, DirectionalComponent.PRIORITY.HIGH);
+                    if(hasStartedFiring) {
+                        if(dm.has(e)){
+                            setDirectionOfPlayerUsingFiringAngle(dm.get(e), angleOfTravel, DirectionalComponent.PRIORITY.HIGHEST);
+                        }
                     }
 
 
                     if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate())) {
+                        hasStartedFiring = true;
                         asc.queueAnimationState(AnimationStateComponent.FIRING);
                         wc.weapon.fire(world,e, x, y, angleOfTravel);
                     }
                 }
             } else {
+
+                hasStartedFiring = false;
+
                 wc.timer.setResetTime(wc.defaultStartTime);
                 wc.timer.reset();
                 if (asc.getDefaultState() != 0) {
@@ -161,6 +164,22 @@ public class PlayerInputSystem extends EntityProcessingSystem {
             turnOffGlide();
         }
     }
+
+
+
+
+
+    public void setDirectionOfPlayerUsingFiringAngle(DirectionalComponent dc, double firingAngle, DirectionalComponent.PRIORITY priority){
+
+        if (firingAngle >= 0) {
+            dc.setDirection(firingAngle <= (Math.PI / 2) ? Direction.RIGHT : Direction.LEFT, priority);
+        } else {
+            dc.setDirection(firingAngle >= -(Math.PI / 2) ? Direction.RIGHT : Direction.LEFT, priority);
+        }
+    }
+
+
+
 
     public void grappleTo(float grappleX, float grappleY) {
 

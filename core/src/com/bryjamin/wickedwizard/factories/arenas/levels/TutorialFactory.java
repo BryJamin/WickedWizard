@@ -350,11 +350,6 @@ public class TutorialFactory extends ArenaShellFactory {
 
         arena.addEntity(bag);
 
-        float HEIGHT = arena.getHeight();
-        float WIDTH = arena.getWidth();
-
-
-
         Rectangle textBounds = new Rectangle(-MainGame.GAME_BORDER, WALLWIDTH * 2, arena.getWidth() + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT);
 
 

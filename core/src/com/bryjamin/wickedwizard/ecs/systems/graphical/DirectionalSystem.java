@@ -4,7 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
-import com.artemis.World;
+import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 /**
  * Created by BB on 07/04/2017.
@@ -42,11 +43,12 @@ public class DirectionalSystem extends EntitySystem {
     }
 
 
-    public static void changeDirection(World world, Entity e, com.bryjamin.wickedwizard.utils.enums.Direction direction, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY priority) {
+    public static void changeDirection(Entity e, Direction direction, DirectionalComponent.PRIORITY priority) {
         if(dm.has(e)){
-            com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent dc = dm.get(e);
+            DirectionalComponent dc = dm.get(e);
             dc.setDirection(direction, priority);
         }
     }
+
 
 }

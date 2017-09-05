@@ -10,9 +10,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
+import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -51,14 +54,17 @@ public class PlayerInput extends InputAdapter {
 
     private boolean inTapSquare;
 
+    private PlayerInputSystem playerInputSystem;
+
     private Viewport gameport;
     private Array<com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent> wingChildren = new Array<com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent>();
 
 
-    public PlayerInput(World world, Viewport gameport, Rectangle movementArea){
+    public PlayerInput(World world, Viewport gameport, Rectangle movementArea, PlayerInputSystem playerInputSystem){
         this.world = world;
         this.movementArea = movementArea;
         this.gameport = gameport;
+        this.playerInputSystem = playerInputSystem;
     }
 
 
@@ -131,6 +137,9 @@ public class PlayerInput extends InputAdapter {
                     if(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem.class).touchedGrapple(input.x, input.y)){
                         world.getSystem(com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).grappleTo(input.x, input.y);
                         grapple= true;
+                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        DirectionalComponent dc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(DirectionalComponent.class);
+                        playerInputSystem.setDirectionOfPlayerUsingFiringAngle(dc, BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), input.x, input.y), DirectionalComponent.PRIORITY.HIGH);
                     };
 
                     if(!grapple) {
