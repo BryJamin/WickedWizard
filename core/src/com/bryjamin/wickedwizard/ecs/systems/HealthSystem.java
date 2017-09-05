@@ -7,6 +7,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
@@ -42,11 +43,14 @@ public class HealthSystem extends EntityProcessingSystem {
                         if (Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false))
                             return;
 
-                        com.bryjamin.wickedwizard.ecs.components.StatComponent sc = sm.get(e);
-                        if (sc.armor > 0) {
-                            sc.armor -= 1;
-                        } else {
-                            sc.health -= 1;
+                        if(sm.has(e)) {
+                            StatComponent sc = sm.get(e);
+                            if (sc.armor > 0) {
+                                sc.armor -= 1;
+                            } else {
+                                sc.health -= 1;
+                            }
+
                         }
 
                         bm.get(e).isHit = true;
