@@ -335,6 +335,7 @@ public class AdventureWorld {
             countDown = 1f;
             world.getSystem(PlayerInputSystem.class).setEnabled(false);
             world.getSystem(CameraSystem.class).setEnabled(false);
+            world.getSystem(CameraShakeSystem.class).setEnabled(false);
             isGameOver = true;
         }
 
