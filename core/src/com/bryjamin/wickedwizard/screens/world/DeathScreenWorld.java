@@ -102,10 +102,17 @@ public class DeathScreenWorld {
 
 
 
+        float width = gameport.getCamera().viewportWidth * 2;
+        float height = gameport.getCamera().viewportHeight * 2;
+
+
         Entity blackScreen = world.createEntity();
-        blackScreen.edit().add(new PositionComponent(gameport.getCamera().position.x - gameport.getWorldWidth() / 2,
-                gameport.getCamera().position.y - gameport.getWorldHeight() / 2));
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), gameport.getCamera().viewportWidth, gameport.getCamera().viewportHeight, TextureRegionComponent.FOREGROUND_LAYER_NEAR);
+        blackScreen.edit().add(new PositionComponent(gameport.getCamera().position.x - width / 2,
+                gameport.getCamera().position.y - height / 2));
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+                width,
+                height,
+                TextureRegionComponent.FOREGROUND_LAYER_NEAR);
         trc.color = new Color(Color.BLACK);
         trc.color.a = 0.5f;
         trc.layer = -1;

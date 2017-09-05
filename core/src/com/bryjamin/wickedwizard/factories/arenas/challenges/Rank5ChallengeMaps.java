@@ -347,8 +347,9 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         arena.addWave(arenaEnemyPlacementFactory.spawnJumpingJack(arena.getWidth() / 2, Measure.units(45f), false));
 
 
-        arena.addWave(arenaEnemyPlacementFactory.spawnFixedPentaSentry(arena.getWidth() / 4, Measure.units(45f)),
-                arenaEnemyPlacementFactory.spawnFixedFlyByDoubleBombSentry(arena.getWidth() / 4 * 3, Measure.units(45f)));
+        arena.addWave(arenaEnemyPlacementFactory.spawnFixedPentaSentry(arena.getWidth() / 2, Measure.units(45f)));
+
+        arena.addWave(arenaEnemyPlacementFactory.spawnMovingFlyByDoubleBombSentry(arena.getWidth() / 2, arena.getHeight() / 2, true, true));
 
 
 

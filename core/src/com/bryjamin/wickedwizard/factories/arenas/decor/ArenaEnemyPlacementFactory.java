@@ -305,14 +305,18 @@ public class ArenaEnemyPlacementFactory extends AbstractFactory {
         return spawnerFactory.spawnerBag(x, y, 1,1.0f, 1.5f,s);
     }
 
-    public ComponentBag spawnMovingFlyByDoubleBombSentry(float x, float y){
+    public ComponentBag spawnMovingFlyByDoubleBombSentry(float x, float y, final boolean startsRight, final boolean startsUp){
         Array<com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner> s = new Array<com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner>();
         s.add(new com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner() {
             public Bag<Component> spawnBag(float x, float y) {
-                return turretFactory.movingFlyByDoubleBombSentry(x,y, random.nextBoolean(), random.nextBoolean());
+                return turretFactory.movingFlyByDoubleBombSentry(x,y, startsRight, startsUp);
             }
         });
         return spawnerFactory.spawnerBag(x, y, 1,1.0f, 1.5f, s);
+    }
+
+    public ComponentBag spawnMovingFlyByDoubleBombSentry(float x, float y){
+        return spawnMovingFlyByDoubleBombSentry(x, y, random.nextBoolean(), random.nextBoolean());
     }
 
 

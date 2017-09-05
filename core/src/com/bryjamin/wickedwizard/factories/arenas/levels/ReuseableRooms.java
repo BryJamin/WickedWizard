@@ -95,7 +95,6 @@ public class ReuseableRooms extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
-
                 arena.addEntity(new OnLoadFactory().startMusicEntity(mix));
                 return arena;
             }
