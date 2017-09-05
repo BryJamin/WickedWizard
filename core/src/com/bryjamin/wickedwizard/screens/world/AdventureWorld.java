@@ -44,6 +44,7 @@ import com.bryjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ProximitySystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
+import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraShakeSystem;
@@ -57,6 +58,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
@@ -218,8 +220,8 @@ public class AdventureWorld {
                         new DoorSystem(),
                         new LevelItemSystem(new ItemStore(random), random),
                         new MusicSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem(assetManager),
-                        new com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem(gameCreator, jigsawGenerator),
+                        new SoundSystem(assetManager),
+                        new ChangeLevelSystem(gameCreator, jigsawGenerator),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
                         new EndGameSystem(game),
@@ -227,6 +229,7 @@ public class AdventureWorld {
                                 arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
                                 playerStats,
                                 playerCurrency),
+
                         new HealthBarSystem(game, gameport)
                 )
                 .build();
