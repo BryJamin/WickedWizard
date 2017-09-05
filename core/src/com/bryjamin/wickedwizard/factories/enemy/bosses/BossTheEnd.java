@@ -331,7 +331,7 @@ public class BossTheEnd extends BossFactory {
 
     private Entity createBaseHand(World world, Entity parent, boolean isLeft){
 
-        final float tempPos = -10000f;
+        final float tempPos = -Measure.units(500f);
 
         Entity hand = world.createEntity();
 
