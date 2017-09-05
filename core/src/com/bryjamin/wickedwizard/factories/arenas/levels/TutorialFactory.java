@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.FontAssets;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
@@ -20,6 +22,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
@@ -114,18 +117,39 @@ public class TutorialFactory extends ArenaShellFactory {
         textBag.add(text);
         arena.addEntity(textBag);
 
-        Bag<Component> bag = new Bag<Component>();
-        bag.add(new PositionComponent(arena.getWidth() / 2, Measure.units(6.25f)));
-        TextureFontComponent tfc = new TextureFontComponent(moveTutorialString2);
-        tfc.layer = FOREGROUND_LAYER_NEAR;
-        tfc.setColor(1,1,1,1);
-        bag.add(tfc);
-        arena.addEntity(bag);
 
 
         for(int i = 0; i < 3; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90));
 
-        arena.addEntity(createTutorialHighlight(0,0, arena.getWidth(), WALLWIDTH * 2, new Color(Color.BLACK)));
+
+
+        Rectangle textBounds = new Rectangle(-MainGame.GAME_BORDER, -MainGame.GAME_BORDER, arena.getWidth() + MainGame.GAME_BORDER * 2, WALLWIDTH * 2 + MainGame.GAME_BORDER);
+
+        ComponentBag uiHighLight = new ComponentBag();
+        uiHighLight.add(new UIComponent());
+
+        FadeComponent fc = new FadeComponent(true, 2.5f, true);
+
+        uiHighLight.add(new PositionComponent(textBounds.getX(), textBounds.getY()));
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                textBounds.getWidth(),
+                textBounds.getHeight(), TextureRegionComponent.FOREGROUND_LAYER_FAR, new Color(Color.WHITE));
+        uiHighLight.add(trc);
+        uiHighLight.add(fc);
+
+        arena.addEntity(uiHighLight);
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(textBounds.getX(), textBounds.getY()));
+        bag.add(new CollisionBoundComponent(textBounds));
+        bag.add(new UIComponent());
+        TextureFontComponent tfc = new TextureFontComponent(FontAssets.medium, moveTutorialString2);
+        tfc.layer = FOREGROUND_LAYER_NEAR;
+        tfc.setColor(0,0,0,1);
+        bag.add(tfc);
+        bag.add(fc);
+
+        arena.addEntity(bag);
 
         return arena;
 
@@ -166,7 +190,7 @@ public class TutorialFactory extends ArenaShellFactory {
         //arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
         for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(17.5f), Measure.units(17.5f + (i * 25f)), 0));
 
-        TextureFontComponent tfc = new TextureFontComponent(platformString, arenaSkin.getWallTint());
+        TextureFontComponent tfc = new TextureFontComponent(FontAssets.small, platformString, arenaSkin.getWallTint());
         tfc.layer = BACKGROUND_LAYER_MIDDLE;
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(75f)));
@@ -256,7 +280,7 @@ public class TutorialFactory extends ArenaShellFactory {
                 text.edit().add(new PositionComponent(gamecam.position.x, gamecam.position.y + Measure.units(19.5f)));
                 text.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, 0, Measure.units(19f)));
                 TextureFontComponent textureFontComponent = new TextureFontComponent(com.bryjamin.wickedwizard.assets.FontAssets.small, jumpTutorialStringDoubleTapBelow);
-                textureFontComponent.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
+                textureFontComponent.layer = FOREGROUND_LAYER_NEAR;
                 text.edit().add(textureFontComponent);
                 text.edit().add(fadeComponent);
                 //text.edit().add(ec);
@@ -315,22 +339,40 @@ public class TutorialFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.DOOR)).buildArena();
 
-        Bag<Component> bag = new Bag<Component>();
+        ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(50f)));
 
         TextureFontComponent text = new TextureFontComponent(enemyTutorialString, arenaSkin.getWallTint());
-        text.layer = BACKGROUND_LAYER_MIDDLE;
+        text.layer = FOREGROUND_LAYER_NEAR;
         bag.add(text);
+
+        bag.add(new UIComponent());
 
         arena.addEntity(bag);
 
         float HEIGHT = arena.getHeight();
         float WIDTH = arena.getWidth();
 
-        arena.addEntity(createTutorialHighlight(0, WALLWIDTH * 2, WALLWIDTH / 2, HEIGHT));
-        arena.addEntity(createTutorialHighlight(0, WALLWIDTH * 2, WIDTH, WALLWIDTH / 2));
-        arena.addEntity(createTutorialHighlight(WIDTH - WALLWIDTH / 2, WALLWIDTH * 2, WALLWIDTH / 2, HEIGHT));
-        arena.addEntity(createTutorialHighlight(0, HEIGHT - WALLWIDTH / 2, WIDTH, WALLWIDTH / 2));
+
+
+        Rectangle textBounds = new Rectangle(-MainGame.GAME_BORDER, WALLWIDTH * 2, arena.getWidth() + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT);
+
+
+        ComponentBag uiHighLight = new ComponentBag();
+        uiHighLight.add(new UIComponent());
+
+        FadeComponent fc = new FadeComponent(true, 2.5f, true);
+        fc.maxAlpha = 0.75f;
+
+        uiHighLight.add(new PositionComponent(textBounds.getX(), textBounds.getY()));
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                textBounds.getWidth(),
+                textBounds.getHeight(), TextureRegionComponent.FOREGROUND_LAYER_FAR, new Color(Color.WHITE));
+        uiHighLight.add(trc);
+        uiHighLight.add(fc);
+
+        arena.addEntity(uiHighLight);
+
 
         bag = new BlobFactory(assetManager).blob(arena.getWidth() - Measure.units(12), Measure.units(30f),1, 0, 8, true, ColorResource.BLOB_GREEN);
         arena.addEntity(bag);

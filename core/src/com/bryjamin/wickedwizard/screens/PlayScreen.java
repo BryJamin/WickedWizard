@@ -266,7 +266,6 @@ public class PlayScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         game.batch.setProjectionMatrix(gamecam.combined);
 
         //if(adventureWorld.isGameOver()) adventureWorld.pauseWorld();

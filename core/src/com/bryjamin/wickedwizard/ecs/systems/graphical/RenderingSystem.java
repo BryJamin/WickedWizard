@@ -20,7 +20,9 @@ import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
@@ -60,21 +62,26 @@ public class RenderingSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch, AssetManager assetManager, Viewport gameport) {
-        super(Aspect.all(PositionComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.texture.UIComponent.class).one(
+
+
+        super(Aspect.all(PositionComponent.class).exclude(UIComponent.class).one(
                 TextureRegionComponent.class,
-                com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent.class,
+                TextureRegionBatchComponent.class,
                 TextureFontComponent.class
         ));
         this.batch = batch;
         this.gameport = gameport;
         this.assetManager = assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
-
         orderedEntities = new ArrayList<Entity>();
-
         loadShader();
 
+
+
+
     }
+
+
 
     public void loadShader() {
         whiteShaderProgram = new ShaderProgram( Gdx.files.internal("shader/VertexShader.glsl"),
@@ -111,7 +118,7 @@ public class RenderingSystem extends EntitySystem {
 */
         for (int i = 0; orderedEntities.size() > i; i++) {
             if(process(orderedEntities.get(i))){
-               // count++;
+                // count++;
             };
         }
 
