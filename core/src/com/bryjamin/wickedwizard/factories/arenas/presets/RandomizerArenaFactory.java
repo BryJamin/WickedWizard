@@ -31,7 +31,7 @@ public class RandomizerArenaFactory extends AbstractFactory {
     public Arena createRandomizerRoom(MapCoords defaultCoords) {
 
         Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.RANDOMIZER)
-                .addSection(new com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder.Section(defaultCoords,
+                .addSection(new ArenaBuilder.Section(defaultCoords,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.DOOR,
                         ArenaBuilder.wall.GRAPPLE,
