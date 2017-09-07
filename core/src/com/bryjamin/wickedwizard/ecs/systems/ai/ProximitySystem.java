@@ -40,7 +40,7 @@ public class ProximitySystem extends EntityProcessingSystem {
         boolean canBeTriggered;
 
         if(ptac.onCameraTrigger){
-            canBeTriggered = world.getSystem(CameraSystem.class).isOnCamera(cbc.bound);
+            canBeTriggered = CameraSystem.isOnCamera(cbc.bound, world.getSystem(CameraSystem.class).getGamecam());
         } else {
             canBeTriggered = overlapsHitbox(playerCbc.bound, ptac.proximityHitBoxes);
         }
