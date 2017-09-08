@@ -54,6 +54,7 @@ public class MainGame extends Game {
 		size1Params.fontParameters.borderWidth = 0;
 		size1Params.fontParameters.minFilter = Texture.TextureFilter.Linear;
 		size1Params.fontParameters.magFilter = Texture.TextureFilter.Linear;
+
 		//size1Params.fontParameters.genMipMaps = true;
         //size1Params.fontParameters.minFilter = Texture.TextureFilter.MipMapNearestNearest;
 		assetManager.load(com.bryjamin.wickedwizard.assets.FontAssets.small, BitmapFont.class, size1Params);
@@ -73,25 +74,5 @@ public class MainGame extends Game {
 		setScreen(new com.bryjamin.wickedwizard.screens.LoadingScreen(this));
 		//setScreen(new CreditsScreen(this));
 	}
-
-/*	@Override
-	public void render () {
-		super.render();
-	}*/
-	
-/*	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
-
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}*/
 }
 

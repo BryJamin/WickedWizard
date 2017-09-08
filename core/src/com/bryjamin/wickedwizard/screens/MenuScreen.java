@@ -76,15 +76,22 @@ public class MenuScreen extends AbstractScreen {
 
     private Preferences preferences;
 
-    private static final float logoStartX = Measure.units(4f);
-    private static final float logoStartY = Measure.units(32.5f);
-    private static final float logoWidth = Measure.units(30f);
-    private static final float logoHeight = Measure.units(30f);
+    private static final float logoWidth = Measure.units(45f);
+    private static final float logoHeight = Measure.units(45f);
+    private static final float logoStartX = CenterMath.offsetX(MainGame.GAME_WIDTH, logoWidth);;
+    private static final float logoStartY = Measure.units(25f);
 
 
     private static final float buttonWidth = Measure.units(30f);
     private static final float buttonHeight = Measure.units(10f);
     private static final float buttonStartX = CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth);
+
+
+
+    private static final float buttonStartY = CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight) - Measure.units(2.5f);
+
+    private static final float startButtonX = Measure.units(15f);
+    private static final float challengesButtonX = MainGame.GAME_WIDTH - buttonWidth - startButtonX;
 
 
     private static final Color buttonForeground = new Color(Color.BLACK);
@@ -260,7 +267,7 @@ public class MenuScreen extends AbstractScreen {
                         world,
                         MenuStrings.START,
                         buttonStartX
-                        ,CenterMath.offsetY(MainGame.GAME_HEIGHT, buttonHeight));
+                        ,buttonStartY);
 
     }
 
@@ -309,8 +316,9 @@ public class MenuScreen extends AbstractScreen {
                 })
                 .build().createButton(world,
                         quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START,
-                        buttonStartX,
-                        Measure.units(35f));
+                        startButtonX,
+                        buttonStartY
+                        );
 
         Entity trails = menuButtonBuilder
                 .action((new Action() {
@@ -321,8 +329,9 @@ public class MenuScreen extends AbstractScreen {
                     }
                 }))
                 .build()
-                .createButton(world, MenuStrings.TRAILS, buttonStartX
-                ,Measure.units(20f));
+                .createButton(world, MenuStrings.TRAILS,
+                        challengesButtonX,
+                        buttonStartY);
 
 
         Entity startTutorial = menuButtonBuilder
