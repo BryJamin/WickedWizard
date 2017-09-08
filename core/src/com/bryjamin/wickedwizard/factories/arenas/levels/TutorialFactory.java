@@ -34,11 +34,13 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.BlobFactory;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.BACKGROUND_LAYER_MIDDLE;
+import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.ENEMY_LAYER_MIDDLE;
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.FOREGROUND_LAYER_NEAR;
 
 /**
@@ -48,34 +50,51 @@ import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComp
 public class TutorialFactory extends ArenaShellFactory {
 
     private final String moveTutorialString1 = "Exit this room on the right";
-    private final String moveTutorialString2 = "Touch within this area of the screen to move";
+    private final String moveTutorialString2 = "Touch Within This AREA of The SCREEN to MOVE";
+    private final String moveTutorialString3 = "(This Includes the Borders)";
 
 
     private static final String jumpTutorialString =
-            "Tap ABOVE your character to jump and glide!";
+            "Tap ABOVE your character to jump!";
 
     private static final String jumpTutorialStringDoubleTapBelow =
-            "DOUBLE Tap BELOW your character to cancel a glide";
-
-    private static final String jumpTutorialStringDoubleTapBelowRemove =
-            "Tap the message box to make it go away";
+            "DOUBLE Tap BELOW your character to cancel hovering";
 
 
     private static final String doubleJumpTutorialString =
             "Tap ABOVE your character and tap ABOVE AGAIN \n To DOUBLE Jump";
 
     private static final String enemyTutorialString =
-            "Hark! A Worthy Foe! \n \n Touch down and hold within this area of the screen to shoot \n \n Drag to change aim";
+            "TOUCH Down and HOLD Within This AREA of the SCREEN \n\n to SHOOT \n \n (DRAG to Change AIM)";
     private static final String grappleTutorialString =
             "Tap grapple points to shoot your grappling hook \n \n (Grapple points are currently being highlighted)";
     private static final String endString =
             "Training Complete \n \n Enter the portal to begin";
 
+
+    private static final String borderTutorial =
+            "The BORDERS of Your SCREEN Can Also be Used  \n \n For Moving and Shooting \n \n Try using the BORDERS to defeat this ENEMY";
+
+
+    private static final String controllerTutorialTop =
+            "It is Recommended to Play The Game Like This:";
+
+    private static final String controllerTutorialMiddle =
+            "This Allows You to Move and Shoot at the Same Time";
+
+    private static final String controllerTutorialBottom =
+            "(Note: Drawing Human Anatomy is Hard)";
+
     private static final String platformString =
-            "Double Tap Below your character to \n Fall through platforms";
+            "Double Tap BELOW your character to \n Fall through platforms";
+
+
+
+    private Color textColor;
 
     public TutorialFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager, arenaSkin);
+        this.textColor = new Color(Color.BLACK);
     }
 
 
@@ -93,7 +112,9 @@ public class TutorialFactory extends ArenaShellFactory {
         placedArenas.add(platformTutorial(new MapCoords(5,0)));
         placedArenas.add(grappleTutorial(new MapCoords(6,0)));
         placedArenas.add(enemyTurtorial(new MapCoords(6,3)));
-        placedArenas.add(endTutorial(new MapCoords(7,3)));
+        placedArenas.add(borderTurtorial(new MapCoords(7, 3)));
+        placedArenas.add(controllerTurtorial(new MapCoords(8, 3)));
+        placedArenas.add(endTutorial(new MapCoords(9,3)));
 
 
         return new ArenaMap(startingArena, placedArenas);
@@ -112,7 +133,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
         Bag<Component> textBag = new Bag<Component>();
         textBag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(40f)));
-        TextureFontComponent text = new TextureFontComponent(moveTutorialString1, arenaSkin.getWallTint());
+        TextureFontComponent text = new TextureFontComponent(moveTutorialString1, textColor);
         text.layer = BACKGROUND_LAYER_MIDDLE;
         textBag.add(text);
         arena.addEntity(textBag);
@@ -148,7 +169,6 @@ public class TutorialFactory extends ArenaShellFactory {
         tfc.setColor(0,0,0,1);
         bag.add(tfc);
         bag.add(fc);
-
         arena.addEntity(bag);
 
         return arena;
@@ -190,7 +210,7 @@ public class TutorialFactory extends ArenaShellFactory {
         //arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
         for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(17.5f), Measure.units(17.5f + (i * 25f)), 0));
 
-        TextureFontComponent tfc = new TextureFontComponent(FontAssets.small, platformString, arenaSkin.getWallTint());
+        TextureFontComponent tfc = new TextureFontComponent(FontAssets.small, platformString, textColor);
         tfc.layer = BACKGROUND_LAYER_MIDDLE;
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(75f)));
@@ -238,14 +258,14 @@ public class TutorialFactory extends ArenaShellFactory {
 
         Bag<Component> jumpTutorialTextbag = new Bag<Component>();
         jumpTutorialTextbag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(40f)));
-        TextureFontComponent jump = new TextureFontComponent(jumpTutorialString, arenaSkin.getWallTint());
+        TextureFontComponent jump = new TextureFontComponent(jumpTutorialString, textColor);
         jump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
         jumpTutorialTextbag.add(jump);
         arena.addEntity(jumpTutorialTextbag);
 
         Bag<Component> doubleJumpTutorialTextbag = new Bag<Component>();
         doubleJumpTutorialTextbag.add(new PositionComponent(wall2PosX - Measure.units(5f), Measure.units(50f)));
-        TextureFontComponent doubleJump = new TextureFontComponent(doubleJumpTutorialString, arenaSkin.getWallTint());
+        TextureFontComponent doubleJump = new TextureFontComponent(doubleJumpTutorialString, textColor);
         doubleJump.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
         doubleJumpTutorialTextbag.add(doubleJump);
         arena.addEntity(doubleJumpTutorialTextbag);
@@ -342,7 +362,13 @@ public class TutorialFactory extends ArenaShellFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(50f)));
 
-        TextureFontComponent text = new TextureFontComponent(enemyTutorialString, arenaSkin.getWallTint());
+
+        Rectangle textBounds = new Rectangle(-MainGame.GAME_BORDER, WALLWIDTH * 2, arena.getWidth() + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT);
+
+
+
+
+        TextureFontComponent text = new TextureFontComponent(FontAssets.small, enemyTutorialString, textColor);
         text.layer = FOREGROUND_LAYER_NEAR;
         bag.add(text);
 
@@ -350,13 +376,12 @@ public class TutorialFactory extends ArenaShellFactory {
 
         arena.addEntity(bag);
 
-        Rectangle textBounds = new Rectangle(-MainGame.GAME_BORDER, WALLWIDTH * 2, arena.getWidth() + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT);
-
 
         ComponentBag uiHighLight = new ComponentBag();
         uiHighLight.add(new UIComponent());
 
         FadeComponent fc = new FadeComponent(true, 2.5f, true);
+        fc.minAlpha = 0.1f;
         fc.maxAlpha = 0.75f;
 
         uiHighLight.add(new PositionComponent(textBounds.getX(), textBounds.getY()));
@@ -427,7 +452,7 @@ public class TutorialFactory extends ArenaShellFactory {
         bag = new Bag<Component>();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(40f)));
 
-        TextureFontComponent text = new TextureFontComponent(grappleTutorialString, arenaSkin.getWallTint());
+        TextureFontComponent text = new TextureFontComponent(grappleTutorialString, textColor);
         text.layer = BACKGROUND_LAYER_MIDDLE;
         bag.add(text);
 
@@ -459,7 +484,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(47.5f)));
 
-        TextureFontComponent text = new TextureFontComponent(endString, arenaSkin.getWallTint());
+        TextureFontComponent text = new TextureFontComponent(endString, textColor);
         text.layer = BACKGROUND_LAYER_MIDDLE;
         bag.add(text);
 
@@ -519,6 +544,159 @@ public class TutorialFactory extends ArenaShellFactory {
         bag.add(trc);
         bag.add(new FadeComponent());
         return bag;
+    }
+
+
+
+    public ComponentBag createUiHighlight(float x, float y, float width, float height, FadeComponent fc, Color c) {
+
+        ComponentBag uiHighLight = new ComponentBag();
+        uiHighLight.add(new UIComponent());
+
+        uiHighLight.add(new PositionComponent(x, y));
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+                width,
+                height, TextureRegionComponent.FOREGROUND_LAYER_FAR, new Color(Color.WHITE));
+        trc.color.a = 0;
+        uiHighLight.add(trc);
+        uiHighLight.add(fc);
+
+        uiHighLight.add(new UIComponent());
+
+
+        return uiHighLight;
+
+    }
+
+
+
+
+    public Arena borderTurtorial(MapCoords defaultCoords){
+
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP).addSection(
+                new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL)).buildArena();
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(50f)));
+
+
+        Rectangle textBounds = new Rectangle(-MainGame.GAME_BORDER, WALLWIDTH * 2, arena.getWidth() + MainGame.GAME_BORDER * 2, MainGame.GAME_HEIGHT);
+
+
+
+
+        TextureFontComponent text = new TextureFontComponent(FontAssets.small, borderTutorial, textColor);
+        text.layer = ENEMY_LAYER_MIDDLE;
+        bag.add(text);
+
+        arena.addEntity(bag);
+
+        FadeComponent fc = new FadeComponent(true, 2.5f, true);
+
+        //LEFT
+        arena.addEntity(createUiHighlight(textBounds.getX(), -MainGame.GAME_BORDER, WALLWIDTH, MainGame.GAME_HEIGHT + WALLWIDTH * 2, fc, new Color(Color.WHITE)));
+
+        //BOTTOM
+        arena.addEntity(createUiHighlight(textBounds.getX() + WALLWIDTH, -MainGame.GAME_BORDER, MainGame.GAME_WIDTH, WALLWIDTH, fc, new Color(Color.WHITE)));
+
+        //RIGHT
+        arena.addEntity(createUiHighlight(MainGame.GAME_WIDTH, -MainGame.GAME_BORDER, WALLWIDTH, MainGame.GAME_HEIGHT + WALLWIDTH * 2, fc, new Color(Color.WHITE)));
+
+        //TOP
+        arena.addEntity(createUiHighlight(textBounds.getX() + WALLWIDTH, MainGame.GAME_HEIGHT, MainGame.GAME_WIDTH, WALLWIDTH, fc, new Color(Color.WHITE)));
+
+
+        bag = new BlobFactory(assetManager).blob(arena.getWidth() - Measure.units(12), Measure.units(30f),1, 0, 8, true, ColorResource.BLOB_GREEN);
+        arena.addEntity(bag);
+
+
+        for(int i = 0; i < 3; i ++)  {
+
+            ComponentBag chevron = decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90);
+            com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, chevron).color.a = 0;
+            chevron.add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
+                @Override
+                public void performAction(World world, Entity e) {
+
+                }
+
+                @Override
+                public void cleanUpAction(World world, Entity e) {
+                    e.edit().add(new FadeComponent(true, 0.5f, false));
+                }
+            }));
+
+
+            arena.addEntity(chevron);
+        }
+
+
+        return arena;
+
+    }
+
+
+
+
+    public Arena controllerTurtorial(MapCoords defaultCoords){
+
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP).addSection(
+                new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.DOOR,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL)).buildArena();
+
+
+        Rectangle textRectangle = new Rectangle(0, 0, MainGame.GAME_WIDTH, Measure.units(10f));
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(0, Measure.units(45f)));
+        TextureFontComponent text = new TextureFontComponent(FontAssets.small, controllerTutorialTop, textColor);
+        text.layer = ENEMY_LAYER_MIDDLE;
+        bag.add(new CollisionBoundComponent(textRectangle));
+        bag.add(text);
+
+        arena.addEntity(bag);
+
+        float size = Measure.units(30f);
+
+        bag = new ComponentBag();
+        bag.add(new PositionComponent(CenterMath.offsetX(MainGame.GAME_WIDTH, size), Measure.units(22.5f)));
+        TextureRegionComponent region = new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_CONTROLLER), size, size, BACKGROUND_LAYER_MIDDLE);
+        bag.add(region);
+        arena.addEntity(bag);
+
+
+
+
+        bag = new ComponentBag();
+        bag.add(new PositionComponent(0, Measure.units(20f)));
+        text = new TextureFontComponent(FontAssets.small, controllerTutorialMiddle, textColor);
+        text.layer = ENEMY_LAYER_MIDDLE;
+        bag.add(new CollisionBoundComponent(textRectangle));
+        bag.add(text);
+
+        arena.addEntity(bag);
+
+
+        bag = new ComponentBag();
+        bag.add(new PositionComponent(0, Measure.units(15f)));
+        text = new TextureFontComponent(FontAssets.small, controllerTutorialBottom, textColor);
+        text.layer = ENEMY_LAYER_MIDDLE;
+        bag.add(new CollisionBoundComponent(textRectangle));
+        bag.add(text);
+
+        arena.addEntity(bag);
+
+
+
+        return arena;
+
     }
 
 

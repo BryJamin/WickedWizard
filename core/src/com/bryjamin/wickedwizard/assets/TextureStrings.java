@@ -50,6 +50,8 @@ public class TextureStrings {
 
     public static final String ICON_PAUSE = "pause";
 
+    public static final String ICON_CONTROLLER = "settings/icon_controller";
+
 
     public static final String LOCKBOX = "decor/lock_block";
     public static final String SPIKEWALL = "decor/spike_wall";

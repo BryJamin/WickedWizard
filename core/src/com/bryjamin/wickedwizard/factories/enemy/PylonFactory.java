@@ -157,7 +157,8 @@ public class PylonFactory extends EnemyFactory {
 
                     if(isFinished) sc.stateTime = 0;
 
-                    boolean isOnCamera = world.getSystem(CameraSystem.class).isOnCamera(entity.getComponent(CollisionBoundComponent.class).bound);
+                    boolean isOnCamera = CameraSystem.isOnCamera(entity.getComponent(CollisionBoundComponent.class).bound,
+                            world.getSystem(CameraSystem.class).getGamecam());
 
                     return isFinished && isOnCamera;
 

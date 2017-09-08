@@ -16,6 +16,8 @@ import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSmoulderingArmor;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWandasScarf;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWhiteGoggles;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemLuckyShot;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapult;
@@ -227,7 +229,8 @@ public class ItemResource {
                 new ItemSmoulderingArmor(),
                 new ItemSquareBuckler(),
                 new ItemVitaminC(),
-                new com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWandasScarf()};
+                new ItemWandasScarf(),
+                new ItemWhiteGoggles()};
 
         public static ItemValues angrySlimeCoat = new ItemValues.ItemValueBuilder("54d58ef6-3534-49bb-acac-3c484febff2a")
                 .challengeId(ChallengesResource.Rank3Challenges.rank3TimeTrail)
@@ -276,9 +279,18 @@ public class ItemResource {
         public static ItemValues wandasScarf = new ItemValues.ItemValueBuilder("4f4436bc-088d-49c0-b39d-2c5ab9a0e3fb")
                 .region("item/WandasScarf")
                 .name("Wanda's Scarf")
-                .description("She's like you, you know.")
+                .description("You prefer your own")
                 .challengeId(ChallengesResource.Rank2Challenges.perfectWanda)
                 .build();
+
+
+        public static ItemValues whiteGoggles = new ItemValues.ItemValueBuilder("e3cf6cf0-5b22-4a57-be4e-f85a2e4b7fa7")
+                .itemTypes(ItemType.ITEM)
+                .region("item/WhiteGoggles")
+                .name("White Goggles")
+                .description("Accuracy+")
+                .build();
+
 
 
     }

@@ -217,14 +217,6 @@ public class CameraSystem extends EntitySystem {
     }
 
 
-    //TODO may need to factor in the border
-    public boolean isOnCamera(Rectangle r){
-        boolean isOnX = r.getX() + r.getWidth() >= getCameraX() + com.bryjamin.wickedwizard.MainGame.GAME_BORDER && r.getX() - r.getWidth() <= getCameraX() + gamecam.viewportWidth - com.bryjamin.wickedwizard.MainGame.GAME_BORDER;
-        boolean isOnY = r.getY() >= getCameraY() + com.bryjamin.wickedwizard.MainGame.GAME_BORDER && r.getY() - r.getHeight() <= getCameraY() + com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT - com.bryjamin.wickedwizard.MainGame.GAME_BORDER;
-        return isOnX && isOnY;
-    }
-
-
     public static boolean isOnCamera(Rectangle r, Camera gamecam){
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
