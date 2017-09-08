@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -118,7 +119,7 @@ public class BossAmalgama extends BossFactory {
 
 
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.AMALGAMA_RED_EYE),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.AMALGAMA_RED_EYE),
                 CenterMath.offsetX(bodyWidth, bodyTextureWidth) + bodyTextureOffsetX,
                 CenterMath.offsetY(bodyHeight, bodyTextureHeight),
                 bodyTextureWidth,
@@ -128,10 +129,10 @@ public class BossAmalgama extends BossFactory {
 
         bag.add(new AnimationStateComponent(RED_EYE_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(RED_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AMALGAMA_RED_EYE), Animation.PlayMode.LOOP));
-        animMap.put(BLUE_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AMALGAMA_BLUE_EYE), Animation.PlayMode.LOOP));
-        animMap.put(GREEN_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AMALGAMA_GREEN_EYE), Animation.PlayMode.LOOP));
-        animMap.put(YELLOW_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AMALGAMA_YELLOW_EYE), Animation.PlayMode.LOOP));
+        animMap.put(RED_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_RED_EYE), Animation.PlayMode.LOOP));
+        animMap.put(BLUE_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_BLUE_EYE), Animation.PlayMode.LOOP));
+        animMap.put(GREEN_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_GREEN_EYE), Animation.PlayMode.LOOP));
+        animMap.put(YELLOW_EYE_STATE, new Animation<TextureRegion>(STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.AMALGAMA_YELLOW_EYE), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
 
@@ -340,7 +341,7 @@ public class BossAmalgama extends BossFactory {
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);

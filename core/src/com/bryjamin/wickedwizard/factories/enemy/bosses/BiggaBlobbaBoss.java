@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -94,10 +95,10 @@ public class BiggaBlobbaBoss extends BossFactory {
         // bag.add(new MoveToPlayerComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(1f / 20f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
-        animMap.put(CHARGINGANIMATION, new Animation<TextureRegion>(1f / 40f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(1f / 20f, atlas.findRegions(TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(CHARGINGANIMATION, new Animation<TextureRegion>(1f / 40f, atlas.findRegions(TextureStrings.BIGGABLOBBA_STANDING), Animation.PlayMode.LOOP));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent(animMap));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BIGGABLOBBA_STANDING),
+        bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent(atlas.findRegion(TextureStrings.BIGGABLOBBA_STANDING),
                 com.bryjamin.wickedwizard.utils.CenterMath.offsetX(width, textureSize),
                 0,
                 textureSize,

@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
@@ -141,15 +142,15 @@ public class BossWraithCowl extends BossFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height),
                 new HitBox(new Rectangle(x, y, hitBoxheight, hitBoxwidth), CenterMath.offsetX(width, hitBoxwidth),
                         CenterMath.offsetY(height, hitBoxheight))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.COWL), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.COWL), width, height,
                 texturelayer));
         bag.add(new ParentComponent());
 
 
         bag.add(new AnimationStateComponent(SAD_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(SAD_STATE, new Animation<TextureRegion>(SAD_STATE_FRAME_DURATION, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.WRAITH_COWL_SAD), Animation.PlayMode.LOOP));
-        animMap.put(MAD_STATE, new Animation<TextureRegion>(MAD_STATE_FRAME_DURATION, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.WRAITH_COWL_MAD), Animation.PlayMode.LOOP));
+        animMap.put(SAD_STATE, new Animation<TextureRegion>(SAD_STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.WRAITH_COWL_SAD), Animation.PlayMode.LOOP));
+        animMap.put(MAD_STATE, new Animation<TextureRegion>(MAD_STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.WRAITH_COWL_MAD), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
 
@@ -367,7 +368,7 @@ public class BossWraithCowl extends BossFactory {
         pc.children.add(c);
         e.edit().add(c);
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.DEFAULT = color;
         trc.color = color;
         e.edit().add(trc);
@@ -452,7 +453,7 @@ public class BossWraithCowl extends BossFactory {
                 fakeWraith.edit().add(new EnemyComponent());
                 fakeWraith.edit().add(new EnemyComponent());
                 fakeWraith.edit().add(new OrbitComponent(centerPosition.position, radiusOfOrbit, changeInDegrees, startAngleInDegrees + i, orbitOffsetX, orbitOffsetY));
-                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.COWL), width, height,
+                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.COWL), width, height,
                         texturelayer);
                 trc.color.a = 0;
                 fakeWraith.edit().add(trc);
@@ -466,7 +467,7 @@ public class BossWraithCowl extends BossFactory {
 
                 fakeWraith.edit().add(new AnimationStateComponent(MAD_STATE));
                 IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-                animMap.put(MAD_STATE, new Animation<TextureRegion>(MAD_STATE_FRAME_DURATION, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.WRAITH_COWL_MAD), Animation.PlayMode.LOOP));
+                animMap.put(MAD_STATE, new Animation<TextureRegion>(MAD_STATE_FRAME_DURATION, atlas.findRegions(TextureStrings.WRAITH_COWL_MAD), Animation.PlayMode.LOOP));
                 fakeWraith.edit().add(new AnimationComponent(animMap));
 
             }
@@ -504,7 +505,7 @@ public class BossWraithCowl extends BossFactory {
     public Entity createWhiteFlash(World world){
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(0, 0));
-        e.edit().add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), ArenaShellFactory.SECTION_WIDTH, ArenaShellFactory.SECTION_HEIGHT, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), ArenaShellFactory.SECTION_WIDTH, ArenaShellFactory.SECTION_HEIGHT, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                 new Color(Color.BLACK)));
         e.edit().add(new ExpireComponent(0.2f));
         return e;

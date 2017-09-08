@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -85,7 +86,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
         world = new World(config);
 
 
-        Entity title = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        Entity title = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(new Color(Color.BLACK))
@@ -97,7 +98,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                         Measure.units(50f));
 
 
-        Entity backToMainMenu = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        Entity backToMainMenu = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30f))
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
@@ -117,7 +118,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
 
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder challengeButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder challengeButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -155,7 +156,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
     public int createChallengeButtons(World world, int startCount, Array<String> challengeIds, String unlockString){
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder challengeButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder challengeButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -208,7 +209,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                 Entity lockedChallenge = world.createEntity();
                 lockedChallenge.edit().add(new PositionComponent(startX + buttonWidth * mod + buttonGap * mod,
                         startY - (div * buttonHeight) - (div * buttonGap)));
-                lockedChallenge.edit().add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SETTINGS_LOCK), buttonWidth, buttonHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+                lockedChallenge.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_LOCK), buttonWidth, buttonHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
             }
 

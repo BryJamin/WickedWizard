@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
@@ -83,10 +84,10 @@ public class BouncerFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.BOUNCER_DEFAULT), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.BOUNCER_DEFAULT), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BOUNCER_DEFAULT),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOUNCER_DEFAULT),
                 0, 0, width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
@@ -107,10 +108,10 @@ public class BouncerFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.BOUNCER_RED), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.BOUNCER_RED), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BOUNCER_RED),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BOUNCER_RED),
                 0, 0, width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 

@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.items;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
@@ -726,7 +727,7 @@ public class ItemResource {
 
         public static ItemValues miniSpinnyThingie =  new ItemValues.ItemValueBuilder("2200b179-33ee-4cd9-9853-515708bceda8")
                 .challengeId(ChallengesResource.Rank2Challenges.perfectKugel)
-                .region(com.bryjamin.wickedwizard.assets.TextureStrings.KUGELDUSCHE_LASER)
+                .region(TextureStrings.KUGELDUSCHE_LASER)
                 .name("Mini Spinny Thingie")
                 .description("A thingie that is mini and spinnys")
                 .build();

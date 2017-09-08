@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -68,10 +69,10 @@ public class SilverHeadFactory extends EnemyFactory {
         //bag.add(new MoveToPlayerComponent());
         bag.add(new AnimationStateComponent(STANDING));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(STANDING, new Animation<TextureRegion>(0.125f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SILVERHEAD_ST), Animation.PlayMode.LOOP));
-        animMap.put(CLOSING, new Animation<TextureRegion>(0.05f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SILVERHEAD_HIDING)));
-        animMap.put(OPENING, new Animation<TextureRegion>(0.05f,  atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SILVERHEAD_HIDING), Animation.PlayMode.REVERSED));
-        animMap.put(CHARING, new Animation<TextureRegion>(0.1f,  atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SILVERHEAD_CHARGING)));
+        animMap.put(STANDING, new Animation<TextureRegion>(0.125f, atlas.findRegions(TextureStrings.SILVERHEAD_ST), Animation.PlayMode.LOOP));
+        animMap.put(CLOSING, new Animation<TextureRegion>(0.05f, atlas.findRegions(TextureStrings.SILVERHEAD_HIDING)));
+        animMap.put(OPENING, new Animation<TextureRegion>(0.05f,  atlas.findRegions(TextureStrings.SILVERHEAD_HIDING), Animation.PlayMode.REVERSED));
+        animMap.put(CHARING, new Animation<TextureRegion>(0.1f,  atlas.findRegions(TextureStrings.SILVERHEAD_CHARGING)));
         bag.add(new AnimationComponent(animMap));
 
         bag.add(new TextureRegionComponent(animMap.get(STANDING).getKeyFrame(0),

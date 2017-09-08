@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
@@ -183,7 +184,7 @@ public class AdventureWorld {
                         new com.bryjamin.wickedwizard.ecs.systems.graphical.BlinkOnHitSystem(),
                         //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), gameport.getCamera()),
+                        new com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
                         new com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem(player),
                         new com.bryjamin.wickedwizard.ecs.systems.ai.FiringAISystem(),
                         new GrapplePointSystem(),
@@ -286,7 +287,7 @@ public class AdventureWorld {
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());
-        pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
 

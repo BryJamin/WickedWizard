@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -40,7 +41,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new ActionAfterTimeComponent(laserOrbitalTask, 0));
         return bag;
     }
@@ -54,7 +55,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(laserOrbitalTask));
         return bag;
     }
@@ -68,7 +69,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new ActionAfterTimeComponent(laserOrbitalTask, isInstant ? 0 : timeTillReapeat, timeTillReapeat, true));
         return bag;
     }
@@ -86,7 +87,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
@@ -123,7 +124,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
 
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
@@ -152,7 +153,7 @@ public class BeamTurretFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         bag.add(new WallComponent(new Rectangle(x,y,width, height)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width,height, PLAYER_LAYER_FAR, new Color(arenaSkin.getWallTint())));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {

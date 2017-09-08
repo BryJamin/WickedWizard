@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -60,10 +61,10 @@ public class JumpingJackFactory extends EnemyFactory{
 
         bag.add(new AnimationStateComponent(JUMPINGJACKANIMATION));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(JUMPINGJACKANIMATION,  new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.JUMPING_JACK), Animation.PlayMode.LOOP));
-        animMap.put(JUMPINGJACKTIREDANIMATION,  new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.JUMPING_JACK_TIRED), Animation.PlayMode.LOOP));
+        animMap.put(JUMPINGJACKANIMATION,  new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(TextureStrings.JUMPING_JACK), Animation.PlayMode.LOOP));
+        animMap.put(JUMPINGJACKTIREDANIMATION,  new Animation<TextureRegion>(0.2f / 1f, atlas.findRegions(TextureStrings.JUMPING_JACK_TIRED), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.JUMPING_JACK_TIRED),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.JUMPING_JACK_TIRED),
                 width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 

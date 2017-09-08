@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -128,7 +129,7 @@ public class BossTheEnd extends BossFactory {
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, mainBodyWidth, mainBodyHeight)));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 mainBodyWidth,
                 mainBodyHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
@@ -341,7 +342,7 @@ public class BossTheEnd extends BossFactory {
 
         hand.edit().add(new CollisionBoundComponent(new Rectangle(tempPos, tempPos, handsWidth, handsHeight)));
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent());
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 CenterMath.offsetX(handsWidth, handsTextureWidth),
                 CenterMath.offsetY(handsHeight, handsTextureHeight),
                 handsTextureWidth, handsTextureHeight,
@@ -367,10 +368,10 @@ public class BossTheEnd extends BossFactory {
 
         hand.edit().add(new AnimationStateComponent(FLOATING_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(FLOATING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.END_HAND), Animation.PlayMode.LOOP));
-        animMap.put(CHARGING_STATE, new Animation<TextureRegion>(1f / 18f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.END_HAND_CHARGING), Animation.PlayMode.LOOP));
-        animMap.put(FIRING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.END_HAND_FIRING), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 10f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.END_HAND_FIRING)));
+        animMap.put(FLOATING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(TextureStrings.END_HAND), Animation.PlayMode.LOOP));
+        animMap.put(CHARGING_STATE, new Animation<TextureRegion>(1f / 18f, atlas.findRegions(TextureStrings.END_HAND_CHARGING), Animation.PlayMode.LOOP));
+        animMap.put(FIRING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(TextureStrings.END_HAND_FIRING), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 10f, atlas.findRegions(TextureStrings.END_HAND_FIRING)));
         hand.edit().add(new AnimationComponent(animMap));
 
 

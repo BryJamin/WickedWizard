@@ -310,7 +310,7 @@ public class TutorialFactory extends ArenaShellFactory {
                 blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + Measure.units(12.5f)));
                 blackBackingBox.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, - MainGame.GAME_WIDTH / 2, Measure.units(12.5f)));
 
-                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), 0,0,
+                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0,0,
                         MainGame.GAME_WIDTH,
                         Measure.units(10f),
                         TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(0,0,0,0));
@@ -540,7 +540,7 @@ public class TutorialFactory extends ArenaShellFactory {
     public ComponentBag createTutorialHighlight(float x, float y, float width, float height, Color c) {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR, c);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_FAR, c);
         bag.add(trc);
         bag.add(new FadeComponent());
         return bag;

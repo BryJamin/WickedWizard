@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -97,7 +98,7 @@ public class HealthBarSystem extends EntitySystem {
         //Back black bar
 
         batch.setColor(Color.BLACK);
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK),
                 camX + com.bryjamin.wickedwizard.utils.CenterMath.offsetX(gamecam.viewportWidth, initialHealthBarWidth),
                 camY + initialHealthBarOffsetY,
                 initialHealthBarWidth,
@@ -134,7 +135,7 @@ public class HealthBarSystem extends EntitySystem {
 
 
         batch.setColor(Color.WHITE);
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK),
                 camX + com.bryjamin.wickedwizard.utils.CenterMath.offsetX(gamecam.viewportWidth, initialHealthBarWidth),
                 camY + initialHealthBarOffsetY ,
                 whiteHealthBarWidth,
@@ -143,7 +144,7 @@ public class HealthBarSystem extends EntitySystem {
 
 
         batch.setColor(Color.RED);
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK),
                 camX + com.bryjamin.wickedwizard.utils.CenterMath.offsetX(gamecam.viewportWidth, initialHealthBarWidth),
                 camY + initialHealthBarOffsetY ,
                 redHealthBarWidth,

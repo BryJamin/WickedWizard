@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -93,7 +94,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         world = new World(config);
 
 
-        Entity title = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        Entity title = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(new Color(Color.BLACK))
@@ -105,7 +106,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
                         Measure.units(50f));
 
 
-        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30f))
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
@@ -183,7 +184,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         arrow.edit().add(new PositionComponent(x, y));
 
 
-        TextureRegionComponent textureRegionComponent = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.ICON_ARROW),
+        TextureRegionComponent textureRegionComponent = new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_ARROW),
                 arrowSize, arrowSize, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
 
         textureRegionComponent.rotation = isLeft ? 90 : 270;
@@ -233,7 +234,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         }
 
         if(!DataSave.isDataAvailable(item.getValues().challengeId)){
-            trc.region = atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SETTINGS_QUESTION_MARK);
+            trc.region = atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK);
         }
 
         bag.add(trc);

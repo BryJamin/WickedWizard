@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExploderComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
@@ -66,11 +67,11 @@ public class AmoebaFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AMOEBA), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.AMOEBA), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.AMOEBA),
+        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.AMOEBA),
                 textureoffsetX, textureoffsetY, textureWidth, textureHeight,
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, color);
 

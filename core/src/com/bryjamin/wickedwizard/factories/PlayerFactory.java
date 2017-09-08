@@ -8,13 +8,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
-import com.bryjamin.wickedwizard.ecs.components.BackPackComponent;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
@@ -48,6 +50,24 @@ public class PlayerFactory extends AbstractFactory {
         super(assetManager);
     }
 
+
+
+    public ComponentBag rootPlayerBag(float x, float y){
+
+
+        return null;
+
+
+
+
+
+
+    }
+
+
+
+
+
     public ComponentBag playerBag(float x , float y){
 
         float width = Measure.units(5f);
@@ -64,11 +84,17 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new VelocityComponent(0, 0));
         bag.add(new PlayerComponent());
-        bag.add(new BackPackComponent());
+
+
+
         bag.add(new FrictionComponent());
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
         bag.add(new GravityComponent());
         bag.add(new MoveToComponent());
+
+
+
+
         bag.add(new CurrencyComponent(startingMoney));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent());
@@ -79,8 +105,8 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(sc);
 
         IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
-        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK_BLINK)));
+        k.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
+        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.BLOCK_BLINK)));
         bag.add(new AnimationComponent(k));
 
 
@@ -89,11 +115,11 @@ public class PlayerFactory extends AbstractFactory {
         bag.add(statComponent);
         com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new com.bryjamin.wickedwizard.factories.weapons.PlayerPistol(assetManager, statComponent), pauseBeforeShooting);
         bag.add(wc);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(6));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent(1, com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent.BLINKTYPE.FLASHING));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent());
+        bag.add(new HealthComponent(6));
+        bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));
+        bag.add(new ParentComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK_WALK),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK_WALK),
                width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
         trc.color = new Color(Color.WHITE);
         trc.DEFAULT = new Color(Color.WHITE);
@@ -156,11 +182,11 @@ public class PlayerFactory extends AbstractFactory {
         sc.setDefaultState(0);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
-        aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.WINGS), Animation.PlayMode.LOOP));
+        aniMap.put(0, new Animation<TextureRegion>(0.7f / 10, atlas.findRegions(TextureStrings.WINGS), Animation.PlayMode.LOOP));
         AnimationComponent ac = new AnimationComponent(aniMap);
         bag.add(ac);
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.WINGS),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.WINGS),
                 -Measure.units(0.5f), 0, Measure.units(6), Measure.units(6), TextureRegionComponent.PLAYER_LAYER_FAR);
         trc.scaleX = isLeft ? 1 : -1;
         bag.add(trc);
@@ -216,7 +242,7 @@ public class PlayerFactory extends AbstractFactory {
         //bag.add(new IntangibleComponent());
         //bag.add(new BulletComponent());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 width, height, TextureRegionComponent.PLAYER_LAYER_NEAR, new Color(Color.BLACK));
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)

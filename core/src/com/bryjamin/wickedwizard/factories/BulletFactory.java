@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -26,15 +27,15 @@ public class BulletFactory extends AbstractFactory {
 
 
     public ComponentBag basicBulletBag(float x, float y, float scale) {
-        return basicBulletBag(x ,y ,scale ,atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), new Color(1,1,1,1));
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion(TextureStrings.BLOCK), new Color(1,1,1,1));
     }
 
     public ComponentBag basicBulletBag(float x, float y, float scale, Color color) {
-        return basicBulletBag(x ,y ,scale ,atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), color);
+        return basicBulletBag(x ,y ,scale ,atlas.findRegion(TextureStrings.BLOCK), color);
     }
 
     public ComponentBag basicEnemyBulletBag(float x, float y, float scale) {
-        ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK) , new Color(Color.RED));
+        ComponentBag bag = basicBulletBag(x ,y ,scale ,atlas.findRegion(TextureStrings.BLOCK) , new Color(Color.RED));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder(assetManager)
                 .numberOfGibletPairs(3)

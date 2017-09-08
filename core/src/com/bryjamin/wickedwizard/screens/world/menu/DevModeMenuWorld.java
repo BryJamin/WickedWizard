@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.screens.PlayScreenConfig;
@@ -70,7 +71,7 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
         Color background = Color.BLACK;
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30))
                 .height(Measure.units(10f))
                 .foregroundColor(foreground)
@@ -111,13 +112,13 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
     private void createBossAndRoomSelectors(){
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder startButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder startButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(10f))
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
                 .backgroundColor(new Color(Color.WHITE));
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder selectorButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder selectorButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(7.5f))
                 .height(Measure.units(7.5f))
                 .foregroundColor(new Color(Color.WHITE))

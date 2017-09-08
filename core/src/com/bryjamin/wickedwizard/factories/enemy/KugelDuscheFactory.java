@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -58,14 +59,14 @@ public class KugelDuscheFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.KUGELDUSCHE_EMPTY),
+        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.KUGELDUSCHE_EMPTY),
                 (isLeft) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
 
 
         bag.add(new AnimationComponent(animMap));
 
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.KUGELDUSCHE_EMPTY),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.KUGELDUSCHE_EMPTY),
                 width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.color = new Color(Color.BLACK);
@@ -105,14 +106,14 @@ public class KugelDuscheFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.KUGELDUSCHE_LASER),
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.KUGELDUSCHE_LASER),
                 (isLeft) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
 
 
         bag.add(new AnimationComponent(animMap));
 
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.KUGELDUSCHE_LASER),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.KUGELDUSCHE_LASER),
                 width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.color = new Color(Color.BLACK);

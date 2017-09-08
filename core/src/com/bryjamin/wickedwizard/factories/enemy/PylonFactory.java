@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -51,13 +52,13 @@ public class PylonFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>( 1f / 25f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.PYLON_SPAWNING)));
+                atlas.findRegions(TextureStrings.PYLON_SPAWNING)));
         animMap.put(PYLONCHARGE, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.PYLON_CHARGING), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.PYLON_CHARGING), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.PYLON_SPAWNING),
+        TextureRegionComponent tfc = new TextureRegionComponent(atlas.findRegion(TextureStrings.PYLON_SPAWNING),
                 width, height,
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(color));
         tfc.rotation = rotationInDegrees;

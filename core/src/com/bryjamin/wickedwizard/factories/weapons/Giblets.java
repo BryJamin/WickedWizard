@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.assets.Mix;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -168,7 +169,7 @@ public class Giblets extends AbstractFactory implements Action {
 
 
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), size, size,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size,
                 layer, color));
 
         return bag;

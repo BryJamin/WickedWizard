@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
@@ -152,10 +153,10 @@ public class PortalFactory extends AbstractFactory {
         AnimationStateComponent sc = new AnimationStateComponent(AnimationStateComponent.DEFAULT);
         bag.add(sc);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.TELEPORTER), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.1f, atlas.findRegions(TextureStrings.TELEPORTER), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.TELEPORTER),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.TELEPORTER),
                 width,
                 height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));

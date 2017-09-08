@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
@@ -172,7 +173,7 @@ public class RenderingSystem extends EntitySystem {
             batch.setColor(trc.color);
 
 
-            TextureRegion tr = trc.region != null ? trc.region : atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK);
+            TextureRegion tr = trc.region != null ? trc.region : atlas.findRegion(TextureStrings.BLOCK);
 
             batch.draw(tr,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,

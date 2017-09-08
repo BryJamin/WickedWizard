@@ -22,25 +22,26 @@ import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
-import com.bryjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
+import com.bryjamin.wickedwizard.ecs.systems.physics.GravitySystem;
+import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.bryjamin.wickedwizard.screens.world.menu.ChallengesWorldContainer;
 import com.bryjamin.wickedwizard.screens.world.menu.DevModeMenuWorld;
 import com.bryjamin.wickedwizard.screens.world.menu.ItemDisplayWorldContainer;
 import com.bryjamin.wickedwizard.screens.world.menu.MenuBackDropWorld;
 import com.bryjamin.wickedwizard.screens.world.menu.SettingsWorld;
-import com.bryjamin.wickedwizard.screens.world.menu.ChallengesWorldContainer;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
-import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -242,7 +243,7 @@ public class MenuScreen extends AbstractScreen {
 
         Entity logo = world.createEntity();
         logo.edit().add(new PositionComponent(logoStartX, logoStartY));
-        logo.edit().add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.ICON_LOGO), logoWidth, logoHeight));
+        logo.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_LOGO), logoWidth, logoHeight));
 
 
 
@@ -250,7 +251,7 @@ public class MenuScreen extends AbstractScreen {
 
     private void setUpMenuScreenOnlyTutorial(){
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -299,7 +300,7 @@ public class MenuScreen extends AbstractScreen {
         final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK))
+        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
@@ -127,11 +128,11 @@ public class SpawnerFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
-        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, a);
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SPAWNER), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SPAWNER), width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height)));
@@ -164,11 +165,11 @@ public class SpawnerFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new EnemyComponent());
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
-        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, a);
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SPAWNER), width, height,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SPAWNER), width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, arenaSkin.getWallTint()));
 
         bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix, 0.5f));

@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
@@ -87,10 +88,10 @@ public class HoarderFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.HOARDER), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.HOARDER), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.ALURM),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ALURM),
                 (width / 2) - (textureWidth / 2), (height / 2) - (textureHeight / 2), textureWidth, textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_NEAR));
 
@@ -169,11 +170,11 @@ public class HoarderFactory extends EnemyFactory {
 
 
         spawner.edit().add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
-        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
+        Animation<TextureRegion> a = new Animation<TextureRegion>(1.0f / 35f, atlas.findRegions(TextureStrings.SPAWNER), Animation.PlayMode.LOOP);
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, a);
         spawner.edit().add(new AnimationComponent(animMap));
-        spawner.edit().add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SPAWNER), portalWidth, portalHeight,
+        spawner.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SPAWNER), portalWidth, portalHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE, new Color(Color.WHITE)));
 
         spawner.edit().add(new FadeComponent(false, chestFadeOutTime, false));

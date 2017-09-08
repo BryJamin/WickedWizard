@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -60,7 +61,7 @@ public class JigFactory extends EnemyFactory{
 
 
 
-        com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent trc = new com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.JIG_FIRING),
+        com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent trc = new com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent(atlas.findRegion(TextureStrings.JIG_FIRING),
                 com.bryjamin.wickedwizard.utils.CenterMath.offsetX(width, texwidth), com.bryjamin.wickedwizard.utils.CenterMath.offsetY(height, texheight), texwidth, texheight, com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);
@@ -69,9 +70,9 @@ public class JigFactory extends EnemyFactory{
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.3f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.JIG_FIRING), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.JIG_FIRING), Animation.PlayMode.LOOP));
         animMap.put(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.1f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.JIG_FIRING), Animation.PlayMode.REVERSED));
+                atlas.findRegions(TextureStrings.JIG_FIRING), Animation.PlayMode.REVERSED));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent(animMap));
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent(0,0));

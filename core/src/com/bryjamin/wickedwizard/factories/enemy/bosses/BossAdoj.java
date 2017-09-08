@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -80,13 +81,13 @@ public class BossAdoj extends BossFactory {
                 new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(x, y, hornHitBoxWidth, hornHitBoxHeight),
                         rightHornHitBoxOffsetX,
                         hornHitBoxOffsetY)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.ADOJ), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ADOJ), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
 
         bag.add(new AnimationStateComponent());
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.ADOJ), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.025f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.ADOJ_FIRING)));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(TextureStrings.ADOJ), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.025f / 1f, atlas.findRegions(TextureStrings.ADOJ_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());

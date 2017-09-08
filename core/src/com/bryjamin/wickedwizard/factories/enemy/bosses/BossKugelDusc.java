@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -69,14 +70,14 @@ public class BossKugelDusc extends BossFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.KUGELDUSCHE_EMPTY),
+        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.KUGELDUSCHE_EMPTY),
                 (left) ? Animation.PlayMode.LOOP : Animation.PlayMode.LOOP_REVERSED));
 
 
         bag.add(new AnimationComponent(animMap));
 
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.KUGELDUSCHE_EMPTY),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.KUGELDUSCHE_EMPTY),
                 width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         trc.color = new Color(Color.BLACK);

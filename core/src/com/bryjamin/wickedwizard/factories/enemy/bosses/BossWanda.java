@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
@@ -96,7 +97,7 @@ public class BossWanda extends BossFactory {
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.WANDA_STANDING),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.WANDA_STANDING),
                 textureOffsetX,
                 textureOffsetY,
                 textureWidth,
@@ -106,8 +107,8 @@ public class BossWanda extends BossFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.WANDA_STANDING), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.WANDA_FIRING)));
+        animMap.put(0, new Animation<TextureRegion>(0.1f / 1f, atlas.findRegions(TextureStrings.WANDA_STANDING), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.05f / 1f, atlas.findRegions(TextureStrings.WANDA_FIRING)));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -199,7 +200,7 @@ public class BossWanda extends BossFactory {
                 warning.edit().add(new OrbitComponent(pc.position, Measure.units(10f), -10, 90 * i, width / 2, height / 2));
                 warning.edit().add(new IntangibleComponent());
 
-                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                         Measure.units(2f),
                         Measure.units(2f),
                         TextureRegionComponent.ENEMY_LAYER_NEAR, new Color(ColorResource.ENEMY_BULLET_COLOR));
@@ -364,7 +365,7 @@ public class BossWanda extends BossFactory {
             e.edit().add(new FadeComponent(true, 0.2f, false));
             e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
@@ -444,7 +445,7 @@ public class BossWanda extends BossFactory {
             e.edit().add(new FadeComponent(true, 0.2f, false));
             e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);

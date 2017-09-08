@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
@@ -58,14 +59,14 @@ public class LaserusFactory extends EnemyFactory {
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, laserusHealth);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.LASERUS),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.LASERUS),
                 0, 0, width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.LASERUS), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.LASERUS_FIRING)));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.LASERUS), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.LASERUS_FIRING)));
 
         bag.add(new AnimationComponent(animMap));
 

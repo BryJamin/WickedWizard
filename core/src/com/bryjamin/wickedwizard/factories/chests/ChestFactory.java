@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChestComponent;
@@ -74,10 +75,10 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
 
-        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1f / 7.5f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.CHEST), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1f / 7.5f, atlas.findRegions(TextureStrings.CHEST), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.CHEST), texWidth, texHeight,
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.CHEST), texWidth, texHeight,
                 TextureRegionComponent.BACKGROUND_LAYER_NEAR));
 
         bag.add(new OnDeathActionComponent(chestDeathAction()));

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
@@ -61,7 +62,7 @@ public class SnakeFactory extends EnemyFactory {
         bag.add(cbc);
 
         VelocityComponent vc = new VelocityComponent();
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SNAKE_GREENISH),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.SNAKE_GREENISH),
                 width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
@@ -85,7 +86,7 @@ public class SnakeFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SNAKE_GREENISH), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SNAKE_GREENISH), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -115,7 +116,7 @@ public class SnakeFactory extends EnemyFactory {
         bag.add(cbc);
 
         VelocityComponent vc = new VelocityComponent();
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SNAKE_BLACK),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.SNAKE_BLACK),
                 width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
@@ -139,7 +140,7 @@ public class SnakeFactory extends EnemyFactory {
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SNAKE_BLACK), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SNAKE_BLACK), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
@@ -82,12 +83,12 @@ public class GoatWizardFactory extends EnemyFactory {
         bag.add(new AnimationStateComponent(GOAT_WIZARD_NORMAL_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(GOAT_WIZARD_NORMAL_STATE, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.GOAT_WIZARD), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.GOAT_WIZARD), Animation.PlayMode.LOOP));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.GOAT_WIZARD_FIRING)));
+                atlas.findRegions(TextureStrings.GOAT_WIZARD_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.GOAT_WIZARD),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GOAT_WIZARD),
                 (width / 2) - (texwidth / 2), (height / 2) - (texheight / 2), texwidth, texheight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);
@@ -204,7 +205,7 @@ public class GoatWizardFactory extends EnemyFactory {
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
@@ -236,7 +237,7 @@ public class GoatWizardFactory extends EnemyFactory {
             pc.children.add(c);
             e.edit().add(c);
 
-            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
+            TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0, Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);

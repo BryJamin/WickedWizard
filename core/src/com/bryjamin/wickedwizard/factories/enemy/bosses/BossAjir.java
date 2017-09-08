@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -124,16 +125,16 @@ public class BossAjir extends BossFactory {
                         CenterMath.offsetX(width, armsHitBoxWidth),
                         armsHitBoxOffsetY)));
 
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.AJIR),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.AJIR),
                 CenterMath.offsetX(width, textureWidth),
                 CenterMath.offsetY(height, textureHeight),
                 textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
         bag.add(new AnimationStateComponent(NORMAL_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(NORMAL_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AJIR), Animation.PlayMode.LOOP));
-        animMap.put(FIRING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AJIR_FIRING)));
-        animMap.put(FIRING_LASERS_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.AJIR_FIRING), Animation.PlayMode.LOOP));
+        animMap.put(NORMAL_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(TextureStrings.AJIR), Animation.PlayMode.LOOP));
+        animMap.put(FIRING_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(TextureStrings.AJIR_FIRING)));
+        animMap.put(FIRING_LASERS_STATE, new Animation<TextureRegion>(1f / 10f, atlas.findRegions(TextureStrings.AJIR_FIRING), Animation.PlayMode.LOOP));
 
         bag.add(new AnimationComponent(animMap));
 

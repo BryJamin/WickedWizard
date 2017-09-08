@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
@@ -68,12 +69,12 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.1f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.MODON), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.MODON), Animation.PlayMode.LOOP));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.2f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.MODON_FIRING)));
+                atlas.findRegions(TextureStrings.MODON_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.MODON),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.MODON),
                 com.bryjamin.wickedwizard.utils.CenterMath.offsetX(width, textureWidth), 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);
@@ -138,14 +139,14 @@ public class ModonFactory extends EnemyFactory{
         bag.add(new AnimationStateComponent(HEAVY_MODON_IN_AIR_STATE));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.05f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.MODON_HEAVY), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.MODON_HEAVY), Animation.PlayMode.LOOP));
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.1f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.MODON_HEAVY_FIRING)));
+                atlas.findRegions(TextureStrings.MODON_HEAVY_FIRING)));
         animMap.put(HEAVY_MODON_IN_AIR_STATE, new Animation<TextureRegion>(0.05f / 1f,
-                atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.MODON_HEAVY_IN_AIR), Animation.PlayMode.LOOP));
+                atlas.findRegions(TextureStrings.MODON_HEAVY_IN_AIR), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.MODON_HEAVY),
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.MODON_HEAVY),
                 com.bryjamin.wickedwizard.utils.CenterMath.offsetX(width, textureWidth), 0, textureWidth, textureHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE);
 
         bag.add(trc);

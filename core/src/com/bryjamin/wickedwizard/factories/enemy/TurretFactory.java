@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -58,14 +59,14 @@ public class TurretFactory extends EnemyFactory {
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, sentryHealth);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY),
                 0, 0, width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY), Animation.PlayMode.LOOP_RANDOM));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY_FIRING)));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY), Animation.PlayMode.LOOP_RANDOM));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING)));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -114,14 +115,14 @@ public class TurretFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, triSentryHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width,height), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY_TRI),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY_TRI),
                 0, 0, width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY_TRI), Animation.PlayMode.LOOP_RANDOM));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY_FIRING_TRI)));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY_TRI), Animation.PlayMode.LOOP_RANDOM));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING_TRI)));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -161,14 +162,14 @@ public class TurretFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, flyByHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.FLYBY),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.FLYBY),
                 0, 0, width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.FLYBY), Animation.PlayMode.LOOP_RANDOM));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.FLYBY_FIRING)));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.FLYBY), Animation.PlayMode.LOOP_RANDOM));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.FLYBY_FIRING)));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -234,14 +235,14 @@ public class TurretFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, pentaHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, upgradeWidth,upgradeHeight), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY_PENTA),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SENTRY_PENTA),
                 upgradeWidth, upgradeHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY_PENTA), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.SENTRY_FIRING_PENTA)));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY_PENTA), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.SENTRY_FIRING_PENTA)));
 
         bag.add(new AnimationComponent(animMap));
 
@@ -273,14 +274,14 @@ public class TurretFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x , y, doubleFlyByHealth);
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, upgradeWidth, upgradeHeight), true));
-        bag.add(new TextureRegionComponent(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.FLYBY_DOUBLE),
+        bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.FLYBY_DOUBLE),
                 0, 0, upgradeWidth, upgradeHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE
         ));
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.FLYBY_DOUBLE), Animation.PlayMode.LOOP));
-        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(com.bryjamin.wickedwizard.assets.TextureStrings.FLYBY_DOUBLE_FIRING)));
+        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.FLYBY_DOUBLE), Animation.PlayMode.LOOP));
+        animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.10f / 1f, atlas.findRegions(TextureStrings.FLYBY_DOUBLE_FIRING)));
 
         bag.add(new AnimationComponent(animMap));
 

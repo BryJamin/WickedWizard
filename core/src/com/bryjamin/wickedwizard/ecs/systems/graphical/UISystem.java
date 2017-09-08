@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -193,7 +194,7 @@ public class UISystem extends EntitySystem {
 
             System.out.println(trc.color.a);
 
-            TextureRegion tr = trc.region != null ? trc.region : atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK);
+            TextureRegion tr = trc.region != null ? trc.region : atlas.findRegion(TextureStrings.BLOCK);
 
             batch.draw(tr,
                     pc.getX() + trc.offsetX, pc.getY() + trc.offsetY,
@@ -274,10 +275,10 @@ public class UISystem extends EntitySystem {
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
 
         batch.setColor(new Color(Color.BLACK));
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), camX, camY + gamecam.viewportHeight - Measure.units(5f), gamecam.viewportWidth, Measure.units(5f));
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), camX, camY, gamecam.viewportWidth, Measure.units(5f));
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), camX, camY, Measure.units(5f), gamecam.viewportHeight);
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), camX + gamecam.viewportWidth - Measure.units(5f), camY, Measure.units(5f), gamecam.viewportHeight);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY + gamecam.viewportHeight - Measure.units(5f), gamecam.viewportWidth, Measure.units(5f));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY, gamecam.viewportWidth, Measure.units(5f));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY, Measure.units(5f), gamecam.viewportHeight);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX + gamecam.viewportWidth - Measure.units(5f), camY, Measure.units(5f), gamecam.viewportHeight);
         batch.setColor(new Color(Color.WHITE));
     }
 

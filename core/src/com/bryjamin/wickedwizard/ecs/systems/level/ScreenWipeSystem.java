@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
@@ -170,7 +171,7 @@ public class ScreenWipeSystem extends BaseSystem {
             transitionEntity.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
 
             transitionEntity.edit().add(new UnpackableComponent());
-            transitionEntity.edit().add(new TextureRegionComponent(assetManager.get(com.bryjamin.wickedwizard.assets.FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK),
+            transitionEntity.edit().add(new TextureRegionComponent(assetManager.get(com.bryjamin.wickedwizard.assets.FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
                     gamecam.viewportWidth, gamecam.viewportHeight,
                     TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(Color.BLACK)));
             transitionEntity.edit().add(new ExpireComponent(10f));

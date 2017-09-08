@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -68,7 +69,7 @@ public class ArenaGUI {
         this.range = range;
         this.currentRoom = currentRoom;
         this.atlas = atlas;
-        this.block = atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK);
+        this.block = atlas.findRegion(TextureStrings.BLOCK);
     }
 
 
@@ -80,7 +81,7 @@ public class ArenaGUI {
         this.range = range;
         this.currentRoom = arenaMap.getCurrentArena();
         this.atlas = atlas;
-        this.block = atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK);
+        this.block = atlas.findRegion(TextureStrings.BLOCK);
     }
 
     public void update(float dt, float x, float y, ArenaMap arenaMap, MapCoords currentCoords){
@@ -117,7 +118,7 @@ public class ArenaGUI {
         float height = SIZE * (range * 2 - 1);
 
         batch.setColor(mapBackGroundColor);
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x, y, width, height);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y, width, height);
         batch.setColor(mapBorderColor);
         drawLineSquare(batch, x, y, width, height, LINE_THICKNESS);
     }
@@ -134,25 +135,25 @@ public class ArenaGUI {
     }
 
     private void drawLeftLine(SpriteBatch batch, float x, float y, float thickness, float height){
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x, y - thickness, thickness, height + (thickness * 2));
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x - thickness, y - thickness, thickness, height + (thickness * 2));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y - thickness, thickness, height + (thickness * 2));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness, thickness, height + (thickness * 2));
 
     }
 
     private void drawRightLine(SpriteBatch batch, float x, float y, float thickness, float height){
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x - thickness, y - thickness, thickness, height + (thickness * 2));
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x, y - thickness, thickness, height + (thickness * 2));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness, thickness, height + (thickness * 2));
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x, y - thickness, thickness, height + (thickness * 2));
     }
 
     private void drawBottomLine(SpriteBatch batch, float x, float y, float width, float thickness){
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x - thickness, y - thickness, width + (thickness * 2), thickness);
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x - thickness, y, width + (thickness * 2), thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness, width + (thickness * 2), thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y, width + (thickness * 2), thickness);
 
     }
 
     private void drawTopLine(SpriteBatch batch, float x, float y, float width, float thickness){
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x - thickness, y - thickness,  width + (thickness * 2), thickness);
-        batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), x - thickness, y, width + (thickness * 2), thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y - thickness,  width + (thickness * 2), thickness);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), x - thickness, y, width + (thickness * 2), thickness);
     }
 
 
@@ -182,26 +183,26 @@ public class ArenaGUI {
             int diffY = m.getY() - currentCoords.getY();
 
             if((diffX < range && diffX > -range) &&  (diffY < range && diffY > -range)) {
-                batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+                batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
 
                 if (arena.arenaType == Arena.ArenaType.BOSS) {
                     batch.setColor(bossRoomColor);
-                    batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+                    batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
                 if (arena.arenaType == Arena.ArenaType.ITEM) {
                     batch.setColor(itemRoomColor);
-                    batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+                    batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
                 if (arena.arenaType == Arena.ArenaType.SHOP) {
                     batch.setColor(shopRoomColor);
-                    batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+                    batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
                 if (arena.arenaType == Arena.ArenaType.RANDOMIZER) {
                     batch.setColor(randomizerRoomColor);
-                    batch.draw(atlas.findRegion(com.bryjamin.wickedwizard.assets.TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
+                    batch.draw(atlas.findRegion(TextureStrings.BLOCK), mapx + (SIZE * diffX), mapy + (SIZE * diffY), SIZE, SIZE);
                 }
 
             }
