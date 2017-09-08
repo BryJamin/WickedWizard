@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
+import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
+import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
@@ -21,8 +23,11 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
@@ -31,6 +36,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.factories.weapons.PlayerPistol;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -46,91 +52,44 @@ public class PlayerFactory extends AbstractFactory {
     private static final float pauseBeforeShooting = 0.15f;
 
 
+    private static final float width = Measure.units(5f);
+    private static final float height = Measure.units(5f);
+
+
     public PlayerFactory(AssetManager assetManager) {
         super(assetManager);
     }
 
 
 
-    public ComponentBag rootPlayerBag(float x, float y){
-
-
-        return null;
-
-
-
-
-
-
-    }
-
-
-
-
-
-    public ComponentBag playerBag(float x , float y){
-
-        float width = Measure.units(5f);
-        float height = Measure.units(5f);
+    public ComponentBag rootPlayerBag(ComponentBag fillBag, float x, float y){
 
         x = x - width / 2;
         y = y - height / 2;
 
-
-        ComponentBag bag = new ComponentBag();
-
-
-       // bag.add(new CameraShakeComponent(1f));
-        bag.add(new PositionComponent(x,y));
-        bag.add(new VelocityComponent(0, 0));
-        bag.add(new PlayerComponent());
+        fillBag.add(new PositionComponent(x,y));
+        fillBag.add(new VelocityComponent(0, 0));
 
 
-
-        bag.add(new FrictionComponent());
-        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
-        bag.add(new GravityComponent());
-        bag.add(new MoveToComponent());
-
+        fillBag.add(new FrictionComponent());
+        fillBag.add(new CollisionBoundComponent(new Rectangle(x,y,width, height)));
+        fillBag.add(new GravityComponent());
+        fillBag.add(new MoveToComponent());
 
 
+        fillBag.add(new JumpComponent());
+        fillBag.add(new GlideComponent());
+        fillBag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
 
-        bag.add(new CurrencyComponent(startingMoney));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent());
-        bag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
-
-        AnimationStateComponent sc = new AnimationStateComponent();
-        sc.setDefaultState(AnimationStateComponent.DEFAULT);
-        bag.add(sc);
-
-        IntMap<Animation<TextureRegion>> k = new IntMap<Animation<TextureRegion>>();
-        k.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
-        k.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.BLOCK_BLINK)));
-        bag.add(new AnimationComponent(k));
+        fillBag.add(new HealthComponent(6));
+        fillBag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));
+        fillBag.add(new ParentComponent());
 
 
-        StatComponent statComponent = new com.bryjamin.wickedwizard.ecs.components.StatComponent();
-
-        bag.add(statComponent);
-        com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new com.bryjamin.wickedwizard.factories.weapons.PlayerPistol(assetManager, statComponent), pauseBeforeShooting);
-        bag.add(wc);
-        bag.add(new HealthComponent(6));
-        bag.add(new BlinkOnHitComponent(1, BlinkOnHitComponent.BLINKTYPE.FLASHING));
-        bag.add(new ParentComponent());
-
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK_WALK),
-               width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
-        trc.color = new Color(Color.WHITE);
-        trc.DEFAULT = new Color(Color.WHITE);
-        bag.add(trc);
-
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent());
+        fillBag.add(new DirectionalComponent());
 
 
-
-
-        bag.add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
+        fillBag.add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(StatComponent.class).health <= 0;
@@ -162,6 +121,63 @@ public class PlayerFactory extends AbstractFactory {
         }));
 
 
+
+
+        return fillBag;
+
+
+    }
+
+
+
+
+
+    public ComponentBag playerBag(String id, float x , float y){
+
+        ComponentBag bag = this.rootPlayerBag(new ComponentBag(), x, y);
+        bag.add(new PlayerComponent(id));
+
+        StatComponent statComponent = new StatComponent();
+        CurrencyComponent currencyComponent = new CurrencyComponent(startingMoney);
+        WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager, statComponent), pauseBeforeShooting);
+
+        TextureRegionComponent trc;
+
+        bag.add(statComponent);
+        bag.add(currencyComponent);
+        bag.add(wc);
+
+        IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
+
+
+        if(id.equals(PlayerIDs.XI_ID)){
+            statComponent.maxHealth = 4;
+            statComponent.health = 4;
+            statComponent.damage = 1;
+
+            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.XI_WALK), Animation.PlayMode.LOOP));
+            aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.XI_FIRING)));
+
+            trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.XI_WALK),
+                    width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
+
+
+        } else { //LEAH
+            statComponent.maxHealth = 6;
+            statComponent.health = 6;
+
+            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
+            aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.BLOCK_BLINK)));
+
+            trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK_WALK),
+                    width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
+
+        }
+
+        bag.add(trc);
+
+        bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
+        bag.add(new AnimationComponent(aniMap));
 
         return bag;
     }

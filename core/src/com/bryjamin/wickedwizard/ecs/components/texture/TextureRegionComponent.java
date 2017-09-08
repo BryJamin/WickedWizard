@@ -58,7 +58,7 @@ public class TextureRegionComponent extends Component{
     public TextureRegionComponent(TextureRegion region, float offsetX, float offsetY, float width, float height, int layer, Color color) {
         this(region, offsetX,offsetY, width, height, layer);
         this.color = color;
-        this.DEFAULT = color;
+        this.DEFAULT = new Color(color);
     }
 
 
@@ -76,7 +76,7 @@ public class TextureRegionComponent extends Component{
     public TextureRegionComponent(TextureRegion region, float width, float height, int layer, Color color){
         this(region, 0,0, width, height, layer);
         this.color = color;
-        this.DEFAULT = color;
+        this.DEFAULT = new Color(color);
     }
 
 

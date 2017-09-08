@@ -19,6 +19,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -128,7 +129,7 @@ public class AdventureWorld {
         this.batch = game.batch;
         this.gameport = gameport;
         this.random = random;
-        this.player = new PlayerFactory(assetManager).playerBag(Measure.units(50f), Measure.units(45f));
+        this.player = new PlayerFactory(assetManager).playerBag(PlayerIDs.XI_ID, Measure.units(50f), Measure.units(45f));
         this.gameCreator = gameCreator;
         playerStats = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(StatComponent.class, player);
         playerCurrency = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
@@ -157,7 +158,7 @@ public class AdventureWorld {
 
 
         Arena startingArena = jigsawGenerator.getStartingRoom();
-        this.setPlayer(new PlayerFactory(game.assetManager).playerBag(startingArena.getWidth() / 2, Measure.units(45f)));
+        this.setPlayer(new PlayerFactory(game.assetManager).playerBag(PlayerIDs.XI_ID, startingArena.getWidth() / 2, Measure.units(45f)));
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()

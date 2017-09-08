@@ -102,55 +102,6 @@ decor/block_door
   orig: 64, 64
   offset: 0, 0
   index: 8
-block_firing
-  rotate: false
-  xy: 594, 660
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-block_firing
-  rotate: false
-  xy: 660, 726
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-block_firing
-  rotate: false
-  xy: 726, 792
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-block_walk
-  rotate: false
-  xy: 726, 792
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-block_firing
-  rotate: false
-  xy: 660, 660
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-block_walk
-  rotate: false
-  xy: 660, 660
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-block_walk
-  rotate: false
-  xy: 726, 726
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
 blocklarge
   rotate: false
   xy: 2, 602
@@ -2853,6 +2804,111 @@ platform
   orig: 64, 64
   offset: 0, 0
   index: 0
+player/block_firing
+  rotate: false
+  xy: 594, 660
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/block_firing
+  rotate: false
+  xy: 660, 726
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player/block_firing
+  rotate: false
+  xy: 726, 792
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player/block_walk
+  rotate: false
+  xy: 726, 792
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/block_firing
+  rotate: false
+  xy: 660, 660
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+player/block_walk
+  rotate: false
+  xy: 660, 660
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player/block_walk
+  rotate: false
+  xy: 726, 726
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player/xi_facing
+  rotate: false
+  xy: 1718, 330
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/xi_firing
+  rotate: false
+  xy: 1784, 396
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/xi_firing
+  rotate: false
+  xy: 1850, 462
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player/xi_firing
+  rotate: false
+  xy: 1916, 528
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player/xi_walk
+  rotate: false
+  xy: 1916, 528
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/xi_firing
+  rotate: false
+  xy: 1982, 528
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+player/xi_walk
+  rotate: false
+  xy: 1982, 528
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player/xi_walk
+  rotate: false
+  xy: 1520, 66
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
 settings/arrow
   rotate: false
   xy: 1250, 858
