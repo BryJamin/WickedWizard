@@ -12,15 +12,12 @@ import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
-import com.bryjamin.wickedwizard.assets.FontAssets;
-import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
@@ -106,35 +103,27 @@ public class AdventureWorld {
     private final Viewport gameport;
 
 
-    private final static float playerStartPositonX = Measure.units(47.5f);
-    private final static float playerStartPositonY = Measure.units(30f);
-
+    private String playerId;
 
     private boolean isGameOver;
 
-    private ArenaGUI arenaGUI;
     public World world;
 
     private ComponentBag player;
     private StatComponent playerStats;
 
-    private JigsawGenerator jigsawGenerator;
-
     private GameCreator gameCreator;
-
-    private BitmapFont currencyFont;
-
     private float countDown;
 
-    public AdventureWorld(MainGame game, Viewport gameport, GameCreator gameCreator, Random random) {
+    public AdventureWorld(MainGame game, Viewport gameport, GameCreator gameCreator, String playerId, Random random) {
         this.game = game;
         this.assetManager = game.assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas);
         this.batch = game.batch;
         this.gameport = gameport;
+        this.playerId = playerId;
         this.random = random;
         this.gameCreator = gameCreator;
-        this.currencyFont = assetManager.get(FontAssets.small, BitmapFont.class);// font size 12 pixels
         createAdventureWorld();
     }
 
@@ -156,6 +145,8 @@ public class AdventureWorld {
 
 
     public World createAdventureWorld() {
+
+        JigsawGenerator jigsawGenerator;
 
         jigsawGenerator = gameCreator.getCurrentLevel().jigsawGeneratorConfig.build();
         if(gameCreator.getCurrentLevel().isGenerated){
@@ -185,11 +176,11 @@ public class AdventureWorld {
 
 
             } else {
-                this.setPlayer(new PlayerFactory(game.assetManager).playerBag(PlayerIDs.XI_ID, startingArena.getWidth() / 2, Measure.units(45f)));
+                this.setPlayer(new PlayerFactory(game.assetManager).playerBag(playerId, startingArena.getWidth() / 2, Measure.units(45f)));
             }
 
         } else {
-            this.setPlayer(new PlayerFactory(game.assetManager).playerBag(PlayerIDs.XI_ID, startingArena.getWidth() / 2, Measure.units(45f)));
+            this.setPlayer(new PlayerFactory(game.assetManager).playerBag(playerId, startingArena.getWidth() / 2, Measure.units(45f)));
         }
 
 
@@ -260,7 +251,7 @@ public class AdventureWorld {
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
                         new EndGameSystem(game),
                         new UISystem(game, gameport,
-                                arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
+                                new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
                                 BagSearch.getObjectOfTypeClass(StatComponent.class, player),
                                 BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player)),
 

@@ -8,33 +8,31 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
+import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
-import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
-import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.screens.PlayScreen;
+import com.bryjamin.wickedwizard.screens.world.WorldContainer;
+import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
- * Created by BB on 20/08/2017.
+ * Created by BB on 09/09/2017.
  */
 
-public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.AbstractGestureDectector implements com.bryjamin.wickedwizard.screens.world.WorldContainer {
+public class CharacterSelectWorldContainer extends AbstractGestureDectector implements WorldContainer {
 
     private final MainGame game;
     private final Viewport gameport;
@@ -58,15 +56,13 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
 
     private World world;
 
-    public ChallengesWorldContainer(MainGame game, Viewport viewport){
+    public CharacterSelectWorldContainer(MainGame game, Viewport viewport) {
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
         this.challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
         createWorld();
     }
-
-
 
 
     public void createWorld() {
@@ -90,7 +86,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
         world = new World(config);
 
 
-        Entity title = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        Entity title = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(new Color(Color.BLACK))
@@ -102,7 +98,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                         Measure.units(50f));
 
 
-        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        Entity backToMainMenu = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(Measure.units(30f))
                 .height(Measure.units(10f))
                 .foregroundColor(new Color(Color.BLACK))
@@ -121,95 +117,53 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                         , Measure.units(5f));
 
 
-        int count = 0;
 
-        count = createChallengeButtons(world, count, ChallengesResource.Rank1Challenges.rank1ChallengesArray,
-                ChallengesResource.LEVEL_1_COMPLETE);
-        count = createChallengeButtons(world, count, ChallengesResource.Rank2Challenges.rank2ChallengesArray,
-                ChallengesResource.LEVEL_2_COMPLETE);
-        count = createChallengeButtons(world, count, ChallengesResource.Rank3Challenges.rank3ChallengesArray,
-                ChallengesResource.LEVEL_3_COMPLETE);
-        count = createChallengeButtons(world, count, ChallengesResource.Rank4Challenges.rank4ChallengesArray,
-                ChallengesResource.LEVEL_4_COMPLETE);
-        count = createChallengeButtons(world, count, ChallengesResource.Rank5Challenges.rank5ChallengesArray,
-                com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.LEVEL_5_COMPLETE);
+        Entity LeahSelect = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(Measure.units(20f))
+                .height(Measure.units(20f))
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(Color.WHITE))
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        game.getScreen().dispose();
+                        game.setScreen(new PlayScreen(game, PlayerIDs.LEAH_ID));
 
-    }
-
-
-
-
-    public int createChallengeButtons(World world, int startCount, Array<String> challengeIds, String unlockString){
-
-
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder challengeButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
-                .width(buttonWidth)
-                .height(buttonHeight)
-                .foregroundColor(buttonForeground)
-                .backgroundColor(buttonBackground);
-
-        int count = startCount;
-
-        for(int i = 0; i < challengeIds.size; i++){
-
-            int mod = count % maxColumns;
-            int div = count / maxColumns;
-
-            final String s = challengeIds.get(i);
-
-            boolean challengeComplete = DataSave.isDataAvailable(s);
-
-
-            if(DataSave.isDataAvailable(unlockString)) {
-
-                Entity startChallenge = challengeButtonBuilder
-                        .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)
-                        .backgroundColor(challengeComplete ? buttonForeground : buttonBackground)
-                        .action(new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-
-                                try {
-
-                                    System.out.println(s);
-
-                                    com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator = challengeMaps.getChallenge(s);
-                                    if(gameCreator == null) throw new Exception("Challenge with id: " + s + " does not exist in the Challenge Maps Array");
-                                    game.getScreen().dispose();
-                                    game.setScreen(new PlayScreen(game, gameCreator));
-                                } catch (Exception exception){
-
-                                    exception.printStackTrace();
-
-                                }
-                            }
-                        })
-                        .build()
-                        .createButton(world, Integer.toString(count + 1), startX + buttonWidth * mod + buttonGap * mod,
-                                startY - (div * buttonHeight) - (div * buttonGap));
+                    }
+                })
+                .build()
+                .createButton(
+                        world,
+                        "Leah",
+                        Measure.units(70f)
+                        , Measure.units(5f));
 
 
 
-            } else {
+        Entity XiSelect = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(Measure.units(20f))
+                .height(Measure.units(20f))
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(Color.WHITE))
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        game.getScreen().dispose();
+                        game.setScreen(new PlayScreen(game, PlayerIDs.XI_ID));
 
-                Entity lockedChallenge = world.createEntity();
-                lockedChallenge.edit().add(new PositionComponent(startX + buttonWidth * mod + buttonGap * mod,
-                        startY - (div * buttonHeight) - (div * buttonGap)));
-                lockedChallenge.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_LOCK), buttonWidth, buttonHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
-
-            }
-
-
-            count++;
-
-        }
+                    }
+                })
+                .build()
+                .createButton(
+                        world,
+                        "Xi",
+                        Measure.units(30f)
+                        , Measure.units(25f));
 
 
-        return count;
 
 
     }
-
 
 
 
@@ -229,4 +183,5 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
         Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
         return world.getSystem(com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
     }
+
 }
