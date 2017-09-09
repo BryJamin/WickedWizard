@@ -77,7 +77,7 @@ public class PlayScreen extends AbstractScreen {
     //TODO IF you ever click in the deck area don't cast any spells
 
 
-    public PlayScreen(MainGame game, com.bryjamin.wickedwizard.screens.PlayScreenConfig playScreenConfig) {
+    public PlayScreen(MainGame game, PlayScreenConfig playScreenConfig) {
         super(game);
         setUpGlobals();
 

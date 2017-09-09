@@ -19,12 +19,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -76,11 +78,14 @@ import com.bryjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
+import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.screens.QuickSave;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -91,6 +96,8 @@ import java.util.Random;
  */
 
 public class AdventureWorld {
+
+    private MainGame game;
 
     private final AssetManager assetManager;
     private final TextureAtlas atlas;
@@ -109,31 +116,25 @@ public class AdventureWorld {
     public World world;
 
     private ComponentBag player;
-    private com.bryjamin.wickedwizard.ecs.components.StatComponent playerStats;
-    private CurrencyComponent playerCurrency;
-
-    private MainGame game;
+    private StatComponent playerStats;
 
     private JigsawGenerator jigsawGenerator;
 
-    private com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator;
+    private GameCreator gameCreator;
 
     private BitmapFont currencyFont;
 
     private float countDown;
 
-    public AdventureWorld(MainGame game, Viewport gameport, com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator, Random random) {
+    public AdventureWorld(MainGame game, Viewport gameport, GameCreator gameCreator, Random random) {
         this.game = game;
         this.assetManager = game.assetManager;
         this.atlas = assetManager.get(FileLocationStrings.spriteAtlas);
         this.batch = game.batch;
         this.gameport = gameport;
         this.random = random;
-        this.player = new PlayerFactory(assetManager).playerBag(PlayerIDs.XI_ID, Measure.units(50f), Measure.units(45f));
         this.gameCreator = gameCreator;
-        playerStats = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(StatComponent.class, player);
-        playerCurrency = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
-        this.currencyFont = assetManager.get(com.bryjamin.wickedwizard.assets.FontAssets.small, BitmapFont.class);// font size 12 pixels
+        this.currencyFont = assetManager.get(FontAssets.small, BitmapFont.class);// font size 12 pixels
         createAdventureWorld();
     }
 
@@ -143,9 +144,16 @@ public class AdventureWorld {
 
     public void setPlayer(ComponentBag player) {
         this.player = player;
-        playerStats = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(StatComponent.class, player);
-        playerCurrency = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player);
+        this.playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
     }
+
+
+
+    public void setPlayer(String id){
+        new PlayerFactory(assetManager).playerBag(id, 0,0);
+    }
+
+
 
     public World createAdventureWorld() {
 
@@ -156,9 +164,33 @@ public class AdventureWorld {
             jigsawGenerator.cleanArenas();
         }
 
-
         Arena startingArena = jigsawGenerator.getStartingRoom();
-        this.setPlayer(new PlayerFactory(game.assetManager).playerBag(PlayerIDs.XI_ID, startingArena.getWidth() / 2, Measure.units(45f)));
+
+        if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
+            String quickSaveString = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY).getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+            if (!quickSaveString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+                QuickSave.loadQuickSave(gameCreator, assetManager, this);
+
+
+                jigsawGenerator = gameCreator.getCurrentLevel().jigsawGeneratorConfig.build();
+                if(gameCreator.getCurrentLevel().isGenerated){
+                    jigsawGenerator.generate();
+                } else {
+                    jigsawGenerator.cleanArenas();
+                }
+
+                Arena loadedStartingArena = jigsawGenerator.getStartingRoom();
+
+                BagSearch.getObjectOfTypeClass(PositionComponent.class, player).position.set(loadedStartingArena.getWidth() / 2, Measure.units(45f), 0);
+
+
+            } else {
+                this.setPlayer(new PlayerFactory(game.assetManager).playerBag(PlayerIDs.XI_ID, startingArena.getWidth() / 2, Measure.units(45f)));
+            }
+
+        } else {
+            this.setPlayer(new PlayerFactory(game.assetManager).playerBag(PlayerIDs.XI_ID, startingArena.getWidth() / 2, Measure.units(45f)));
+        }
 
 
         WorldConfiguration config = new WorldConfigurationBuilder()
@@ -229,8 +261,8 @@ public class AdventureWorld {
                         new EndGameSystem(game),
                         new UISystem(game, gameport,
                                 arenaGUI = new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
-                                playerStats,
-                                playerCurrency),
+                                BagSearch.getObjectOfTypeClass(StatComponent.class, player),
+                                BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player)),
 
                         new HealthBarSystem(game, gameport)
                 )
@@ -240,16 +272,6 @@ public class AdventureWorld {
         world = new World(config);
 
         world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
-
-        if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
-
-            String quickSaveString = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY).getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-
-            if (!quickSaveString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
-                QuickSave.loadQuickSave(world);
-            }
-
-        }
 
         Entity entity = world.createEntity();
         for (Component comp : player) {
@@ -265,12 +287,14 @@ public class AdventureWorld {
 
         world.process();
 
-        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent.class)).getEntities();
+        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(OnRoomLoadActionComponent.class)).getEntities();
         for(int i = 0; i < intBag.size(); i++) {
-            world.getEntity(intBag.get(i)).getComponent(com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));
+            world.getEntity(intBag.get(i)).getComponent(OnRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));
         }
 
-
+        for(Item i : world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).collectedItems){
+            i.applyEffect(world, world.getSystem(FindPlayerSystem.class).getPlayerEntity());
+        }
 
 
         float width = Measure.units(4.5f);
@@ -294,7 +318,8 @@ public class AdventureWorld {
 
 
         if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false) && MenuScreen.isDevDevice()) {
-            turnOnGodMode(playerStats, world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class));
+            turnOnGodMode(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class),
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class));
         }
 
 
