@@ -163,7 +163,7 @@ public class MapTeleportationSystem extends EntitySystem {
      */
     public void createNewLevel(){
 
-        com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem rts = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class);
+        RoomTransitionSystem rts = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class);
         rts.packRoom(world, rts.getCurrentArena());
 
         JigsawGenerator jg = world.getSystem(ChangeLevelSystem.class).incrementLevel();

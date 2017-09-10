@@ -1,19 +1,25 @@
 package com.bryjamin.wickedwizard.screens;
 
-import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.SerializationException;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.bryjamin.wickedwizard.factories.items.Item;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
+import com.bryjamin.wickedwizard.factories.PlayerFactory;
+import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
+import com.bryjamin.wickedwizard.screens.world.AdventureWorld;
+import com.bryjamin.wickedwizard.utils.BagSearch;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 
 /**
  * Created by Home on 29/07/2017.
@@ -25,16 +31,30 @@ public class QuickSave {
 
     private static Json json = new Json();
 
+    private static String PLAYER_ID_STRING = "4c2ad909-f3f1-42e7-9463-9fb72182edd1";
+    private static String STAT_COMPONENT_STRING = "1a4544a0-5ad3-4951-85b1-befea3bf4c3b";
+    private static String CURRENCY_COMPONENT_STRING = "a3c1b456-2f03-47cf-85ea-9627513871b3";
+    private static String LEVEL_POSITION_STRING = "2dcaafdb-b3a5-4780-982d-7cbeaf5e4706";
+    private static String ITEMPOOL_COMPONENT_STRING = "449de27a-3f35-431d-983f-8bffd0d4b2ce";
+
+
 
     public static void saveGame(World world){
 
-        SaveData saveData = new SaveData();
-        saveData.setStatComponentJSON(json.toJson(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class)));
-        saveData.setLevelJSON(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.class).getGameCreator().position + "");
-        saveData.setCurrencyJSON(json.toJson(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class)));
-        saveData.setItemPoolJSON(json.toJson(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.class).getJigsawGenerator().getItemStore().getItemStringArray()));
 
-        String saveDataString = json.toJson(saveData);
+        OrderedMap<String, String> saveMap = new OrderedMap<String, String>();
+
+        saveMap.put(PLAYER_ID_STRING, json.toJson(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PlayerComponent.class).id));
+
+        saveMap.put(STAT_COMPONENT_STRING, json.toJson(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class)));
+
+        saveMap.put(CURRENCY_COMPONENT_STRING, json.toJson(world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class)));
+
+        saveMap.put(LEVEL_POSITION_STRING, json.toJson(world.getSystem(ChangeLevelSystem.class).getGameCreator().position + ""));
+
+        saveMap.put(ITEMPOOL_COMPONENT_STRING, json.toJson(world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().getItemStringArray()));
+
+        String saveDataString = json.toJson(saveMap);
 
         try {
             Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
@@ -43,8 +63,6 @@ public class QuickSave {
         } catch (SerializationException e){
             e.printStackTrace();
         }
-
-
 
     }
 
@@ -56,10 +74,18 @@ public class QuickSave {
         String loadString = preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
 
         try {
-            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
-            json.fromJson(StatComponent.class, saveData.getStatComponentJSON());
-            json.fromJson(CurrencyComponent.class, saveData.getCurrencyJSON());
-            json.fromJson(Array.class, saveData.getItemPoolJSON());
+
+            OrderedMap<String, String> saveMap = json.fromJson(OrderedMap.class, Base64Coder.decodeString(loadString));
+
+            json.fromJson(String.class, saveMap.get(PLAYER_ID_STRING));
+
+            json.fromJson(StatComponent.class, saveMap.get(STAT_COMPONENT_STRING));
+
+            json.fromJson(CurrencyComponent.class, saveMap.get(CURRENCY_COMPONENT_STRING));
+
+            json.fromJson(String.class, saveMap.get(LEVEL_POSITION_STRING));
+
+            json.fromJson(Array.class, saveMap.get(ITEMPOOL_COMPONENT_STRING));
 
             return true;
 
@@ -77,7 +103,7 @@ public class QuickSave {
     }
 
 
-    public static void loadQuickSave(World world){
+    public static void loadQuickSave(GameCreator gameCreator, AssetManager assetManager, AdventureWorld adventureWorld){
 
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
         String loadString = preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
@@ -85,42 +111,25 @@ public class QuickSave {
 
         try {
 
-/*            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
-
-            StatComponent s = world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
-            s.applyStats(json.fromJson(StatComponent.class, saveData.getStatComponentJSON()));*/
+            OrderedMap<String, String> saveMap = json.fromJson(OrderedMap.class, Base64Coder.decodeString(loadString));
 
 
-            SaveData saveData = json.fromJson(SaveData.class, Base64Coder.decodeString(loadString));
-            final com.bryjamin.wickedwizard.ecs.components.StatComponent s = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class);
-            final com.bryjamin.wickedwizard.ecs.components.StatComponent savedStats = json.fromJson(StatComponent.class, saveData.getStatComponentJSON());
+            String level = json.fromJson(String.class, saveMap.get(LEVEL_POSITION_STRING));
+            gameCreator.setCurrentLevel(Integer.parseInt(level));
 
-            world.createEntity().edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
-                @Override
-                public void performAction(World world, Entity e) {
-                    for(Item i : savedStats.collectedItems){
-                        i.applyEffect(world, world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerEntity());
-                    }
+            gameCreator.getNextLevel().jigsawGeneratorConfig.itemStore
+                    .updateItemOptions(json.fromJson(Array.class, saveMap.get(ITEMPOOL_COMPONENT_STRING)));
 
-                    s.applyStats(savedStats);
-                }
-            }));
+            PlayerFactory playerFactory = new PlayerFactory(assetManager);
 
+            ComponentBag player = playerFactory.playerBag(json.fromJson(String.class, saveMap.get(PLAYER_ID_STRING)), 0, 0);
+            BagSearch.getObjectOfTypeClass(StatComponent.class, player)
+                    .applyStats(json.fromJson(StatComponent.class, saveMap.get(STAT_COMPONENT_STRING)));
 
-            CurrencyComponent currencyComponent = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class);
-            currencyComponent.updateCurrency(json.fromJson(CurrencyComponent.class, saveData.getCurrencyJSON()));
+            BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player)
+                    .updateCurrency(json.fromJson(CurrencyComponent.class, saveMap.get(CURRENCY_COMPONENT_STRING)));
 
-            String level = json.fromJson(String.class, saveData.getLevelJSON());
-            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.class).getGameCreator().setCurrentLevel(Integer.parseInt(level));
-
-            JigsawGenerator jg = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem.class).getJigsawGenerator();
-            jg.getItemStore().updateItemOptions(json.fromJson(Array.class, String.class, saveData.getItemPoolJSON()));
-
-            System.out.println(jg.getItemStore().toString());
-
-
-
-            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem.class).createNewLevel();
+            adventureWorld.setPlayer(player);
 
             preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
             preferences.flush();
@@ -136,72 +145,5 @@ public class QuickSave {
 
 
     }
-
-
-
-    private static class SaveData{
-
-        private String statComponentJSON;
-        private String levelJSON;
-        private String itemsJSON;
-        private String currencyJSON;
-        private String itemPoolJSON;
-
-        public String getStatComponentJSON() {
-            return statComponentJSON;
-        }
-
-        public void setStatComponentJSON(String statComponentJSON) {
-            this.statComponentJSON = statComponentJSON;
-        }
-
-        public String getLevelJSON() {
-            return levelJSON;
-        }
-
-        public void setLevelJSON(String levelJSON) {
-            this.levelJSON = levelJSON;
-        }
-
-        public String getItemsJSON() {
-            return itemsJSON;
-        }
-
-        public void setItemsJSON(String itemsJSON) {
-            this.itemsJSON = itemsJSON;
-        }
-
-        public String getCurrencyJSON() {
-            return currencyJSON;
-        }
-
-        public void setCurrencyJSON(String currencyJSON) {
-            this.currencyJSON = currencyJSON;
-        }
-
-        public String getItemPoolJSON() {
-            return itemPoolJSON;
-        }
-
-        public void setItemPoolJSON(String itemPoolJSON) {
-            this.itemPoolJSON = itemPoolJSON;
-        }
-
-
-        // SaveData
-
-
-        @Override
-        public String toString() {
-            return "SaveData{" +
-                    "statComponentJSON='" + statComponentJSON + '\'' +
-                    ", levelJSON='" + levelJSON + '\'' +
-                    ", itemsJSON='" + itemsJSON + '\'' +
-                    ", currencyJSON='" + currencyJSON + '\'' +
-                    ", itemPoolJSON='" + itemPoolJSON + '\'' +
-                    '}';
-        }
-    }
-
 
 }

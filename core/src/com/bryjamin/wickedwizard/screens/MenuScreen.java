@@ -37,6 +37,7 @@ import com.bryjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.screens.world.menu.ChallengesWorldContainer;
+import com.bryjamin.wickedwizard.screens.world.menu.CharacterSelectWorldContainer;
 import com.bryjamin.wickedwizard.screens.world.menu.DevModeMenuWorld;
 import com.bryjamin.wickedwizard.screens.world.menu.ItemDisplayWorldContainer;
 import com.bryjamin.wickedwizard.screens.world.menu.MenuBackDropWorld;
@@ -68,19 +69,21 @@ public class MenuScreen extends AbstractScreen {
     private MenuBackDropWorld menuBackDropWorld;
     private ChallengesWorldContainer challengesWorldContainer;
     private ItemDisplayWorldContainer itemDisplayWorldContainer;
+    private CharacterSelectWorldContainer characterSelectWorldContainer;
 
     private GestureDetector gestureDetector;
     private GestureDetector settingsDetector;
     private GestureDetector backDropDetector;
     private GestureDetector trailsWorldDectector;
     private GestureDetector itemsDisplayWorldDectector;
+    private GestureDetector characterSelectWorldDectector;
 
     private Preferences preferences;
 
     private static final float logoWidth = Measure.units(45f);
     private static final float logoHeight = Measure.units(45f);
     private static final float logoStartX = CenterMath.offsetX(MainGame.GAME_WIDTH, logoWidth);;
-    private static final float logoStartY = Measure.units(25f);
+    private static final float logoStartY = Measure.units(22.5f);
 
 
     private static final float buttonWidth = Measure.units(30f);
@@ -101,7 +104,7 @@ public class MenuScreen extends AbstractScreen {
 
 
     public enum MenuType {
-        MAIN, DEV, SETTING, CHALLENGES, ITEMS;
+        MAIN, DEV, SETTING, CHALLENGES, ITEMS, CHARACTER_SELECT;
     }
 
     private static MenuType menuType;
@@ -135,6 +138,8 @@ public class MenuScreen extends AbstractScreen {
         atlas = game.assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
         gamecam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
         gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
@@ -146,10 +151,14 @@ public class MenuScreen extends AbstractScreen {
         menuBackDropWorld = new MenuBackDropWorld(game, gameport);
         challengesWorldContainer = new ChallengesWorldContainer(game, gameport);
         itemDisplayWorldContainer = new ItemDisplayWorldContainer(game, gameport);
+        characterSelectWorldContainer = new CharacterSelectWorldContainer(game, gameport);
+
+
         settingsDetector = new GestureDetector(settingsWorld);
         backDropDetector = new GestureDetector(menuBackDropWorld);
         trailsWorldDectector = new GestureDetector(challengesWorldContainer);
         itemsDisplayWorldDectector = new GestureDetector(itemDisplayWorldContainer);
+        characterSelectWorldDectector = new GestureDetector(characterSelectWorldContainer);
 
         Gdx.input.setCatchBackKey(true);
 
@@ -172,6 +181,8 @@ public class MenuScreen extends AbstractScreen {
             default:
                 break;
             case ITEMS: multiplexer.addProcessor(itemsDisplayWorldDectector);
+                break;
+            case CHARACTER_SELECT: multiplexer.addProcessor(characterSelectWorldDectector);
                 break;
         }
 
@@ -307,14 +318,28 @@ public class MenuScreen extends AbstractScreen {
                 .backgroundColor(buttonBackground);
 
 
-        Entity startGame = menuButtonBuilder
-                .action(new Action() {
+
+        Action buttonAction = quickSaveDataIsReadable ?
+                new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         game.getScreen().dispose();
-                        game.setScreen(new com.bryjamin.wickedwizard.screens.PlayScreen(game));
+                        game.setScreen(new PlayScreen(game));
                     }
-                })
+                } :
+
+                new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        game.getScreen().dispose();
+                        game.setScreen(new PlayScreen(game));
+                        //setMenuType(MenuType.CHARACTER_SELECT);
+                    }
+                };
+
+
+        Entity startGame = menuButtonBuilder
+                .action(buttonAction)
                 .build().createButton(world,
                         quickSaveDataIsReadable ? MenuStrings.CONTINUE : MenuStrings.START,
                         startButtonX,
@@ -381,6 +406,9 @@ public class MenuScreen extends AbstractScreen {
             case ITEMS:
                 itemDisplayWorldContainer.process(delta);
                 break;
+            case CHARACTER_SELECT:
+                characterSelectWorldContainer.process(delta);
+                break;
 
         }
 
@@ -428,7 +456,6 @@ public class MenuScreen extends AbstractScreen {
         public boolean longPress(float x, float y) {
 
             if(!MenuScreen.isDevDevice()) return false;
-
 
             Preferences devSettings = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY);
 

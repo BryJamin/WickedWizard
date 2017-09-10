@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
+import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
@@ -36,6 +37,7 @@ import com.bryjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
+import com.bryjamin.wickedwizard.screens.world.AdventureWorld;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Level;
@@ -77,7 +79,7 @@ public class PlayScreen extends AbstractScreen {
     //TODO IF you ever click in the deck area don't cast any spells
 
 
-    public PlayScreen(MainGame game, com.bryjamin.wickedwizard.screens.PlayScreenConfig playScreenConfig) {
+    public PlayScreen(MainGame game, PlayScreenConfig playScreenConfig) {
         super(game);
         setUpGlobals();
 
@@ -143,7 +145,7 @@ public class PlayScreen extends AbstractScreen {
                 break;
         }
 
-        createWorlds(gameCreator);
+        createWorlds(gameCreator, PlayerIDs.LEAH_ID);
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -153,14 +155,21 @@ public class PlayScreen extends AbstractScreen {
     public PlayScreen(MainGame game) {
         super(game);
         setUpGlobals();
-        createWorlds(PresetGames.DEFAULT_GAME(manager, random));
+        createWorlds(PresetGames.DEFAULT_GAME(manager, random), PlayerIDs.LEAH_ID);
+        Gdx.input.setCatchBackKey(true);
+    }
+
+    public PlayScreen(MainGame game, String playerId) {
+        super(game);
+        setUpGlobals();
+        createWorlds(PresetGames.DEFAULT_GAME(manager, random), playerId);
         Gdx.input.setCatchBackKey(true);
     }
 
     public PlayScreen(MainGame game, GameCreator gameCreator) {
         super(game);
         setUpGlobals();
-        createWorlds(gameCreator);
+        createWorlds(gameCreator, PlayerIDs.LEAH_ID);
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -249,9 +258,8 @@ public class PlayScreen extends AbstractScreen {
     }
 
 
-    public void createWorlds(GameCreator gameCreator){
-
-        adventureWorld = new com.bryjamin.wickedwizard.screens.world.AdventureWorld(game, gameport,gameCreator, random);
+    public void createWorlds(GameCreator gameCreator, String playerId){
+        adventureWorld = new AdventureWorld(game, gameport,gameCreator,playerId, random);
     }
 
     @Override

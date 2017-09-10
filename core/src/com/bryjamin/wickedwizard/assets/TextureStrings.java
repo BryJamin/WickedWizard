@@ -7,9 +7,6 @@ public class TextureStrings {
 
     public static final  String BLOCK = "blocktiny";
 
-    public static final  String BLOCK_WALK = "block_walk";
-
-    public static final  String BLOCK_BLINK = "block_firing";
 
 
     public static final String MAIN_MENU_BACKDROP = "backgrounds/menu_backdrop";
@@ -27,8 +24,15 @@ public class TextureStrings {
 
 
     //PLAYER
-    public static final  String SQU_WALK = "squ_walk";
-    public static final String SQU_FIRING = "squ_firing";//AnimationPacker.genAnimation(0.15f / 10, "squ_firing");
+    public static final String BLOCK_WALK = "player/block_walk";
+    public static final String BLOCK_BLINK = "player/block_firing";
+
+
+    public static final String XI_WALK = "player/xi_walk";
+    public static final String XI_FIRING = "player/xi_firing";
+
+
+
     public static final String WINGS = "wings";
 
 
