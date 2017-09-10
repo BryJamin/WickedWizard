@@ -4,13 +4,16 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
+import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.screens.DataSave;
@@ -129,7 +132,28 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
                         world,
                         MenuStrings.RESET,
                         CenterMath.offsetX(com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, buttonWidth)
-                        , CenterMath.offsetY(com.bryjamin.wickedwizard.MainGame.GAME_HEIGHT, buttonHeight));
+                        , Measure.units(22.5f));
+
+
+
+
+
+        menuButtonBuilder.action(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                boolean guideLineBool = !Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true);
+                Gdx.app.getPreferences(PreferenceStrings.SETTINGS).putBoolean(PreferenceStrings.SETTINGS_GUIDELINE, guideLineBool).flush();
+                e.getComponent(TextureFontComponent.class).text = guideLineBool ? MenuStrings.SETTINGS_GUIDELINE_ON : MenuStrings.SETTINGS_GUIDELINE_OFF;
+            }
+        });
+
+
+        boolean bool = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true);
+
+        Entity guideLine = menuButtonBuilder.build().createButton(world,
+                bool? MenuStrings.SETTINGS_GUIDELINE_ON : MenuStrings.SETTINGS_GUIDELINE_OFF,
+                CenterMath.offsetX(com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, buttonWidth),
+                Measure.units(35f));
 
 
 

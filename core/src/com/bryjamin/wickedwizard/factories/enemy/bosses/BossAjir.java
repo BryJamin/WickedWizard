@@ -140,8 +140,8 @@ public class BossAjir extends BossFactory {
 
 
         PhaseComponent phaseComponent = new PhaseComponent();
-        phaseComponent.addPhase(bulletSplitterWeaponPhase, new AjirSplitterWeaponPhase(random));
         phaseComponent.addPhase(deathFromAbovePhase, new AjirDeathFromAboveLaserPhase(random));
+        phaseComponent.addPhase(bulletSplitterWeaponPhase, new AjirSplitterWeaponPhase(random));
 
         bag.add(phaseComponent);
 

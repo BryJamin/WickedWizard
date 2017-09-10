@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.artemis.World;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
@@ -76,6 +78,13 @@ public class UISystem extends EntitySystem {
 
     private BitmapFont currencyFont;
 
+
+    private boolean drawGuideLine;
+
+    public void updateGuideLineUsingPreferences(){
+        this.drawGuideLine = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true);
+    }
+
     public UISystem(MainGame game, Viewport gameport, ArenaGUI arenaGUI, com.bryjamin.wickedwizard.ecs.components.StatComponent playerStats, CurrencyComponent playerCurrency) {
         super(Aspect.all(PositionComponent.class, UIComponent.class).one(
                 TextureRegionComponent.class,
@@ -95,6 +104,10 @@ public class UISystem extends EntitySystem {
         this.playerCurrency = playerCurrency;
 
         this.arenaGUI = arenaGUI;
+
+        this.drawGuideLine = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true);
+
+
 
 
     }
@@ -155,6 +168,11 @@ public class UISystem extends EntitySystem {
     protected void processSystem() {
 
         drawScreenBorder(batch, atlas, gameport.getCamera());
+
+        if(drawGuideLine) {
+            drawGuideLine(batch, atlas, gameport.getCamera());
+        }
+
         drawMapAndHud(isPaused);
 
         for (int i = 0; orderedEntities.size() > i; i++) {
@@ -166,9 +184,12 @@ public class UISystem extends EntitySystem {
 
     }
 
-
-
-
+    private void drawGuideLine(SpriteBatch batch, TextureAtlas atlas, Camera gamecam) {
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+        batch.setColor(Color.WHITE);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY  + MainGame.GAME_BORDER + Measure.units(10), gamecam.viewportWidth, Measure.units(0.5f));
+    }
 
 
     protected boolean process(Entity e) {

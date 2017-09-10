@@ -223,14 +223,12 @@ public class RenderingSystem extends EntitySystem {
 
             if(cbm.has(e)){
                 CollisionBoundComponent cbc = cbm.get(e);
-                glyphLayout.setText(bmf, trfc.text);
+                glyphLayout.setText(bmf, trfc.text, trfc.color, cbc.bound.width, trfc.align, true);
 
-/*
-                System.out.println("layout height" + glyphLayout.height);
-                System.out.println("Bound height" + cbc.bound.height);*/
+
 
                 bmf.draw(batch, glyphLayout,
-                        pc.getX() + CenterMath.offsetX(cbc.bound.getWidth(), glyphLayout.width) + trfc.offsetX,
+                        pc.getX(),
                         pc.getY() + glyphLayout.height + CenterMath.offsetY(cbc.bound.getHeight(), glyphLayout.height) + trfc.offsetY);
             } else {
                 bmf.draw(batch, trfc.text,

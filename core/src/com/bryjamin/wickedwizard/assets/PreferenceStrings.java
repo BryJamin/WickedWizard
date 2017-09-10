@@ -15,6 +15,9 @@ public class PreferenceStrings {
     public final static String SETTINGS_MUSIC = "music";
 
 
+    public final static String SETTINGS_GUIDELINE = "settings_guideline";
+
+
 
 
 

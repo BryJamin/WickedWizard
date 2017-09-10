@@ -83,7 +83,7 @@ public class MenuScreen extends AbstractScreen {
     private static final float logoWidth = Measure.units(45f);
     private static final float logoHeight = Measure.units(45f);
     private static final float logoStartX = CenterMath.offsetX(MainGame.GAME_WIDTH, logoWidth);;
-    private static final float logoStartY = Measure.units(25f);
+    private static final float logoStartY = Measure.units(22.5f);
 
 
     private static final float buttonWidth = Measure.units(30f);
@@ -331,7 +331,9 @@ public class MenuScreen extends AbstractScreen {
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        setMenuType(MenuType.CHARACTER_SELECT);
+                        game.getScreen().dispose();
+                        game.setScreen(new PlayScreen(game));
+                        //setMenuType(MenuType.CHARACTER_SELECT);
                     }
                 };
 

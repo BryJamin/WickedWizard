@@ -80,14 +80,14 @@ enemy/switch
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 5
+  index: 6
 enemy/switch
   rotate: false
   xy: 1910, 858
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 6
+  index: 5
 block
   rotate: false
   xy: 396, 660
@@ -249,6 +249,27 @@ chevron
   orig: 64, 64
   offset: 0, 0
   index: 11
+chevron
+  rotate: false
+  xy: 1254, 726
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 13
+chevron
+  rotate: false
+  xy: 1254, 726
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 14
+chevron
+  rotate: false
+  xy: 1254, 726
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 12
 decor/altar
   rotate: false
   xy: 266, 332
@@ -269,14 +290,14 @@ enemy/pylon_spawning
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 1
 enemy/pylon_spawning
   rotate: false
   xy: 462, 726
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 0
 decor/block_door
   rotate: false
   xy: 528, 792
@@ -500,14 +521,14 @@ enemy/alurm
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 2
 enemy/alurm
   rotate: false
   xy: 266, 266
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
+  index: 1
 enemy/alurm
   rotate: false
   xy: 266, 200
@@ -598,14 +619,14 @@ enemy/boss/adoj_firing
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 3
 enemy/boss/adoj_firing
   rotate: false
   xy: 134, 6
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
+  index: 0
 enemy/boss/adoj
   rotate: false
   xy: 200, 6
@@ -654,14 +675,14 @@ enemy/boss/ajir_firing
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
+  index: 1
 enemy/boss/ajir_firing
   rotate: false
   xy: 330, 596
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 3
 enemy/boss/ajir
   rotate: false
   xy: 266, 530
@@ -1522,14 +1543,14 @@ enemy/modon_jump
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 3
 enemy/modon_jump
   rotate: false
   xy: 530, 132
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
+  index: 1
 enemy/modon_jump
   rotate: false
   xy: 530, 132
@@ -1557,14 +1578,14 @@ enemy/modon_heavy_in_air
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
+  index: 2
 enemy/modon_heavy_in_air
   rotate: false
   xy: 662, 264
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
+  index: 0
 enemy/modon_heavy_jump
   rotate: false
   xy: 662, 264
@@ -1585,13 +1606,6 @@ enemy/modon_heavy_jump
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
-enemy/modon_heavy_jump
-  rotate: false
-  xy: 728, 330
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 3
 enemy/modon_heavy_jump
   rotate: false
@@ -1600,6 +1614,13 @@ enemy/modon_heavy_jump
   orig: 64, 64
   offset: 0, 0
   index: 1
+enemy/modon_heavy_jump
+  rotate: false
+  xy: 728, 330
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
 enemy/modon_heavy_in_air
   rotate: false
   xy: 794, 396

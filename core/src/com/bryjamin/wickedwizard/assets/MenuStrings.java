@@ -24,6 +24,16 @@ public class MenuStrings {
 
     public static final String NO = "No";
 
+
+    public static final String ON = "On";
+
+    public static final String OFF = "Off";
+
+
+    public static final String SETTINGS_GUIDELINE_ON = "White Line On";
+
+    public static final String SETTINGS_GUIDELINE_OFF = "White Line Off";
+
     public static final String STATS = "Stats";
 
     public static final String ITEMS = "Items";

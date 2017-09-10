@@ -136,7 +136,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                         world,
                         "Leah",
                         Measure.units(70f)
-                        , Measure.units(5f));
+                        , Measure.units(20f));
 
 
 
