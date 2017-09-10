@@ -223,7 +223,7 @@ public class RenderingSystem extends EntitySystem {
 
             if(cbm.has(e)){
                 CollisionBoundComponent cbc = cbm.get(e);
-                glyphLayout.setText(bmf, trfc.text, trfc.color, cbc.bound.width, trfc.align, true);
+                glyphLayout.setText(bmf, trfc.text, trfc.color, cbc.bound.width, trfc.align, false);
 
 
 
