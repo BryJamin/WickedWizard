@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.ColorChangeComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.BulletFactory;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -71,6 +72,9 @@ public class PlayerPistol implements Weapon{
                 range + (playerStats.range * Measure.units(5f))));
 
         if(isCrit) {
+
+            bullet.edit().add(new ColorChangeComponent(new Color(0,0,0,1), new Color(1,1,1,1), 0.05f, true));
+
             bullet.edit().add(new OnDeathActionComponent(gibletBuilder
                     .numberOfGibletPairs(5)
                     .expiryTime(0.4f)

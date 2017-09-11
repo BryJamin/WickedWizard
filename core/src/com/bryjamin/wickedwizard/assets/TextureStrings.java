@@ -24,10 +24,12 @@ public class TextureStrings {
 
 
     //PLAYER
+    public static final String BLOCK_FACING = "player/block_portrait";
     public static final String BLOCK_WALK = "player/block_walk";
     public static final String BLOCK_BLINK = "player/block_firing";
 
 
+    public static final String XI_FACING = "player/xi_portrait";
     public static final String XI_WALK = "player/xi_walk";
     public static final String XI_FIRING = "player/xi_firing";
 

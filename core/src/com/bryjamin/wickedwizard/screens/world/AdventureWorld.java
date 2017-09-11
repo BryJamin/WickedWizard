@@ -50,6 +50,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraShakeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.ColorChangeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
@@ -238,6 +239,7 @@ public class AdventureWorld {
                         new CameraShakeSystem(gameport),
                         new FollowPositionSystem(),
                         new FadeSystem(), //Applies any fade before render
+                        new ColorChangeSystem(),
                         new RenderingSystem(batch, assetManager, gameport),
                         new BulletSystem(),
                         new ScreenWipeSystem(batch, assetManager, (OrthographicCamera) gameport.getCamera()),

@@ -7,20 +7,23 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
-import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
-import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.world.WorldContainer;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
@@ -38,6 +41,9 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private final Viewport gameport;
     private final TextureAtlas atlas;
 
+
+    private static final float characterSelectWidth = Measure.units(10f);
+    private static final float characterSelectHeight = Measure.units(10f);
 
     private static final float buttonWidth = Measure.units(7.5f);
     private static final float buttonHeight = Measure.units(7.5f);
@@ -93,7 +99,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                 .backgroundColor(new Color(0, 0, 0, 0))
                 .build()
                 .createButton(world,
-                        MenuStrings.TRAILS,
+                        MenuStrings.SELECT_A_CHARACTER,
                         CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
                         Measure.units(50f));
 
@@ -118,51 +124,33 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
 
 
 
-        Entity LeahSelect = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(Measure.units(20f))
-                .height(Measure.units(20f))
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(Color.WHITE))
-                .action(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        game.getScreen().dispose();
-                        game.setScreen(new PlayScreen(game, PlayerIDs.LEAH_ID));
+        createCharacterSelect(world, PlayerIDs.LEAH_ID, TextureStrings.BLOCK_FACING, Measure.units(20f), Measure.units(35f));
+        createCharacterSelect(world, PlayerIDs.XI_ID, TextureStrings.XI_FACING, Measure.units(40f), Measure.units(35f));
 
-                    }
-                })
-                .build()
-                .createButton(
-                        world,
-                        "Leah",
-                        Measure.units(70f)
-                        , Measure.units(20f));
+
+    }
 
 
 
-        Entity XiSelect = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(Measure.units(20f))
-                .height(Measure.units(20f))
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(Color.WHITE))
-                .action(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        game.getScreen().dispose();
-                        game.setScreen(new PlayScreen(game, PlayerIDs.XI_ID));
+    public Entity createCharacterSelect(World world, final String playerId, String texture, float x, float y){
 
-                    }
-                })
-                .build()
-                .createButton(
-                        world,
-                        "Xi",
-                        Measure.units(30f)
-                        , Measure.units(25f));
+        Entity e = world.createEntity();
+
+        e.edit().add(new PositionComponent(x, y));
+        e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
+
+        e.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.getScreen().dispose();
+                game.setScreen(new PlayScreen(game, playerId));
+            }
+        }));
 
 
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(texture), characterSelectWidth, characterSelectHeight));
 
-
+        return e;
     }
 
 

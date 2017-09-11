@@ -331,9 +331,9 @@ public class MenuScreen extends AbstractScreen {
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        game.getScreen().dispose();
-                        game.setScreen(new PlayScreen(game));
-                        //setMenuType(MenuType.CHARACTER_SELECT);
+                //        game.getScreen().dispose();
+                //        game.setScreen(new PlayScreen(game));
+                        setMenuType(MenuType.CHARACTER_SELECT);
                     }
                 };
 

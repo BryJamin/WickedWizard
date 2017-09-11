@@ -46,6 +46,9 @@ public class MenuStrings {
     public static final String BACK_TO_MAIN_MENU = "Back To Main Menu";
 
 
+    public static final String SELECT_A_CHARACTER = "Select A Character";
+
+
     public static final String NEW_TRAILS = "New Challenges Unlocked";
 
     public static final String TRAILS = "Challenges";

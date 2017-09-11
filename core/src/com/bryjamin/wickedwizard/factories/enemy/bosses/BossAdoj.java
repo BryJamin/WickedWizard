@@ -58,6 +58,7 @@ public class BossAdoj extends BossFactory {
 
     private static final float tommyReload = 1f;
     private static final float tommyFiringTime = 0.3f;
+    private static final float tommyGunSpeed = Measure.units(65f);
 
 
     public BossAdoj(AssetManager assetManager) {
@@ -161,7 +162,7 @@ public class BossAdoj extends BossFactory {
             this.reloadTime = reloadTime;
             this.tommyGun = new MultiPistol.PistolBuilder(assetManager)
                     .shotScale(3)
-                    .shotSpeed(Measure.units(75f))
+                    .shotSpeed(tommyGunSpeed)
                     .fireRate(0.05f)
                     .build();
 

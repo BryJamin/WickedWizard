@@ -29,6 +29,7 @@ import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.TableMath;
 
 /**
  * Created by BB on 20/08/2017.
@@ -123,6 +124,10 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
 
         int count = 0;
 
+        Array<String> allChallenges = new Array<String>();
+        allChallenges.addAll();
+
+
         count = createChallengeButtons(world, count, ChallengesResource.Rank1Challenges.rank1ChallengesArray,
                 ChallengesResource.LEVEL_1_COMPLETE);
         count = createChallengeButtons(world, count, ChallengesResource.Rank2Challenges.rank2ChallengesArray,
@@ -142,7 +147,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
     public int createChallengeButtons(World world, int startCount, Array<String> challengeIds, String unlockString){
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder challengeButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder challengeButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -152,13 +157,10 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
 
         for(int i = 0; i < challengeIds.size; i++){
 
-            int mod = count % maxColumns;
-            int div = count / maxColumns;
 
             final String s = challengeIds.get(i);
 
             boolean challengeComplete = DataSave.isDataAvailable(s);
-
 
             if(DataSave.isDataAvailable(unlockString)) {
 
@@ -185,16 +187,14 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                             }
                         })
                         .build()
-                        .createButton(world, Integer.toString(count + 1), startX + buttonWidth * mod + buttonGap * mod,
-                                startY - (div * buttonHeight) - (div * buttonGap));
+                        .createButton(world, Integer.toString(count + 1), x, y);
 
 
 
             } else {
 
                 Entity lockedChallenge = world.createEntity();
-                lockedChallenge.edit().add(new PositionComponent(startX + buttonWidth * mod + buttonGap * mod,
-                        startY - (div * buttonHeight) - (div * buttonGap)));
+                lockedChallenge.edit().add(new PositionComponent(x, y));
                 lockedChallenge.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_LOCK), buttonWidth, buttonHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
             }
