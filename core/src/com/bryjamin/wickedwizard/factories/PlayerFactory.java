@@ -36,6 +36,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.bryjamin.wickedwizard.factories.weapons.PlayerPistol;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -150,6 +151,8 @@ public class PlayerFactory extends AbstractFactory {
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
 
 
+
+
         if(id.equals(PlayerIDs.XI_ID)){
             statComponent.maxHealth = 4;
             statComponent.health = 4;
@@ -159,6 +162,21 @@ public class PlayerFactory extends AbstractFactory {
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.XI_FIRING)));
 
             trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.XI_WALK),
+                    width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
+
+
+        } else if(id.equals(PlayerIDs.PHI_ID)){
+
+            statComponent.maxHealth = 8;
+            statComponent.health = 8;
+            statComponent.damage -= PresetStatIncrease.minor;
+            statComponent.fireRate -= PresetStatIncrease.minor;
+            statComponent.speed -= PresetStatIncrease.Speed.minor;
+
+            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.PHI_WALK), Animation.PlayMode.LOOP));
+            aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.PHI_FIRING)));
+
+            trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.PHI_WALK),
                     width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
 
 

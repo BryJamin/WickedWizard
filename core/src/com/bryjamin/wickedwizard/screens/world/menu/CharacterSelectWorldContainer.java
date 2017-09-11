@@ -6,7 +6,6 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -23,7 +22,6 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.world.WorldContainer;
@@ -56,12 +54,10 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private static final Color buttonBackground = new Color(Color.WHITE);
 
     private static final int maxColumns = 4;
+    private static final int maxRows = 2;
 
-    private static final float startY = Measure.units(40f);
+    private static final float startY = Measure.units(37.5f);
     private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (characterSelectWidth * maxColumns) + (characterSelectGap * (maxColumns - 1)));
-
-    private ChallengeMaps challengeMaps;
-
 
     private World world;
 
@@ -69,7 +65,6 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
-        this.challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
         createWorld();
     }
 
@@ -126,7 +121,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                         , Measure.units(5f));
 
 
-        PlayerIDs.PlayableCharacter[] playableCharacters = new PlayerIDs.PlayableCharacter[]{PlayerIDs.LEAH, PlayerIDs.XI, PlayerIDs.XI, PlayerIDs.XI, PlayerIDs.XI};
+        PlayerIDs.PlayableCharacter[] playableCharacters = new PlayerIDs.PlayableCharacter[]{PlayerIDs.LEAH, PlayerIDs.PHI, PlayerIDs.XI};
 
 
         for(int i = 0; i < playableCharacters.length; i++){
@@ -145,7 +140,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                 Entity e = world.createEntity();
                 e.edit().add(new PositionComponent(x, y));
                 e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
-                e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), characterSelectWidth, characterSelectHeight));
+                e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK), characterSelectWidth, characterSelectHeight));
             }
 
         }

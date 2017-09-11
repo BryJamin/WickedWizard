@@ -8,24 +8,36 @@ import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 
 public class PlayerIDs {
 
+
     public static final String LEAH_ID = "accaf10b-744f-4d76-a099-85f1791c3a58";
 
     public static final String XI_ID = "6b217e83-0ca8-435a-8dd0-78a3eff155be";
 
-    public static final String PHI_ID = "6b217e83-0ca8-435a-8dd0-78a3eff155be";
+    public static final String PHI_ID = "7b100db4-14da-4224-a55e-c9073326c653";
 
 
-    public static PlayableCharacter LEAH = new PlayableCharacter.PlayableCharacterBuilder("accaf10b-744f-4d76-a099-85f1791c3a58")
+    public static PlayableCharacter LEAH = new PlayableCharacter.PlayableCharacterBuilder(LEAH_ID)
             .name("Leah")
             .region(TextureStrings.BLOCK_FACING)
             .build();
 
 
-    public static PlayableCharacter XI = new PlayableCharacter.PlayableCharacterBuilder("6b217e83-0ca8-435a-8dd0-78a3eff155be")
+    public static PlayableCharacter XI = new PlayableCharacter.PlayableCharacterBuilder(XI_ID)
             .name("Xi")
             .region(TextureStrings.XI_FACING)
+            .unlockString(ChallengesResource.LEVEL_4_COMPLETE)
+            .build();
+
+
+
+    public static PlayableCharacter PHI = new PlayableCharacter.PlayableCharacterBuilder(PHI_ID)
+            .name("Phi")
+            .region(TextureStrings.PHI_FACING)
             .unlockString(ChallengesResource.LEVEL_2_COMPLETE)
             .build();
+
+
+
 
 
     public static class PlayableCharacter {

@@ -33,6 +33,10 @@ public class TextureStrings {
     public static final String XI_WALK = "player/xi_walk";
     public static final String XI_FIRING = "player/xi_firing";
 
+    public static final String PHI_FACING = "player/phi_portrait";
+    public static final String PHI_WALK = "player/phi_walk";
+    public static final String PHI_FIRING = "player/phi_firing";
+
 
 
     public static final String WINGS = "wings";
