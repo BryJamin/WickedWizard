@@ -157,6 +157,8 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
 
         for(int i = 0; i < challengeIds.size; i++){
 
+            float x = TableMath.getXPos(startX, count, maxColumns, buttonWidth, buttonGap);
+            float y = TableMath.getYPos(startY, count, maxColumns, buttonWidth, buttonGap);
 
             final String s = challengeIds.get(i);
 
