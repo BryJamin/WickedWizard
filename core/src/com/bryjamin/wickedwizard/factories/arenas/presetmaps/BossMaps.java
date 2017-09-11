@@ -36,6 +36,7 @@ import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 /**
  * Created by Home on 29/05/2017.
@@ -125,7 +126,7 @@ public class BossMaps extends AbstractFactory {
 
 
         exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
-        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint()));
+        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint(), ItemType.BOSS));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
 
 

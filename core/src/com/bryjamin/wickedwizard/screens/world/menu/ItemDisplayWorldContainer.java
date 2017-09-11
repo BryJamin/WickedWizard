@@ -223,17 +223,17 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
 
-        boolean isItemCollected = DataSave.isItemCollected(item.getValues().id);
+        boolean isItemCollected = DataSave.isItemCollected(item.getValues().getId());
 
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
-                iconWidth, iconHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE, item.getValues().textureColor);
+        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
+                iconWidth, iconHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE, item.getValues().getTextureColor());
 
         if(!isItemCollected) {
             trc.color = new Color(Color.BLACK);
             trc.DEFAULT = new Color(Color.BLACK);
         }
 
-        if(!DataSave.isDataAvailable(item.getValues().challengeId)){
+        if(!DataSave.isDataAvailable(item.getValues().getChallengeId())){
             trc.region = atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK);
         }
 

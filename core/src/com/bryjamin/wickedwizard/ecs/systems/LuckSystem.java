@@ -321,7 +321,7 @@ public class LuckSystem extends BaseSystem {
                 onDeathActionComponent.action = new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        Entity itemAltar = BagToEntity.bagToEntity(world.createEntity(), itemFactory.createCenteredItemAltarBag(
+                        Entity itemAltar = BagToEntity.bagToEntity(world.createEntity(), itemFactory.createCenteredPresetItemAltarBag(
                                 x,
                                 y,
                                 altarColor,

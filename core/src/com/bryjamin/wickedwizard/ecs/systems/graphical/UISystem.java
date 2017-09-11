@@ -341,9 +341,9 @@ public class UISystem extends EntitySystem {
 
         for(int i = 1; i <= playerStats.health; i++){
             if(i <= playerStats.health && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.region.getLeft(), 0));
+                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 0));
             } else if(playerStats.health % 2 != 0 && i == playerStats.health){
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.region.getLeft(), 1));
+                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 1));
             }
         }
 
@@ -352,12 +352,12 @@ public class UISystem extends EntitySystem {
 
         for(int i = 1; i <= emptyHealth; i++) {
             if(i <= emptyHealth && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.region.getLeft(), 2));
+                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 2));
             }
         }
 
         for(int i = 0; i < playerStats.armor; i++) {
-            healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.armorUp.region.getLeft()));
+            healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.armorUp.getRegion().getLeft()));
         }
 
         float screenoffset = Measure.units(10f);
@@ -374,7 +374,7 @@ public class UISystem extends EntitySystem {
 
         float offsetX = Measure.units(1.5f);
 
-        batch.draw(atlas.findRegion(p.getValues().region.getLeft(), p.getValues().region.getRight()),
+        batch.draw(atlas.findRegion(p.getValues().getRegion().getLeft(), p.getValues().getRegion().getRight()),
                 camX + offsetX,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(3.5f),
                 Measure.units(2.5f), Measure.units(2.5f));

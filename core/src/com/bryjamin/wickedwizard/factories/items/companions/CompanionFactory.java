@@ -118,7 +118,7 @@ public class CompanionFactory extends AbstractFactory {
 
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, crownWidth, crownHeight)));
-        bag.add(new TextureRegionComponent(atlas.findRegion(ItemResource.Companion.crownOfBiggaBlobba.region.getLeft()), crownWidth, crownHeight, TextureRegionComponent.PLAYER_LAYER_NEAR));
+        bag.add(new TextureRegionComponent(atlas.findRegion(ItemResource.Companion.crownOfBiggaBlobba.getRegion().getLeft()), crownWidth, crownHeight, TextureRegionComponent.PLAYER_LAYER_NEAR));
         bag.add(new FiringAIComponent(FiringAIComponent.AI.TARGET_ENEMY, 0 , 0));
         bag.add(new FriendlyComponent());
         bag.add(new IntangibleComponent());
@@ -212,7 +212,7 @@ public class CompanionFactory extends AbstractFactory {
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, orbitalSize, orbitalSize)));
         bag.add(new FollowPositionComponent(positionc.position, CenterMath.offsetX(cbc.bound.getWidth(), crownWidth),  cbc.bound.height * 1.8f));
-        bag.add(new TextureRegionComponent(atlas.findRegion(ItemResource.Companion.myVeryOwnStalker.region.getLeft()), orbitalSize, orbitalSize, TextureRegionComponent.PLAYER_LAYER_NEAR,
+        bag.add(new TextureRegionComponent(atlas.findRegion(ItemResource.Companion.myVeryOwnStalker.getRegion().getLeft()), orbitalSize, orbitalSize, TextureRegionComponent.PLAYER_LAYER_NEAR,
                 new Color(1,1,1,0)));
         bag.add(new FriendlyComponent());
         bag.add(new IntangibleComponent());
@@ -226,7 +226,7 @@ public class CompanionFactory extends AbstractFactory {
         bag.add(new AnimationStateComponent(AnimationStateComponent.DEFAULT));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1f / 14f,
-                atlas.findRegions(ItemResource.Companion.myVeryOwnStalker.region.getLeft()), Animation.PlayMode.LOOP_REVERSED));
+                atlas.findRegions(ItemResource.Companion.myVeryOwnStalker.getRegion().getLeft()), Animation.PlayMode.LOOP_REVERSED));
 
 
         bag.add(new AnimationComponent(animMap));

@@ -24,12 +24,14 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
+import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.world.WorldContainer;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.TableMath;
 
 /**
  * Created by BB on 09/09/2017.
@@ -44,6 +46,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
 
     private static final float characterSelectWidth = Measure.units(10f);
     private static final float characterSelectHeight = Measure.units(10f);
+    private static final float characterSelectGap = Measure.units(5f);
 
     private static final float buttonWidth = Measure.units(7.5f);
     private static final float buttonHeight = Measure.units(7.5f);
@@ -52,10 +55,10 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
 
-    private static final int maxColumns = 9;
+    private static final int maxColumns = 4;
 
     private static final float startY = Measure.units(40f);
-    private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (buttonWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
+    private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (characterSelectWidth * maxColumns) + (characterSelectGap * (maxColumns - 1)));
 
     private ChallengeMaps challengeMaps;
 
@@ -123,11 +126,29 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                         , Measure.units(5f));
 
 
-
-        createCharacterSelect(world, PlayerIDs.LEAH_ID, TextureStrings.BLOCK_FACING, Measure.units(20f), Measure.units(35f));
-        createCharacterSelect(world, PlayerIDs.XI_ID, TextureStrings.XI_FACING, Measure.units(40f), Measure.units(35f));
+        PlayerIDs.PlayableCharacter[] playableCharacters = new PlayerIDs.PlayableCharacter[]{PlayerIDs.LEAH, PlayerIDs.XI, PlayerIDs.XI, PlayerIDs.XI, PlayerIDs.XI};
 
 
+        for(int i = 0; i < playableCharacters.length; i++){
+
+            PlayerIDs.PlayableCharacter pc = playableCharacters[i];
+
+            float x = TableMath.getXPos(startX, i, maxColumns, characterSelectWidth, characterSelectGap);
+            float y = TableMath.getYPos(startY, i, maxColumns, characterSelectHeight, characterSelectGap);
+
+            if(pc.getUnlockString() == null){
+                createCharacterSelect(world, pc.getId(), pc.getRegion(), x, y);
+            } else if(DataSave.isDataAvailable(pc.getUnlockString())){
+                createCharacterSelect(world, pc.getId(), pc.getRegion(), x, y);
+            } else {
+
+                Entity e = world.createEntity();
+                e.edit().add(new PositionComponent(x, y));
+                e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
+                e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), characterSelectWidth, characterSelectHeight));
+            }
+
+        }
     }
 
 

@@ -56,6 +56,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLett
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
 import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
+import com.bryjamin.wickedwizard.utils.Pair;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 /**
@@ -91,14 +92,42 @@ public class ItemResource {
 
     public static class ItemValues {
 
-        public final String id;
-        public final com.bryjamin.wickedwizard.utils.Pair<String, Integer> region;
-        public final Color textureColor;
-        public final String name;
-        public final String description;
-        public final Array<com.bryjamin.wickedwizard.utils.enums.ItemType> itemTypes;
-        public final String challengeId;
+        private final String id;
+        private final com.bryjamin.wickedwizard.utils.Pair<String, Integer> region;
+        private final Color textureColor;
+        private final String name;
+        private final String description;
+        private final Array<com.bryjamin.wickedwizard.utils.enums.ItemType> itemTypes;
+        private final String challengeId;
 
+
+        public String getId() {
+            return id;
+        }
+
+        public Pair<String, Integer> getRegion() {
+            return region;
+        }
+
+        public Color getTextureColor() {
+            return textureColor;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public Array<ItemType> getItemTypes() {
+            return itemTypes;
+        }
+
+        public String getChallengeId() {
+            return challengeId;
+        }
 
         public static class ItemValueBuilder {
 
