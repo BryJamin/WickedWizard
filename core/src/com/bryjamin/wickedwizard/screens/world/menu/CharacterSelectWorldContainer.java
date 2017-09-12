@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
@@ -18,6 +19,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
@@ -121,7 +123,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                         , Measure.units(5f));
 
 
-        PlayerIDs.PlayableCharacter[] playableCharacters = new PlayerIDs.PlayableCharacter[]{PlayerIDs.LEAH, PlayerIDs.PHI, PlayerIDs.XI};
+        PlayerIDs.PlayableCharacter[] playableCharacters = new PlayerIDs.PlayableCharacter[]{PlayerIDs.LEAH, PlayerIDs.PHI, PlayerIDs.XI, PlayerIDs.TESS};
 
 
         for(int i = 0; i < playableCharacters.length; i++){
@@ -132,9 +134,9 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
             float y = TableMath.getYPos(startY, i, maxColumns, characterSelectHeight, characterSelectGap);
 
             if(pc.getUnlockString() == null){
-                createCharacterSelect(world, pc.getId(), pc.getRegion(), x, y);
+                createCharacterSelect(world, pc, x, y);
             } else if(DataSave.isDataAvailable(pc.getUnlockString())){
-                createCharacterSelect(world, pc.getId(), pc.getRegion(), x, y);
+                createCharacterSelect(world, pc, x, y);
             } else {
 
                 Entity e = world.createEntity();
@@ -148,7 +150,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
 
 
 
-    public Entity createCharacterSelect(World world, final String playerId, String texture, float x, float y){
+    public Entity createCharacterSelect(World world, final PlayerIDs.PlayableCharacter pc, float x, float y){
 
         Entity e = world.createEntity();
 
@@ -159,12 +161,19 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
             @Override
             public void performAction(World world, Entity e) {
                 game.getScreen().dispose();
-                game.setScreen(new PlayScreen(game, playerId));
+                game.setScreen(new PlayScreen(game, pc.getId()));
             }
         }));
 
 
-        e.edit().add(new TextureRegionComponent(atlas.findRegion(texture), characterSelectWidth, characterSelectHeight));
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(pc.getRegion()), characterSelectWidth, characterSelectHeight));
+
+
+        Entity textBelow = world.createEntity();
+        textBelow.edit().add(new PositionComponent(x, y - Measure.units(5f)));
+        textBelow.edit().add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(5f), characterSelectWidth, Measure.units(5f))));
+        textBelow.edit().add(new TextureFontComponent(FontAssets.small, pc.getName()));
+
 
         return e;
     }

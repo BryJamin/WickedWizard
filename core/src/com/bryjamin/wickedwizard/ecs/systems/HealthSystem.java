@@ -72,7 +72,6 @@ public class HealthSystem extends EntityProcessingSystem {
 
         if(hc.health <= 0){
             world.getSystem(OnDeathSystem.class).kill(e);
-            System.out.println("?????");
         }
     }
 

@@ -35,7 +35,6 @@ public class PreferenceStrings {
 
 
     public final static String DATA_PREF_KEY = "com.bb.wickedwizard.data";
-    public final static String DATA_QUICK_SAVE = "abx4";
     public final static String DATA_PERMANENT_DATA = "f239f5db-f5fe-42ed-b98f-54250522ec6c";
     public final static String DATA_QUICK_SAVE_NO_VALID_SAVE = Base64Coder.encodeString("novalidsave");
 

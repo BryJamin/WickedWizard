@@ -79,6 +79,8 @@ public class UISystem extends EntitySystem {
     private BitmapFont currencyFont;
 
 
+    private Color white = new Color(Color.WHITE);
+
     private boolean drawGuideLine;
 
     public void updateGuideLineUsingPreferences(){
@@ -187,8 +189,9 @@ public class UISystem extends EntitySystem {
     private void drawGuideLine(SpriteBatch batch, TextureAtlas atlas, Camera gamecam) {
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-        batch.setColor(Color.WHITE);
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY  + MainGame.GAME_BORDER + Measure.units(10), gamecam.viewportWidth, Measure.units(0.5f));
+        batch.setColor(1,1,1,1f);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY  + MainGame.GAME_BORDER + Measure.units(9.5f), gamecam.viewportWidth, Measure.units(0.5f));
+        batch.setColor(white);
     }
 
 
@@ -210,10 +213,6 @@ public class UISystem extends EntitySystem {
 
             batch.setColor(trc.color);
 
-
-            System.out.println(this.getEntities().size());
-
-            System.out.println(trc.color.a);
 
             TextureRegion tr = trc.region != null ? trc.region : atlas.findRegion(TextureStrings.BLOCK);
 

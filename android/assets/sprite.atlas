@@ -384,112 +384,112 @@ decor/spike_wall
   index: 0
 decor/turret
   rotate: false
-  xy: 1321, 65
+  xy: 1717, 461
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 decor/turret
   rotate: false
-  xy: 1387, 131
+  xy: 1783, 527
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 decor/turret
   rotate: false
-  xy: 1453, 197
+  xy: 1849, 593
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 decor/turret
   rotate: false
-  xy: 1519, 263
+  xy: 1387, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 decor/turret
   rotate: false
-  xy: 1585, 329
+  xy: 1453, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 decor/turret
   rotate: false
-  xy: 1651, 395
+  xy: 1519, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 decor/turret
   rotate: false
-  xy: 1717, 461
+  xy: 1585, 263
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 decor/turret
   rotate: false
-  xy: 1783, 527
+  xy: 1651, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 7
 decor/turret
   rotate: false
-  xy: 1849, 593
+  xy: 1717, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 8
 decor/turret
   rotate: false
-  xy: 1387, 65
+  xy: 1783, 461
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 9
 decor/turret
   rotate: false
-  xy: 1453, 131
+  xy: 1849, 527
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 10
 decor/turret
   rotate: false
-  xy: 1519, 197
+  xy: 1915, 593
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 11
 decor/turret
   rotate: false
-  xy: 1585, 263
+  xy: 1453, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 12
 decor/turret
   rotate: false
-  xy: 1651, 329
+  xy: 1519, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 13
 decor/turret
   rotate: false
-  xy: 1717, 395
+  xy: 1585, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 14
 decor/turret
   rotate: false
-  xy: 1783, 461
+  xy: 1651, 263
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -944,56 +944,56 @@ enemy/boss/end_hand_firing
   index: 1
 enemy/boss/wraith_cowl_mad
   rotate: false
-  xy: 1849, 461
+  xy: 1783, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/boss/wraith_cowl_mad
   rotate: false
-  xy: 1915, 527
+  xy: 1849, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/boss/wraith_cowl_mad
   rotate: false
-  xy: 1519, 65
+  xy: 1915, 461
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/boss/wraith_cowl_mad
   rotate: false
-  xy: 1585, 131
+  xy: 1585, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 enemy/boss/wraith_cowl_sad
   rotate: false
-  xy: 1651, 197
+  xy: 1651, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/boss/wraith_cowl_sad
   rotate: false
-  xy: 1651, 197
+  xy: 1651, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/boss/wraith_cowl_sad
   rotate: false
-  xy: 1717, 263
+  xy: 1717, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/boss/wraith_cowl_sad
   rotate: false
-  xy: 1783, 329
+  xy: 1783, 263
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2246,49 +2246,49 @@ enemy/switch
   index: 4
 enemy/wanda_firing
   rotate: false
-  xy: 1849, 527
+  xy: 1717, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/wanda_standing
   rotate: false
-  xy: 1849, 527
+  xy: 1717, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/wanda_standing
   rotate: false
-  xy: 1849, 527
+  xy: 1717, 329
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 enemy/wanda_firing
   rotate: false
-  xy: 1915, 593
+  xy: 1783, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/wanda_firing
   rotate: false
-  xy: 1453, 65
+  xy: 1849, 461
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/wanda_standing
   rotate: false
-  xy: 1519, 131
+  xy: 1915, 527
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/wanda_standing
   rotate: false
-  xy: 1519, 131
+  xy: 1915, 527
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2937,58 +2937,114 @@ player/phi_walk
   orig: 64, 64
   offset: 0, 0
   index: 2
-player/xi_firing
+player/tess_firing
   rotate: false
-  xy: 1849, 395
+  xy: 1321, 65
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/tess_firing
+  rotate: false
+  xy: 1387, 131
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player/tess_firing
+  rotate: false
+  xy: 1453, 197
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player/tess_walk
+  rotate: false
+  xy: 1453, 197
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player/tess_firing
+  rotate: false
+  xy: 1519, 263
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+player/tess_walk
+  rotate: false
+  xy: 1519, 263
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player/tess_portrait
+  rotate: false
+  xy: 1585, 329
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/tess_walk
+  rotate: false
+  xy: 1651, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/xi_firing
   rotate: false
-  xy: 1915, 461
+  xy: 1849, 329
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/xi_firing
+  rotate: false
+  xy: 1915, 395
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/xi_firing
   rotate: false
-  xy: 1585, 65
+  xy: 1651, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/xi_walk
   rotate: false
-  xy: 1585, 65
+  xy: 1651, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/xi_firing
   rotate: false
-  xy: 1651, 131
+  xy: 1717, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 player/xi_walk
   rotate: false
-  xy: 1651, 131
+  xy: 1717, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/xi_portrait
   rotate: false
-  xy: 1717, 197
+  xy: 1783, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/xi_walk
   rotate: false
-  xy: 1783, 263
+  xy: 1849, 263
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -3219,42 +3275,42 @@ teleporter
   index: 5
 wings
   rotate: false
-  xy: 1585, 197
+  xy: 1519, 65
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 wings
   rotate: false
-  xy: 1651, 263
+  xy: 1585, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 wings
   rotate: false
-  xy: 1651, 263
+  xy: 1585, 131
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 wings
   rotate: false
-  xy: 1717, 329
+  xy: 1651, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 wings
   rotate: false
-  xy: 1717, 329
+  xy: 1651, 197
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 wings
   rotate: false
-  xy: 1783, 395
+  xy: 1717, 263
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

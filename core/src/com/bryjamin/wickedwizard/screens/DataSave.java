@@ -2,9 +2,11 @@ package com.bryjamin.wickedwizard.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.OrderedMap;
+import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 
 /**
@@ -14,9 +16,21 @@ import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 public class DataSave {
 
 
+    private static String CHALLENGE_MAP_KEY = "43eac2e9-63b1-4739-8d74-0cc5885bfa00";
+    private static String ITEM_MAP_KEY = "f34c29cb-e264-42b6-a748-b3ea88540eb2";
+
     private static Json json = new Json();
 
     private static DataSaveStore dataSaveStore = new DataSaveStore();
+
+
+    private static OrderedMap<String, OrderedMap> dataSaveMap = new OrderedMap<String, OrderedMap>();
+
+    static {
+        dataSaveMap.put(CHALLENGE_MAP_KEY, new OrderedMap<String, Boolean>());
+        dataSaveMap.put(ITEM_MAP_KEY, new OrderedMap<String, Boolean>());
+    }
+
 
 
     static {
@@ -24,35 +38,85 @@ public class DataSave {
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
         String loadString = preferences.getString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
 
+
+        FileHandle file = Gdx.files.local(FileLocationStrings.playerData);
+
         try {
 
-            dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
+            if(file.exists()) {
 
-        } catch(Exception e){
+                OrderedMap<String, OrderedMap> orderedMap = json.fromJson(OrderedMap.class, Base64Coder.decodeString(file.readString()));
+               // dataSaveMap = json.fromJson(OrderedMap.class, Base64Coder.decodeString(file.readString()));
+
+                if(!orderedMap.containsKey(CHALLENGE_MAP_KEY)) throw new Exception("Invalid Save Data");
+                if(!orderedMap.containsKey(ITEM_MAP_KEY)) throw new Exception("Invalid Save Data");
+
+                dataSaveMap = orderedMap;
+            }
+
+        } catch (Exception e){
             e.printStackTrace();
         }
+
+
+        try {
+
+            if (!loadString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+                dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
+
+
+                for (String key : dataSaveStore.keyStoreBoolean.keys().toArray()) {
+                    if (!dataSaveMap.get(CHALLENGE_MAP_KEY).containsKey(key)) {
+                        dataSaveMap.get(CHALLENGE_MAP_KEY).put(key, dataSaveStore.keyStoreBoolean.get(key));
+                    }
+                }
+
+
+                for (String key : dataSaveStore.itemStoreBoolean.keys().toArray()) {
+                    if (!dataSaveMap.get(ITEM_MAP_KEY).containsKey(key)) {
+                        dataSaveMap.get(ITEM_MAP_KEY).put(key, dataSaveStore.itemStoreBoolean.get(key));
+                    }
+                }
+                preferences.putString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+                preferences.flush();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
 
 
 
     public static void saveChallengeData(String id){
-        dataSaveStore.keyStoreBoolean.put(id, true);
+        try {
+            dataSaveMap.get(CHALLENGE_MAP_KEY).put(id, false);
+        }catch (Exception e) {
+            e.printStackTrace();;
+        }
         saveData();
     }
 
     public static void saveItemData(String id){
-        dataSaveStore.itemStoreBoolean.put(id, true);
+
+        try {
+            dataSaveMap.get(ITEM_MAP_KEY).put(id, false);
+        }catch (Exception e) {
+            e.printStackTrace();;
+        }
+
         saveData();
     }
 
 
     public static void saveData(){
 
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        String loadString = preferences.getString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-
-
+        FileHandle file = Gdx.files.local(FileLocationStrings.playerData);
+        String saveDataString = json.toJson(dataSaveMap);
+        file.writeString(Base64Coder.encodeString(saveDataString), false);
+/*
         try {
             try {
                // dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
@@ -68,28 +132,37 @@ public class DataSave {
         } catch(Exception e){
             e.printStackTrace();
         }
+*/
 
 
     }
 
     public static void clearData(){
 
-        dataSaveStore = new DataSaveStore();
-        String saveDataString = json.toJson(dataSaveStore);
+        dataSaveMap = new OrderedMap<String, OrderedMap>();
+        String saveDataString = Base64Coder.encodeString(json.toJson(dataSaveMap));
 
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        preferences.putString(PreferenceStrings.DATA_PERMANENT_DATA, saveDataString);
-        preferences.flush();
+        FileHandle file = Gdx.files.local(FileLocationStrings.playerData);
+        file.writeString(saveDataString, false);
+
     }
 
 
 
     public static boolean isDataAvailable(String id){
-        return dataSaveStore.keyStoreBoolean.containsKey(id);
+        try {
+            return dataSaveMap.get(CHALLENGE_MAP_KEY).containsKey(id);
+        } catch (Exception e){
+            return  false;
+        }
     }
 
     public static boolean isItemCollected(String id){
-        return dataSaveStore.itemStoreBoolean.containsKey(id);
+        try {
+            return dataSaveMap.get(ITEM_MAP_KEY).containsKey(id);
+        } catch (Exception e){
+            return  false;
+        }
     }
 
 

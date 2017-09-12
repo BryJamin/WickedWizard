@@ -159,8 +159,8 @@ public class AdventureWorld {
         Arena startingArena = jigsawGenerator.getStartingRoom();
 
         if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
-            String quickSaveString = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY).getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-            if (!quickSaveString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+
+            if (QuickSave.doesQuickSaveExist()) {
                 QuickSave.loadQuickSave(gameCreator, assetManager, this);
 
 

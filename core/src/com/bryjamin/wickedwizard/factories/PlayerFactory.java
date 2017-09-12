@@ -165,7 +165,7 @@ public class PlayerFactory extends AbstractFactory {
                     width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
 
 
-        } else if(id.equals(PlayerIDs.PHI_ID)){
+        } else if(id.equals(PlayerIDs.PHI_ID)) {
 
             statComponent.maxHealth = 8;
             statComponent.health = 8;
@@ -173,10 +173,26 @@ public class PlayerFactory extends AbstractFactory {
             statComponent.fireRate -= PresetStatIncrease.minor;
             statComponent.speed -= PresetStatIncrease.Speed.minor;
 
-            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.PHI_WALK), Animation.PlayMode.LOOP));
+            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1 / 9f, atlas.findRegions(TextureStrings.PHI_WALK), Animation.PlayMode.LOOP));
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.PHI_FIRING)));
 
             trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.PHI_WALK),
+                    width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
+
+
+        } else if(id.equals(PlayerIDs.TESS_ID)) {
+
+            statComponent.health = 2;
+            statComponent.maxHealth = 2;
+
+            statComponent.armor = 1;
+
+            statComponent.luck = 5;
+
+            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1 / 9f, atlas.findRegions(TextureStrings.TESS_WALK), Animation.PlayMode.LOOP));
+            aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.TESS_FIRING)));
+
+            trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.TESS_WALK),
                     width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
 
 

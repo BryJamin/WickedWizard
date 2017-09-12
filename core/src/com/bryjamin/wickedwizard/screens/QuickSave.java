@@ -2,14 +2,14 @@ package com.bryjamin.wickedwizard.screens;
 
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.SerializationException;
-import com.bryjamin.wickedwizard.assets.PreferenceStrings;
+import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
@@ -56,10 +56,16 @@ public class QuickSave {
 
         String saveDataString = json.toJson(saveMap);
 
+
+
         try {
-            Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-            preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, Base64Coder.encodeString(saveDataString));
-            preferences.flush();
+
+            FileHandle file = Gdx.files.local(FileLocationStrings.playerQuickSaveData);
+            file.writeString(Base64Coder.encodeString(saveDataString), false);
+
+            //Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
+            //preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, Base64Coder.encodeString(saveDataString));
+            //preferences.flush();
         } catch (SerializationException e){
             e.printStackTrace();
         }
@@ -70,8 +76,10 @@ public class QuickSave {
 
     public static boolean checkQuickSave(){
 
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        String loadString = preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+        FileHandle file = Gdx.files.local(FileLocationStrings.playerQuickSaveData);
+
+        if(!file.exists()) return false;
+        String loadString = file.readString();
 
         try {
 
@@ -92,10 +100,12 @@ public class QuickSave {
         } catch (Exception e){
             e.printStackTrace();
 
-            if(!loadString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+            if(file.exists()) file.delete();
+
+/*            if(!loadString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
                 preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
                 preferences.flush();
-            }
+            }*/
 
             return false;
         }
@@ -103,16 +113,21 @@ public class QuickSave {
     }
 
 
-    public static void loadQuickSave(GameCreator gameCreator, AssetManager assetManager, AdventureWorld adventureWorld){
+    public static boolean doesQuickSaveExist(){
+        return Gdx.files.local(FileLocationStrings.playerQuickSaveData).exists();
+    }
 
-        Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        String loadString = preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
 
+    public static boolean loadQuickSave(GameCreator gameCreator, AssetManager assetManager, AdventureWorld adventureWorld){
+
+        FileHandle file = Gdx.files.local(FileLocationStrings.playerQuickSaveData);
+
+        if(!file.exists()) return false;
+        String loadString = file.readString();
 
         try {
 
             OrderedMap<String, String> saveMap = json.fromJson(OrderedMap.class, Base64Coder.decodeString(loadString));
-
 
             String level = json.fromJson(String.class, saveMap.get(LEVEL_POSITION_STRING));
             gameCreator.setCurrentLevel(Integer.parseInt(level));
@@ -131,17 +146,13 @@ public class QuickSave {
 
             adventureWorld.setPlayer(player);
 
-            preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-            preferences.flush();
-
         } catch (Exception e){
-
-            preferences.putString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-            preferences.flush();
-
             e.printStackTrace();
         }
 
+        file.delete();
+
+        return true;
 
 
     }

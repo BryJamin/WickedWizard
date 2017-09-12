@@ -303,10 +303,9 @@ public class MenuScreen extends AbstractScreen {
 
     private void setUpMenuScreenStartAndTutorial() {
 
-        final boolean quickSaveDataIsDefault =
-                preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE).equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+        final boolean quickSaveDataIsDefault = QuickSave.doesQuickSaveExist();
 
-        final boolean quickSaveDataIsReadable = com.bryjamin.wickedwizard.screens.QuickSave.checkQuickSave();
+        final boolean quickSaveDataIsReadable = QuickSave.checkQuickSave();
 
         final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
 
@@ -369,7 +368,7 @@ public class MenuScreen extends AbstractScreen {
 
                     }
                 })
-                .build().createButton(world, MenuStrings.TUTORIAL, Measure.units(65f)
+                .build().createButton(world, MenuStrings.TUTORIAL, Measure.units(60f)
                 ,Measure.units(5f));
 
     }

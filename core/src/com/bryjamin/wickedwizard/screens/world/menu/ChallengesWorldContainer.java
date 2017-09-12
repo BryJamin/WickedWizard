@@ -175,8 +175,6 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
 
                                 try {
 
-                                    System.out.println(s);
-
                                     com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator = challengeMaps.getChallenge(s);
                                     if(gameCreator == null) throw new Exception("Challenge with id: " + s + " does not exist in the Challenge Maps Array");
                                     game.getScreen().dispose();

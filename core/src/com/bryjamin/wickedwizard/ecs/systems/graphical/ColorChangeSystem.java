@@ -79,9 +79,6 @@ public class ColorChangeSystem extends EntityProcessingSystem {
 
         end.set(startR, startG, startB, startA);
 
-        System.out.println(start);
-        System.out.println(end);
-
     }
 
 
