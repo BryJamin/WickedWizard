@@ -255,7 +255,7 @@ public class PauseWorld implements WorldContainer {
         Entity itemEntity = world.createEntity();
         itemEntity.edit().add(new PositionComponent(x, y));
         itemEntity.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
-                itemIconSize, itemIconSize, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+                itemIconSize, itemIconSize, TextureRegionComponent.ENEMY_LAYER_MIDDLE, item.getValues().getTextureColor()));
     }
 
     public World getWorld() {
