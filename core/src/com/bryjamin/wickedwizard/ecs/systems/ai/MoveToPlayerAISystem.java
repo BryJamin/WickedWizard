@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 
 /**
@@ -36,7 +37,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent pBound = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
+        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
 
         com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);

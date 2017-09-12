@@ -89,6 +89,8 @@ import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
+;
+
 /**
  * Created by Home on 10/07/2017.
  */
@@ -210,7 +212,7 @@ public class AdventureWorld {
                         //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
                         new com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
-                        new com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem(player),
+                        new FindPlayerSystem(player),
                         new com.bryjamin.wickedwizard.ecs.systems.ai.FiringAISystem(),
                         new GrapplePointSystem(),
                         new LockSystem(),

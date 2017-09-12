@@ -7,6 +7,7 @@ import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.MapCoords;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class PresetGenerators {
 
 
     public JigsawGeneratorConfig level1Configuration(AssetManager assetManager, Random random) {
-        return level1Configuration(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.ONE.getArenaSkin(), random);
+        return level1Configuration(assetManager, Level.ONE.getArenaSkin(), random);
     }
 
     public JigsawGeneratorConfig level1Configuration(AssetManager assetManager, ArenaSkin arenaSkin, Random random){
@@ -43,8 +44,8 @@ public class PresetGenerators {
 
         return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level1Rooms(assetManager, arenaSkin, random).getAllArenas())
-                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(com.bryjamin.wickedwizard.utils.enums.Level.ONE).createArena(new MapCoords())))
-                .level(com.bryjamin.wickedwizard.utils.enums.Level.ONE)
+                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(Level.ONE).createArena(new MapCoords())))
+                .level(Level.ONE)
                 .bossMapCreates(bossMapGens)
                 .noRandomizerRooms(0)
                 .noBattleRooms(numberOfLevel1Rooms);
@@ -52,7 +53,7 @@ public class PresetGenerators {
     }
 
     public JigsawGeneratorConfig level2Configuration(AssetManager assetManager, Random random) {
-        return level2Configuration(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin(), random);
+        return level2Configuration(assetManager, Level.TWO.getArenaSkin(), random);
     }
 
 
@@ -65,15 +66,15 @@ public class PresetGenerators {
 
         return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level2Rooms(assetManager, arenaSkin, random).getAllArenas())
-                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(com.bryjamin.wickedwizard.utils.enums.Level.TWO).createArena(new MapCoords())))
-                .level(com.bryjamin.wickedwizard.utils.enums.Level.TWO)
+                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(Level.TWO).createArena(new MapCoords())))
+                .level(Level.TWO)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel2Rooms);
 
     }
 
     public JigsawGeneratorConfig level3Configuration(AssetManager assetManager, Random random) {
-        return level3Configuration(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.THREE.getArenaSkin(), random);
+        return level3Configuration(assetManager, Level.THREE.getArenaSkin(), random);
     }
 
 
@@ -86,14 +87,14 @@ public class PresetGenerators {
 
         return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level3Rooms(assetManager, arenaSkin, random).getAllArenas())
-                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(com.bryjamin.wickedwizard.utils.enums.Level.THREE).createArena(new MapCoords())))
-                .level(com.bryjamin.wickedwizard.utils.enums.Level.THREE)
+                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(Level.THREE).createArena(new MapCoords())))
+                .level(Level.THREE)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel3Rooms);
     }
 
     public JigsawGeneratorConfig level4Configuration(AssetManager assetManager, Random random) {
-        return level4Configuration(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FOUR.getArenaSkin(), random);
+        return level4Configuration(assetManager, Level.FOUR.getArenaSkin(), random);
     }
 
 
@@ -106,15 +107,15 @@ public class PresetGenerators {
 
         return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level4Rooms(assetManager, arenaSkin, random).getAllArenas())
-                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(com.bryjamin.wickedwizard.utils.enums.Level.FOUR).createArena(new MapCoords())))
-                .level(com.bryjamin.wickedwizard.utils.enums.Level.FOUR)
+                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(Level.FOUR).createArena(new MapCoords())))
+                .level(Level.FOUR)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel4Rooms);
 
     }
 
     public JigsawGeneratorConfig level5Configuration(AssetManager assetManager, Random random) {
-        return level5Configuration(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.FIVE.getArenaSkin(), random);
+        return level5Configuration(assetManager, Level.FIVE.getArenaSkin(), random);
     }
 
 
@@ -126,8 +127,8 @@ public class PresetGenerators {
 
         return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new com.bryjamin.wickedwizard.factories.arenas.levels.Level5Rooms(assetManager, arenaSkin, random).getAllArenas())
-                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(com.bryjamin.wickedwizard.utils.enums.Level.FIVE).createArena(new MapCoords())))
-                .level(com.bryjamin.wickedwizard.utils.enums.Level.FIVE)
+                .startingMap(new ArenaMap(new ReuseableRooms(assetManager, arenaSkin).startingArena(Level.FIVE).createArena(new MapCoords())))
+                .level(Level.FIVE)
                 .bossMapCreates(bossMapGens)
                 .noBattleRooms(numberOfLevel5Rooms);
 

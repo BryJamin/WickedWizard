@@ -116,23 +116,6 @@ public class DataSave {
         FileHandle file = Gdx.files.local(FileLocationStrings.playerData);
         String saveDataString = json.toJson(dataSaveMap);
         file.writeString(Base64Coder.encodeString(saveDataString), false);
-/*
-        try {
-            try {
-               // dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-
-            String saveDataString = json.toJson(dataSaveStore);
-            preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-            preferences.putString(PreferenceStrings.DATA_PERMANENT_DATA, Base64Coder.encodeString(saveDataString));
-            preferences.flush();
-
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-*/
 
 
     }

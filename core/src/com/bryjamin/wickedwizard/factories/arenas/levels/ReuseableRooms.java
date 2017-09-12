@@ -11,6 +11,7 @@ import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
@@ -39,6 +40,8 @@ import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Level;
 
+;
+
 /**
  * Created by BB on 19/08/2017.
  */
@@ -58,6 +61,7 @@ public class ReuseableRooms extends AbstractFactory {
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.chestFactory = new ChestFactory(assetManager);
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
+        this.arenaSkin = arenaSkin;
     }
 
 
@@ -90,11 +94,21 @@ public class ReuseableRooms extends AbstractFactory {
     }
 
 
-    public ArenaCreate challengeStartingArena(final Mix mix){
+    public ArenaCreate challengeStartingArena(final ChallengeLayout challengeLayout, final Mix mix){
         return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
+
+                ComponentBag bag = arena.createArenaBag();
+                bag.add(new PositionComponent(0, Measure.units(35f)));
+                bag.add(new CollisionBoundComponent(new Rectangle(0,Measure.units(35f), MainGame.GAME_WIDTH, Measure.units(5f))));
+                bag.add(new TextureFontComponent(FontAssets.small, challengeLayout.getName(), arenaSkin.getWallTint()));
+
+                TextureFontComponent textureFontComponent = new TextureFontComponent(FontAssets.medium, challengeLayout.getName(), arenaSkin.getWallTint());
+                textureFontComponent.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;
+                bag.add(textureFontComponent);
+
                 arena.addEntity(new OnLoadFactory().startMusicEntity(mix));
                 return arena;
             }

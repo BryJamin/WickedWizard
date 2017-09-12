@@ -3,22 +3,29 @@ package com.bryjamin.wickedwizard.factories.arenas.challenges;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
+import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
+import com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
+
+;
 
 /**
  * Created by BB on 24/08/2017.
@@ -36,7 +43,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
     private com.bryjamin.wickedwizard.factories.items.ItemFactory itemFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
-    private ArenaSkin arenaSkin = com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin();
+    private ArenaSkin arenaSkin = Level.TWO.getArenaSkin();
 
     private Random random;
 
@@ -52,22 +59,22 @@ public class Rank2ChallengeMaps extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.GameCreator perfectWanda(String id){
+    public GameCreator perfectWanda(ChallengeLayout challengeLayout){
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.TWO.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(challengeLayout, Level.TWO.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 e.deleteFromWorld();
             }
         }));
 
-        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(2,0));
+        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(challengeLayout.getChallengeID()).createArena(new MapCoords(2,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda(assetManager, arenaSkin).wandaArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -76,8 +83,8 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator = new com.bryjamin.wickedwizard.factories.arenas.GameCreator();
-        gameCreator.add(new com.bryjamin.wickedwizard.factories.arenas.GameCreator.LevelCreator(jigsawGeneratorConfig, false));
+        GameCreator gameCreator = new GameCreator();
+        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
         return gameCreator;
 
@@ -87,22 +94,22 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.GameCreator perfectKugel(String id){
+    public GameCreator perfectKugel(ChallengeLayout challengeLayout){
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.TWO.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(challengeLayout, Level.TWO.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 e.deleteFromWorld();
             }
         }));
 
-        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(id).createArena(new MapCoords(3,0));
+        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaRightPortal(challengeLayout.getChallengeID()).createArena(new MapCoords(3,0));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 new BossRoomGiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1,0)),
                 endArena
@@ -111,8 +118,8 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator = new com.bryjamin.wickedwizard.factories.arenas.GameCreator();
-        gameCreator.add(new com.bryjamin.wickedwizard.factories.arenas.GameCreator.LevelCreator(jigsawGeneratorConfig, false));
+        GameCreator gameCreator = new GameCreator();
+        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
         return gameCreator;
 
@@ -121,17 +128,17 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.GameCreator rank2ArenaRace(String id){
+    public GameCreator rank2ArenaRace(ChallengeLayout challengeLayout){
 
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.TWO.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(challengeLayout, Level.TWO.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();
             }
@@ -157,7 +164,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
         arena.addWave(arenaEnemyPlacementFactory.spawnLaserKugel(arena.getWidth() / 2, arena.getHeight() / 2, false));
 
-        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(0, 2));
+        Arena endArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(challengeLayout.getChallengeID()).createArena(new MapCoords(0, 2));
         ArenaMap arenaMap = new ArenaMap(startingArena,
                 arena,
                 endArena
@@ -166,8 +173,8 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator = new com.bryjamin.wickedwizard.factories.arenas.GameCreator();
-        gameCreator.add(new com.bryjamin.wickedwizard.factories.arenas.GameCreator.LevelCreator(jigsawGeneratorConfig, false));
+        GameCreator gameCreator = new GameCreator();
+        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
         return gameCreator;
 
@@ -176,23 +183,17 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
 
 
+    public GameCreator rank2TimeTrail(ChallengeLayout challengeLayout){
 
-
-
-
-
-
-    public com.bryjamin.wickedwizard.factories.arenas.GameCreator rank2TimeTrail(String id){
-
-        Arena startingArena = new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(com.bryjamin.wickedwizard.utils.enums.Level.TWO.getMusic()).createArena(new MapCoords());
+        Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(challengeLayout, Level.TWO.getMusic()).createArena(new MapCoords());
 
         ComponentBag bag = startingArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();
             }
@@ -206,14 +207,14 @@ public class Rank2ChallengeMaps extends AbstractFactory {
                 rank2TimeTrailRoom2GoatWizard(new MapCoords(1, 3)),
                 rank2TimeTrailRoom3(new MapCoords(2, 3)),
                 rank2TimeTrailRoom4(new MapCoords(6, 3)),
-                new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(id).createArena(new MapCoords(7, 3))
+                new com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms(assetManager, arenaSkin).challengeEndArenaMiddlePortal(challengeLayout.getChallengeID()).createArena(new MapCoords(7, 3))
         );
 
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator = new com.bryjamin.wickedwizard.factories.arenas.GameCreator();
-        gameCreator.add(new com.bryjamin.wickedwizard.factories.arenas.GameCreator.LevelCreator(jigsawGeneratorConfig, false));
+        GameCreator gameCreator = new GameCreator();
+        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
         return gameCreator;
 

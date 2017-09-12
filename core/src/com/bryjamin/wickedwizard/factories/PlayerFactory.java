@@ -36,6 +36,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.bryjamin.wickedwizard.factories.weapons.PlayerPistol;
 import com.bryjamin.wickedwizard.utils.BulletMath;
@@ -339,9 +340,9 @@ public class PlayerFactory extends AbstractFactory {
         }, new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
-                com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent mtc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent.class);
+                com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent.class);
 
-                CollisionBoundComponent cbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
 
                 float x = e.getComponent(CollisionBoundComponent.class).getCenterX();
@@ -359,7 +360,7 @@ public class PlayerFactory extends AbstractFactory {
 
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem.class).playRandomSound(com.bryjamin.wickedwizard.assets.SoundFileStrings.grappleFireMix);
 
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = true;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = true;
 
                 e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
 

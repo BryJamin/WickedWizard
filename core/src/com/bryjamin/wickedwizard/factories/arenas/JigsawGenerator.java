@@ -22,6 +22,7 @@ import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.WeightedObject;
 import com.bryjamin.wickedwizard.utils.WeightedRoll;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class JigsawGenerator {
 
     private Random random;
 
-    private com.bryjamin.wickedwizard.utils.enums.Level level;
+    private Level level;
 
     private com.bryjamin.wickedwizard.utils.comparator.FarSort farSort;
 
@@ -97,7 +98,7 @@ public class JigsawGenerator {
     }
 
 
-    public com.bryjamin.wickedwizard.utils.enums.Level getLevel(){
+    public Level getLevel(){
         return level;
     }
 

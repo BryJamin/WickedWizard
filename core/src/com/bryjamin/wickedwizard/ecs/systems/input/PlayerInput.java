@@ -89,7 +89,7 @@ public class PlayerInput extends InputAdapter {
 
         if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
             movementInputPoll = pointer;
-            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = false;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = false;
         } else if(firingInputPoll == null){
             firingInputPoll = pointer;
         }
@@ -143,9 +143,9 @@ public class PlayerInput extends InputAdapter {
                     };
 
                     if(!grapple) {
-                        CollisionBoundComponent cbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-                        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
-                        JumpComponent jc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
+                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                        JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
 
                         if (input.y > cbc.getCenterY()) {
                             if (jc.jumps > 0) {
@@ -177,7 +177,7 @@ public class PlayerInput extends InputAdapter {
             firingInputPoll = (firingInputPoll == pointer) ? null : firingInputPoll;
 
             if(firingInputPoll == null){
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.WeaponComponent.class).timer.reset();
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.WeaponComponent.class).timer.reset();
             }
 
         }

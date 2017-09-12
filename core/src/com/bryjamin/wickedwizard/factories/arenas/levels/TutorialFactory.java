@@ -47,6 +47,7 @@ import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.BACKGROUND_LAYER_MIDDLE;
 import static com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent.ENEMY_LAYER_FAR;
@@ -129,7 +130,7 @@ public class TutorialFactory extends ArenaShellFactory {
         Arena startingArena = groundMovementTutorial(new MapCoords(0,0));
 
 
-        startingArena.addEntity(new OnLoadFactory().startMusicEntity(com.bryjamin.wickedwizard.utils.enums.Level.ONE.getMusic()));
+        startingArena.addEntity(new OnLoadFactory().startMusicEntity(Level.ONE.getMusic()));
 
         placedArenas.add(startingArena);
 

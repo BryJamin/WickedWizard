@@ -1,8 +1,10 @@
 package com.bryjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.BaseSystem;
+import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 /**
  * Created by Home on 29/04/2017.
@@ -12,23 +14,23 @@ public class ChangeLevelSystem extends BaseSystem {
 
     private JigsawGenerator jigsawGenerator;
 
-    private com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator;
+    private GameCreator gameCreator;
 
-    private com.bryjamin.wickedwizard.utils.enums.Level level;
+    private Level level;
 
-    public ChangeLevelSystem(com.bryjamin.wickedwizard.factories.arenas.GameCreator gameCreator, JigsawGenerator jigsawGenerator){
+    public ChangeLevelSystem(GameCreator gameCreator, JigsawGenerator jigsawGenerator){
         this.gameCreator = gameCreator;
         this.jigsawGenerator = jigsawGenerator;
         this.level = jigsawGenerator.getLevel();
     }
 
 
-    public void setLevel(com.bryjamin.wickedwizard.utils.enums.Level level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 
     public void setLevel(String level) {
-        for(com.bryjamin.wickedwizard.utils.enums.Level l : com.bryjamin.wickedwizard.utils.enums.Level.values()){
+        for(Level l : Level.values()){
             if(l.name().equals(level)) this.level = l;
         }
     }
@@ -41,7 +43,7 @@ public class ChangeLevelSystem extends BaseSystem {
             return null;
         }
 
-        com.bryjamin.wickedwizard.factories.arenas.GameCreator.LevelCreator levelCreator = gameCreator.getNextLevel();
+        GameCreator.LevelCreator levelCreator = gameCreator.getNextLevel();
         JigsawGeneratorConfig jigsawGeneratorConfig = levelCreator.jigsawGeneratorConfig;
         level = jigsawGeneratorConfig.level;
 
@@ -57,11 +59,11 @@ public class ChangeLevelSystem extends BaseSystem {
         return jigsawGenerator;
     }
 
-    public com.bryjamin.wickedwizard.utils.enums.Level getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public com.bryjamin.wickedwizard.factories.arenas.GameCreator getGameCreator() {
+    public GameCreator getGameCreator() {
         return gameCreator;
     }
 

@@ -16,6 +16,7 @@ import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -110,7 +111,7 @@ public class BossFactory extends AbstractFactory {
         float height = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT * 3;
 
         Entity flash = world.createEntity();
-        flash.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position, -width / 2, -height / 2));
+        flash.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position, -width / 2, -height / 2));
         flash.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(0, 0));
         flash.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                 new Color(Color.WHITE)));

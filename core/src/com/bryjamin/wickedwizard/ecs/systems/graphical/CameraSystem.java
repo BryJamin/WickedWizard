@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -101,7 +102,7 @@ public class CameraSystem extends EntitySystem {
 
     //TODO need to break this method up. It is too large and confusing.
     public void updateGamecam() {
-        CollisionBoundComponent cbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
         Arena currentArena = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena();
 

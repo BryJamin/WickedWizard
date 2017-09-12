@@ -6,8 +6,9 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 
 /**
@@ -33,7 +34,7 @@ public class ProximitySystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
 
-        CollisionBoundComponent playerCbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         CollisionBoundComponent cbc = cbm.get(e);
         ProximityTriggerAIComponent ptac = ptam.get(e);
 

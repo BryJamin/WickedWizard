@@ -38,6 +38,8 @@ import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
+;
+
 /**
  * Created by Home on 29/05/2017.
  */

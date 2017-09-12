@@ -11,6 +11,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
@@ -103,7 +104,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                                 e.edit().add(new FadeComponent(true, 3.0f, false));
                             }
                         }, 1.5f));
-                        fadeout.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position, -width / 2, -height / 2));
+                        fadeout.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position, -width / 2, -height / 2));
                         fadeout.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(0,0,0,0)));
 
                         fadeout.edit().add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {

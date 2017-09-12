@@ -12,7 +12,7 @@ import com.bryjamin.wickedwizard.GameTest;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
-import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 

@@ -16,6 +16,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -108,7 +109,7 @@ public class ModonFactory extends EnemyFactory{
 
     private void jump(World world, Entity e){
 
-        CollisionBoundComponent pcbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
         boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());

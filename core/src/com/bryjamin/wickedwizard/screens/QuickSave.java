@@ -21,6 +21,8 @@ import com.bryjamin.wickedwizard.screens.world.AdventureWorld;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 
+;
+
 /**
  * Created by Home on 29/07/2017.
  */
@@ -55,8 +57,6 @@ public class QuickSave {
         saveMap.put(ITEMPOOL_COMPONENT_STRING, json.toJson(world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().getItemStringArray()));
 
         String saveDataString = json.toJson(saveMap);
-
-
 
         try {
 

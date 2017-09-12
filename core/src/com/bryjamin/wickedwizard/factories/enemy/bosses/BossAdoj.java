@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
@@ -183,7 +184,7 @@ public class BossAdoj extends BossFactory {
                    // e.getComponent(WeaponComponent.class).addChargeTime(reloadTime);
                     if(hasBullets) {
                         CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                        CollisionBoundComponent playerCbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
                         e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.class);
                         e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent(com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.AI.UNTARGETED,
