@@ -185,11 +185,11 @@ public class UISystem extends EntitySystem {
 
 
 
-        for (int i = 0; orderedEntities.size() > i; i++) {
-            if(process(orderedEntities.get(i))){
-                // count++;
-            };
-        }
+            for (int i = 0; orderedEntities.size() > i; i++) {
+                if(process(orderedEntities.get(i))){
+                    // count++;
+                };
+            }
 
         }
 

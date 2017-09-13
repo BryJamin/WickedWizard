@@ -9,9 +9,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
@@ -20,7 +18,6 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
-import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
@@ -29,7 +26,6 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
-import com.bryjamin.wickedwizard.factories.BackgroundFactory;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.weapons.CritCalculator;
@@ -191,20 +187,20 @@ public class PauseWorld implements WorldContainer {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(camX,camY));
-/*        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 CenterMath.offsetX(gamecam.viewportWidth, gamecam.viewportWidth * 2),
                 CenterMath.offsetY(gamecam.viewportHeight, gamecam.viewportHeight * 2),
-                gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));*/
+                gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0.1f,0.1f,0.1f,0.9f)));
 
-        Array<TextureRegion> regions = new Array<TextureRegion>();
+/*        Array<TextureRegion> regions = new Array<TextureRegion>();
         regions.add(atlas.findRegion(TextureStrings.PAUSE_SCREEN_BACKDROP));
 
         BackgroundFactory backgroundFactory = new BackgroundFactory();
-        TextureRegionBatchComponent textureRegionBatchComponent = backgroundFactory.generateTRBC(gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, Measure.units(5f), regions, TextureRegionComponent.BACKGROUND_LAYER_FAR);
+        TextureRegionBatchComponent textureRegionBatchComponent = backgroundFactory.generateTRBC(gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, Measure.units(15f), regions, TextureRegionComponent.BACKGROUND_LAYER_FAR);
         textureRegionBatchComponent.offsetX = CenterMath.offsetX(gamecam.viewportWidth, gamecam.viewportWidth * 2);
         textureRegionBatchComponent.offsetY = CenterMath.offsetY(gamecam.viewportHeight, gamecam.viewportHeight * 2);
         textureRegionBatchComponent.color = new Color(0.1f,0.1f,0.1f,0.9f);
-        e.edit().add(textureRegionBatchComponent);
+        e.edit().add(textureRegionBatchComponent);*/
       //  e.edit().add(backgroundFactory.generateTRBC()
 
 
