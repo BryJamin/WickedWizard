@@ -25,7 +25,9 @@ public class DesktopLauncher {
 		settings.maxHeight = 2048;
 		settings.filterMin = Texture.TextureFilter.Nearest;
 		settings.filterMag = Texture.TextureFilter.Nearest;
-		//settings.duplicatePadding = true;
+		settings.paddingX = 2;
+		settings.paddingY = 2;
+		settings.duplicatePadding = true;
 		settings.combineSubdirectories = true;
 
 		TexturePacker.process(settings, inputDir,outputDir,packFileName);

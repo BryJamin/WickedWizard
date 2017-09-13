@@ -96,7 +96,6 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                     public void performAction(World world, Entity e) {
                         boolean isGod = devToolPrefs.getBoolean(PreferenceStrings.DEV_GODMODE, true);
 
-                        System.out.println(isGod);
 
                         devToolPrefs.putBoolean(PreferenceStrings.DEV_GODMODE, !isGod).flush();
                         e.getComponent(com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent.class).text = !isGod ? "GodMode on" : "GodMode off";

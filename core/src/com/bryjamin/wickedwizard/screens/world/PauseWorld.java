@@ -190,7 +190,19 @@ public class PauseWorld implements WorldContainer {
         e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 CenterMath.offsetX(gamecam.viewportWidth, gamecam.viewportWidth * 2),
                 CenterMath.offsetY(gamecam.viewportHeight, gamecam.viewportHeight * 2),
-                gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0,0,0,0.93f)));
+                gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, TextureRegionComponent.BACKGROUND_LAYER_FAR, new Color(0.1f,0.1f,0.1f,0.9f)));
+
+/*        Array<TextureRegion> regions = new Array<TextureRegion>();
+        regions.add(atlas.findRegion(TextureStrings.PAUSE_SCREEN_BACKDROP));
+
+        BackgroundFactory backgroundFactory = new BackgroundFactory();
+        TextureRegionBatchComponent textureRegionBatchComponent = backgroundFactory.generateTRBC(gamecam.viewportWidth * 2, gamecam.viewportHeight * 2, Measure.units(15f), regions, TextureRegionComponent.BACKGROUND_LAYER_FAR);
+        textureRegionBatchComponent.offsetX = CenterMath.offsetX(gamecam.viewportWidth, gamecam.viewportWidth * 2);
+        textureRegionBatchComponent.offsetY = CenterMath.offsetY(gamecam.viewportHeight, gamecam.viewportHeight * 2);
+        textureRegionBatchComponent.color = new Color(0.1f,0.1f,0.1f,0.9f);
+        e.edit().add(textureRegionBatchComponent);*/
+      //  e.edit().add(backgroundFactory.generateTRBC()
+
 
 
 
@@ -254,8 +266,8 @@ public class PauseWorld implements WorldContainer {
     private void itemIcon(World world, Item item, float x, float y){
         Entity itemEntity = world.createEntity();
         itemEntity.edit().add(new PositionComponent(x, y));
-        itemEntity.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
-                itemIconSize, itemIconSize, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        itemEntity.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
+                itemIconSize, itemIconSize, TextureRegionComponent.ENEMY_LAYER_MIDDLE, item.getValues().getTextureColor()));
     }
 
     public World getWorld() {

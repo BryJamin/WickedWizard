@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -151,10 +152,10 @@ public class BiggaBlobbaBoss extends BossFactory {
 
     private com.bryjamin.wickedwizard.ecs.components.ai.Task movementPhase(){
 
-        return new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
+        return new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerCbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
+                com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
                 com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
                 com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
                 vc.velocity.x = cbc.getCenterX() > playerCbc.getCenterX() ? vc.velocity.x = -speed : speed;
@@ -237,7 +238,7 @@ public class BiggaBlobbaBoss extends BossFactory {
                 e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent pcbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
+                        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
                         com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
 
                         boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());

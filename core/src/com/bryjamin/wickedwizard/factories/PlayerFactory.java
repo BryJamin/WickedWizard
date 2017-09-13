@@ -36,6 +36,8 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.bryjamin.wickedwizard.factories.weapons.PlayerPistol;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -150,6 +152,8 @@ public class PlayerFactory extends AbstractFactory {
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
 
 
+
+
         if(id.equals(PlayerIDs.XI_ID)){
             statComponent.maxHealth = 4;
             statComponent.health = 4;
@@ -159,6 +163,37 @@ public class PlayerFactory extends AbstractFactory {
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.XI_FIRING)));
 
             trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.XI_WALK),
+                    width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
+
+
+        } else if(id.equals(PlayerIDs.PHI_ID)) {
+
+            statComponent.maxHealth = 8;
+            statComponent.health = 8;
+            statComponent.damage -= PresetStatIncrease.minor;
+            statComponent.fireRate -= PresetStatIncrease.minor;
+            statComponent.speed -= PresetStatIncrease.Speed.minor;
+
+            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1 / 9f, atlas.findRegions(TextureStrings.PHI_WALK), Animation.PlayMode.LOOP));
+            aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.PHI_FIRING)));
+
+            trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.PHI_WALK),
+                    width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
+
+
+        } else if(id.equals(PlayerIDs.TESS_ID)) {
+
+            statComponent.health = 2;
+            statComponent.maxHealth = 2;
+
+            statComponent.armor = 1;
+
+            statComponent.luck = 5;
+
+            aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1 / 9f, atlas.findRegions(TextureStrings.TESS_WALK), Animation.PlayMode.LOOP));
+            aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.TESS_FIRING)));
+
+            trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.TESS_WALK),
                     width, height, TextureRegionComponent.PLAYER_LAYER_MIDDLE, new Color(Color.WHITE));
 
 
@@ -305,9 +340,9 @@ public class PlayerFactory extends AbstractFactory {
         }, new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
-                com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent mtc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent.class);
+                com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent.class);
 
-                CollisionBoundComponent cbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
 
                 float x = e.getComponent(CollisionBoundComponent.class).getCenterX();
@@ -325,7 +360,7 @@ public class PlayerFactory extends AbstractFactory {
 
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem.class).playRandomSound(com.bryjamin.wickedwizard.assets.SoundFileStrings.grappleFireMix);
 
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = true;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = true;
 
                 e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
 

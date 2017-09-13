@@ -116,6 +116,7 @@ public class DecorFactory extends AbstractFactory {
         bag.add(new PositionComponent(x,y));
         bag.add(new WallComponent(new Rectangle(x,y, width, height)));
 
+
         TextureRegionBatchComponent trbc = bf.generateTRBC(width, height, Measure.units(5),
                 atlas.findRegions(arenaSkin.getWallTexture()),
                 PLAYER_LAYER_FAR);

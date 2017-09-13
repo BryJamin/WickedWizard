@@ -7,8 +7,10 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 public class ItemArenaFactory extends ArenaShellFactory {
 
@@ -21,23 +23,9 @@ public class ItemArenaFactory extends ArenaShellFactory {
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, this.arenaSkin);
     }
 
-    //TODO actually make the rareItem rare.
-    public Arena createItemRoom(MapCoords defaultCoords) {
 
-        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.ITEM)
-                .addSection(new ArenaBuilder.Section(defaultCoords,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.DOOR,
-                        ArenaBuilder.wall.GRAPPLE,
-                        ArenaBuilder.wall.DOOR)).buildArena();
-
-        arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
-        arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(35f), Measure.units(30f), Measure.units(30f), Measure.units(5f)));
-
-            arena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f),
-                    Measure.units(35f), arenaSkin.getWallTint()));
-
-        return arena;
+    private ComponentBag altarPosition(float x, float y){
+        return itemFactory.createItemAltarBag(x, y, arenaSkin.getWallTint(), ItemType.ITEM);
     }
 
 
@@ -51,8 +39,7 @@ public class ItemArenaFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL)).buildArena();
 
         arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(35f), Measure.units(10f), Measure.units(30f), Measure.units(25f)));
-        arena.addEntity(itemFactory.createItemAltarBag(arena.getWidth() - Measure.units(27.5f),
-                    Measure.units(35f), arenaSkin.getWallTint()));
+        arena.addEntity(altarPosition(arena.getWidth() - Measure.units(27.5f), Measure.units(35f)));
         return arena;
     }
 
@@ -67,7 +54,8 @@ public class ItemArenaFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL)).buildArena();
 
         arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(10f), Measure.units(30f), Measure.units(25f)));
-        arena.addEntity(itemFactory.createItemAltarBag(Measure.units(12.5f), Measure.units(35f), arenaSkin.getWallTint()));
+
+        arena.addEntity(altarPosition(Measure.units(12.5f), Measure.units(35f)));
 
         return arena;
     }
@@ -86,8 +74,8 @@ public class ItemArenaFactory extends ArenaShellFactory {
 
         arena.addEntity(decorFactory.wallBag(Measure.units(20f), Measure.units(32.5f), Measure.units(60f), Measure.units(5f)));
 
-        arena.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
-                Measure.units(10f), arenaSkin.getWallTint()));
+
+        arena.addEntity(altarPosition(Measure.units(42.5f), Measure.units(10f)));
 
         return arena;
     }
@@ -108,8 +96,8 @@ public class ItemArenaFactory extends ArenaShellFactory {
         arena.addEntity(decorFactory.decorativeBlock(Measure.units(25f), Measure.units(32.5f), com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory.DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
         arena.addEntity(decorFactory.decorativeBlock(Measure.units(75f) - com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory.DECORATIVE_BEAM_WIDTH, Measure.units(32.5f), com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory.DECORATIVE_BEAM_WIDTH, Measure.units(30f), TextureRegionComponent.BACKGROUND_LAYER_MIDDLE));
 
-        arena.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
-                Measure.units(37.5f), arenaSkin.getWallTint()));
+
+        arena.addEntity(altarPosition(Measure.units(42.5f), Measure.units(37.5f)));
 
         return arena;
     }
@@ -127,8 +115,8 @@ public class ItemArenaFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL))
                 .buildArena();
 
-        arena.addEntity(itemFactory.createItemAltarBag(Measure.units(42.5f),
-                Measure.units(10f), arenaSkin.getWallTint()));
+        arena.addEntity(altarPosition(Measure.units(42.5f), Measure.units(10f)));
+
         return arena;
     }
 

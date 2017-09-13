@@ -12,6 +12,8 @@ import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
+;
+
 /**
  * Created by Home on 10/07/2017.
  */
@@ -27,7 +29,7 @@ public class JigsawGeneratorConfig {
     public final Random random;
     public final AssetManager assetManager;
 
-    public Level level = com.bryjamin.wickedwizard.utils.enums.Level.ONE;
+    public Level level = Level.ONE;
 
 
     public ItemStore itemStore;
@@ -63,7 +65,7 @@ public class JigsawGeneratorConfig {
     { startingMap.setCurrentArena(val); return this; }
 
 
-    public JigsawGeneratorConfig level(com.bryjamin.wickedwizard.utils.enums.Level val)
+    public JigsawGeneratorConfig level(Level val)
     { level = val; return this; }
 
     public JigsawGeneratorConfig itemStore(com.bryjamin.wickedwizard.factories.items.ItemStore val)

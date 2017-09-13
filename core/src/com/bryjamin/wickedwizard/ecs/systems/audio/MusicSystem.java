@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Music;
 import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.assets.MusicStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 /**
  * Music System plays music based on what level you are on.
@@ -131,11 +132,11 @@ public class MusicSystem extends BaseSystem {
         changeMix(MusicStrings.BG_MAIN_MENU);
     }
 
-    public void playLevelMusic(com.bryjamin.wickedwizard.utils.enums.Level level){
+    public void playLevelMusic(Level level){
         changeMix(pickLevelMusic(level));
     }
 
-    public void playBossMusic(com.bryjamin.wickedwizard.utils.enums.Level level){
+    public void playBossMusic(Level level){
         changeMix(MusicStrings.BG_MAIN_MENU);
     }
 
@@ -174,7 +175,7 @@ public class MusicSystem extends BaseSystem {
 
 
 
-    private Mix pickLevelMusic(com.bryjamin.wickedwizard.utils.enums.Level level){
+    private Mix pickLevelMusic(Level level){
 
         Mix mix;
             switch(level){

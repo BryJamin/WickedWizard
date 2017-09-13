@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
@@ -58,6 +59,7 @@ public class BossAdoj extends BossFactory {
 
     private static final float tommyReload = 1f;
     private static final float tommyFiringTime = 0.3f;
+    private static final float tommyGunSpeed = Measure.units(65f);
 
 
     public BossAdoj(AssetManager assetManager) {
@@ -161,7 +163,7 @@ public class BossAdoj extends BossFactory {
             this.reloadTime = reloadTime;
             this.tommyGun = new MultiPistol.PistolBuilder(assetManager)
                     .shotScale(3)
-                    .shotSpeed(Measure.units(75f))
+                    .shotSpeed(tommyGunSpeed)
                     .fireRate(0.05f)
                     .build();
 
@@ -182,7 +184,7 @@ public class BossAdoj extends BossFactory {
                    // e.getComponent(WeaponComponent.class).addChargeTime(reloadTime);
                     if(hasBullets) {
                         CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                        CollisionBoundComponent playerCbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
                         e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.class);
                         e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent(com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.AI.UNTARGETED,

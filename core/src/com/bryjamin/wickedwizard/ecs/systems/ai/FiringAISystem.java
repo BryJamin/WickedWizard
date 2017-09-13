@@ -11,6 +11,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 
 /**
@@ -110,7 +111,7 @@ public class FiringAISystem extends EntityProcessingSystem {
      * @return - Angle in radians the player is from the starting position
      */
     private double firingAngleToPlayerInRadians(float x, float y){
-        CollisionBoundComponent playercbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        CollisionBoundComponent playercbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         return BulletMath.angleOfTravel(x, y, playercbc.getCenterX(), playercbc.getCenterY());
     }
 

@@ -72,15 +72,12 @@ public class PlayerInput extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        if(playerInputSystem.disableInput) return false;
         if(pointer > 1) return false;
 
 
         Vector3 touchInput = new Vector3(screenX, screenY, 0);
         gameport.unproject(touchInput);
-        //TimeUtils.nanoTime();
-
-        if(world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y)) return true;
-
 
         tapStartTime = Gdx.input.getCurrentEventTime();
         tapSquareCenterX = screenX;
@@ -89,7 +86,7 @@ public class PlayerInput extends InputAdapter {
 
         if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
             movementInputPoll = pointer;
-            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = false;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = false;
         } else if(firingInputPoll == null){
             firingInputPoll = pointer;
         }
@@ -103,7 +100,9 @@ public class PlayerInput extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+        if(!playerInputSystem.isEnabled()) return false;
         if(pointer > 1) return false;
+
 
         if(!activeGrapple) {
 
@@ -143,9 +142,9 @@ public class PlayerInput extends InputAdapter {
                     };
 
                     if(!grapple) {
-                        CollisionBoundComponent cbc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-                        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
-                        JumpComponent jc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
+                        CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                        JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
 
                         if (input.y > cbc.getCenterY()) {
                             if (jc.jumps > 0) {
@@ -177,7 +176,7 @@ public class PlayerInput extends InputAdapter {
             firingInputPoll = (firingInputPoll == pointer) ? null : firingInputPoll;
 
             if(firingInputPoll == null){
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.WeaponComponent.class).timer.reset();
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.WeaponComponent.class).timer.reset();
             }
 
         }

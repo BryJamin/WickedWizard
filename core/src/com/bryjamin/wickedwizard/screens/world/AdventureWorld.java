@@ -10,11 +10,13 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
@@ -50,12 +52,14 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraShakeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.ColorChangeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
@@ -88,11 +92,13 @@ import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
 
+;
+
 /**
  * Created by Home on 10/07/2017.
  */
 
-public class AdventureWorld {
+public class AdventureWorld extends InputAdapter {
 
     private MainGame game;
 
@@ -158,8 +164,8 @@ public class AdventureWorld {
         Arena startingArena = jigsawGenerator.getStartingRoom();
 
         if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
-            String quickSaveString = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY).getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-            if (!quickSaveString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
+
+            if (QuickSave.doesQuickSaveExist()) {
                 QuickSave.loadQuickSave(gameCreator, assetManager, this);
 
 
@@ -209,7 +215,7 @@ public class AdventureWorld {
                         //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
                         new com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
-                        new com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem(player),
+                        new FindPlayerSystem(player),
                         new com.bryjamin.wickedwizard.ecs.systems.ai.FiringAISystem(),
                         new GrapplePointSystem(),
                         new LockSystem(),
@@ -238,6 +244,7 @@ public class AdventureWorld {
                         new CameraShakeSystem(gameport),
                         new FollowPositionSystem(),
                         new FadeSystem(), //Applies any fade before render
+                        new ColorChangeSystem(),
                         new RenderingSystem(batch, assetManager, gameport),
                         new BulletSystem(),
                         new ScreenWipeSystem(batch, assetManager, (OrthographicCamera) gameport.getCamera()),
@@ -399,5 +406,15 @@ public class AdventureWorld {
     }
 
 
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        Vector3 touchInput = new Vector3(screenX, screenY, 0);
+        gameport.unproject(touchInput);
+
+        if(world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y)) return true;
+
+        return false;
+    }
 }
 

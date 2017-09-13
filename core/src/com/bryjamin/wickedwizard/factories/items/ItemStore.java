@@ -34,7 +34,7 @@ public class ItemStore {
 
 
         for(Item i : ItemResource.allItems){
-            if(com.bryjamin.wickedwizard.screens.DataSave.isDataAvailable(i.getValues().challengeId)) {
+            if(com.bryjamin.wickedwizard.screens.DataSave.isDataAvailable(i.getValues().getChallengeId())) {
                 createItem(i);
             }
         }
@@ -75,12 +75,17 @@ public class ItemStore {
         return item;
     }
 
-    private Item generateRoomItem(ItemType itemType){
+    public Item generateRoomItem(ItemType... itemTypes){
 
         Array<ItemOptions> itemOptionsArray = new Array<ItemOptions>();
 
         for(ItemOptions io : this.itemOptionsArray){
-            if(io.item.getValues().itemTypes.contains(itemType, true)) itemOptionsArray.add(io);
+            for(ItemType itemType : itemTypes) {
+                if (io.item.getValues().getItemTypes().contains(itemType, true)) {
+                    itemOptionsArray.add(io);
+                    break;
+                }
+            }
         }
 
         Item item;
@@ -113,7 +118,7 @@ public class ItemStore {
 
         for(String id : itemIds){
             for(ItemOptions itemOptions : itemOptionsArray){
-                if(itemOptions.item.getValues().id.equals(id)) {
+                if(itemOptions.item.getValues().getId().equals(id)) {
                     copyArray.removeValue(itemOptions, true);
                 }
             }
@@ -137,7 +142,7 @@ public class ItemStore {
         Array<String> stringArray = new Array<String>();
 
         for(ItemOptions io: itemOptionsArray){
-            stringArray.add(io.item.getValues().id);
+            stringArray.add(io.item.getValues().getId());
         }
 
         return stringArray;
@@ -177,7 +182,7 @@ public class ItemStore {
         System.out.println(itemOptionsArray.size);
 
         for(ItemOptions itemOption : this.itemOptionsArray){
-            s = s + "\n" + itemOption.item.getValues().name;
+            s = s + "\n" + itemOption.item.getValues().getName();
         }
 
 

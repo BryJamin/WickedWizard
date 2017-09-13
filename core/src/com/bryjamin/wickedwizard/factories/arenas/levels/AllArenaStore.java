@@ -11,6 +11,8 @@ import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
+;
+
 /**
  * Created by Home on 11/07/2017.
  */

@@ -18,6 +18,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
@@ -111,9 +112,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
         unpackRoom(currentMap.getCurrentArena());
 
-        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = false;
-        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class).reset();
-        Vector2 velocity  = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity;
+        world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = false;
+        world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class).reset();
+        Vector2 velocity  = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity;
 
         velocity.y = velocity.y / 2;
         velocity.x = velocity.x / 2 ;
@@ -226,7 +227,7 @@ public class RoomTransitionSystem extends EntitySystem {
             if(!bm.has(e) && !expireM.has(e) && !offScreenPickUpM.has(e)) {
 
                 if(cm.has(e)){
-                    if(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).
+                    if(world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).
                             children.contains(cm.get(e), true)){
                         continue;
                     }
@@ -238,8 +239,8 @@ public class RoomTransitionSystem extends EntitySystem {
             }
 
             if(offScreenPickUpM.has(e)){
-                if(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerEntity() != null) {
-                    offScreenPickUpM.get(e).getPickUp().applyEffect(world, world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerEntity());
+                if(world.getSystem(FindPlayerSystem.class).getPlayerEntity() != null) {
+                    offScreenPickUpM.get(e).getPickUp().applyEffect(world, world.getSystem(FindPlayerSystem.class).getPlayerEntity());
                 }
             }
 
@@ -268,9 +269,9 @@ public class RoomTransitionSystem extends EntitySystem {
             if(dm.has(e)){
                 placePlayerAfterTransition(dm.get(e),
                         cbm.get(e),
-                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(PositionComponent.class),
-                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class),
-                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class),
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class),
                         doorEntryPercentage);
             }
 
@@ -317,7 +318,7 @@ public class RoomTransitionSystem extends EntitySystem {
      * @return - The Player's position in map co-ordinates
      */
     public MapCoords getCurrentPlayerLocation(){
-        CollisionBoundComponent pBound = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
         playerLocation.setX(currentMap.getCurrentArena().getStartingCoords().getX() + (int) (pBound.getCenterX() / com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH));
         playerLocation.setY(currentMap.getCurrentArena().getStartingCoords().getY() + (int) (pBound.getCenterY() / com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT));
         return playerLocation;

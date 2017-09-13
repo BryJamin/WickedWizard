@@ -46,6 +46,9 @@ public class MenuStrings {
     public static final String BACK_TO_MAIN_MENU = "Back To Main Menu";
 
 
+    public static final String SELECT_A_CHARACTER = "Select A Character";
+
+
     public static final String NEW_TRAILS = "New Challenges Unlocked";
 
     public static final String TRAILS = "Challenges";
@@ -99,6 +102,16 @@ public class MenuStrings {
 
     }
 
+
+
+    public static class Gallery {
+
+        public static final String WELCOME = "Welcome to the Gallery";
+        public static final String CHARACTER_UNLOCK = " Has Now Been Unlocked";
+        public static final String GALLERY_END = "You've Reached the End of the Labyrinth \n\n Exit on the Right";
+
+
+    }
 
 
 

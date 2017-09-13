@@ -68,10 +68,6 @@ public class OnDeathSystem  extends BaseSystem {
 
         if(parentm.has(deadEntity)) killChildComponents(parentm.get(deadEntity));
 
-        if(playerm.has(deadEntity)) {
-            System.out.println("PLAYER DEATH");
-        }
-
 
         deadEntity.deleteFromWorld();
     }

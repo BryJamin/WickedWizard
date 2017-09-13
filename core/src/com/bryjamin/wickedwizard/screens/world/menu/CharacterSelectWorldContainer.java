@@ -6,7 +6,7 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
@@ -16,17 +16,22 @@ import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
-import com.bryjamin.wickedwizard.screens.MenuButton;
+import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.world.WorldContainer;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.TableMath;
 
 /**
  * Created by BB on 09/09/2017.
@@ -39,6 +44,10 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private final TextureAtlas atlas;
 
 
+    private static final float characterSelectWidth = Measure.units(10f);
+    private static final float characterSelectHeight = Measure.units(10f);
+    private static final float characterSelectGap = Measure.units(5f);
+
     private static final float buttonWidth = Measure.units(7.5f);
     private static final float buttonHeight = Measure.units(7.5f);
     private static final float buttonGap = Measure.units(2.5f);
@@ -46,13 +55,11 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
 
-    private static final int maxColumns = 9;
+    private static final int maxColumns = 4;
+    private static final int maxRows = 2;
 
-    private static final float startY = Measure.units(40f);
-    private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (buttonWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
-
-    private ChallengeMaps challengeMaps;
-
+    private static final float startY = Measure.units(37.5f);
+    private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (characterSelectWidth * maxColumns) + (characterSelectGap * (maxColumns - 1)));
 
     private World world;
 
@@ -60,7 +67,6 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
         this.game = game;
         this.gameport = viewport;
         this.atlas = game.assetManager.get(FileLocationStrings.spriteAtlas);
-        this.challengeMaps = new ChallengeMaps(game.assetManager, MathUtils.random);
         createWorld();
     }
 
@@ -93,7 +99,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                 .backgroundColor(new Color(0, 0, 0, 0))
                 .build()
                 .createButton(world,
-                        MenuStrings.TRAILS,
+                        MenuStrings.SELECT_A_CHARACTER,
                         CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
                         Measure.units(50f));
 
@@ -117,52 +123,59 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
                         , Measure.units(5f));
 
 
-
-        Entity LeahSelect = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(Measure.units(20f))
-                .height(Measure.units(20f))
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(Color.WHITE))
-                .action(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        game.getScreen().dispose();
-                        game.setScreen(new PlayScreen(game, PlayerIDs.LEAH_ID));
-
-                    }
-                })
-                .build()
-                .createButton(
-                        world,
-                        "Leah",
-                        Measure.units(70f)
-                        , Measure.units(20f));
+        PlayerIDs.PlayableCharacter[] playableCharacters = new PlayerIDs.PlayableCharacter[]{PlayerIDs.LEAH, PlayerIDs.PHI, PlayerIDs.XI, PlayerIDs.TESS};
 
 
+        for(int i = 0; i < playableCharacters.length; i++){
 
-        Entity XiSelect = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(Measure.units(20f))
-                .height(Measure.units(20f))
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(Color.WHITE))
-                .action(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        game.getScreen().dispose();
-                        game.setScreen(new PlayScreen(game, PlayerIDs.XI_ID));
+            PlayerIDs.PlayableCharacter pc = playableCharacters[i];
 
-                    }
-                })
-                .build()
-                .createButton(
-                        world,
-                        "Xi",
-                        Measure.units(30f)
-                        , Measure.units(25f));
+            float x = TableMath.getXPos(startX, i, maxColumns, characterSelectWidth, characterSelectGap);
+            float y = TableMath.getYPos(startY, i, maxColumns, characterSelectHeight, characterSelectGap);
+
+            if(pc.getUnlockString() == null){
+                createCharacterSelect(world, pc, x, y);
+            } else if(DataSave.isDataAvailable(pc.getUnlockString())){
+                createCharacterSelect(world, pc, x, y);
+            } else {
+
+                Entity e = world.createEntity();
+                e.edit().add(new PositionComponent(x, y));
+                e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
+                e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK), characterSelectWidth, characterSelectHeight));
+            }
+
+        }
+    }
 
 
 
+    public Entity createCharacterSelect(World world, final PlayerIDs.PlayableCharacter pc, float x, float y){
 
+        Entity e = world.createEntity();
+
+        e.edit().add(new PositionComponent(x, y));
+        e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
+
+        e.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.getScreen().dispose();
+                game.setScreen(new PlayScreen(game, pc.getId()));
+            }
+        }));
+
+
+        e.edit().add(new TextureRegionComponent(atlas.findRegion(pc.getRegion()), characterSelectWidth, characterSelectHeight));
+
+
+        Entity textBelow = world.createEntity();
+        textBelow.edit().add(new PositionComponent(x, y - Measure.units(5f)));
+        textBelow.edit().add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(5f), characterSelectWidth, Measure.units(5f))));
+        textBelow.edit().add(new TextureFontComponent(FontAssets.small, pc.getName()));
+
+
+        return e;
     }
 
 

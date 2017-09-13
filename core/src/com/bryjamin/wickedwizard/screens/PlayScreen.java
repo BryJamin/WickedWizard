@@ -44,6 +44,9 @@ import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
+;
+;
+
 
 //TODO
 
@@ -207,6 +210,7 @@ public class PlayScreen extends AbstractScreen {
 
         if (!adventureWorld.isGameOver()) {
             if(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).isEnabled()) {
+                multiplexer.addProcessor(adventureWorld);
                 multiplexer.addProcessor(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).getPlayerInput());
             }
 

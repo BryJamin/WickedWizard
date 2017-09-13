@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
 
@@ -42,7 +43,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
     public Level2Rooms(AssetManager assetManager, Random random) {
-        this(assetManager, com.bryjamin.wickedwizard.utils.enums.Level.TWO.getArenaSkin(), random);
+        this(assetManager, Level.TWO.getArenaSkin(), random);
     }
 
 

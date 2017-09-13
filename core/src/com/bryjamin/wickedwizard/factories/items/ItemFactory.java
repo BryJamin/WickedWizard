@@ -59,6 +59,7 @@ import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.HitBox;
+import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 import java.util.Random;
 
@@ -100,7 +101,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new GravityComponent());
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(5), Measure.units(5))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), Measure.units(5), Measure.units(5),
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().getRegion().getLeft(), pickUp.getValues().getRegion().getRight()), Measure.units(5), Measure.units(5),
                 TextureRegionComponent.PLAYER_LAYER_FAR));
         bag.add(new FrictionComponent());
         return bag;
@@ -125,7 +126,7 @@ public class ItemFactory extends AbstractFactory {
         bag.add(new OffScreenPickUpComponent(pickUp));
         bag.add(new PickUpComponent(pickUp));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, Measure.units(2), Measure.units(2))));
-        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()), Measure.units(2), Measure.units(2),
+        bag.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().getRegion().getLeft(), pickUp.getValues().getRegion().getRight()), Measure.units(2), Measure.units(2),
                 TextureRegionComponent.FOREGROUND_LAYER_MIDDLE));
 
 
@@ -179,10 +180,10 @@ public class ItemFactory extends AbstractFactory {
         ComponentBag bag = new ComponentBag();
 
         bag.add(new PositionComponent());
-        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
+        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
                 Measure.units(5), Measure.units(5),
                 TextureRegionComponent.ENEMY_LAYER_FAR,
-                item.getValues().textureColor));
+                item.getValues().getTextureColor()));
         bag.add(followPositionComponent);
         ChildComponent c = new ChildComponent(pc);
         bag.add(c);
@@ -192,39 +193,22 @@ public class ItemFactory extends AbstractFactory {
 
     }
 
-    public ComponentBag createCenteredItemAltarBag(float x, float y, Color color){
+    public ComponentBag createCenteredItemAltarBag(float x, float y, Color color, ItemType... itemTypes){
 
         x = x - altarWidth / 2;
         y = y - altarHeight / 2;
 
-        return createItemAltarBag(x, y, color, null);
+        return createItemAltarBag(x, y, color, itemTypes);
     }
 
 
-    public ComponentBag createCenteredItemAltarBag(float x, float y, Color color, Item item){
+    private ComponentBag emptyAltar(float x, float y, Color color){
 
-        x = x - altarWidth / 2;
-        y = y - altarHeight / 2;
-
-        return createItemAltarBag(x, y, color, item);
-    }
-
-
-
-    public ComponentBag createItemAltarBag(float x, float y, Color color){
-        return createItemAltarBag(x, y, color, null);
-    }
-
-
-
-    public ComponentBag createItemAltarBag(float x, float y, Color color, final Item item){
-
-        PositionComponent positionComponent = new PositionComponent(x,y);
 
         ComponentBag altarBag = new ComponentBag();
-        ParentComponent pc = new ParentComponent();
-        altarBag.add(pc);
-        altarBag.add(positionComponent);
+
+        altarBag.add(new ParentComponent());
+        altarBag.add(new PositionComponent(x,y));
         altarBag.add(new AltarComponent());
         altarBag.add(new VelocityComponent());
         altarBag.add(new GravityComponent());
@@ -232,20 +216,26 @@ public class ItemFactory extends AbstractFactory {
         Rectangle bound = new Rectangle(new Rectangle(x,y, altarWidth, altarHeight / 3));
         altarBag.add(new CollisionBoundComponent(bound));
         altarBag.add(new ProximityTriggerAIComponent(activeAltar(), new HitBox(bound)));
+        altarBag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ALTAR), altarWidth, altarHeight,
+                TextureRegionComponent.PLAYER_LAYER_FAR, new Color(color)));
+
+        return altarBag;
+
+    }
 
 
+
+
+    public ComponentBag createItemAltarBag(float x, float y, Color color, final ItemType... itemTypes){
+
+        ComponentBag altarBag = emptyAltar(x, y, color);
 
         altarBag.add(new OnRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
-                Item altarItem;
 
-                if(item == null){
-                    altarItem = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
-                } else {
-                    altarItem = item;
-                }
+                Item altarItem = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateRoomItem(itemTypes);
 
                 e.getComponent(AltarComponent.class).pickUp = altarItem;
 
@@ -257,11 +247,35 @@ public class ItemFactory extends AbstractFactory {
             }
         }));
 
+        return  altarBag;
+    }
 
-        TextureRegionComponent altarTexture = new TextureRegionComponent(atlas.findRegion(TextureStrings.ALTAR), altarWidth, altarHeight,
-                TextureRegionComponent.PLAYER_LAYER_FAR, new Color(color));
 
-        altarBag.add(altarTexture);
+
+    public ComponentBag createCenteredPresetItemAltarBag(float x, float y, Color color, Item item){
+        x = x - altarWidth / 2;
+        y = y - altarHeight / 2;
+        return createPresetItemAltarBag(x, y, color, item);
+    }
+
+
+    public ComponentBag createPresetItemAltarBag(float x, float y, Color color, final Item item){
+
+        ComponentBag altarBag = emptyAltar(x, y, color);
+
+        altarBag.add(new OnRoomLoadActionComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                e.getComponent(AltarComponent.class).pickUp = item;
+
+                BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(item, e.getComponent(ParentComponent.class),
+                        new FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
+
+                e.edit().remove(OnRoomLoadActionComponent.class);
+
+            }
+        }));
 
         return altarBag;
     }
@@ -288,16 +302,16 @@ public class ItemFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateItemRoomItem();
+                Item item = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateShopRoomItem();
                 e.getComponent(AltarComponent.class).pickUp = item;
 
-                e.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()),
+                e.edit().add(new TextureRegionComponent(atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
                         (width / 2) - (textureWidth / 2),
                         (height / 2) - (textureHeight / 2),
                         textureWidth,
                         textureHeight,
                         TextureRegionComponent.ENEMY_LAYER_FAR,
-                        item.getValues().textureColor));
+                        item.getValues().getTextureColor()));
 
                 Vector3 position = e.getComponent(PositionComponent.class).position;
 
@@ -316,7 +330,7 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag priceTag = new ComponentBag();
         priceTag.add(new PositionComponent(x + Measure.units(2f), y - Measure.units(1.5f)));
-        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getValues().region.getLeft(), new MoneyPlus1().getValues().region.getRight()),
+        priceTag.add(new TextureRegionComponent(atlas.findRegion(new MoneyPlus1().getValues().getRegion().getLeft(), new MoneyPlus1().getValues().getRegion().getRight()),
                 goldWidth,
                 goldHeight,
                 TextureRegionComponent.ENEMY_LAYER_FAR));
@@ -381,12 +395,12 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag shopItemTexture = new ComponentBag();
         shopItemTexture.add(new PositionComponent(x , y));
-        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().region.getLeft(), pickUp.getValues().region.getRight()),
+        shopItemTexture.add(new TextureRegionComponent(atlas.findRegion(pickUp.getValues().getRegion().getLeft(), pickUp.getValues().getRegion().getRight()),
                 CenterMath.offsetX(width, textureWidth),
                 CenterMath.offsetY(height, textureHeight),
                 textureWidth,
                 textureHeight,
-                TextureRegionComponent.ENEMY_LAYER_FAR, pickUp.getValues().textureColor));
+                TextureRegionComponent.ENEMY_LAYER_FAR, pickUp.getValues().getTextureColor()));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(pickUp));
         shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
@@ -598,7 +612,7 @@ public class ItemFactory extends AbstractFactory {
 
 
                         world.getSystem(PickUpSystem.class).itemOverHead(player, item);
-                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(item.getValues().name, item.getValues().description );
+                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(item.getValues().getName(), item.getValues().getDescription());
 
                         ac.hasItem = false;
                         if (world.getMapper(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).has(e)) {

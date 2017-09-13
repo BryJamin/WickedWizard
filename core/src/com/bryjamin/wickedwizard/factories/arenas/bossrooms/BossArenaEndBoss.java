@@ -11,11 +11,13 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.bryjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
@@ -76,7 +78,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
                 Arena a = world.getSystem(RoomTransitionSystem.class).getCurrentArena();
 
-                PositionComponent pc = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
+                PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 pc.position.x = a.getWidth() / 2;
                 pc.position.y = a.getHeight() / 2;
             }
@@ -87,7 +89,7 @@ public class BossArenaEndBoss extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate endStartingRoom(final ArenaMap destinationMapAfterBossKill) {
+    public ArenaCreate endStartingRoom(final ArenaMap destinationMapAfterBossKill) {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -127,7 +129,7 @@ public class BossArenaEndBoss extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate endStartingRoom() {
+    public ArenaCreate endStartingRoom() {
         return endStartingRoom(new GalleryAtTheEndMap(assetManager).endGameMap());
     }
 
@@ -168,7 +170,7 @@ public class BossArenaEndBoss extends AbstractFactory {
         float height = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT * 3;
 
         Entity e = world.createEntity();
-        e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
+        e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
         e.edit().add(new PositionComponent(0, 0));
         e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                 new Color(Color.WHITE)));

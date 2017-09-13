@@ -8,14 +8,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.BulletFactory;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
@@ -219,6 +219,13 @@ public class MultiPistol implements Weapon {
                             new Vector3(cbc.getCenterX(), cbc.getCenterY(), 0), expireRange));
                 }
 
+
+                //TODO For future me in order to make something later first calculate it's difference from 255, then increase it by a percentage of that change
+
+/*
+                float change = 150f / 255f;
+                bullet.edit().add(new ColorChangeComponent(new Color(color), new Color(color.r + change, color.g + change, color.b + change, 1), 0.15f, true));
+*/
 
 
                 if(customOnDeathAction == null) {

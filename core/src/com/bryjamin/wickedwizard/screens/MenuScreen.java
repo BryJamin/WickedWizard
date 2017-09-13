@@ -78,8 +78,6 @@ public class MenuScreen extends AbstractScreen {
     private GestureDetector itemsDisplayWorldDectector;
     private GestureDetector characterSelectWorldDectector;
 
-    private Preferences preferences;
-
     private static final float logoWidth = Measure.units(45f);
     private static final float logoHeight = Measure.units(45f);
     private static final float logoStartX = CenterMath.offsetX(MainGame.GAME_WIDTH, logoWidth);;
@@ -115,9 +113,6 @@ public class MenuScreen extends AbstractScreen {
 
     public MenuScreen(MainGame game) {
         super(game);
-
-        preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-
         if(menuType == null) {
 
             if(isDevDevice()) {
@@ -303,10 +298,9 @@ public class MenuScreen extends AbstractScreen {
 
     private void setUpMenuScreenStartAndTutorial() {
 
-        final boolean quickSaveDataIsDefault =
-                preferences.getString(PreferenceStrings.DATA_QUICK_SAVE, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE).equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+        final boolean quickSaveDataIsDefault = QuickSave.doesQuickSaveExist();
 
-        final boolean quickSaveDataIsReadable = com.bryjamin.wickedwizard.screens.QuickSave.checkQuickSave();
+        final boolean quickSaveDataIsReadable = QuickSave.checkQuickSave();
 
         final boolean isInvalidData = !quickSaveDataIsDefault && !quickSaveDataIsReadable;
 
@@ -331,9 +325,9 @@ public class MenuScreen extends AbstractScreen {
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        game.getScreen().dispose();
-                        game.setScreen(new PlayScreen(game));
-                        //setMenuType(MenuType.CHARACTER_SELECT);
+                //        game.getScreen().dispose();
+                //        game.setScreen(new PlayScreen(game));
+                        setMenuType(MenuType.CHARACTER_SELECT);
                     }
                 };
 

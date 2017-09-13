@@ -463,12 +463,12 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.DOOR,
+                                ArenaBuilder.wall.GRAPPLE,
                                 ArenaBuilder.wall.NONE)).buildArena();
 
 

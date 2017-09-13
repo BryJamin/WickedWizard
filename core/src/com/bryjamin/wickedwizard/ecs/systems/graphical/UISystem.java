@@ -68,6 +68,12 @@ public class UISystem extends EntitySystem {
 
 
     public boolean isPaused = false;
+
+
+    public boolean disable = false;
+
+
+
     private ArenaGUI arenaGUI;
 
     private Array<TextureRegion> healthRegions = new Array<TextureRegion>();
@@ -78,6 +84,8 @@ public class UISystem extends EntitySystem {
 
     private BitmapFont currencyFont;
 
+
+    private Color white = new Color(Color.WHITE);
 
     private boolean drawGuideLine;
 
@@ -169,16 +177,20 @@ public class UISystem extends EntitySystem {
 
         drawScreenBorder(batch, atlas, gameport.getCamera());
 
-        if(drawGuideLine) {
-            drawGuideLine(batch, atlas, gameport.getCamera());
-        }
+        if(!disable) {
+            if (drawGuideLine) {
+                drawGuideLine(batch, atlas, gameport.getCamera());
+            }
+            drawMapAndHud(isPaused);
 
-        drawMapAndHud(isPaused);
 
-        for (int i = 0; orderedEntities.size() > i; i++) {
-            if(process(orderedEntities.get(i))){
-                // count++;
-            };
+
+            for (int i = 0; orderedEntities.size() > i; i++) {
+                if(process(orderedEntities.get(i))){
+                    // count++;
+                };
+            }
+
         }
 
 
@@ -187,8 +199,9 @@ public class UISystem extends EntitySystem {
     private void drawGuideLine(SpriteBatch batch, TextureAtlas atlas, Camera gamecam) {
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
         float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-        batch.setColor(Color.WHITE);
-        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY  + MainGame.GAME_BORDER + Measure.units(10), gamecam.viewportWidth, Measure.units(0.5f));
+        batch.setColor(1,1,1,1f);
+        batch.draw(atlas.findRegion(TextureStrings.BLOCK), camX, camY  + MainGame.GAME_BORDER + Measure.units(9.5f), gamecam.viewportWidth, Measure.units(0.5f));
+        batch.setColor(white);
     }
 
 
@@ -210,10 +223,6 @@ public class UISystem extends EntitySystem {
 
             batch.setColor(trc.color);
 
-
-            System.out.println(this.getEntities().size());
-
-            System.out.println(trc.color.a);
 
             TextureRegion tr = trc.region != null ? trc.region : atlas.findRegion(TextureStrings.BLOCK);
 
@@ -341,9 +350,9 @@ public class UISystem extends EntitySystem {
 
         for(int i = 1; i <= playerStats.health; i++){
             if(i <= playerStats.health && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.region.getLeft(), 0));
+                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 0));
             } else if(playerStats.health % 2 != 0 && i == playerStats.health){
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.region.getLeft(), 1));
+                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 1));
             }
         }
 
@@ -352,12 +361,12 @@ public class UISystem extends EntitySystem {
 
         for(int i = 1; i <= emptyHealth; i++) {
             if(i <= emptyHealth && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.region.getLeft(), 2));
+                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 2));
             }
         }
 
         for(int i = 0; i < playerStats.armor; i++) {
-            healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.armorUp.region.getLeft()));
+            healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.armorUp.getRegion().getLeft()));
         }
 
         float screenoffset = Measure.units(10f);
@@ -374,7 +383,7 @@ public class UISystem extends EntitySystem {
 
         float offsetX = Measure.units(1.5f);
 
-        batch.draw(atlas.findRegion(p.getValues().region.getLeft(), p.getValues().region.getRight()),
+        batch.draw(atlas.findRegion(p.getValues().getRegion().getLeft(), p.getValues().getRegion().getRight()),
                 camX + offsetX,
                 gamecam.position.y + (gamecam.viewportHeight / 2) - Measure.units(3.5f),
                 Measure.units(2.5f), Measure.units(2.5f));

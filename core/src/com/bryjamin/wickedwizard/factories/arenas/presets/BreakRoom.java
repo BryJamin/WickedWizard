@@ -12,7 +12,13 @@ import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
@@ -61,27 +67,29 @@ public class BreakRoom extends AbstractFactory {
                 Camera gamecam = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem.class).getGamecam();
 
                 Entity backScreen = world.createEntity();
-                backScreen.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent());
-                backScreen.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent());
-                backScreen.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
+                backScreen.edit().add(new PositionComponent());
+                backScreen.edit().add(new MoveToPositionComponent());
+                backScreen.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
                 backScreen.edit().add(new TextureRegionComponent(assetManager.get(com.bryjamin.wickedwizard.assets.FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
                         gamecam.viewportWidth, gamecam.viewportHeight,
                         TextureRegionComponent.PLAYER_LAYER_NEAR, new Color(Color.BLACK)));
 
-
             }
         }));
+
+
+
 
 
         ComponentBag componentBag = new ComponentBag();
         componentBag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                //world.getSystem(PlayerInputSystem.class).setEnabled(false);
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem.class).fadeOutMusic();
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
+                world.getSystem(PlayerInputSystem.class).disableInput = true;
+                world.getSystem(MusicSystem.class).fadeOutMusic();
+                world.getSystem(OnDeathSystem.class).kill(e);
             }
-        }));
+        }, 0f));
 
         arena.addEntity(componentBag);
 
@@ -89,8 +97,8 @@ public class BreakRoom extends AbstractFactory {
         com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
-                .foregroundColor(new Color(Color.WHITE))
-                .backgroundColor( new Color(Color.BLACK))
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(Color.WHITE))
                 .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -120,6 +128,11 @@ public class BreakRoom extends AbstractFactory {
                                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem.class).createNewLevel();
                                 for(BaseSystem s: world.getSystems()){
                                     s.setEnabled(true);
+
+                                    if(s instanceof PlayerInputSystem){
+                                        ((PlayerInputSystem) s).disableInput = false;
+                                    }
+
                                 }
                             }
                         });
