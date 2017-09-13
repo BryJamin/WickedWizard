@@ -39,20 +39,20 @@ amoeba
   orig: 64, 64
   offset: 0, 0
   index: 4
-backgrounds/background_pipe
+backgrounds/center_sqaure
   rotate: false
-  xy: 1315, 857
+  xy: 989, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-backgrounds/background_pipe
+backgrounds/checkered_block
   rotate: false
-  xy: 1381, 857
+  xy: 923, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: 0
 backgrounds/menu_backdrop
   rotate: false
   xy: 793, 461
@@ -62,42 +62,42 @@ backgrounds/menu_backdrop
   index: 0
 black_block
   rotate: false
-  xy: 1909, 857
+  xy: 1777, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/switch
   rotate: false
-  xy: 1909, 857
+  xy: 1777, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 enemy/switch
   rotate: false
-  xy: 1909, 857
+  xy: 1777, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 enemy/switch
   rotate: false
-  xy: 1909, 857
+  xy: 1777, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 7
 block
   rotate: false
-  xy: 395, 659
+  xy: 395, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 decor/block_door
   rotate: false
-  xy: 395, 659
+  xy: 395, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -118,14 +118,14 @@ blocktiny
   index: 0
 bomb
   rotate: false
-  xy: 725, 659
+  xy: 725, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 bomb
   rotate: false
-  xy: 791, 725
+  xy: 791, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -279,70 +279,70 @@ decor/altar
   index: 0
 decor/block_door
   rotate: false
-  xy: 461, 725
+  xy: 461, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/pylon_spawning
   rotate: false
-  xy: 461, 725
+  xy: 461, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/pylon_spawning
   rotate: false
+  xy: 461, 791
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+decor/block_door
+  rotate: false
+  xy: 395, 659
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+decor/block_door
+  rotate: false
   xy: 461, 725
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/block_door
-  rotate: false
-  xy: 527, 791
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/block_door
-  rotate: false
-  xy: 461, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 decor/block_door
   rotate: false
-  xy: 527, 725
+  xy: 527, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 decor/block_door
   rotate: false
-  xy: 593, 791
+  xy: 461, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 decor/block_door
   rotate: false
-  xy: 527, 659
+  xy: 527, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 decor/block_door
   rotate: false
-  xy: 593, 725
+  xy: 593, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 decor/block_door
   rotate: false
-  xy: 659, 791
+  xy: 527, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -566,35 +566,35 @@ enemy/alurm_firing
   index: 3
 enemy/blob
   rotate: false
-  xy: 1975, 857
+  xy: 1843, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/blob
   rotate: false
-  xy: 395, 791
+  xy: 1909, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/blob
   rotate: false
-  xy: 395, 791
+  xy: 1909, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 enemy/blob
   rotate: false
-  xy: 395, 725
+  xy: 1975, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/blob
   rotate: false
-  xy: 461, 791
+  xy: 395, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -825,49 +825,49 @@ enemy/boss/amalgama_yellow
   index: 2
 enemy/boss/biggablobba
   rotate: false
-  xy: 1447, 857
+  xy: 1315, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/boss/biggablobba
   rotate: false
-  xy: 1513, 857
+  xy: 1381, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/boss/biggablobba
   rotate: false
-  xy: 1579, 857
+  xy: 1447, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/boss/biggablobba
   rotate: false
-  xy: 1645, 857
+  xy: 1513, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 enemy/boss/biggablobba
   rotate: false
-  xy: 1711, 857
+  xy: 1579, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 enemy/boss/biggablobba
   rotate: false
-  xy: 1777, 857
+  xy: 1645, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 enemy/boss/biggablobba
   rotate: false
-  xy: 1843, 857
+  xy: 1711, 857
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -1000,56 +1000,56 @@ enemy/boss/wraith_cowl_sad
   index: 3
 enemy/bouncer
   rotate: false
-  xy: 857, 791
+  xy: 725, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
+enemy/bouncer
+  rotate: false
+  xy: 791, 725
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/bouncer
+  rotate: false
+  xy: 857, 791
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
 enemy/bouncer
   rotate: false
   xy: 791, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
-enemy/bouncer
-  rotate: false
-  xy: 857, 725
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/bouncer
-  rotate: false
-  xy: 923, 791
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 3
 enemy/bouncer_laser
   rotate: false
-  xy: 857, 659
+  xy: 857, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/bouncer_laser
   rotate: false
-  xy: 923, 725
+  xy: 923, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/bouncer_laser
   rotate: false
-  xy: 989, 791
+  xy: 857, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/bouncer_laser
   rotate: false
-  xy: 923, 659
+  xy: 923, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2827,6 +2827,27 @@ platform
   index: 0
 player/block_firing
   rotate: false
+  xy: 593, 725
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+player/block_firing
+  rotate: false
+  xy: 659, 791
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+player/block_firing
+  rotate: false
+  xy: 593, 659
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+player/block_walk
+  rotate: false
   xy: 593, 659
   size: 64, 64
   orig: 64, 64
@@ -2838,45 +2859,24 @@ player/block_firing
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
-player/block_firing
-  rotate: false
-  xy: 725, 791
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-player/block_walk
-  rotate: false
-  xy: 725, 791
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-player/block_firing
-  rotate: false
-  xy: 659, 659
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 3
 player/block_walk
   rotate: false
-  xy: 659, 659
+  xy: 659, 725
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/block_portrait
   rotate: false
-  xy: 725, 725
+  xy: 725, 791
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/block_walk
   rotate: false
-  xy: 791, 791
+  xy: 659, 659
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

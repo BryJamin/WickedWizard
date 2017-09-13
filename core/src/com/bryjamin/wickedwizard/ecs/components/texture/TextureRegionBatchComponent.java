@@ -27,5 +27,4 @@ public class TextureRegionBatchComponent extends TextureRegionComponent {
         this.layer = layer;
     }
 
-
 }

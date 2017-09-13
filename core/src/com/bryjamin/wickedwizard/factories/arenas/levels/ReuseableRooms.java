@@ -103,7 +103,6 @@ public class ReuseableRooms extends AbstractFactory {
                 ComponentBag bag = arena.createArenaBag();
                 bag.add(new PositionComponent(0, Measure.units(35f)));
                 bag.add(new CollisionBoundComponent(new Rectangle(0,Measure.units(35f), MainGame.GAME_WIDTH, Measure.units(5f))));
-                bag.add(new TextureFontComponent(FontAssets.small, challengeLayout.getName(), arenaSkin.getWallTint()));
 
                 TextureFontComponent textureFontComponent = new TextureFontComponent(FontAssets.medium, challengeLayout.getName(), arenaSkin.getWallTint());
                 textureFontComponent.layer = TextureRegionComponent.BACKGROUND_LAYER_NEAR;

@@ -368,7 +368,7 @@ public class MenuScreen extends AbstractScreen {
 
                     }
                 })
-                .build().createButton(world, MenuStrings.TUTORIAL, Measure.units(60f)
+                .build().createButton(world, MenuStrings.TUTORIAL, Measure.units(65f)
                 ,Measure.units(5f));
 
     }

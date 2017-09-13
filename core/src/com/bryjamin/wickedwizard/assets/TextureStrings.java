@@ -11,6 +11,8 @@ public class TextureStrings {
 
     public static final String MAIN_MENU_BACKDROP = "backgrounds/menu_backdrop";
 
+    public static final String PAUSE_SCREEN_BACKDROP = "backgrounds/center_sqaure";
+
     //DECOR
     public static final String DECOR_BLOCK_DOOR = "decor/block_door";
     public static final String CHEST = "chest";
