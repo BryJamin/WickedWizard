@@ -63,6 +63,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     private PlayerInput playerInput;
 
+    public boolean disableInput = false;
+
     public Rectangle movementArea;
 
     public boolean hasStartedFiring = false;
@@ -84,8 +86,13 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         return playerInput;
     }
 
+
     @Override
     protected void process(Entity e) {
+
+        if(disableInput) return;
+
+        System.out.println(this.isEnabled());
 
         PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);

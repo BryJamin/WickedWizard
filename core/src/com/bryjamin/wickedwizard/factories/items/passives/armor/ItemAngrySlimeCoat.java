@@ -17,7 +17,7 @@ public class ItemAngrySlimeCoat implements Item {
 
         player.getComponent(StatComponent.class).armor += 2;
         player.getComponent(StatComponent.class).speed += PresetStatIncrease.Speed.minor;
-        player.getComponent(StatComponent.class).damage += PresetStatIncrease.Speed.minor;
+        player.getComponent(StatComponent.class).damage += PresetStatIncrease.minor;
         return true;
     }
 

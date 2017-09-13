@@ -72,15 +72,12 @@ public class PlayerInput extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        if(playerInputSystem.disableInput) return false;
         if(pointer > 1) return false;
 
 
         Vector3 touchInput = new Vector3(screenX, screenY, 0);
         gameport.unproject(touchInput);
-        //TimeUtils.nanoTime();
-
-        if(world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y)) return true;
-
 
         tapStartTime = Gdx.input.getCurrentEventTime();
         tapSquareCenterX = screenX;
@@ -103,7 +100,9 @@ public class PlayerInput extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+        if(!playerInputSystem.isEnabled()) return false;
         if(pointer > 1) return false;
+
 
         if(!activeGrapple) {
 

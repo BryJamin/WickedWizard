@@ -18,6 +18,17 @@ public class ChallengesResource {
     public static final String LEVEL_5_COMPLETE = "057c393b-b311-4738-9fa5-00af2dbad3b9";
 
 
+    public static class GameCompletion {
+
+        public static final String GAME_COMPLETION_TWO = "ad211c68-cf46-4f01-aac2-51a2ccb251b6";
+        public static final String GAME_COMPLETION_THREE = "c1e50d1a-0a19-4260-8eb6-3e4816d43527";
+        public static final String GAME_COMPLETION_FOUR = "e3d083d2-e9cb-4591-8706-5b783c31c2bc";
+        public static final String GAME_COMPLETION_FIVE = "aa136c06-9d47-48fe-9d9f-fc21f9aaaa79";
+
+    }
+
+
+
 
     public static class Rank1Challenges {
 

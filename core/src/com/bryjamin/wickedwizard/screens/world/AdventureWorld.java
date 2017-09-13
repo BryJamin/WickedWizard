@@ -10,11 +10,13 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.utils.Bag;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
@@ -57,6 +59,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
@@ -95,7 +98,7 @@ import java.util.Random;
  * Created by Home on 10/07/2017.
  */
 
-public class AdventureWorld {
+public class AdventureWorld extends InputAdapter {
 
     private MainGame game;
 
@@ -403,5 +406,15 @@ public class AdventureWorld {
     }
 
 
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        Vector3 touchInput = new Vector3(screenX, screenY, 0);
+        gameport.unproject(touchInput);
+
+        if(world.getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y)) return true;
+
+        return false;
+    }
 }
 

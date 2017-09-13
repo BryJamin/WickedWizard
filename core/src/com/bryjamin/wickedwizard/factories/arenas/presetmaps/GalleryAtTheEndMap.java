@@ -83,6 +83,14 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                             world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
                         }
                     }
+
+
+
+
+                    
+
+
+
                 }));
 
 
