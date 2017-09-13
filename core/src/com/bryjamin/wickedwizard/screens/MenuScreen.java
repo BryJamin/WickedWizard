@@ -78,8 +78,6 @@ public class MenuScreen extends AbstractScreen {
     private GestureDetector itemsDisplayWorldDectector;
     private GestureDetector characterSelectWorldDectector;
 
-    private Preferences preferences;
-
     private static final float logoWidth = Measure.units(45f);
     private static final float logoHeight = Measure.units(45f);
     private static final float logoStartX = CenterMath.offsetX(MainGame.GAME_WIDTH, logoWidth);;
@@ -115,9 +113,6 @@ public class MenuScreen extends AbstractScreen {
 
     public MenuScreen(MainGame game) {
         super(game);
-
-        preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-
         if(menuType == null) {
 
             if(isDevDevice()) {
