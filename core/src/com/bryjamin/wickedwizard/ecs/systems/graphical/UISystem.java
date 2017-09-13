@@ -68,6 +68,12 @@ public class UISystem extends EntitySystem {
 
 
     public boolean isPaused = false;
+
+
+    public boolean disable = false;
+
+
+
     private ArenaGUI arenaGUI;
 
     private Array<TextureRegion> healthRegions = new Array<TextureRegion>();
@@ -171,16 +177,20 @@ public class UISystem extends EntitySystem {
 
         drawScreenBorder(batch, atlas, gameport.getCamera());
 
-        if(drawGuideLine) {
-            drawGuideLine(batch, atlas, gameport.getCamera());
-        }
+        if(!disable) {
+            if (drawGuideLine) {
+                drawGuideLine(batch, atlas, gameport.getCamera());
+            }
+            drawMapAndHud(isPaused);
 
-        drawMapAndHud(isPaused);
+
 
         for (int i = 0; orderedEntities.size() > i; i++) {
             if(process(orderedEntities.get(i))){
                 // count++;
             };
+        }
+
         }
 
 

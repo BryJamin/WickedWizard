@@ -104,5 +104,15 @@ public class MenuStrings {
 
 
 
+    public static class Gallery {
+
+        public static final String WELCOME = "Welcome to the Gallery";
+        public static final String CHARACTER_UNLOCK = " Has Now Been Unlocked";
+        public static final String GALLERY_END = "You've Reached the End of the Labyrinth \n\n Exit on the Right";
+
+
+    }
+
+
 
 }

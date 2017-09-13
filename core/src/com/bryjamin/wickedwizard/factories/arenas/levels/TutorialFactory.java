@@ -542,12 +542,10 @@ public class TutorialFactory extends ArenaShellFactory {
                                 MainGame game = world.getSystem(EndGameSystem.class).getGame();
 
                                 if(DataSave.isDataAvailable(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.TUTORIAL_COMPLETE)){
-
                                     game.getScreen().dispose();
                                     game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
 
                                 } else {
-
                                     DataSave.saveChallengeData(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.TUTORIAL_COMPLETE);
                                     Screen s = game.getScreen();
                                     game.setScreen(new com.bryjamin.wickedwizard.screens.PlayScreen(game));

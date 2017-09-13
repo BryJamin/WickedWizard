@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.bryjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
@@ -88,7 +89,7 @@ public class BossArenaEndBoss extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate endStartingRoom(final ArenaMap destinationMapAfterBossKill) {
+    public ArenaCreate endStartingRoom(final ArenaMap destinationMapAfterBossKill) {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
@@ -128,7 +129,7 @@ public class BossArenaEndBoss extends AbstractFactory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate endStartingRoom() {
+    public ArenaCreate endStartingRoom() {
         return endStartingRoom(new GalleryAtTheEndMap(assetManager).endGameMap());
     }
 

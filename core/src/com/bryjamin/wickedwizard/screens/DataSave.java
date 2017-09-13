@@ -15,141 +15,99 @@ import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 
 public class DataSave {
 
-
-    private static String CHALLENGE_MAP_KEY = "43eac2e9-63b1-4739-8d74-0cc5885bfa00";
-    private static String ITEM_MAP_KEY = "f34c29cb-e264-42b6-a748-b3ea88540eb2";
-
     private static Json json = new Json();
 
     private static DataSaveStore dataSaveStore = new DataSaveStore();
-
-
-    private static OrderedMap<String, OrderedMap> dataSaveMap = new OrderedMap<String, OrderedMap>();
-
-    static {
-        dataSaveMap.put(CHALLENGE_MAP_KEY, new OrderedMap<String, Boolean>());
-        dataSaveMap.put(ITEM_MAP_KEY, new OrderedMap<String, Boolean>());
-    }
 
 
 
     static {
 
         Preferences preferences = Gdx.app.getPreferences(PreferenceStrings.DATA_PREF_KEY);
-        String loadString = preferences.getString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
-
-
         FileHandle file = Gdx.files.local(FileLocationStrings.playerData);
 
         try {
-
             if(file.exists()) {
-
-                OrderedMap<String, OrderedMap> orderedMap = json.fromJson(OrderedMap.class, Base64Coder.decodeString(file.readString()));
-               // dataSaveMap = json.fromJson(OrderedMap.class, Base64Coder.decodeString(file.readString()));
-
-                if(!orderedMap.containsKey(CHALLENGE_MAP_KEY)) throw new Exception("Invalid Save Data");
-                if(!orderedMap.containsKey(ITEM_MAP_KEY)) throw new Exception("Invalid Save Data");
-
-                dataSaveMap = orderedMap;
+                dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(file.readString()));
             }
-
-        } catch (Exception e){
+        } catch(Exception e){
             e.printStackTrace();
         }
 
+        if (preferences.contains(PreferenceStrings.DATA_PERMANENT_DATA)) {
+            try {
 
-        try {
+                    String loadString = preferences.getString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
 
-            if (!loadString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
-                dataSaveStore = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
+                    if (!loadString.equals(PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE)) {
 
+                        DataSaveStore temp = json.fromJson(DataSaveStore.class, Base64Coder.decodeString(loadString));
 
-                for (String key : dataSaveStore.keyStoreBoolean.keys().toArray()) {
-                    if (!dataSaveMap.get(CHALLENGE_MAP_KEY).containsKey(key)) {
-                        dataSaveMap.get(CHALLENGE_MAP_KEY).put(key, dataSaveStore.keyStoreBoolean.get(key));
+                        for (String key : temp.keyStoreBoolean.keys().toArray()) {
+                            if (!dataSaveStore.keyStoreBoolean.containsKey(key)) {
+                                dataSaveStore.keyStoreBoolean.put(key, false);
+                            }
+                        }
+
+                        for (String key : temp.itemStoreBoolean.keys().toArray()) {
+                            if (!dataSaveStore.itemStoreBoolean.containsKey(key)) {
+                                dataSaveStore.itemStoreBoolean.put(key, false);
+                            }
+                        }
                     }
-                }
 
+                    preferences.remove(PreferenceStrings.DATA_PERMANENT_DATA);
+                    preferences.flush();
+                    saveData();
 
-                for (String key : dataSaveStore.itemStoreBoolean.keys().toArray()) {
-                    if (!dataSaveMap.get(ITEM_MAP_KEY).containsKey(key)) {
-                        dataSaveMap.get(ITEM_MAP_KEY).put(key, dataSaveStore.itemStoreBoolean.get(key));
-                    }
-                }
-                preferences.putString(PreferenceStrings.DATA_PERMANENT_DATA, PreferenceStrings.DATA_QUICK_SAVE_NO_VALID_SAVE);
+            } catch (Exception e) {
+                e.printStackTrace();
+                preferences.remove(PreferenceStrings.DATA_PERMANENT_DATA);
                 preferences.flush();
             }
-        } catch (Exception e){
-            e.printStackTrace();
+
+
         }
 
 
     }
 
-
-
-
     public static void saveChallengeData(String id){
-        try {
-            dataSaveMap.get(CHALLENGE_MAP_KEY).put(id, false);
-        }catch (Exception e) {
-            e.printStackTrace();;
-        }
+        dataSaveStore.keyStoreBoolean.put(id, true);
         saveData();
     }
 
     public static void saveItemData(String id){
-
-        try {
-            dataSaveMap.get(ITEM_MAP_KEY).put(id, false);
-        }catch (Exception e) {
-            e.printStackTrace();;
-        }
-
+        dataSaveStore.itemStoreBoolean.put(id, true);
         saveData();
     }
+
 
 
     public static void saveData(){
 
         FileHandle file = Gdx.files.local(FileLocationStrings.playerData);
-        String saveDataString = json.toJson(dataSaveMap);
+        String saveDataString = json.toJson(dataSaveStore);
         file.writeString(Base64Coder.encodeString(saveDataString), false);
 
-
     }
+
 
     public static void clearData(){
-
-        dataSaveMap = new OrderedMap<String, OrderedMap>();
-        String saveDataString = Base64Coder.encodeString(json.toJson(dataSaveMap));
-
+        dataSaveStore = new DataSaveStore();
+        String saveDataString = json.toJson(dataSaveStore);
         FileHandle file = Gdx.files.local(FileLocationStrings.playerData);
         file.writeString(saveDataString, false);
-
     }
-
 
 
     public static boolean isDataAvailable(String id){
-        try {
-            return dataSaveMap.get(CHALLENGE_MAP_KEY).containsKey(id);
-        } catch (Exception e){
-            return  false;
-        }
+        return dataSaveStore.keyStoreBoolean.containsKey(id);
     }
 
     public static boolean isItemCollected(String id){
-        try {
-            return dataSaveMap.get(ITEM_MAP_KEY).containsKey(id);
-        } catch (Exception e){
-            return  false;
-        }
+        return dataSaveStore.itemStoreBoolean.containsKey(id);
     }
-
-
-
 
     private static class DataSaveStore {
 
@@ -157,7 +115,6 @@ public class DataSave {
         public OrderedMap<String, Boolean> itemStoreBoolean = new OrderedMap<String, Boolean>();
         public OrderedMap<String, Integer> keyStoreTally = new OrderedMap<String, Integer>();
 
-
     }
 
 
@@ -179,6 +136,4 @@ public class DataSave {
 
 
 
-
-
-}
+    }

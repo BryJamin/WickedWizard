@@ -12,10 +12,12 @@ public class PlayerIDs {
     public static final String LEAH_ID = "accaf10b-744f-4d76-a099-85f1791c3a58";
 
     public static final String XI_ID = "6b217e83-0ca8-435a-8dd0-78a3eff155be";
+    public static final String XI_UNLOCK_STRING = "bda8bad5-27fa-45c2-8294-8c56e4dde78e";
 
     public static final String PHI_ID = "7b100db4-14da-4224-a55e-c9073326c653";
 
     public static final String TESS_ID = "5eb6809e-9e4e-4de4-a788-547c8b9c4188";
+    public static final String TESS_UNLOCK_STRING = "98aef33d-3951-45d6-aa62-5d6f386b9d2e";
 
 
     public static PlayableCharacter LEAH = new PlayableCharacter.PlayableCharacterBuilder(LEAH_ID)
@@ -27,7 +29,7 @@ public class PlayerIDs {
     public static PlayableCharacter XI = new PlayableCharacter.PlayableCharacterBuilder(XI_ID)
             .name("Xi")
             .region(TextureStrings.XI_PORTRAIT)
-            .unlockString(ChallengesResource.LEVEL_4_COMPLETE)
+            .unlockString(XI_UNLOCK_STRING)
             .build();
 
 
@@ -42,8 +44,11 @@ public class PlayerIDs {
     public static PlayableCharacter TESS = new PlayableCharacter.PlayableCharacterBuilder(TESS_ID)
             .name("Tess")
             .region(TextureStrings.TESS_PORTRAIT)
-            .unlockString(ChallengesResource.TUTORIAL_COMPLETE)
+            .unlockString(TESS_UNLOCK_STRING)
             .build();
+
+
+    public static PlayableCharacter[] endGameUnlockAbleCharacters = {XI, TESS};
 
 
 
@@ -88,7 +93,7 @@ public class PlayerIDs {
             private String id;
             public String name = "Undefined";
             public String region = TextureStrings.BLOCK;
-            public String unlockString = null;
+            public String unlockString = ChallengesResource.TUTORIAL_COMPLETE;
 
 
             public PlayableCharacterBuilder(String id) {

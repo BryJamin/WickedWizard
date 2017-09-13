@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
@@ -24,6 +25,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -87,12 +89,23 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     }
 
 
+    public void movePlayer(float targetX, float currentPosition, AccelerantComponent ac, VelocityComponent vc, StatComponent sc){
+        ac.accelX = Measure.units(15f) * (1 + sc.speed);
+        ac.maxX = Measure.units(80f) * (1 + sc.speed);
+        GrappleSystem.moveTo(targetX, currentPosition, ac, vc);
+    }
+
+    public void autoMove(float targetX){
+        for(Entity e : this.getEntities()){
+            movePlayer(targetX, cbm.get(e).getCenterX(), am.get(e), vm.get(e), sm.get(e));
+        }
+    }
+
+
     @Override
     protected void process(Entity e) {
 
         if(disableInput) return;
-
-        System.out.println(this.isEnabled());
 
         PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
@@ -119,14 +132,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
                     if (input.y <= movementArea.y + movementArea.getHeight() && !mtc.hasTarget()) {
-                        ac.accelX = Measure.units(15f) * (1 + sc.speed);
-                        ac.maxX = Measure.units(80f) * (1 + sc.speed);
-                        GrappleSystem.moveTo(input.x, cbc.getCenterX(), ac, vc);
-
-                /*        if(mtc.hasTarget()) {
-                            mtc.reset();
-                        }
-*/
+                        movePlayer(input.x, cbc.getCenterX(), ac, vc, sc);
                     }
                 }
             }
