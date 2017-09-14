@@ -85,19 +85,24 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
         world = new World(config);
 
 
+        Entity title = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(buttonWidth)
+                .height(buttonHeight)
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(0, 0, 0, 0))
+                .build()
+                .createButton(world,
+                        MenuStrings.SETTINGS,
+                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
+                        Measure.units(50f));
+
+
+
         com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
                 .backgroundColor(new Color(0,0,0,0));
-
-
-        Entity settingsText =
-                menuButtonBuilder.build().createButton(
-                        world,
-                        MenuStrings.SETTINGS,
-                        Measure.units(0f),
-                        Measure.units(50f));
 
 
         menuButtonBuilder
