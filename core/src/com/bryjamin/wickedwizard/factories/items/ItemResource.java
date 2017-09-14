@@ -212,21 +212,18 @@ public class ItemResource {
         public static ItemValues Ace = new ItemValues.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/Ace")
                 .name("Ace")
-                .challengeId(ChallengesResource.LEVEL_1_COMPLETE)
                 .itemTypes(com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM)
                 .description("Accuracy+ Luck+")
                 .build();
 
         public static ItemValues aimAssist = new ItemValues.ItemValueBuilder("005e4604-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/AimAssist")
-                .challengeId(ChallengesResource.LEVEL_1_COMPLETE)
                 .name("Aim Assist")
                 .description("Accuracy++ Range+")
                 .build();
 
         public static ItemValues CriticalEye = new ItemValues.ItemValueBuilder("005e4712-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/CriticalEye")
-                .challengeId(ChallengesResource.LEVEL_1_COMPLETE)
                 .name("Critical Eye")
                 .description("Accuracy+++")
                 .challengeId(ChallengesResource.Rank3Challenges.rank3ArenaTrial)
