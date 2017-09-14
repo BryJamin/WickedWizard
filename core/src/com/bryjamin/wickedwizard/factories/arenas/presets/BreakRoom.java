@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
@@ -18,7 +19,6 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
@@ -68,6 +68,7 @@ public class BreakRoom extends AbstractFactory {
 
                 Entity backScreen = world.createEntity();
                 backScreen.edit().add(new PositionComponent());
+                backScreen.edit().add(new DisablePlayerInputComponent());
                 backScreen.edit().add(new MoveToPositionComponent());
                 backScreen.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
                 backScreen.edit().add(new TextureRegionComponent(assetManager.get(com.bryjamin.wickedwizard.assets.FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
@@ -85,7 +86,6 @@ public class BreakRoom extends AbstractFactory {
         componentBag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(PlayerInputSystem.class).disableInput = true;
                 world.getSystem(MusicSystem.class).fadeOutMusic();
                 world.getSystem(OnDeathSystem.class).kill(e);
             }
@@ -128,11 +128,6 @@ public class BreakRoom extends AbstractFactory {
                                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem.class).createNewLevel();
                                 for(BaseSystem s: world.getSystems()){
                                     s.setEnabled(true);
-
-                                    if(s instanceof PlayerInputSystem){
-                                        ((PlayerInputSystem) s).disableInput = false;
-                                    }
-
                                 }
                             }
                         });

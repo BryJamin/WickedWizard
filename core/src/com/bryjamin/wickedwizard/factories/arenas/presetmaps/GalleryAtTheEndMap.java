@@ -10,6 +10,7 @@ import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
@@ -22,6 +23,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
@@ -29,6 +31,8 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
+import com.bryjamin.wickedwizard.factories.arenas.MapCleaner;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -48,12 +52,14 @@ public class GalleryAtTheEndMap extends AbstractFactory {
     private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
     private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
     private ArenaSkin arenaSkin;
+    private MapCleaner mapCleaner;
 
     public GalleryAtTheEndMap(AssetManager assetManager) {
         super(assetManager);
         this.arenaSkin = new BrightWhiteSkin();
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+        this.mapCleaner = new MapCleaner(decorFactory);
     }
 
 
@@ -66,6 +72,9 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 galleryExitRoom().createArena(new MapCoords(2, 2)),
                 galleryTheOutSide().createArena(new MapCoords(3, 2))
                 );
+
+        mapCleaner.cleanArenas(arenaMap.getRoomArray());
+
 
         return arenaMap;
     }
@@ -108,10 +117,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        if (!DataSave.isDataAvailable(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.LEVEL_5_COMPLETE)) {
-                            DataSave.saveChallengeData(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.LEVEL_5_COMPLETE);
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
-                        }
+                        world.getSystem(UnlockMessageSystem.class).createUnlockMessage(ChallengesResource.LEVEL_5_COMPLETE);
                     }
 
                 }));
@@ -268,11 +274,10 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 setUp.add(new OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        world.getSystem(PlayerInputSystem.class).disableInput = true;
                         world.getSystem(UISystem.class).disable = true;
 
-
                         Entity playerMover = world.createEntity();
+                        playerMover.edit().add(new DisablePlayerInputComponent());
                         playerMover.edit().add(new ActionAfterTimeComponent(new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
@@ -386,13 +391,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-
-                        if(!DataSave.isDataAvailable(bossRushid)){
-                            DataSave.saveChallengeData(bossRushid);
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
-                        } else {
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
-                        }
+                        world.getSystem(UnlockMessageSystem.class).createUnlockMessage(bossRushid);
                     }
                 }));
 

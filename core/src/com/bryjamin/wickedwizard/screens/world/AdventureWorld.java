@@ -61,6 +61,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.DisablePlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
@@ -232,6 +233,7 @@ public class AdventureWorld extends InputAdapter {
                         new MoveToPlayerAISystem(),
                         new PlatformSystem(),
                         new JumpSystem(),
+                        new DisablePlayerInputSystem(),
                         new PlayerInputSystem(gameport),
                         new StateSystem(),
                         new SpawnerSystem(),
@@ -308,11 +310,11 @@ public class AdventureWorld extends InputAdapter {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(32.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(37.5f), Measure.units(30.5f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());
-        pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.ENEMY_LAYER_MIDDLE));
+        pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.BACKGROUND_LAYER_FAR));
 
 
 

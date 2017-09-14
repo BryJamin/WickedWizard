@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -65,7 +66,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     private PlayerInput playerInput;
 
-    public boolean disableInput = false;
+    boolean disableInput = false;
 
     public Rectangle movementArea;
 
@@ -105,7 +106,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     @Override
     protected void process(Entity e) {
 
-        if(disableInput) return;
 
         PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
@@ -119,6 +119,14 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
+
+
+
+        if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
+            turnOffGlide();
+        }
+
+        if(disableInput) return;
 
         if (mtm.get(e).targetX == null && mtm.get(e).targetY == null) {
             playerInput.activeGrapple = false;
@@ -174,9 +182,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
             }
         }
 
-        if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
-            turnOffGlide();
-        }
     }
 
 
@@ -289,7 +294,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public void turnOffGlide(){
 
-        com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
+        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
 
 

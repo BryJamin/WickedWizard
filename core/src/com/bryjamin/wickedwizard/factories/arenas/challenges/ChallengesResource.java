@@ -222,8 +222,7 @@ public class ChallengesResource {
                 .build();
 
         public static ChallengeLayout PERFECT_BOSS_RUSH = new ChallengeLayout.ChallengeLayoutBuilder(perfectBossRush)
-                .unlockString(ChallengesResource.LEVEL_5_COMPLETE)
-                .unlockString(perfectBossRush)
+                .unlockString(bossRush)
                 .name("Finale")
                 .build();
 

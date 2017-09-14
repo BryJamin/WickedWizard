@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
@@ -17,6 +18,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -155,6 +157,25 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
                 CenterMath.offsetX(com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, buttonWidth),
                 Measure.units(35f));
 
+
+
+        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(Measure.units(30f))
+                .height(Measure.units(10f))
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(Color.WHITE))
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        com.bryjamin.wickedwizard.screens.MenuScreen.setMenuType(com.bryjamin.wickedwizard.screens.MenuScreen.MenuType.MAIN);
+                    }
+                })
+                .build()
+                .createButton(
+                        world,
+                        MenuStrings.MAIN_MENU,
+                        MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
+                        , Measure.units(5f));
 
 
     }

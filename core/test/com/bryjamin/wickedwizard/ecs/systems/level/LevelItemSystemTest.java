@@ -41,11 +41,11 @@ public class LevelItemSystemTest extends GameTest {
         ItemStore itemStore = new ItemStore(new Random());
 
         for(ItemStore.ItemOptions i : itemStore.getItemOptionsArray()) {
-            Assert.assertTrue(i.item.getValues().region.getLeft()
+            Assert.assertTrue(i.item.getValues().getRegion().getLeft()
                     + " index "
-                    + i.item.getValues().region.getRight()
+                    + i.item.getValues().getRegion().getRight()
                     + " is not inside of the sprite atlas",
-                    atlas.findRegion(i.item.getValues().region.getLeft()) != null);
+                    atlas.findRegion(i.item.getValues().getRegion().getLeft()) != null);
         }
 
     }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -226,6 +227,12 @@ public class CameraSystem extends EntitySystem {
         boolean isOnX = r.getX() + r.getWidth() >= camX && r.getX() <= camX + gamecam.viewportWidth;
         boolean isOnY = r.getY() + r.getHeight() >= camY && r.getY() <= camY + gamecam.viewportHeight;
         return isOnX && isOnY;
+    }
+
+
+
+    public static FollowPositionComponent createFollowCameraComponent(Camera gamecam, float offsetX, float offsetY){
+        return new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2 + offsetX, -gamecam.viewportHeight / 2 + offsetY);
     }
 
 

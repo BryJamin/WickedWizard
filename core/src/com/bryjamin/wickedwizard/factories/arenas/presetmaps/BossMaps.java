@@ -5,11 +5,9 @@ import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
-import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
@@ -33,7 +31,6 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
-import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -153,13 +150,7 @@ public class BossMaps extends AbstractFactory {
                         case 4: id = ChallengesResource.LEVEL_5_COMPLETE; break;
                     }
 
-
-                    world.getSystem(UnlockMessageSystem.class).createChallengeUnlockMessage(id);
-
-                    if (!DataSave.isDataAvailable(id)) {
-                        DataSave.saveChallengeData(id);
-                        world.getSystem(MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
-                    }
+                    world.getSystem(UnlockMessageSystem.class).createUnlockMessage(id);
                 }
                 e.deleteFromWorld();
             }

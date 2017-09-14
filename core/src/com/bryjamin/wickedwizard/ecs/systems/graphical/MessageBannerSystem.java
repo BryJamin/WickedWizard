@@ -7,8 +7,8 @@ import com.artemis.EntitySystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BannerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -159,10 +159,10 @@ public class MessageBannerSystem extends EntitySystem {
     private Entity createBannerBox(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec, Color color){
 
         Entity blackBackingBox = world.createEntity();
-        blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + bannerFollowOffsetY));
-        blackBackingBox.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, - MainGame.GAME_WIDTH / 2, bannerFollowOffsetY));
+        blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + bannerFollowOffsetY));
+        blackBackingBox.edit().add(new FollowPositionComponent(gamecam.position, - gamecam.viewportWidth / 2, bannerFollowOffsetY));
 
-        TextureRegionComponent trc = new TextureRegionComponent(bannerTexture, 0,0, MainGame.GAME_WIDTH, bannerHeight, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+        TextureRegionComponent trc = new TextureRegionComponent(bannerTexture, 0,0, gamecam.viewportWidth, bannerHeight, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
         trc.color = color;
         trc.color.a = 0;
         blackBackingBox.edit().add(trc);

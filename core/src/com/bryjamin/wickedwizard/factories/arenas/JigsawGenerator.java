@@ -1,23 +1,18 @@
 package com.bryjamin.wickedwizard.factories.arenas;
 
-import com.artemis.Component;
-import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
-import com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
-import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presets.RandomizerArenaFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presets.ShopFactory;
-import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.WeightedObject;
 import com.bryjamin.wickedwizard.utils.WeightedRoll;
@@ -59,7 +54,8 @@ public class JigsawGenerator {
 
     private com.bryjamin.wickedwizard.factories.items.ItemStore itemStore;
 
-    private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
+    private DecorFactory decorFactory;
+    private MapCleaner mapCleaner;
 
 
     private com.bryjamin.wickedwizard.utils.WeightedRoll<Comparator<DoorComponent>> typeOfSortRoller;
@@ -83,6 +79,7 @@ public class JigsawGenerator {
         this.arenaSkin = jigsawGeneratorConfig.level.getArenaSkin();
         this.level = jigsawGeneratorConfig.level;
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
+        this.mapCleaner = new MapCleaner(decorFactory);
 
 
         this.randomizerArenaFactory = new RandomizerArenaFactory(assetManager, arenaSkin);
@@ -323,12 +320,11 @@ public class JigsawGenerator {
 
         btc = new BossTeleporterComponent(teleportLink);
         ArenaMap bossMap = bossMapGens.get(random.nextInt(bossMapGens.size)).createBossMap(btc);
-        cleanArenas(bossMap.getRoomArray());
+        mapCleaner.cleanArenas(bossMap.getRoomArray());
 
         mapTracker.put(btc, bossMap);
 
-
-        this.cleanArenas(startingMap.getRoomArray());
+        mapCleaner.cleanArenas(startingMap.getRoomArray());
 
     }
 
@@ -351,7 +347,7 @@ public class JigsawGenerator {
         for(Arena itemRoom : itemRooms) {
             if (placeRoomUsingDoorsRandomly(itemRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)) {
                 placedArenas.add(itemRoom);
-                cleanArena(itemRoom, placedArenas);
+                mapCleaner.cleanArena(itemRoom, placedArenas);
                 return true;
             }
         }
@@ -369,7 +365,7 @@ public class JigsawGenerator {
         Arena shopRoom = shopFactory.createShop(new MapCoords());
         if(placeRoomUsingDoorsRandomly(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(shopRoom);
-            cleanArena(shopRoom, placedArenas);
+            mapCleaner.cleanArena(shopRoom, placedArenas);
             return true;
         }
 
@@ -382,7 +378,7 @@ public class JigsawGenerator {
         Arena shopRoom = randomizerArenaFactory.createRandomizerRoom(new MapCoords());
         if(placeRoomUsingDoorsRandomly(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
             placedArenas.add(shopRoom);
-            cleanArena(shopRoom, placedArenas);
+            mapCleaner.cleanArena(shopRoom, placedArenas);
             return true;
         }
 
@@ -595,52 +591,6 @@ public class JigsawGenerator {
     }
 
 
-    /**
-     * Scans arenas within an array arena to see if any doors link to co-ordinates that are not occupied or
-     * do not have any doors linking back.
-     *
-     * The doors are then replaced with a wall
-     *
-     * @param arenas
-     */
-    public void cleanArenas(Array<Arena> arenas){
-        for(int i = 0; i < arenas.size; i++) {
-            Arena a = arenas.get(i);
-            cleanArena(a, arenas);
-        }
-    }
-
-    public void cleanArena(Arena a, Array<Arena> arenas){
-
-        for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
-            com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc = a.getDoors().get(j);
-            if (!findDoorWithinFoundRoom(dc, arenas)) {
-                replaceDoorWithWall(dc, a);
-            }
-        }
-
-    }
-
-    private void replaceDoorWithWall(DoorComponent dc, Arena arena){
-
-        Bag<Component> bag = arena.findBag(dc);
-        if (BagSearch.contains(GrappleableComponent.class, bag) && BagSearch.contains(InCombatActionComponent.class, bag)) {
-            arena.getBagOfEntities().remove(bag);
-        } else {
-            CollisionBoundComponent cbc = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag);
-            if(cbc != null) {
-                arena.getBagOfEntities().remove(bag);
-                arena.addEntity(decorFactory.wallBag(cbc.bound.x, cbc.bound.y, cbc.bound.getWidth(), cbc.bound.getHeight(), arena.getArenaSkin()));
-            }
-        }
-        //arena.adjacentCoords.removeValue(dc.leaveCoords, false);
-        arena.doors.removeValue(dc, true);
-
-    }
-
-    public void cleanArenas(){
-       cleanArenas(startingMap.getRoomArray());
-    }
 
     /**
      * Uses a given door component to see if it links to a room that exists with the array of rooms
@@ -684,6 +634,11 @@ public class JigsawGenerator {
             }
         }
         return null;
+    }
+
+
+    public void cleanArenas(){
+        mapCleaner.cleanArenas(startingMap.getRoomArray());
     }
 
 

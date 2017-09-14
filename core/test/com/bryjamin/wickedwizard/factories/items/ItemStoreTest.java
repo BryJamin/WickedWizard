@@ -10,9 +10,10 @@ import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.bryjamin.wickedwizard.GameTest;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
-
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 
@@ -63,8 +64,8 @@ public class ItemStoreTest extends GameTest {
         }
        // assertTrue(itemStore.getItemOptionsArray().size == 1);
         for(ItemStore.ItemOptions io : itemStore.getItemOptionsArray()) {
-            assertTrue(io.item.getValues().itemTypes.contains(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS, false));
-            assertTrue(!io.item.getValues().itemTypes.contains(com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM, false));
+            assertTrue(io.item.getValues().getItemTypes().contains(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS, false));
+            assertTrue(!io.item.getValues().getItemTypes().contains(com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM, false));
         }
     }
 
@@ -85,11 +86,11 @@ public class ItemStoreTest extends GameTest {
         ItemStore itemStore = new ItemStore(new Random());
 
         for(com.bryjamin.wickedwizard.factories.items.Item item : com.bryjamin.wickedwizard.factories.items.ItemResource.allItems) {
-            Assert.assertTrue(item.getValues().region.getLeft()
+            Assert.assertTrue(item.getValues().getRegion().getLeft()
                             + " index "
-                            + item.getValues().region.getRight()
+                            + item.getValues().getRegion().getRight()
                             + " is not inside of the sprite atlas",
-                    atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()) != null);
+                    atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()) != null);
         }
 
     }
@@ -112,7 +113,7 @@ public class ItemStoreTest extends GameTest {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem(),
-                        new FindPlayerSystem(new PlayerFactory(assetManager).playerBag(0,0)))
+                        new FindPlayerSystem(new PlayerFactory(assetManager).playerBag(PlayerIDs.LEAH_ID,0,0)))
                 .build();
 
         World world = new World(config);

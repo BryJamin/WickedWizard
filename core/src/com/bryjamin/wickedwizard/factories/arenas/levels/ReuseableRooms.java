@@ -8,7 +8,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FontAssets;
-import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
@@ -20,7 +19,6 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
@@ -33,7 +31,6 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
-import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -131,14 +128,8 @@ public class ReuseableRooms extends AbstractFactory {
 
                 world.getSystem(SoundSystem.class).playSound(SoundFileStrings.itemPickUpMix1);
 
+                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(challengeId);
 
-                world.getSystem(UnlockMessageSystem.class).createItemUnlockMessage(challengeId);
-                if(!DataSave.isDataAvailable(challengeId)){
-                    DataSave.saveChallengeData(challengeId);
-                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
-                } else {
-                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
-                }
                 e.deleteFromWorld();
             }
         }));
