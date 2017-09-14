@@ -81,56 +81,6 @@ public class UnlockMessageSystem extends BaseSystem {
 
 
 
-    public void createChallengeUnlockMessage(Array<Bag<ComponentBag>> bagArray, String unlockId){
-
-        Array<ChallengeLayout> unlockedChallenges = new Array<ChallengeLayout>();
-
-        for(ChallengeLayout challengeLayout : ChallengesResource.getAllChallenges()){
-            if(challengeLayout.getUnlockString().equals(unlockId)){
-                unlockedChallenges.add(challengeLayout);
-            }
-        }
-
-        if(unlockedChallenges.size <= 0) return;
-
-        Bag<ComponentBag> bagOfBags = new Bag<ComponentBag>();
-        bagOfBags.add(createTitle(unlockedChallenges.size > 1 ? MenuStrings.CHALLENGE_UNLOCKED_PLURAL : MenuStrings.CHALLENGE_UNLOCKED));
-        bagOfBags.add(createBackDrop());
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-
-
-        int maxColumns = 1;
-
-        float iconSize = gamecam.viewportWidth;
-        float iconGap = Measure.units(5f);
-
-        float startY = camY + Measure.units(45f);
-        float startX = camX + CenterMath.offsetX(gamecam.viewportWidth, (iconSize * maxColumns) + (iconGap * (maxColumns - 1)));
-
-
-        for(int i = 0; i < unlockedChallenges.size; i++){
-
-            ComponentBag unlockedItemBag = new ComponentBag();
-            float x = TableMath.getXPos(startX, i, maxColumns, iconSize, iconGap);
-            float y = TableMath.getYPos(Measure.units(40f), i, maxColumns, iconGap, iconGap);
-            unlockedItemBag.add(new PositionComponent(x, y));
-            unlockedItemBag.add(new CollisionBoundComponent(new Rectangle(x, y, gamecam.viewportWidth, Measure.units(10f))));
-            unlockedItemBag.add(new UIComponent());
-            unlockedItemBag.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2 + y));
-            unlockedItemBag.add(new TextureFontComponent(FontAssets.medium, unlockedChallenges.get(i).getName()));
-
-            bagOfBags.add(unlockedItemBag);
-
-        }
-
-        bagArray.add(bagOfBags);
-
-    }
-
-
     private ComponentBag createTitle(String title){
 
         float camX = gamecam.position.x - gamecam.viewportWidth / 2;
@@ -139,8 +89,8 @@ public class UnlockMessageSystem extends BaseSystem {
         ComponentBag titleText = new ComponentBag();
 
         Rectangle textRectangle = new Rectangle(camX, camY, gamecam.viewportWidth, Measure.units(10f));
-        titleText.add(new PositionComponent(camX, Measure.units(50f)));
-        titleText.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2 + Measure.units(50f)));
+        titleText.add(new PositionComponent(camX, Measure.units(55f)));
+        titleText.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2 + Measure.units(55f)));
         titleText.add(new CollisionBoundComponent(new Rectangle(textRectangle)));
         titleText.add(new UIComponent());
         titleText.add(new TextureFontComponent(FontAssets.medium, title));
@@ -204,7 +154,7 @@ public class UnlockMessageSystem extends BaseSystem {
         Entity next = world.createEntity();
         next.edit().add(pc);
         next.edit().add(new PositionComponent(camX, camY + Measure.units(5f)));
-        next.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2 + Measure.units(5f)));
+        next.edit().add(CameraSystem.createFollowCameraComponent(gamecam, 0, Measure.units(5f)));
         next.edit().add(new CollisionBoundComponent(new Rectangle(camX, camY + Measure.units(5f), Measure.units(50f), Measure.units(10f))));
         next.edit().add(new TextureFontComponent(FontAssets.medium, MenuStrings.TAP_TO_CONTINUE));
         next.edit().add(new UIComponent());
@@ -235,7 +185,7 @@ public class UnlockMessageSystem extends BaseSystem {
         flash.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), gamecam.viewportWidth, gamecam.viewportHeight,
                 TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                 new Color(Color.WHITE)));
-        flash.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
+        flash.edit().add(CameraSystem.createFollowCameraComponent(gamecam, 0, 0));
         flash.edit().add(new FadeComponent(false, 1f, false));
         flash.edit().add(new ExpireComponent(1f));
 
@@ -262,16 +212,10 @@ public class UnlockMessageSystem extends BaseSystem {
 
         //ITEMS
 
-
-        int maxColumns = unlockedItems.size < 8 ? unlockedItems.size : 8;
-
         float iconSize = Measure.units(10f);
 
         float y = CenterMath.offsetY(gamecam.viewportHeight, iconSize) + Measure.units(5f);
         float x = CenterMath.offsetX(gamecam.viewportWidth, iconSize);
-
-        float offsetX = -gamecam.viewportWidth / 2;
-        float offsetY = -gamecam.viewportHeight / 2;
 
         for(int i = 0; i < unlockedItems.size; i++){
 
@@ -282,7 +226,7 @@ public class UnlockMessageSystem extends BaseSystem {
             ComponentBag unlockedItemBag = new ComponentBag();
 
             unlockedItemBag.add(new PositionComponent(x, y));
-            unlockedItemBag.add(new FollowPositionComponent(gamecam.position, offsetX, offsetY));
+            unlockedItemBag.add(CameraSystem.createFollowCameraComponent(gamecam, x, y));
             unlockedItemBag.add(new UIComponent());
             unlockedItemBag.add(new TextureRegionComponent(atlas.findRegion(unlockedItems.get(i).getValues().getRegion().getLeft(), unlockedItems.get(i).getValues().getRegion().getRight()),
                     iconSize, iconSize, TextureRegionComponent.ENEMY_LAYER_FAR, unlockedItems.get(i).getValues().getTextureColor()));
@@ -292,7 +236,7 @@ public class UnlockMessageSystem extends BaseSystem {
 
             ComponentBag textBelow = new ComponentBag();
             textBelow.add(new PositionComponent(x, y - Measure.units(5.5f)));
-            textBelow.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2 + x, -gamecam.viewportHeight / 2 + y - Measure.units(5.5f)));
+            textBelow.add(CameraSystem.createFollowCameraComponent(gamecam, x, y - Measure.units(5.5f)));
             textBelow.add(new TextureFontComponent(FontAssets.medium, "\"" + unlockedItems.get(i).getValues().getName() + "\""));
             textBelow.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(5f), iconSize, Measure.units(5f))));
             textBelow.add(new UIComponent());
@@ -307,58 +251,41 @@ public class UnlockMessageSystem extends BaseSystem {
 
 
 
+    public void createChallengeUnlockMessage(Array<Bag<ComponentBag>> bagArray, String unlockId){
 
+        Array<ChallengeLayout> unlockedChallenges = new Array<ChallengeLayout>();
 
-
-/*
-
-
-
-    public void createItemUnlockMessage(Array<Bag<ComponentBag>> bagArray, String unlockId){
-
-        Array<Item> unlockedItems = new Array<Item>();
-
-        for(Item i : ItemResource.getAllItems()){
-            if(i.getValues().getChallengeId().equals(unlockId)){
-                unlockedItems.add(i);
+        for(ChallengeLayout challengeLayout : ChallengesResource.getAllChallenges()){
+            if(challengeLayout.getUnlockString().equals(unlockId)){
+                unlockedChallenges.add(challengeLayout);
             }
         }
 
-
-        if(unlockedItems.size <= 0) return;
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
+        if(unlockedChallenges.size <= 0) return;
 
         Bag<ComponentBag> bagOfBags = new Bag<ComponentBag>();
+        bagOfBags.add(createTitle(unlockedChallenges.size > 1 ? MenuStrings.CHALLENGE_UNLOCKED_PLURAL : MenuStrings.CHALLENGE_UNLOCKED));
         bagOfBags.add(createBackDrop());
-        bagOfBags.add(createTitle(unlockedItems.size > 1 ? MenuStrings.ITEM_UNLOCKED_PLURAL : MenuStrings.ITEM_UNLOCKED));
 
-        //ITEMS
+        int maxColumns = 1;
 
-
-        int maxColumns = unlockedItems.size < 8 ? unlockedItems.size : 8;
-
-        float iconSize = Measure.units(10f);
+        float iconSize = gamecam.viewportWidth;
         float iconGap = Measure.units(5f);
 
-        float startY = camY + Measure.units(30f);
-        float startX = camX + CenterMath.offsetX(gamecam.viewportWidth, (iconSize * maxColumns) + (iconGap * (maxColumns - 1)));
-        //Create Item display
+        float x = CenterMath.offsetX(gamecam.viewportWidth, iconSize);
 
-        for(int i = 0; i < unlockedItems.size; i++){
+
+        for(int i = 0; i < unlockedChallenges.size; i++){
 
             ComponentBag unlockedItemBag = new ComponentBag();
 
-
-            float x = TableMath.getXPos(startX, i, maxColumns, iconSize, iconGap);
-            float y = TableMath.getYPos(startY, i, maxColumns, iconSize, iconGap);
+            float y = TableMath.getYPos(Measure.units(45f), i, maxColumns, iconGap, iconGap);
 
             unlockedItemBag.add(new PositionComponent(x, y));
+            unlockedItemBag.add(new CollisionBoundComponent(new Rectangle(x, y, gamecam.viewportWidth, Measure.units(10f))));
             unlockedItemBag.add(new UIComponent());
-            unlockedItemBag.add(new TextureRegionComponent(atlas.findRegion(unlockedItems.get(i).getValues().getRegion().getLeft(), unlockedItems.get(i).getValues().getRegion().getRight()),
-                    iconSize, iconSize, TextureRegionComponent.ENEMY_LAYER_FAR, unlockedItems.get(i).getValues().getTextureColor()));
+            unlockedItemBag.add(CameraSystem.createFollowCameraComponent(gamecam, x, y));
+            unlockedItemBag.add(new TextureFontComponent(FontAssets.medium, unlockedChallenges.get(i).getName()));
 
             bagOfBags.add(unlockedItemBag);
 
@@ -367,9 +294,6 @@ public class UnlockMessageSystem extends BaseSystem {
         bagArray.add(bagOfBags);
 
     }
-
-*/
-
 
 
 
