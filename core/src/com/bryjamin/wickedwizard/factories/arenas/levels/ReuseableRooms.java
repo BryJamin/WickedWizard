@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
@@ -130,6 +131,8 @@ public class ReuseableRooms extends AbstractFactory {
 
                 world.getSystem(SoundSystem.class).playSound(SoundFileStrings.itemPickUpMix1);
 
+
+                world.getSystem(UnlockMessageSystem.class).createItemUnlockMessage(challengeId);
                 if(!DataSave.isDataAvailable(challengeId)){
                     DataSave.saveChallengeData(challengeId);
                     world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);

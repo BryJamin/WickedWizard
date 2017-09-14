@@ -229,8 +229,8 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
                 iconWidth, iconHeight, TextureRegionComponent.ENEMY_LAYER_MIDDLE, item.getValues().getTextureColor());
 
         if(!isItemCollected) {
-            trc.color = new Color(Color.BLACK);
-            trc.DEFAULT = new Color(Color.BLACK);
+            trc.color = new Color(0.2f,0.2f,0.2f, 1);
+            trc.DEFAULT = new Color(0.2f,0.2f,0.2f, 1);
         }
 
         if(!DataSave.isDataAvailable(item.getValues().getChallengeId())){

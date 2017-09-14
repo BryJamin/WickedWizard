@@ -121,49 +121,6 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50f)));
                 arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
 
-
-
-/*
-                ComponentBag endFade = new ComponentBag();
-                endFade.add(new ActionAfterTimeComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-
-
-                        float width = com.bryjamin.wickedwizard.MainGame.GAME_WIDTH * 2;
-                        float height = com.bryjamin.wickedwizard.MainGame.GAME_HEIGHT * 2;
-
-                        Entity fadeout = world.createEntity();
-                        fadeout.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(0,0));
-                        fadeout.edit().add(new ActionAfterTimeComponent(new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                e.edit().add(new FadeComponent(true, 3.0f, false));
-                            }
-                        }, 1.5f));
-                        fadeout.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position, -width / 2, -height / 2));
-                        fadeout.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(0,0,0,0)));
-
-                        fadeout.edit().add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
-                            @Override
-                            public boolean condition(World world, Entity entity) {
-                                return entity.getComponent(TextureRegionComponent.class).color.a >= 1f;
-                            }
-                        }, new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                world.getSystem(EndGameSystem.class).startCredits();
-                            }
-                        }));
-
-
-
-                    }
-                }, 2.0f));
-
-                arena.addEntity(endFade);
-*/
-
                 return arena;
             }
         };

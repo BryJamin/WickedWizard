@@ -10,6 +10,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
@@ -152,6 +153,8 @@ public class BossMaps extends AbstractFactory {
                         case 4: id = ChallengesResource.LEVEL_5_COMPLETE; break;
                     }
 
+
+                    world.getSystem(UnlockMessageSystem.class).createChallengeUnlockMessage(id);
 
                     if (!DataSave.isDataAvailable(id)) {
                         DataSave.saveChallengeData(id);

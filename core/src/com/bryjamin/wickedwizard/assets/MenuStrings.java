@@ -57,6 +57,12 @@ public class MenuStrings {
     public static final String TRAIL_OLD_ITEM = "The previously unlocked item is still unlocked";
 
 
+
+
+    public static final String ITEM_UNLOCKED = "New Item Unlocked";
+    public static final String CHALLENGE_UNLOCKED = "New Challenge Unlocked";
+
+
     public static class Stats {
 
         public static final String DAMAGE = "Dmg";
@@ -101,6 +107,8 @@ public class MenuStrings {
 
 
     }
+
+
 
 
 

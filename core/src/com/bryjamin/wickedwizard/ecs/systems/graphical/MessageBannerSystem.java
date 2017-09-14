@@ -8,12 +8,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bryjamin.wickedwizard.MainGame;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.BannerComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.BannerComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -32,7 +34,6 @@ public class MessageBannerSystem extends EntitySystem {
 
     private static final float itemBannerTitleTextOffsetY = Measure.units(21.5f);
     private static final float itemBannerDescriptionOffsetY = Measure.units(16.5f);
-
 
     private static final float levelBannerTextOffsetY = Measure.units(19.5f);
 
@@ -82,6 +83,7 @@ public class MessageBannerSystem extends EntitySystem {
 
         Entity banner = world.createEntity();
         banner.edit().add(new BannerComponent());
+        banner.edit().add(new UIComponent());
         com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parentComponent = new com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent();
         banner.edit().add(parentComponent);
 
@@ -120,8 +122,9 @@ public class MessageBannerSystem extends EntitySystem {
 
         Entity banner = world.createEntity();
         banner.edit().add(new BannerComponent());
-        com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parentComponent = new com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent();
-        banner.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent());
+        banner.edit().add(new UIComponent());
+        ParentComponent parentComponent = new ParentComponent();
+        banner.edit().add(new ParentComponent());
 
         FadeComponent fc = new FadeComponent(true, 4f, false);
         fc.count = 1;
@@ -144,6 +147,7 @@ public class MessageBannerSystem extends EntitySystem {
         Entity text = world.createEntity();
         text.edit().add(new PositionComponent(gamecam.position.x + offsetX, gamecam.position.y + offsetY));
         text.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, offsetX, offsetY));
+        text.edit().add(new UIComponent());
         text.edit().add(tfc);
         text.edit().add(fc);
         text.edit().add(ec);
@@ -162,6 +166,7 @@ public class MessageBannerSystem extends EntitySystem {
         trc.color = color;
         trc.color.a = 0;
         blackBackingBox.edit().add(trc);
+        blackBackingBox.edit().add(new UIComponent());
         blackBackingBox.edit().add(ec);
         blackBackingBox.edit().add(fc);
         blackBackingBox.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent(parentBanner));

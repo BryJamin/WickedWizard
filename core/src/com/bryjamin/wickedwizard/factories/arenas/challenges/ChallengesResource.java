@@ -243,6 +243,22 @@ public class ChallengesResource {
 
 
 
+    public static Array<ChallengeLayout> getAllChallenges(){
+
+        Array<ChallengeLayout> challengeLayouts = new Array<ChallengeLayout>();
+
+        challengeLayouts.addAll(Rank1Challenges.rank1ChallengesArray);
+        challengeLayouts.addAll(Rank2Challenges.rank2ChallengesArray);
+        challengeLayouts.addAll(Rank3Challenges.rank3ChallengesArray);
+        challengeLayouts.addAll(Rank4Challenges.rank4ChallengesArray);
+        challengeLayouts.addAll(Rank5Challenges.rank5ChallengesArray);
+
+        return challengeLayouts;
+
+    }
+
+
+
 
 
 }
