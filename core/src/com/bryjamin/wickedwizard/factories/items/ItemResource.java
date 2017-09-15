@@ -12,6 +12,8 @@ import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEn
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemAngrySlimeCoat;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemArmorUp;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSmoulderingArmor;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
@@ -28,6 +30,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.damage.rankTwo.ItemMin
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemTacticalKnitwear;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHealthUp;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHyperTrophy;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemIronFragment;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
@@ -56,7 +59,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemLeafCutte
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemMiniShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
-import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDisappointment;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemDisappointment;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeather;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
@@ -209,7 +212,8 @@ public class ItemResource {
 
         public static Item[] armorItems = {
                 new ItemAngrySlimeCoat(),
-                new com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody(),
+                new ItemArmorUp(),
+                new ItemIronBody(),
                 new ItemSlimeCoat(),
                 new ItemSmoulderingArmor(),
                 new ItemSquareBuckler(),
@@ -222,6 +226,12 @@ public class ItemResource {
                 .textureColor(ColorResource.BLOB_RED)
                 .name("Angry Slime Coat")
                 .description("Eww.. but also Grr..")
+                .build();
+
+        public static ItemLayout armorUp = new ItemLayout.ItemValueBuilder("121b0f84-359f-4d4a-832f-c5f6f77b82d1")
+                .region("item/ArmorUp")
+                .name("Armor Up!")
+                .description("Armored Up!")
                 .build();
 
 
@@ -392,11 +402,19 @@ public class ItemResource {
 
         public static Item[] healthItems = {
                 new ItemDisappointment(),
+                new ItemHealthUp(),
                 new ItemHyperTrophy(),
                 new ItemIronFragment(),
                 new ItemSarcasticLion(),
                 new ItemSootheNote(),
                 new Medicine()};
+
+
+        public static ItemLayout healthUp = new ItemLayout.ItemValueBuilder("2239cd0d-fad6-449e-848b-f6eaec7e3349")
+                .region("item/HealthUp")
+                .name("Health Up!")
+                .description("Healthed Up!")
+                .build();
 
 
         public static ItemLayout hypertrophy = new ItemLayout.ItemValueBuilder("5085bada-81d9-11e7-bb31-be2e44b06b34")
@@ -458,7 +476,7 @@ public class ItemResource {
         public static ItemLayout enigmaticShot = new ItemLayout.ItemValueBuilder("07d26ef6-418a-4c0f-89c0-ec0c45e1647a")
                 .region("item/EnigmaticShot")
                 .name("Enigmatic Shot")
-                .description("What Does This Even Do?")
+                .description("Random Stat Manipulation")
                 .build();
 
         public static ItemLayout eyesOfAmalgama = new ItemLayout.ItemValueBuilder("de5c3cf1-d510-4cb1-b4ce-63c99ab0832d")

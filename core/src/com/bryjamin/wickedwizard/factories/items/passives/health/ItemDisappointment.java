@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.factories.items.passives.shotspeed;
+package com.bryjamin.wickedwizard.factories.items.passives.health;
 
 import com.artemis.Entity;
 import com.artemis.World;
