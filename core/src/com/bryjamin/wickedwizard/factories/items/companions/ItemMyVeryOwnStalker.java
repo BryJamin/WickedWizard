@@ -3,6 +3,8 @@ package com.bryjamin.wickedwizard.factories.items.companions;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 
 /**
  * Created by BB on 27/08/2017.
@@ -24,8 +26,8 @@ public class ItemMyVeryOwnStalker implements com.bryjamin.wickedwizard.factories
     }
 
     @Override
-    public com.bryjamin.wickedwizard.factories.items.ItemResource.ItemValues getValues() {
-        return com.bryjamin.wickedwizard.factories.items.ItemResource.Companion.myVeryOwnStalker;
+    public ItemLayout getValues() {
+        return ItemResource.Companion.myVeryOwnStalker;
     }
 
 }

@@ -2,11 +2,13 @@ package com.bryjamin.wickedwizard.factories.items.companions;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.factories.items.Companion;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 
 /**
@@ -29,8 +31,8 @@ public class ItemDangerDetector implements Companion {
     }
 
     @Override
-    public com.bryjamin.wickedwizard.factories.items.ItemResource.ItemValues getValues() {
-        return com.bryjamin.wickedwizard.factories.items.ItemResource.Companion.dangerDetector;
+    public ItemLayout getValues() {
+        return ItemResource.Companion.dangerDetector;
     }
 
 }

@@ -3,6 +3,8 @@ package com.bryjamin.wickedwizard.factories.items.passives.speed;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
 /**
@@ -18,7 +20,7 @@ public class ItemQuickness implements com.bryjamin.wickedwizard.factories.items.
     }
 
     @Override
-    public com.bryjamin.wickedwizard.factories.items.ItemResource.ItemValues getValues() {
-        return com.bryjamin.wickedwizard.factories.items.ItemResource.Speed.quickness;
+    public ItemLayout getValues() {
+        return ItemResource.Speed.quickness;
     }
 }

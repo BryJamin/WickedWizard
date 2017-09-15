@@ -287,7 +287,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
         Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0), Arena.ArenaType.NORMAL);
-        iWishYouWell.addEntity(itemFactory.createCenteredPresetItemAltarBag(Measure.units(42.5f),
+        iWishYouWell.addEntity(itemFactory.createPresetItemAltarBag(Measure.units(42.5f),
                 Measure.units(10f), arenaSkin.getWallTint(), new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell()));
 
         ArenaMap arenaMap = new ArenaMap(startingArena,

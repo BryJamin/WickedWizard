@@ -85,7 +85,7 @@ public class ItemStoreTest extends GameTest {
 
         ItemStore itemStore = new ItemStore(new Random());
 
-        for(com.bryjamin.wickedwizard.factories.items.Item item : com.bryjamin.wickedwizard.factories.items.ItemResource.allItems) {
+        for(com.bryjamin.wickedwizard.factories.items.Item item : ItemResource.allItems) {
             Assert.assertTrue(item.getValues().getRegion().getLeft()
                             + " index "
                             + item.getValues().getRegion().getRight()
@@ -137,7 +137,7 @@ public class ItemStoreTest extends GameTest {
 
 
 
-        for(com.bryjamin.wickedwizard.factories.items.Item i : com.bryjamin.wickedwizard.factories.items.ItemResource.allItems) {
+        for(com.bryjamin.wickedwizard.factories.items.Item i : ItemResource.allItems) {
 
             if(i instanceof com.bryjamin.wickedwizard.factories.items.Companion){
                 companion += 1;

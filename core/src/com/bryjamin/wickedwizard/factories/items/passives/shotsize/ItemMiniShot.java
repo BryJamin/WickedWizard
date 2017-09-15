@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.factories.items.passives.luck;
+package com.bryjamin.wickedwizard.factories.items.passives.shotsize;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -8,25 +8,22 @@ import com.bryjamin.wickedwizard.factories.items.ItemLayout;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
-
 /**
- * Created by Home on 13/05/2017.
+ * Created by BB on 15/09/2017.
  */
 
-public class ItemForgottenFigment implements Item {
+public class ItemMiniShot implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).luck -= PresetStatIncrease.minor;
-        player.getComponent(StatComponent.class).damage += PresetStatIncrease.major;
+        player.getComponent(StatComponent.class).shotSize -= PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).shotSpeed += PresetStatIncrease.minor;
         player.getComponent(StatComponent.class).fireRate += PresetStatIncrease.minor;
         return true;
     }
 
     @Override
     public ItemLayout getValues() {
-        return ItemResource.Luck.forgottenFigment;
+        return ItemResource.ShotSize.miniShot;
     }
-
-
 }

@@ -127,7 +127,7 @@ public class UnlockMessageSystem extends BaseSystem {
         if(!DataSave.isDataAvailable(unlockId)){
             DataSave.saveChallengeData(unlockId);
         } else {
-            return;
+            //return;
         }
 
 

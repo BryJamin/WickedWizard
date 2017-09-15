@@ -4,6 +4,8 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
 
@@ -23,7 +25,7 @@ public class ItemSarcasticLion implements Item {
     }
 
     @Override
-    public com.bryjamin.wickedwizard.factories.items.ItemResource.ItemValues getValues() {
-        return com.bryjamin.wickedwizard.factories.items.ItemResource.Health.sarcasticLion;
+    public ItemLayout getValues() {
+        return ItemResource.Health.sarcasticLion;
     }
 }

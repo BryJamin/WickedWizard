@@ -1,6 +1,5 @@
 package com.bryjamin.wickedwizard.factories.items;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
@@ -46,8 +45,10 @@ import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemScope;
+import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemBigShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemCannonCube;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemLeafCutter;
+import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemMiniShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDisappointment;
@@ -56,7 +57,6 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLett
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
 import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
-import com.bryjamin.wickedwizard.utils.Pair;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 /**
@@ -80,6 +80,59 @@ public class ItemResource {
         allItems.addAll(ShotSpeed.shotSpeedItems);
         allItems.addAll(Speed.speedItems);
         allItems.addAll(Companion.companionItems);
+
+
+
+        //RANK1 CHALLENGES
+        Armor.slimeCoat.setChallengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun);
+        Damage.anger.setChallengeId(ChallengesResource.Rank1Challenges.arenaSpeedRun);
+        Companion.crownOfBiggaBlobba.setChallengeId(ChallengesResource.Rank1Challenges.perfectBlobba);
+        FireRate.statueOfAdoj.setChallengeId(ChallengesResource.Rank1Challenges.perfectAdoj);
+
+        Armor.slimeCoat.setChallengeId(ChallengesResource.Rank1Challenges.perfectBlobba); //("Test")
+
+
+
+        //RANK 2 CHALLENGES
+        ShotSpeed.shinyFeather.setChallengeId(ChallengesResource.Rank2Challenges.rank2TimeTrail);
+        Luck.forgottenFigment.setChallengeId(ChallengesResource.Rank2Challenges.arenaTrail);
+        Armor.wandasScarf.setChallengeId(ChallengesResource.Rank2Challenges.perfectWanda);
+        Companion.miniSpinnyThingie.setChallengeId(ChallengesResource.Rank2Challenges.perfectKugel);
+
+
+
+
+        //RANK3 CHALLENGES
+        Armor.angrySlimeCoat.setChallengeId(ChallengesResource.Rank3Challenges.rank3TimeTrail);
+        Accuracy.CriticalEye.setChallengeId(ChallengesResource.Rank3Challenges.rank3ArenaTrial);
+        Damage.statueOfAjir.setChallengeId(ChallengesResource.Rank3Challenges.perfectAjir);
+        Luck.threeDimensionalGold.setChallengeId(ChallengesResource.Rank3Challenges.perfectBoomy);
+
+
+        //Rank4 Challenges
+        Speed.quickness.setChallengeId(ChallengesResource.Rank4Challenges.rank4TimeTrail);
+        Damage.miniTrebuchet.setChallengeId(ChallengesResource.Rank4Challenges.rank4Arena);
+        Companion.myVeryOwnStalker.setChallengeId(ChallengesResource.Rank4Challenges.perfectWraith);
+        Luck.eyesOfAmalgama.setChallengeId(ChallengesResource.Rank4Challenges.perfectAmalgama);
+
+
+
+
+        //Rank 5 Challenges
+        ShotSpeed.momentum.setChallengeId(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail);
+        ShotSize.cannonCube.setChallengeId(ChallengesResource.Rank5Challenges.rank5NotUltimateArena);
+        Luck.iWishYouWell.setChallengeId(ChallengesResource.Rank5Challenges.bossRush);
+
+
+
+
+        //LEVEL 2 COMPLETE
+        ShotSize.leafCutter.setChallengeId(ChallengesResource.LEVEL_2_COMPLETE);
+
+
+        //LEVEL 3 COMPLETE
+        Range.laserScope.setChallengeId(ChallengesResource.LEVEL_3_COMPLETE);
+
     }
 
     public static Array<Item> getAllItems() {
@@ -89,110 +142,6 @@ public class ItemResource {
         return all;
     }
 
-
-    public static class ItemValues {
-
-        private final String id;
-        private final com.bryjamin.wickedwizard.utils.Pair<String, Integer> region;
-        private final Color textureColor;
-        private final String name;
-        private final String description;
-        private final Array<com.bryjamin.wickedwizard.utils.enums.ItemType> itemTypes;
-        private final String challengeId;
-
-
-        public String getId() {
-            return id;
-        }
-
-        public Pair<String, Integer> getRegion() {
-            return region;
-        }
-
-        public Color getTextureColor() {
-            return textureColor;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public Array<ItemType> getItemTypes() {
-            return itemTypes;
-        }
-
-        public String getChallengeId() {
-            return challengeId;
-        }
-
-        public static class ItemValueBuilder {
-
-            //Required
-            private String id;
-
-            //Optional
-            private com.bryjamin.wickedwizard.utils.Pair<String, Integer> region = new com.bryjamin.wickedwizard.utils.Pair<String,Integer>("item/SarcasticLion", 0);
-            private Color textureColor = new Color(Color.WHITE);
-            private String name = "Default Item";
-            private String description = "You forgot to set this value";
-            private Array<com.bryjamin.wickedwizard.utils.enums.ItemType> itemTypes = new Array<com.bryjamin.wickedwizard.utils.enums.ItemType>();
-            private String challengeId = ChallengesResource.TUTORIAL_COMPLETE;
-
-
-            public ItemValueBuilder(String id){
-                this.id = id;
-                this.itemTypes.addAll(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS, com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM, com.bryjamin.wickedwizard.utils.enums.ItemType.SHOP);
-            }
-
-            public ItemValueBuilder region(String s)
-            { region = new com.bryjamin.wickedwizard.utils.Pair<String, Integer>(s,0); return this; }
-
-            public ItemValueBuilder region(String s, int index)
-            { region = new com.bryjamin.wickedwizard.utils.Pair<String, Integer>(s, index); return this; }
-
-
-            public ItemValueBuilder textureColor(Color val)
-            { textureColor = val; return this; }
-
-            public ItemValueBuilder name(String val)
-            { name = val; return this; }
-
-            public ItemValueBuilder description(String val)
-            { description = val; return this; }
-
-            public ItemValueBuilder itemTypes(com.bryjamin.wickedwizard.utils.enums.ItemType... val) {
-                itemTypes.clear();
-                itemTypes.addAll(val);
-                return this;
-            }
-
-            public ItemValueBuilder challengeId(String val)
-            { challengeId = val; return this; }
-
-
-            public ItemValues build() {
-                return new ItemValues(this);
-            }
-
-
-        }
-
-        public ItemValues(ItemValueBuilder ivb){
-            this.id = ivb.id;
-            this.region = ivb.region;
-            this.textureColor = ivb.textureColor;
-            this.name = ivb.name;
-            this.description = ivb.description;
-            this.itemTypes = ivb.itemTypes;
-            this.challengeId = ivb.challengeId;
-        }
-
-
-    }
 
 
 
@@ -209,39 +158,38 @@ public class ItemResource {
                 new com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemLensLessMonocle()};
 
 
-        public static ItemValues Ace = new ItemValues.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout Ace = new ItemLayout.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/Ace")
                 .name("Ace")
                 .itemTypes(com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM)
                 .description("Accuracy+ Luck+")
                 .build();
 
-        public static ItemValues aimAssist = new ItemValues.ItemValueBuilder("005e4604-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout aimAssist = new ItemLayout.ItemValueBuilder("005e4604-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/AimAssist")
                 .name("Aim Assist")
                 .description("Accuracy++ Range+")
                 .build();
 
-        public static ItemValues CriticalEye = new ItemValues.ItemValueBuilder("005e4712-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout CriticalEye = new ItemLayout.ItemValueBuilder("005e4712-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/CriticalEye")
                 .name("Critical Eye")
                 .description("Accuracy+++")
-                .challengeId(ChallengesResource.Rank3Challenges.rank3ArenaTrial)
                 .build();
 
-        public static ItemValues KeenEye = new ItemValues.ItemValueBuilder("005e4ac8-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout KeenEye = new ItemLayout.ItemValueBuilder("005e4ac8-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/KeenEye")
                 .name("Keen Eye")
                 .description("Accuracy++")
                 .build();
 
-        public static ItemValues blockOfEnergy = new ItemValues.ItemValueBuilder("005e4e60-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout blockOfEnergy = new ItemLayout.ItemValueBuilder("005e4e60-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/BlockOfEnergy")
                 .name("Block of Energy")
                 .description("Accuracy+ FireRate+")
                 .build();
 
-        public static ItemValues lensLessMagnifyingGlass = new ItemValues.ItemValueBuilder("b0c88615-51fb-4bd3-ac6d-3b5cc362d8e8")
+        public static ItemLayout lensLessMagnifyingGlass = new ItemLayout.ItemValueBuilder("b0c88615-51fb-4bd3-ac6d-3b5cc362d8e8")
                 .region("item/LensLessMagnifyingGlass")
                 .name("Lensless Magnifying Glass")
                 .description("This somehow improves Accuracy")
@@ -262,8 +210,7 @@ public class ItemResource {
                 new ItemWandasScarf(),
                 new ItemWhiteGoggles()};
 
-        public static ItemValues angrySlimeCoat = new ItemValues.ItemValueBuilder("54d58ef6-3534-49bb-acac-3c484febff2a")
-                .challengeId(ChallengesResource.Rank3Challenges.rank3TimeTrail)
+        public static ItemLayout angrySlimeCoat = new ItemLayout.ItemValueBuilder("54d58ef6-3534-49bb-acac-3c484febff2a")
                 .region("enemy/blob", 2)
                 .textureColor(ColorResource.BLOB_RED)
                 .name("Angry Slime Coat")
@@ -271,49 +218,47 @@ public class ItemResource {
                 .build();
 
 
-        public static ItemValues ironBody = new ItemValues.ItemValueBuilder("795d5bee-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout ironBody = new ItemLayout.ItemValueBuilder("795d5bee-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/IronBody")
                 .name("Iron Body")
                 .description("You feel heavier")
                 .build();
 
-        public static ItemValues slimeCoat = new ItemValues.ItemValueBuilder("795d5ea0-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout slimeCoat = new ItemLayout.ItemValueBuilder("795d5ea0-81d8-11e7-bb31-be2e44b06b34")
                 .region("enemy/blob", 2)
                 .textureColor(ColorResource.BLOB_GREEN)
                 .name("Slime Coat")
                 .description("Eww..")
-                .challengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun)
                 .build();
 
-        public static ItemValues smoulderingHelm = new ItemValues.ItemValueBuilder("f48b95ec-ec77-4407-8d5b-2f83ba1517fb")
+        public static ItemLayout smoulderingHelm = new ItemLayout.ItemValueBuilder("f48b95ec-ec77-4407-8d5b-2f83ba1517fb")
                 .region("item/SmoulderingHelm")
                 .name("Smouldering Helm")
                 .description("Damage+")
                 .build();
 
 
-        public static ItemValues squareBuckler = new ItemValues.ItemValueBuilder("795d6508-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout squareBuckler = new ItemLayout.ItemValueBuilder("795d6508-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/SquareBuckler")
                 .name("Square Buckler")
                 .description("Good for two hits")
                 .build();
 
-        public static ItemValues vitaminC = new ItemValues.ItemValueBuilder("795d68be-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout vitaminC = new ItemLayout.ItemValueBuilder("795d68be-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/VitaminC")
                 .name("Vitamin C")
                 .description("Cures Scurvy")
                 .build();
 
 
-        public static ItemValues wandasScarf = new ItemValues.ItemValueBuilder("4f4436bc-088d-49c0-b39d-2c5ab9a0e3fb")
+        public static ItemLayout wandasScarf = new ItemLayout.ItemValueBuilder("4f4436bc-088d-49c0-b39d-2c5ab9a0e3fb")
                 .region("item/WandasScarf")
                 .name("Wanda's Scarf")
                 .description("You prefer your own")
-                .challengeId(ChallengesResource.Rank2Challenges.perfectWanda)
                 .build();
 
 
-        public static ItemValues whiteGoggles = new ItemValues.ItemValueBuilder("e3cf6cf0-5b22-4a57-be4e-f85a2e4b7fa7")
+        public static ItemLayout whiteGoggles = new ItemLayout.ItemValueBuilder("e3cf6cf0-5b22-4a57-be4e-f85a2e4b7fa7")
                 .itemTypes(ItemType.ITEM)
                 .region("item/WhiteGoggles")
                 .name("White Goggles")
@@ -336,48 +281,45 @@ public class ItemResource {
                 new ItemStability(),
                 new ItemStatueOfAjir()};
 
-        public static ItemValues anger = new ItemValues.ItemValueBuilder("9863a17e-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout anger = new ItemLayout.ItemValueBuilder("9863a17e-81d8-11e7-bb31-be2e44b06b34")
                 .itemTypes(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS, com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM)
-                .challengeId(ChallengesResource.Rank1Challenges.arenaSpeedRun)
                 .region("item/Anger")
                 .name("Anger")
                 .description("Damage++")
                 .build();
 
-        public static ItemValues luckyShot = new ItemValues.ItemValueBuilder("9863a7a0-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout luckyShot = new ItemLayout.ItemValueBuilder("9863a7a0-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/LuckyShot")
                 .name("Lucky Shot")
                 .description("Damage+ Luck+")
                 .build();
 
-        public static ItemValues miniCatapult = new ItemValues.ItemValueBuilder("9863a944-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout miniCatapult = new ItemLayout.ItemValueBuilder("9863a944-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/MiniCatapult")
                 .name("Mini Catapult")
                 .description("Damage+ Range+")
                 .build();
 
-        public static ItemValues miniTrebuchet = new ItemValues.ItemValueBuilder("9863aa8e-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout miniTrebuchet = new ItemLayout.ItemValueBuilder("9863aa8e-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/MiniTrebuchet")
                 .name("Mini Trebuchet")
                 .description("The drawing that could")
-                .challengeId(ChallengesResource.Rank4Challenges.rank4Arena)
                 .build();
 
-        public static ItemValues smoulderingEmber = new ItemValues.ItemValueBuilder("9863abce-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout smoulderingEmber = new ItemLayout.ItemValueBuilder("9863abce-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/SmoulderingEmber")
                 .name("Smouldering Ember")
                 .description("Damage+ FireRate+")
                 .build();
 
-        public static ItemValues stability = new ItemValues.ItemValueBuilder("9863ad04-81d8-11e7-bb31-be2e44b06b34")
+        public static ItemLayout stability = new ItemLayout.ItemValueBuilder("9863ad04-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/Stability")
                 .name("Stability")
                 .description("Damage+ Accuracy+")
                 .build();
 
 
-        public static ItemValues statueOfAjir = new ItemValues.ItemValueBuilder("e45f39f3-4ea3-493d-b985-c02527b4167d")
-                .challengeId(ChallengesResource.Rank3Challenges.perfectAjir)
+        public static ItemLayout statueOfAjir = new ItemLayout.ItemValueBuilder("e45f39f3-4ea3-493d-b985-c02527b4167d")
                 .itemTypes(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS)
                 .region("item/StatueOfAjir")
                 .name("Statue Of Ajir")
@@ -397,40 +339,39 @@ public class ItemResource {
                 new com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemStatueOfAdoj(),
                 new ItemTacticalKnitwear()};
 
-        public static ItemValues statueOfAdoj = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
-                .challengeId(ChallengesResource.Rank1Challenges.perfectAdoj)
+        public static ItemLayout statueOfAdoj = new ItemLayout.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/StatueOfAdoj")
                 .name("Statue Of Adoj")
                 .description("So Lifelike")
                 .build();
 
 
-        public static ItemValues elasticity = new ItemValues.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout elasticity = new ItemLayout.ItemValueBuilder("32ab3abc-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Elasticity")
                 .name("Elasticity")
                 .description("FireRate+ Range+")
                 .build();
 
-        public static ItemValues minorAccerlerant = new ItemValues.ItemValueBuilder("32ab3d64-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout minorAccerlerant = new ItemLayout.ItemValueBuilder("32ab3d64-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/MinorAccelerant")
                 .name("Minor Accelerant")
                 .description("FireRate+ Speed+")
                 .build();
 
-        public static ItemValues runedFragment = new ItemValues.ItemValueBuilder("32ab3e5e-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout runedFragment = new ItemLayout.ItemValueBuilder("32ab3e5e-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/RunedFragment")
                 .name("Runed Fragment")
                 .description("FireRate+ Luck+")
                 .build();
 
 
-        public static ItemValues swiftShot = new ItemValues.ItemValueBuilder("32ab3f3a-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout swiftShot = new ItemLayout.ItemValueBuilder("32ab3f3a-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/SwiftShot")
                 .name("Swift Shot")
                 .description("FireRate++")
                 .build();
 
-        public static ItemValues tacticalKnitwear = new ItemValues.ItemValueBuilder("32ab4386-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout tacticalKnitwear = new ItemLayout.ItemValueBuilder("32ab4386-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/TacticalKnitwear")
                 .name("Tactical Knitwear")
                 .description("FireRate+ Accuracy+")
@@ -451,39 +392,39 @@ public class ItemResource {
                 new Medicine()};
 
 
-        public static ItemValues hypertrophy = new ItemValues.ItemValueBuilder("5085bada-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout hypertrophy = new ItemLayout.ItemValueBuilder("5085bada-81d9-11e7-bb31-be2e44b06b34")
                 .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/Hypertrophy")
                 .name("Hypertrophy")
                 .description("Health+ Damage+ Speed-")
                 .build();
 
-        public static ItemValues ironFragment = new ItemValues.ItemValueBuilder("5085bdd2-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout ironFragment = new ItemLayout.ItemValueBuilder("5085bdd2-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/IronFragment")
                 .name("Iron Fragment")
                 .description("Health+ Armor+")
                 .build();
 
-        public static ItemValues sarcasticLion = new ItemValues.ItemValueBuilder("5085becc-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout sarcasticLion = new ItemLayout.ItemValueBuilder("5085becc-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/SarcasticLion")
                 .name("Sarcastic Lion")
                 .description("Rawr")
                 .build();
 
 
-        public static ItemValues sootheNote = new ItemValues.ItemValueBuilder("5085bf9e-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout sootheNote = new ItemLayout.ItemValueBuilder("5085bf9e-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/SootheNote")
                 .name("Soothe Note")
                 .description("Soothing")
                 .build();
 
-        public static ItemValues medicine = new ItemValues.ItemValueBuilder("5085c066-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout medicine = new ItemLayout.ItemValueBuilder("5085c066-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Medicine")
                 .name("Medicine")
                 .description("Health+")
                 .build();
 
-        public static ItemValues disappointment = new ItemValues.ItemValueBuilder("edbd9f26-1b15-4f8d-a15d-f620066e0154")
+        public static ItemLayout disappointment = new ItemLayout.ItemValueBuilder("edbd9f26-1b15-4f8d-a15d-f620066e0154")
                 .region("item/Disappointment")
                 .name("Disappointment")
                 .description("...")
@@ -506,59 +447,55 @@ public class ItemResource {
                 new ItemThreeDimensionalGold(),
                 new ItemThreeLeafClover()};
 
-        public static ItemValues eyesOfAmalgama = new ItemValues.ItemValueBuilder("de5c3cf1-d510-4cb1-b4ce-63c99ab0832d")
-                .challengeId(ChallengesResource.Rank4Challenges.perfectAmalgama)
+        public static ItemLayout eyesOfAmalgama = new ItemLayout.ItemValueBuilder("de5c3cf1-d510-4cb1-b4ce-63c99ab0832d")
                 .region("item/EyesOfAmalgama")
                 .name("Eyes Of Amalgama")
                 .description("Random stat increase")
                 .build();
 
 
-        public static ItemValues forgottenFigment = new ItemValues.ItemValueBuilder("6b37cd6e-81d9-11e7-bb31-be2e44b06b34")
-                .challengeId(ChallengesResource.Rank2Challenges.arenaTrail)
+        public static ItemLayout forgottenFigment = new ItemLayout.ItemValueBuilder("6b37cd6e-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ForgottenScarab")
                 .name("Forgotten Figment")
                 .description("Something feels off...")
                 .build();
 
-        public static ItemValues goldenFigment = new ItemValues.ItemValueBuilder("6b37d07a-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout goldenFigment = new ItemLayout.ItemValueBuilder("6b37d07a-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/GoldenScarab")
                 .name("Golden Figment")
                 .description("Luck+++")
                 .build();
 
 
-        public static ItemValues iWishYouWell = new ItemValues.ItemValueBuilder("818c03ae-3c90-46f7-9d9a-5bd110b93648")
-                .challengeId(ChallengesResource.Rank5Challenges.bossRush)
+        public static ItemLayout iWishYouWell = new ItemLayout.ItemValueBuilder("818c03ae-3c90-46f7-9d9a-5bd110b93648")
                 .region("item/IWishYouWell")
                 .name("I Wish You Well")
                 .description("I Sincerely do")
                 .build();
 
 
-        public static ItemValues jadeFigment = new ItemValues.ItemValueBuilder("6b37d17e-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout jadeFigment = new ItemLayout.ItemValueBuilder("6b37d17e-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/JadeScarab")
                 .name("Jade Figment")
                 .description("Luck++")
                 .build();
 
 
-        public static ItemValues patternedOpal = new ItemValues.ItemValueBuilder("642722ee-18f8-4b34-bf95-a6c21243af63")
+        public static ItemLayout patternedOpal = new ItemLayout.ItemValueBuilder("642722ee-18f8-4b34-bf95-a6c21243af63")
                 .itemTypes(ItemType.ITEM)
                 .region("item/PatternedOpal")
                 .name("Patterened Opal")
                 .description("Luck+")
                 .build();
 
-        public static ItemValues threeLeafClover = new ItemValues.ItemValueBuilder("6b37d250-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout threeLeafClover = new ItemLayout.ItemValueBuilder("6b37d250-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ThreeLeafClover")
                 .name("Three Leaf Clover")
                 .description("Close Enough... Luck+")
                 .build();
 
 
-        public static ItemValues threeDimensionalGold = new ItemValues.ItemValueBuilder("36712291-d64c-4ea2-bea7-de3e8395d463")
-                .challengeId(ChallengesResource.Rank3Challenges.perfectBoomy)
+        public static ItemLayout threeDimensionalGold = new ItemLayout.ItemValueBuilder("36712291-d64c-4ea2-bea7-de3e8395d463")
                 .region("item/ThreeDimensionalGold")
                 .itemTypes(com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM)
                 .name("3-Dimensional Gold")
@@ -580,44 +517,43 @@ public class ItemResource {
                 new ItemQuadonometry(),
                 new ItemScope()};
 
-        public static ItemValues clearSight = new ItemValues.ItemValueBuilder("8074c97a-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout clearSight = new ItemLayout.ItemValueBuilder("8074c97a-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ClearSight")
                 .name("Clear Sight")
                 .description("Range++ Accuracy+")
                 .build();
 
-        public static ItemValues fireSight = new ItemValues.ItemValueBuilder("8074cf92-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout fireSight = new ItemLayout.ItemValueBuilder("8074cf92-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/FireSight")
                 .name("Fire Sight")
                 .description("Range+ Damage+")
                 .build();
 
-        public static ItemValues laserScope = new ItemValues.ItemValueBuilder("8074d1ae-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout laserScope = new ItemLayout.ItemValueBuilder("8074d1ae-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/LaserScope")
                 .name("Laser Scope")
-                .challengeId(ChallengesResource.LEVEL_3_COMPLETE)
                 .description("Range+++")
                 .build();
 
-        public static ItemValues lostLettersRangeFireRate = new ItemValues.ItemValueBuilder("8074d488-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout lostLettersRangeFireRate = new ItemLayout.ItemValueBuilder("8074d488-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/LostLettersRangeFireRate")
                 .name("Lost Letters")
                 .description("R and F?")
                 .build();
 
-        public static ItemValues neatCube = new ItemValues.ItemValueBuilder("8074d65e-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout neatCube = new ItemLayout.ItemValueBuilder("8074d65e-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/NeatCube")
                 .name("Neat Cube")
                 .description("Pretty Neat")
                 .build();
 
-        public static ItemValues quadonometry = new ItemValues.ItemValueBuilder("8074d816-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout quadonometry = new ItemLayout.ItemValueBuilder("8074d816-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Quadonometry")
                 .name("Quadonometry")
                 .description("Range+ Accuracy+")
                 .build();
 
-        public static ItemValues scope = new ItemValues.ItemValueBuilder("8074db54-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout scope = new ItemLayout.ItemValueBuilder("8074db54-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Scope")
                 .name("Scope")
                 .description("Range++")
@@ -632,26 +568,42 @@ public class ItemResource {
 
 
         public static Item[] shotSizeItems = {
+                new ItemBigShot(),
                 new ItemCannonCube(),
-                new ItemLeafCutter()
+                new ItemLeafCutter(),
+                new ItemMiniShot()
 
         };
 
 
-        public static ItemValues cannonCube = new ItemValues.ItemValueBuilder("275fcafa-661a-4a5e-a50a-14217a5ef7be")
-                .challengeId(ChallengesResource.Rank5Challenges.rank5NotUltimateArena)
+        public static ItemLayout bigShot = new ItemLayout.ItemValueBuilder("af47fff1-c63d-468d-844e-b6f2634753b8")
+                .region("item/BigShot")
+                .name("Big Shot")
+                .description("Bigger Shots")
+                .build();
+
+
+        public static ItemLayout cannonCube = new ItemLayout.ItemValueBuilder("275fcafa-661a-4a5e-a50a-14217a5ef7be")
                 .region("item/CannonCube")
                 .name("CannonCube")
                 .description("More destructive, Less Aerodynamic")
                 .build();
 
 
-        public static ItemValues leafCutter = new ItemValues.ItemValueBuilder("af0bc30b-e11e-49dc-a82f-fe1762c7d770")
-                .challengeId(ChallengesResource.LEVEL_2_COMPLETE)
+        public static ItemLayout leafCutter = new ItemLayout.ItemValueBuilder("af0bc30b-e11e-49dc-a82f-fe1762c7d770")
                 .region("item/LeafCutter")
                 .name("Leaf Cutter")
                 .description("Shots like the breeze")
                 .build();
+
+
+
+        public static ItemLayout miniShot = new ItemLayout.ItemValueBuilder("0b133834-e2db-47a9-8b2b-95fbc51fa683")
+                .region("item/MiniShot")
+                .name("Mini Shot")
+                .description("Smaller Shots")
+                .build();
+
 
 
 
@@ -671,39 +623,37 @@ public class ItemResource {
                 new ItemShinyFeather()};
 
 
-        public static ItemValues boringRock = new ItemValues.ItemValueBuilder("ad70fbce-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout boringRock = new ItemLayout.ItemValueBuilder("ad70fbce-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/BoringRock")
                 .name("Boring Rock")
                 .description("Pretty Boring...")
                 .build();
 
-        public static ItemValues bubble = new ItemValues.ItemValueBuilder("ad70fe44-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout bubble = new ItemLayout.ItemValueBuilder("ad70fe44-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Bubble")
                 .name("Bubble")
                 .description("ShotSpeed++")
                 .build();
 
-        public static ItemValues dullFeather = new ItemValues.ItemValueBuilder("ad70ff34-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout dullFeather = new ItemLayout.ItemValueBuilder("ad70ff34-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/DullFeather")
                 .name("Dull Feather")
                 .description("ShotSpeed+ Speed+")
                 .build();
 
-        public static ItemValues lostLettersShotSpeedAccuracy = new ItemValues.ItemValueBuilder("ad710074-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout lostLettersShotSpeedAccuracy = new ItemLayout.ItemValueBuilder("ad710074-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/LostLettersShotSpeedAccuracy")
                 .name("Lost Letters")
                 .description("S and A?")
                 .build();
 
-        public static ItemValues momentum = new ItemValues.ItemValueBuilder("ad7101fa-81d9-11e7-bb31-be2e44b06b34")
-                .challengeId(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail)
+        public static ItemLayout momentum = new ItemLayout.ItemValueBuilder("ad7101fa-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/Momentum")
                 .name("Momentum")
                 .description("ShotSpeed++ Speed+ Damage+")
                 .build();
 
-        public static ItemValues shinyFeather = new ItemValues.ItemValueBuilder("ad710358-81d9-11e7-bb31-be2e44b06b34")
-                .challengeId(ChallengesResource.Rank2Challenges.rank2TimeTrail)
+        public static ItemLayout shinyFeather = new ItemLayout.ItemValueBuilder("ad710358-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ShinyFeather")
                 .name("Shiny Feather")
                 .description("ShotSpeed++ Speed++")
@@ -719,8 +669,7 @@ public class ItemResource {
                 new ItemQuickness()};
 
 
-        public static ItemValues quickness = new ItemValues.ItemValueBuilder("ce6f7cce-81d9-11e7-bb31-be2e44b06b34").region("item/Quickness")
-                .challengeId(ChallengesResource.Rank4Challenges.rank4TimeTrail)
+        public static ItemLayout quickness = new ItemLayout.ItemValueBuilder("ce6f7cce-81d9-11e7-bb31-be2e44b06b34").region("item/Quickness")
                 .name("Quickness")
                 .description("Speed+++")
                 .build();
@@ -738,31 +687,28 @@ public class ItemResource {
                 new ItemMyVeryOwnStalker()
         };
 
-        public static ItemValues dangerDetector =  new ItemValues.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")
+        public static ItemLayout dangerDetector =  new ItemLayout.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")
                 .region("item/companion/DangerDetector")
                 .name("Danger Detector")
                 .description("Detects Danger apparently")
                 .build();
 
 
-        public static ItemValues crownOfBiggaBlobba =  new ItemValues.ItemValueBuilder("8a6a0e43-10fc-4939-880e-5e69b48173f8")
-                .challengeId(ChallengesResource.Rank1Challenges.perfectBlobba)
+        public static ItemLayout crownOfBiggaBlobba =  new ItemLayout.ItemValueBuilder("8a6a0e43-10fc-4939-880e-5e69b48173f8")
                 .region("item/companion/CrownOfBiggaBlobba")
                 .name("Crown Of BiggaBlobba")
                 .description("Fits Nicely")
                 .build();
 
 
-        public static ItemValues miniSpinnyThingie =  new ItemValues.ItemValueBuilder("2200b179-33ee-4cd9-9853-515708bceda8")
-                .challengeId(ChallengesResource.Rank2Challenges.perfectKugel)
+        public static ItemLayout miniSpinnyThingie =  new ItemLayout.ItemValueBuilder("2200b179-33ee-4cd9-9853-515708bceda8")
                 .region(TextureStrings.KUGELDUSCHE_LASER)
                 .name("Mini Spinny Thingie")
                 .description("A thingie that is mini and spinnys")
                 .build();
 
 
-        public static ItemValues myVeryOwnStalker =  new ItemValues.ItemValueBuilder("05324bec-c14d-403e-b034-df7536d10d2c")
-                .challengeId(ChallengesResource.Rank4Challenges.perfectWraith)
+        public static ItemLayout myVeryOwnStalker =  new ItemLayout.ItemValueBuilder("05324bec-c14d-403e-b034-df7536d10d2c")
                 .region("item/companion/MyVeryOwnStalker")
                 .name("Your Very Own Stalker")
                 .description("A chill runs down your square")
@@ -779,18 +725,18 @@ public class ItemResource {
 
     public static class PickUp {
 
-        public static ItemValues armorUp = new ItemValues.ItemValueBuilder("d21f630c-81d9-11e7-bb31-be2e44b06b34").region("item/armor")
+        public static ItemLayout armorUp = new ItemLayout.ItemValueBuilder("d21f630c-81d9-11e7-bb31-be2e44b06b34").region("item/armor")
                 .name("Armor Up")
                 .description("Armor+")
                 .build();
 
-        public static ItemValues healthUp = new ItemValues.ItemValueBuilder("d21f66f4-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout healthUp = new ItemLayout.ItemValueBuilder("d21f66f4-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/heart", 1)
                 .name("Health Up")
                 .description("Health+")
                 .build();
 
-        public static ItemValues fullHealthUp = new ItemValues.ItemValueBuilder("d21f68c0-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout fullHealthUp = new ItemLayout.ItemValueBuilder("d21f68c0-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/heart", 0)
                 .name("Health Up")
                 .description("Health++")
@@ -798,13 +744,17 @@ public class ItemResource {
 
 
 
-        public static ItemValues moneyUp = new ItemValues.ItemValueBuilder("d21f6f82-81d9-11e7-bb31-be2e44b06b34")
+        public static ItemLayout moneyUp = new ItemLayout.ItemValueBuilder("d21f6f82-81d9-11e7-bb31-be2e44b06b34")
                 .region("gold")
                 .name("Money Up")
                 .description("Money+")
                 .build();
 
     }
+
+
+
+
 
 
 

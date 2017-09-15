@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.items.pickups;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.PickUp;
 
@@ -19,7 +20,7 @@ public class MoneyPlus1 implements PickUp {
     }
 
     @Override
-    public ItemResource.ItemValues getValues() {
+    public ItemLayout getValues() {
         return ItemResource.PickUp.moneyUp;
     }
 }
