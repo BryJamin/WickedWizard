@@ -51,7 +51,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
-import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFocusShot;
 import com.bryjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
@@ -269,7 +269,7 @@ public class ItemFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                Item item = new ItemIronBody();
+                Item item = new ItemFocusShot();
 
                 e.getComponent(AltarComponent.class).pickUp = item;
 

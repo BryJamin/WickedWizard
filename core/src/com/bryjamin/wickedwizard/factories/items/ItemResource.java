@@ -33,6 +33,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.health.ItemIronFragmen
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
 import com.bryjamin.wickedwizard.factories.items.passives.health.Medicine;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEnigmaticShot;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEyesOfAmalgama;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
@@ -41,7 +42,11 @@ import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemPatternedOpal;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeDimensionalGold;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemClearSight;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFireSight;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFocusShot;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLostLettersRangeFireRate;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemScope;
@@ -440,6 +445,7 @@ public class ItemResource {
     public static class Luck {
 
         public static Item[] luckItems = {
+                new ItemEnigmaticShot(),
                 new ItemEyesOfAmalgama(),
                 new ItemForgottenFigment(),
                 new ItemGoldenFigment(),
@@ -449,10 +455,16 @@ public class ItemResource {
                 new ItemThreeDimensionalGold(),
                 new ItemThreeLeafClover()};
 
+        public static ItemLayout enigmaticShot = new ItemLayout.ItemValueBuilder("07d26ef6-418a-4c0f-89c0-ec0c45e1647a")
+                .region("item/EnigmaticShot")
+                .name("Enigmatic Shot")
+                .description("What Does This Even Do?")
+                .build();
+
         public static ItemLayout eyesOfAmalgama = new ItemLayout.ItemValueBuilder("de5c3cf1-d510-4cb1-b4ce-63c99ab0832d")
                 .region("item/EyesOfAmalgama")
                 .name("Eyes Of Amalgama")
-                .description("Random stat increase")
+                .description("Random All Stat increase")
                 .build();
 
 
@@ -511,10 +523,11 @@ public class ItemResource {
     public static class Range {
 
         public static Item[] rangeItems = {
-                new com.bryjamin.wickedwizard.factories.items.passives.range.ItemClearSight(),
-                new com.bryjamin.wickedwizard.factories.items.passives.range.ItemFireSight(),
+                new ItemClearSight(),
+                new ItemFireSight(),
+                new ItemFocusShot(),
                 new ItemLaserScope(),
-                new com.bryjamin.wickedwizard.factories.items.passives.range.ItemLostLettersRangeFireRate(),
+                new ItemLostLettersRangeFireRate(),
                 new ItemNeatCube(),
                 new ItemQuadonometry(),
                 new ItemScope()};
@@ -524,6 +537,13 @@ public class ItemResource {
                 .name("Clear Sight")
                 .description("Range++ Accuracy+")
                 .build();
+
+        public static ItemLayout focusShot = new ItemLayout.ItemValueBuilder("1731028e-86e4-4907-b656-847d793579f2")
+                .region("item/FocusShot")
+                .name("Focus Shot")
+                .description("Range+++ FireRate--")
+                .build();
+
 
         public static ItemLayout fireSight = new ItemLayout.ItemValueBuilder("8074cf92-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/FireSight")
@@ -674,6 +694,7 @@ public class ItemResource {
         };
 
         public static ItemLayout hotStep = new ItemLayout.ItemValueBuilder("b7368b6c-96e4-4de1-8f41-bd7a6a36dc3d")
+                .itemTypes(ItemType.SHOP, ItemType.ITEM)
                 .region("item/HotStep")
                 .name("Hot Step")
                 .description("Speed+ Damage+")
@@ -687,6 +708,7 @@ public class ItemResource {
 
 
         public static ItemLayout quickStep = new ItemLayout.ItemValueBuilder("80d809ef-f961-4f1c-9751-a97877d911c7")
+                .itemTypes(ItemType.SHOP, ItemType.ITEM)
                 .region("item/QuickStep")
                 .name("Quick Step")
                 .description("Speed++")

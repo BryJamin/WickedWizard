@@ -1,0 +1,35 @@
+package com.bryjamin.wickedwizard.factories.items.passives.luck;
+
+import com.artemis.Entity;
+import com.artemis.World;
+import com.badlogic.gdx.math.MathUtils;
+import com.bryjamin.wickedwizard.ecs.components.StatComponent;
+import com.bryjamin.wickedwizard.factories.items.Item;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
+import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
+
+/**
+ * Created by BB on 15/09/2017.
+ */
+
+public class ItemEnigmaticShot implements Item {
+
+
+    @Override
+    public boolean applyEffect(World world, Entity player) {
+        player.getComponent(StatComponent.class).luck += PresetStatIncrease.major;
+        player.getComponent(StatComponent.class).shotSpeed += MathUtils.random.nextBoolean() ? 0 : PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).accuracy += MathUtils.random.nextBoolean() ? 0 : PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).range += MathUtils.random.nextBoolean() ? 0 : PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).shotSize += MathUtils.random.nextBoolean() ? -PresetStatIncrease.minor : PresetStatIncrease.minor;
+        return true;
+    }
+
+    @Override
+    public ItemLayout getValues() {
+        return ItemResource.Luck.enigmaticShot;
+    }
+
+
+}

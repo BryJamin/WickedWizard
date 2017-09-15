@@ -157,7 +157,7 @@ public class ItemStoreTest extends GameTest {
 
             com.bryjamin.wickedwizard.ecs.components.StatComponent after = e.getComponent(StatComponent.class);
 
-            health += (after.health > pre.health) ? 1 : 0;
+            health += (after.getHealth() > pre.getHealth()) ? 1 : 0;
             maxHealth += (after.maxHealth > pre.maxHealth) ? 1 : 0;
             dmg += (after.damage > pre.damage) ? 1 : 0;
             armor += (after.armor > pre.armor) ? 1 : 0;
