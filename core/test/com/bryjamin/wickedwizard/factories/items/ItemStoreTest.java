@@ -134,6 +134,20 @@ public class ItemStoreTest extends GameTest {
 
 
 
+        int nhealth = 0;
+        int nmaxHealth = 0;
+        int ndmg = 0;
+        int narmor = 0;
+        int nfirerate = 0;
+        int nspeed = 0;
+        int nluck = 0;
+        int nrange = 0;
+        int nshotspeed = 0;
+        int naccuracy = 0;
+        int ncompanion = 0;
+
+
+
 
 
 
@@ -168,6 +182,22 @@ public class ItemStoreTest extends GameTest {
             accuracy += (after.accuracy > pre.accuracy) ? 1 : 0;
             range += (after.range > pre.range) ? 1 : 0;
 
+
+
+
+            nhealth += (after.getHealth() < pre.getHealth()) ? 1 : 0;
+            nmaxHealth += (after.maxHealth < pre.maxHealth) ? 1 : 0;
+            ndmg += (after.damage < pre.damage) ? 1 : 0;
+            narmor += (after.armor < pre.armor) ? 1 : 0;
+            nfirerate += (after.fireRate < pre.fireRate) ? 1 : 0;
+            nspeed += (after.speed < pre.speed) ? 1 : 0;
+            nluck += (after.luck < pre.luck) ? 1 : 0;
+            nshotspeed += (after.shotSpeed < pre.shotSpeed) ? 1 : 0;
+            naccuracy += (after.accuracy < pre.accuracy) ? 1 : 0;
+            nrange += (after.range < pre.range) ? 1 : 0;
+
+
+
             total++;
 
 
@@ -186,6 +216,20 @@ public class ItemStoreTest extends GameTest {
         System.out.println("Total Items increasing accuracy: " + accuracy);
         System.out.println("Total Items increasing range: " + range);
         System.out.println("Total Companions: " + companion);
+
+
+
+
+        System.out.println("Total Items decreasing health: " + nhealth);
+        System.out.println("Total Items decreasing maxHealth: " + nmaxHealth);
+        System.out.println("Total Items decreasing damage: " + ndmg);
+        System.out.println("Total Items decreasing armor: " + narmor);
+        System.out.println("Total Items decreasing firerate: " + nfirerate);
+        System.out.println("Total Items decreasing speed: " + nspeed);
+        System.out.println("Total Items decreasing luck: " + nluck);
+        System.out.println("Total Items decreasing shotspeed: " + nshotspeed);
+        System.out.println("Total Items decreasing accuracy: " + naccuracy);
+        System.out.println("Total Items decreasing range: " + nrange);
 
     }
 
