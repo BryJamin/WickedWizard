@@ -48,6 +48,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClov
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemClearSight;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFireSight;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFocusShot;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemGoldenScope;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLostLettersRangeFireRate;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
@@ -57,6 +58,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemBigShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemCannonCube;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemLeafCutter;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemMiniShot;
+import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemWideLens;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemDisappointment;
@@ -544,6 +546,7 @@ public class ItemResource {
                 new ItemClearSight(),
                 new ItemFireSight(),
                 new ItemFocusShot(),
+                new ItemGoldenScope(),
                 new ItemLaserScope(),
                 new ItemLostLettersRangeFireRate(),
                 new ItemNeatCube(),
@@ -568,6 +571,14 @@ public class ItemResource {
                 .name("Fire Sight")
                 .description("Range+ Damage+")
                 .build();
+
+
+        public static ItemLayout goldenScope = new ItemLayout.ItemValueBuilder("7f440d23-ecb0-451a-88d1-1694a2473afc")
+                .region("item/GoldenScope")
+                .name("Golden Scope")
+                .description("Range+ Luck+")
+                .build();
+
 
         public static ItemLayout laserScope = new ItemLayout.ItemValueBuilder("8074d1ae-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/LaserScope")
@@ -611,7 +622,8 @@ public class ItemResource {
                 new ItemBigShot(),
                 new ItemCannonCube(),
                 new ItemLeafCutter(),
-                new ItemMiniShot()
+                new ItemMiniShot(),
+                new ItemWideLens()
 
         };
 
@@ -645,9 +657,11 @@ public class ItemResource {
                 .build();
 
 
-
-
-
+        public static ItemLayout widelens = new ItemLayout.ItemValueBuilder("f76c7dba-f42d-4680-af2c-0dfb4657db31")
+                .region("item/WideLens")
+                .name("Wide Lens")
+                .description("Accuracy+")
+                .build();
     }
 
 
