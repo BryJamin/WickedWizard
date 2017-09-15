@@ -31,7 +31,7 @@ public class PlayerPistol implements Weapon{
     private BulletFactory bulletFactory;
     private com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder gibletBuilder;
 
-    private static final float shotSpeedMultiplier = 2.5f;
+    private static final float shotSpeedMultiplier = 5.0f;
 
     private static final float range = Measure.units(50f);
 

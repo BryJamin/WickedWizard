@@ -8,9 +8,11 @@ import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
+import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemBlazingShades;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEnergy;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
+import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemLensLessMonocle;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemAngrySlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemArmorUp;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
@@ -30,6 +32,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.damage.rankTwo.ItemMin
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemTacticalKnitwear;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemDisappointment;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHealthUp;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHyperTrophy;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemIronFragment;
@@ -61,7 +64,6 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemMiniShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemWideLens;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
-import com.bryjamin.wickedwizard.factories.items.passives.health.ItemDisappointment;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeather;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
@@ -164,10 +166,11 @@ public class ItemResource {
         public static Item[] accuracyItems = {
                 new ItemAce(),
                 new ItemAimAssist(),
+                new ItemBlazingShades(),
                 new ItemBlockOfEnergy(),
                 new ItemCriticalEye(),
                 new ItemKeenEye(),
-                new com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemLensLessMonocle()};
+                new ItemLensLessMonocle()};
 
 
         public static ItemLayout Ace = new ItemLayout.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
@@ -182,6 +185,13 @@ public class ItemResource {
                 .name("Aim Assist")
                 .description("Accuracy++ Range+")
                 .build();
+
+        public static ItemLayout blazingShades = new ItemLayout.ItemValueBuilder("ca02c60a-ca62-4bf8-8c3b-b5dc1a8bf73f")
+                .region("item/BlazingShades")
+                .name("Blazing Shades")
+                .description("Less Accuracy, More Fiery")
+                .build();
+
 
         public static ItemLayout CriticalEye = new ItemLayout.ItemValueBuilder("005e4712-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/CriticalEye")
