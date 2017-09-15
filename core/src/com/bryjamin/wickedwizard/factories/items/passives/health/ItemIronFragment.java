@@ -20,7 +20,7 @@ public class ItemIronFragment implements Item {
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = player.getComponent(StatComponent.class);
         sc.maxHealth = sc.maxHealth + PresetStatIncrease.Health.increase(1);
         sc.armor = sc.armor + 1;
-        sc.health = (sc.health + 1 >= sc.maxHealth) ? sc.maxHealth : sc.health + PresetStatIncrease.Health.increase(1);
+        sc.increaseHealth(2);
         return true;
     }
 

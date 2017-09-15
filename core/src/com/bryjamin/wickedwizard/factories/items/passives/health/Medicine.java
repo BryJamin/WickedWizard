@@ -19,7 +19,7 @@ public class Medicine implements Item {
         StatComponent sc = player.getComponent(StatComponent.class);
         int i = PresetStatIncrease.Health.increase(1);
         sc.maxHealth = sc.maxHealth + i;
-        sc.health = (sc.health + i >= sc.maxHealth) ? sc.maxHealth : sc.health + i;
+        sc.increaseHealth(2);
         return true;
     }
 

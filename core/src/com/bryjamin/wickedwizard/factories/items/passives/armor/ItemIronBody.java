@@ -21,9 +21,7 @@ public class ItemIronBody implements Item {
         StatComponent sc = player.getComponent(StatComponent.class);
 
         sc.maxHealth = sc.maxHealth + 2;
-        sc.health = (sc.health + 1 >= sc.maxHealth) ? sc.maxHealth : sc.health + 2;
-
-
+        sc.increaseHealth(2);
         sc.armor += 1;
         sc.speed -= PresetStatIncrease.Speed.major;
         return true;

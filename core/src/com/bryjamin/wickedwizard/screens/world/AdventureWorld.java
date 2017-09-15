@@ -310,7 +310,7 @@ public class AdventureWorld extends InputAdapter {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(37.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(32.5f), Measure.units(30.5f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());
@@ -360,7 +360,7 @@ public class AdventureWorld extends InputAdapter {
             world.setDelta(0.017f);
         }
 
-        if(playerStats.health <= 0 && !isGameOver){
+        if(playerStats.getHealth() <= 0 && !isGameOver){
             countDown = 1f;
             world.getSystem(PlayerInputSystem.class).setEnabled(false);
             world.getSystem(CameraSystem.class).setEnabled(false);

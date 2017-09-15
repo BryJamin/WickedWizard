@@ -19,7 +19,7 @@ public class ItemSootheNote implements Item {
     public boolean applyEffect(World world, Entity player) {
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = player.getComponent(StatComponent.class);
         sc.maxHealth = sc.maxHealth + PresetStatIncrease.Health.increase(1);
-        sc.health = (sc.health + PresetStatIncrease.Health.increase(2) >= sc.maxHealth) ? sc.maxHealth : sc.health + PresetStatIncrease.Health.increase(2);
+        sc.increaseHealth(4);
         return true;
     }
 

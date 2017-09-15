@@ -19,8 +19,7 @@ public class ItemHyperTrophy implements Item {
     public boolean applyEffect(World world, Entity player) {
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = player.getComponent(StatComponent.class);
         sc.maxHealth = sc.maxHealth + 2;
-        sc.health = (sc.health + 1 >= sc.maxHealth) ? sc.maxHealth : sc.health + 2;
-
+        sc.increaseHealth(2);
         sc.speed -= PresetStatIncrease.Speed.major;
         sc.damage += PresetStatIncrease.minor;
 

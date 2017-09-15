@@ -77,8 +77,8 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(1);
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 e.deleteFromWorld();
             }
@@ -113,8 +113,8 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 1;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(1);
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 e.deleteFromWorld();
             }
@@ -149,8 +149,8 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(1);
                 e.deleteFromWorld();
             }
         }));
@@ -316,8 +316,8 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).health = 2;
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).maxHealth = 2;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(1);
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 world.getSystem(LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();

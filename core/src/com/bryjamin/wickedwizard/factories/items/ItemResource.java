@@ -56,6 +56,8 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeat
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
+import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemHotStep;
+import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemQuickStep;
 import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
@@ -666,7 +668,16 @@ public class ItemResource {
     public static class Speed {
 
         public static Item[] speedItems = {
-                new ItemQuickness()};
+                new ItemHotStep(),
+                new ItemQuickness(),
+                new ItemQuickStep()
+        };
+
+        public static ItemLayout hotStep = new ItemLayout.ItemValueBuilder("b7368b6c-96e4-4de1-8f41-bd7a6a36dc3d")
+                .region("item/HotStep")
+                .name("Hot Step")
+                .description("Speed+ Damage+")
+                .build();
 
 
         public static ItemLayout quickness = new ItemLayout.ItemValueBuilder("ce6f7cce-81d9-11e7-bb31-be2e44b06b34").region("item/Quickness")
@@ -674,6 +685,12 @@ public class ItemResource {
                 .description("Speed+++")
                 .build();
 
+
+        public static ItemLayout quickStep = new ItemLayout.ItemValueBuilder("80d809ef-f961-4f1c-9751-a97877d911c7")
+                .region("item/QuickStep")
+                .name("Quick Step")
+                .description("Speed++")
+                .build();
 
     }
 

@@ -16,8 +16,8 @@ public class PickUpFullHealthUp implements PickUp {
     @Override
     public boolean applyEffect(World world, Entity player) {
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = player.getComponent(StatComponent.class);
-        if(sc.health == sc.maxHealth) return false;
-        sc.health = (sc.health + 2 >= sc.maxHealth) ? sc.maxHealth : sc.health + 2;
+        if(sc.getHealth() == sc.maxHealth) return false;
+        sc.increaseHealth(2);
         return true;
     }
 

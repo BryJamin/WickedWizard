@@ -349,15 +349,15 @@ public class UISystem extends EntitySystem {
 
         healthRegions.clear();
 
-        for(int i = 1; i <= playerStats.health; i++){
-            if(i <= playerStats.health && i % 2 == 0) {
+        for(int i = 1; i <= playerStats.getHealth(); i++){
+            if(i <= playerStats.getHealth() && i % 2 == 0) {
                 healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.getRegion().getLeft(), 0));
-            } else if(playerStats.health % 2 != 0 && i == playerStats.health){
+            } else if(playerStats.getHealth() % 2 != 0 && i == playerStats.getHealth()){
                 healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.getRegion().getLeft(), 1));
             }
         }
 
-        int emptyHealth = playerStats.maxHealth - playerStats.health;
+        int emptyHealth = playerStats.maxHealth - playerStats.getHealth();
         emptyHealth = (emptyHealth % 2 == 0) ? emptyHealth : emptyHealth - 1;
 
         for(int i = 1; i <= emptyHealth; i++) {
