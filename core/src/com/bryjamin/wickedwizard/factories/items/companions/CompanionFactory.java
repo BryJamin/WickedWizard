@@ -202,6 +202,49 @@ public class CompanionFactory extends AbstractFactory {
     }
 
 
+    public ComponentBag ghastlyWailCompanion(final Entity player, PositionComponent positionc, final CollisionBoundComponent cbc) {
+
+        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc);
+
+        final WeaponComponent weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .damage(1f)
+                .color(ColorResource.COMPANION_GHOST_BULLET_COLOR)
+                .shotScale(1.5f)
+                .shotSpeed(Measure.units(50f))
+                .enemy(false)
+                .expireRange(Measure.units(50f))
+                .friendly(true)
+                .angles(0,30,60,90,120,150,180,210,240,270,300,330)
+                .intangible(true)
+                .build());;
+
+
+        bag.add(new ConditionalActionComponent(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return player.getComponent(WeaponComponent.class).timer.isFinished();
+            }
+        }, new Action() {
+
+            int count;
+
+
+            @Override
+            public void performAction(World world, Entity e) {
+                count++;
+                if(count == 10) {
+                    FiringAIComponent firingAIComponent = e.getComponent(FiringAIComponent.class);
+                    weaponComponent.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), firingAIComponent.firingAngleInRadians);
+                    count = 0;
+                }
+            }
+        }));
+
+        return bag;
+
+    }
+
+
 
 
 

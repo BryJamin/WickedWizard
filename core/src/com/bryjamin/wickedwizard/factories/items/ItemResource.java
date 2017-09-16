@@ -6,6 +6,7 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemGhastlyWail;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMegaSideCannons;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
@@ -152,6 +153,11 @@ public class ItemResource {
 
         //LEVEL 3 COMPLETE
         Range.laserScope.setChallengeId(ChallengesResource.LEVEL_3_COMPLETE);
+
+
+
+        //Level 4 COMPLETE
+        Companion.megaSideCannons.setChallengeId(ChallengesResource.LEVEL_4_COMPLETE);
 
     }
 
@@ -786,20 +792,14 @@ public class ItemResource {
     public static class Companion {
 
         public static Item[] companionItems = {
-                new ItemDangerDetector(),
                 new ItemCrownOfBiggaBlobba(),
+                new ItemDangerDetector(),
+                new ItemGhastlyWail(),
                 new ItemMegaSideCannons(),
                 new ItemMiniSpinnyThingie(),
                 new ItemMyVeryOwnStalker(),
                 new ItemSideCannons()
         };
-
-        public static ItemLayout dangerDetector =  new ItemLayout.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")
-                .region("item/companion/DangerDetector")
-                .name("Danger Detector")
-                .description("Detects Danger apparently")
-                .build();
-
 
         public static ItemLayout crownOfBiggaBlobba =  new ItemLayout.ItemValueBuilder("8a6a0e43-10fc-4939-880e-5e69b48173f8")
                 .region("item/companion/CrownOfBiggaBlobba")
@@ -807,6 +807,17 @@ public class ItemResource {
                 .description("Fits Nicely")
                 .build();
 
+        public static ItemLayout dangerDetector =  new ItemLayout.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")
+                .region("item/companion/DangerDetector")
+                .name("Danger Detector")
+                .description("Detects Danger apparently")
+                .build();
+
+        public static ItemLayout ghastlyWail =  new ItemLayout.ItemValueBuilder("74fdf448-3c4d-4a0c-a32b-3fed6f19821c")
+                .region("item/companion/GhastlyWail")
+                .name("Ghastly Wail")
+                .description("Screams Externally")
+                .build();
 
         public static ItemLayout miniSpinnyThingie =  new ItemLayout.ItemValueBuilder("2200b179-33ee-4cd9-9853-515708bceda8")
                 .region(TextureStrings.KUGELDUSCHE_LASER)

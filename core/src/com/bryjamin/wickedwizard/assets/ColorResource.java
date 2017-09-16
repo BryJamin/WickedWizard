@@ -16,6 +16,7 @@ public class ColorResource {
 
     public static final Color PLAYER_BULLET_COLOR = new Color(Color.WHITE);
     public static final Color COMPANION_BULLET_COLOR = RGBtoColor(229, 229, 229, 1);
+    public static final Color COMPANION_GHOST_BULLET_COLOR = RGBtoColor(96, 68, 255, 1);
 
     public static final Color MONEY_YELLOW = RGBtoColor(255, 214, 0, 1);
 

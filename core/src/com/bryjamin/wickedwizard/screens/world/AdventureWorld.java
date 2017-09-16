@@ -25,11 +25,14 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.bryjamin.wickedwizard.ecs.systems.DoorSystem;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -304,14 +307,14 @@ public class AdventureWorld extends InputAdapter {
         float height = Measure.units(4.5f);
 
         Entity pauseButton = world.createEntity();
-        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.texture.UIComponent());
-        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent(new Action() {
+        pauseButton.edit().add(new UIComponent());
+        pauseButton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(3.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new FollowPositionComponent(gameport.getCamera().position, Measure.units(30.5f), Measure.units(30.5f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());
