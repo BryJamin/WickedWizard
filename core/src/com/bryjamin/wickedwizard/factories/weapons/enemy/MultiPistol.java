@@ -16,6 +16,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.ColorChangeComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.BulletFactory;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
@@ -52,6 +53,7 @@ public class MultiPistol implements Weapon {
     private final Color color;
 
     private final OnDeathActionComponent customOnDeathAction;
+    private final ColorChangeComponent colorChangeComponent;
 
 
     private final Giblets giblets;
@@ -83,6 +85,8 @@ public class MultiPistol implements Weapon {
         private float[] bulletOffsets = new float[]{0};
 
         private OnDeathActionComponent customOnDeathAction = null;
+
+        private ColorChangeComponent colorChangeComponent = null;
 
         private Color color = new Color(ColorResource.ENEMY_BULLET_COLOR);
 
@@ -132,6 +136,9 @@ public class MultiPistol implements Weapon {
         public PistolBuilder customOnDeathAction(OnDeathActionComponent val)
         { customOnDeathAction = val; return this; }
 
+        public PistolBuilder colorChangeComponent(ColorChangeComponent val)
+        { colorChangeComponent = val; return this; }
+
         public MultiPistol build() {
             return new MultiPistol(this);
         }
@@ -162,6 +169,7 @@ public class MultiPistol implements Weapon {
         this.bulletOffsets = pb.bulletOffsets;
 
         this.customOnDeathAction = pb.customOnDeathAction;
+        this.colorChangeComponent = pb.colorChangeComponent;
 
         this.color = pb.color;
 
@@ -233,6 +241,12 @@ public class MultiPistol implements Weapon {
                 } else {
                     bullet.edit().add(customOnDeathAction);
                 }
+
+
+                if(colorChangeComponent != null){
+                    bullet.edit().add(colorChangeComponent);
+                }
+
             }
 
 

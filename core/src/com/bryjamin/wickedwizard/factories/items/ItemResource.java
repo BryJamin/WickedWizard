@@ -7,6 +7,7 @@ import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemGhastlyWail;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemLiasCrown;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMegaSideCannons;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
@@ -46,6 +47,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLi
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
 import com.bryjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEnigmaticShot;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEquivalentExchange;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEyesOfAmalgama;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigment;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
@@ -54,6 +56,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemPatternedOpal;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeDimensionalGold;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemBuckShot;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemClearSight;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFireSight;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFocusShot;
@@ -134,6 +137,7 @@ public class ItemResource {
         Speed.quickness.setChallengeId(ChallengesResource.Rank4Challenges.rank4TimeTrail);
         Damage.miniTrebuchet.setChallengeId(ChallengesResource.Rank4Challenges.rank4Arena);
         Companion.myVeryOwnStalker.setChallengeId(ChallengesResource.Rank4Challenges.perfectWraith);
+        Companion.ghastlyWail.setChallengeId(ChallengesResource.Rank4Challenges.perfectWraith);
         Luck.eyesOfAmalgama.setChallengeId(ChallengesResource.Rank4Challenges.perfectAmalgama);
 
 
@@ -143,6 +147,8 @@ public class ItemResource {
         ShotSpeed.momentum.setChallengeId(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail);
         ShotSize.cannonCube.setChallengeId(ChallengesResource.Rank5Challenges.rank5NotUltimateArena);
         Luck.iWishYouWell.setChallengeId(ChallengesResource.Rank5Challenges.bossRush);
+        Companion.liasCrown.setChallengeId(ChallengesResource.Rank5Challenges.perfectBossRush);
+
 
 
 
@@ -497,6 +503,7 @@ public class ItemResource {
 
         public static Item[] luckItems = {
                 new ItemEnigmaticShot(),
+                new ItemEquivalentExchange(),
                 new ItemEyesOfAmalgama(),
                 new ItemForgottenFigment(),
                 new ItemGoldenFigment(),
@@ -510,6 +517,13 @@ public class ItemResource {
                 .region("item/EnigmaticShot")
                 .name("Enigmatic Shot")
                 .description("Random Stat Manipulation")
+                .build();
+
+
+        public static ItemLayout equivalentExchange = new ItemLayout.ItemValueBuilder("82b66590-e0d2-45ed-9cfb-9d8d9a75c5df")
+                .region("item/EquivalentExchange")
+                .name("Equivalent Exchange")
+                .description("Swaps Highest and Lowest Stat")
                 .build();
 
         public static ItemLayout eyesOfAmalgama = new ItemLayout.ItemValueBuilder("de5c3cf1-d510-4cb1-b4ce-63c99ab0832d")
@@ -574,6 +588,7 @@ public class ItemResource {
     public static class Range {
 
         public static Item[] rangeItems = {
+                new ItemBuckShot(),
                 new ItemClearSight(),
                 new ItemFireSight(),
                 new ItemFocusShot(),
@@ -583,6 +598,13 @@ public class ItemResource {
                 new ItemNeatCube(),
                 new ItemQuadonometry(),
                 new ItemScope()};
+
+        public static ItemLayout buckShot = new ItemLayout.ItemValueBuilder("3491ee46-bf2e-40ef-a8a0-836a5583bdb7")
+                .region("item/BuckShot")
+                .name("Buckshot")
+                .description("Less Range, More Power")
+                .build();
+
 
         public static ItemLayout clearSight = new ItemLayout.ItemValueBuilder("8074c97a-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ClearSight")
@@ -795,6 +817,7 @@ public class ItemResource {
                 new ItemCrownOfBiggaBlobba(),
                 new ItemDangerDetector(),
                 new ItemGhastlyWail(),
+                new ItemLiasCrown(),
                 new ItemMegaSideCannons(),
                 new ItemMiniSpinnyThingie(),
                 new ItemMyVeryOwnStalker(),
@@ -817,6 +840,14 @@ public class ItemResource {
                 .region("item/companion/GhastlyWail")
                 .name("Ghastly Wail")
                 .description("Screams Externally")
+                .build();
+
+
+        public static ItemLayout liasCrown =  new ItemLayout.ItemValueBuilder("b032283b-c2b7-40d4-a6a4-243b0ba1b421")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
+                .region("item/companion/LiasCrown")
+                .name("Lia's Crown")
+                .description("Congratulations")
                 .build();
 
         public static ItemLayout miniSpinnyThingie =  new ItemLayout.ItemValueBuilder("2200b179-33ee-4cd9-9853-515708bceda8")
