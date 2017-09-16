@@ -11,6 +11,9 @@ import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
+import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
@@ -105,6 +108,101 @@ public class CompanionFactory extends AbstractFactory {
 
 
     }
+
+
+    public ComponentBag hiddenFiringCompanions(ComponentBag fillBag,ParentComponent parentComponent, PositionComponent positionComponent, CollisionBoundComponent cbc){
+
+        fillBag.add(new ChildComponent(parentComponent));
+        fillBag.add(new PositionComponent(cbc.getCenterX(), cbc.getCenterY()));
+        fillBag.add(new FiringAIComponent(0));
+        fillBag.add(new FriendlyComponent());
+        fillBag.add(new IntangibleComponent());
+        fillBag.add(new FollowPositionComponent(positionComponent.position, cbc.bound.width / 2,  cbc.bound.height / 2));
+
+        return fillBag;
+
+    }
+
+
+
+    public ComponentBag sideCannonCompanion(final Entity player, PositionComponent positionc, final CollisionBoundComponent cbc) {
+
+        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc);
+
+        final WeaponComponent weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .damage(1f)
+                .color(ColorResource.COMPANION_BULLET_COLOR)
+                .shotScale(1.5f)
+                .shotSpeed(Measure.units(75f))
+                .enemy(false)
+                .friendly(true)
+                .fireRate(1.0f)
+                .angles(0, 180)
+                .build());;
+
+
+        bag.add(new ConditionalActionComponent(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return player.getComponent(WeaponComponent.class).timer.isFinished();
+            }
+        }, new Action() {
+            int count;
+            @Override
+            public void performAction(World world, Entity e) {
+                count++;
+                if(count == 3) {
+                    FiringAIComponent firingAIComponent = e.getComponent(FiringAIComponent.class);
+                    weaponComponent.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), firingAIComponent.firingAngleInRadians);
+                    count = 0;
+                }
+            }
+        }));
+
+        return bag;
+
+    }
+
+
+    public ComponentBag megaSideCannonCompanion(final Entity player, PositionComponent positionc, final CollisionBoundComponent cbc) {
+
+        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc);
+
+        final WeaponComponent weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .damage(1.25f)
+                .color(ColorResource.COMPANION_BULLET_COLOR)
+                .shotScale(3f)
+                .shotSpeed(Measure.units(75f))
+                .enemy(false)
+                .friendly(true)
+                .angles(0, 180)
+                .build());;
+
+
+        bag.add(new ConditionalActionComponent(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return player.getComponent(WeaponComponent.class).timer.isFinished();
+            }
+        }, new Action() {
+            int count;
+            @Override
+            public void performAction(World world, Entity e) {
+                count++;
+                if(count == 3) {
+                    FiringAIComponent firingAIComponent = e.getComponent(FiringAIComponent.class);
+                    weaponComponent.weapon.fire(world, e, cbc.getCenterX(), cbc.getCenterY(), firingAIComponent.firingAngleInRadians);
+                    count = 0;
+                }
+            }
+        }));
+
+        return bag;
+
+    }
+
+
+
 
 
 

@@ -4,8 +4,12 @@ import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemMegaSideCannons;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemSideCannons;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemBlazingShades;
@@ -13,6 +17,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemBlockOfEn
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemCriticalEye;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemKeenEye;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemLensLessMonocle;
+import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemSharpShootersDiary;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemAngrySlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemArmorUp;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
@@ -61,6 +66,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemBigShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemCannonCube;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemLeafCutter;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemMiniShot;
+import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemPodShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemWideLens;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
@@ -170,7 +176,8 @@ public class ItemResource {
                 new ItemBlockOfEnergy(),
                 new ItemCriticalEye(),
                 new ItemKeenEye(),
-                new ItemLensLessMonocle()};
+                new ItemLensLessMonocle(),
+                new ItemSharpShootersDiary()};
 
 
         public static ItemLayout Ace = new ItemLayout.ItemValueBuilder("005e433e-81d8-11e7-bb31-be2e44b06b34")
@@ -215,6 +222,14 @@ public class ItemResource {
                 .region("item/LensLessMagnifyingGlass")
                 .name("Lensless Magnifying Glass")
                 .description("This somehow improves Accuracy")
+                .build();
+
+
+        public static ItemLayout sharpShootersDiary = new ItemLayout.ItemValueBuilder("98ae3842-b9e4-4e51-98ff-4302b5b9e047")
+                .itemTypes(ItemType.ITEM, ItemType.SHOP)
+                .region("item/SharpShootersDiary")
+                .name("SharpShooter's Diary")
+                .description("Aim For The Weak Spots")
                 .build();
 
     }
@@ -633,6 +648,7 @@ public class ItemResource {
                 new ItemCannonCube(),
                 new ItemLeafCutter(),
                 new ItemMiniShot(),
+                new ItemPodShot(),
                 new ItemWideLens()
 
         };
@@ -664,6 +680,14 @@ public class ItemResource {
                 .region("item/MiniShot")
                 .name("Mini Shot")
                 .description("Smaller Shots")
+                .build();
+
+
+        public static ItemLayout podShot = new ItemLayout.ItemValueBuilder("a2ad4edd-4121-406d-ab38-41f65fd1d02d")
+                .region("item/PodShot")
+                .name("Pod Shot")
+                .itemTypes(ItemType.ITEM)
+                .description("Like Peas In A Shot")
                 .build();
 
 
@@ -763,9 +787,11 @@ public class ItemResource {
 
         public static Item[] companionItems = {
                 new ItemDangerDetector(),
-                new com.bryjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba(),
-                new com.bryjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie(),
-                new ItemMyVeryOwnStalker()
+                new ItemCrownOfBiggaBlobba(),
+                new ItemMegaSideCannons(),
+                new ItemMiniSpinnyThingie(),
+                new ItemMyVeryOwnStalker(),
+                new ItemSideCannons()
         };
 
         public static ItemLayout dangerDetector =  new ItemLayout.ItemValueBuilder("f151f958-cedf-47ce-96c1-2271ac417859")
@@ -793,6 +819,20 @@ public class ItemResource {
                 .region("item/companion/MyVeryOwnStalker")
                 .name("Your Very Own Stalker")
                 .description("A chill runs down your square")
+                .build();
+
+
+        public static ItemLayout sideCannons =  new ItemLayout.ItemValueBuilder("8cb06824-df80-486b-9c3e-eb3b4d03f8f7")
+                .region("item/companion/SideCannons")
+                .name("Side Cannons")
+                .description("\"Cannons\"")
+                .build();
+
+
+        public static ItemLayout megaSideCannons =  new ItemLayout.ItemValueBuilder("57ab14c9-3335-467b-86f8-c944a04494f3")
+                .region("item/companion/MegaSideCannons")
+                .name("Mega Side Cannons")
+                .description("\"Mega Cannons\"")
                 .build();
 
 

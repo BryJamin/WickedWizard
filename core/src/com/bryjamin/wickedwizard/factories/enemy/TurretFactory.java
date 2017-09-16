@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -177,7 +178,7 @@ public class TurretFactory extends EnemyFactory {
 
             @Override
             public void fire(World world, Entity e, float x, float y, double angleInRadians) {
-                Entity newEntity = com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), bombFactory.bomb(x,y,1f));
+                Entity newEntity = BagToEntity.bagToEntity(world.createEntity(), bombFactory.bomb(x,y,1f));
 
                 FrictionComponent fc = new FrictionComponent();
                 fc.airFriction = false;
@@ -294,7 +295,7 @@ public class TurretFactory extends EnemyFactory {
             public void fire(World world, Entity e, float x, float y, double angleInRadians) {
 
                 for(int i : angles) {
-                    Entity newEntity = com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), bombFactory.bomb(x, y, 1f));
+                    Entity newEntity = BagToEntity.bagToEntity(world.createEntity(), bombFactory.bomb(x, y, 1f));
                     FrictionComponent fc = new FrictionComponent();
                     fc.airFriction = false;
                     newEntity.edit().add(fc);

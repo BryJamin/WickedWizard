@@ -149,6 +149,13 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
                 if (Gdx.input.isTouched(playerInput.firingInputPoll)) {
 
+
+                    //The purpose for the delay reset is for enemies/companies that react to player fire to have a chance to see that the player has fired
+                    if(wc.timer.isFinished()){
+                        wc.timer.reset(wc.weapon.getBaseFireRate());
+                    }
+
+
                     wc.timer.update(world.getDelta());
 
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.firingInputPoll), Gdx.input.getY(playerInput.firingInputPoll), 0);
@@ -164,7 +171,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     }
 
 
-                    if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate())) {
+                    if (wc.timer.isFinished()) {
                         hasStartedFiring = true;
                         asc.queueAnimationState(AnimationStateComponent.FIRING);
                         wc.weapon.fire(world,e, x, y, angleOfTravel);

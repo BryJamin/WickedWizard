@@ -38,6 +38,7 @@ import com.bryjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.bryjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ActionAfterTimeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ChallengeTimerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.EnemyCollisionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ExpireSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
@@ -239,7 +240,7 @@ public class AdventureWorld extends InputAdapter {
                         new SpawnerSystem(),
                         new com.bryjamin.wickedwizard.ecs.systems.input.GrappleSystem(),
                         new FrictionSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem()
+                        new ConditionalActionSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
@@ -310,7 +311,7 @@ public class AdventureWorld extends InputAdapter {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(32.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gameport.getCamera().position, Measure.units(3.5f), Measure.units(30.5f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());

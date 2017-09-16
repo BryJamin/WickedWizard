@@ -2,7 +2,6 @@ package com.bryjamin.wickedwizard.factories.items.companions;
 
 import com.artemis.Entity;
 import com.artemis.World;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
@@ -12,18 +11,18 @@ import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 
 /**
- * Created by BB on 27/08/2017.
+ * Created by BB on 16/09/2017.
  */
 
-public class ItemMyVeryOwnStalker implements Companion {
+public class ItemMegaSideCannons implements Companion {
 
 
     @Override
     public boolean applyEffect(World world, Entity player) {
 
         BagToEntity.bagToEntity(world.createEntity(), new CompanionFactory(world.getSystem(RenderingSystem.class).assetManager)
-                .myVeryOwnStalker(
-                        player.getComponent(ParentComponent.class),
+                .megaSideCannonCompanion(
+                        player,
                         player.getComponent(PositionComponent.class),
                         player.getComponent(CollisionBoundComponent.class)));
 
@@ -32,7 +31,7 @@ public class ItemMyVeryOwnStalker implements Companion {
 
     @Override
     public ItemLayout getValues() {
-        return ItemResource.Companion.myVeryOwnStalker;
+        return ItemResource.Companion.megaSideCannons;
     }
 
 }
