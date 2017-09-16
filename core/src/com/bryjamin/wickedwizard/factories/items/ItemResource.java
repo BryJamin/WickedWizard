@@ -218,6 +218,13 @@ public class ItemResource {
                 .description("Accuracy+++")
                 .build();
 
+
+        public static ItemLayout erraticFire = new ItemLayout.ItemValueBuilder("ef59ff5c-45e0-4260-89bf-1cfd4ef12065")
+                .region("item/ErraticFire")
+                .name("Erratic Fire")
+                .description("Accuracy--- FireRate+++")
+                .build();
+
         public static ItemLayout KeenEye = new ItemLayout.ItemValueBuilder("005e4ac8-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/KeenEye")
                 .name("Keen Eye")

@@ -132,12 +132,13 @@ public class CreditsWorld {
         createCreditsPart("Special Thanks", creditsLargeGap);
         createCreditsPart("Mark-Adam Kellerman", creditsSmallGap);
         createCreditsPart("Phoebe Clarke", creditsSmallGap);
+        createCreditsPart("Johan (\"Flowy\") Almeflo", creditsSmallGap);
         createCreditsPart("Louis Hampton", creditsSmallGap);
         createCreditsPart("James O'Toole", creditsSmallGap);
         createCreditsPart("Michelle Bryant", creditsSmallGap);
 
         createCreditsPart("Pete Colley", creditsSmallGap);
-        createCreditsPart("Dave Shama", creditsSmallGap);
+        createCreditsPart("Dave (\"Sharma\") Shama", creditsSmallGap);
         createCreditsPart("Anthony Gibson", creditsSmallGap);
 
 

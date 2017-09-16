@@ -341,14 +341,14 @@ public class AdventureWorld extends InputAdapter {
 
 
     public void turnOnGodMode(StatComponent stats, CurrencyComponent currencyComponent){
-/*        stats.damage = 99f;
+        stats.damage = 99f;
         stats.accuracy = 99f;
         stats.fireRate = 99f;
-        stats.speed = 0.5f;*/
+        stats.speed = 0.5f;
  //       stats.luck = 99f;
 
-        stats.damage = 5;
-        stats.accuracy = 0;
+      //  stats.damage = 5;
+      //  stats.accuracy = 0;
 
         currencyComponent.money = 99;
 
