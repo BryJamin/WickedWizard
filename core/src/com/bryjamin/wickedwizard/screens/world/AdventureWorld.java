@@ -27,7 +27,7 @@ import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -91,6 +91,7 @@ import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
+import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.QuickSave;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -261,7 +262,7 @@ public class AdventureWorld extends InputAdapter {
                         new MusicSystem(),
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(gameCreator, jigsawGenerator),
-                        new UnlockMessageSystem(gameport.getCamera(), assetManager),
+                        new UnlockMessageSystem(game),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
                         new EndGameSystem(game),
@@ -293,9 +294,9 @@ public class AdventureWorld extends InputAdapter {
 
         world.process();
 
-        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(OnRoomLoadActionComponent.class)).getEntities();
+        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(DuringRoomLoadActionComponent.class)).getEntities();
         for(int i = 0; i < intBag.size(); i++) {
-            world.getEntity(intBag.get(i)).getComponent(OnRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));
+            world.getEntity(intBag.get(i)).getComponent(DuringRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));
         }
 
         for(Item i : world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).collectedItems){
@@ -373,6 +374,8 @@ public class AdventureWorld extends InputAdapter {
             world.getSystem(CameraSystem.class).setEnabled(false);
             world.getSystem(CameraShakeSystem.class).setEnabled(false);
             isGameOver = true;
+
+            ((PlayScreen) game.getScreen()).startGameOver();
         }
 
         if(isGameOver){
@@ -394,7 +397,7 @@ public class AdventureWorld extends InputAdapter {
         world.getSystem(MusicSystem.class).pauseMusic();
 
         for (BaseSystem s : world.getSystems()) {
-            if (!(s instanceof com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem || s instanceof com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem)) {
+            if (!(s instanceof RenderingSystem || s instanceof UISystem)) {
                 s.setEnabled(false);
             }
         }

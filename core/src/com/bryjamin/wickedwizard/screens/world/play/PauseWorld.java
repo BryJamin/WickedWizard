@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.screens.world;
+package com.bryjamin.wickedwizard.screens.world.play;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -30,6 +30,7 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.weapons.CritCalculator;
 import com.bryjamin.wickedwizard.screens.MenuButton;
+import com.bryjamin.wickedwizard.screens.world.WorldContainer;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -109,7 +110,6 @@ public class PauseWorld implements WorldContainer {
 
 
     public PauseWorld(MainGame game, SpriteBatch batch, AssetManager manager, Viewport gameport, RoomTransitionSystem rts, com.bryjamin.wickedwizard.ecs.components.StatComponent playerStats){
-
             this.game = game;
             this.batch = batch;
             this.manager = manager;
@@ -118,11 +118,7 @@ public class PauseWorld implements WorldContainer {
             this.roomTransitionSystem = rts;
             this.pauseArenaGUI = new ArenaGUI(0, 0, Measure.units(2.5f), 8, rts.getCurrentMap(), atlas);
             this.playerStats = playerStats;
-
             createWorld();
-
-
-
     }
 
 

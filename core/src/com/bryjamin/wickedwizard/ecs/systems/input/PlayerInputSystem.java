@@ -127,6 +127,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         }
 
         if(disableInput) return;
+        //if(!isEnabled()) return;
 
         if (mtm.get(e).targetX == null && mtm.get(e).targetY == null) {
             playerInput.activeGrapple = false;
@@ -136,6 +137,9 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         if (!playerInput.activeGrapple) {
 
             if (playerInput.movementInputPoll != null) {
+
+                //System.out.println("i AM MOVING THE PLAYER");
+
                 if (Gdx.input.isTouched(playerInput.movementInputPoll)) {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);

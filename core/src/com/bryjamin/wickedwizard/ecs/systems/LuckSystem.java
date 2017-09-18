@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.factories.BombFactory;
@@ -327,7 +327,7 @@ public class LuckSystem extends BaseSystem {
                                 altarColor,
                                 world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateAnyItem()
                                 ));
-                        itemAltar.getComponent(OnRoomLoadActionComponent.class).action.performAction(world, itemAltar);
+                        itemAltar.getComponent(DuringRoomLoadActionComponent.class).action.performAction(world, itemAltar);
                     }
                 };
 

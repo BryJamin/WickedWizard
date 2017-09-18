@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.screens.world;
+package com.bryjamin.wickedwizard.screens.world.play;
 
 import com.artemis.Entity;
 import com.artemis.World;

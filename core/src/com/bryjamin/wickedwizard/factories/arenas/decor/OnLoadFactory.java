@@ -8,7 +8,7 @@ import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
@@ -72,7 +72,7 @@ public class OnLoadFactory {
         ComponentBag bag = new ComponentBag();
 
 
-        bag.add(new OnRoomLoadActionComponent(new Action() {
+        bag.add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 

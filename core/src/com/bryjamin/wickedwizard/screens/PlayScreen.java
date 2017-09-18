@@ -38,18 +38,15 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.bryjamin.wickedwizard.screens.world.AdventureWorld;
+import com.bryjamin.wickedwizard.screens.world.AreYouSureWorld;
+import com.bryjamin.wickedwizard.screens.world.play.DeathScreenWorld;
+import com.bryjamin.wickedwizard.screens.world.play.PauseWorld;
+import com.bryjamin.wickedwizard.screens.world.play.UnlockMessageWorld;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.enums.Level;
 
 import java.util.Random;
-
-;
-;
-
-
-//TODO
-
 
 /**
  * Created by Home on 15/10/2016.
@@ -60,22 +57,25 @@ public class PlayScreen extends AbstractScreen {
 
     private Viewport gameport;
 
-
     public TextureAtlas atlas;
     public AssetManager manager;
 
-    private com.bryjamin.wickedwizard.screens.world.DeathScreenWorld deathScreenWorld;
-    private com.bryjamin.wickedwizard.screens.world.PauseWorld pauseWorld;
-    private com.bryjamin.wickedwizard.screens.world.AreYouSureWorld areYouSureWorld;
-
-
-
-    private boolean isPaused = false;
+    private DeathScreenWorld deathScreenWorld;
+    private PauseWorld pauseWorld;
+    private AreYouSureWorld areYouSureWorld;
+    private UnlockMessageWorld unlockMessageWorld;
 
     private GestureDetector gestureDetector;
 
     private Random random;
-    private com.bryjamin.wickedwizard.screens.world.AdventureWorld adventureWorld;
+    private AdventureWorld adventureWorld;
+
+    public enum ScreenState {
+        PLAY, PAUSE, ARE_YOU_SURE, UNLOCK, DEATH;
+    }
+
+    private ScreenState state = ScreenState.PLAY;
+
 
 
 
@@ -208,54 +208,42 @@ public class PlayScreen extends AbstractScreen {
 
         InputMultiplexer multiplexer = new InputMultiplexer();
 
-        if (!adventureWorld.isGameOver()) {
-            if(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).isEnabled()) {
-                multiplexer.addProcessor(adventureWorld);
-                multiplexer.addProcessor(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).getPlayerInput());
-            }
+        if(state == ScreenState.PLAY) {
+            multiplexer.addProcessor(adventureWorld);
+            multiplexer.addProcessor(adventureWorld.getWorld().getSystem(PlayerInputSystem.class).getPlayerInput());
+        }
 
-            multiplexer.addProcessor(new InputAdapter() {
-                @Override
-                public boolean keyDown(int keycode) {
+        multiplexer.addProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
 
-                    if(areYouSureWorld == null) {
-                        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
-                            if (!isPaused) {
-                                pause();
-                            } else {
+                //TODO on pc pushing escape probably shouldn't quit the game (But a pc version isn't happening)
 
-                                if (keycode == Input.Keys.BACK) {
-                                    startAreYouSure();
-                                } else {
-                                    unpause();
-                                }
-                            }
-                        }
-                    } else {
-                        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
+                if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+
+                    switch (state) {
+                        case PLAY: pause();
+                            break;
+                        case PAUSE: startAreYouSure();
+                            break;
+                        case ARE_YOU_SURE:
                             game.getScreen().dispose();
                             game.setScreen(new MenuScreen(game));
-                        }
+                            break;
+                        case UNLOCK:
+                            unpause();
+                            break;
+                        case DEATH:
+                            game.getScreen().dispose();
+                            game.setScreen(new MenuScreen(game));
+                            break;
                     }
 
-                    return super.keyDown(keycode);
                 }
-            });
-        } else if(deathScreenWorld != null){
-            multiplexer.addProcessor(new InputAdapter() {
-                @Override
-                public boolean keyDown(int keycode) {
 
-                    if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE){
-                        game.getScreen().dispose();
-                        game.setScreen(new MenuScreen(game));
-                    }
-
-
-                    return super.keyDown(keycode);
-                }
-            });
-        }
+                return super.keyDown(keycode);
+            }
+        });
 
         multiplexer.addProcessor(gestureDetector);
         Gdx.input.setInputProcessor(multiplexer);
@@ -264,6 +252,7 @@ public class PlayScreen extends AbstractScreen {
 
     public void createWorlds(GameCreator gameCreator, String playerId){
         adventureWorld = new AdventureWorld(game, gameport,gameCreator,playerId, random);
+        unlockMessageWorld = new UnlockMessageWorld(game, gameport);
     }
 
     @Override
@@ -280,32 +269,40 @@ public class PlayScreen extends AbstractScreen {
 
         game.batch.setProjectionMatrix(gamecam.combined);
 
-        //if(adventureWorld.isGameOver()) adventureWorld.pauseWorld();
-
         handleInput(delta);
+
         adventureWorld.process(delta);
 
-
-
-        if(adventureWorld.isGameOver() && deathScreenWorld == null) deathScreenWorld = new com.bryjamin.wickedwizard.screens.world.DeathScreenWorld(game, gameport);
-        if(isPaused) pauseWorld.process(delta);
-
-        if(areYouSureWorld != null) {
-            areYouSureWorld.process(delta);
-        }
-
-        if(adventureWorld.isGameOver() && deathScreenWorld != null) deathScreenWorld.process(delta);
-
-        if(!adventureWorld.isGameOver()) {
-            if(!game.batch.isDrawing()) game.batch.begin();
-            game.batch.end();
+        switch (state){
+            case PAUSE:
+                pauseWorld.process(delta);
+                break;
+            case ARE_YOU_SURE:
+                areYouSureWorld.process(delta);
+                break;
+            case DEATH:
+                deathScreenWorld.process(delta);
+                break;
+            case UNLOCK:
+                unlockMessageWorld.process(delta);
+                break;
         }
 
         gamecam.update();
 
 
+        if(game.batch.isDrawing()){
+            game.batch.end();
+        }
 
     }
+
+
+    public void startGameOver(){
+        state = ScreenState.DEATH;
+        deathScreenWorld = new DeathScreenWorld(game, gameport);
+    }
+
 
 
     @Override
@@ -317,20 +314,33 @@ public class PlayScreen extends AbstractScreen {
     @Override
     public void pause() {
         adventureWorld.pauseWorld();
-        isPaused = true;
-        //pause();
-        pauseWorld = new com.bryjamin.wickedwizard.screens.world.PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
+        state = ScreenState.PAUSE;
+        pauseWorld = new PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
                 adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
-        //QuickSave.saveGame(world);
     }
+
+
+    public void unlock(String... strings){
+
+        unlockMessageWorld = new UnlockMessageWorld(game, gameport);
+
+        if(unlockMessageWorld.createUnlockMessage(strings)){
+            adventureWorld.pauseWorld();
+            state = ScreenState.UNLOCK;
+        };
+    }
+
 
     public void unpause(){
         adventureWorld.unPauseWorld();
-        isPaused = false;
+        state = ScreenState.PLAY;
     }
 
     public void startAreYouSure(){
-        areYouSureWorld = new com.bryjamin.wickedwizard.screens.world.AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_EXIT_GAME,
+
+        state = ScreenState.ARE_YOU_SURE;
+
+        areYouSureWorld = new AreYouSureWorld(game, gameport, MenuStrings.ARE_YOU_SURE_EXIT_GAME,
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -342,16 +352,10 @@ public class PlayScreen extends AbstractScreen {
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        PlayScreen playScreen = (PlayScreen) game.getScreen();
-                        playScreen.escapeAreYouSure();
+                        state = ScreenState.PAUSE;
                     }
                 });
     }
-
-    public void escapeAreYouSure(){
-        areYouSureWorld = null;
-    }
-
 
     @Override
     public void resume() {
@@ -374,23 +378,28 @@ public class PlayScreen extends AbstractScreen {
         @Override
         public boolean tap(float x, float y, int count, int button) {
 
+            Vector3 touchInput;
 
-            if (areYouSureWorld != null) {
-                Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
-                areYouSureWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-                return true;
-            }
+            switch (state){
 
-            if (adventureWorld.isGameOver() && deathScreenWorld != null) {
-                Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
-                deathScreenWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-                return true;
-            }
+                case ARE_YOU_SURE:
+                    touchInput = gameport.unproject(new Vector3(x, y, 0));
+                    areYouSureWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
 
-            if(isPaused && areYouSureWorld == null) {
-                Vector3 touchInput = gameport.unproject(new Vector3(x, y, 0));
-                pauseWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
-                return true;
+                case DEATH:
+                    touchInput = gameport.unproject(new Vector3(x, y, 0));
+                    deathScreenWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+                case PAUSE:
+                    touchInput = gameport.unproject(new Vector3(x, y, 0));
+                    pauseWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+                case UNLOCK:
+                    touchInput = gameport.unproject(new Vector3(x, y, 0));
+                    unlockMessageWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+
             }
 
             return true;

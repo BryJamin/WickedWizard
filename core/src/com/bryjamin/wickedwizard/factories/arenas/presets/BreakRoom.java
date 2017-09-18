@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -60,7 +61,7 @@ public class BreakRoom extends AbstractFactory {
                         ArenaBuilder.wall.FULL))
                 .buildArena();
 
-        arena.createArenaBag().add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
+        arena.createArenaBag().add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 

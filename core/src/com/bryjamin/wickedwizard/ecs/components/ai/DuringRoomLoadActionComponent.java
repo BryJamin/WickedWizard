@@ -7,14 +7,17 @@ import com.artemis.World;
 
 /**
  * Created by BB on 25/08/2017.
+ *
+ * Actions that take place as a room is being loaded
+ *
  */
 
-public class OnRoomLoadActionComponent extends Component {
+public class DuringRoomLoadActionComponent extends Component {
 
     public Action action;
     public boolean repeat = false;
 
-    public OnRoomLoadActionComponent (){
+    public DuringRoomLoadActionComponent(){
         action = new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -23,7 +26,7 @@ public class OnRoomLoadActionComponent extends Component {
         };
     }
 
-    public OnRoomLoadActionComponent(Action action){
+    public DuringRoomLoadActionComponent(Action action){
         this.action = action;
     }
 

@@ -15,7 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -115,7 +115,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
                 ComponentBag saveGame = arena.createArenaBag();
-                saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
+                saveGame.add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         world.getSystem(UnlockMessageSystem.class).createUnlockMessage(ChallengesResource.LEVEL_5_COMPLETE);
@@ -272,7 +272,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
                 ComponentBag setUp = arena.createArenaBag();
-                setUp.add(new OnRoomLoadActionComponent(new Action() {
+                setUp.add(new DuringRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         world.getSystem(UISystem.class).disable = true;
@@ -389,7 +389,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 }, 0.5f));
 
                 ComponentBag saveGame = arena.createArenaBag();
-                saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
+                saveGame.add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         world.getSystem(UnlockMessageSystem.class).createUnlockMessage(bossRushid);

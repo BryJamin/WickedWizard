@@ -12,7 +12,8 @@ import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -25,6 +26,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
@@ -116,7 +118,18 @@ public class ReuseableRooms extends AbstractFactory {
     public void challengeRoadOnLoadActionEntity(Arena arena, final String challengeId){
 
         ComponentBag bag = arena.createArenaBag();
-        bag.add(new OnRoomLoadActionComponent(new Action() {
+
+
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(challengeId);
+                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(ChallengesResource.LEVEL_4_COMPLETE);
+                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(ChallengesResource.LEVEL_3_COMPLETE);
+            }
+        }));
+
+        bag.add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -127,10 +140,6 @@ public class ReuseableRooms extends AbstractFactory {
                 }
 
                 world.getSystem(SoundSystem.class).playSound(SoundFileStrings.itemPickUpMix1);
-
-                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(challengeId);
-
-                e.deleteFromWorld();
             }
         }));
 
