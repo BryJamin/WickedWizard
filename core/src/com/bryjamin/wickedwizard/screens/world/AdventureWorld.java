@@ -69,6 +69,7 @@ import com.bryjamin.wickedwizard.ecs.systems.input.DisablePlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.BossDefeatUnlockSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.InCombatSystem;
@@ -262,6 +263,7 @@ public class AdventureWorld extends InputAdapter {
                         new MusicSystem(),
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(gameCreator, jigsawGenerator),
+                        new BossDefeatUnlockSystem(game),
                         new UnlockMessageSystem(game),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),

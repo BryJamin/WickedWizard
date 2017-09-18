@@ -34,6 +34,7 @@ import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.arenas.levels.AllArenaStore;
 import com.bryjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
+import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
@@ -106,11 +107,11 @@ public class PlayScreen extends AbstractScreen {
 
                 try{
 
-                    bossMap = new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(game.assetManager, playScreenConfig.id != 8 ? new LightGraySkin() : new DarkGraySkin()).getBossMapsArray().get(playScreenConfig.id);
+                    bossMap = new BossMaps(game.assetManager, playScreenConfig.id != 8 ? new LightGraySkin() : new DarkGraySkin()).getBossMapsArray().get(playScreenConfig.id);
 
                 } catch (IndexOutOfBoundsException e) {
                     e.printStackTrace();
-                    bossMap = new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(game.assetManager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent());
+                    bossMap = new BossMaps(game.assetManager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent());
 
                 }
 

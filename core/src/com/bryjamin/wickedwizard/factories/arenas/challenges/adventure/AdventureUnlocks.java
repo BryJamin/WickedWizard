@@ -42,7 +42,14 @@ public class AdventureUnlocks {
 
     static {
 
-        putUnlock(PlayerIDs.LEAH_ID, ChallengesResource.LEVEL_1_COMPLETE, LEAH_1_UNLOCK, ItemResource.Armor.armorUp);
+        putUnlock(PlayerIDs.LEAH_ID, ChallengesResource.LEVEL_1_COMPLETE, LEAH_1_UNLOCK, ItemResource.Armor.steppingStones);
+
+
+
+
+
+
+
         putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_1_COMPLETE, XI_1_UNLOCK, ItemResource.Armor.smoulderingHelm);
 
     }

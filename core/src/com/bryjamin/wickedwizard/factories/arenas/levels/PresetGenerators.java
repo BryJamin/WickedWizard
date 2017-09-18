@@ -25,12 +25,6 @@ public class PresetGenerators {
     private static final int numberOfLevel5Rooms = 15;
 
 
-
-    public PresetGenerators(){
-
-    }
-
-
     public JigsawGeneratorConfig level1Configuration(AssetManager assetManager, Random random) {
         return level1Configuration(assetManager, Level.ONE.getArenaSkin(), random);
     }
@@ -61,8 +55,8 @@ public class PresetGenerators {
 
         Array<com.bryjamin.wickedwizard.factories.arenas.BossMapCreate> bossMapGens = new Array<com.bryjamin.wickedwizard.factories.arenas.BossMapCreate>();
 
-        bossMapGens.add(new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(assetManager, arenaSkin).wandaMapCreate());
-        bossMapGens.add(new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(assetManager, arenaSkin).giantSpinnerMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, arenaSkin).wandaMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, arenaSkin).giantSpinnerMapCreate());
 
         return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level2Rooms(assetManager, arenaSkin, random).getAllArenas())
@@ -82,8 +76,12 @@ public class PresetGenerators {
 
         Array<com.bryjamin.wickedwizard.factories.arenas.BossMapCreate> bossMapGens = new Array<com.bryjamin.wickedwizard.factories.arenas.BossMapCreate>();
 
-        bossMapGens.add(new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(assetManager, arenaSkin).boomyMapCreate());
-        bossMapGens.add(new com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps(assetManager, arenaSkin).ajirMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, arenaSkin).boomyMapCreate());
+        bossMapGens.add(new BossMaps(assetManager, arenaSkin).ajirMapCreate());
+
+
+
+
 
         return new JigsawGeneratorConfig(assetManager, random)
                 .arenaCreates(new Level3Rooms(assetManager, arenaSkin, random).getAllArenas())

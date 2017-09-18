@@ -26,6 +26,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSmoulderingArmor;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSteppingStones;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWandasScarf;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWhiteGoggles;
@@ -228,6 +229,7 @@ public class ItemResource {
                 new ItemSlimeCoat(),
                 new ItemSmoulderingArmor(),
                 new ItemSquareBuckler(),
+                new ItemSteppingStones(),
                 new ItemVitaminC(),
                 new ItemWandasScarf(),
                 new ItemWhiteGoggles()};
@@ -271,6 +273,14 @@ public class ItemResource {
                 .name("Square Buckler")
                 .description("Good for two hits")
                 .build();
+
+
+        public static ItemLayout steppingStones = new ItemLayout.ItemValueBuilder("b0b5ef20-c00c-4cba-880f-5ad6a78c16d5")
+                .region("item/SteppingStones")
+                .name("Stepping Stones")
+                .description("Speed+ Armor+")
+                .build();
+
 
         public static ItemLayout vitaminC = new ItemLayout.ItemValueBuilder("795d68be-81d8-11e7-bb31-be2e44b06b34")
                 .region("item/VitaminC")

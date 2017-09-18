@@ -9,7 +9,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -22,8 +26,6 @@ public class HealthBarSystem extends EntitySystem {
 
     public boolean isActive = false;
     private boolean processingFlag = false;
-
-
 
     private static float initialHealthBarWidth = Measure.units(50f);
     private static float initialHealthBarHeight = Measure.units(2.5f);
@@ -49,12 +51,12 @@ public class HealthBarSystem extends EntitySystem {
 
 
     public HealthBarSystem(com.bryjamin.wickedwizard.MainGame game, Viewport gameport) {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class, com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent.class));
+        super(Aspect.all(BossComponent.class, HealthComponent.class, BlinkOnHitComponent.class));
         this.batch = game.batch;
         this.gameport = gameport;
         this.gamecam = gameport.getCamera();
         this.assetManager = game.assetManager;
-        this.atlas = assetManager.get(com.bryjamin.wickedwizard.assets.FileLocationStrings.spriteAtlas, TextureAtlas.class);
+        this.atlas = assetManager.get(FileLocationStrings.spriteAtlas, TextureAtlas.class);
 
 
     }
@@ -73,7 +75,6 @@ public class HealthBarSystem extends EntitySystem {
         if(!processingFlag) {
             processingFlag = this.getEntities().size() > 0;
         }
-
 
         return processingFlag;
     }

@@ -9,6 +9,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -62,7 +63,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
         Arena arena = endArena().createArena(new MapCoords(0,0));
 
-        arena.createArenaBag().add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
+        arena.createArenaBag().add(new InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -136,7 +137,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate endArena() {
+    public ArenaCreate endArena() {
         return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
