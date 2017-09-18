@@ -107,41 +107,6 @@ public class ItemResource {
 
 
 
-        //RANK1 CHALLENGES
-        Armor.slimeCoat.setChallengeId(ChallengesResource.Rank1Challenges.tutorialSpeedRun);
-        Damage.anger.setChallengeId(ChallengesResource.Rank1Challenges.arenaSpeedRun);
-        Companion.crownOfBiggaBlobba.setChallengeId(ChallengesResource.Rank1Challenges.perfectBlobba);
-        FireRate.statueOfAdoj.setChallengeId(ChallengesResource.Rank1Challenges.perfectAdoj);
-
-        Armor.slimeCoat.setChallengeId(ChallengesResource.Rank1Challenges.perfectBlobba); //("Test")
-
-
-
-        //RANK 2 CHALLENGES
-        ShotSpeed.shinyFeather.setChallengeId(ChallengesResource.Rank2Challenges.rank2TimeTrail);
-        Luck.forgottenFigment.setChallengeId(ChallengesResource.Rank2Challenges.arenaTrail);
-        Armor.wandasScarf.setChallengeId(ChallengesResource.Rank2Challenges.perfectWanda);
-        Companion.miniSpinnyThingie.setChallengeId(ChallengesResource.Rank2Challenges.perfectKugel);
-
-
-
-
-        //RANK3 CHALLENGES
-        Armor.angrySlimeCoat.setChallengeId(ChallengesResource.Rank3Challenges.rank3TimeTrail);
-        Accuracy.CriticalEye.setChallengeId(ChallengesResource.Rank3Challenges.rank3ArenaTrial);
-        Damage.statueOfAjir.setChallengeId(ChallengesResource.Rank3Challenges.perfectAjir);
-        Luck.threeDimensionalGold.setChallengeId(ChallengesResource.Rank3Challenges.perfectBoomy);
-
-
-        //Rank4 Challenges
-        Speed.quickness.setChallengeId(ChallengesResource.Rank4Challenges.rank4TimeTrail);
-        Damage.miniTrebuchet.setChallengeId(ChallengesResource.Rank4Challenges.rank4Arena);
-        Companion.myVeryOwnStalker.setChallengeId(ChallengesResource.Rank4Challenges.perfectWraith);
-        Companion.ghastlyWail.setChallengeId(ChallengesResource.Rank4Challenges.perfectWraith);
-        Luck.eyesOfAmalgama.setChallengeId(ChallengesResource.Rank4Challenges.perfectAmalgama);
-
-
-
 
         //Rank 5 Challenges
         ShotSpeed.momentum.setChallengeId(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail);

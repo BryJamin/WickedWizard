@@ -1,9 +1,10 @@
-package com.bryjamin.wickedwizard.factories.arenas.challenges;
+package com.bryjamin.wickedwizard.factories.arenas.challenges.maps;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 
@@ -25,22 +26,17 @@ public class ChallengeMaps extends AbstractFactory {
     private com.bryjamin.wickedwizard.factories.items.ItemFactory itemFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
-    private Rank1ChallengeMaps rank1ChallengeMaps;
-    private Rank2ChallengeMaps rank2ChallengeMaps;
-    private Rank3ChallengeMaps rank3ChallengeMaps;
-    private Rank4ChallengeMaps rank4ChallengeMaps;
-    private Rank5ChallengeMaps rank5ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps rank1ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank2ChallengeMaps rank2ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank3ChallengeMaps rank3ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank4ChallengeMaps rank4ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank5ChallengeMaps rank5ChallengeMaps;
 
     ArenaSkin arenaSkin = new com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin();
 
     private Random random;
 
-
     private OrderedMap<String, GameCreator> mapOfChallenges = new OrderedMap<String, GameCreator>();
-
-
-
-
 
     public ChallengeMaps(AssetManager assetManager, Random random) {
         super(assetManager);
@@ -50,25 +46,15 @@ public class ChallengeMaps extends AbstractFactory {
         this.portalFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager);
         this.itemFactory = new com.bryjamin.wickedwizard.factories.items.ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
-        this.rank1ChallengeMaps = new Rank1ChallengeMaps(assetManager, random);
-        this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
-        this.rank3ChallengeMaps = new Rank3ChallengeMaps(assetManager, random);
-        this.rank4ChallengeMaps = new Rank4ChallengeMaps(assetManager, random);
-        this.rank5ChallengeMaps = new Rank5ChallengeMaps(assetManager, random);
+        this.rank1ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps(assetManager, random);
+        this.rank2ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank2ChallengeMaps(assetManager, random);
+        this.rank3ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank3ChallengeMaps(assetManager, random);
+        this.rank4ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank4ChallengeMaps(assetManager, random);
+        this.rank5ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank5ChallengeMaps(assetManager, random);
 
         this.random = random;
         setUpMap();
     }
-
-
-    public void updateArenaSkin(ArenaSkin arenaSkin){
-        this.arenaShellFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory(assetManager, arenaSkin);
-        this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
-        this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
-        this.arenaSkin = arenaSkin;
-    }
-
-
 
     public void setUpMap(){
 

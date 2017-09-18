@@ -1,10 +1,9 @@
-package com.bryjamin.wickedwizard.factories.arenas.challenges;
+package com.bryjamin.wickedwizard.factories.arenas.challenges.maps;
 
 import com.artemis.BaseSystem;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
-import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -25,12 +24,13 @@ import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
-import com.bryjamin.wickedwizard.factories.arenas.presets.ItemArenaFactory;
+import com.bryjamin.wickedwizard.factories.arenas.presetrooms.ItemArenaFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -48,10 +48,10 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     private static final float ARENA_SPEEDRUN_TIMER = 99f;
     private static final float TIME_TRIAL_SPEEDRUN_TIMER =
-            com.bryjamin.wickedwizard.factories.arenas.challenges.Rank4ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
-                    Rank3ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
-                    Rank2ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
-                    Rank1ChallengeMaps.TUTORIAL_SPEEDRUN_TIMER + 5f;
+            com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank4ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
+                    com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank3ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
+                    com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank2ChallengeMaps.TIME_TRIAL_SPEEDRUN_TIMER +
+                    com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps.TUTORIAL_SPEEDRUN_TIMER + 5f;
 
 
     private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
@@ -64,10 +64,10 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
     private Random random;
 
-    private Rank1ChallengeMaps rank1ChallengeMaps;
-    private Rank2ChallengeMaps rank2ChallengeMaps;
-    private Rank3ChallengeMaps rank3ChallengeMaps;
-    private com.bryjamin.wickedwizard.factories.arenas.challenges.Rank4ChallengeMaps rank4ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps rank1ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank2ChallengeMaps rank2ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank3ChallengeMaps rank3ChallengeMaps;
+    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank4ChallengeMaps rank4ChallengeMaps;
 
 
     public Rank5ChallengeMaps(AssetManager assetManager, Random random) {
@@ -78,10 +78,10 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.beamTurretFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory(assetManager, arenaSkin);
         this.random = random;
-        this.rank1ChallengeMaps = new Rank1ChallengeMaps(assetManager, random);
-        this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
-        this.rank3ChallengeMaps = new Rank3ChallengeMaps(assetManager, random);
-        this.rank4ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.Rank4ChallengeMaps(assetManager, random);
+        this.rank1ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps(assetManager, random);
+        this.rank2ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank2ChallengeMaps(assetManager, random);
+        this.rank3ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank3ChallengeMaps(assetManager, random);
+        this.rank4ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank4ChallengeMaps(assetManager, random);
 
     }
 

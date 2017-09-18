@@ -19,8 +19,8 @@ public class ItemEnigmaticShot implements Item {
     @Override
     public boolean applyEffect(World world, Entity player) {
         player.getComponent(StatComponent.class).luck += PresetStatIncrease.major;
-        player.getComponent(StatComponent.class).damage += MathUtils.random.nextBoolean() ? 0 : -PresetStatIncrease.minor;
-        player.getComponent(StatComponent.class).fireRate += MathUtils.random.nextBoolean() ? 0 : -PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).damage += MathUtils.random.nextBoolean() ? PresetStatIncrease.minor : -PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).fireRate += MathUtils.random.nextBoolean() ? PresetStatIncrease.minor : -PresetStatIncrease.minor;
         player.getComponent(StatComponent.class).shotSpeed += MathUtils.random.nextBoolean() ? 0 : PresetStatIncrease.minor;
         player.getComponent(StatComponent.class).accuracy += MathUtils.random.nextBoolean() ? 0 : PresetStatIncrease.minor;
         player.getComponent(StatComponent.class).range += MathUtils.random.nextBoolean() ? 0 : PresetStatIncrease.minor;

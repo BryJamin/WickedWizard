@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.factories.arenas.presets;
+package com.bryjamin.wickedwizard.factories.arenas.presetrooms;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;

@@ -9,11 +9,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -34,12 +40,12 @@ public class BossFactory extends AbstractFactory {
 
 
     protected ComponentBag defaultBossBag (final ComponentBag fillbag, float x, float y, float health) {
-        fillbag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
-        fillbag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
-        fillbag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
-        fillbag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent());
-        fillbag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent());
-        fillbag.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(new Action() {
+        fillbag.add(new PositionComponent(x, y));
+        fillbag.add(new HealthComponent(health));
+        fillbag.add(new BlinkOnHitComponent());
+        fillbag.add(new BossComponent());
+        fillbag.add(new EnemyComponent());
+        fillbag.add(new  OnDeathActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 deathClone(world, e);

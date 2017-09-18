@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.factories.arenas.challenges;
+package com.bryjamin.wickedwizard.factories.arenas.challenges.maps;
 
 import com.artemis.Component;
 import com.artemis.Entity;
@@ -6,7 +6,6 @@ import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.assets.ColorResource;
-import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
@@ -20,6 +19,7 @@ import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBiggaBlobba;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;

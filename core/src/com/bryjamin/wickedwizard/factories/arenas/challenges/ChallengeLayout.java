@@ -1,6 +1,4 @@
-package com.bryjamin.wickedwizard.assets.resourcelayouts;
-
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+package com.bryjamin.wickedwizard.factories.arenas.challenges;
 
 /**
  * Created by BB on 12/09/2017.
@@ -10,13 +8,13 @@ public class ChallengeLayout {
 
     private final String challengeID;
     private final String name;
-    private final String unlockString;
+    private final String stringToUnlockChallenge;
 
 
     public ChallengeLayout(ChallengeLayoutBuilder challengeLayoutBuilder){
         this.challengeID = challengeLayoutBuilder.challengeID;
         this.name = challengeLayoutBuilder.name;
-        this.unlockString = challengeLayoutBuilder.unlockString;
+        this.stringToUnlockChallenge = challengeLayoutBuilder.unlockString;
     };
 
 
@@ -28,8 +26,8 @@ public class ChallengeLayout {
         return name;
     }
 
-    public String getUnlockString() {
-        return unlockString;
+    public String getStringToUnlockChallenge() {
+        return stringToUnlockChallenge;
     }
 
     public static class ChallengeLayoutBuilder {

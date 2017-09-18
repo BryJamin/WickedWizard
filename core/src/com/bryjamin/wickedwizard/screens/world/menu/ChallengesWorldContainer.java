@@ -15,7 +15,7 @@ import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
-import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -23,7 +23,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeMaps;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.maps.ChallengeMaps;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.MenuButton;
@@ -124,25 +124,9 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
                         , Measure.units(5f));
 
 
-
-        Array<ChallengeLayout> challengeLayouts = new Array<ChallengeLayout>();
-        challengeLayouts.addAll(ChallengesResource.Rank1Challenges.rank1ChallengesArray);
-        challengeLayouts.addAll(ChallengesResource.Rank2Challenges.rank2ChallengesArray);
-        challengeLayouts.addAll(ChallengesResource.Rank3Challenges.rank3ChallengesArray);
-        challengeLayouts.addAll(ChallengesResource.Rank4Challenges.rank4ChallengesArray);
-        challengeLayouts.addAll(ChallengesResource.Rank5Challenges.rank5ChallengesArray);
-
         int count = 0;
 
-        count = createChallengeButtons(world, count, challengeLayouts);
-/*        count = createChallengeButtons(world, count, ChallengesResource.Rank2Challenges.rank2ChallengesArray,
-                ChallengesResource.LEVEL_2_COMPLETE);
-        count = createChallengeButtons(world, count, ChallengesResource.Rank3Challenges.rank3ChallengesArray,
-                ChallengesResource.LEVEL_3_COMPLETE);
-        count = createChallengeButtons(world, count, ChallengesResource.Rank4Challenges.rank4ChallengesArray,
-                ChallengesResource.LEVEL_4_COMPLETE);
-        count = createChallengeButtons(world, count, ChallengesResource.Rank5Challenges.rank5ChallengesArray,
-                com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.LEVEL_5_COMPLETE);*/
+        count = createChallengeButtons(world, count, ChallengesResource.getAllChallenges());
 
     }
 
@@ -169,7 +153,7 @@ public class ChallengesWorldContainer extends com.bryjamin.wickedwizard.utils.Ab
 
             boolean challengeComplete = DataSave.isDataAvailable(s);
 
-            if(DataSave.isDataAvailable(challengeLayouts.get(i).getUnlockString())) {
+            if(DataSave.isDataAvailable(challengeLayouts.get(i).getStringToUnlockChallenge())) {
 
                 Entity startChallenge = challengeButtonBuilder
                         .foregroundColor(challengeComplete ? buttonBackground : buttonForeground)

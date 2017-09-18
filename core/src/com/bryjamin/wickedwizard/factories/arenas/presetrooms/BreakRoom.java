@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.factories.arenas.presets;
+package com.bryjamin.wickedwizard.factories.arenas.presetrooms;
 
 import com.artemis.BaseSystem;
 import com.artemis.Entity;

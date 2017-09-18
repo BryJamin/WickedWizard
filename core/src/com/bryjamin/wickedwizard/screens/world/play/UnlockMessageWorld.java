@@ -18,8 +18,7 @@ import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
-import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
-import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
@@ -116,46 +115,6 @@ public class UnlockMessageWorld implements WorldContainer {
         return world;
     }
 
-
-
-
-
-
-
-    private ComponentBag createTitle(String title){
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        ComponentBag titleText = new ComponentBag();
-
-        Rectangle textRectangle = new Rectangle(camX, camY, gamecam.viewportWidth, Measure.units(10f));
-        titleText.add(new PositionComponent(camX, Measure.units(55f)));
-        titleText.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2 + Measure.units(55f)));
-        titleText.add(new CollisionBoundComponent(new Rectangle(textRectangle)));
-        titleText.add(new TextureFontComponent(FontAssets.medium, title));
-
-        return titleText;
-    }
-
-
-    private ComponentBag createBackDrop(){
-
-        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
-        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
-
-        ComponentBag backDrop = new ComponentBag();
-
-        backDrop.add(new PositionComponent(camX, camY));
-        backDrop.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
-        backDrop.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), gamecam.viewportWidth, gamecam.viewportHeight,
-                TextureRegionComponent.BACKGROUND_LAYER_FAR,
-                new Color(0f,0f,0f, 0.8f)));
-
-        return backDrop;
-    }
-
-
     /**
      * Depending on the Unlock Id creates a message to the player to show which items and Challenges they have unlock
      *
@@ -167,14 +126,15 @@ public class UnlockMessageWorld implements WorldContainer {
         final Array<Bag<ComponentBag>> bagArray = new Array<Bag<ComponentBag>>();
 
         for(String unlockId : unlockIds) {
-            if (!DataSave.isDataAvailable(unlockId)) {
+            if(true){
+            //if (!DataSave.isDataAvailable(unlockId)) {
                 DataSave.saveChallengeData(unlockId);
                 createChallengeUnlockMessage(bagArray, unlockId);
                 createItemUnlockMessage(bagArray, unlockId);
             }
         }
 
-        
+
         if(bagArray.size <= 0) return false;
 
 
@@ -195,7 +155,6 @@ public class UnlockMessageWorld implements WorldContainer {
         next.edit().add(CameraSystem.createFollowCameraComponent(gamecam, 0, Measure.units(5f)));
         next.edit().add(new CollisionBoundComponent(new Rectangle(camX, camY + Measure.units(5f), Measure.units(50f), Measure.units(10f))));
         next.edit().add(new TextureFontComponent(FontAssets.medium, MenuStrings.TAP_TO_CONTINUE));
-        next.edit().add(new DisablePlayerInputComponent());
         next.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -233,8 +192,38 @@ public class UnlockMessageWorld implements WorldContainer {
     }
 
 
+    private ComponentBag createTitle(String title){
+
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+        ComponentBag titleText = new ComponentBag();
+
+        Rectangle textRectangle = new Rectangle(camX, camY, gamecam.viewportWidth, Measure.units(10f));
+        titleText.add(new PositionComponent(camX, Measure.units(55f)));
+        titleText.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2 + Measure.units(55f)));
+        titleText.add(new CollisionBoundComponent(new Rectangle(textRectangle)));
+        titleText.add(new TextureFontComponent(FontAssets.medium, title));
+
+        return titleText;
+    }
 
 
+    private ComponentBag createBackDrop(){
+
+        float camX = gamecam.position.x - gamecam.viewportWidth / 2;
+        float camY = gamecam.position.y - gamecam.viewportHeight / 2;
+
+        ComponentBag backDrop = new ComponentBag();
+
+        backDrop.add(new PositionComponent(camX, camY));
+        backDrop.add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
+        backDrop.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), gamecam.viewportWidth, gamecam.viewportHeight,
+                TextureRegionComponent.BACKGROUND_LAYER_FAR,
+                new Color(0f,0f,0f, 0.8f)));
+
+        return backDrop;
+    }
 
 
     public void createItemUnlockMessage(Array<Bag<ComponentBag>> bagArray, String unlockId){
@@ -294,7 +283,7 @@ public class UnlockMessageWorld implements WorldContainer {
         Array<ChallengeLayout> unlockedChallenges = new Array<ChallengeLayout>();
 
         for(ChallengeLayout challengeLayout : ChallengesResource.getAllChallenges()){
-            if(challengeLayout.getUnlockString().equals(unlockId)){
+            if(challengeLayout.getStringToUnlockChallenge().equals(unlockId)){
                 unlockedChallenges.add(challengeLayout);
             }
         }

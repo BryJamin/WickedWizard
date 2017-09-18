@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
@@ -26,6 +28,7 @@ import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRo
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.adventure.AdventureUnlocks;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -151,6 +154,12 @@ public class BossMaps extends AbstractFactory {
                     }
 
                     world.getSystem(UnlockMessageSystem.class).createUnlockMessage(id);
+
+                    String s = AdventureUnlocks.getUnlock(
+                            world.getSystem(FindPlayerSystem.class).getPlayerComponent(PlayerComponent.class).id,
+                            id);
+
+                    if(s != null) world.getSystem(UnlockMessageSystem.class).createUnlockMessage(s);
                 }
                 e.deleteFromWorld();
             }
