@@ -287,6 +287,9 @@ public class RoomTransitionSystem extends EntitySystem {
 
         }
 
+
+        world.getSystem(FollowPositionSystem.class).process();
+
     }
 
     /**

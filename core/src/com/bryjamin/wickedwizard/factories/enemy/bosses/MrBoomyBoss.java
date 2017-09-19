@@ -28,6 +28,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
+import com.bryjamin.wickedwizard.factories.explosives.ExplosionFactory;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.BomberPistol;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MinePistol;
 import com.bryjamin.wickedwizard.utils.CenterMath;
@@ -68,6 +69,7 @@ public class MrBoomyBoss extends BossFactory {
     private static final float groundBomberWeaponFireRate = 0.5f;
 
     private BombFactory bombFactory;
+    private ExplosionFactory explosionFactory;
 
 
     //Phase
@@ -78,6 +80,7 @@ public class MrBoomyBoss extends BossFactory {
     public MrBoomyBoss(AssetManager assetManager) {
         super(assetManager);
         this.bombFactory = new BombFactory(assetManager);
+        this.explosionFactory = new ExplosionFactory(assetManager);
     }
 
 
@@ -196,7 +199,7 @@ public class MrBoomyBoss extends BossFactory {
                         ocac.bottom = new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
-                                bombFactory.explosionTask().performAction(world, e);
+                                explosionFactory.enemyExplosionTask().performAction(world, e);
                                 e.edit().remove(OnCollisionActionComponent.class);
                             }
                         };

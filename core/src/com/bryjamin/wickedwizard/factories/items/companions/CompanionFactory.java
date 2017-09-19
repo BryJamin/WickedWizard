@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
@@ -33,6 +34,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
+import com.bryjamin.wickedwizard.factories.explosives.ExplosionFactory;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.bryjamin.wickedwizard.utils.CenterMath;
@@ -53,8 +55,11 @@ public class CompanionFactory extends AbstractFactory {
     private static final float orbitalSpeedInDegrees = 1.5f;
     private static final float orbitalSize = Measure.units(5f);
 
+    private ExplosionFactory explosionFactory;
+
     public CompanionFactory(AssetManager assetManager) {
         super(assetManager);
+        this.explosionFactory = new ExplosionFactory(assetManager);
     }
 
 
@@ -111,11 +116,12 @@ public class CompanionFactory extends AbstractFactory {
     }
 
 
-    public ComponentBag hiddenFiringCompanions(ComponentBag fillBag,ParentComponent parentComponent, PositionComponent positionComponent, CollisionBoundComponent cbc){
+    public ComponentBag hiddenFiringCompanions(ComponentBag fillBag, ParentComponent parentComponent, PositionComponent positionComponent, CollisionBoundComponent cbc,
+                                               FiringAIComponent companionAi){
 
         fillBag.add(new ChildComponent(parentComponent));
         fillBag.add(new PositionComponent(cbc.getCenterX(), cbc.getCenterY()));
-        fillBag.add(new FiringAIComponent(0));
+        fillBag.add(companionAi);
         fillBag.add(new FriendlyComponent());
         fillBag.add(new IntangibleComponent());
         fillBag.add(new FollowPositionComponent(positionComponent.position, cbc.bound.width / 2,  cbc.bound.height / 2));
@@ -125,10 +131,42 @@ public class CompanionFactory extends AbstractFactory {
     }
 
 
+    public ComponentBag autoRocket(final Entity player, PositionComponent positionc, final CollisionBoundComponent cbc){
+
+        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc,
+                new FiringAIComponent(FiringAIComponent.AI.TARGET_ENEMY));
+
+        final WeaponComponent weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
+                .damage(1f)
+                .color(ColorResource.COMPANION_ROCKET_COLOR_ONE)
+                .colorChangeComponent(new ColorChangeComponent(
+                        new Color(ColorResource.COMPANION_ROCKET_COLOR_ONE),
+                        new Color(ColorResource.COMPANION_ROCKET_COLOR_TWO),
+                        0.05f,
+                        true))
+                .shotScale(3f)
+                .shotSpeed(Measure.units(150f))
+                .enemy(false)
+                .friendly(true)
+                .fireRate(5.0f)
+                .angles(0)
+                .customOnDeathAction(new OnDeathActionComponent(explosionFactory.friendlyExplosionTask(5)))
+                .build());
+
+        bag.add(weaponComponent);
+
+
+        return bag;
+
+
+    }
+
+
 
     public ComponentBag sideCannonCompanion(final Entity player, PositionComponent positionc, final CollisionBoundComponent cbc) {
 
-        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc);
+        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc,
+                new FiringAIComponent(0));
 
         final WeaponComponent weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
                 .damage(1f)
@@ -167,7 +205,8 @@ public class CompanionFactory extends AbstractFactory {
 
     public ComponentBag megaSideCannonCompanion(final Entity player, PositionComponent positionc, final CollisionBoundComponent cbc) {
 
-        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc);
+        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc,
+                new FiringAIComponent(0));
 
         final WeaponComponent weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
                 .damage(1.25f)
@@ -205,7 +244,8 @@ public class CompanionFactory extends AbstractFactory {
 
     public ComponentBag ghastlyWailCompanion(final Entity player, PositionComponent positionc, final CollisionBoundComponent cbc) {
 
-        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc);
+        ComponentBag bag = hiddenFiringCompanions(new ComponentBag(), player.getComponent(ParentComponent.class), positionc, cbc,
+                new FiringAIComponent(0));
 
         final WeaponComponent weaponComponent = new WeaponComponent(new MultiPistol.PistolBuilder(assetManager)
                 .damage(1f)
@@ -304,7 +344,6 @@ public class CompanionFactory extends AbstractFactory {
 
 
     }
-
 
 
 

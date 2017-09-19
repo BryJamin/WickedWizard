@@ -314,10 +314,15 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void pause() {
-        adventureWorld.pauseWorld();
-        state = ScreenState.PAUSE;
-        pauseWorld = new PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
-                adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
+
+        switch (state){
+            case PLAY:
+                adventureWorld.pauseWorld();
+                state = ScreenState.PAUSE;
+                pauseWorld = new PauseWorld(game, game.batch, game.assetManager, gameport, adventureWorld.getWorld().getSystem(RoomTransitionSystem.class),
+                        adventureWorld.getWorld().getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class));
+                break;
+        }
     }
 
 

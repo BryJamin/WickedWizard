@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.items;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemAutoRockets;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemGhastlyWail;
@@ -836,6 +837,7 @@ public class ItemResource {
     public static class Companion {
 
         public static Item[] companionItems = {
+                new ItemAutoRockets(),
                 new ItemCrownOfBiggaBlobba(),
                 new ItemDangerDetector(),
                 new ItemGhastlyWail(),
@@ -845,6 +847,13 @@ public class ItemResource {
                 new ItemMyVeryOwnStalker(),
                 new ItemSideCannons()
         };
+
+
+        public static ItemLayout autoRockets =  new ItemLayout.ItemValueBuilder("2c468520-0b04-4e5d-b269-e4ce72e6dfd4")
+                .region("item/companion/AutoRockets")
+                .name("Auto Rockets")
+                .description("Occasionally Fire Rockets at Enemies")
+                .build();
 
         public static ItemLayout crownOfBiggaBlobba =  new ItemLayout.ItemValueBuilder("8a6a0e43-10fc-4939-880e-5e69b48173f8")
                 .region("item/companion/CrownOfBiggaBlobba")

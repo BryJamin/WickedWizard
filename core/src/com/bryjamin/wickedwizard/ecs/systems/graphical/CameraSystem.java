@@ -9,9 +9,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
-import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -29,7 +31,11 @@ import com.bryjamin.wickedwizard.utils.Measure;
 public class CameraSystem extends EntitySystem {
 
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.WallComponent> wm;
+    ComponentMapper<WallComponent> wm;
+
+    ComponentMapper<FollowCameraComponent> followCameraComponentMapper;
+    ComponentMapper<PositionComponent> positionComponentMapper;
+
 
     private Camera gamecam;
     private Viewport gamePort;
@@ -71,7 +77,7 @@ public class CameraSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public CameraSystem(Viewport gamePort) {
-        super(Aspect.all(CameraShakeComponent.class));
+        super(Aspect.all(FollowCameraComponent.class, PositionComponent.class));
         this.gamecam = gamePort.getCamera();
         this.gamePort = gamePort;
         this.cameraVelocity = new Vector2();
@@ -159,6 +165,8 @@ public class CameraSystem extends EntitySystem {
 
         world.getSystem(com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.class).movementArea.setPosition(gamecam.position.x - gamePort.getWorldWidth() / 2  +  com.bryjamin.wickedwizard.MainGame.GAME_BORDER,
                 gamecam.position.y - gamePort.getWorldHeight() / 2 +  com.bryjamin.wickedwizard.MainGame.GAME_BORDER);
+
+
     }
 
 

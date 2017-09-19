@@ -6,12 +6,13 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ExplosionComponent;
+import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 
 /**
  * Created by Home on 23/05/2017.
@@ -21,10 +22,18 @@ public class ExplosionSystem extends EntityProcessingSystem {
 
 
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.HealthComponent> hm;
+    ComponentMapper<HealthComponent> hm;
     ComponentMapper<ExplosionComponent> em;
+
     ComponentMapper<FriendlyComponent> fm;
-    ComponentMapper<BlinkOnHitComponent> bm;
+
+    ComponentMapper<PlayerComponent> playerm;
+
+    ComponentMapper<EnemyComponent> enemym;
+
+
+
+
     ComponentMapper<BulletComponent> bulm;
 
 
@@ -35,36 +44,52 @@ public class ExplosionSystem extends EntityProcessingSystem {
 
 
     @Override
-    protected void process(Entity e) {
+    protected boolean checkProcessing() {
+        return this.getEntities().size() > 0;
+    }
+
+    @Override
+    protected void process(Entity explosionEntity) {
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().
-                get(Aspect.all(com.bryjamin.wickedwizard.ecs.components.HealthComponent.class, CollisionBoundComponent.class).one(com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, EnemyComponent.class));
-
-        /*or
-        EntitySubscription subscription = world.getAspectSubscriptionManager().
-                get(Aspect.all(HealthComponent.class, CollisionBoundComponent.class));
-        */
+                get(Aspect.all(HealthComponent.class, CollisionBoundComponent.class).one(PlayerComponent.class, EnemyComponent.class));
 
         IntBag entities = subscription.getEntities();
 
 
-        CollisionBoundComponent explosionBound = cbm.get(e);
+        CollisionBoundComponent explosionBound = cbm.get(explosionEntity);
 
         for(int i = 0; i < entities.size(); i++){
 
             int entity = entities.get(i);
 
+            if(playerm.has(entity) && fm.has(explosionEntity)){
+
+                System.out.println("INSIDE");
+                continue;
+            }
+
+            if(enemym.has(entity) && enemym.has(explosionEntity)){
+
+                System.out.println("INSIDE");
+                continue;
+            }
+
             CollisionBoundComponent cbc = cbm.get(entity);
-            com.bryjamin.wickedwizard.ecs.components.HealthComponent hc = hm.get(entity);
+            HealthComponent hc = hm.get(entity);
 
             if(explosionBound.bound.overlaps(cbc.bound)){
-                hc.applyDamage(em.get(e).damage);
+                System.out.println("Damage overlap is " + em.get(explosionEntity).damage);
+                hc.applyDamage(em.get(explosionEntity).damage);
             }
 
 
         }
 
-        e.edit().remove(ExplosionComponent.class);
+
+        System.out.println("Explosion Damage is " + em.get(explosionEntity).damage);
+
+        explosionEntity.edit().remove(ExplosionComponent.class);
 
 
     }

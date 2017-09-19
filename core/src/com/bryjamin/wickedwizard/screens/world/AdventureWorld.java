@@ -26,8 +26,8 @@ import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -35,7 +35,10 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.BulletSystem;
 import com.bryjamin.wickedwizard.ecs.systems.DoorSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ExplosionSystem;
+import com.bryjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.HealthSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LockSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LuckSystem;
 import com.bryjamin.wickedwizard.ecs.systems.PickUpSystem;
@@ -44,15 +47,20 @@ import com.bryjamin.wickedwizard.ecs.systems.ai.ChallengeTimerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ConditionalActionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.EnemyCollisionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ExpireSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FiringAISystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FollowCameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.MoveToPlayerAISystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.MoveToSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.PhaseSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.ProximitySystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.BlinkOnHitSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraShakeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
@@ -60,6 +68,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.ColorChangeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
@@ -67,6 +76,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.DisablePlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.GrapplePointSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.GrappleSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.BossDefeatUnlockSystem;
@@ -76,12 +86,16 @@ import com.bryjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.RoomTypeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.BounceCollisionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.FrictionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.GravitySystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.GroundCollisionSystem;
+import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.bryjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem;
+import com.bryjamin.wickedwizard.ecs.systems.physics.OrbitalSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
@@ -200,7 +214,7 @@ public class AdventureWorld extends InputAdapter {
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem(),
+                        new MovementSystem(),
                         new ChallengeTimerSystem(),
                         new GravitySystem(),
                         //TODO this is here because lock boxes check for a collision but ground collision sets vertical velocity to 0.
@@ -208,33 +222,33 @@ public class AdventureWorld extends InputAdapter {
                         new CollisionSystem(),
                         new BounceCollisionSystem(),
                         new GroundCollisionSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.physics.OnCollisionActionSystem()
+                        new OnCollisionActionSystem(),
+                        new FollowPositionSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new PhaseSystem(),
                         new ExpireSystem(),
                         new ActionAfterTimeSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.ExplosionSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.physics.OrbitalSystem(),
+                        new ExplosionSystem(),
+                        new OrbitalSystem(),
                         new InCombatSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.ai.ExpiryRangeSystem(),
+                        new ExpiryRangeSystem(),
                         new AnimationSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.BlinkOnHitSystem(),
+                        new BlinkOnHitSystem(),
                         //TODO where bullet system used to be
                         new EnemyCollisionSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
+                        new MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
                         new FindPlayerSystem(player),
-                        new com.bryjamin.wickedwizard.ecs.systems.ai.FiringAISystem(),
                         new GrapplePointSystem(),
                         new LockSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.HealthSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem(),
+                        new HealthSystem(),
+                        new OnDeathSystem(),
                         new ProximitySystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.FindChildSystem(),
+                        new FindChildSystem(),
                         new PickUpSystem(),
                         new LuckSystem(assetManager, random),
-                        new com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.level.RoomTypeSystem(),
+                        new ActionOnTouchSystem(),
+                        new RoomTypeSystem(),
                         new MoveToSystem(),
                         new MoveToPlayerAISystem(),
                         new PlatformSystem(),
@@ -243,7 +257,7 @@ public class AdventureWorld extends InputAdapter {
                         new PlayerInputSystem(gameport),
                         new StateSystem(),
                         new SpawnerSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.input.GrappleSystem(),
+                        new GrappleSystem(),
                         new FrictionSystem(),
                         new ConditionalActionSystem()
                 )
@@ -251,7 +265,8 @@ public class AdventureWorld extends InputAdapter {
                         new DirectionalSystem(),
                         new CameraSystem(gameport),
                         new CameraShakeSystem(gameport),
-                        new FollowPositionSystem(),
+                        new FollowCameraSystem(gameport.getCamera()),
+                        new FiringAISystem(),
                         new FadeSystem(), //Applies any fade before render
                         new ColorChangeSystem(),
                         new RenderingSystem(batch, assetManager, gameport),
@@ -317,7 +332,7 @@ public class AdventureWorld extends InputAdapter {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new FollowPositionComponent(gameport.getCamera().position, Measure.units(30.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new FollowCameraComponent(Measure.units(30.5f), Measure.units(30.5f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());
