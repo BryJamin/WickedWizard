@@ -19,6 +19,7 @@ public class BossDefeatUnlockSystem extends EntitySystem {
 
 
     private MainGame game;
+    private GameCreator gameCreator;
 
     private boolean isActive;
     private boolean isProcessing;
@@ -28,9 +29,10 @@ public class BossDefeatUnlockSystem extends EntitySystem {
      * Creates an entity system that uses the specified aspect as a matcher
      * against entities.
      */
-    public BossDefeatUnlockSystem(MainGame game) {
+    public BossDefeatUnlockSystem(MainGame game, GameCreator gameCreator) {
         super(Aspect.all(BossComponent.class));
         this.game = game;
+        this.gameCreator = gameCreator;
     }
 
     @Override
@@ -48,8 +50,6 @@ public class BossDefeatUnlockSystem extends EntitySystem {
 
 
         if(this.getEntities().size() <= 0){
-
-            GameCreator gameCreator = world.getSystem(ChangeLevelSystem.class).getGameCreator();
 
             if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
 

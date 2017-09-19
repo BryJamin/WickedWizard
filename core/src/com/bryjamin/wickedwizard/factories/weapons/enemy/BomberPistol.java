@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -16,7 +17,7 @@ public class BomberPistol implements Weapon{
 
     private AssetManager assetManager;
 
-    private com.bryjamin.wickedwizard.factories.BombFactory bombFactory;
+    private BombFactory bombFactory;
 
     private float shotScale = 4;
     private float fireRate;
@@ -78,7 +79,7 @@ public class BomberPistol implements Weapon{
     public BomberPistol(PistolBuilder pb){
 
         this.assetManager = pb.assetManager;
-        this.bombFactory = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+        this.bombFactory = new BombFactory(assetManager);
 
         this.shotScale = pb.shotScale;
         this.fireRate = pb.fireRate;

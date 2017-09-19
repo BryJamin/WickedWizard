@@ -2,8 +2,6 @@ package com.bryjamin.wickedwizard.factories.weapons;
 
 import com.badlogic.gdx.math.MathUtils;
 
-import java.util.Random;
-
 /**
  * Created by Home on 14/05/2017.
  */
@@ -11,8 +9,8 @@ import java.util.Random;
 public class CritCalculator {
 
 
-    private static final float accuracyMultiplier = 1;
-    private static final float luckMultiplier = 0.25f;
+    private static final float accuracyMultiplier = 2;
+    private static final float luckMultiplier = 0.5f;
 
     public static boolean isCrit(float critChance, float accuracy, float luck){
         return getCritChance(critChance, accuracy, luck) > MathUtils.random.nextInt(100);

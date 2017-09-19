@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -28,7 +29,7 @@ import com.bryjamin.wickedwizard.utils.Measure;
 
 public class TurretFactory extends EnemyFactory {
 
-    private com.bryjamin.wickedwizard.factories.BombFactory bombFactory;
+    private BombFactory bombFactory;
 
     private final static float sentryHealth = 10;
     private final static float triSentryHealth = 15;
@@ -42,7 +43,7 @@ public class TurretFactory extends EnemyFactory {
 
     public TurretFactory(AssetManager assetManager) {
         super(assetManager);
-        bombFactory = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+        bombFactory = new BombFactory(assetManager);
     }
 
     final float width = Measure.units(10f);

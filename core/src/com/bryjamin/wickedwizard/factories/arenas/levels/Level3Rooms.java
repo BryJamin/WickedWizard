@@ -12,6 +12,7 @@ import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.bryjamin.wickedwizard.factories.enemy.TurretFactory;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -144,7 +145,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 //arena.addEntity(arenaEnemyPlacementFactory.spawnLaserKugel(arena.getWidth() / 2, arena.getHeight() / 2, random.nextBoolean()));
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
                 for(int i = 0; i < 9; i++) arena.addEntity(bf.mine(Measure.units(27.5f + (i * 7.5f)), Measure.units(25f), 0));
 
                 arena.addEntity(bf.mine(Measure.units(12.5f), Measure.units(10f), 0));
@@ -397,7 +398,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(25f), Measure.units(125f), Measure.units(20f), Measure.units(5f)));
 
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
 
                 arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - Measure.units(20f), Measure.units(30f), random.nextBoolean(), random.nextBoolean()));
@@ -422,7 +423,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
                 arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - Measure.units(20f), Measure.units(25f), random.nextBoolean(), random.nextBoolean()));
 
@@ -446,7 +447,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(30f), Measure.units(30f), Measure.units(5f), Measure.units(5f)));
 
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
                 arena.addEntity(bf.multiDirectionalSeaMine(Measure.units(20f), Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() - Measure.units(20f), Measure.units(40f), random.nextBoolean(), random.nextBoolean()));
 
@@ -589,7 +590,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                             }
                         }));
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
 
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
@@ -618,7 +619,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(Measure.units(25f), Measure.units(10f), Measure.units(20f), Measure.units(35f)));
                 arena.addEntity(decorFactory.wallBag(Measure.units(55f), Measure.units(20f), Measure.units(20f), Measure.units(35f)));
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
 
                 for(int i = 0; i < 4; i++) arena.addEntity(bf.mine(Measure.units(47.5f + (i * 7.5f)), Measure.units(10f), 0));
 
@@ -813,7 +814,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                                 ArenaBuilder.wall.DOOR))
                         .buildArena();
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
 
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4 * 3, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
                 arena.addEntity(bf.multiDirectionalSeaMine(arena.getWidth() / 4, arena.getHeight() / 2, random.nextBoolean(), random.nextBoolean()));
@@ -928,7 +929,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 boolean bool = random.nextBoolean();
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
 
                 for(int i = 0; i < 4; i++) {
                     arena.addEntity(decorFactory.grapplePointBag( i % 2 == (bool ? 0 : 1) ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4, Measure.units(45f + (i * 30))));
@@ -1081,7 +1082,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
 
                 boolean leftHasMines = random.nextBoolean();
 
-                com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+                BombFactory bf = new BombFactory(assetManager);
 
                 //Center
                 arena.addEntity(decorFactory.wallBag(Measure.units(50f), Measure.units(0f), Measure.units(20f), Measure.units(10f)));

@@ -8,23 +8,20 @@ import com.bryjamin.wickedwizard.factories.items.ItemLayout;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
-
 /**
- * Created by Home on 05/08/2017.
+ * Created by BB on 19/09/2017.
  */
 
-public class ItemClearSight implements Item {
+public class ItemLeahsScarf implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).range += PresetStatIncrease.minor;
-        player.getComponent(StatComponent.class).accuracy += PresetStatIncrease.minor;
+        player.getComponent(StatComponent.class).range += PresetStatIncrease.major;
+        player.getComponent(StatComponent.class).accuracy += PresetStatIncrease.major;
         return true;
     }
-
     @Override
     public ItemLayout getValues() {
-        return ItemResource.Range.clearSight;
+        return ItemResource.Range.leahsScarf;
     }
-
 }

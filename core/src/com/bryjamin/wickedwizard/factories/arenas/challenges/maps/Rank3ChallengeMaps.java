@@ -18,6 +18,7 @@ import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -43,7 +44,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
     private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
     private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
     private ItemFactory itemFactory;
-    private com.bryjamin.wickedwizard.factories.BombFactory bombFactory;
+    private BombFactory bombFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
     private ArenaSkin arenaSkin = Level.THREE.getArenaSkin();
@@ -57,7 +58,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.itemFactory = new ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
-        this.bombFactory = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+        this.bombFactory = new BombFactory(assetManager);
 
         this.random = random;
     }
@@ -313,7 +314,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
         arena.addEntity(decorFactory.wallBag(leftPosX, Measure.units(20f), Measure.units(20f), Measure.units(35f)));
         arena.addEntity(decorFactory.wallBag(Measure.units(55f), Measure.units(10f), Measure.units(20f), Measure.units(35f)));
 
-        com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+        BombFactory bf = new BombFactory(assetManager);
 
         for(int i = 0; i < 3; i++) arena.addEntity(bf.mine(Measure.units(55f + (i * 7.5f)), Measure.units(45f), 0));
 
@@ -347,7 +348,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
         boolean bool = true;
 
-        com.bryjamin.wickedwizard.factories.BombFactory bf = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+        BombFactory bf = new BombFactory(assetManager);
 
         for(int i = 0; i < 4; i++) {
             arena.addEntity(decorFactory.grapplePointBag( i % 2 == (bool ? 0 : 1) ? arena.getWidth() / 4 * 3 : arena.getWidth() / 4, Measure.units(45f + (i * 30))));

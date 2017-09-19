@@ -263,7 +263,7 @@ public class AdventureWorld extends InputAdapter {
                         new MusicSystem(),
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(gameCreator, jigsawGenerator),
-                        new BossDefeatUnlockSystem(game),
+                        new BossDefeatUnlockSystem(game, gameCreator),
                         new UnlockMessageSystem(game),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),

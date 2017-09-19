@@ -81,6 +81,24 @@ public class StatComponent extends Component {
     }
 
 
+    public void increaseMaxHealth(int i){
+
+        try {
+
+            if(i % 2 != 0){
+                i += 1;
+                throw new Exception("Error in StatComponent MaxHealth Increase. MaxHealth Increase is Not An Even Number");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+        }
+
+        maxHealth += i;
+    }
+
+
     public void setHealthMarkTwo(int health){
 
         try {

@@ -5,7 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
-import com.bryjamin.wickedwizard.factories.BombFactory;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.AlurmFactory;
 import com.bryjamin.wickedwizard.factories.enemy.AmoebaFactory;

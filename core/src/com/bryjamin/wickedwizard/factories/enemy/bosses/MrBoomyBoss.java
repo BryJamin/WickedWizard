@@ -27,7 +27,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
-import com.bryjamin.wickedwizard.factories.BombFactory;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.BomberPistol;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MinePistol;
 import com.bryjamin.wickedwizard.utils.CenterMath;

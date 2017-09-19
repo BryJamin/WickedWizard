@@ -111,20 +111,6 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
                 arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
-/*
-
-
-                ComponentBag saveGame = arena.createArenaBag();
-                saveGame.add(new ActionAfterTimeComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        world.getSystem(UnlockMessageSystem.class).createUnlockMessage(ChallengesResource.LEVEL_5_COMPLETE);
-                    }
-
-                }));
-*/
-
-
 
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50f)));
                 arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));

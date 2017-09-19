@@ -3,7 +3,6 @@ package com.bryjamin.wickedwizard.factories.items;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemGhastlyWail;
@@ -40,10 +39,14 @@ import com.bryjamin.wickedwizard.factories.items.passives.damage.rankTwo.ItemMin
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemElasticity;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemSwiftShot;
 import com.bryjamin.wickedwizard.factories.items.passives.firerate.ItemTacticalKnitwear;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemDilation;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemDisappointment;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHealingTonic;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHealingTonicPlus;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHealthUp;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHyperTrophy;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemIronFragment;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemPhisScarf;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
 import com.bryjamin.wickedwizard.factories.items.passives.health.Medicine;
@@ -63,6 +66,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFireSight;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemFocusShot;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemGoldenScope;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLaserScope;
+import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLeahsScarf;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemLostLettersRangeFireRate;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemNeatCube;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemQuadonometry;
@@ -73,6 +77,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemLeafCutte
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemMiniShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemPodShot;
 import com.bryjamin.wickedwizard.factories.items.passives.shotsize.ItemWideLens;
+import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBlueEyeGems;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBoringRock;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemBubble;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeather;
@@ -105,32 +110,6 @@ public class ItemResource {
         allItems.addAll(ShotSpeed.shotSpeedItems);
         allItems.addAll(Speed.speedItems);
         allItems.addAll(Companion.companionItems);
-
-
-
-
-        //Rank 5 Challenges
-        ShotSpeed.momentum.setChallengeId(ChallengesResource.Rank5Challenges.rank5UltimateTimeTrail);
-        ShotSize.cannonCube.setChallengeId(ChallengesResource.Rank5Challenges.rank5NotUltimateArena);
-        Luck.iWishYouWell.setChallengeId(ChallengesResource.Rank5Challenges.bossRush);
-        Companion.liasCrown.setChallengeId(ChallengesResource.Rank5Challenges.perfectBossRush);
-
-
-
-
-
-        //LEVEL 2 COMPLETE
-        ShotSize.leafCutter.setChallengeId(ChallengesResource.LEVEL_2_COMPLETE);
-
-
-        //LEVEL 3 COMPLETE
-        Range.laserScope.setChallengeId(ChallengesResource.LEVEL_3_COMPLETE);
-
-
-
-        //Level 4 COMPLETE
-        Companion.megaSideCannons.setChallengeId(ChallengesResource.LEVEL_4_COMPLETE);
-
     }
 
     public static Array<Item> getAllItems() {
@@ -139,8 +118,6 @@ public class ItemResource {
         all.addAll(allItems);
         return all;
     }
-
-
 
 
     //Accuracy
@@ -422,16 +399,52 @@ public class ItemResource {
     public static class Health {
 
         public static Item[] healthItems = {
+                new ItemDilation(),
                 new ItemDisappointment(),
+                new ItemHealingTonic(),
+                new ItemHealingTonicPlus(),
                 new ItemHealthUp(),
                 new ItemHyperTrophy(),
                 new ItemIronFragment(),
+                new ItemPhisScarf(),
                 new ItemSarcasticLion(),
                 new ItemSootheNote(),
                 new Medicine()};
 
 
+        public static ItemLayout dilation = new ItemLayout.ItemValueBuilder("13d4b00e-25f3-4ac6-9048-e9b395ee9fde")
+                .itemTypes(ItemType.ITEM)
+                .region("item/Dilation")
+                .name("Dilation")
+                .description("Woah")
+                .build();
+
+        public static ItemLayout disappointment = new ItemLayout.ItemValueBuilder("edbd9f26-1b15-4f8d-a15d-f620066e0154")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
+                .region("item/Disappointment")
+                .name("Disappointment")
+                .description("...")
+                .build();
+
+
+        public static ItemLayout healingTonic = new ItemLayout.ItemValueBuilder("a03fc429-5bbd-41ff-846b-9c2040f40164")
+                .itemTypes(ItemType.ITEM, ItemType.SHOP)
+                .region("item/HealingTonic")
+                .name("Healing Tonic")
+                .description("Heals Minor Wounds and Increases Luck")
+                .build();
+
+        public static ItemLayout healingTonicPlus = new ItemLayout.ItemValueBuilder("2cb10f91-6c0f-46b1-a854-9ddbbd0151b3")
+                .itemTypes(ItemType.ITEM, ItemType.SHOP)
+                .region("item/HealingTonicPlus")
+                .name("Healing Tonic Plus")
+                .description("Heals Major Wounds and Increases Luck")
+                .build();
+
+
+
         public static ItemLayout healthUp = new ItemLayout.ItemValueBuilder("2239cd0d-fad6-449e-848b-f6eaec7e3349")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/HealthUp")
                 .name("Health Up!")
                 .description("Healthed Up!")
@@ -446,12 +459,22 @@ public class ItemResource {
                 .build();
 
         public static ItemLayout ironFragment = new ItemLayout.ItemValueBuilder("5085bdd2-81d9-11e7-bb31-be2e44b06b34")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/IronFragment")
                 .name("Iron Fragment")
                 .description("Health+ Armor+")
                 .build();
 
+
+        public static ItemLayout phisScarf = new ItemLayout.ItemValueBuilder("68e06af7-fc92-412b-943d-fd767488ad94")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
+                .region("item/PhisScarf")
+                .name("Phi's Scarf")
+                .description("It's Comforting")
+                .build();
+
         public static ItemLayout sarcasticLion = new ItemLayout.ItemValueBuilder("5085becc-81d9-11e7-bb31-be2e44b06b34")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/SarcasticLion")
                 .name("Sarcastic Lion")
                 .description("Rawr")
@@ -459,22 +482,19 @@ public class ItemResource {
 
 
         public static ItemLayout sootheNote = new ItemLayout.ItemValueBuilder("5085bf9e-81d9-11e7-bb31-be2e44b06b34")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/SootheNote")
                 .name("Soothe Note")
                 .description("Soothing")
                 .build();
 
         public static ItemLayout medicine = new ItemLayout.ItemValueBuilder("5085c066-81d9-11e7-bb31-be2e44b06b34")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/Medicine")
                 .name("Medicine")
                 .description("Health+")
                 .build();
 
-        public static ItemLayout disappointment = new ItemLayout.ItemValueBuilder("edbd9f26-1b15-4f8d-a15d-f620066e0154")
-                .region("item/Disappointment")
-                .name("Disappointment")
-                .description("...")
-                .build();
 
 
 
@@ -576,6 +596,7 @@ public class ItemResource {
                 new ItemFocusShot(),
                 new ItemGoldenScope(),
                 new ItemLaserScope(),
+                new ItemLeahsScarf(),
                 new ItemLostLettersRangeFireRate(),
                 new ItemNeatCube(),
                 new ItemQuadonometry(),
@@ -591,7 +612,7 @@ public class ItemResource {
         public static ItemLayout clearSight = new ItemLayout.ItemValueBuilder("8074c97a-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/ClearSight")
                 .name("Clear Sight")
-                .description("Range++ Accuracy+")
+                .description("Range+ Accuracy+")
                 .build();
 
         public static ItemLayout focusShot = new ItemLayout.ItemValueBuilder("1731028e-86e4-4907-b656-847d793579f2")
@@ -619,6 +640,12 @@ public class ItemResource {
                 .region("item/LaserScope")
                 .name("Laser Scope")
                 .description("Range+++")
+                .build();
+
+        public static ItemLayout leahsScarf = new ItemLayout.ItemValueBuilder("882d4670-ad95-4cf1-ac50-8f32345dc08b")
+                .region("item/LeahsScarf")
+                .name("Leah's Scarf")
+                .description("The First")
                 .build();
 
         public static ItemLayout lostLettersRangeFireRate = new ItemLayout.ItemValueBuilder("8074d488-81d9-11e7-bb31-be2e44b06b34")
@@ -713,6 +740,7 @@ public class ItemResource {
     public static class ShotSpeed {
 
         public static Item[] shotSpeedItems = {
+                new ItemBlueEyeGems(),
                 new ItemBoringRock(),
                 new ItemBubble(),
                 new ItemDullFeather(),
@@ -720,6 +748,12 @@ public class ItemResource {
                 new ItemMomentum(),
                 new ItemShinyFeather()};
 
+
+        public static ItemLayout blueEyeGems = new ItemLayout.ItemValueBuilder("1fba9964-bb31-4cfb-8201-56ccb206389b")
+                .region("item/BlueEyeGems")
+                .name("Blue-Eye Gems")
+                .description("Note: Are Not Blue Eye-Gems")
+                .build();
 
         public static ItemLayout boringRock = new ItemLayout.ItemValueBuilder("ad70fbce-81d9-11e7-bb31-be2e44b06b34")
                 .region("item/BoringRock")
@@ -749,6 +783,12 @@ public class ItemResource {
                 .region("item/Momentum")
                 .name("Momentum")
                 .description("ShotSpeed++ Speed+ Damage+")
+                .build();
+
+        public static ItemLayout personalBubble = new ItemLayout.ItemValueBuilder("5d26b473-36d5-455d-b928-2f28f3ccdfa6")
+                .region("item/PersonalBubble")
+                .name("Personal Bubble")
+                .description("ShotSpeed++")
                 .build();
 
         public static ItemLayout shinyFeather = new ItemLayout.ItemValueBuilder("ad710358-81d9-11e7-bb31-be2e44b06b34")

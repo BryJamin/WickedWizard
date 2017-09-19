@@ -1,4 +1,4 @@
-package com.bryjamin.wickedwizard.factories;
+package com.bryjamin.wickedwizard.factories.explosives;
 
 import com.artemis.Entity;
 import com.artemis.World;
@@ -30,6 +30,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
@@ -49,8 +50,6 @@ public class BombFactory extends AbstractFactory {
     private Giblets.GibletBuilder gibletBuilder;
 
     private static final float mineSpeed = Measure.units(10f);
-
-
 
 
     private static final float defaultExplosionSize = Measure.units(20f);

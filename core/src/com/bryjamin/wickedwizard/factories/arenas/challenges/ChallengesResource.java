@@ -38,7 +38,7 @@ public class ChallengesResource {
         addChallenge(Rank2Challenges.PERFECT_KUGEL, ItemResource.Companion.miniSpinnyThingie);
 
         addChallenge(Rank3Challenges.RANK_THREE_TIME_TRAIL, ItemResource.Armor.angrySlimeCoat);
-        addChallenge(Rank3Challenges.RANK_THREE_ARENA, ItemResource.Accuracy.CriticalEye);
+        addChallenge(Rank3Challenges.RANK_THREE_ARENA, ItemResource.Accuracy.CriticalEye, ItemResource.Companion.megaSideCannons);
         addChallenge(Rank3Challenges.PERFECT_BOOMY, ItemResource.Luck.threeDimensionalGold);
         addChallenge(Rank3Challenges.PERFECT_AJIR, ItemResource.Damage.statueOfAjir);
 
