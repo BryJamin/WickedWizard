@@ -48,7 +48,9 @@ import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHealthUp;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemHyperTrophy;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemIronFragment;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemPhisScarf;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemPoisonedDrop;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSarcasticLion;
+import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSecondWind;
 import com.bryjamin.wickedwizard.factories.items.passives.health.ItemSootheNote;
 import com.bryjamin.wickedwizard.factories.items.passives.health.Medicine;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemEnigmaticShot;
@@ -85,6 +87,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemDullFeat
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemLostLettersShotSpeedAccuracy;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemMomentum;
 import com.bryjamin.wickedwizard.factories.items.passives.shotspeed.ItemShinyFeather;
+import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemAbstractLeaf;
 import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemHotStep;
 import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemQuickStep;
 import com.bryjamin.wickedwizard.factories.items.passives.speed.ItemQuickness;
@@ -408,7 +411,9 @@ public class ItemResource {
                 new ItemHyperTrophy(),
                 new ItemIronFragment(),
                 new ItemPhisScarf(),
+                new ItemPoisonedDrop(),
                 new ItemSarcasticLion(),
+                new ItemSecondWind(),
                 new ItemSootheNote(),
                 new Medicine()};
 
@@ -474,11 +479,25 @@ public class ItemResource {
                 .description("It's Comforting")
                 .build();
 
+        public static ItemLayout poisonedDrop = new ItemLayout.ItemValueBuilder("de3b5e62-4c7b-4841-b506-93a51bf9a087")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
+                .region("item/PurpleHeart")
+                .name("Poisoned Drop")
+                .description("Why Did You Drink That?!")
+                .build();
+
         public static ItemLayout sarcasticLion = new ItemLayout.ItemValueBuilder("5085becc-81d9-11e7-bb31-be2e44b06b34")
                 .itemTypes(ItemType.ITEM, ItemType.BOSS)
                 .region("item/SarcasticLion")
                 .name("Sarcastic Lion")
                 .description("Rawr")
+                .build();
+
+        public static ItemLayout secondWind = new ItemLayout.ItemValueBuilder("5abcf470-9e35-4ddd-9b8f-ca63232876fb")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
+                .region("item/SecondWind")
+                .name("Second Wind")
+                .description("You Feel Invigorated")
                 .build();
 
 
@@ -805,10 +824,19 @@ public class ItemResource {
     public static class Speed {
 
         public static Item[] speedItems = {
+                new ItemAbstractLeaf(),
                 new ItemHotStep(),
                 new ItemQuickness(),
                 new ItemQuickStep()
         };
+
+        public static ItemLayout abstractLeaf = new ItemLayout.ItemValueBuilder("394d3ba7-7467-41f8-a68f-00179c95c2ba")
+                .itemTypes(ItemType.SHOP, ItemType.ITEM)
+                .region("item/AbstractLeaf")
+                .name("Abstract Leaf")
+                .description("Speed++")
+                .build();
+
 
         public static ItemLayout hotStep = new ItemLayout.ItemValueBuilder("b7368b6c-96e4-4de1-8f41-bd7a6a36dc3d")
                 .itemTypes(ItemType.SHOP, ItemType.ITEM)

@@ -40,7 +40,7 @@ public class FiringAISystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public FiringAISystem() {
-        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.WeaponComponent.class, com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.class));
+        super(Aspect.all(PositionComponent.class, WeaponComponent.class, FiringAIComponent.class));
         enemyTargets = Aspect.all(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class, CollisionBoundComponent.class);
     }
 

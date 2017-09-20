@@ -95,7 +95,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(1);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealth(1);
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 world.getSystem(LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();
@@ -219,7 +219,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(4);
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(4);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealth(4);
                 e.deleteFromWorld();
             }
         }));
@@ -279,7 +279,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(1);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealth(1);
                 world.getSystem(LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();
             }
@@ -336,7 +336,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(1);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealth(1);
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).crit = 0;
                 world.getSystem(LuckSystem.class).turnOffEnemyDrops();
                 e.deleteFromWorld();

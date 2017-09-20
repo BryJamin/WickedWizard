@@ -101,7 +101,7 @@ public class OnLoadFactory {
                         textureFontComponent.text = String.format(Locale.getDefault(), "%.0f", challengeTimerComponent.time);
 
                         if(challengeTimerComponent.time <= 0){
-                            world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealthMarkTwo(-1);
+                            world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealth(-1);
                             e.deleteFromWorld();
                         }
 

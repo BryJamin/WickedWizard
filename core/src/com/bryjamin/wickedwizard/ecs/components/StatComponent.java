@@ -96,10 +96,16 @@ public class StatComponent extends Component {
         }
 
         maxHealth += i;
+
+        if(health > maxHealth){
+            health = maxHealth;
+        }
+
+
     }
 
 
-    public void setHealthMarkTwo(int health){
+    public void setHealth(int health){
 
         try {
 
@@ -132,7 +138,13 @@ public class StatComponent extends Component {
 
         }
 
+
+
         this.maxHealth = maxHealth;
+
+        if(health > maxHealth){
+            health = maxHealth;
+        }
 
     }
 

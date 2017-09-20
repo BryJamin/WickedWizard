@@ -156,7 +156,7 @@ public class PlayerFactory extends AbstractFactory {
 
         if(id.equals(PlayerIDs.XI_ID)){
             statComponent.maxHealth = 4;
-            statComponent.setHealthMarkTwo(4);
+            statComponent.setHealth(4);
             statComponent.damage = 1;
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.XI_WALK), Animation.PlayMode.LOOP));
@@ -169,7 +169,7 @@ public class PlayerFactory extends AbstractFactory {
         } else if(id.equals(PlayerIDs.PHI_ID)) {
 
             statComponent.maxHealth = 8;
-            statComponent.setHealthMarkTwo(8);
+            statComponent.setHealth(8);
             statComponent.damage -= PresetStatIncrease.minor;
             statComponent.fireRate -= PresetStatIncrease.minor;
             statComponent.speed -= PresetStatIncrease.Speed.minor;
@@ -184,7 +184,7 @@ public class PlayerFactory extends AbstractFactory {
         } else if(id.equals(PlayerIDs.TESS_ID)) {
 
             statComponent.maxHealth = 2;
-            statComponent.setHealthMarkTwo(2);
+            statComponent.setHealth(2);
 
             statComponent.armor = 1;
 
@@ -199,7 +199,7 @@ public class PlayerFactory extends AbstractFactory {
 
         } else { //LEAH
             statComponent.maxHealth = 6;
-            statComponent.setHealthMarkTwo(6);
+            statComponent.setHealth(6);
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.BLOCK_BLINK)));
