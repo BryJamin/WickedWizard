@@ -67,12 +67,6 @@ public class CircleBlast implements Weapon {
         return firerate;
     }
 
-    @Override
-    public float getBaseDamage() {
-        return 0;
-    }
-
-
     public void setLeft(boolean left){
         this.left = left;
     }

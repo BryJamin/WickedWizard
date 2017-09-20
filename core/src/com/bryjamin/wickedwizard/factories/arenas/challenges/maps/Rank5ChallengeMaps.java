@@ -278,6 +278,13 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
+
+/*
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(8);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealth(8);
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).armor = 8;*/
+
+
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setMaxHealth(2);
                 world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).setHealth(1);
                 world.getSystem(LuckSystem.class).turnOffEnemyDrops();

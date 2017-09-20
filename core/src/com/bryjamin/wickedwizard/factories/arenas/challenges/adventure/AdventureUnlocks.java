@@ -57,10 +57,10 @@ public class AdventureUnlocks {
 
 
         putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_1_COMPLETE, XI_1_UNLOCK, ItemResource.Health.secondWind);
-        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_2_COMPLETE, XI_2_UNLOCK, ItemResource.ShotSpeed.personalBubble);
-        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_3_COMPLETE, XI_3_UNLOCK, ItemResource.Health.poisonedDrop);
-        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_4_COMPLETE, XI_4_UNLOCK, ItemResource.Health.healingTonicPlus);
-        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_5_COMPLETE, XI_5_UNLOCK, ItemResource.Health.phisScarf);
+        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_2_COMPLETE, XI_2_UNLOCK, ItemResource.Health.poisonedDrop);
+        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_3_COMPLETE, XI_3_UNLOCK, ItemResource.Companion.xisGlare);
+        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_4_COMPLETE, XI_4_UNLOCK, ItemResource.Armor.bookOfXi);
+        putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_5_COMPLETE, XI_5_UNLOCK, ItemResource.Armor.xisOldScarf);
 
 
     }

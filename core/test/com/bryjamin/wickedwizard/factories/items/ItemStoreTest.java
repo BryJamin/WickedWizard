@@ -129,6 +129,7 @@ public class ItemStoreTest extends GameTest {
         int luck = 0;
         int range = 0;
         int shotspeed = 0;
+        int shotSize = 0;
         int accuracy = 0;
         int companion = 0;
 
@@ -143,6 +144,7 @@ public class ItemStoreTest extends GameTest {
         int nluck = 0;
         int nrange = 0;
         int nshotspeed = 0;
+        int nshotSize = 0;
         int naccuracy = 0;
         int ncompanion = 0;
 
@@ -179,6 +181,7 @@ public class ItemStoreTest extends GameTest {
             speed += (after.speed > pre.speed) ? 1 : 0;
             luck += (after.luck > pre.luck) ? 1 : 0;
             shotspeed += (after.shotSpeed > pre.shotSpeed) ? 1 : 0;
+            shotSize += (after.shotSize > pre.shotSize) ? 1 : 0;
             accuracy += (after.accuracy > pre.accuracy) ? 1 : 0;
             range += (after.range > pre.range) ? 1 : 0;
 
@@ -193,6 +196,7 @@ public class ItemStoreTest extends GameTest {
             nspeed += (after.speed < pre.speed) ? 1 : 0;
             nluck += (after.luck < pre.luck) ? 1 : 0;
             nshotspeed += (after.shotSpeed < pre.shotSpeed) ? 1 : 0;
+            nshotSize += (after.shotSize < pre.shotSize) ? 1 : 0;
             naccuracy += (after.accuracy < pre.accuracy) ? 1 : 0;
             nrange += (after.range < pre.range) ? 1 : 0;
 
@@ -213,6 +217,7 @@ public class ItemStoreTest extends GameTest {
         System.out.println("Total Items increasing speed: " + speed);
         System.out.println("Total Items increasing luck: " + luck);
         System.out.println("Total Items increasing shotspeed: " + shotspeed);
+        System.out.println("Total Items increasing shotSize: " + shotSize);
         System.out.println("Total Items increasing accuracy: " + accuracy);
         System.out.println("Total Items increasing range: " + range);
         System.out.println("Total Companions: " + companion);
@@ -228,6 +233,7 @@ public class ItemStoreTest extends GameTest {
         System.out.println("Total Items decreasing speed: " + nspeed);
         System.out.println("Total Items decreasing luck: " + nluck);
         System.out.println("Total Items decreasing shotspeed: " + nshotspeed);
+        System.out.println("Total Items decreasing shotSize: " + nshotSize);
         System.out.println("Total Items decreasing accuracy: " + naccuracy);
         System.out.println("Total Items decreasing range: " + nrange);
 

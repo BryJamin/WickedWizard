@@ -272,10 +272,6 @@ public class MrBoomyBoss extends BossFactory {
             return airBomberWeaponFireRate;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
     }
 
 
@@ -315,10 +311,6 @@ public class MrBoomyBoss extends BossFactory {
             return groundBomberWeaponFireRate;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
     }
 
 

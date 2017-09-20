@@ -12,6 +12,7 @@ import com.bryjamin.wickedwizard.factories.items.companions.ItemMegaSideCannons;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemSideCannons;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemXisGlare;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemBlazingShades;
@@ -22,6 +23,7 @@ import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemLensLessM
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemSharpShootersDiary;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemAngrySlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemArmorUp;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemBookOfXi;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemIronBody;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSmoulderingArmor;
@@ -206,6 +208,7 @@ public class ItemResource {
         public static Item[] armorItems = {
                 new ItemAngrySlimeCoat(),
                 new ItemArmorUp(),
+                new ItemBookOfXi(),
                 new ItemIronBody(),
                 new ItemSlimeCoat(),
                 new ItemSmoulderingArmor(),
@@ -227,6 +230,13 @@ public class ItemResource {
                 .name("Armor Up!")
                 .description("Armored Up!")
                 .build();
+
+        public static ItemLayout bookOfXi = new ItemLayout.ItemValueBuilder("3d443ef3-d5b2-47c3-93c6-f3d1cea3d5cf")
+                .region("item/BookOfXi")
+                .name("Book Of Xi")
+                .description("Trades Health for Armor")
+                .build();
+
 
 
         public static ItemLayout ironBody = new ItemLayout.ItemValueBuilder("795d5bee-81d8-11e7-bb31-be2e44b06b34")
@@ -283,6 +293,14 @@ public class ItemResource {
                 .name("White Goggles")
                 .description("Accuracy+")
                 .build();
+
+
+        public static ItemLayout xisOldScarf = new ItemLayout.ItemValueBuilder("a8ed2705-4495-445c-b26e-d23831c9b0a5")
+                .region("item/XisOldScarf")
+                .name("Xi's Old Scarf")
+                .description("Grants Crit Based on Your Current Armor")
+                .build();
+
 
 
 
@@ -873,7 +891,8 @@ public class ItemResource {
                 new ItemMegaSideCannons(),
                 new ItemMiniSpinnyThingie(),
                 new ItemMyVeryOwnStalker(),
-                new ItemSideCannons()
+                new ItemSideCannons(),
+                new ItemXisGlare()
         };
 
 
@@ -937,9 +956,12 @@ public class ItemResource {
                 .build();
 
 
-
-
-
+        public static ItemLayout xisGlare =  new ItemLayout.ItemValueBuilder("511ebb70-4a7a-4420-9b98-9f534fc2f1de")
+                .itemTypes(ItemType.ITEM, ItemType.BOSS)
+                .region("item/companion/XisGlare")
+                .name("Xi's Glare")
+                .description("Piercing")
+                .build();
 
     }
 

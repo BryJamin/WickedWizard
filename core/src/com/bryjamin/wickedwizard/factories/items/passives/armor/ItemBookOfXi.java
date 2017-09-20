@@ -6,26 +6,31 @@ import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.ItemLayout;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
-import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
-
 
 /**
- * Created by BB on 27/08/2017.
+ * Created by BB on 20/09/2017.
  */
 
-public class ItemWandasScarf implements Item {
+public class ItemBookOfXi implements Item {
 
     @Override
     public boolean applyEffect(World world, Entity player) {
-        player.getComponent(StatComponent.class).armor += 1;
-        player.getComponent(StatComponent.class).fireRate += PresetStatIncrease.minor;
-        player.getComponent(StatComponent.class).shotSpeed += PresetStatIncrease.minor;
-        player.getComponent(StatComponent.class).crit = 1.0f;
+
+        StatComponent statComponent = player.getComponent(StatComponent.class);
+
+        for(int i = 0; i < 3; i++){
+            if(statComponent.getHealth() > 1){
+                statComponent.increaseHealth(-1);
+                statComponent.armor += 1;
+            } else {
+                break;
+            }
+        }
         return true;
     }
 
     @Override
     public ItemLayout getValues() {
-        return ItemResource.Armor.wandasScarf;
+        return ItemResource.Armor.bookOfXi;
     }
 }

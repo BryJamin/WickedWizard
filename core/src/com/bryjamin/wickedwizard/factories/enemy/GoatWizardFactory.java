@@ -249,10 +249,6 @@ public class GoatWizardFactory extends EnemyFactory {
             return fireRate;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 1;
-        }
     }
 
 

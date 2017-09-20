@@ -123,9 +123,5 @@ public class BomberPistol implements Weapon{
         return fireRate;
     }
 
-    @Override
-    public float getBaseDamage() {
-        return 0;
-    }
 
 }

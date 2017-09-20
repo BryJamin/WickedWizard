@@ -263,9 +263,5 @@ public class MultiPistol implements Weapon {
         return fireRate;
     }
 
-    @Override
-    public float getBaseDamage() {
-        return damage;
-    }
 
 }

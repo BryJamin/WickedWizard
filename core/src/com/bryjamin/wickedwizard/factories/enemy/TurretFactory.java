@@ -197,10 +197,7 @@ public class TurretFactory extends EnemyFactory {
                 return turretWeaponFireRate;
             }
 
-            @Override
-            public float getBaseDamage() {
-                return 0;
-            }
+
         }, turretWeaponFireRate);
         bag.add(wc);
 
@@ -312,10 +309,6 @@ public class TurretFactory extends EnemyFactory {
                 return turretWeaponFireRate;
             }
 
-            @Override
-            public float getBaseDamage() {
-                return 0;
-            }
         }, turretWeaponFireRate);
         bag.add(wc);
 

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.AdditionalWeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
@@ -142,12 +143,14 @@ public class PlayerFactory extends AbstractFactory {
         StatComponent statComponent = new StatComponent();
         CurrencyComponent currencyComponent = new CurrencyComponent(startingMoney);
         WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager, statComponent), pauseBeforeShooting);
+        AdditionalWeaponComponent additionalWeaponComponent = new AdditionalWeaponComponent();
 
         TextureRegionComponent trc;
 
         bag.add(statComponent);
         bag.add(currencyComponent);
         bag.add(wc);
+        bag.add(additionalWeaponComponent);
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
 

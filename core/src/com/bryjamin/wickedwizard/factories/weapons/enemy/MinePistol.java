@@ -103,9 +103,4 @@ public class MinePistol implements Weapon {
         return fireRate;
     }
 
-    @Override
-    public float getBaseDamage() {
-        return 0;
-    }
-
 }

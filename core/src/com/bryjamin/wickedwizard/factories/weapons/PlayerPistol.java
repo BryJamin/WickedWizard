@@ -112,11 +112,6 @@ public class PlayerPistol implements Weapon{
         return com.bryjamin.wickedwizard.factories.weapons.CritCalculator.calculateFireRate(defaultFireRate, playerStats.fireRate);
     }
 
-    @Override
-    public float getBaseDamage() {
-        return baseDamage;
-    }
-
 
     public float getRange() {
         return range;

@@ -51,7 +51,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
-import com.bryjamin.wickedwizard.factories.items.passives.health.ItemPoisonedDrop;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemXisOldScarf;
 import com.bryjamin.wickedwizard.factories.items.pickups.MoneyPlus1;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
@@ -237,7 +237,7 @@ public class ItemFactory extends AbstractFactory {
 
 
                 Item altarItem = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateRoomItem(itemTypes);
-                //altarItem = new ItemLiasCrown();
+                //altarItem = new ItemAutoRockets();
 
                 e.getComponent(AltarComponent.class).pickUp = altarItem;
 
@@ -269,7 +269,7 @@ public class ItemFactory extends AbstractFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                Item item = new ItemPoisonedDrop();
+                Item item = new ItemXisOldScarf();
 
                 e.getComponent(AltarComponent.class).pickUp = item;
 
