@@ -107,6 +107,10 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         }
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+    }
 
     @Override
     protected void process(Entity e) {
@@ -152,6 +156,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     if (input.y <= movementArea.y + movementArea.getHeight() && !mtc.hasTarget()) {
                         movePlayer(input.x, cbc.getCenterX(), ac, vc, sc);
                     }
+                } else {
+                   playerInput.movementInputPoll = null;
                 }
             }
 
@@ -207,6 +213,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     }
 
 
+                } else {
+                    playerInput.firingInputPoll = null;
                 }
             } else {
 

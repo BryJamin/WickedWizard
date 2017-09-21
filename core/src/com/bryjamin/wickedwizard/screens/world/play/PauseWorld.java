@@ -215,7 +215,7 @@ public class PauseWorld implements WorldContainer {
                 {MenuStrings.Stats.RANGE, plusMinusStatText(playerStats.range)},
                 {MenuStrings.Stats.ACCURACY, plusMinusStatText(playerStats.accuracy)},
                 {MenuStrings.Stats.LUCK, plusMinusStatText(playerStats.luck)},
-                {MenuStrings.Stats.SPEED, String.format(Locale.getDefault(), "%.2f", 100 + playerStats.speed * 100) + "%"},
+                {MenuStrings.Stats.SPEED, String.format(Locale.getDefault(), "%.0f", 100 + playerStats.speed * 100) + "%"},
                 {MenuStrings.Stats.CRIT, String.format(Locale.getDefault(), "%.2f", CritCalculator.getCritChance(playerStats.crit, playerStats.accuracy, playerStats.luck)) + "%"},
         };
 
@@ -247,7 +247,8 @@ public class PauseWorld implements WorldContainer {
 
 
     private String plusMinusStatText(float stat){
-        return String.format(Locale.getDefault(), (stat >= 0 ? "+" : "") + "%.0f", stat);
+        float f = 100 + (stat * 10.0f);
+        return String.format(Locale.getDefault(),"%.0f", f) + "%";
     }
 
 
