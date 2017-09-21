@@ -27,6 +27,7 @@ import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 08/07/2017.
@@ -236,8 +237,8 @@ public class BossAmalgama extends BossFactory {
 
 
 
-    public com.bryjamin.wickedwizard.utils.Pair<Action, Condition> bouceBackTaskConditionPair(final float pushAngleInDegrees){
-        return new com.bryjamin.wickedwizard.utils.Pair<Action, Condition>(
+    public Pair<Action, Condition> bouceBackTaskConditionPair(final float pushAngleInDegrees){
+        return new Pair<Action, Condition>(
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {

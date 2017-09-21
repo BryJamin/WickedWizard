@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker
 import com.bryjamin.wickedwizard.factories.items.companions.ItemSideCannons;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemTesserWreck;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemXisGlare;
+import com.bryjamin.wickedwizard.factories.items.conditionals.ItemLabyrinthCodex;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemBlazingShades;
@@ -122,6 +123,7 @@ public class ItemResource {
         allItems.addAll(ShotSpeed.shotSpeedItems);
         allItems.addAll(Speed.speedItems);
         allItems.addAll(Companion.companionItems);
+        allItems.addAll(Conditionals.conditionalItems);
     }
 
     public static Array<Item> getAllItems() {
@@ -1011,6 +1013,22 @@ public class ItemResource {
 
     }
 
+
+    public static class Conditionals {
+
+        public static Item[] conditionalItems = {
+                new ItemLabyrinthCodex(),
+        };
+
+
+        public static ItemLayout labyrinthCodex =  new ItemLayout.ItemValueBuilder("cd088912-2721-4a53-bf02-8afdc7514a6a")
+                .itemTypes(ItemType.ITEM, ItemType.SHOP)
+                .region("item/LabyrinthCodex")
+                .name("Labyrinth Codex")
+                .description("Reveals Areas Of The Map")
+                .build();
+
+    }
 
 
     public static class PickUp {

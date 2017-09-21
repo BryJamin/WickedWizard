@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 30/06/2017.
@@ -128,7 +129,7 @@ public class BiggaBlobbaBoss extends BossFactory {
             }
         };
 
-        com.bryjamin.wickedwizard.utils.Pair<Task, Condition> angryTransitionPhase = new com.bryjamin.wickedwizard.utils.Pair<Task, Condition>(phaseChangeJump(), landingCondition(angryTransitionTime));
+        Pair<Task, Condition> angryTransitionPhase = new Pair<Task, Condition>(phaseChangeJump(), landingCondition(angryTransitionTime));
 
         com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent pc = new com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent();
         pc.addPhase(angryTransitionPhase);
@@ -229,7 +230,7 @@ public class BiggaBlobbaBoss extends BossFactory {
     }
 
 
-    private com.bryjamin.wickedwizard.utils.Pair<Task, Condition> jumpingPhase(final float time){
+    private Pair<Task, Condition> jumpingPhase(final float time){
 
         com.bryjamin.wickedwizard.ecs.components.ai.Task task =  new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
@@ -268,7 +269,7 @@ public class BiggaBlobbaBoss extends BossFactory {
             }
         };
 
-        return new com.bryjamin.wickedwizard.utils.Pair<Task, Condition>(task, landingCondition(time));
+        return new Pair<Task, Condition>(task, landingCondition(time));
 
     }
 

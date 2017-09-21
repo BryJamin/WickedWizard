@@ -126,8 +126,8 @@ public class UnlockMessageWorld implements WorldContainer {
         final Array<Bag<ComponentBag>> bagArray = new Array<Bag<ComponentBag>>();
 
         for(String unlockId : unlockIds) {
-            if(true){
-            //if (!DataSave.isDataAvailable(unlockId)) {
+            //if(true){
+            if (!DataSave.isDataAvailable(unlockId)) {
                 DataSave.saveChallengeData(unlockId);
                 createChallengeUnlockMessage(bagArray, unlockId);
                 createItemUnlockMessage(bagArray, unlockId);

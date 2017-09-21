@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.ecs.components.ai;
 
 import com.artemis.Component;
 import com.badlogic.gdx.utils.Array;
+import com.bryjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by ae164 on 20/05/17.
@@ -10,27 +11,27 @@ import com.badlogic.gdx.utils.Array;
 public class ConditionalActionComponent extends Component {
 
 
-    public Array<com.bryjamin.wickedwizard.utils.Pair<Action, Condition>> actionConditionPairArray = new Array<com.bryjamin.wickedwizard.utils.Pair<Action, Condition>>();
+    public Array<Pair<Action, Condition>> actionConditionPairArray = new Array<Pair<Action, Condition>>();
 
 
     public ConditionalActionComponent(Condition condition, Action action) {
-        actionConditionPairArray.add(new com.bryjamin.wickedwizard.utils.Pair<Action, Condition>(action, condition));
+        actionConditionPairArray.add(new Pair<Action, Condition>(action, condition));
     }
 
 
-    public ConditionalActionComponent(com.bryjamin.wickedwizard.utils.Pair<Action, Condition>... actionConditionPairs) {
-        for(com.bryjamin.wickedwizard.utils.Pair<Action, Condition> actionConditionPair : actionConditionPairs){
+    public ConditionalActionComponent(Pair<Action, Condition>... actionConditionPairs) {
+        for(Pair<Action, Condition> actionConditionPair : actionConditionPairs){
             actionConditionPairArray.add(actionConditionPair);
         }
     }
 
 
     public void add(Condition condition, Action action){
-        actionConditionPairArray.add(new com.bryjamin.wickedwizard.utils.Pair<Action, Condition>(action, condition));
+        actionConditionPairArray.add(new Pair<Action, Condition>(action, condition));
     }
 
-    public void add(com.bryjamin.wickedwizard.utils.Pair<Action, Condition>... actionConditionPairs){
-        for(com.bryjamin.wickedwizard.utils.Pair<Action, Condition> actionConditionPair : actionConditionPairs){
+    public void add(Pair<Action, Condition>... actionConditionPairs){
+        for(Pair<Action, Condition> actionConditionPair : actionConditionPairs){
             actionConditionPairArray.add(actionConditionPair);
         }
     }

@@ -13,7 +13,7 @@ import com.bryjamin.wickedwizard.utils.enums.ItemType;
 public class ItemLayout {
 
     private final String id;
-    private final com.bryjamin.wickedwizard.utils.Pair<String, Integer> region;
+    private final Pair<String, Integer> region;
     private final Color textureColor;
     private final String name;
     private final String description;
@@ -65,7 +65,7 @@ public class ItemLayout {
         private String id;
 
         //Optional
-        private com.bryjamin.wickedwizard.utils.Pair<String, Integer> region = new com.bryjamin.wickedwizard.utils.Pair<String,Integer>("item/SarcasticLion", 0);
+        private Pair<String, Integer> region = new Pair<String,Integer>("item/SarcasticLion", 0);
         private Color textureColor = new Color(Color.WHITE);
         private String name = "Default Item";
         private String description = "You forgot to set this value";
@@ -79,10 +79,10 @@ public class ItemLayout {
         }
 
         public ItemValueBuilder region(String s)
-        { region = new com.bryjamin.wickedwizard.utils.Pair<String, Integer>(s,0); return this; }
+        { region = new Pair<String, Integer>(s,0); return this; }
 
         public ItemValueBuilder region(String s, int index)
-        { region = new com.bryjamin.wickedwizard.utils.Pair<String, Integer>(s, index); return this; }
+        { region = new Pair<String, Integer>(s, index); return this; }
 
 
         public ItemValueBuilder textureColor(Color val)
