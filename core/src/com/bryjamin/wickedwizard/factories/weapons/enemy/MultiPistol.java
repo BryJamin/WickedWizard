@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.bryjamin.wickedwizard.assets.ColorResource;
+import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
@@ -49,6 +50,7 @@ public class MultiPistol implements Weapon {
 
     private final int[] angles;
     private final float[] bulletOffsets;
+    private final Mix[] mixes;
 
     private final Color color;
 
@@ -83,6 +85,8 @@ public class MultiPistol implements Weapon {
         private int[] angles = new int[]{0};
 
         private float[] bulletOffsets = new float[]{0};
+
+        private Mix[] mixes = SoundFileStrings.enemyFireMegaMix;
 
         private OnDeathActionComponent customOnDeathAction = null;
 
@@ -130,6 +134,9 @@ public class MultiPistol implements Weapon {
         public PistolBuilder bulletOffsets(float... val)
         { bulletOffsets = val; return this; }
 
+        public PistolBuilder mixes(Mix... val)
+        { mixes = val; return this; }
+
         public PistolBuilder color(Color val)
         { color = val; return this; }
 
@@ -167,6 +174,7 @@ public class MultiPistol implements Weapon {
 
         this.angles = pb.angles;
         this.bulletOffsets = pb.bulletOffsets;
+        this.mixes = pb.mixes;
 
         this.customOnDeathAction = pb.customOnDeathAction;
         this.colorChangeComponent = pb.colorChangeComponent;
@@ -253,7 +261,7 @@ public class MultiPistol implements Weapon {
         }
 
 
-        world.getSystem(SoundSystem.class).playRandomSound(SoundFileStrings.enemyFireMegaMix);
+        world.getSystem(SoundSystem.class).playRandomSound(mixes);
 
 
     }

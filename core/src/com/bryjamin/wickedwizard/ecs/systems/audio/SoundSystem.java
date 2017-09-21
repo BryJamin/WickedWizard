@@ -208,6 +208,8 @@ public class SoundSystem extends EntitySystem {
      */
     public void playRandomSound(Mix... mixes){
 
+        if(mixes.length <= 0) return;
+
         if(!upcomingMixesMixes.contains(mixes, true)) {
             playSound(mixes[MathUtils.random.nextInt(mixes.length)]);
             upcomingMixesMixes.add(mixes);

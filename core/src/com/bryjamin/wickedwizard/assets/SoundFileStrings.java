@@ -52,6 +52,13 @@ public class SoundFileStrings {
     };
 
 
+    public static final Mix wipeFireMix1 = new Mix.MixMaker(enemyFire).volume(0.02f).pitch(0.825f).build();
+    public static final Mix wipeFireMix2 = new Mix.MixMaker(enemyFire).volume(0.02f).pitch(0.85f).build();
+    public static final Mix wipeFireMix3 = new Mix.MixMaker(enemyFire).volume(0.02f).pitch(0.875f).build();
+
+    public static final Mix[] wipeFireMegaMix = new Mix[]{wipeFireMix1, wipeFireMix2, wipeFireMix3};
+
+
     public static final Mix jumpMix = new Mix.MixMaker("audio/sounds/jump/1_jump.ogg").volume(0.2f).build();
     public static final Mix jumpMix2 = new Mix.MixMaker("audio/sounds/jump/2_jump.ogg").volume(0.2f).build();
     public static final Mix jumpMix3 = new Mix.MixMaker("audio/sounds/jump/3_jump.ogg").volume(0.2f).build();

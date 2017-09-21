@@ -51,7 +51,7 @@ public class BossAdoj extends BossFactory {
 
     private static final float rightHornHitBoxOffsetX = Measure.units(21f);
 
-    private static final float health = 70;
+    private static final float health = 65;
 
     private static final float firingAiOffsetY = Measure.units(5f);
     private static final float fastPistolFireRate = 0.1f;

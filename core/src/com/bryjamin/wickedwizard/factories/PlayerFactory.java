@@ -159,8 +159,9 @@ public class PlayerFactory extends AbstractFactory {
 
         if(id.equals(PlayerIDs.XI_ID)){
             statComponent.maxHealth = 4;
-            statComponent.setHealth(4);
+            statComponent.setHealth(3);
             statComponent.damage = 1;
+            statComponent.armor = 1;
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.XI_WALK), Animation.PlayMode.LOOP));
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.XI_FIRING)));

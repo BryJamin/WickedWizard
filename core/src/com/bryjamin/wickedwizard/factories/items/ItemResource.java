@@ -12,6 +12,7 @@ import com.bryjamin.wickedwizard.factories.items.companions.ItemMegaSideCannons;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMiniSpinnyThingie;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemMyVeryOwnStalker;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemSideCannons;
+import com.bryjamin.wickedwizard.factories.items.companions.ItemTesserWreck;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemXisGlare;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAce;
 import com.bryjamin.wickedwizard.factories.items.passives.accuracy.ItemAimAssist;
@@ -29,9 +30,11 @@ import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSlimeCoat;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSmoulderingArmor;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSquareBuckler;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemSteppingStones;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemTesssScarf;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWandasScarf;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemWhiteGoggles;
+import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemXisOldScarf;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemAnger;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemLuckyShot;
 import com.bryjamin.wickedwizard.factories.items.passives.damage.ItemMiniCatapult;
@@ -62,7 +65,10 @@ import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemForgottenFigm
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemGoldenFigment;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemJadeFigment;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemLuckPlus10;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemLuckyRoll;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemPatternedOpal;
+import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemTesseract;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeDimensionalGold;
 import com.bryjamin.wickedwizard.factories.items.passives.luck.ItemThreeLeafClover;
 import com.bryjamin.wickedwizard.factories.items.passives.range.ItemBuckShot;
@@ -214,9 +220,11 @@ public class ItemResource {
                 new ItemSmoulderingArmor(),
                 new ItemSquareBuckler(),
                 new ItemSteppingStones(),
+                new ItemTesssScarf(),
                 new ItemVitaminC(),
                 new ItemWandasScarf(),
-                new ItemWhiteGoggles()};
+                new ItemWhiteGoggles(),
+                new ItemXisOldScarf()};
 
         public static ItemLayout angrySlimeCoat = new ItemLayout.ItemValueBuilder("54d58ef6-3534-49bb-acac-3c484febff2a")
                 .region("enemy/blob", 2)
@@ -270,6 +278,13 @@ public class ItemResource {
                 .region("item/SteppingStones")
                 .name("Stepping Stones")
                 .description("Speed+ Armor+")
+                .build();
+
+
+        public static ItemLayout tesssScarf = new ItemLayout.ItemValueBuilder("d04b2868-2fe2-4014-a6f3-d99e30e25d66")
+                .region("item/TesssScarf")
+                .name("Tess's Scarf")
+                .description("Everything Up!")
                 .build();
 
 
@@ -549,7 +564,10 @@ public class ItemResource {
                 new ItemGoldenFigment(),
                 new ItemIWishYouWell(),
                 new ItemJadeFigment(),
+                new ItemLuckPlus10(),
+                new ItemLuckyRoll(),
                 new ItemPatternedOpal(),
+                new ItemTesseract(),
                 new ItemThreeDimensionalGold(),
                 new ItemThreeLeafClover()};
 
@@ -599,12 +617,33 @@ public class ItemResource {
                 .description("Luck++")
                 .build();
 
+        public static ItemLayout luckyRoll = new ItemLayout.ItemValueBuilder("e74d2389-7a50-48e3-9e12-ac74cac1ac44")
+                .itemTypes(ItemType.ITEM, ItemType.SHOP)
+                .region("item/LuckyRoll")
+                .name("Lucky Roll")
+                .description("Uses Luck to Increase a Random Stat")
+                .build();
+
+        public static ItemLayout luckPlus10 = new ItemLayout.ItemValueBuilder("badfeb55-453e-4d97-a1d2-f23288ffdc34")
+                .itemTypes(ItemType.ITEM)
+                .region("item/LuckPlusTen")
+                .name("Luck +10")
+                .description("Luck +(5 x 2)")
+                .build();
+
 
         public static ItemLayout patternedOpal = new ItemLayout.ItemValueBuilder("642722ee-18f8-4b34-bf95-a6c21243af63")
                 .itemTypes(ItemType.ITEM)
                 .region("item/PatternedOpal")
                 .name("Patterened Opal")
                 .description("Luck+")
+                .build();
+
+        public static ItemLayout tesseract = new ItemLayout.ItemValueBuilder("202e9080-484c-4693-b408-8661ed08b54d")
+                .itemTypes(ItemType.ITEM, ItemType.SHOP)
+                .region("item/Tesseract")
+                .name("TESSeract")
+                .description("Get it? :D")
                 .build();
 
         public static ItemLayout threeLeafClover = new ItemLayout.ItemValueBuilder("6b37d250-81d9-11e7-bb31-be2e44b06b34")
@@ -892,6 +931,7 @@ public class ItemResource {
                 new ItemMiniSpinnyThingie(),
                 new ItemMyVeryOwnStalker(),
                 new ItemSideCannons(),
+                new ItemTesserWreck(),
                 new ItemXisGlare()
         };
 
@@ -955,6 +995,12 @@ public class ItemResource {
                 .description("\"Mega Cannons\"")
                 .build();
 
+        public static ItemLayout tesserWreck =  new ItemLayout.ItemValueBuilder("d0ed0581-e21b-4a46-98c1-ff019c816240")
+                .itemTypes(ItemType.ITEM)
+                .region("item/companion/TesserWreck")
+                .name("TesserWRECK")
+                .description("This Was A Mistake")
+                .build();
 
         public static ItemLayout xisGlare =  new ItemLayout.ItemValueBuilder("511ebb70-4a7a-4420-9b98-9f534fc2f1de")
                 .itemTypes(ItemType.ITEM, ItemType.BOSS)

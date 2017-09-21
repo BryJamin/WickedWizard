@@ -62,6 +62,13 @@ public class AdventureUnlocks {
         putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_4_COMPLETE, XI_4_UNLOCK, ItemResource.Armor.bookOfXi);
         putUnlock(PlayerIDs.XI_ID, ChallengesResource.LEVEL_5_COMPLETE, XI_5_UNLOCK, ItemResource.Armor.xisOldScarf);
 
+        putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_1_COMPLETE, TESS_1_UNLOCK, ItemResource.Luck.tesseract);
+        putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_2_COMPLETE, TESS_2_UNLOCK, ItemResource.Luck.luckyRoll);
+        putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_3_COMPLETE, TESS_3_UNLOCK, ItemResource.Luck.luckPlus10);
+        putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_4_COMPLETE, TESS_4_UNLOCK, ItemResource.Armor.bookOfXi);
+        putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_5_COMPLETE, TESS_5_UNLOCK, ItemResource.Companion.tesserWreck);
+
+
 
     }
 
