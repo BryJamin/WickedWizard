@@ -43,7 +43,7 @@ public class BiggaBlobbaBoss extends BossFactory {
 
     private static final float health = 65;
 
-    private static final float speed = Measure.units(60f);
+    private static final float chargingSpeed = Measure.units(50f);
 
     private static final float jumpTransitionVly = Measure.units(40f);
     private static final float jumpVlx = Measure.units(45f);
@@ -159,9 +159,9 @@ public class BiggaBlobbaBoss extends BossFactory {
                 com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
                 com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
                 com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
-                vc.velocity.x = cbc.getCenterX() > playerCbc.getCenterX() ? vc.velocity.x = -speed : speed;
+                vc.velocity.x = cbc.getCenterX() > playerCbc.getCenterX() ? vc.velocity.x = -chargingSpeed : chargingSpeed;
                 e.getComponent(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.class).setDefaultState(CHARGINGANIMATION);
-                e.edit().add(blobOCAC(speed));
+                e.edit().add(blobOCAC(chargingSpeed));
             }
 
             @Override
@@ -182,7 +182,7 @@ public class BiggaBlobbaBoss extends BossFactory {
         public void performAction(World world, Entity e) {
             position.x = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena().getWidth() / 2;
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent(position));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent(speed, speed));
+            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent(chargingSpeed, chargingSpeed));
         }
 
         @Override

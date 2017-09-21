@@ -38,7 +38,6 @@ import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.bryjamin.wickedwizard.factories.items.conditionals.ItemLabyrinthCodex;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 import com.bryjamin.wickedwizard.factories.weapons.PlayerPistol;
 import com.bryjamin.wickedwizard.utils.BulletMath;
@@ -163,8 +162,6 @@ public class PlayerFactory extends AbstractFactory {
             statComponent.damage = 1;
             statComponent.armor = 1;
 
-            statComponent.collectedItems.add(new ItemLabyrinthCodex());
-
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.XI_WALK), Animation.PlayMode.LOOP));
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.XI_FIRING)));
 
@@ -191,9 +188,7 @@ public class PlayerFactory extends AbstractFactory {
 
             statComponent.maxHealth = 2;
             statComponent.setHealth(2);
-
             statComponent.armor = 1;
-
             statComponent.luck = 5;
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1 / 9f, atlas.findRegions(TextureStrings.TESS_WALK), Animation.PlayMode.LOOP));
