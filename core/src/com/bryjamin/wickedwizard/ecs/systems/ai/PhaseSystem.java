@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by BB on 30/03/2017.
@@ -51,7 +52,7 @@ public class PhaseSystem extends EntityProcessingSystem {
      */
     public void startNextPhase(Entity e){
         com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent pc = pm.get(e);
-        com.bryjamin.wickedwizard.utils.Pair<Task, Condition> taskConditionPair = pc.phaseQueue.removeFirst();
+        Pair<Task, Condition> taskConditionPair = pc.phaseQueue.removeFirst();
         pc.phaseQueue.addLast(taskConditionPair);
         taskConditionPair.getLeft().cleanUpAction(world, e);
         pc.hasActionBeenPerformed = false;

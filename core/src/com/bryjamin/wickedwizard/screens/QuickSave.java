@@ -138,6 +138,7 @@ public class QuickSave {
             PlayerFactory playerFactory = new PlayerFactory(assetManager);
 
             ComponentBag player = playerFactory.playerBag(json.fromJson(String.class, saveMap.get(PLAYER_ID_STRING)), 0, 0);
+
             BagSearch.getObjectOfTypeClass(StatComponent.class, player)
                     .applyStats(json.fromJson(StatComponent.class, saveMap.get(STAT_COMPONENT_STRING)));
 

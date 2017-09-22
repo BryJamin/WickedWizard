@@ -2,9 +2,6 @@ package com.bryjamin.wickedwizard.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.tools.texturepacker.TexturePacker;
-import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import com.bryjamin.wickedwizard.MainGame;
 
 import java.io.IOException;
@@ -15,22 +12,6 @@ public class DesktopLauncher {
 		config.forceExit = true;
 
 //TODO this allows you to pack textures without needing to open the texture packer just uncomment it
-	String projectPath = System.getProperty("user.dir");
-		String inputDir = projectPath + "/images/tobepacked";
-		String outputDir = projectPath;
-		String packFileName = "sprite";
-
-		Settings settings = new Settings();
-		settings.maxWidth = 2048;
-		settings.maxHeight = 2048;
-		settings.filterMin = Texture.TextureFilter.Nearest;
-		settings.filterMag = Texture.TextureFilter.Nearest;
-		settings.paddingX = 2;
-		settings.paddingY = 2;
-		settings.duplicatePadding = true;
-		settings.combineSubdirectories = true;
-
-		TexturePacker.process(settings, inputDir,outputDir,packFileName);
 
 /*		 settings = new Settings();
 		settings.maxWidth = 1024;

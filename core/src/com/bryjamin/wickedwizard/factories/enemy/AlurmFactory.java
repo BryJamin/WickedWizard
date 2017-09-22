@@ -145,11 +145,6 @@ public class AlurmFactory extends EnemyFactory {
             return fireRate;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
-
 
         public void createBlock(World world, Vector3 centerOfOrbit, final float startAngle, Color color){
 

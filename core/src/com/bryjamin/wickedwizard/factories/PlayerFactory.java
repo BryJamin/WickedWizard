@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.AdditionalWeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
@@ -78,7 +79,6 @@ public class PlayerFactory extends AbstractFactory {
         fillBag.add(new GravityComponent());
         fillBag.add(new MoveToComponent());
 
-
         fillBag.add(new JumpComponent());
         fillBag.add(new GlideComponent());
         fillBag.add(new AccelerantComponent(Measure.units(30f), Measure.units(30f), Measure.units(80f), Measure.units(80f)));
@@ -94,7 +94,7 @@ public class PlayerFactory extends AbstractFactory {
         fillBag.add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
-                return entity.getComponent(StatComponent.class).health <= 0;
+                return entity.getComponent(StatComponent.class).getHealth() <= 0;
             }
         }, new Action() {
             @Override
@@ -142,12 +142,14 @@ public class PlayerFactory extends AbstractFactory {
         StatComponent statComponent = new StatComponent();
         CurrencyComponent currencyComponent = new CurrencyComponent(startingMoney);
         WeaponComponent wc = new WeaponComponent(new PlayerPistol(assetManager, statComponent), pauseBeforeShooting);
+        AdditionalWeaponComponent additionalWeaponComponent = new AdditionalWeaponComponent();
 
         TextureRegionComponent trc;
 
         bag.add(statComponent);
         bag.add(currencyComponent);
         bag.add(wc);
+        bag.add(additionalWeaponComponent);
 
         IntMap<Animation<TextureRegion>> aniMap = new IntMap<Animation<TextureRegion>>();
 
@@ -156,8 +158,9 @@ public class PlayerFactory extends AbstractFactory {
 
         if(id.equals(PlayerIDs.XI_ID)){
             statComponent.maxHealth = 4;
-            statComponent.health = 4;
+            statComponent.setHealth(3);
             statComponent.damage = 1;
+            statComponent.armor = 1;
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.XI_WALK), Animation.PlayMode.LOOP));
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.XI_FIRING)));
@@ -169,7 +172,7 @@ public class PlayerFactory extends AbstractFactory {
         } else if(id.equals(PlayerIDs.PHI_ID)) {
 
             statComponent.maxHealth = 8;
-            statComponent.health = 8;
+            statComponent.setHealth(8);
             statComponent.damage -= PresetStatIncrease.minor;
             statComponent.fireRate -= PresetStatIncrease.minor;
             statComponent.speed -= PresetStatIncrease.Speed.minor;
@@ -183,11 +186,9 @@ public class PlayerFactory extends AbstractFactory {
 
         } else if(id.equals(PlayerIDs.TESS_ID)) {
 
-            statComponent.health = 2;
             statComponent.maxHealth = 2;
-
+            statComponent.setHealth(2);
             statComponent.armor = 1;
-
             statComponent.luck = 5;
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1 / 9f, atlas.findRegions(TextureStrings.TESS_WALK), Animation.PlayMode.LOOP));
@@ -199,7 +200,7 @@ public class PlayerFactory extends AbstractFactory {
 
         } else { //LEAH
             statComponent.maxHealth = 6;
-            statComponent.health = 6;
+            statComponent.setHealth(6);
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1/ 9f, atlas.findRegions(TextureStrings.BLOCK_WALK), Animation.PlayMode.LOOP));
             aniMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(1 / 15f, atlas.findRegions(TextureStrings.BLOCK_BLINK)));
@@ -290,8 +291,6 @@ public class PlayerFactory extends AbstractFactory {
         //TODO I should switch this to the moveto component which should also use the way the moveToPlayerAI works
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(BulletMath.velocityX(Measure.units(200f), angle), BulletMath.velocityY(Measure.units(200f), angle)));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
-        //bag.add(new IntangibleComponent());
-        //bag.add(new BulletComponent());
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 width, height, TextureRegionComponent.PLAYER_LAYER_NEAR, new Color(Color.BLACK));

@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
@@ -46,7 +46,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
     private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent> offScreenPickUpM;
 
-    private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent> onRoomLoadMapper;
+    private ComponentMapper<DuringRoomLoadActionComponent> onRoomLoadMapper;
 
     private ComponentMapper<CurrencyComponent> currencyComponentComponentMapper;
 
@@ -79,9 +79,7 @@ public class RoomTransitionSystem extends EntitySystem {
                         s.setEnabled(true);
                     }
                 }
-
                 //world.getSystem(SoundSystem.class).disposeMusic();
-
             }
         });
 
@@ -277,16 +275,20 @@ public class RoomTransitionSystem extends EntitySystem {
 
             if(onRoomLoadMapper.has(e)){
 
-                OnRoomLoadActionComponent onRoomLoadActionComponent = e.getComponent(OnRoomLoadActionComponent.class);
-                onRoomLoadActionComponent.action.performAction(world, e);
-                if(!onRoomLoadActionComponent.repeat){
-                    e.edit().remove(onRoomLoadActionComponent);
+                DuringRoomLoadActionComponent duringRoomLoadActionComponent = e.getComponent(DuringRoomLoadActionComponent.class);
+                duringRoomLoadActionComponent.action.performAction(world, e);
+                if(!duringRoomLoadActionComponent.repeat){
+                    e.edit().remove(duringRoomLoadActionComponent);
                 }
 
             }
 
 
+
         }
+
+
+        world.getSystem(FollowPositionSystem.class).process();
 
     }
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
-import com.bryjamin.wickedwizard.factories.BombFactory;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
@@ -827,7 +827,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(85f),
                         new com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return new com.bryjamin.wickedwizard.factories.BombFactory(assetManager).bomb(x,y, BombFactory.BOMB_LIFE);
+                                return new BombFactory(assetManager).bomb(x,y, BombFactory.BOMB_LIFE);
                             }
                         }));
 
@@ -855,14 +855,14 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4, Measure.units(45f),
                         new com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return new com.bryjamin.wickedwizard.factories.BombFactory(assetManager).bomb(x,y, 1f);
+                                return new BombFactory(assetManager).bomb(x,y, 1f);
                             }
                         }));
 
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 4 * 3, Measure.units(45f),
                         new com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return new com.bryjamin.wickedwizard.factories.BombFactory(assetManager).bomb(x,y, 1f);
+                                return new BombFactory(assetManager).bomb(x,y, 1f);
                             }
                         }));
 
@@ -870,7 +870,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addWave(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(arena.getWidth() / 2, Measure.units(45f),
                         new com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return new com.bryjamin.wickedwizard.factories.BombFactory(assetManager).bomb(x,y, 1f);
+                                return new BombFactory(assetManager).bomb(x,y, 1f);
                             }
                         }));
 
@@ -900,7 +900,7 @@ public class Level2Rooms extends AbstractFactory implements ArenaRepostiory {
                 for(int i = 0; i < 4; i++) bags.add(arenaEnemyPlacementFactory.spawnerFactory.spawnerBag(Measure.units(20f + (i * 20f)), Measure.units(45f),
                         new com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory.Spawner() {
                             public Bag<Component> spawnBag(float x, float y) {
-                                return new com.bryjamin.wickedwizard.factories.BombFactory(assetManager).bomb(x,y, 1f);
+                                return new BombFactory(assetManager).bomb(x,y, 1f);
                             }
                         }));
 

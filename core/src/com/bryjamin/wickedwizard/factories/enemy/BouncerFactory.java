@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -57,8 +58,8 @@ public class BouncerFactory extends EnemyFactory {
             @Override
             public void performAction(World world, Entity e) {
                 CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
-                com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), smallBouncer(cbc.getCenterX(), cbc.getCenterY(), true));
-                com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), smallBouncer(cbc.getCenterX(), cbc.getCenterY(), false));
+                BagToEntity.bagToEntity(world.createEntity(), smallBouncer(cbc.getCenterX(), cbc.getCenterY(), true));
+                BagToEntity.bagToEntity(world.createEntity(), smallBouncer(cbc.getCenterX(), cbc.getCenterY(), false));
             }
 
             @Override

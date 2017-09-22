@@ -10,11 +10,12 @@ import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -22,6 +23,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
@@ -29,11 +31,13 @@ import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
+import com.bryjamin.wickedwizard.factories.arenas.MapCleaner;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.BrightWhiteSkin;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -48,12 +52,14 @@ public class GalleryAtTheEndMap extends AbstractFactory {
     private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
     private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
     private ArenaSkin arenaSkin;
+    private MapCleaner mapCleaner;
 
     public GalleryAtTheEndMap(AssetManager assetManager) {
         super(assetManager);
         this.arenaSkin = new BrightWhiteSkin();
         this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
         this.decorFactory = new DecorFactory(assetManager, arenaSkin);
+        this.mapCleaner = new MapCleaner(decorFactory);
     }
 
 
@@ -66,6 +72,9 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 galleryExitRoom().createArena(new MapCoords(2, 2)),
                 galleryTheOutSide().createArena(new MapCoords(3, 2))
                 );
+
+        mapCleaner.cleanArenas(arenaMap.getRoomArray());
+
 
         return arenaMap;
     }
@@ -103,66 +112,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
 
-
-                ComponentBag saveGame = arena.createArenaBag();
-                saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        if (!DataSave.isDataAvailable(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.LEVEL_5_COMPLETE)) {
-                            DataSave.saveChallengeData(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.LEVEL_5_COMPLETE);
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
-                        }
-                    }
-
-                }));
-
-
-
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50f)));
                 arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
-
-
-
-/*
-                ComponentBag endFade = new ComponentBag();
-                endFade.add(new ActionAfterTimeComponent(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-
-
-                        float width = com.bryjamin.wickedwizard.MainGame.GAME_WIDTH * 2;
-                        float height = com.bryjamin.wickedwizard.MainGame.GAME_HEIGHT * 2;
-
-                        Entity fadeout = world.createEntity();
-                        fadeout.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(0,0));
-                        fadeout.edit().add(new ActionAfterTimeComponent(new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                e.edit().add(new FadeComponent(true, 3.0f, false));
-                            }
-                        }, 1.5f));
-                        fadeout.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position, -width / 2, -height / 2));
-                        fadeout.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(0,0,0,0)));
-
-                        fadeout.edit().add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
-                            @Override
-                            public boolean condition(World world, Entity entity) {
-                                return entity.getComponent(TextureRegionComponent.class).color.a >= 1f;
-                            }
-                        }, new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                world.getSystem(EndGameSystem.class).startCredits();
-                            }
-                        }));
-
-
-
-                    }
-                }, 2.0f));
-
-                arena.addEntity(endFade);
-*/
 
                 return arena;
             }
@@ -308,14 +259,13 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
                 ComponentBag setUp = arena.createArenaBag();
-                setUp.add(new OnRoomLoadActionComponent(new Action() {
+                setUp.add(new DuringRoomLoadActionComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        world.getSystem(PlayerInputSystem.class).disableInput = true;
                         world.getSystem(UISystem.class).disable = true;
 
-
                         Entity playerMover = world.createEntity();
+                        playerMover.edit().add(new DisablePlayerInputComponent());
                         playerMover.edit().add(new ActionAfterTimeComponent(new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
@@ -404,7 +354,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
                         Arena arena = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena();
 
-                        com.bryjamin.wickedwizard.utils.BagToEntity.bagToEntity(world.createEntity(), new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(45f),
+                        BagToEntity.bagToEntity(world.createEntity(), new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager).customSmallPortal(arena.getWidth() / 2, Measure.units(45f),
 
                                 new Action() {
                                     @Override
@@ -426,16 +376,10 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 }, 0.5f));
 
                 ComponentBag saveGame = arena.createArenaBag();
-                saveGame.add(new com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent(new Action() {
+                saveGame.add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-
-                        if(!DataSave.isDataAvailable(bossRushid)){
-                            DataSave.saveChallengeData(bossRushid);
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
-                        } else {
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
-                        }
+                        world.getSystem(UnlockMessageSystem.class).createUnlockMessage(bossRushid);
                     }
                 }));
 

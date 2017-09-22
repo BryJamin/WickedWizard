@@ -218,10 +218,6 @@ public class JumpingJackFactory extends EnemyFactory{
             return 1;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
     }
 
 

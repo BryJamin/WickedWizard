@@ -15,13 +15,18 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
+import com.bryjamin.wickedwizard.ecs.components.AdditionalWeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
+import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -47,16 +52,17 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<DirectionalComponent> dm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent> parm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent> cm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
+    ComponentMapper<ParentComponent> parm;
+    ComponentMapper<ChildComponent> cm;
+    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<AccelerantComponent> am;
     ComponentMapper<MoveToComponent> mtm;
     ComponentMapper<CollisionBoundComponent> cbm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.WeaponComponent> wm;
+    ComponentMapper<WeaponComponent> wm;
+    ComponentMapper<AdditionalWeaponComponent> additionalWeaponComponentMapper;
     ComponentMapper<AnimationStateComponent> asm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.StatComponent> sm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gm;
+    ComponentMapper<StatComponent> sm;
+    ComponentMapper<GravityComponent> gm;
     ComponentMapper<GlideComponent> glm;
     ComponentMapper<TextureRegionComponent> trm;
     ComponentMapper<JumpComponent> jm;
@@ -65,7 +71,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     private PlayerInput playerInput;
 
-    public boolean disableInput = false;
+    boolean disableInput = false;
 
     public Rectangle movementArea;
 
@@ -101,17 +107,21 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         }
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+    }
 
     @Override
     protected void process(Entity e) {
 
-        if(disableInput) return;
 
         PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
         AccelerantComponent ac = am.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = wm.get(e);
+        AdditionalWeaponComponent adc = additionalWeaponComponentMapper.get(e);
         AnimationStateComponent asc = asm.get(e);
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
@@ -119,6 +129,15 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
+
+
+
+        if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
+            turnOffGlide();
+        }
+
+        if(disableInput) return;
+        //if(!isEnabled()) return;
 
         if (mtm.get(e).targetX == null && mtm.get(e).targetY == null) {
             playerInput.activeGrapple = false;
@@ -128,12 +147,17 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         if (!playerInput.activeGrapple) {
 
             if (playerInput.movementInputPoll != null) {
+
+                //System.out.println("i AM MOVING THE PLAYER");
+
                 if (Gdx.input.isTouched(playerInput.movementInputPoll)) {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
                     if (input.y <= movementArea.y + movementArea.getHeight() && !mtc.hasTarget()) {
                         movePlayer(input.x, cbc.getCenterX(), ac, vc, sc);
                     }
+                } else {
+                   playerInput.movementInputPoll = null;
                 }
             }
 
@@ -141,7 +165,25 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
                 if (Gdx.input.isTouched(playerInput.firingInputPoll)) {
 
+
+                    //The purpose for the delay reset is for enemies/companies that react to player fire to have a chance to see that the player has fired
+                    if(wc.timer.isFinished()){
+                        wc.timer.reset(wc.weapon.getBaseFireRate());
+                    }
+
+                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
+                        if (weaponComponent.timer.isFinished()) {
+                            weaponComponent.timer.reset(weaponComponent.weapon.getBaseFireRate());
+                        }
+                    }
+
+
                     wc.timer.update(world.getDelta());
+
+                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
+                        weaponComponent.timer.update(world.getDelta());
+                    }
+
 
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.firingInputPoll), Gdx.input.getY(playerInput.firingInputPoll), 0);
                     gameport.unproject(input);
@@ -156,11 +198,23 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     }
 
 
-                    if (wc.timer.isFinishedAndReset(wc.weapon.getBaseFireRate())) {
+                    if (wc.timer.isFinished()) {
                         hasStartedFiring = true;
                         asc.queueAnimationState(AnimationStateComponent.FIRING);
                         wc.weapon.fire(world,e, x, y, angleOfTravel);
                     }
+
+                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
+                        if (weaponComponent.timer.isFinished()) {
+                            hasStartedFiring = true;
+                            asc.queueAnimationState(AnimationStateComponent.FIRING);
+                            weaponComponent.weapon.fire(world,e, x, y, angleOfTravel);
+                        }
+                    }
+
+
+                } else {
+                    playerInput.firingInputPoll = null;
                 }
             } else {
 
@@ -168,15 +222,20 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
                 wc.timer.setResetTime(wc.defaultStartTime);
                 wc.timer.reset();
+
+                for(WeaponComponent weaponComponent : adc.additionalWeapons){
+                    weaponComponent.timer.setResetTime(wc.defaultStartTime);
+                    weaponComponent.timer.reset();
+                }
+
+
+
                 if (asc.getDefaultState() != 0) {
                     asc.setDefaultState(0);
                 }
             }
         }
 
-        if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
-            turnOffGlide();
-        }
     }
 
 
@@ -289,7 +348,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public void turnOffGlide(){
 
-        com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
+        ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
 
 

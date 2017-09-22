@@ -20,10 +20,10 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
@@ -230,7 +230,7 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag altarBag = emptyAltar(x, y, color);
 
-        altarBag.add(new OnRoomLoadActionComponent(new Action() {
+        altarBag.add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -242,7 +242,7 @@ public class ItemFactory extends AbstractFactory {
                 BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(altarItem, e.getComponent(ParentComponent.class),
                         new FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
 
-                e.edit().remove(OnRoomLoadActionComponent.class);
+                e.edit().remove(DuringRoomLoadActionComponent.class);
 
             }
         }));
@@ -263,7 +263,8 @@ public class ItemFactory extends AbstractFactory {
 
         ComponentBag altarBag = emptyAltar(x, y, color);
 
-        altarBag.add(new OnRoomLoadActionComponent(new Action() {
+        altarBag.add(new DuringRoomLoadActionComponent(new Action() {
+
             @Override
             public void performAction(World world, Entity e) {
 
@@ -272,7 +273,7 @@ public class ItemFactory extends AbstractFactory {
                 BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(item, e.getComponent(ParentComponent.class),
                         new FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
 
-                e.edit().remove(OnRoomLoadActionComponent.class);
+                e.edit().remove(DuringRoomLoadActionComponent.class);
 
             }
         }));
@@ -298,7 +299,7 @@ public class ItemFactory extends AbstractFactory {
         shopItemTexture.add(new CurrencyComponent(money));
         shopItemTexture.add(pc);
 
-        shopItemTexture.add(new OnRoomLoadActionComponent(new Action() {
+        shopItemTexture.add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -407,7 +408,7 @@ public class ItemFactory extends AbstractFactory {
         shopItemTexture.add(new CurrencyComponent(money));
         shopItemTexture.add(pc);
 
-        shopItemTexture.add(new OnRoomLoadActionComponent(new Action() {
+        shopItemTexture.add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 Vector3 position = e.getComponent(PositionComponent.class).position;
@@ -443,7 +444,7 @@ public class ItemFactory extends AbstractFactory {
                 textureHeight,
                 TextureRegionComponent.ENEMY_LAYER_FAR, new Color(Color.BLACK)));
 
-        shopItemTexture.add(new OnRoomLoadActionComponent(new Action() {
+        shopItemTexture.add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 Vector3 position = e.getComponent(PositionComponent.class).position;

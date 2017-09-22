@@ -22,6 +22,7 @@ public class WeaponComponent extends Component{
     public WeaponComponent(Weapon weapon){
         //this.reloadTime = reloadTime;
         timer = new StateTimer(weapon.getBaseFireRate(), 0);
+        this.defaultStartTime = weapon.getBaseFireRate();
         this.weapon = weapon;
     }
 

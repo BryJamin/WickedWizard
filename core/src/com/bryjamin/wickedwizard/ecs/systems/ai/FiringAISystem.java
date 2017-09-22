@@ -7,6 +7,8 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
+import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -38,7 +40,7 @@ public class FiringAISystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public FiringAISystem() {
-        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.WeaponComponent.class, com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent.class));
+        super(Aspect.all(PositionComponent.class, WeaponComponent.class, FiringAIComponent.class));
         enemyTargets = Aspect.all(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class, CollisionBoundComponent.class);
     }
 
@@ -46,10 +48,10 @@ public class FiringAISystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
 
-        com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = wm.get(e);
+        WeaponComponent wc = wm.get(e);
 
 
-        com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent fc = fm.get(e);
+        FiringAIComponent fc = fm.get(e);
 
         wc.timer.update(world.delta);
 
@@ -80,12 +82,17 @@ public class FiringAISystem extends EntityProcessingSystem {
 
             case TARGET_ENEMY:
 
-                if(wc.timer.isFinishedAndReset() && enemiesExist()){
+                if(wc.timer.isFinished() && enemiesExist()){
+
+                    System.out.println("Inside");
 
                     wc.weapon.fire(world, e, x, y, firingAngleToNearestEnemyInRadians(x, y));
                     if(world.getMapper(AnimationStateComponent.class).has(e))
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);
+                    wc.timer.reset();
                 }
+
+                break;
 
 
             case UNTARGETED:

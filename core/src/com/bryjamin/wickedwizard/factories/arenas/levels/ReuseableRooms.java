@@ -8,31 +8,30 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FontAssets;
-import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
-import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
-import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -118,7 +117,16 @@ public class ReuseableRooms extends AbstractFactory {
     public void challengeRoadOnLoadActionEntity(Arena arena, final String challengeId){
 
         ComponentBag bag = arena.createArenaBag();
-        bag.add(new OnRoomLoadActionComponent(new Action() {
+
+
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(challengeId);
+            }
+        }));
+
+        bag.add(new DuringRoomLoadActionComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
 
@@ -129,14 +137,6 @@ public class ReuseableRooms extends AbstractFactory {
                 }
 
                 world.getSystem(SoundSystem.class).playSound(SoundFileStrings.itemPickUpMix1);
-
-                if(!DataSave.isDataAvailable(challengeId)){
-                    DataSave.saveChallengeData(challengeId);
-                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_NEW_ITEM);
-                } else {
-                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.TRAIL_COMPLETE, MenuStrings.TRAIL_OLD_ITEM);
-                }
-                e.deleteFromWorld();
             }
         }));
 

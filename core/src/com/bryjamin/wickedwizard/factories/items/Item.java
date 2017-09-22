@@ -13,6 +13,6 @@ public interface Item extends PickUp {
     boolean applyEffect(World world, Entity player);
 
     @Override
-    ItemResource.ItemValues getValues();
+    ItemLayout getValues();
 
 }

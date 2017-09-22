@@ -4,6 +4,8 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
 
@@ -18,12 +20,12 @@ public class ItemIronFragment implements Item {
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = player.getComponent(StatComponent.class);
         sc.maxHealth = sc.maxHealth + PresetStatIncrease.Health.increase(1);
         sc.armor = sc.armor + 1;
-        sc.health = (sc.health + 1 >= sc.maxHealth) ? sc.maxHealth : sc.health + PresetStatIncrease.Health.increase(1);
+        sc.increaseHealth(2);
         return true;
     }
 
     @Override
-    public com.bryjamin.wickedwizard.factories.items.ItemResource.ItemValues getValues() {
-        return com.bryjamin.wickedwizard.factories.items.ItemResource.Health.ironFragment;
+    public ItemLayout getValues() {
+        return ItemResource.Health.ironFragment;
     }
 }

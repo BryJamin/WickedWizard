@@ -48,7 +48,7 @@ public class HealthSystem extends EntityProcessingSystem {
                             if (sc.armor > 0) {
                                 sc.armor -= 1;
                             } else {
-                                sc.health -= 1;
+                                sc.decreaseHealth(1);
                             }
 
                         }

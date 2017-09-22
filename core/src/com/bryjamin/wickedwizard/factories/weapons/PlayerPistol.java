@@ -31,7 +31,7 @@ public class PlayerPistol implements Weapon{
     private BulletFactory bulletFactory;
     private com.bryjamin.wickedwizard.factories.weapons.Giblets.GibletBuilder gibletBuilder;
 
-    private static final float shotSpeedMultiplier = 2.5f;
+    private static final float shotSpeedMultiplier = 5.0f;
 
     private static final float range = Measure.units(50f);
 
@@ -110,11 +110,6 @@ public class PlayerPistol implements Weapon{
     @Override
     public float getBaseFireRate() {
         return com.bryjamin.wickedwizard.factories.weapons.CritCalculator.calculateFireRate(defaultFireRate, playerStats.fireRate);
-    }
-
-    @Override
-    public float getBaseDamage() {
-        return baseDamage;
     }
 
 

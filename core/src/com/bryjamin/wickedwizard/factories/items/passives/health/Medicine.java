@@ -4,6 +4,8 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.factories.items.Item;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
 /**
@@ -17,13 +19,13 @@ public class Medicine implements Item {
         StatComponent sc = player.getComponent(StatComponent.class);
         int i = PresetStatIncrease.Health.increase(1);
         sc.maxHealth = sc.maxHealth + i;
-        sc.health = (sc.health + i >= sc.maxHealth) ? sc.maxHealth : sc.health + i;
+        sc.increaseHealth(2);
         return true;
     }
 
     @Override
-    public com.bryjamin.wickedwizard.factories.items.ItemResource.ItemValues getValues() {
-        return com.bryjamin.wickedwizard.factories.items.ItemResource.Health.medicine;
+    public ItemLayout getValues() {
+        return ItemResource.Health.medicine;
     }
 }
 

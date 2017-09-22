@@ -1,7 +1,8 @@
 package com.bryjamin.wickedwizard.factories.arenas.challenges;
 
 import com.badlogic.gdx.utils.Array;
-import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 
 /**
  * Created by BB on 20/08/2017.
@@ -10,24 +11,56 @@ import com.bryjamin.wickedwizard.assets.resourcelayouts.ChallengeLayout;
 public class ChallengesResource {
 
     public static final String TUTORIAL_COMPLETE = "f239f5db-f5fe-42ed-b98f-54250522ec6c";
-
     public static final String LEVEL_1_COMPLETE = "a4b144de-3ff0-4255-8212-9e1426d82cd4";
     public static final String LEVEL_2_COMPLETE = "1a00b3e1-0f77-4d60-be67-12c6ecc04eb7";
     public static final String LEVEL_3_COMPLETE = "61b51ce6-77f4-48e7-bd16-e16fb9f9fab3";
     public static final String LEVEL_4_COMPLETE = "6b311405-8495-41d9-815f-8d6d3bc733f1";
     public static final String LEVEL_5_COMPLETE = "057c393b-b311-4738-9fa5-00af2dbad3b9";
 
+    public static Array<ChallengeLayout> challenges = new Array<ChallengeLayout>();
 
-    public static class GameCompletion {
+    public static Array<ChallengeLayout> getAllChallenges(){
+        Array<ChallengeLayout> challengeLayouts = new Array<ChallengeLayout>();
+        challengeLayouts.addAll(challenges);
+        return challengeLayouts;
+    }
 
-        public static final String GAME_COMPLETION_TWO = "ad211c68-cf46-4f01-aac2-51a2ccb251b6";
-        public static final String GAME_COMPLETION_THREE = "c1e50d1a-0a19-4260-8eb6-3e4816d43527";
-        public static final String GAME_COMPLETION_FOUR = "e3d083d2-e9cb-4591-8706-5b783c31c2bc";
-        public static final String GAME_COMPLETION_FIVE = "aa136c06-9d47-48fe-9d9f-fc21f9aaaa79";
+    static {
+
+        addChallenge(Rank1Challenges.TUTORIAL_SPEEDRUN, ItemResource.Armor.slimeCoat);
+        addChallenge(Rank1Challenges.ARENA_SPEEDRUN, ItemResource.Damage.anger);
+        addChallenge(Rank1Challenges.PERFECT_BLOBBA, ItemResource.Companion.crownOfBiggaBlobba);
+        addChallenge(Rank1Challenges.PERFECT_ADOJ, ItemResource.FireRate.statueOfAdoj);
+
+        addChallenge(Rank2Challenges.RANK_TWO_TIME_TRAIL, ItemResource.ShotSpeed.shinyFeather);
+        addChallenge(Rank2Challenges.RANK_TWO_ARENA, ItemResource.Luck.forgottenFigment);
+        addChallenge(Rank2Challenges.PERFECT_WANDA, ItemResource.Armor.wandasScarf);
+        addChallenge(Rank2Challenges.PERFECT_KUGEL, ItemResource.Companion.miniSpinnyThingie);
+
+        addChallenge(Rank3Challenges.RANK_THREE_TIME_TRAIL, ItemResource.Armor.angrySlimeCoat);
+        addChallenge(Rank3Challenges.RANK_THREE_ARENA, ItemResource.Accuracy.CriticalEye, ItemResource.Companion.megaSideCannons);
+        addChallenge(Rank3Challenges.PERFECT_BOOMY, ItemResource.Luck.threeDimensionalGold, ItemResource.Companion.autoRockets);
+        addChallenge(Rank3Challenges.PERFECT_AJIR, ItemResource.Damage.statueOfAjir);
+
+        addChallenge(Rank4Challenges.RANK_FOUR_TIME_TRAIL, ItemResource.Speed.quickness);
+        addChallenge(Rank4Challenges.RANK_FOUR_ARENA, ItemResource.Damage.miniTrebuchet);
+        addChallenge(Rank4Challenges.PERFECT_WRAITH, ItemResource.Companion.myVeryOwnStalker, ItemResource.Companion.ghastlyWail);
+        addChallenge(Rank4Challenges.PERFECT_AMALGAMA, ItemResource.Luck.eyesOfAmalgama, ItemResource.Luck.enigmaticShot);
+
+        addChallenge(Rank5Challenges.RANK_FIVE_TIME_TRAIL, ItemResource.ShotSpeed.momentum);
+        addChallenge(Rank5Challenges.RANK_FIVE_ARENA, ItemResource.ShotSize.cannonCube);
+        addChallenge(Rank5Challenges.BOSS_RUSH, ItemResource.Luck.iWishYouWell);
+        addChallenge(Rank5Challenges.PERFECT_BOSS_RUSH, ItemResource.Companion.liasCrown);
 
     }
 
+    public static void addChallenge(ChallengeLayout challengeLayout, ItemLayout... itemLayouts){
+        challenges.add(challengeLayout);
 
+        for(ItemLayout itemLayout : itemLayouts) {
+            itemLayout.setChallengeId(challengeLayout.getChallengeID());
+        }
+    }
 
 
     public static class Rank1Challenges {
@@ -56,15 +89,6 @@ public class ChallengesResource {
                 .unlockString(ChallengesResource.LEVEL_1_COMPLETE)
                 .name("Adoj Attacks Again")
                 .build();
-
-        public static Array<ChallengeLayout> rank1ChallengesArray = new Array<ChallengeLayout>();
-
-        static {
-            rank1ChallengesArray.add(TUTORIAL_SPEEDRUN); //SlimeCoat
-            rank1ChallengesArray.add(ARENA_SPEEDRUN); //Anger
-            rank1ChallengesArray.add(PERFECT_BLOBBA); //CrownOfBlobba
-            rank1ChallengesArray.add(PERFECT_ADOJ); //StatueOfAdoj
-        }
 
     }
 
@@ -98,15 +122,6 @@ public class ChallengesResource {
                 .unlockString(ChallengesResource.LEVEL_2_COMPLETE)
                 .name("Spinner's Second Spin")
                 .build();
-
-        public static Array<ChallengeLayout> rank2ChallengesArray = new Array<ChallengeLayout>();
-
-        static {
-            rank2ChallengesArray.add(RANK_TWO_TIME_TRAIL); //Shiny Feather
-            rank2ChallengesArray.add(RANK_TWO_ARENA); //Forgotten Figment
-            rank2ChallengesArray.add(PERFECT_WANDA); //Wanda's Scarf
-            rank2ChallengesArray.add(PERFECT_KUGEL); //SpinnyThignie
-        }
 
     }
 
@@ -142,17 +157,6 @@ public class ChallengesResource {
                 .build();
 
 
-
-
-        public static Array<ChallengeLayout> rank3ChallengesArray = new Array<ChallengeLayout>();
-
-        static {
-            rank3ChallengesArray.add(RANK_THREE_TIME_TRAIL); //Angry Slime Coat
-            rank3ChallengesArray.add(RANK_THREE_ARENA); //critical Eye
-            rank3ChallengesArray.add(PERFECT_BOOMY); //3D Gold
-            rank3ChallengesArray.add(PERFECT_AJIR); //statue of ajir
-        }
-
     }
 
 
@@ -185,16 +189,6 @@ public class ChallengesResource {
                 .name("Amalgama Amalgally Amalgamates")
                 .build();
 
-
-        public static Array<ChallengeLayout> rank4ChallengesArray = new Array<ChallengeLayout>();
-
-        static {
-            rank4ChallengesArray.add(RANK_FOUR_TIME_TRAIL); //Quickness
-            rank4ChallengesArray.add(RANK_FOUR_ARENA); //Mini Trebuchet
-            rank4ChallengesArray.add(PERFECT_WRAITH); //Your Very Own Stalker
-            rank4ChallengesArray.add(PERFECT_AMALGAMA); //Eyes of Amalgama
-        }
-
     }
 
 
@@ -222,27 +216,9 @@ public class ChallengesResource {
                 .build();
 
         public static ChallengeLayout PERFECT_BOSS_RUSH = new ChallengeLayout.ChallengeLayoutBuilder(perfectBossRush)
-                .unlockString(ChallengesResource.LEVEL_5_COMPLETE)
-                .unlockString(perfectBossRush)
+                .unlockString(bossRush)
                 .name("Finale")
                 .build();
-
-
-
-        public static Array<ChallengeLayout> rank5ChallengesArray = new Array<ChallengeLayout>();
-
-        static {
-            rank5ChallengesArray.add(RANK_FIVE_TIME_TRAIL); //Momentum
-            rank5ChallengesArray.add(RANK_FIVE_ARENA); //CannonCube
-            rank5ChallengesArray.add(BOSS_RUSH); //I wish you well
-            rank5ChallengesArray.add(PERFECT_BOSS_RUSH); // ??
-        }
-
     }
-
-
-
-
-
 
 }

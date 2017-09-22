@@ -61,6 +61,7 @@ public class GameCreator {
 
     public static class LevelCreator {
 
+        public String id = "unidentified";
         public JigsawGeneratorConfig jigsawGeneratorConfig;
         public boolean isGenerated;
 
@@ -68,8 +69,19 @@ public class GameCreator {
             this(jigsawGeneratorConfig, true);
         }
 
+
+        public LevelCreator(JigsawGeneratorConfig jigsawGeneratorConfig, String id){
+            this(jigsawGeneratorConfig, id, true);
+        }
+
         public LevelCreator(JigsawGeneratorConfig jigsawGeneratorConfig, boolean isGenerated){
             this.jigsawGeneratorConfig = jigsawGeneratorConfig;
+            this.isGenerated = isGenerated;
+        }
+
+        public LevelCreator(JigsawGeneratorConfig jigsawGeneratorConfig, String id, boolean isGenerated){
+            this.jigsawGeneratorConfig = jigsawGeneratorConfig;
+            this.id = id;
             this.isGenerated = isGenerated;
         }
 

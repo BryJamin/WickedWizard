@@ -148,7 +148,7 @@ public class Arena {
         }
     }
 
-    Bag<Component> findBag(Component c){
+    public Bag<Component> findBag(Component c){
         for(Bag<Component> bc : bagOfEntities){
             if(bc.contains(c)){
                 return bc;

@@ -13,7 +13,7 @@ public class StatComponent extends Component {
 
     public Array<Item> collectedItems = new Array<Item>();
 
-    public int health = 6;
+    private int health = 6;
     public int maxHealth = 6;
 
 
@@ -68,10 +68,92 @@ public class StatComponent extends Component {
         this.luck = statComponent.luck;
         this.range = statComponent.range;
         this.shotSpeed = statComponent.shotSpeed;
+        this.shotSize = statComponent.shotSize;
         this.accuracy = statComponent.accuracy;
         this.crit = statComponent.crit;
         this.collectedItems = statComponent.collectedItems;
     }
 
 
+
+
+    public void increaseHealth(int i){
+        health = (health + i > maxHealth) ? maxHealth : health + i;
+    }
+
+
+    public void increaseMaxHealth(int i){
+
+        try {
+
+            if(i % 2 != 0){
+                i += 1;
+                throw new Exception("Error in StatComponent MaxHealth Increase. MaxHealth Increase is Not An Even Number");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+        }
+
+        maxHealth += i;
+
+        if(health > maxHealth){
+            health = maxHealth;
+        }
+
+
+    }
+
+
+    public void setHealth(int health){
+
+        try {
+
+            if(maxHealth < health) {
+                health = maxHealth;
+                throw new Exception("Error in StatComponent. Health is Set Higher than MaxHealth");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+        }
+
+        this.health = health;
+
+    }
+
+
+    public void setMaxHealth(int maxHealth){
+
+        try {
+
+            if(maxHealth % 2 != 0){
+                maxHealth += 1;
+                throw new Exception("Error in StatComponent. MaxHealth is Not An Even Number");
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+
+        }
+
+
+
+        this.maxHealth = maxHealth;
+
+        if(health > maxHealth){
+            health = maxHealth;
+        }
+
+    }
+
+    public void decreaseHealth(int i){
+        health -= i;
+    }
+
+    public int getHealth() {
+        return health;
+    }
 }

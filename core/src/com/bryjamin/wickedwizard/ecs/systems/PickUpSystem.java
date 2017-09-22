@@ -7,7 +7,9 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
@@ -63,8 +65,8 @@ public class PickUpSystem extends EntityProcessingSystem {
         CollisionBoundComponent pBound = player.getComponent(CollisionBoundComponent.class);
 
         Entity itemHoverAffect = world.createEntity();
-        itemHoverAffect.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent());
-        itemHoverAffect.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(player.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position,
+        itemHoverAffect.edit().add(new PositionComponent());
+        itemHoverAffect.edit().add(new FollowPositionComponent(player.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position,
                 0, pBound.bound.getHeight() + pBound.bound.getHeight() / 4));
         itemHoverAffect.edit().add(new TextureRegionComponent(world.getSystem(RenderingSystem.class).atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));

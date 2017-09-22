@@ -32,6 +32,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaGUI;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.PickUp;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -348,25 +349,25 @@ public class UISystem extends EntitySystem {
 
         healthRegions.clear();
 
-        for(int i = 1; i <= playerStats.health; i++){
-            if(i <= playerStats.health && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 0));
-            } else if(playerStats.health % 2 != 0 && i == playerStats.health){
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 1));
+        for(int i = 1; i <= playerStats.getHealth(); i++){
+            if(i <= playerStats.getHealth() && i % 2 == 0) {
+                healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.getRegion().getLeft(), 0));
+            } else if(playerStats.getHealth() % 2 != 0 && i == playerStats.getHealth()){
+                healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.getRegion().getLeft(), 1));
             }
         }
 
-        int emptyHealth = playerStats.maxHealth - playerStats.health;
+        int emptyHealth = playerStats.maxHealth - playerStats.getHealth();
         emptyHealth = (emptyHealth % 2 == 0) ? emptyHealth : emptyHealth - 1;
 
         for(int i = 1; i <= emptyHealth; i++) {
             if(i <= emptyHealth && i % 2 == 0) {
-                healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.healthUp.getRegion().getLeft(), 2));
+                healthRegions.add(atlas.findRegion(ItemResource.PickUp.healthUp.getRegion().getLeft(), 2));
             }
         }
 
         for(int i = 0; i < playerStats.armor; i++) {
-            healthRegions.add(atlas.findRegion(com.bryjamin.wickedwizard.factories.items.ItemResource.PickUp.armorUp.getRegion().getLeft()));
+            healthRegions.add(atlas.findRegion(ItemResource.PickUp.armorUp.getRegion().getLeft()));
         }
 
         float screenoffset = Measure.units(10f);

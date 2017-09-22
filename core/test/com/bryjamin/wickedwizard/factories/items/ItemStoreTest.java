@@ -10,9 +10,10 @@ import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.bryjamin.wickedwizard.GameTest;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
-
+import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 
@@ -63,8 +64,8 @@ public class ItemStoreTest extends GameTest {
         }
        // assertTrue(itemStore.getItemOptionsArray().size == 1);
         for(ItemStore.ItemOptions io : itemStore.getItemOptionsArray()) {
-            assertTrue(io.item.getValues().itemTypes.contains(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS, false));
-            assertTrue(!io.item.getValues().itemTypes.contains(com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM, false));
+            assertTrue(io.item.getValues().getItemTypes().contains(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS, false));
+            assertTrue(!io.item.getValues().getItemTypes().contains(com.bryjamin.wickedwizard.utils.enums.ItemType.ITEM, false));
         }
     }
 
@@ -84,12 +85,12 @@ public class ItemStoreTest extends GameTest {
 
         ItemStore itemStore = new ItemStore(new Random());
 
-        for(com.bryjamin.wickedwizard.factories.items.Item item : com.bryjamin.wickedwizard.factories.items.ItemResource.allItems) {
-            Assert.assertTrue(item.getValues().region.getLeft()
+        for(com.bryjamin.wickedwizard.factories.items.Item item : ItemResource.allItems) {
+            Assert.assertTrue(item.getValues().getRegion().getLeft()
                             + " index "
-                            + item.getValues().region.getRight()
+                            + item.getValues().getRegion().getRight()
                             + " is not inside of the sprite atlas",
-                    atlas.findRegion(item.getValues().region.getLeft(), item.getValues().region.getRight()) != null);
+                    atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()) != null);
         }
 
     }
@@ -112,7 +113,7 @@ public class ItemStoreTest extends GameTest {
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem(),
-                        new FindPlayerSystem(new PlayerFactory(assetManager).playerBag(0,0)))
+                        new FindPlayerSystem(new PlayerFactory(assetManager).playerBag(PlayerIDs.LEAH_ID,0,0)))
                 .build();
 
         World world = new World(config);
@@ -128,15 +129,31 @@ public class ItemStoreTest extends GameTest {
         int luck = 0;
         int range = 0;
         int shotspeed = 0;
+        int shotSize = 0;
         int accuracy = 0;
         int companion = 0;
 
 
 
+        int nhealth = 0;
+        int nmaxHealth = 0;
+        int ndmg = 0;
+        int narmor = 0;
+        int nfirerate = 0;
+        int nspeed = 0;
+        int nluck = 0;
+        int nrange = 0;
+        int nshotspeed = 0;
+        int nshotSize = 0;
+        int naccuracy = 0;
+        int ncompanion = 0;
 
 
 
-        for(com.bryjamin.wickedwizard.factories.items.Item i : com.bryjamin.wickedwizard.factories.items.ItemResource.allItems) {
+
+
+
+        for(com.bryjamin.wickedwizard.factories.items.Item i : ItemResource.allItems) {
 
             if(i instanceof com.bryjamin.wickedwizard.factories.items.Companion){
                 companion += 1;
@@ -156,7 +173,7 @@ public class ItemStoreTest extends GameTest {
 
             com.bryjamin.wickedwizard.ecs.components.StatComponent after = e.getComponent(StatComponent.class);
 
-            health += (after.health > pre.health) ? 1 : 0;
+            health += (after.getHealth() > pre.getHealth()) ? 1 : 0;
             maxHealth += (after.maxHealth > pre.maxHealth) ? 1 : 0;
             dmg += (after.damage > pre.damage) ? 1 : 0;
             armor += (after.armor > pre.armor) ? 1 : 0;
@@ -164,8 +181,26 @@ public class ItemStoreTest extends GameTest {
             speed += (after.speed > pre.speed) ? 1 : 0;
             luck += (after.luck > pre.luck) ? 1 : 0;
             shotspeed += (after.shotSpeed > pre.shotSpeed) ? 1 : 0;
+            shotSize += (after.shotSize > pre.shotSize) ? 1 : 0;
             accuracy += (after.accuracy > pre.accuracy) ? 1 : 0;
             range += (after.range > pre.range) ? 1 : 0;
+
+
+
+
+            nhealth += (after.getHealth() < pre.getHealth()) ? 1 : 0;
+            nmaxHealth += (after.maxHealth < pre.maxHealth) ? 1 : 0;
+            ndmg += (after.damage < pre.damage) ? 1 : 0;
+            narmor += (after.armor < pre.armor) ? 1 : 0;
+            nfirerate += (after.fireRate < pre.fireRate) ? 1 : 0;
+            nspeed += (after.speed < pre.speed) ? 1 : 0;
+            nluck += (after.luck < pre.luck) ? 1 : 0;
+            nshotspeed += (after.shotSpeed < pre.shotSpeed) ? 1 : 0;
+            nshotSize += (after.shotSize < pre.shotSize) ? 1 : 0;
+            naccuracy += (after.accuracy < pre.accuracy) ? 1 : 0;
+            nrange += (after.range < pre.range) ? 1 : 0;
+
+
 
             total++;
 
@@ -182,9 +217,25 @@ public class ItemStoreTest extends GameTest {
         System.out.println("Total Items increasing speed: " + speed);
         System.out.println("Total Items increasing luck: " + luck);
         System.out.println("Total Items increasing shotspeed: " + shotspeed);
+        System.out.println("Total Items increasing shotSize: " + shotSize);
         System.out.println("Total Items increasing accuracy: " + accuracy);
         System.out.println("Total Items increasing range: " + range);
         System.out.println("Total Companions: " + companion);
+
+
+
+
+        System.out.println("Total Items decreasing health: " + nhealth);
+        System.out.println("Total Items decreasing maxHealth: " + nmaxHealth);
+        System.out.println("Total Items decreasing damage: " + ndmg);
+        System.out.println("Total Items decreasing armor: " + narmor);
+        System.out.println("Total Items decreasing firerate: " + nfirerate);
+        System.out.println("Total Items decreasing speed: " + nspeed);
+        System.out.println("Total Items decreasing luck: " + nluck);
+        System.out.println("Total Items decreasing shotspeed: " + nshotspeed);
+        System.out.println("Total Items decreasing shotSize: " + nshotSize);
+        System.out.println("Total Items decreasing accuracy: " + naccuracy);
+        System.out.println("Total Items decreasing range: " + nrange);
 
     }
 

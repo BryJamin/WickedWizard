@@ -2,6 +2,7 @@ package com.bryjamin.wickedwizard.factories.items;
 
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.factories.items.passives.armor.ItemVitaminC;
+import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 import java.util.Random;
@@ -32,12 +33,19 @@ public class ItemStore {
     public ItemStore(Random random){
         this.random = random;
 
-
         for(Item i : ItemResource.allItems){
-            if(com.bryjamin.wickedwizard.screens.DataSave.isDataAvailable(i.getValues().getChallengeId())) {
+            if(DataSave.isDataAvailable(i.getValues().getChallengeId())) {
                 createItem(i);
+                System.out.println(i.getValues().getChallengeId());
+                System.out.println(i.getValues().getName());
+
             }
         }
+
+
+
+
+
     }
 
     private void createItem(Item item){

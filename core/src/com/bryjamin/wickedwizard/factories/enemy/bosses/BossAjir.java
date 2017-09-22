@@ -352,10 +352,6 @@ public class BossAjir extends BossFactory {
             return timeBetweenSplitAction;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
     }
 
 

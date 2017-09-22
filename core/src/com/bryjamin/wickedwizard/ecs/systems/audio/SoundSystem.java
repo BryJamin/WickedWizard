@@ -140,11 +140,16 @@ public class SoundSystem extends EntitySystem {
 
         for(SoundEmitterComponent sec : soundFadeArray){
 
+            Music m = activeLoopedMusic.get(sec);
+            if(m == null) {
+                activeLoopedMusic.remove(sec);
+                continue;
+            }
+
 
             sec.currentVolume -= world.delta * sec.volumeFadeFactor * MASTER_VOLUME;
 
-            if(sec.currentVolume <= 0){
-                Music m = activeLoopedMusic.get(sec); //Gdx.audio.newMusic(Gdx.files.internal(sec.mix.getFileName())); //activeLoopedMusic.get(sec);
+            if(sec.currentVolume <= 0){ //Gdx.audio.newMusic(Gdx.files.internal(sec.mix.getFileName())); //activeLoopedMusic.get(sec);
                 m.setVolume(0);
                 m.stop();
                 m.dispose();
@@ -152,7 +157,6 @@ public class SoundSystem extends EntitySystem {
                 soundFadeArray.removeValue(sec, true);
                 activeLoopedMusic.remove(sec);
             } else {
-                Music m = activeLoopedMusic.get(sec);
                 m.setVolume(SOUNDON ? sec.currentVolume * MASTER_VOLUME : 0);
             }
 
@@ -203,6 +207,8 @@ public class SoundSystem extends EntitySystem {
      * @param mixes - Array of mixes
      */
     public void playRandomSound(Mix... mixes){
+
+        if(mixes.length <= 0) return;
 
         if(!upcomingMixesMixes.contains(mixes, true)) {
             playSound(mixes[MathUtils.random.nextInt(mixes.length)]);

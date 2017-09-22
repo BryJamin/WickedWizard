@@ -341,11 +341,6 @@ public class BossWanda extends BossFactory {
             return 0.5f;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
-
         public void createBlock(World world, Vector3 centerOfOrbit, final float startAngle, Color color) {
 
             Entity e = world.createEntity();
@@ -417,11 +412,6 @@ public class BossWanda extends BossFactory {
         @Override
         public float getBaseFireRate() {
             return shieldBlastFireRate;
-        }
-
-        @Override
-        public float getBaseDamage() {
-            return 0;
         }
 
 

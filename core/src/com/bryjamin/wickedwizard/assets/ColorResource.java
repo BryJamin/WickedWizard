@@ -11,11 +11,17 @@ public class ColorResource {
 
     public static final Color AMOEBA_BLUE = RGBtoColor(59, 134, 134, 1);
     public static final Color AMOEBA_FAST_PURPLE = RGBtoColor(98, 59, 206, 1);
-    public static final Color GHOST_BULLET_COLOR = RGBtoColor(147, 76, 206, 0.9f);
+    public static final Color GHOST_BULLET_COLOR = RGBtoColor(194, 73, 255, 0.9f);
     public static final Color ENEMY_BULLET_COLOR = new Color(Color.RED);
 
     public static final Color PLAYER_BULLET_COLOR = new Color(Color.WHITE);
     public static final Color COMPANION_BULLET_COLOR = RGBtoColor(229, 229, 229, 1);
+
+    public static final Color COMPANION_ROCKET_COLOR_ONE = RGBtoColor(253, 95, 0, 1);
+    public static final Color COMPANION_ROCKET_COLOR_TWO = new Color(Color.WHITE);
+
+
+    public static final Color COMPANION_GHOST_BULLET_COLOR = RGBtoColor(96, 68, 255, 1);
 
     public static final Color MONEY_YELLOW = RGBtoColor(255, 214, 0, 1);
 

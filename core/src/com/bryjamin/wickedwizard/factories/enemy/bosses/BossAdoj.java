@@ -51,21 +51,21 @@ public class BossAdoj extends BossFactory {
 
     private static final float rightHornHitBoxOffsetX = Measure.units(21f);
 
-    private static final float health = 70;
+    private static final float health = 65;
 
     private static final float firingAiOffsetY = Measure.units(5f);
     private static final float fastPistolFireRate = 0.1f;
-    private static final float speed = Measure.units(40f);
+
+    private static final float movementPhaseSpeed = Measure.units(40f);
 
     private static final float tommyReload = 1f;
     private static final float tommyFiringTime = 0.3f;
-    private static final float tommyGunSpeed = Measure.units(65f);
+    private static final float tommyGunSpeed = Measure.units(55f);
 
 
     public BossAdoj(AssetManager assetManager) {
         super(assetManager);
     }
-
 
 
     public ComponentBag bossAdoj(float x, float y){
@@ -140,7 +140,7 @@ public class BossAdoj extends BossFactory {
 
             }
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent(position));
-            e.edit().add(new AccelerantComponent(speed, speed));
+            e.edit().add(new AccelerantComponent(movementPhaseSpeed, movementPhaseSpeed));
         }
 
         @Override

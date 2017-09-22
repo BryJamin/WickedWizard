@@ -175,8 +175,7 @@ public class LaserusFactory extends EnemyFactory {
         @Override
         public float getBaseFireRate() {return fireRate;}
 
-        @Override
-        public float getBaseDamage() {return 0;}
+
     }
 
 

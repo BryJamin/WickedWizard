@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 30/06/2017.
@@ -42,7 +43,7 @@ public class BiggaBlobbaBoss extends BossFactory {
 
     private static final float health = 65;
 
-    private static final float speed = Measure.units(60f);
+    private static final float chargingSpeed = Measure.units(50f);
 
     private static final float jumpTransitionVly = Measure.units(40f);
     private static final float jumpVlx = Measure.units(45f);
@@ -128,7 +129,7 @@ public class BiggaBlobbaBoss extends BossFactory {
             }
         };
 
-        com.bryjamin.wickedwizard.utils.Pair<Task, Condition> angryTransitionPhase = new com.bryjamin.wickedwizard.utils.Pair<Task, Condition>(phaseChangeJump(), landingCondition(angryTransitionTime));
+        Pair<Task, Condition> angryTransitionPhase = new Pair<Task, Condition>(phaseChangeJump(), landingCondition(angryTransitionTime));
 
         com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent pc = new com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent();
         pc.addPhase(angryTransitionPhase);
@@ -158,9 +159,9 @@ public class BiggaBlobbaBoss extends BossFactory {
                 com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
                 com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
                 com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
-                vc.velocity.x = cbc.getCenterX() > playerCbc.getCenterX() ? vc.velocity.x = -speed : speed;
+                vc.velocity.x = cbc.getCenterX() > playerCbc.getCenterX() ? vc.velocity.x = -chargingSpeed : chargingSpeed;
                 e.getComponent(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.class).setDefaultState(CHARGINGANIMATION);
-                e.edit().add(blobOCAC(speed));
+                e.edit().add(blobOCAC(chargingSpeed));
             }
 
             @Override
@@ -181,7 +182,7 @@ public class BiggaBlobbaBoss extends BossFactory {
         public void performAction(World world, Entity e) {
             position.x = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena().getWidth() / 2;
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent(position));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent(speed, speed));
+            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent(chargingSpeed, chargingSpeed));
         }
 
         @Override
@@ -229,7 +230,7 @@ public class BiggaBlobbaBoss extends BossFactory {
     }
 
 
-    private com.bryjamin.wickedwizard.utils.Pair<Task, Condition> jumpingPhase(final float time){
+    private Pair<Task, Condition> jumpingPhase(final float time){
 
         com.bryjamin.wickedwizard.ecs.components.ai.Task task =  new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
@@ -268,7 +269,7 @@ public class BiggaBlobbaBoss extends BossFactory {
             }
         };
 
-        return new com.bryjamin.wickedwizard.utils.Pair<Task, Condition>(task, landingCondition(time));
+        return new Pair<Task, Condition>(task, landingCondition(time));
 
     }
 

@@ -1,22 +1,13 @@
 package com.bryjamin.wickedwizard.factories.arenas.presetmaps;
 
-import com.artemis.Entity;
-import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.OrderedSet;
-import com.bryjamin.wickedwizard.assets.MenuStrings;
-import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterComponent;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.BossMapCreate;
-import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
-import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossArenaEndBoss;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAdoj;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomAjir;
@@ -26,14 +17,11 @@ import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomBoomyMap;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomGiantKugelRoom;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWanda;
 import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
-import com.bryjamin.wickedwizard.screens.DataSave;
-import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
@@ -132,7 +120,7 @@ public class BossMaps extends AbstractFactory {
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
 
 
-        ComponentBag bag = exitArena.createArenaBag();
+/*        ComponentBag bag = exitArena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
@@ -152,15 +140,17 @@ public class BossMaps extends AbstractFactory {
                         case 4: id = ChallengesResource.LEVEL_5_COMPLETE; break;
                     }
 
+                    world.getSystem(UnlockMessageSystem.class).createUnlockMessage(id);
 
-                    if (!DataSave.isDataAvailable(id)) {
-                        DataSave.saveChallengeData(id);
-                        world.getSystem(MessageBannerSystem.class).createLevelBanner(MenuStrings.NEW_TRAILS);
-                    }
+                    String s = AdventureUnlocks.getUnlock(
+                            world.getSystem(FindPlayerSystem.class).getPlayerComponent(PlayerComponent.class).id,
+                            id);
+
+                    if(s != null) world.getSystem(UnlockMessageSystem.class).createUnlockMessage(s);
                 }
                 e.deleteFromWorld();
             }
-        }));
+        }));*/
 
 
         return exitArena;

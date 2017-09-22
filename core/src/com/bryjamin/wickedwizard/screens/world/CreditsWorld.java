@@ -28,6 +28,7 @@ import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.Pair;
 
 /**
  * Created by Home on 26/07/2017.
@@ -132,12 +133,13 @@ public class CreditsWorld {
         createCreditsPart("Special Thanks", creditsLargeGap);
         createCreditsPart("Mark-Adam Kellerman", creditsSmallGap);
         createCreditsPart("Phoebe Clarke", creditsSmallGap);
+        createCreditsPart("Johan (\"Flowy\") Almeflo", creditsSmallGap);
         createCreditsPart("Louis Hampton", creditsSmallGap);
         createCreditsPart("James O'Toole", creditsSmallGap);
         createCreditsPart("Michelle Bryant", creditsSmallGap);
 
         createCreditsPart("Pete Colley", creditsSmallGap);
-        createCreditsPart("Dave Shama", creditsSmallGap);
+        createCreditsPart("Dave (\"Sharma\") Shama", creditsSmallGap);
         createCreditsPart("Anthony Gibson", creditsSmallGap);
 
 
@@ -231,8 +233,8 @@ public class CreditsWorld {
 
     }
 
-    private com.bryjamin.wickedwizard.utils.Pair<ComponentBag, Float> createCreditsPart (ComponentBag bag, float distanceTravelledTillNextInLine){
-        return new com.bryjamin.wickedwizard.utils.Pair<ComponentBag, Float>(bag, distanceTravelledTillNextInLine);
+    private Pair<ComponentBag, Float> createCreditsPart (ComponentBag bag, float distanceTravelledTillNextInLine){
+        return new Pair<ComponentBag, Float>(bag, distanceTravelledTillNextInLine);
     }
 
 

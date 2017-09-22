@@ -27,7 +27,7 @@ import com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
-import com.bryjamin.wickedwizard.factories.arenas.presets.BreakRoom;
+import com.bryjamin.wickedwizard.factories.arenas.presetrooms.BreakRoom;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;

@@ -3,6 +3,8 @@ package com.bryjamin.wickedwizard.factories.items.passives.accuracy;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
+import com.bryjamin.wickedwizard.factories.items.ItemLayout;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.factories.items.passives.PresetStatIncrease;
 
 /**
@@ -19,8 +21,8 @@ public class ItemAimAssist implements com.bryjamin.wickedwizard.factories.items.
     }
 
     @Override
-    public com.bryjamin.wickedwizard.factories.items.ItemResource.ItemValues getValues() {
-        return com.bryjamin.wickedwizard.factories.items.ItemResource.Accuracy.aimAssist;
+    public ItemLayout getValues() {
+        return ItemResource.Accuracy.aimAssist;
     }
 
 }

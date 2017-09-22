@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
+import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -29,7 +30,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     private ChestFactory chestFactory;
     private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
-    private com.bryjamin.wickedwizard.factories.BombFactory bombFactory;
+    private BombFactory bombFactory;
     private BeamTurretFactory beamTurretFactory;
     private Random random;
     private ArenaSkin arenaSkin;
@@ -41,7 +42,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.beamTurretFactory = new BeamTurretFactory(assetManager, arenaSkin);
-        this.bombFactory = new com.bryjamin.wickedwizard.factories.BombFactory(assetManager);
+        this.bombFactory = new BombFactory(assetManager);
         this.random = random;
         this.arenaSkin = arenaSkin;
     }

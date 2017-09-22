@@ -259,10 +259,6 @@ public class KnightFactory extends EnemyFactory {
             return 1.5f;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 1;
-        }
     }
 
 

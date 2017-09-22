@@ -454,11 +454,6 @@ public class BossTheEnd extends BossFactory {
         }
 
         @Override
-        public float getBaseDamage() {
-            return 0;
-        }
-
-        @Override
         public void performHandAction(World world, Entity hand) {
             PhaseComponent phaseComponent = new PhaseComponent();
             phaseComponent.addPhase(handCharingTime, chargingAnimationTask());
@@ -566,10 +561,6 @@ public class BossTheEnd extends BossFactory {
             return 70;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
 
         @Override
         public void performHandAction(World world, Entity hand) {
@@ -687,10 +678,6 @@ public class BossTheEnd extends BossFactory {
             return 70;
         }
 
-        @Override
-        public float getBaseDamage() {
-            return 0;
-        }
 
 
         @Override
@@ -783,11 +770,6 @@ public class BossTheEnd extends BossFactory {
         @Override
         public float getBaseFireRate() {
             return 0.25f;
-        }
-
-        @Override
-        public float getBaseDamage() {
-            return 0;
         }
 
 
