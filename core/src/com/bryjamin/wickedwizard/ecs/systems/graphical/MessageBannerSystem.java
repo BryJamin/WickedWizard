@@ -7,10 +7,13 @@ import com.artemis.EntitySystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BannerComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
@@ -26,19 +29,11 @@ public class MessageBannerSystem extends EntitySystem {
 
     ComponentMapper<PositionComponent> pm;
 
-    TextureFontComponent titleFC;
-    TextureFontComponent messageFC;
-    TextureRegion bannerTexture;
-
-
-
-    private static final float itemBannerTitleTextOffsetY = Measure.units(21.5f);
-    private static final float itemBannerDescriptionOffsetY = Measure.units(16.5f);
-
-    private static final float levelBannerTextOffsetY = Measure.units(19.5f);
+    private TextureFontComponent titleFC;
+    private TextureFontComponent messageFC;
+    private TextureRegion bannerTexture;
 
     private static final float bannerHeight = Measure.units(10f);
-    private static final float bannerFollowOffsetY = Measure.units(12.5f);
 
     private Camera gamecam;
 
@@ -74,7 +69,7 @@ public class MessageBannerSystem extends EntitySystem {
     }
 
 
-    public void createItemBanner(String title, String message){
+    public void createItemBanner(String title, String message, float offsetY){
 
         for(Entity e : this.getEntities()){
             world.getSystem(com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
@@ -94,50 +89,21 @@ public class MessageBannerSystem extends EntitySystem {
 
         titleFC.color.a = 0;
         titleFC.text = title;
-        createBannerText(0,  itemBannerTitleTextOffsetY, titleFC, parentComponent, fc, ec);
+        createBannerText(0,  offsetY + Measure.units(5f), titleFC, parentComponent, fc, ec);
 
 
         messageFC.color.a = 0;
         messageFC.text = message;
-        createBannerText(0, itemBannerDescriptionOffsetY, messageFC, parentComponent, fc, ec);
+        createBannerText(0, offsetY, messageFC, parentComponent, fc, ec);
 
-        createBannerBox(parentComponent, fc, ec, new Color(Color.BLACK));
+        createBannerBox(offsetY, parentComponent, fc, ec, new Color(Color.BLACK));
 
         fc = new FadeComponent(true, 0.25f, false);
         fc.count = 1;
 
-        Entity whiteFlashingBox = createBannerBox(parentComponent, fc, new ExpireComponent(0.9f), new Color(Color.WHITE));
+        Entity whiteFlashingBox = createBannerBox(offsetY, parentComponent, fc, new ExpireComponent(0.9f), new Color(Color.WHITE));
         whiteFlashingBox.getComponent(TextureRegionComponent.class).layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
         whiteFlashingBox.getComponent(TextureRegionComponent.class).color.a = 1;
-
-    }
-
-
-    public void createLevelBanner(String message){
-
-        for(Entity e : this.getEntities()){
-            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
-        }
-
-
-        Entity banner = world.createEntity();
-        banner.edit().add(new BannerComponent());
-        banner.edit().add(new UIComponent());
-        ParentComponent parentComponent = new ParentComponent();
-        banner.edit().add(new ParentComponent());
-
-        FadeComponent fc = new FadeComponent(true, 4f, false);
-        fc.count = 1;
-
-        ExpireComponent ec = new ExpireComponent(10f);
-
-
-        TextureFontComponent trc = new TextureFontComponent(com.bryjamin.wickedwizard.assets.FontAssets.medium, message);
-        trc.color.a = 0;
-        trc.layer = TextureRegionComponent.FOREGROUND_LAYER_NEAR;
-        createBannerText(0,  levelBannerTextOffsetY, trc, parentComponent, fc, ec);
-
-        createBannerBox(parentComponent, fc, ec, new Color(Color.BLACK));
 
     }
 
@@ -146,21 +112,23 @@ public class MessageBannerSystem extends EntitySystem {
     private Entity createBannerText(float offsetX, float offsetY, TextureFontComponent tfc, com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec){
         Entity text = world.createEntity();
         text.edit().add(new PositionComponent(gamecam.position.x + offsetX, gamecam.position.y + offsetY));
-        text.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, offsetX, offsetY));
+        text.edit().add(new FollowCameraComponent(-gamecam.viewportWidth / 2, offsetY));
+        text.edit().add(new CollisionBoundComponent(
+                new Rectangle(gamecam.position.x + offsetX, gamecam.position.y + offsetY, gamecam.viewportWidth, bannerHeight / 2)));
         text.edit().add(new UIComponent());
         text.edit().add(tfc);
         text.edit().add(fc);
         text.edit().add(ec);
-        text.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent(parentBanner));
+        text.edit().add(new ChildComponent(parentBanner));
         return text;
     }
 
 
-    private Entity createBannerBox(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec, Color color){
+    private Entity createBannerBox(float offsetY, ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec, Color color){
 
         Entity blackBackingBox = world.createEntity();
-        blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + bannerFollowOffsetY));
-        blackBackingBox.edit().add(new FollowPositionComponent(gamecam.position, - gamecam.viewportWidth / 2, bannerFollowOffsetY));
+        blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + offsetY));
+        blackBackingBox.edit().add(new FollowCameraComponent(- gamecam.viewportWidth / 2, offsetY));
 
         TextureRegionComponent trc = new TextureRegionComponent(bannerTexture, 0,0, gamecam.viewportWidth, bannerHeight, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
         trc.color = color;

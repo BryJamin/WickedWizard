@@ -22,12 +22,16 @@ public class PlayerIDs {
 
     public static PlayableCharacter LEAH = new PlayableCharacter.PlayableCharacterBuilder(LEAH_ID)
             .name("Leah")
+            .traits("Normal")
+            .personality("Protagonist")
             .region(TextureStrings.BLOCK_PORTRAIT)
             .build();
 
 
     public static PlayableCharacter XI = new PlayableCharacter.PlayableCharacterBuilder(XI_ID)
             .name("Xi")
+            .traits("Low Health, Higher Damage")
+            .personality("Edgy")
             .region(TextureStrings.XI_PORTRAIT)
             .unlockString(XI_UNLOCK_STRING)
             .build();
@@ -36,6 +40,8 @@ public class PlayerIDs {
 
     public static PlayableCharacter PHI = new PlayableCharacter.PlayableCharacterBuilder(PHI_ID)
             .name("Phi")
+            .traits("High Health, Low Damage and Speed")
+            .personality("Low Self-Esteem")
             .region(TextureStrings.PHI_PORTRAIT)
             .unlockString(ChallengesResource.LEVEL_2_COMPLETE)
             .build();
@@ -43,6 +49,8 @@ public class PlayerIDs {
 
     public static PlayableCharacter TESS = new PlayableCharacter.PlayableCharacterBuilder(TESS_ID)
             .name("Tess")
+            .traits("Low Health, High Luck")
+            .personality("See-Through")
             .region(TextureStrings.TESS_PORTRAIT)
             .unlockString(TESS_UNLOCK_STRING)
             .build();
@@ -57,6 +65,8 @@ public class PlayerIDs {
 
         private final String id;
         private final String name;
+        private final String traits;
+        private final String personality;
         private final String region;
         private final String unlockString;
 
@@ -64,6 +74,8 @@ public class PlayerIDs {
         public PlayableCharacter(PlayableCharacterBuilder pcb){
             this.id = pcb.id;
             this.name = pcb.name;
+            this.traits = pcb.traits;
+            this.personality = pcb.personality;
             this.region = pcb.region;
             this.unlockString = pcb.unlockString;
         }
@@ -86,14 +98,24 @@ public class PlayerIDs {
             return unlockString;
         }
 
+        public String getTraits() {
+            return traits;
+        }
+
+        public String getPersonality() {
+            return personality;
+        }
+
         public static class PlayableCharacterBuilder {
 
 
             //Required
             private String id;
-            public String name = "Undefined";
-            public String region = TextureStrings.BLOCK;
-            public String unlockString = ChallengesResource.TUTORIAL_COMPLETE;
+            private String name = "Undefined";
+            private String traits = "Undefined";
+            private String personality = "Undefinied";
+            private String region = TextureStrings.BLOCK;
+            private String unlockString = ChallengesResource.TUTORIAL_COMPLETE;
 
 
             public PlayableCharacterBuilder(String id) {
@@ -102,6 +124,12 @@ public class PlayerIDs {
 
             public PlayableCharacterBuilder name(String val)
             { name = val; return this; }
+
+            public PlayableCharacterBuilder traits(String val)
+            { traits = val; return this; }
+
+            public PlayableCharacterBuilder personality(String val)
+            { personality = val; return this; }
 
             public PlayableCharacterBuilder region(String val)
             { region = val; return this; }

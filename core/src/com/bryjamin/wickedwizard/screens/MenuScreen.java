@@ -114,7 +114,6 @@ public class MenuScreen extends AbstractScreen {
     public MenuScreen(MainGame game) {
         super(game);
         if(menuType == null) {
-
             if(isDevDevice()) {
                 String menuTypeName = Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getString(PreferenceStrings.DEV_MENU_IS_DEV, MenuType.DEV.name());
                 menuType = menuTypeName.equals(MenuType.DEV.name()) ? MenuType.DEV : MenuType.MAIN;
@@ -137,6 +136,8 @@ public class MenuScreen extends AbstractScreen {
 
         gameport = new FitViewport(MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, gamecam);
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
+        gamecam.update();
+        gameport.apply();
 
         createMenu();
 
@@ -284,10 +285,25 @@ public class MenuScreen extends AbstractScreen {
     }
 
     public static void setMenuType(MenuType menuType) {
-        if(menuType == MenuType.CHALLENGES || menuType == MenuType.MAIN){
+        if(menuType == MenuType.CHALLENGES || menuType == MenuType.MAIN || menuType == MenuType.CHARACTER_SELECT){
             MenuScreen.defaultMenuType = menuType;
         }
         MenuScreen.menuType = menuType;
+    }
+
+    public static void goBack() {
+
+        switch (menuType){
+            case ITEMS:
+            case SETTING:
+                resetMenuType();
+                break;
+            case CHARACTER_SELECT:
+            case CHALLENGES:
+                setMenuType(MenuType.MAIN);
+                break;
+        }
+
     }
 
 

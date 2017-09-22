@@ -4,10 +4,12 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import com.artemis.utils.Bag;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
@@ -25,13 +27,16 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.screens.MenuButton;
+import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.world.WorldContainer;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
+import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
-import com.bryjamin.wickedwizard.utils.TableMath;
 
 /**
  * Created by BB on 09/09/2017.
@@ -48,20 +53,26 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private static final float characterSelectHeight = Measure.units(10f);
     private static final float characterSelectGap = Measure.units(5f);
 
+
+
     private static final float buttonWidth = Measure.units(7.5f);
     private static final float buttonHeight = Measure.units(7.5f);
     private static final float buttonGap = Measure.units(2.5f);
 
-    private static final Color buttonForeground = new Color(Color.BLACK);
-    private static final Color buttonBackground = new Color(Color.WHITE);
-
     private static final int maxColumns = 4;
     private static final int maxRows = 2;
 
-    private static final float startY = Measure.units(37.5f);
+    private static final float startY = Measure.units(32.5f);
     private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (characterSelectWidth * maxColumns) + (characterSelectGap * (maxColumns - 1)));
 
     private World world;
+
+
+    private Array<Bag<ComponentBag>> characterComponentBagArray = new Array<Bag<ComponentBag>>();
+    private static final float arrowSize = Measure.units(15f);
+    private Bag<Entity> currentlyShownCharacter;
+    private static int currentlyShownIndex = 0;
+
 
     public CharacterSelectWorldContainer(MainGame game, Viewport viewport) {
         this.game = game;
@@ -92,35 +103,21 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
         world = new World(config);
 
 
-        Entity title = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(buttonWidth)
-                .height(buttonHeight)
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(0, 0, 0, 0))
-                .build()
-                .createButton(world,
-                        MenuStrings.SELECT_A_CHARACTER,
-                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
-                        Measure.units(50f));
+        setUpTitle(world);
+        setUpMainMenuButton(world);
+        setUpPlayerEntityBags(world);
 
 
-        Entity backToMainMenu = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(Measure.units(30f))
-                .height(Measure.units(10f))
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(Color.WHITE))
-                .action(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        com.bryjamin.wickedwizard.screens.MenuScreen.setMenuType(com.bryjamin.wickedwizard.screens.MenuScreen.MenuType.MAIN);
-                    }
-                })
-                .build()
-                .createButton(
-                        world,
-                        MenuStrings.MAIN_MENU,
-                        MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
-                        , Measure.units(5f));
+        float arrowY = Measure.units(45f);
+
+        arrowEntity(world, Measure.units(5f), arrowY, true);
+        arrowEntity(world, gameport.getCamera().viewportWidth - arrowSize - Measure.units(5f), arrowY, false);
+
+
+    }
+
+
+    public void setUpPlayerEntityBags(World world){
 
 
         PlayerIDs.PlayableCharacter[] playableCharacters = new PlayerIDs.PlayableCharacter[]{PlayerIDs.LEAH, PlayerIDs.PHI, PlayerIDs.XI, PlayerIDs.TESS};
@@ -130,34 +127,55 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
 
             PlayerIDs.PlayableCharacter pc = playableCharacters[i];
 
-            float x = TableMath.getXPos(startX, i, maxColumns, characterSelectWidth, characterSelectGap);
-            float y = TableMath.getYPos(startY, i, maxColumns, characterSelectHeight, characterSelectGap);
+            float x = CenterMath.offsetX(gameport.getCamera().viewportWidth, characterSelectWidth);
+            float y = startY;
 
-            if(pc.getUnlockString() == null){
-                createCharacterSelect(world, pc, x, y);
-            } else if(DataSave.isDataAvailable(pc.getUnlockString())){
-                createCharacterSelect(world, pc, x, y);
+            System.out.println(gameport.getCamera().viewportWidth  + "   ::::");
+            System.out.println(x);
+
+            Bag<ComponentBag> bagArray = new Bag<ComponentBag>();
+
+            //if(true){
+            if(pc.getUnlockString() == null || DataSave.isDataAvailable(pc.getUnlockString())){
+                createCharacterSelect(bagArray, pc, x, y);
             } else {
 
-                Entity e = world.createEntity();
-                e.edit().add(new PositionComponent(x, y));
-                e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
-                e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK), characterSelectWidth, characterSelectHeight));
+                ComponentBag bag = new ComponentBag();
+                bag.add(new PositionComponent(x, y));
+                bag.add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
+                bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_QUESTION_MARK), characterSelectWidth, characterSelectHeight));
+
+                ComponentBag textBelow = new ComponentBag();
+                textBelow.add(new PositionComponent(x, y - Measure.units(5f)));
+                textBelow.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(5f), characterSelectWidth, Measure.units(5f))));
+                textBelow.add(new TextureFontComponent(FontAssets.small, pc.getName()));
+
+                bagArray.add(textBelow);
+
+                bagArray.add(bag);
             }
 
+            characterComponentBagArray.add(bagArray);
+
         }
+
+
+        currentlyShownCharacter = BagToEntity.bagsToEntities(world, characterComponentBagArray.get(currentlyShownIndex));
+
+
+
     }
 
 
 
-    public Entity createCharacterSelect(World world, final PlayerIDs.PlayableCharacter pc, float x, float y){
+    public Bag<ComponentBag> createCharacterSelect(Bag<ComponentBag> bags, final PlayerIDs.PlayableCharacter pc, float x, float y){
 
-        Entity e = world.createEntity();
+        ComponentBag bag = new ComponentBag();
 
-        e.edit().add(new PositionComponent(x, y));
-        e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
+        bag.add(new PositionComponent(x, y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, characterSelectWidth, characterSelectHeight)));
 
-        e.edit().add(new ActionOnTouchComponent(new Action() {
+        bag.add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
                 game.getScreen().dispose();
@@ -166,18 +184,137 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
         }));
 
 
-        e.edit().add(new TextureRegionComponent(atlas.findRegion(pc.getRegion()), characterSelectWidth, characterSelectHeight));
+        bag.add(new TextureRegionComponent(atlas.findRegion(pc.getRegion()), characterSelectWidth, characterSelectHeight));
 
 
-        Entity textBelow = world.createEntity();
-        textBelow.edit().add(new PositionComponent(x, y - Measure.units(5f)));
-        textBelow.edit().add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(5f), characterSelectWidth, Measure.units(5f))));
-        textBelow.edit().add(new TextureFontComponent(FontAssets.small, pc.getName()));
+        bags.add(bag);
 
 
-        return e;
+        ComponentBag textBelow = new ComponentBag();
+
+        textBelow.add(new PositionComponent(x, y - Measure.units(5f)));
+        textBelow.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(5f), characterSelectWidth, Measure.units(5f))));
+        textBelow.add(new TextureFontComponent(FontAssets.small, pc.getName()));
+
+        bags.add(textBelow);
+
+
+
+        ComponentBag traits = new ComponentBag();
+
+        traits.add(new PositionComponent(x, y - Measure.units(10f)));
+        traits.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(10f), characterSelectWidth, Measure.units(5f))));
+        traits.add(new TextureFontComponent(FontAssets.small, "Trait: " + pc.getTraits()));
+
+        bags.add(traits);
+
+        ComponentBag synopsis = new ComponentBag();
+
+        synopsis.add(new PositionComponent(x, y - Measure.units(15f)));
+        synopsis.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(15f), characterSelectWidth, Measure.units(5f))));
+        synopsis.add(new TextureFontComponent(FontAssets.small, "Personality: " + pc.getPersonality()));
+
+        bags.add(synopsis);
+
+
+        return bags;
     }
 
+
+
+    public void setUpTitle(World world){
+
+        float titleY = Measure.units(50f);
+
+        Entity title = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(buttonWidth)
+                .height(buttonHeight)
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(0, 0, 0, 0))
+                .build()
+                .createButton(world,
+                        MenuStrings.SELECT_A_CHARACTER,
+                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
+                        titleY);
+
+
+        Entity bottomBit = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(FontAssets.small, atlas.findRegion(TextureStrings.BLOCK))
+                .width(buttonWidth)
+                .height(buttonHeight)
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(0, 0, 0, 0))
+                .build()
+                .createButton(world,
+                        MenuStrings.TAP_A_CHARACTER,
+                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
+                        titleY - Measure.units(5f));
+
+
+    }
+
+
+    public void setUpMainMenuButton(World world){
+        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(Measure.units(30f))
+                .height(Measure.units(10f))
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(Color.WHITE))
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        MenuScreen.goBack();
+                    }
+                })
+                .build()
+                .createButton(
+                        world,
+                        MenuStrings.BACK,
+                        MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
+                        , Measure.units(5f));
+
+    }
+
+
+
+
+    private Entity arrowEntity(World world, float x, float y, final boolean isLeft){
+
+        Entity arrow = world.createEntity();
+
+        arrow.edit().add(new PositionComponent(x, y));
+
+        TextureRegionComponent textureRegionComponent = new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_ARROW),
+                arrowSize, arrowSize, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
+
+        textureRegionComponent.rotation = isLeft ? 90 : 270;
+
+        arrow.edit().add(textureRegionComponent);
+
+        arrow.edit().add(new CollisionBoundComponent(new Rectangle(x, y, arrowSize, arrowSize)));
+        arrow.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                for(Entity entity : currentlyShownCharacter){
+                    entity.deleteFromWorld();
+                }
+
+                currentlyShownIndex = isLeft ? currentlyShownIndex - 1 : currentlyShownIndex + 1;
+
+                if(currentlyShownIndex >= characterComponentBagArray.size){
+                    currentlyShownIndex = 0;
+                } else if(currentlyShownIndex < 0) {
+                    currentlyShownIndex = characterComponentBagArray.size - 1;
+                }
+
+                currentlyShownCharacter = BagToEntity.bagsToEntities(world, characterComponentBagArray.get(currentlyShownIndex));
+
+            }
+        }));
+
+
+        return arrow;
+
+    }
 
 
     @Override
