@@ -132,7 +132,11 @@ public class PlayScreen extends AbstractScreen {
                         unlockId = ChallengesResource.LEVEL_3_COMPLETE;
                         break;
                     case 6:
+                    case 7:
                         unlockId = ChallengesResource.LEVEL_4_COMPLETE;
+                        break;
+                    case 8:
+                        unlockId = ChallengesResource.LEVEL_5_COMPLETE;
                         break;
                 }
 

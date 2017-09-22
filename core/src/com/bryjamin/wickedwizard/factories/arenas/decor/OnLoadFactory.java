@@ -30,21 +30,6 @@ import java.util.Locale;
 public class OnLoadFactory {
 
 
-    public ComponentBag largeMessageBag(final String string){
-
-        ComponentBag messageAction = new ComponentBag();
-        messageAction.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createLevelBanner(string);
-                e.deleteFromWorld();
-            }
-        }, 0f, false));
-
-        return messageAction;
-
-    }
-
 
     public ComponentBag startMusicEntity(final Mix mix){
 

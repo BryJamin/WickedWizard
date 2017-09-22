@@ -13,16 +13,23 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
+import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FollowCameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.AfterUIRenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
@@ -31,6 +38,7 @@ import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
+import com.bryjamin.wickedwizard.screens.world.WorldContainer;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.CenterMath;
@@ -42,14 +50,13 @@ import com.bryjamin.wickedwizard.utils.Measure;
  * Created by BB on 22/08/2017.
  */
 
-public class ItemDisplayWorldContainer extends AbstractGestureDectector implements com.bryjamin.wickedwizard.screens.world.WorldContainer {
+public class ItemDisplayWorldContainer extends AbstractGestureDectector implements WorldContainer {
 
     private final MainGame game;
     private final Viewport gameport;
     private final TextureAtlas atlas;
 
-
-    private static final float arrowSize = Measure.units(7.5f);
+    private static final float arrowSize = Measure.units(15f);
 
     private static final float iconWidth = Measure.units(7.5f);
     private static final float iconHeight = Measure.units(7.5f);
@@ -83,9 +90,14 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
                         new AnimationSystem(),
                         //new FindPlayerSystem(player),
                         new ActionOnTouchSystem(),
+                        new MessageBannerSystem(atlas.findRegion(TextureStrings.BLOCK), gameport.getCamera()),
+                        new OnDeathSystem(),
+                        new FindChildSystem(),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new RenderingSystem(game.batch, game.assetManager, gameport),
+                        new AfterUIRenderingSystem(game, gameport),
+                        new FollowCameraSystem(gameport.getCamera()),
                         new BoundsDrawingSystem()
                 )
                 .build();
@@ -93,43 +105,14 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
         world = new World(config);
 
-
-        Entity title = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(buttonWidth)
-                .height(buttonHeight)
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(0, 0, 0, 0))
-                .build()
-                .createButton(world,
-                        MenuStrings.ITEMS,
-                        CenterMath.offsetX(MainGame.GAME_WIDTH, buttonWidth),
-                        Measure.units(50f));
-
-
-        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(Measure.units(30f))
-                .height(Measure.units(10f))
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(Color.WHITE))
-                .action(new Action() {
-                    @Override
-                    public void performAction(World world, Entity e) {
-                        MenuScreen.goBack();
-                    }
-                })
-                .build()
-                .createButton(
-                        world,
-                        MenuStrings.BACK,
-                        MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
-                        , Measure.units(5f));
-
+        setUpTitle(world, MenuStrings.ITEMS, MenuStrings.TAP_AN_ITEM);
+        setUpMainMenuButton(world);
 
         int count = 0;
-        float startY = Measure.units(40f);
+        float startY = Measure.units(37.5f);
         float buttonGap = Measure.units(2.5f);
 
-        int maxColumns = 8;
+        int maxColumns = 9;
         int maxRows = 3;
 
         float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (iconWidth * maxColumns) + (buttonGap * (maxColumns - 1)));
@@ -173,8 +156,12 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
         currentlyShownItems = BagToEntity.bagsToEntities(world, itemComponentBagArray.get(currentlyShownIndex));
 
-        arrowEntity(world, startX + (iconWidth * maxColumns + 1) + buttonGap * maxColumns + 1, CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), false);
-        arrowEntity(world, startX + (iconWidth * - 1) + buttonGap * -1, CenterMath.offsetY(MainGame.GAME_HEIGHT, arrowSize) + Measure.units(3.25f), true);
+
+
+        float arrowY = Measure.units(45f);
+
+        arrowEntity(world, Measure.units(5f), arrowY, true);
+        arrowEntity(world, gameport.getCamera().viewportWidth - arrowSize - Measure.units(5f), arrowY, false);
 
     }
 
@@ -218,9 +205,22 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
     }
 
-    private ComponentBag itemIcon(Item item, float x, float y){
+    private ComponentBag itemIcon(final Item item, float x, float y){
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(x, y));
+        bag.add(new CollisionBoundComponent(new Rectangle(x, y, iconWidth, iconHeight)));
+
+        bag.add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                if(DataSave.isItemCollected(item.getValues().getId())) {
+                    world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().getName(), item.getValues().getDescription(), Measure.units(17.5f));
+                } else {
+                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.UNIDENTIFIED_ITEM, MenuStrings.UNIDENTIFIED_ITEM_DESCRIPTION,  Measure.units(17.5f));
+                }
+            }
+        }));
 
         boolean isItemCollected = DataSave.isItemCollected(item.getValues().getId());
 
@@ -241,6 +241,46 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         return bag;
 
     }
+
+
+
+    public void setUpTitle(World world, String title, String heading){
+
+        float titleY = Measure.units(50f);
+
+        Entity e = world.createEntity();
+        e.edit().add(new PositionComponent(0, titleY));
+        e.edit().add(new CollisionBoundComponent(new Rectangle(0, titleY, gameport.getCamera().viewportWidth, buttonHeight)));
+        e.edit().add(new TextureFontComponent(FontAssets.medium, title, new Color(Color.BLACK)));
+
+        e = world.createEntity();
+        e.edit().add(new PositionComponent(0, titleY - Measure.units(5f)));
+        e.edit().add(new CollisionBoundComponent(new Rectangle(0, titleY, gameport.getCamera().viewportWidth, buttonHeight)));
+        e.edit().add(new TextureFontComponent(FontAssets.small, heading, new Color(Color.BLACK)));
+
+    }
+
+
+    public void setUpMainMenuButton(World world){
+        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+                .width(Measure.units(30f))
+                .height(Measure.units(10f))
+                .foregroundColor(new Color(Color.BLACK))
+                .backgroundColor(new Color(Color.WHITE))
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        MenuScreen.goBack();
+                    }
+                })
+                .build()
+                .createButton(
+                        world,
+                        MenuStrings.BACK,
+                        MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
+                        , Measure.units(5f));
+    }
+
 
 
     @Override

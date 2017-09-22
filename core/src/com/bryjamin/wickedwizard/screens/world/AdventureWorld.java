@@ -59,6 +59,7 @@ import com.bryjamin.wickedwizard.ecs.systems.ai.ProximitySystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.SpawnerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.AfterUIRenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BlinkOnHitSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
@@ -365,7 +366,7 @@ public class AdventureWorld extends InputAdapter {
                                 new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
                                 BagSearch.getObjectOfTypeClass(StatComponent.class, player),
                                 BagSearch.getObjectOfTypeClass(CurrencyComponent.class, player)),
-
+                        new AfterUIRenderingSystem(game, gameport),
                         new HealthBarSystem(game, gameport)
                 )
                 .build();
