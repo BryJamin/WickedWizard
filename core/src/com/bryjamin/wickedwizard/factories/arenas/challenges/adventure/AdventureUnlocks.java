@@ -40,7 +40,7 @@ public class AdventureUnlocks {
 
 
 
-    static {
+    public static void setUpUnlocks() {
 
         putUnlock(PlayerIDs.LEAH_ID, ChallengesResource.LEVEL_1_COMPLETE, LEAH_1_UNLOCK, ItemResource.Armor.steppingStones);
         putUnlock(PlayerIDs.LEAH_ID, ChallengesResource.LEVEL_2_COMPLETE, LEAH_2_UNLOCK, ItemResource.ShotSize.leafCutter);
@@ -65,7 +65,7 @@ public class AdventureUnlocks {
         putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_1_COMPLETE, TESS_1_UNLOCK, ItemResource.Luck.tesseract);
         putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_2_COMPLETE, TESS_2_UNLOCK, ItemResource.Luck.luckyRoll);
         putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_3_COMPLETE, TESS_3_UNLOCK, ItemResource.Luck.luckPlus10);
-        putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_4_COMPLETE, TESS_4_UNLOCK, ItemResource.Armor.bookOfXi);
+        putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_4_COMPLETE, TESS_4_UNLOCK, ItemResource.Armor.tesssScarf);
         putUnlock(PlayerIDs.TESS_ID, ChallengesResource.LEVEL_5_COMPLETE, TESS_5_UNLOCK, ItemResource.Companion.tesserWreck);
 
 

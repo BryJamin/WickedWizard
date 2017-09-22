@@ -68,6 +68,7 @@ public class StatComponent extends Component {
         this.luck = statComponent.luck;
         this.range = statComponent.range;
         this.shotSpeed = statComponent.shotSpeed;
+        this.shotSize = statComponent.shotSize;
         this.accuracy = statComponent.accuracy;
         this.crit = statComponent.crit;
         this.collectedItems = statComponent.collectedItems;

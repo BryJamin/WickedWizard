@@ -134,11 +134,13 @@ public class AdventureWorld extends InputAdapter {
     private String playerId;
 
     private boolean isGameOver;
+    private boolean isQuickSave;
 
     public World world;
 
     private ComponentBag player;
     private StatComponent playerStats;
+    private StatComponent savedStats;
 
     private GameCreator gameCreator;
     private float countDown;
@@ -188,6 +190,7 @@ public class AdventureWorld extends InputAdapter {
         if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
 
             if (QuickSave.doesQuickSaveExist()) {
+
                 QuickSave.loadQuickSave(gameCreator, assetManager, this);
 
 
@@ -201,7 +204,8 @@ public class AdventureWorld extends InputAdapter {
                 Arena loadedStartingArena = jigsawGenerator.getStartingRoom();
 
                 BagSearch.getObjectOfTypeClass(PositionComponent.class, player).position.set(loadedStartingArena.getWidth() / 2, Measure.units(45f), 0);
-
+                savedStats = new StatComponent();
+                savedStats.applyStats(BagSearch.getObjectOfTypeClass(StatComponent.class, player));
 
             } else {
                 this.setPlayer(new PlayerFactory(game.assetManager).playerBag(playerId, startingArena.getWidth() / 2, Measure.units(45f)));
@@ -212,6 +216,80 @@ public class AdventureWorld extends InputAdapter {
         }
 
 
+        createWorld(jigsawGenerator);
+
+
+        world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
+
+        Entity entity = world.createEntity();
+        for (Component comp : player) {
+            entity.edit().add(comp);
+        }
+
+        for (Bag<Component> bag : world.getSystem(RoomTransitionSystem.class).getCurrentArena().getBagOfEntities()) {
+            entity = world.createEntity();
+            for (Component comp : bag) {
+                entity.edit().add(comp);
+            }
+        }
+
+        world.process();
+
+        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(DuringRoomLoadActionComponent.class)).getEntities();
+        for(int i = 0; i < intBag.size(); i++) {
+            world.getEntity(intBag.get(i)).getComponent(DuringRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));
+        }
+
+        for(Item i : world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).collectedItems){
+            i.applyEffect(world, world.getSystem(FindPlayerSystem.class).getPlayerEntity());
+        }
+
+        if(savedStats != null){
+            playerStats.applyStats(savedStats);
+        }
+
+        createPauseButton(world);
+
+        if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false) && MenuScreen.isDevDevice()) {
+            turnOnGodMode(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class),
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class));
+        }
+
+
+
+        return world;
+
+
+
+
+
+    }
+
+
+    public void createPauseButton(World world){
+
+        float width = Measure.units(4.5f);
+        float height = Measure.units(4.5f);
+
+        Entity pauseButton = world.createEntity();
+        pauseButton.edit().add(new UIComponent());
+        pauseButton.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(EndGameSystem.class).pauseGame();
+            }
+        }));
+        pauseButton.edit().add(new FollowCameraComponent(Measure.units(30.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new PositionComponent());
+        pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
+        pauseButton.edit().add(new UnpackableComponent());
+        pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.BACKGROUND_LAYER_FAR));
+
+    }
+
+
+
+    public void createWorld(JigsawGenerator jigsawGenerator){
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
                         new MovementSystem(),
@@ -294,66 +372,6 @@ public class AdventureWorld extends InputAdapter {
 
 
         world = new World(config);
-
-        world.getSystem(PlayerInputSystem.class).getPlayerInput().setWorld(world);
-
-        Entity entity = world.createEntity();
-        for (Component comp : player) {
-            entity.edit().add(comp);
-        }
-
-        for (Bag<Component> bag : world.getSystem(RoomTransitionSystem.class).getCurrentArena().getBagOfEntities()) {
-            entity = world.createEntity();
-            for (Component comp : bag) {
-                entity.edit().add(comp);
-            }
-        }
-
-        world.process();
-
-        IntBag intBag = world.getAspectSubscriptionManager().get(Aspect.all(DuringRoomLoadActionComponent.class)).getEntities();
-        for(int i = 0; i < intBag.size(); i++) {
-            world.getEntity(intBag.get(i)).getComponent(DuringRoomLoadActionComponent.class).action.performAction(world, world.getEntity(intBag.get(i)));
-        }
-
-        for(Item i : world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class).collectedItems){
-            i.applyEffect(world, world.getSystem(FindPlayerSystem.class).getPlayerEntity());
-        }
-
-
-        float width = Measure.units(4.5f);
-        float height = Measure.units(4.5f);
-
-        Entity pauseButton = world.createEntity();
-        pauseButton.edit().add(new UIComponent());
-        pauseButton.edit().add(new ActionOnTouchComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                world.getSystem(EndGameSystem.class).pauseGame();
-            }
-        }));
-        pauseButton.edit().add(new FollowCameraComponent(Measure.units(30.5f), Measure.units(30.5f)));
-        pauseButton.edit().add(new PositionComponent());
-        pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
-        pauseButton.edit().add(new UnpackableComponent());
-        pauseButton.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_PAUSE), width, height, TextureRegionComponent.BACKGROUND_LAYER_FAR));
-
-
-
-
-        if(Gdx.app.getPreferences(PreferenceStrings.DEV_MODE_PREF_KEY).getBoolean(PreferenceStrings.DEV_GODMODE, false) && MenuScreen.isDevDevice()) {
-            turnOnGodMode(world.getSystem(FindPlayerSystem.class).getPlayerComponent(StatComponent.class),
-                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class));
-        }
-
-
-
-        return world;
-
-
-
-
-
     }
 
 

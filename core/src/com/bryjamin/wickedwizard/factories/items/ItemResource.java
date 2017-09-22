@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.items;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.adventure.AdventureUnlocks;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemAutoRockets;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemCrownOfBiggaBlobba;
 import com.bryjamin.wickedwizard.factories.items.companions.ItemDangerDetector;
@@ -112,6 +113,9 @@ public class ItemResource {
     public static Array<Item> allItems = new Array<Item>();
 
     static {
+
+        AdventureUnlocks.setUpUnlocks();
+
         allItems.addAll(Accuracy.accuracyItems);
         allItems.addAll(Armor.armorItems);
         allItems.addAll(Damage.damageItems);
@@ -124,6 +128,7 @@ public class ItemResource {
         allItems.addAll(Speed.speedItems);
         allItems.addAll(Companion.companionItems);
         allItems.addAll(Conditionals.conditionalItems);
+
     }
 
     public static Array<Item> getAllItems() {
