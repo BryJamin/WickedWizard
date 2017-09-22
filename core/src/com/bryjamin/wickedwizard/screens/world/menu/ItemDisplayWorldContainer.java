@@ -30,6 +30,7 @@ import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.MenuButton;
+import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.utils.AbstractGestureDectector;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.CenterMath;
@@ -57,7 +58,6 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
     private static final float buttonHeight = Measure.units(7.5f);
 
     private Array<Bag<ComponentBag>> itemComponentBagArray = new Array<Bag<ComponentBag>>();
-
     private Bag<Entity> currentlyShownItems;
     private int currentlyShownIndex = 0;
 
@@ -114,13 +114,13 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
                 .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        com.bryjamin.wickedwizard.screens.MenuScreen.setMenuType(com.bryjamin.wickedwizard.screens.MenuScreen.MenuType.MAIN);
+                        MenuScreen.goBack();
                     }
                 })
                 .build()
                 .createButton(
                         world,
-                        MenuStrings.MAIN_MENU,
+                        MenuStrings.BACK,
                         MainGame.GAME_WIDTH - Measure.units(30f) - Measure.units(5f)
                         , Measure.units(5f));
 
@@ -182,7 +182,6 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
         Entity arrow = world.createEntity();
 
         arrow.edit().add(new PositionComponent(x, y));
-
 
         TextureRegionComponent textureRegionComponent = new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_ARROW),
                 arrowSize, arrowSize, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);

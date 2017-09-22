@@ -154,7 +154,7 @@ public class PauseWorld implements WorldContainer {
                 .backgroundColor(new Color(Color.WHITE));
 
 
-        Entity returntoMainMenu = menuButtonBuilder
+        Entity returnToMainMenu = menuButtonBuilder
                 .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
@@ -164,7 +164,7 @@ public class PauseWorld implements WorldContainer {
                     }
                 })
                 .build()
-                .createButton(world, MenuStrings.MAIN_MENU, camX + mainmenuOffsetX
+                .createButton(world, MenuStrings.EXIT_GAME, camX + mainmenuOffsetX
                 ,camY + mainmenuOffsetY);
 
 

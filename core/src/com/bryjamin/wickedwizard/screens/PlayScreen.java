@@ -32,6 +32,7 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGeneratorConfig;
 import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.levels.AllArenaStore;
 import com.bryjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
@@ -115,8 +116,28 @@ public class PlayScreen extends AbstractScreen {
 
                 }
 
-                gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
-                        .startingMap(bossMap), false));
+                String unlockId = ChallengesResource.TUTORIAL_COMPLETE;
+
+                switch (playScreenConfig.id){
+                    case 0:
+                    case 1:
+                        unlockId = ChallengesResource.LEVEL_1_COMPLETE;
+                        break;
+                    case 2:
+                    case 3:
+                        unlockId = ChallengesResource.LEVEL_2_COMPLETE;
+                        break;
+                    case 4:
+                    case 5:
+                        unlockId = ChallengesResource.LEVEL_3_COMPLETE;
+                        break;
+                    case 6:
+                        unlockId = ChallengesResource.LEVEL_4_COMPLETE;
+                        break;
+                }
+
+                gameCreator = new GameCreator(PresetGames.DEFAULT_GAME_ID, new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
+                        .startingMap(bossMap), unlockId, false));
                 break;
 
 

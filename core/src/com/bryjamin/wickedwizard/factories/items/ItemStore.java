@@ -36,9 +36,6 @@ public class ItemStore {
         for(Item i : ItemResource.allItems){
             if(DataSave.isDataAvailable(i.getValues().getChallengeId())) {
                 createItem(i);
-                System.out.println(i.getValues().getChallengeId());
-                System.out.println(i.getValues().getName());
-
             }
         }
 
