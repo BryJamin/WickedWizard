@@ -58,6 +58,9 @@ public class MenuStrings {
     public static final String SELECT_A_CHARACTER = "Select A Character";
     public static final String TAP_A_CHARACTER = "(Tap on a Character Portrait to Begin)";
 
+    public static final String SELECT_A_CHARACTER_PERSONALITY = "Personality";
+    public static final String SELECT_A_CHARACTER_TRAITS = "Traits";
+
 
     public static final String NEW_TRAILS = "New Challenges Unlocked";
 

@@ -99,7 +99,7 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
 
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        final com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -118,7 +118,8 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
                                             public void performAction(World world, Entity e) {
                                                 DataSave.clearData();
                                                 game.getScreen().dispose();
-                                                game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
+                                                MenuScreen.setMenuType(MenuScreen.MenuType.MAIN);
+                                                game.setScreen(new MenuScreen(game));
                                             }
                                         },
                                         new Action() {

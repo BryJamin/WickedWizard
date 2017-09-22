@@ -216,7 +216,7 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
                 if(DataSave.isItemCollected(item.getValues().getId())) {
                     world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().getName(), item.getValues().getDescription(), Measure.units(17.5f));
-                } else {
+                } else if(DataSave.isDataAvailable(item.getValues().getChallengeId())){
                     world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.UNIDENTIFIED_ITEM, MenuStrings.UNIDENTIFIED_ITEM_DESCRIPTION,  Measure.units(17.5f));
                 }
             }

@@ -22,7 +22,7 @@ public class PlayerIDs {
 
     public static PlayableCharacter LEAH = new PlayableCharacter.PlayableCharacterBuilder(LEAH_ID)
             .name("Leah")
-            .traits("Normal")
+            .traits("Average")
             .personality("Protagonist")
             .region(TextureStrings.BLOCK_PORTRAIT)
             .build();

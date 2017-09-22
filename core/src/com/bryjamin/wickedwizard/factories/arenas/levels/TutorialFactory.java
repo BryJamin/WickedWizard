@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -316,7 +317,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
                 Entity text = world.createEntity();
                 text.edit().add(new PositionComponent(gamecam.position.x, gamecam.position.y + Measure.units(19.5f)));
-                text.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, 0, Measure.units(19f)));
+                text.edit().add(new FollowCameraComponent(0, Measure.units(19f)));
                 TextureFontComponent textureFontComponent = new TextureFontComponent(com.bryjamin.wickedwizard.assets.FontAssets.small, jumpTutorialStringDoubleTapBelow);
                 textureFontComponent.layer = FOREGROUND_LAYER_NEAR;
                 text.edit().add(textureFontComponent);
@@ -326,7 +327,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
                 Entity blackBackingBox = world.createEntity();
                 blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + Measure.units(12.5f)));
-                blackBackingBox.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, - MainGame.GAME_WIDTH / 2, Measure.units(12.5f)));
+                blackBackingBox.edit().add(new FollowCameraComponent(- MainGame.GAME_WIDTH / 2, Measure.units(12.5f)));
 
                 TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0,0,
                         MainGame.GAME_WIDTH,
@@ -579,29 +580,6 @@ public class TutorialFactory extends ArenaShellFactory {
         bag.add(new FadeComponent());
         return bag;
     }
-
-
-
-    public ComponentBag createUiHighlight(float x, float y, float width, float height, FadeComponent fc, Color c) {
-
-        ComponentBag uiHighLight = new ComponentBag();
-        uiHighLight.add(new UIComponent());
-
-        uiHighLight.add(new PositionComponent(x, y));
-        TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
-                width,
-                height, TextureRegionComponent.FOREGROUND_LAYER_FAR, new Color(Color.WHITE));
-        trc.color.a = 0;
-        uiHighLight.add(trc);
-        uiHighLight.add(fc);
-
-        uiHighLight.add(new UIComponent());
-
-
-        return uiHighLight;
-
-    }
-
 
 
 
