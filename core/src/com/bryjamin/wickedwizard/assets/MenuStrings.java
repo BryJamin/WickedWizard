@@ -20,6 +20,10 @@ public class MenuStrings {
 
     public static final String MAIN_MENU = "Main Menu";
 
+    public static final String EXIT_GAME = "Exit Game";
+
+    public static final String BACK = "Back";
+
     public static final String YES = "Yes";
 
     public static final String NO = "No";
@@ -29,6 +33,8 @@ public class MenuStrings {
 
     public static final String OFF = "Off";
 
+
+    public static final String COMPLETED = "Completed";
 
     public static final String SETTINGS_GUIDELINE_ON = "White Line On";
 
@@ -47,11 +53,14 @@ public class MenuStrings {
 
 
     public static final String SELECT_A_CHARACTER = "Select A Character";
+    public static final String TAP_A_CHARACTER = "(Tap on a Character to Begin)";
 
 
     public static final String NEW_TRAILS = "New Challenges Unlocked";
 
     public static final String TRAILS = "Challenges";
+    public static final String CHALLENGE = "Challenge";
+    public static final String TAP_A_CHALLENGE = "(Tap on a Challenge to Begin)";
     public static final String TRAIL_COMPLETE = "Challenge Complete";
     public static final String TRAIL_NEW_ITEM = "New Item Unlocked";
     public static final String TRAIL_OLD_ITEM = "The previously unlocked item is still unlocked";
