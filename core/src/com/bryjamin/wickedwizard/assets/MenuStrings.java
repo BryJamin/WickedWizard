@@ -100,7 +100,25 @@ public class MenuStrings {
     public static class Death {
 
 
-        public static final String[] DEATH_FLAVOR_TEXT = {
+        public static final String[] ADVENTURE_LEVEL_1_FLAVOR_TEXT = {
+                "You Have to Start Somewhere",
+                "Keep Going!",
+                "Welp, that happened",
+                "You were probably really close",
+                "Ouch",
+                "Ow",
+                "That looked painful",
+                "Oh no! You got hit too much...",
+                "Did I miss anything? Oh.",
+                "Good try, I guess",
+                "Game Over"};
+
+
+
+
+
+        public static final String[] CHALLENGE_FLAVOR_TEXT = {
+                "Challenge Failed",
                 "Oh dear, you seem to have died",
                 "Welp, that happened",
                 "You were probably really close",
@@ -110,7 +128,11 @@ public class MenuStrings {
                 "Oh no! You got hit too much...",
                 "Did I miss anything? Oh.",
                 "Good try, I guess",
-                "You did better than the last one. I hope."};
+                "Game Over"};
+
+
+        public static final String[] TUTORIAL_FLAVOR_TEXT = {
+                "Just as a heads up, This is the Tutorial"};
 
 
 

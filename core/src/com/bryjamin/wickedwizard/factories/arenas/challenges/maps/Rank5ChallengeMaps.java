@@ -168,7 +168,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
 
-        GameCreator gameCreator = new GameCreator();
+        GameCreator gameCreator = new GameCreator(GameCreator.GameType.CHALLENGE);
         gameCreator.add(new GameCreator.LevelCreator(firstConfig, false));
         gameCreator.add(new GameCreator.LevelCreator(secondConfig, false));
         gameCreator.add(new GameCreator.LevelCreator(thirdConfig, false));
@@ -260,10 +260,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -325,10 +322,8 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -382,10 +377,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }

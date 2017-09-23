@@ -15,17 +15,21 @@ import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FollowCameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
+import com.bryjamin.wickedwizard.screens.world.AdventureWorld;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -37,25 +41,33 @@ public class DeathScreenWorld {
 
 
     private Viewport gameport;
+
+    private GameCreator gameCreator;
+
+    private AdventureWorld adventureWorld;
+
     private TextureAtlas atlas;
 
     private MainGame game;
 
     private World world;
 
-
     private static final float buttonWidth = Measure.units(50f);
     private static final float buttonHeight = Measure.units(15f);
 
+
+
     private static final float screenFadeTime = 4.0f;
 
-    public DeathScreenWorld(MainGame game, Viewport gameport){
+    private FadeComponent fc = new FadeComponent(true, screenFadeTime, false);
+
+    public DeathScreenWorld(MainGame game, AdventureWorld adventureWorld, Viewport gameport){
         this.game = game;
+        this.adventureWorld = adventureWorld;
         this.atlas  = game.assetManager.get(FileLocationStrings.spriteAtlas);
         this.gameport = gameport;
         createDeathScreenWorld();
     }
-
 
 
     public void createDeathScreenWorld(){
@@ -70,6 +82,7 @@ public class DeathScreenWorld {
                         new ActionOnTouchSystem(),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
+                        new FollowCameraSystem(gameport.getCamera()),
                         new RenderingSystem(game.batch, game.assetManager, gameport),
                         new BoundsDrawingSystem()
                 )
@@ -77,17 +90,76 @@ public class DeathScreenWorld {
 
         world = new World(config);
 
-        FadeComponent fc = new FadeComponent(screenFadeTime, false);
-        fc.fadeIn = true;
 
-        Entity restartEntity = createRestartTextEntity(world, fc);
+
+
+
+
+
+        switch (adventureWorld.getGameCreator().getGameType()){
+
+            case TUTORIAL:
+
+                createDeathScreenText(world,
+                        MenuStrings.Death.TUTORIAL_FLAVOR_TEXT[MathUtils.random.nextInt(MenuStrings.Death.TUTORIAL_FLAVOR_TEXT.length)],
+                        MenuStrings.Death.RESTART
+                );
+
+                break;
+
+            case CHALLENGE:
+
+                createDeathScreenText(world,
+                        MenuStrings.Death.CHALLENGE_FLAVOR_TEXT[MathUtils.random.nextInt(MenuStrings.Death.CHALLENGE_FLAVOR_TEXT.length)],
+                        MenuStrings.Death.RESTART
+                        );
+
+                break;
+
+
+            case ADVENTURE:
+
+                break;
+
+
+
+
+        }
+
+
+        createBlackScreen(world, fc);
+    }
+
+
+
+    public void createDeathScreenText(World world, String topText, String bottomText){
+
+
+
+        float camX = gameport.getCamera().position.x - gameport.getCamera().viewportWidth / 2;
+        float camY = gameport.getCamera().position.y - gameport.getCamera().viewportHeight / 2;
+
+        Entity restartEntity = world.createEntity();
+        restartEntity.edit().add(new PositionComponent(camX + CenterMath.offsetX(gameport.getCamera().viewportWidth, Measure.units(50f))
+                ,camY + CenterMath.offsetY(gameport.getCamera().viewportHeight, Measure.units(10f))));
+        restartEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
+                ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, buttonWidth, buttonHeight)));
+        restartEntity.edit().add(new ActionOnTouchComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                game.getScreen().dispose();
+                game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
+            }
+        }));
+        restartEntity.edit().add(fc);
+
 
         PositionComponent restartEntityPosition = restartEntity.getComponent(PositionComponent.class);
         CollisionBoundComponent restartEntityBound = restartEntity.getComponent(CollisionBoundComponent.class);
 
         Entity upperTextEntity = world.createEntity();
         upperTextEntity.edit().add(new PositionComponent(restartEntityPosition.getX(), restartEntityPosition.getY() + restartEntityBound.bound.getHeight() / 2));
-        TextureFontComponent tfc = new TextureFontComponent(MenuStrings.Death.DEATH_FLAVOR_TEXT[MathUtils.random.nextInt(MenuStrings.Death.DEATH_FLAVOR_TEXT.length)]);
+        TextureFontComponent tfc = new TextureFontComponent(topText);
         upperTextEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
                 ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, restartEntityBound.bound.getWidth(), restartEntityBound.bound.getHeight() / 2)));
         upperTextEntity.edit().add(tfc);
@@ -95,7 +167,7 @@ public class DeathScreenWorld {
 
         Entity lowerTextEntity = world.createEntity();
         lowerTextEntity.edit().add(new PositionComponent(restartEntityPosition.getX(), restartEntityPosition.getY()));
-        tfc = new TextureFontComponent(MenuStrings.Death.RESTART);
+        tfc = new TextureFontComponent(bottomText);
         lowerTextEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
                 ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, restartEntityBound.bound.getWidth(), restartEntityBound.bound.getHeight() / 2)));
         lowerTextEntity.edit().add(tfc);
@@ -103,25 +175,34 @@ public class DeathScreenWorld {
 
 
 
+    }
+
+
+
+
+    public void createBlackScreen(World world, FadeComponent fc){
+
         float width = gameport.getCamera().viewportWidth * 2;
         float height = gameport.getCamera().viewportHeight * 2;
+
 
 
         Entity blackScreen = world.createEntity();
         blackScreen.edit().add(new PositionComponent(gameport.getCamera().position.x - width / 2,
                 gameport.getCamera().position.y - height / 2));
+        blackScreen.edit().add(new FollowCameraComponent(- width / 2, - height / 2));
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 width,
                 height,
-                TextureRegionComponent.FOREGROUND_LAYER_NEAR);
-        trc.color = new Color(Color.BLACK);
-        trc.color.a = 0.5f;
-        trc.layer = -1;
+                TextureRegionComponent.BACKGROUND_LAYER_MIDDLE,
+                new Color(Color.BLACK));
 
         blackScreen.edit().add(trc);
         blackScreen.edit().add(fc);
 
+
     }
+
 
 
     public Entity createRestartTextEntity(World world, FadeComponent fadeComponent){

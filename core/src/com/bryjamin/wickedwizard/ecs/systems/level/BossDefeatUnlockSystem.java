@@ -8,7 +8,6 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
-import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.adventure.AdventureUnlocks;
 
 /**
@@ -51,7 +50,7 @@ public class BossDefeatUnlockSystem extends EntitySystem {
 
         if(this.getEntities().size() <= 0){
 
-            if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
+            if(gameCreator.getGameType() == GameCreator.GameType.ADVENTURE) {
 
                 String id = gameCreator.getCurrentLevel().id;
 

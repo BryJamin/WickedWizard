@@ -103,7 +103,6 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
@@ -111,6 +110,7 @@ import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.QuickSave;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -188,7 +188,7 @@ public class AdventureWorld extends InputAdapter {
 
         Arena startingArena = jigsawGenerator.getStartingRoom();
 
-        if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
+        if(gameCreator.getGameType() == GameCreator.GameType.ADVENTURE) {
 
             if (QuickSave.doesQuickSaveExist()) {
 
@@ -383,12 +383,7 @@ public class AdventureWorld extends InputAdapter {
         stats.fireRate = 99f;
         stats.speed = 0.5f;
         stats.luck = 99f;
-
-      //  stats.damage = 5;
-      //  stats.accuracy = 0;
-
         currencyComponent.money = 99;
-
     }
 
 
@@ -397,12 +392,6 @@ public class AdventureWorld extends InputAdapter {
     }
 
     public void process(float delta) {
-
-        if (delta < 0.02f) {
-            world.setDelta(delta);
-        } else {
-            world.setDelta(0.017f);
-        }
 
         if(playerStats.getHealth() <= 0 && !isGameOver){
             countDown = 1f;
@@ -423,7 +412,9 @@ public class AdventureWorld extends InputAdapter {
 
         }
 
-        world.process();
+        GameDelta.delta(world, delta);
+
+    //    world.process();
 
     }
 
@@ -450,6 +441,10 @@ public class AdventureWorld extends InputAdapter {
         }
     }
 
+
+    public GameCreator getGameCreator() {
+        return gameCreator;
+    }
 
     public boolean isGameOver() {
         return isGameOver;

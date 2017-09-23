@@ -98,7 +98,7 @@ public class PlayScreen extends AbstractScreen {
             case TUTORIAL:
             default:
                 TutorialFactory tutorialFactory = new TutorialFactory(game.assetManager, Level.ONE.getArenaSkin());
-                gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
+                gameCreator = new GameCreator(GameCreator.GameType.TUTORIAL, new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
                         .startingMap(tutorialFactory.tutorialMap()), false));
                 break;
             case BOSS:
@@ -140,7 +140,7 @@ public class PlayScreen extends AbstractScreen {
                         break;
                 }
 
-                gameCreator = new GameCreator(PresetGames.DEFAULT_GAME_ID, new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
+                gameCreator = new GameCreator(GameCreator.GameType.ADVENTURE, new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
                         .startingMap(bossMap), unlockId, false));
                 break;
 
@@ -168,7 +168,7 @@ public class PlayScreen extends AbstractScreen {
 
                 }
 
-                gameCreator = new GameCreator(new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
+                gameCreator = new GameCreator(GameCreator.GameType.ADVENTURE, new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)
                         .noBattleRooms(20)
                         .arenaCreates(arenaCreates)));
                 break;
@@ -326,7 +326,7 @@ public class PlayScreen extends AbstractScreen {
 
     public void startGameOver(){
         state = ScreenState.DEATH;
-        deathScreenWorld = new DeathScreenWorld(game, gameport);
+        deathScreenWorld = new DeathScreenWorld(game, adventureWorld, gameport);
     }
 
 

@@ -65,10 +65,6 @@ public class Rank1ChallengeMaps extends AbstractFactory{
     }
 
 
-
-
-
-
     public GameCreator perfectBlobba(ChallengeLayout challengeLayout){
 
         Arena startingArena = new ReuseableRooms(assetManager, arenaSkin).challengeStartingArena(challengeLayout, Level.ONE.getMusic()).createArena(new MapCoords());
@@ -93,12 +89,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-
-        return gameCreator;
-
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
     }
 
@@ -129,11 +120,8 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
     }
 
@@ -173,11 +161,8 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
     }
 
@@ -372,11 +357,7 @@ public class Rank1ChallengeMaps extends AbstractFactory{
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
     }
 

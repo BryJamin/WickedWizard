@@ -18,7 +18,7 @@ public class PresetGames {
 
         com.bryjamin.wickedwizard.factories.arenas.levels.PresetGenerators presetGenerators = new com.bryjamin.wickedwizard.factories.arenas.levels.PresetGenerators();
 
-        return new GameCreator(DEFAULT_GAME_ID,
+        return new GameCreator(GameCreator.GameType.ADVENTURE,
                 new GameCreator.LevelCreator(presetGenerators.level1Configuration(assetManager, random), ChallengesResource.LEVEL_1_COMPLETE),
                 new GameCreator.LevelCreator(presetGenerators.level2Configuration(assetManager, random), ChallengesResource.LEVEL_2_COMPLETE),
                 new GameCreator.LevelCreator(presetGenerators.level3Configuration(assetManager, random), ChallengesResource.LEVEL_3_COMPLETE),
