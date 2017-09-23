@@ -135,8 +135,12 @@ public class MenuStrings {
                 "Just as a heads up, This is the Tutorial"};
 
 
+        public static final String ITEMS = "Items Found";
 
         public static final String RESTART = "Tap here to Restart";
+
+
+        public static final String YOU_REACHED_HERE = "(You Reached Here)";
 
 
 

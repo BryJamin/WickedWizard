@@ -16,7 +16,7 @@ public class TableMath {
     }
 
 
-    public static float getYPos(float startY, int number, int maxColumns, float height, float gapHeight){
+    public static float getYPosTopToBottom(float startY, int number, int maxColumns, float height, float gapHeight){
         int div = number / maxColumns;
         return startY - (div * height) - (div * gapHeight);
     }

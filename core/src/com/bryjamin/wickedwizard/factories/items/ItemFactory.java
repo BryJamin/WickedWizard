@@ -615,7 +615,7 @@ public class ItemFactory extends AbstractFactory {
                         world.getSystem(PickUpSystem.class).itemOverHead(player, item);
                         world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(item.getValues().getName(),
                                 item.getValues().getDescription(),
-                                Measure.units(17.5f));
+                                Measure.units(52.5f));
 
                         ac.hasItem = false;
                         if (world.getMapper(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).has(e)) {

@@ -162,6 +162,10 @@ public class AdventureWorld extends InputAdapter {
         return player;
     }
 
+    public StatComponent getPlayerStats() {
+        return playerStats;
+    }
+
     public void setPlayer(ComponentBag player) {
         this.player = player;
         this.playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
@@ -269,8 +273,8 @@ public class AdventureWorld extends InputAdapter {
 
     public void createPauseButton(World world){
 
-        float width = Measure.units(4.5f);
-        float height = Measure.units(4.5f);
+        float width = Measure.units(5);
+        float height = Measure.units(5f);
 
         Entity pauseButton = world.createEntity();
         pauseButton.edit().add(new UIComponent());
@@ -280,7 +284,7 @@ public class AdventureWorld extends InputAdapter {
                 world.getSystem(EndGameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new FollowCameraComponent(Measure.units(30.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new FollowCameraComponent(Measure.units(87.5f), Measure.units(65f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());

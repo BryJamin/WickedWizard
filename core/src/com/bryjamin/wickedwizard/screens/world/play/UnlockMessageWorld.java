@@ -306,7 +306,7 @@ public class UnlockMessageWorld implements WorldContainer {
 
             ComponentBag unlockedItemBag = new ComponentBag();
 
-            float y = TableMath.getYPos(Measure.units(45f), i, maxColumns, iconGap, iconGap);
+            float y = TableMath.getYPosTopToBottom(Measure.units(45f), i, maxColumns, iconGap, iconGap);
 
             unlockedItemBag.add(new PositionComponent(x, y));
             unlockedItemBag.add(new CollisionBoundComponent(new Rectangle(x, y, gamecam.viewportWidth, Measure.units(10f))));

@@ -112,7 +112,7 @@ public class MessageBannerSystem extends EntitySystem {
     private Entity createBannerText(float offsetX, float offsetY, TextureFontComponent tfc, com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parentBanner, FadeComponent fc, ExpireComponent ec){
         Entity text = world.createEntity();
         text.edit().add(new PositionComponent(gamecam.position.x + offsetX, gamecam.position.y + offsetY));
-        text.edit().add(new FollowCameraComponent(-gamecam.viewportWidth / 2, offsetY));
+        text.edit().add(new FollowCameraComponent(0, offsetY));
         text.edit().add(new CollisionBoundComponent(
                 new Rectangle(gamecam.position.x + offsetX, gamecam.position.y + offsetY, gamecam.viewportWidth, bannerHeight / 2)));
         text.edit().add(new UIComponent());
@@ -128,7 +128,7 @@ public class MessageBannerSystem extends EntitySystem {
 
         Entity blackBackingBox = world.createEntity();
         blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportWidth / 2, gamecam.position.y + offsetY));
-        blackBackingBox.edit().add(new FollowCameraComponent(- gamecam.viewportWidth / 2, offsetY));
+        blackBackingBox.edit().add(new FollowCameraComponent(0, offsetY));
 
         TextureRegionComponent trc = new TextureRegionComponent(bannerTexture, 0,0, gamecam.viewportWidth, bannerHeight, TextureRegionComponent.FOREGROUND_LAYER_MIDDLE);
         trc.color = color;

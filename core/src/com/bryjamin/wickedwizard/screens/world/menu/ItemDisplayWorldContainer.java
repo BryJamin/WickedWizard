@@ -45,6 +45,7 @@ import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
+import com.bryjamin.wickedwizard.utils.TableMath;
 
 /**
  * Created by BB on 22/08/2017.
@@ -129,11 +130,10 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
             for (int i = 0; i < allItems.size; i++) {
 
-                int mod = i % maxColumns;
-                int div = i / maxColumns;
+                float x = TableMath.getXPos(startX, i, maxColumns, iconWidth, buttonGap);
+                float y = TableMath.getYPosTopToBottom(startY, i, maxColumns, iconHeight, buttonGap);
 
-                ComponentBag item = itemIcon(allItems.get(i), startX + iconWidth * mod + buttonGap * mod,
-                        startY - (div * iconHeight) - (div * buttonGap));
+                ComponentBag item = itemIcon(allItems.get(i), x, y);
 
                 bagArray.add(item);
                 count++;
@@ -215,9 +215,9 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
             public void performAction(World world, Entity e) {
 
                 if(DataSave.isItemCollected(item.getValues().getId())) {
-                    world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().getName(), item.getValues().getDescription(), Measure.units(17.5f));
+                    world.getSystem(MessageBannerSystem.class).createItemBanner(item.getValues().getName(), item.getValues().getDescription(), Measure.units(47.5f));
                 } else if(DataSave.isDataAvailable(item.getValues().getChallengeId())){
-                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.UNIDENTIFIED_ITEM, MenuStrings.UNIDENTIFIED_ITEM_DESCRIPTION,  Measure.units(17.5f));
+                    world.getSystem(MessageBannerSystem.class).createItemBanner(MenuStrings.UNIDENTIFIED_ITEM, MenuStrings.UNIDENTIFIED_ITEM_DESCRIPTION,  Measure.units(47.5f));
                 }
             }
         }));

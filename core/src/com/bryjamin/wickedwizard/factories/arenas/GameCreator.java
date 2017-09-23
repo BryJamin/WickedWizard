@@ -53,8 +53,9 @@ public class GameCreator {
     }
 
 
-
-
+    public int getPosition() {
+        return position;
+    }
 
     public LevelCreator getAndSetLevel(int position){
         if(position <= 0) position = 0;

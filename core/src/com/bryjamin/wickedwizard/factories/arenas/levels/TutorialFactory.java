@@ -317,7 +317,8 @@ public class TutorialFactory extends ArenaShellFactory {
 
                 Entity text = world.createEntity();
                 text.edit().add(new PositionComponent(gamecam.position.x, gamecam.position.y + Measure.units(19.5f)));
-                text.edit().add(new FollowCameraComponent(0, Measure.units(19f)));
+                text.edit().add(new FollowCameraComponent(0, Measure.units(47.5f)));
+                text.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gamecam.viewportWidth, Measure.units(10f))));
                 TextureFontComponent textureFontComponent = new TextureFontComponent(com.bryjamin.wickedwizard.assets.FontAssets.small, jumpTutorialStringDoubleTapBelow);
                 textureFontComponent.layer = FOREGROUND_LAYER_NEAR;
                 text.edit().add(textureFontComponent);
@@ -327,10 +328,10 @@ public class TutorialFactory extends ArenaShellFactory {
 
                 Entity blackBackingBox = world.createEntity();
                 blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + Measure.units(12.5f)));
-                blackBackingBox.edit().add(new FollowCameraComponent(- MainGame.GAME_WIDTH / 2, Measure.units(12.5f)));
+                blackBackingBox.edit().add(new FollowCameraComponent(0, Measure.units(47.5f)));
 
                 TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0,0,
-                        MainGame.GAME_WIDTH,
+                        gamecam.viewportWidth,
                         Measure.units(10f),
                         TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(0,0,0,0));
                 blackBackingBox.edit().add(trc);
