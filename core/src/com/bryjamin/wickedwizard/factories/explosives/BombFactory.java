@@ -76,7 +76,7 @@ public class BombFactory extends AbstractFactory {
                 IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
                 animMap.put(0, new Animation<TextureRegion>(0.25f / 1f, atlas.findRegions(TextureStrings.MINE), Animation.PlayMode.LOOP));
                 e.edit().add(new AnimationComponent(animMap));
-                e.edit().add(new OnDeathActionComponent(explosionFactory.enemyExplosionTask()));
+                e.edit().add(new OnDeathActionComponent(explosionFactory.neutralExplosionTask()));
             }
 
             @Override
@@ -127,7 +127,7 @@ public class BombFactory extends AbstractFactory {
                 IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
                 animMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(0.125f / 1f, atlas.findRegions(TextureStrings.AIR_MINE), Animation.PlayMode.LOOP));
                 e.edit().add(new AnimationComponent(animMap));
-                e.edit().add(new OnDeathActionComponent(explosionFactory.enemyExplosionTask()));
+                e.edit().add(new OnDeathActionComponent(explosionFactory.neutralExplosionTask()));
             }
 
             @Override
@@ -212,7 +212,7 @@ public class BombFactory extends AbstractFactory {
 
         bag.add(cac);
 
-        bag.add(new OnDeathActionComponent(explosionFactory.enemyExplosionTask()));
+        bag.add(new OnDeathActionComponent(explosionFactory.neutralExplosionTask()));
 
         return bag;
 

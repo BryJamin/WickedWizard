@@ -62,7 +62,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private static final int maxColumns = 4;
     private static final int maxRows = 2;
 
-    private static final float startY = Measure.units(32.5f);
+    private static final float startY = Measure.units(33.5f);
     private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (characterSelectWidth * maxColumns) + (characterSelectGap * (maxColumns - 1)));
 
     private World world;

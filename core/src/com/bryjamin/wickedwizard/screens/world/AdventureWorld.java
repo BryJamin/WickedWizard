@@ -428,7 +428,7 @@ public class AdventureWorld extends InputAdapter {
         world.getSystem(MusicSystem.class).pauseMusic();
 
         for (BaseSystem s : world.getSystems()) {
-            if (!(s instanceof RenderingSystem || s instanceof UISystem)) {
+            if (!(s instanceof RenderingSystem || s instanceof UISystem || s instanceof AfterUIRenderingSystem)) {
                 s.setEnabled(false);
             }
         }

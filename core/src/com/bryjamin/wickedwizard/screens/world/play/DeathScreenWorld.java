@@ -65,7 +65,7 @@ public class DeathScreenWorld {
     private static final float itemIconGap = Measure.units(2.5f);
 
     private static final float adventureTitleY = Measure.units(55f);
-    private static final float tapToRestartY = Measure.units(50f);
+    private static final float tapToRestartY = Measure.units(47.5f);
 
 
     private static final float youAreHereIconsStartY = Measure.units(40);
@@ -76,9 +76,7 @@ public class DeathScreenWorld {
     private static final float itemIconsStartY = itemTitleY - Measure.units(5);
 
 
-    private static final float screenFadeTime = 4.0f;
-
-    private FadeComponent fc = new FadeComponent(true, screenFadeTime, false);
+    private static final float screenFadeTime = 2.0f;
 
     public DeathScreenWorld(MainGame game, AdventureWorld adventureWorld, Viewport gameport){
         this.game = game;
@@ -124,7 +122,7 @@ public class DeathScreenWorld {
                 title.edit().add(new PositionComponent());
                 title.edit().add(new FollowCameraComponent(0, adventureTitleY));
                 title.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gameport.getCamera().viewportWidth, Measure.units(10f))));
-                title.edit().add(fc);
+                title.edit().add(new FadeComponent(true, screenFadeTime, false));
                 title.edit().add(new TextureFontComponent(FontAssets.medium,
                         MenuStrings.Death.ADVENTURE_LEVEL_1_FLAVOR_TEXT[MathUtils.random.nextInt(MenuStrings.Death.ADVENTURE_LEVEL_1_FLAVOR_TEXT.length)],
                         new Color(Color.WHITE)));
@@ -154,6 +152,7 @@ public class DeathScreenWorld {
 
                     Entity square = world.createEntity();
                     square.edit().add(new PositionComponent());
+                    square.edit().add(new FadeComponent(true, screenFadeTime, false));
                     square.edit().add(new FollowCameraComponent(x, y));
                     square.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.BACKGROUND_LAYER_NEAR,
                     i < currentPosition ? new Color(Color.WHITE) : new Color(0.5f, 0.5f, 0.5f, 1)
@@ -167,17 +166,11 @@ public class DeathScreenWorld {
                             float x2 = TableMath.getXPos(startX, (i * 3) + j, maxColumns, size, gap) + CenterMath.offsetX(size, size / 2);
                             float y2 = y + CenterMath.offsetY(size, size / 2);
 
-                            System.out.println(i <= currentPosition);
-                            System.out.println("x is + " + x2);
-                            System.out.println("j is + " + j);
-                            System.out.println("i is + " + i);
-
                             Color color = (i < currentPosition) ? new Color(Color.WHITE) : new Color(0.5f, 0.5f, 0.5f, 1);
-
-                            System.out.println(color);
 
                             Entity smallSquare = world.createEntity();
                             smallSquare.edit().add(new PositionComponent());
+                            smallSquare.edit().add(new FadeComponent(true, screenFadeTime, false));
                             smallSquare.edit().add(new FollowCameraComponent(x2, y2));
                             smallSquare.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size / 2, size / 2, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                                     color));
@@ -192,6 +185,7 @@ public class DeathScreenWorld {
 
                         Entity flashingSqaure = world.createEntity();
                         flashingSqaure.edit().add(new PositionComponent());
+                        flashingSqaure.edit().add(new FadeComponent(true, screenFadeTime, false));
                         flashingSqaure.edit().add(new FollowCameraComponent(x, y));
                         flashingSqaure.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
                                 new Color(Color.WHITE)));
@@ -201,16 +195,28 @@ public class DeathScreenWorld {
 
                             @Override
                             public void performAction(World world, Entity e) {
-                                TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
-                                trc.color.a = bool ? 0 : 1;
-                                bool = !bool;
+
+                                e.edit().remove(FadeComponent.class);
+
+                                e.getComponent(ActionAfterTimeComponent.class).resetTime = 1.0f;
+                                e.getComponent(ActionAfterTimeComponent.class).timeUntilAction = 0f;
+
+                                e.getComponent(ActionAfterTimeComponent.class).action = new Action() {
+                                    @Override
+                                    public void performAction(World world, Entity e) {
+                                        TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
+                                        trc.color.a = bool ? 0 : 1;
+                                        bool = !bool;
+                                    }
+                                };
                             }
-                        }, 1f, true));
+                        }, screenFadeTime, true));
 
 
 
                         Entity flashingSqaureText = world.createEntity();
                         flashingSqaureText.edit().add(new PositionComponent());
+                        flashingSqaureText.edit().add(new FadeComponent(true, screenFadeTime, false));
                         flashingSqaureText.edit().add(new FollowCameraComponent(x + CenterMath.offsetX(size, gameport.getCamera().viewportWidth), y - Measure.units(7.5f)));
                         flashingSqaureText.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, gameport.getCamera().viewportWidth, Measure.units(10f))));
                         flashingSqaureText.edit().add(new TextureFontComponent(FontAssets.small, MenuStrings.Death.YOU_REACHED_HERE, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
@@ -235,7 +241,7 @@ public class DeathScreenWorld {
 
                 Entity exit = world.createEntity();
                 exit.edit().add(new PositionComponent());
-                exit.edit().add(fc);
+                exit.edit().add(new FadeComponent(true, screenFadeTime, false));
                 exit.edit().add(new FollowCameraComponent(0, tapToRestartY));
                 exit.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gameport.getCamera().viewportWidth, Measure.units(10f))));
                 exit.edit().add(new TextureFontComponent(FontAssets.medium,
@@ -266,7 +272,7 @@ public class DeathScreenWorld {
         }
 
 
-        createBlackScreen(world, fc);
+        createBlackScreen(world, new FadeComponent(true, screenFadeTime, false));
     }
 
 
@@ -283,17 +289,20 @@ public class DeathScreenWorld {
 
 
     public void createItemStatisticSection(World world){
+
+
+        Array<Item> itemArray = adventureWorld.getPlayerStats().collectedItems;
+
+        if(itemArray.size <= 0) return;
+
         Entity itemsText = world.createEntity();
         itemsText.edit().add(new PositionComponent());
         itemsText.edit().add(new FollowCameraComponent(0, itemTitleY));
         itemsText.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gameport.getCamera().viewportWidth, Measure.units(10f))));
-        itemsText.edit().add(fc);
+        itemsText.edit().add(new FadeComponent(true, screenFadeTime, false));
         itemsText.edit().add(new TextureFontComponent(FontAssets.medium,
                 MenuStrings.Death.ITEMS,
                 new Color(Color.WHITE)));
-
-
-        Array<Item> itemArray = adventureWorld.getPlayerStats().collectedItems;
 
 
         int maxColumns = (itemArray.size > 12) ? 12 : itemArray.size;
@@ -322,6 +331,7 @@ public class DeathScreenWorld {
     public void createItemIcon(World world, Item item, float x, float y){
         Entity itemEntity = world.createEntity();
         itemEntity.edit().add(new PositionComponent(x, y));
+        itemEntity.edit().add(new FadeComponent(true, screenFadeTime, false));
         itemEntity.edit().add(new FollowCameraComponent(x, y));
         itemEntity.edit().add(new TextureRegionComponent(
                 atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
@@ -342,7 +352,7 @@ public class DeathScreenWorld {
         restartEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
                 ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, buttonWidth, buttonHeight)));
         restartEntity.edit().add(new ActionOnTouchComponent(returnToMainMenu()));
-        restartEntity.edit().add(fc);
+        restartEntity.edit().add(new FadeComponent(true, screenFadeTime, false));
 
 
         PositionComponent restartEntityPosition = restartEntity.getComponent(PositionComponent.class);
@@ -354,7 +364,7 @@ public class DeathScreenWorld {
         upperTextEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
                 ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, restartEntityBound.bound.getWidth(), restartEntityBound.bound.getHeight() / 2)));
         upperTextEntity.edit().add(tfc);
-        upperTextEntity.edit().add(fc);
+        upperTextEntity.edit().add(new FadeComponent(true, screenFadeTime, false));
 
         Entity lowerTextEntity = world.createEntity();
         lowerTextEntity.edit().add(new PositionComponent(restartEntityPosition.getX(), restartEntityPosition.getY()));
@@ -362,7 +372,7 @@ public class DeathScreenWorld {
         lowerTextEntity.edit().add(new CollisionBoundComponent(new Rectangle(gameport.getCamera().position.x
                 ,gameport.getCamera().position.y - gameport.getWorldHeight() / 2 + 800, restartEntityBound.bound.getWidth(), restartEntityBound.bound.getHeight() / 2)));
         lowerTextEntity.edit().add(tfc);
-        lowerTextEntity.edit().add(fc);
+        lowerTextEntity.edit().add(new FadeComponent(true, screenFadeTime, false));
 
 
 

@@ -38,7 +38,7 @@ public class HealthBarSystem extends EntitySystem {
     private float whiteHealthBarWidth;
     private float redHealthBarWidth;
 
-    private static final float whiteHealthBarSpeed = Measure.units(10f);
+    private static final float whiteHealthBarSpeed = Measure.units(25f);
     private static final float redHealthBarSpeed = Measure.units(80f);
 
     private float initialHealth = 10;
