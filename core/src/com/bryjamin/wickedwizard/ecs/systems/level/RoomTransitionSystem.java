@@ -12,12 +12,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
@@ -37,7 +38,7 @@ public class RoomTransitionSystem extends EntitySystem {
     private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
     private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gm;
     private ComponentMapper<CollisionBoundComponent> cbm;
-    private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> dm;
+    private ComponentMapper<DoorComponent> dm;
     private ComponentMapper<MoveToComponent> mtm;
     private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent> parm;
     private ComponentMapper<ExpireComponent> expireM;
@@ -56,7 +57,7 @@ public class RoomTransitionSystem extends EntitySystem {
     private MapCoords destination;
     private MapCoords previousDestination;
     private MapCoords playerLocation = new MapCoords(0,0);
-    private com.bryjamin.wickedwizard.ecs.components.object.DoorComponent currentDoor;
+    private DoorComponent currentDoor;
     private float doorEntryPercentage;
 
 
@@ -125,7 +126,7 @@ public class RoomTransitionSystem extends EntitySystem {
 
     }
 
-    public void placePlayerAfterTransition(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc,
+    public void placePlayerAfterTransition(DoorComponent dc,
                                            CollisionBoundComponent doorBoundary,
                                            PositionComponent playerPosition,
                                            CollisionBoundComponent playerBoundary,
@@ -182,7 +183,7 @@ public class RoomTransitionSystem extends EntitySystem {
      */
     public Array<Arena> getAdjacentArenas(Arena a){
         Array<Arena> arenas = new Array<Arena>();
-        for(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc : a.getDoors()){
+        for(DoorComponent dc : a.getDoors()){
             Arena arena = findRoom(dc.leaveCoords);
             if(arena != null){
                 arenas.add(arena);
@@ -299,7 +300,7 @@ public class RoomTransitionSystem extends EntitySystem {
      * @param doorEntryHeightPercentage - The height the player was at when he touched the door
      * @return - True if there is a matching door, False if there is not
      */
-    public boolean goFromSourceDoorToDestinationDoor(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc, float doorEntryHeightPercentage){
+    public boolean goFromSourceDoorToDestinationDoor(DoorComponent dc, float doorEntryHeightPercentage){
 
         Arena next = findRoom(dc.leaveCoords);
         if(next != null) {

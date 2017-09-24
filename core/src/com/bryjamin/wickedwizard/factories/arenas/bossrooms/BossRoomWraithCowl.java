@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.arenas.bossrooms;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 
@@ -20,8 +21,8 @@ public class BossRoomWraithCowl extends com.bryjamin.wickedwizard.factories.Abst
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate wraithcowlArena() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate wraithcowlArena() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

@@ -36,7 +36,7 @@ public class DoorSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent.class));
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(DoorComponent.class));
         IntBag entityIds = subscription.getEntities();
 
 

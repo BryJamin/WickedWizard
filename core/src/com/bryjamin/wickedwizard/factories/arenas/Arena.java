@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -29,8 +30,8 @@ public class Arena {
 
     public Array<MapCoords> cotainingCoords = new Array<MapCoords>();
 
-    public Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> doors = new Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
-    public Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> mandatoryDoors = new Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
+    public Array<DoorComponent> doors = new Array<DoorComponent>();
+    public Array<DoorComponent> mandatoryDoors = new Array<DoorComponent>();
 
     private Bag<Bag<Component>> bagOfEntities = new Bag<Bag<Component>>();
 
@@ -112,9 +113,9 @@ public class Arena {
 
     public void addDoor(Bag<Component> door, boolean isMandatory){
         for(Component c : door){
-            if(c instanceof com.bryjamin.wickedwizard.ecs.components.object.DoorComponent){
-                doors.add((com.bryjamin.wickedwizard.ecs.components.object.DoorComponent) c);
-                if(isMandatory) mandatoryDoors.add((com.bryjamin.wickedwizard.ecs.components.object.DoorComponent) c);
+            if(c instanceof DoorComponent){
+                doors.add((DoorComponent) c);
+                if(isMandatory) mandatoryDoors.add((DoorComponent) c);
                 bagOfEntities.add(door);
                 return;
             }
@@ -127,7 +128,7 @@ public class Arena {
     }
 
 
-    public Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> getDoors() {
+    public Array<DoorComponent> getDoors() {
         return doors;
     }
 

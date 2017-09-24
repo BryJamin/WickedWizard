@@ -34,7 +34,7 @@ public class MapCleaner {
 
     public void cleanArena(Arena a, Array<Arena> arenas){
         for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
-            com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc = a.getDoors().get(j);
+            DoorComponent dc = a.getDoors().get(j);
             if (!findDoorWithinFoundRoom(dc, arenas)) {
                 replaceDoorWithWall(dc, a);
             }

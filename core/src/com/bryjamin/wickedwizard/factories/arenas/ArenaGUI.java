@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -278,7 +279,7 @@ public class ArenaGUI {
     }
 
     public void drawArenaDoors(SpriteBatch batch, Arena arena){
-        for(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc : arena.doors) {
+        for(DoorComponent dc : arena.doors) {
 
 
             batch.setColor(doorColor);

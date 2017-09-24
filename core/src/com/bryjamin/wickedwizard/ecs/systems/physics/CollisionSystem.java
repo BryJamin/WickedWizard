@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
@@ -58,7 +59,7 @@ public class CollisionSystem extends EntityProcessingSystem {
         enemyOnlyWalls = Aspect.all(CollisionBoundComponent.class, EnemyOnlyWallComponent.class);
 
         enemyBulletBlockWalls = Aspect.all(CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.object.BlockEnemyBulletComponent.class);
-        playerWalls = Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent.class, CollisionBoundComponent.class).exclude(GrappleableComponent.class);
+        playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(GrappleableComponent.class);
         platforms = Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent.class, CollisionBoundComponent.class);
 
 

@@ -71,33 +71,13 @@ public class BossMaps extends AbstractFactory {
 
 
     /**
-     * This is the arena placed inside of the main level map, that is used to teleport to a boss map.
-     * @param mapCoords - Mapcoords of the arena
-     * @param btc - The boss teleporter component that holds the link to another map.
-     * @return - Returns the arena
-     */
-    public final Arena bossTeleportArena(MapCoords mapCoords, BossTeleporterComponent btc){
-
-        btc.offsetX = Measure.units(25f);
-
-        Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.BOSS);
-        bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
-        bossRoom.addEntity(portalFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
-
-        return bossRoom;
-    }
-
-
-    /**
      * The starting room you are teleported to when you use a boss room teleporter
      * @param mapCoords - Map co-ordinates of the Arena
      * @param btc - The boss teleport component that holds the link to another map
      * @return - Returns the arena
      */
     public Arena bossMapStartingArena(MapCoords mapCoords, BossTeleporterComponent btc){
-
         btc.offsetY = -Measure.units(15f);
-
         Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.NORMAL);
         startingArena.addEntity(portalFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f), btc));
         return startingArena;
@@ -118,40 +98,6 @@ public class BossMaps extends AbstractFactory {
         exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
         exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint(), ItemType.BOSS));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
-
-
-/*        ComponentBag bag = exitArena.createArenaBag();
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                GameCreator gameCreator = world.getSystem(ChangeLevelSystem.class).getGameCreator();
-
-                if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
-
-                    String id;
-
-                    switch (gameCreator.position){
-                        case 0:
-                        default: id = ChallengesResource.LEVEL_1_COMPLETE; break;
-                        case 1: id = ChallengesResource.LEVEL_2_COMPLETE; break;
-                        case 2: id = ChallengesResource.LEVEL_3_COMPLETE; break;
-                        case 3: id = ChallengesResource.LEVEL_4_COMPLETE; break;
-                        case 4: id = ChallengesResource.LEVEL_5_COMPLETE; break;
-                    }
-
-                    world.getSystem(UnlockMessageSystem.class).createUnlockMessage(id);
-
-                    String s = AdventureUnlocks.getUnlock(
-                            world.getSystem(FindPlayerSystem.class).getPlayerComponent(PlayerComponent.class).id,
-                            id);
-
-                    if(s != null) world.getSystem(UnlockMessageSystem.class).createUnlockMessage(s);
-                }
-                e.deleteFromWorld();
-            }
-        }));*/
-
 
         return exitArena;
     }

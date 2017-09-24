@@ -327,7 +327,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
     private ArenaCreate endBossRushRoom(final String bossRushid){
 
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

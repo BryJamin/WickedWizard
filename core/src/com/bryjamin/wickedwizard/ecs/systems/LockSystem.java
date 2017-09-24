@@ -5,10 +5,11 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.LockComponent;
-import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 
 /**
  * Created by Home on 24/03/2017.
@@ -20,7 +21,7 @@ public class LockSystem extends EntitySystem {
     ComponentMapper<AnimationStateComponent> sm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<GrappleableComponent> gm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> dm;
+    ComponentMapper<DoorComponent> dm;
     private ComponentMapper<LockComponent> lm;
 
 
@@ -29,7 +30,7 @@ public class LockSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public LockSystem() {
-        super(Aspect.all(LockComponent.class, CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent.class));
+        super(Aspect.all(LockComponent.class, CollisionBoundComponent.class, DoorComponent.class));
     }
 
     @Override

@@ -92,7 +92,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
 
     public ArenaCreate endStartingRoom(final ArenaMap destinationMapAfterBossKill) {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -138,7 +138,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
 
     public ArenaCreate endArena() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

@@ -5,6 +5,7 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -198,7 +199,7 @@ public class ArenaBuilder {
                 if(s.ceiling == wall.GRAPPLE || s.ceiling == wall.MANDATORYGRAPPLE){
 
                     ComponentBag bag = decorFactory.hiddenGrapplePointBag(posX + SECTION_WIDTH / 2, posY + ((SECTION_HEIGHT / 4) * 3));
-                    com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc = new com.bryjamin.wickedwizard.ecs.components.object.DoorComponent(
+                    DoorComponent dc = new DoorComponent(
                             new MapCoords(coordX, coordY),
                             new MapCoords(coordX, coordY + 1),
                             com.bryjamin.wickedwizard.utils.enums.Direction.UP);
@@ -296,7 +297,7 @@ public class ArenaBuilder {
                     new MapCoords(coordX, coordY - 1),
                     com.bryjamin.wickedwizard.utils.enums.Direction.DOWN);
 
-            com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent.class, bag).ignore = true;
+            com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
 
             arena.addEntity(decorFactory.platform(Measure.units(40f) + posX, Measure.units(5f), Measure.units(20f)));
 
