@@ -66,6 +66,9 @@ public class BossWanda extends BossFactory {
 
     private static final float firingPhaseTime = 2.5f;
 
+
+    private static final float health = 65;
+
     private Giblets.GibletBuilder gibletBuilder;
 
 
@@ -91,7 +94,7 @@ public class BossWanda extends BossFactory {
         y = y - height / 2;
 
 
-        ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, 75);
+        ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, health);
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
 

@@ -1,6 +1,7 @@
 package com.bryjamin.wickedwizard.ecs.systems.level;
 
 import com.artemis.BaseSystem;
+import com.bryjamin.wickedwizard.screens.MenuScreen;
 
 /**
  * Created by Home on 28/07/2017.
@@ -33,7 +34,7 @@ public class EndGameSystem extends BaseSystem {
 
     public void backToMenu(){
         game.getScreen().dispose();
-        game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
+        game.setScreen(new MenuScreen(game));
     }
 
     public com.bryjamin.wickedwizard.MainGame getGame() {
@@ -42,7 +43,10 @@ public class EndGameSystem extends BaseSystem {
 
     public void quickSaveAndBackToMenu(){
         com.bryjamin.wickedwizard.screens.QuickSave.saveGame(world);
-        backToMenu();
+        game.getScreen().dispose();
+        game.setScreen(new MenuScreen(game));
+        MenuScreen.setMenuType(MenuScreen.MenuType.MAIN);
+
     }
 
 }

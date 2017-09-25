@@ -71,6 +71,10 @@ public class TextureStrings {
     public static final String ICON_CONTROLLER = "settings/icon_controller";
 
 
+    public static final String ICON_HOVER = "icons/hover_tips";
+    public static final String ICON_AIMING = "icons/aiming_tip";
+
+
     public static final String LOCKBOX = "decor/lock_block";
     public static final String SPIKEWALL = "decor/spike_wall";
 

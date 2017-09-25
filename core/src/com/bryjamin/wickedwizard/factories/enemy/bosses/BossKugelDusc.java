@@ -28,7 +28,7 @@ public class BossKugelDusc extends BossFactory {
     private static final float width = Measure.units(30f);
     private static final float height = Measure.units(30f);
 
-    private static final float health = 90;
+    private static final float health = 80;
 
     //SPRAY
 

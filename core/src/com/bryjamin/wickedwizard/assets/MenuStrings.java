@@ -114,9 +114,6 @@ public class MenuStrings {
                 "Game Over"};
 
 
-
-
-
         public static final String[] CHALLENGE_FLAVOR_TEXT = {
                 "Challenge Failed",
                 "Oh dear, you seem to have died",
@@ -139,21 +136,35 @@ public class MenuStrings {
 
         public static final String RESTART = "Tap here to Restart";
 
-
         public static final String YOU_REACHED_HERE = "(You Reached Here)";
-
-
-
-
-
-
-
-
-
 
 
     }
 
+
+    public static class Tutorial {
+
+        public static final String liaTips(int number){
+            return "Labyrinth Tips #" + number;
+        }
+
+        public static final String DOUBLE_TAP_STOP_HOVERING_1 = "While Hovering";
+        public static final String DOUBLE_TAP_STOP_HOVERING_2 = "DOUBLE Tap ANYWHERE BELOW Your Character";
+        public static final String DOUBLE_TAP_STOP_HOVERING_3 = "To CANCEL Hovering";
+
+
+        public static final String AIMING_1 = "Avoid Placing Your Thumbs Directly On Top of Enemies When Shooting";
+        public static final String AIMING_2 = "As This BLOCKS Your Vision of the Enemy!";
+        public static final String AIMING_3 = "Place Your Thumbs In Areas BEYOND Your Enemy";
+        public static final String AIMING_4 = "The ENTIRE SCREEN Is Your Playground!";
+
+
+        public static final String TWO_THUMBS_1 = "Avoid Placing Your Thumbs Directly On Top of Enemies When Shooting";
+        public static final String TWO_THUMBS_2 = "As This BLOCKS Your Vision of the Enemy!";
+        public static final String TWO_THUMBS_3 = "Place Your Thumbs In Areas BEYOND Your Enemy";
+        public static final String TWO_THUMBS_4 = "The ENTIRE SCREEN Is Your Playground!";
+
+    }
 
 
 
