@@ -96,15 +96,15 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     }
 
 
-    public void movePlayer(float targetX, float currentPosition, AccelerantComponent ac, VelocityComponent vc, StatComponent sc){
-        ac.accelX = Measure.units(15f) * (1 + sc.speed);
-        ac.maxX = Measure.units(80f) * (1 + sc.speed);
+    public void movePlayer(float targetX, float currentPosition, AccelerantComponent ac, VelocityComponent vc, float speedMultiplier){
+        ac.accelX = Measure.units(15f) * (1 + speedMultiplier);
+        ac.maxX = Measure.units(80f) * (1 + speedMultiplier);
         GrappleSystem.moveTo(targetX, currentPosition, ac, vc);
     }
 
-    public void autoMove(float targetX){
+    public void autoMove(float targetX, float speedMultiplier){
         for(Entity e : this.getEntities()){
-            movePlayer(targetX, cbm.get(e).getCenterX(), am.get(e), vm.get(e), sm.get(e));
+            movePlayer(targetX, cbm.get(e).getCenterX(), am.get(e), vm.get(e), speedMultiplier);
         }
     }
 
@@ -155,7 +155,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
                     if (input.y <= movementArea.y + movementArea.getHeight() && !mtc.hasTarget()) {
-                        movePlayer(input.x, cbc.getCenterX(), ac, vc, sc);
+                        movePlayer(input.x, cbc.getCenterX(), ac, vc, sc.speed);
                     }
                 } else {
                    playerInput.movementInputPoll = null;

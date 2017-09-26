@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
+import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.bryjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -58,7 +59,11 @@ public class BossArenaEndBoss extends AbstractFactory {
     }
 
 
-
+    /**
+     * Map That holds the 'End' Boss. Teleport to the gallery once the boss has been killed
+     * @param destinationMapAfterBossKill
+     * @return
+     */
     public ArenaMap theEndMapAdventureMode(final ArenaMap destinationMapAfterBossKill){
 
         Arena arena = endArena().createArena(new MapCoords(0,0));
@@ -82,7 +87,7 @@ public class BossArenaEndBoss extends AbstractFactory {
 
                 PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 pc.position.x = a.getWidth() / 2;
-                pc.position.y = a.getHeight() / 2;
+                pc.position.y = Measure.units(25f);
             }
         }));
 
@@ -168,8 +173,8 @@ public class BossArenaEndBoss extends AbstractFactory {
 
 
     public Entity createWhiteFlash(World world){
-        float width = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH * 3;
-        float height = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT * 3;
+        float width = ArenaShellFactory.SECTION_WIDTH * 3;
+        float height = ArenaShellFactory.SECTION_HEIGHT * 3;
 
 
         Entity e = world.createEntity();

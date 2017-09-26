@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
@@ -22,7 +23,11 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
+import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -75,13 +80,13 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
 
         WorldConfiguration backDropconfig = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem()
+                        new MovementSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
-                        new com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem())
+                        new ActionOnTouchSystem(),
+                        new AnimationSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem(game.batch, game.assetManager, gameport),
+                        new RenderingSystem(game.batch, game.assetManager, gameport),
                         new BoundsDrawingSystem()
                 )
                 .build();
@@ -91,7 +96,7 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
 
         Entity backdrop = world.createEntity();
         backdrop.edit().add(new PositionComponent(0,0));
-        backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, com.bryjamin.wickedwizard.MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
+        backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), MainGame.GAME_WIDTH, MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
                 ColorResource.RGBtoColor(137, 207, 240, 1)));
 
 

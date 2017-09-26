@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -95,7 +96,7 @@ public class BossFactory extends AbstractFactory {
         deathClone.edit().add(e.getComponent(CollisionBoundComponent.class));
         deathClone.edit().add(new ExpireComponent(1.45f));
         deathClone.edit().add(new CameraShakeComponent(0.75f));
-        deathClone.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent());
+        deathClone.edit().add(new ArenaLockComponent());
 
         deathClone.edit().add(new ActionAfterTimeComponent(new Action() {
             @Override

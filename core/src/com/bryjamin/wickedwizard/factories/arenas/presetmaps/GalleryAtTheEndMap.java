@@ -4,10 +4,8 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.MainGame;
-import com.bryjamin.wickedwizard.assets.FontAssets;
-import com.bryjamin.wickedwizard.assets.MenuStrings;
+import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.MusicStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
@@ -15,14 +13,12 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
-import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AfterUIRenderingSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
@@ -54,6 +50,10 @@ public class GalleryAtTheEndMap extends AbstractFactory {
     private ArenaSkin arenaSkin;
     private MapCleaner mapCleaner;
 
+    private static final float timeUntilcreditFade = 2.0f;
+    private static final float characterPauseTime = 2.0f;
+    private static final float creditFadeDuration = 2.0f;
+
     public GalleryAtTheEndMap(AssetManager assetManager) {
         super(assetManager);
         this.arenaSkin = new BrightWhiteSkin();
@@ -67,8 +67,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
     public ArenaMap endGameMap() {
 
         ArenaMap arenaMap = new ArenaMap(galleryGrappleStart().createArena(new MapCoords(0,0)),
-                galleryExitRoom().createArena(new MapCoords(0, 2)),
-                galleryTheOutSide().createArena(new MapCoords(1, 2))
+                galleryTheOutSide().createArena(new MapCoords(0, 4))
                 );
 
         mapCleaner.cleanArenas(arenaMap.getRoomArray());
@@ -90,9 +89,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
-                ArenaBuilder arenaBuilder = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP);
 
-                arenaBuilder
+                Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
@@ -101,17 +99,25 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 3),
+                                ArenaBuilder.wall.FULL,
+                                ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.GRAPPLE,
-                                ArenaBuilder.wall.NONE));
-
-                Arena arena = arenaBuilder.buildArena();
-
+                                ArenaBuilder.wall.NONE)).buildArena();
 
                 arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5f), Measure.units(300f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5f), Measure.units(300f)));
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50f)));
-                arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
+                for(int i = 0; i < 6; i++){
+                    arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50f) + Measure.units(30f) * i));
+                }
 
                 arena.addEntity(new OnLoadFactory().startMusicEntity(MusicStrings.BG_MAIN_MENU));
 
@@ -120,59 +126,6 @@ public class GalleryAtTheEndMap extends AbstractFactory {
         };
 
     }
-
-
-    private ArenaCreate galleryFirstRoom(){
-
-
-        return new ArenaCreate() {
-            @Override
-            public Arena createArena(MapCoords defaultCoords) {
-
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
-
-
-                float x = 0;
-                float y = Measure.units(40f);
-
-                ComponentBag welcomeText = arena.createArenaBag();
-                welcomeText.add(new PositionComponent(x, y));
-                welcomeText.add(new CollisionBoundComponent(new Rectangle(x, y, arena.getWidth(), Measure.units(5f))));
-                welcomeText.add(new TextureFontComponent(FontAssets.medium, MenuStrings.Gallery.WELCOME, arenaSkin.getWallTint()));
-
-
-                return arena;
-            }
-        };
-
-    }
-
-
-    private ArenaCreate galleryExitRoom(){
-
-
-        return new ArenaCreate() {
-            @Override
-            public Arena createArena(MapCoords defaultCoords) {
-
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
-
-                float x = 0;
-                float y = Measure.units(40f);
-
-                ComponentBag welcomeText = arena.createArenaBag();
-                welcomeText.add(new PositionComponent(x, y));
-                welcomeText.add(new CollisionBoundComponent(new Rectangle(x, y, arena.getWidth(), Measure.units(5f))));
-                welcomeText.add(new TextureFontComponent(FontAssets.medium, MenuStrings.Gallery.GALLERY_END, arenaSkin.getWallTint()));
-
-                return arena;
-            }
-        };
-
-    }
-
-
-
 
 
     private ArenaCreate galleryTheOutSide(){
@@ -185,26 +138,43 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
                 Arena arena = new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.TRAP)
                         .addSection(new ArenaBuilder.Section(defaultCoords,
-                                ArenaBuilder.wall.DOOR,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.FULL))
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.DOOR))
+                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() - 1, defaultCoords.getY()),
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE,
+                                ArenaBuilder.wall.NONE))
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 1, defaultCoords.getY()),
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.FULL))
-                        .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX() + 2, defaultCoords.getY()),
-                                ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.NONE,
-                                ArenaBuilder.wall.FULL))
+                                ArenaBuilder.wall.NONE))
                         .buildArena();
 
-                arena.setWidth(MainGame.GAME_WIDTH * 2);
+                arena.setWidth(MainGame.GAME_WIDTH);
+
+                arena.addEntity(decorFactory.wallBag(-arena.getWidth() * 5, Measure.units(0), arena.getWidth() * 5, Measure.units(10f)));
+                arena.addEntity(decorFactory.wallBag(arena.getWidth(), Measure.units(0), arena.getWidth() * 5, Measure.units(10f)));
+
+
+                ComponentBag lock = new ComponentBag();
+                lock.add(new EnemyComponent());
+                arena.addEntity(lock);
+
 
 
                 ComponentBag background = arena.createArenaBag();
+
+                background.add(new PositionComponent(0,0));
+                background.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP),
+                        MainGame.GAME_WIDTH ,
+                        MainGame.GAME_HEIGHT,
+                        TextureRegionComponent.BACKGROUND_LAYER_MIDDLE,
+                        ColorResource.RGBtoColor(137, 207, 240, 1)));
+                arena.addEntity(background);
 
 
 
@@ -221,9 +191,9 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                             @Override
                             public void performAction(World world, Entity e){
                                 e.getComponent(ActionAfterTimeComponent.class).resetTime = 0f;
-                                world.getSystem(PlayerInputSystem.class).autoMove(Measure.units(5000));
+                                world.getSystem(PlayerInputSystem.class).autoMove(Measure.units(5000), -0.3f);
                             }
-                        }, 1f, true));
+                        }, characterPauseTime, true));
 
                     }
                 }));
@@ -240,13 +210,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
                         Entity fadeout = world.createEntity();
                         fadeout.edit().add(new PositionComponent(0,0));
-                        fadeout.edit().add(new ActionAfterTimeComponent(new Action() {
-                            @Override
-                            public void performAction(World world, Entity e) {
-                                e.edit().add(new FadeComponent(true, 3.0f, false));
-                            }
-                        }, 1.5f));
-                        fadeout.edit().add(new FollowPositionComponent(world.getSystem(CameraSystem.class).getGamecam().position, -width / 2, -height / 2));
+                        fadeout.edit().add(new FadeComponent(true, creditFadeDuration, false));
+                        fadeout.edit().add(new FollowCameraComponent(0,0));
                         fadeout.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR, new Color(0,0,0,0)));
 
                         fadeout.edit().add(new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
@@ -264,7 +229,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
                     }
-                }, 2.0f));
+                }, timeUntilcreditFade));
 
                 arena.addEntity(endFade);
                 return arena;
