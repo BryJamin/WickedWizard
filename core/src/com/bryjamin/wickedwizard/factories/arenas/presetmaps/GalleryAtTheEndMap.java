@@ -26,7 +26,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
@@ -305,7 +305,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                         }, new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
-                                world.getSystem(EndGameSystem.class).startCredits();
+                                world.getSystem(GameSystem.class).startCredits();
                             }
                         }));
 
@@ -362,7 +362,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                                         world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.class).startScreenWipe(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.Transition.FADE, new Action() {
                                             @Override
                                             public void performAction(World world, Entity e) {
-                                                com.bryjamin.wickedwizard.MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                                com.bryjamin.wickedwizard.MainGame game = world.getSystem(GameSystem.class).getGame();
                                                 game.getScreen().dispose();
                                                 game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
                                             }

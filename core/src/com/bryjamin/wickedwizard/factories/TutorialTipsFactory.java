@@ -29,6 +29,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -47,7 +48,23 @@ public class TutorialTipsFactory extends AbstractFactory {
     }
 
 
+    public Bag<ComponentBag> controllerTips(Bag<ComponentBag> fillBag, Camera gamecam){
 
+        ParentComponent parentComponent = new ParentComponent();
+
+        fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(1), 0, titleY));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.CONTROLLER_1, 0, Measure.units(50f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.CONTROLLER_2, 0, Measure.units(22.5f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.CONTROLLER_3, 0, Measure.units(17.5f)));
+
+        fillBag.add(defaultCenteredImage(new ComponentBag(), TextureStrings.ICON_CONTROLLER, parentComponent, gamecam, Measure.units(40f), Measure.units(18.5f)));
+        fillBag.add(tapToContinue(new ComponentBag(), parentComponent, Measure.units(0), Measure.units(5f), Measure.units(50f), Measure.units(10f)));
+
+        return fillBag;
+
+    }
 
 
 
@@ -56,7 +73,8 @@ public class TutorialTipsFactory extends AbstractFactory {
         ParentComponent parentComponent = new ParentComponent();
 
         fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(1), 0, titleY));
+        fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(2), 0, titleY));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.DOUBLE_TAP_STOP_HOVERING_1, 0, Measure.units(45f)));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.DOUBLE_TAP_STOP_HOVERING_2, 0, Measure.units(30f)));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.DOUBLE_TAP_STOP_HOVERING_3, 0, Measure.units(25f)));
@@ -75,7 +93,8 @@ public class TutorialTipsFactory extends AbstractFactory {
         ParentComponent parentComponent = new ParentComponent();
 
         fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(2), 0, titleY));
+        fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(3), 0, titleY));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AIMING_1, 0, Measure.units(50f)));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AIMING_2, 0, Measure.units(45f)));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AIMING_3, 0, Measure.units(22.5f)));
@@ -103,17 +122,17 @@ public class TutorialTipsFactory extends AbstractFactory {
         ParentComponent parentComponent = new ParentComponent();
 
         fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(3), 0, titleY));
+        fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(4), 0, titleY));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.TWO_THUMBS_1, 0, Measure.units(50f)));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.TWO_THUMBS_2, 0, Measure.units(45f)));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.TWO_THUMBS_3, 0, Measure.units(22.5f)));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.TWO_THUMBS_4, 0, Measure.units(17.5f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.TWO_THUMBS_2, 0, Measure.units(22.5f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.TWO_THUMBS_3, 0, Measure.units(17.5f)));
 
 
-        ComponentBag bag = defaultCenteredImage(new ComponentBag(), TextureStrings.ICON_AIMING, parentComponent, gamecam, Measure.units(30f), Measure.units(20f));
+        ComponentBag bag = defaultCenteredImage(new ComponentBag(), TextureStrings.ICON_THUMBS, parentComponent, gamecam, Measure.units(30f), Measure.units(22.5f));
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
-        animMap.put(0, new Animation<TextureRegion>(0.15f / 1f, atlas.findRegions(TextureStrings.ICON_AIMING), Animation.PlayMode.LOOP));
+        animMap.put(0, new Animation<TextureRegion>(0.075f / 1f, atlas.findRegions(TextureStrings.ICON_THUMBS), Animation.PlayMode.LOOP));
         bag.add(new AnimationComponent(animMap));
 
         fillBag.add(bag);
@@ -123,10 +142,6 @@ public class TutorialTipsFactory extends AbstractFactory {
         return fillBag;
 
     }
-
-
-
-
 
 
     private ComponentBag blackBackground(ComponentBag fillBag, ParentComponent parentComponent, Camera gamecam){
@@ -144,6 +159,24 @@ public class TutorialTipsFactory extends AbstractFactory {
         return fillBag;
 
     }
+
+    private ComponentBag whiteFlashBackground(ComponentBag fillBag, ParentComponent parentComponent, Camera gamecam){
+
+
+        fillBag.add(new PositionComponent());
+        fillBag.add(new FollowCameraComponent());
+        fillBag.add(new ChildComponent(parentComponent));
+        fillBag.add(new FadeComponent(false, 1f, false));
+        fillBag.add(new UIComponent());
+        fillBag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), gamecam.viewportWidth, gamecam.viewportHeight,
+                TextureRegionComponent.FOREGROUND_LAYER_NEAR,
+                new Color(1,1,1,1f)));
+
+
+        return fillBag;
+
+    }
+
 
 
     private ComponentBag defaultText(ComponentBag fillBag, String font, ParentComponent parentComponent, Camera gamecam, String text, float x, float y){
@@ -196,11 +229,9 @@ public class TutorialTipsFactory extends AbstractFactory {
                 e.edit().add(new ActionOnTouchComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-
                         world.getSystem(OnDeathSystem.class).killChildComponentsIgnoreOnDeath(e.getComponent(ParentComponent.class));
-
+                        world.getSystem(GameSystem.class).unPauseGame();
                         e.deleteFromWorld();
-
                     }
                 }));
 

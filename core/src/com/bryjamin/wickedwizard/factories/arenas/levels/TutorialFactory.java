@@ -7,7 +7,6 @@ import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,8 +18,7 @@ import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
-import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -28,11 +26,12 @@ import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.TipsMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
+import com.bryjamin.wickedwizard.factories.TutorialTipsFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
@@ -82,6 +81,10 @@ public class TutorialFactory extends ArenaShellFactory {
     private static final String movingEnemyTutorial =
             "Oh No, This ENEMY is Moving! \n\n Stop It Before it Learns to do More!";
 
+    private static final String movingEnemyTutorial2 =
+            "Ack! Another One! \n\n Take Care Of It!";
+
+
 
     private static final String grappleTutorialString =
             "Tap Grappling Points to Shoot a Grappling Hook \n \n (Grapple Points are Currently Being Highlighted)";
@@ -114,9 +117,12 @@ public class TutorialFactory extends ArenaShellFactory {
 
     private Color textColor;
 
+    private TutorialTipsFactory tutorialTipsFactory;
+
     public TutorialFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager, arenaSkin);
         this.textColor = new Color(Color.BLACK);
+        this.tutorialTipsFactory = new TutorialTipsFactory(assetManager);
     }
 
 
@@ -138,15 +144,16 @@ public class TutorialFactory extends ArenaShellFactory {
 //        placedArenas.add(grappleJumpTutorial(new MapCoords(1, 0)));
         placedArenas.add(controllerTurtorial(new MapCoords(1, 0)));
         placedArenas.add(jumpTutorial(new MapCoords(2, 0)));
-        placedArenas.add(platformTutorial(new MapCoords(6,0)));
-        placedArenas.add(enemyTurtorial(new MapCoords(7,0)));
-        placedArenas.add(grappleTutorial(new MapCoords(8,0)));
-        placedArenas.add(grappleJumpTutorial(new MapCoords(8, 3)));
-        placedArenas.add(movingEnemyTurtorial(new MapCoords(8,5)));
-        placedArenas.add(bulletTutorial(new MapCoords(9, 5)));
-        placedArenas.add(guideLineTutorial(new MapCoords(10, 5)));
-        placedArenas.add(endTutorial(new MapCoords(11,5)));
-
+        placedArenas.add(enemyTurtorial(new MapCoords(6,0)));
+        placedArenas.add(enemyTutorialPart2(new MapCoords(7,0)));
+        placedArenas.add(movingEnemyTurtorial(new MapCoords(8,0)));
+        placedArenas.add(bulletTutorial(new MapCoords(9, 0)));
+        placedArenas.add(platformTutorial(new MapCoords(10,0)));
+        placedArenas.add(grappleTutorial(new MapCoords(11,0)));
+        placedArenas.add(grappleJumpTutorial(new MapCoords(11, 3)));
+        placedArenas.add(movingEnemyTurtorialPart2(new MapCoords(11, 5)));
+        placedArenas.add(guideLineTutorial(new MapCoords(12, 5)));
+        placedArenas.add(endTutorial(new MapCoords(13,5)));
 
         //guideLineTutorial
 
@@ -224,8 +231,6 @@ public class TutorialFactory extends ArenaShellFactory {
         //Arrows
         for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(arena.getWidth() - Measure.units(27.5f), Measure.units(17.5f + (i * 25f)), 180));
 
-        //arena.addEntity(decorFactory.chevronBag(Measure.units(85f), Measure.units(22.5f), 0));
-        //arena.addEntity(decorFactory.chevronBag(Measure.units(55f), Measure.units(22.5f), -90));
         for(int i = 0; i < 2; i ++)  arena.addEntity(decorFactory.chevronBag(Measure.units(17.5f), Measure.units(17.5f + (i * 25f)), 0));
 
         TextureFontComponent tfc = new TextureFontComponent(FontAssets.small, platformString, textColor);
@@ -293,71 +298,19 @@ public class TutorialFactory extends ArenaShellFactory {
 
 
         ComponentBag messageBoxTrigger = new ComponentBag();
-        messageBoxTrigger.add(new PositionComponent(Measure.units(55f), 0));
-
-        Rectangle rectangle = new Rectangle(Measure.units(55f), 0, Measure.units(160f), Measure.units(70f));
-
+        messageBoxTrigger.add(new PositionComponent(Measure.units(110f), 0));
+        Rectangle rectangle = new Rectangle(Measure.units(90f), 0, Measure.units(160f), Measure.units(70f));
         messageBoxTrigger.add(new CollisionBoundComponent(rectangle));
         messageBoxTrigger.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent());
         messageBoxTrigger.add(new ProximityTriggerAIComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
-
-                com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parentComponent = e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
-
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).killChildComponentsIgnoreOnDeath(parentComponent);
-
-                Camera gamecam = world.getSystem(CameraSystem.class).getGamecam();
-
-
-                FadeComponent fadeComponent = new FadeComponent(true, 1f, false);
-
-
-                //MESSAGE BOX
-
-                Entity text = world.createEntity();
-                text.edit().add(new PositionComponent(gamecam.position.x, gamecam.position.y + Measure.units(19.5f)));
-                text.edit().add(new FollowCameraComponent(0, Measure.units(47.5f)));
-                text.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gamecam.viewportWidth, Measure.units(10f))));
-                TextureFontComponent textureFontComponent = new TextureFontComponent(com.bryjamin.wickedwizard.assets.FontAssets.small, jumpTutorialStringDoubleTapBelow);
-                textureFontComponent.layer = FOREGROUND_LAYER_NEAR;
-                text.edit().add(textureFontComponent);
-                text.edit().add(fadeComponent);
-                //text.edit().add(ec);
-                text.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent(parentComponent));
-
-                Entity blackBackingBox = world.createEntity();
-                blackBackingBox.edit().add(new PositionComponent(gamecam.position.x - gamecam.viewportHeight / 2, gamecam.position.y + Measure.units(12.5f)));
-                blackBackingBox.edit().add(new FollowCameraComponent(0, Measure.units(47.5f)));
-
-                TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0,0,
-                        gamecam.viewportWidth,
-                        Measure.units(10f),
-                        TextureRegionComponent.FOREGROUND_LAYER_MIDDLE, new Color(0,0,0,0));
-                blackBackingBox.edit().add(trc);
-                //blackBackingBox.edit().add(ec);
-                blackBackingBox.edit().add(fadeComponent);
-                blackBackingBox.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent(parentComponent));
-
-
+                world.getSystem(TipsMessageSystem.class).createTipsMessage(MenuStrings.Tutorial.DOUBLE_TAP_ID);
+                e.deleteFromWorld();
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
-
-                for(com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent c : e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).children){
-                    Entity child = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindChildSystem.class).findChildEntity(c);
-                    if(child != null){
-                        child.edit().remove(FadeComponent.class);
-                        child.edit().add(new FadeComponent(false, 1f, false));
-                        child.edit().add(new ExpireComponent(1f));
-                    }
-                }
-
-                //world.getSystem(OnDeathSystem.class).killChildComponents(e.getComponent(ParentComponent.class));
-
             }
         }, new com.bryjamin.wickedwizard.utils.collider.HitBox(rectangle)));
 
@@ -377,39 +330,49 @@ public class TutorialFactory extends ArenaShellFactory {
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(50f)));
 
-
-        TextureFontComponent text = new TextureFontComponent(FontAssets.small, enemyTutorialString, textColor);
-        text.layer = FOREGROUND_LAYER_NEAR;
-        bag.add(text);
-
+        bag.add(new TextureFontComponent(FontAssets.small, enemyTutorialString, TextureRegionComponent.FOREGROUND_LAYER_NEAR, textColor));
         bag.add(new UIComponent());
 
         arena.addEntity(bag);
 
-        bag = new BlobFactory(assetManager).blob(arena.getWidth() - Measure.units(12), Measure.units(30f),1, 0, 8, true, ColorResource.BLOB_GREEN);
+        bag = new BlobFactory(assetManager).blob(arena.getWidth() - Measure.units(20), Measure.units(30f),1, 0, 6, true, ColorResource.BLOB_GREEN);
+        arena.addEntity(bag);
+
+        threeGroundChevrons(arena);
+
+
+        return arena;
+
+    }
+
+
+
+    public Arena enemyTutorialPart2(MapCoords defaultCoords){
+
+        Arena arena = createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(50f)));
+        bag.add(new TextureFontComponent(FontAssets.small, enemyTutorialString, TextureRegionComponent.FOREGROUND_LAYER_NEAR, textColor));
+        bag.add(new UIComponent());
+
+        bag = new ComponentBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(TipsMessageSystem.class).createTipsMessage(MenuStrings.Tutorial.AIMING_ID);
+                e.deleteFromWorld();
+            }
+        }));
+
+
+        arena.addEntity(bag);
+
+        bag = new BlobFactory(assetManager).blob(arena.getWidth() - Measure.units(20), Measure.units(30f),1, 0, 6, true, ColorResource.BLOB_GREEN);
         arena.addEntity(bag);
 
 
-        for(int i = 0; i < 3; i ++)  {
-
-            ComponentBag chevron = decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90);
-            BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, chevron).color.a = 0;
-            chevron.add(new com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
-                @Override
-                public void performAction(World world, Entity e) {
-
-                }
-
-                @Override
-                public void cleanUpAction(World world, Entity e) {
-                    e.edit().add(new FadeComponent(true, 0.5f, false));
-                }
-            }));
-
-
-            arena.addEntity(chevron);
-        }
-
+        threeGroundChevrons(arena);
 
         return arena;
 
@@ -435,6 +398,50 @@ public class TutorialFactory extends ArenaShellFactory {
         arena.addEntity(bag);
 
 
+        bag = new ComponentBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(TipsMessageSystem.class).createTipsMessage(MenuStrings.Tutorial.TWO_THUMBS_ID);
+                e.deleteFromWorld();
+            }
+        }));
+        arena.addEntity(bag);
+
+
+        threeGroundChevrons(arena);
+
+        return arena;
+
+    }
+
+
+    public Arena movingEnemyTurtorialPart2(MapCoords defaultCoords){
+
+        Arena arena = createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
+
+        ComponentBag bag = new ComponentBag();
+        bag.add(new PositionComponent(MainGame.GAME_WIDTH / 2, Measure.units(50f)));
+
+
+        TextureFontComponent text = new TextureFontComponent(FontAssets.small, movingEnemyTutorial2, textColor);
+        text.layer = ENEMY_LAYER_FAR;
+        bag.add(text);
+
+        arena.addEntity(bag);
+
+        bag = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, MathUtils.random).spawnBouncer(arena.getWidth() / 2, Measure.units(30), true);
+        arena.addEntity(bag);
+
+        threeGroundChevrons(arena);
+
+        return arena;
+
+    }
+
+
+    public void threeGroundChevrons(Arena arena) {
+
         for(int i = 0; i < 3; i ++)  {
 
             ComponentBag chevron = decorFactory.chevronBag(Measure.units(15f + (i * 30)), Measure.units(15f), -90);
@@ -451,15 +458,9 @@ public class TutorialFactory extends ArenaShellFactory {
                 }
             }));
 
-
             arena.addEntity(chevron);
         }
-
-
-        return arena;
-
     }
-
 
 
 
@@ -541,7 +542,7 @@ public class TutorialFactory extends ArenaShellFactory {
                             public void performAction(World world, Entity e) {
 
 
-                                MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                MainGame game = world.getSystem(GameSystem.class).getGame();
 
                                 if(DataSave.isDataAvailable(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.TUTORIAL_COMPLETE)){
                                     game.getScreen().dispose();
@@ -593,8 +594,21 @@ public class TutorialFactory extends ArenaShellFactory {
                         ArenaBuilder.wall.FULL,
                         ArenaBuilder.wall.FULL)).buildArena();
 
+        ComponentBag bag = new ComponentBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(TipsMessageSystem.class).createTipsMessage(MenuStrings.Tutorial.CONTROLLER_ID);
+                e.deleteFromWorld();
+            }
+        }));
 
-        Rectangle textRectangle = new Rectangle(0, 0, MainGame.GAME_WIDTH, Measure.units(10f));
+        arena.addEntity(bag);
+
+
+
+
+/*        Rectangle textRectangle = new Rectangle(0, 0, MainGame.GAME_WIDTH, Measure.units(10f));
 
         ComponentBag bag = new ComponentBag();
         bag.add(new PositionComponent(0, Measure.units(45f)));
@@ -633,7 +647,7 @@ public class TutorialFactory extends ArenaShellFactory {
         bag.add(new CollisionBoundComponent(textRectangle));
         bag.add(text);
 
-        arena.addEntity(bag);
+        arena.addEntity(bag);*/
 
 
 

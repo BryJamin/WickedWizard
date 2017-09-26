@@ -329,29 +329,21 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                 arena.addEntity(decorFactory.wallBag(Measure.units(165f), Measure.units(35f), Measure.units(130f), Measure.units(5f)));
 
                 //left
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(15f), Measure.units(15f), 0));
-                arena.addEntity(decorFactory.wallBag(Measure.units(10f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
+                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(10f), Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(5), Measure.units(10f), Measure.units(20f), Measure.units(15f)));
 
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(80f), Measure.units(15f), 0));
                 arena.addEntity(decorFactory.wallBag(Measure.units(75f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
 
                 //right
-
-
-
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(215f), Measure.units(15f), 0));
                 arena.addEntity(decorFactory.wallBag(Measure.units(210f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
 
-                arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(280f), Measure.units(15f), 0));
-                arena.addEntity(decorFactory.wallBag(Measure.units(275f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
-
+                if(random.nextBoolean() ) arena.addEntity(chestFactory.chestBag(Measure.units(280), Measure.units(25f)));
+                arena.addEntity(decorFactory.wallBag(Measure.units(275f), Measure.units(10f), Measure.units(20f), Measure.units(15f)));
 
                 arena.addEntity(arenaEnemyPlacementFactory.pylonFactory.ghostPylonBag(Measure.units(145f), Measure.units(15f), 0));
                 arena.addEntity(decorFactory.wallBag(Measure.units(140f), Measure.units(10f), Measure.units(20f), Measure.units(5f)));
-
-
-                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(45), Measure.units(10f)));
-                if(random.nextBoolean()) arena.addEntity(chestFactory.chestBag(Measure.units(245f), Measure.units(10f)));
 
 
                 return arena;

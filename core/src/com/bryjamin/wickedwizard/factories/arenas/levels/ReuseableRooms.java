@@ -20,7 +20,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
@@ -158,7 +158,7 @@ public class ReuseableRooms extends AbstractFactory {
                                 world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                                     @Override
                                     public void performAction(World world, Entity e) {
-                                        MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                        MainGame game = world.getSystem(GameSystem.class).getGame();
                                         game.getScreen().dispose();
                                         game.setScreen(new MenuScreen(game));
                                     }
@@ -187,7 +187,7 @@ public class ReuseableRooms extends AbstractFactory {
                                 world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                                     @Override
                                     public void performAction(World world, Entity e) {
-                                        MainGame game = world.getSystem(EndGameSystem.class).getGame();
+                                        MainGame game = world.getSystem(GameSystem.class).getGame();
                                         game.getScreen().dispose();
                                         game.setScreen(new MenuScreen(game));
                                     }

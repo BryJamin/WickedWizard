@@ -148,25 +148,29 @@ public class MenuStrings {
             return "Labyrinth Tips #" + number;
         }
 
+
+        public static final String CONTROLLER_ID = "76072843-a306-436d-afac-f3cfd228d10a";
+        public static final String CONTROLLER_1 = "It is Recommended to Hold Your Phone Like This:";
+        public static final String CONTROLLER_2 = "When Playing This Game";
+        public static final String CONTROLLER_3 = "(Note: Drawing Human Anatomy is Hard)";
+
+        public static final String DOUBLE_TAP_ID = "dc56738d-6d7b-4354-84de-56a00e8ce4e8";
         public static final String DOUBLE_TAP_STOP_HOVERING_1 = "While Hovering";
         public static final String DOUBLE_TAP_STOP_HOVERING_2 = "DOUBLE Tap ANYWHERE BELOW Your Character";
         public static final String DOUBLE_TAP_STOP_HOVERING_3 = "To CANCEL Hovering";
 
 
+        public static final String AIMING_ID = "2550c231-10bb-413e-adf6-9761eaa8af0d";
         public static final String AIMING_1 = "Avoid Placing Your Thumbs Directly On Top of Enemies When Shooting";
         public static final String AIMING_2 = "As This BLOCKS Your Vision of the Enemy!";
         public static final String AIMING_3 = "Place Your Thumbs In Areas BEYOND Your Enemy";
         public static final String AIMING_4 = "The ENTIRE SCREEN Is Your Playground!";
 
-
-        public static final String TWO_THUMBS_1 = "Avoid Placing Your Thumbs Directly On Top of Enemies When Shooting";
-        public static final String TWO_THUMBS_2 = "As This BLOCKS Your Vision of the Enemy!";
-        public static final String TWO_THUMBS_3 = "Place Your Thumbs In Areas BEYOND Your Enemy";
-        public static final String TWO_THUMBS_4 = "The ENTIRE SCREEN Is Your Playground!";
-
+        public static final String TWO_THUMBS_ID = "1915809c-1da2-403f-95f6-914bb1165e4a";
+        public static final String TWO_THUMBS_1 = "Both Thumbs Can Be Used At The Same Time";
+        public static final String TWO_THUMBS_2 = "Move With One Thumb,";
+        public static final String TWO_THUMBS_3 = "Jump And Shoot With The Other!";
     }
-
-
 
 
     public static class Gallery {

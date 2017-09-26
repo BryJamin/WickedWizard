@@ -16,7 +16,6 @@ public class UnlockMessageSystem extends BaseSystem {
 
     private Array<String> unlockIds = new Array<String>();
 
-
     /**
      * Creates an entity system that uses the specified aspect as a matcher
      * against entities.

@@ -22,7 +22,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
@@ -80,7 +80,7 @@ public class PortalFactory extends AbstractFactory {
                 world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        world.getSystem(EndGameSystem.class).backToMenu();
+                        world.getSystem(GameSystem.class).backToMenu();
 
                     }
                 });
@@ -106,7 +106,7 @@ public class PortalFactory extends AbstractFactory {
                 world.getSystem(ScreenWipeSystem.class).startScreenWipe(ScreenWipeSystem.Transition.FADE, new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        world.getSystem(EndGameSystem.class).backToMenu();
+                        world.getSystem(GameSystem.class).backToMenu();
 
                     }
                 });

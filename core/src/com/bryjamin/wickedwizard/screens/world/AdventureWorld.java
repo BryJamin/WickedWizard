@@ -71,7 +71,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.TipsMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
@@ -82,7 +82,7 @@ import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.BossDefeatUnlockSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
@@ -281,7 +281,7 @@ public class AdventureWorld extends InputAdapter {
         pauseButton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(EndGameSystem.class).pauseGame();
+                world.getSystem(GameSystem.class).pauseGame();
             }
         }));
         pauseButton.edit().add(new FollowCameraComponent(Measure.units(87.5f), Measure.units(65f)));
@@ -338,7 +338,6 @@ public class AdventureWorld extends InputAdapter {
                         new JumpSystem(),
                         new DisablePlayerInputSystem(),
                         new PlayerInputSystem(gameport),
-                        new StateSystem(),
                         new SpawnerSystem(),
                         new GrappleSystem(),
                         new FrictionSystem(),
@@ -362,10 +361,11 @@ public class AdventureWorld extends InputAdapter {
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(gameCreator, jigsawGenerator),
                         new BossDefeatUnlockSystem(game, gameCreator),
+                        new TipsMessageSystem(game),
                         new UnlockMessageSystem(game),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
-                        new EndGameSystem(game),
+                        new GameSystem(game),
                         new UISystem(game, gameport,
                                 new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
                                 BagSearch.getObjectOfTypeClass(StatComponent.class, player),

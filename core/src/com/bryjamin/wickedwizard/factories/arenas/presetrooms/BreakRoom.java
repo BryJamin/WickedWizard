@@ -21,7 +21,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
@@ -111,7 +111,7 @@ public class BreakRoom extends AbstractFactory {
                         world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.class).startScreenWipe(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.Transition.FADE, new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
-                                world.getSystem(EndGameSystem.class).quickSaveAndBackToMenu();
+                                world.getSystem(GameSystem.class).quickSaveAndBackToMenu();
                             }
                         });
                     }

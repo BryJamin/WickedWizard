@@ -39,7 +39,7 @@ public class ChangeLevelSystem extends BaseSystem {
 
 
         if(gameCreator.isFinalLevel()) {
-            world.getSystem(EndGameSystem.class).backToMenu();
+            world.getSystem(GameSystem.class).backToMenu();
             return null;
         }
 

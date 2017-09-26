@@ -22,7 +22,6 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -79,8 +78,7 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem(),
-                        new StateSystem())
+                        new com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem(game.batch, game.assetManager, gameport),
                         new BoundsDrawingSystem()
