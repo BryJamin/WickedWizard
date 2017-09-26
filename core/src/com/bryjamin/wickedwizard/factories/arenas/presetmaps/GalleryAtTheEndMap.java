@@ -216,6 +216,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                             public void performAction(World world, Entity e) {
                                 world.getSystem(PlayerInputSystem.class).autoMove(Measure.units(5000));
                             }
+                        }, 1f, true));
 
                     }
                 }));
