@@ -64,14 +64,10 @@ public class ExplosionSystem extends EntityProcessingSystem {
             int entity = entities.get(i);
 
             if(playerm.has(entity) && fm.has(explosionEntity)){
-
-                System.out.println("INSIDE");
                 continue;
             }
 
             if(enemym.has(entity) && enemym.has(explosionEntity)){
-
-                System.out.println("INSIDE");
                 continue;
             }
 
@@ -79,16 +75,11 @@ public class ExplosionSystem extends EntityProcessingSystem {
             HealthComponent hc = hm.get(entity);
 
             if(explosionBound.bound.overlaps(cbc.bound)){
-                System.out.println("Damage overlap is " + em.get(explosionEntity).damage);
                 hc.applyDamage(em.get(explosionEntity).damage);
             }
 
 
         }
-
-
-        System.out.println("Explosion Damage is " + em.get(explosionEntity).damage);
-
         explosionEntity.edit().remove(ExplosionComponent.class);
 
 

@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 /**
@@ -21,7 +22,7 @@ import com.bryjamin.wickedwizard.utils.enums.Direction;
 public class DirectionalSystem extends EntitySystem {
 
    static ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent> dm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
 
     public DirectionalSystem() {
         super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.class));

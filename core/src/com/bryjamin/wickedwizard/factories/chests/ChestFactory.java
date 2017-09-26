@@ -19,6 +19,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
@@ -68,7 +69,7 @@ public class ChestFactory extends AbstractFactory {
         bag.add(new ChestComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(3));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
+        bag.add(new BlinkOnHitComponent());
 
        // bag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
 

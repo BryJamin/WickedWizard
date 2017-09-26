@@ -7,6 +7,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
+
 /**
  * Created by BB on 06/04/2017.
  *

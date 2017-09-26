@@ -4,13 +4,14 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
 /**
  * Created by Home on 11/03/2017.
  */
 public class BounceCollisionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent> playerm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
@@ -20,7 +21,7 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public BounceCollisionSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class));
+        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class));
     }
 
 
@@ -36,7 +37,7 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
         com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent bc = bouncecm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
+        PositionComponent pc = pm.get(e);
 
 
         //The sake of this is to stop the collision between two together vertical block (this is a test run)

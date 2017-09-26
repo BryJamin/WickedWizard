@@ -72,8 +72,6 @@ public class JigsawGenerator {
         this.setStartingMap(jigsawGeneratorConfig.startingMap);
         this.arenaGens = jigsawGeneratorConfig.arenaGens;
 
-
-        System.out.println(getStartingMap().getCurrentArena());
         this.farSort = new com.bryjamin.wickedwizard.utils.comparator.FarSort(getStartingMap().getCurrentArena().getStartingCoords());
         this.bossMapGens = jigsawGeneratorConfig.bossMapGens;
         this.arenaSkin = jigsawGeneratorConfig.level.getArenaSkin();

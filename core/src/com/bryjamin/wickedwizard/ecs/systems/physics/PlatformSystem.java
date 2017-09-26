@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.math.Rectangle;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -14,7 +15,7 @@ import com.bryjamin.wickedwizard.utils.Measure;
 
 public class PlatformSystem extends EntitySystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent> platm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gravm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent> dm;
@@ -72,7 +73,7 @@ public class PlatformSystem extends EntitySystem {
                     playerVelocity.velocity.y = 0;
                     playerBound.bound.y = cbc.bound.y + cbc.bound.getHeight();
 
-                    com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+                    PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                     pc.position.x = playerBound.bound.getX();
                     pc.position.y = playerBound.bound.getY();
 
@@ -112,7 +113,7 @@ public class PlatformSystem extends EntitySystem {
 
                 if(c == com.bryjamin.wickedwizard.utils.collider.Collider.Collision.BOTTOM) {
                     platform.canPassThrough = true;
-                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position.y -= platformPushDown;
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.y -= platformPushDown;
                     return true;
                 }
 

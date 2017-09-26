@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
@@ -24,7 +25,7 @@ import com.bryjamin.wickedwizard.utils.collider.Collider;
  */
 public class CollisionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent> playerm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent> enemym;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
@@ -53,7 +54,7 @@ public class CollisionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public  CollisionSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
+        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
         wall = Aspect.all(WallComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.HealthComponent.class);
         destructibleWalls = Aspect.all(WallComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class);
         enemyOnlyWalls = Aspect.all(CollisionBoundComponent.class, EnemyOnlyWallComponent.class);
@@ -78,7 +79,7 @@ public class CollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
+        PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         cbm.get(e).getRecentCollisions().clear();

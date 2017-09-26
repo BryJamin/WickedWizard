@@ -187,9 +187,6 @@ public class AlurmFactory extends EnemyFactory {
                     VelocityComponent vc = e.getComponent(VelocityComponent.class);
                     vc.velocity.x = BulletMath.velocityX(Measure.units(62.5f), Math.toRadians(startAngle));
                     vc.velocity.y = BulletMath.velocityY(Measure.units(62.5f), Math.toRadians(startAngle));
-
-                    System.out.println("angle is :" + startAngle);
-
                 }
 
                 @Override

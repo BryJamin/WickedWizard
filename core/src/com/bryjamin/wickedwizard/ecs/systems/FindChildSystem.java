@@ -8,6 +8,7 @@ import com.artemis.utils.IntBag;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
+
 /**
  * Created by Home on 17/04/2017.
  */

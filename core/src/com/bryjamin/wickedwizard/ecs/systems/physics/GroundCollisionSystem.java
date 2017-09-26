@@ -4,8 +4,9 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.utils.collider.Collider;
 
 /**
@@ -14,13 +15,13 @@ import com.bryjamin.wickedwizard.utils.collider.Collider;
 
 public class GroundCollisionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
 
     @SuppressWarnings("unchecked")
     public GroundCollisionSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, CollisionBoundComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class, IntangibleComponent.class));
+        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, CollisionBoundComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class, IntangibleComponent.class));
     }
 
 
@@ -35,7 +36,7 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
 
         CollisionBoundComponent cbc = cbm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
+        PositionComponent pc = pm.get(e);
 
         boolean topOrBottom = cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) ||
                 cbc.getRecentCollisions().contains(Collider.Collision.TOP, false);

@@ -18,6 +18,7 @@ import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -89,7 +90,7 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
 
 
         Entity backdrop = world.createEntity();
-        backdrop.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(0,0));
+        backdrop.edit().add(new PositionComponent(0,0));
         backdrop.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MAIN_MENU_BACKDROP), com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, com.bryjamin.wickedwizard.MainGame.GAME_HEIGHT, TextureRegionComponent.BACKGROUND_LAYER_FAR,
                 ColorResource.RGBtoColor(137, 207, 240, 1)));
 
@@ -102,7 +103,7 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
         float y = musicButtonPosY;
 
         Entity musicSetting = world.createEntity();
-        musicSetting.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
+        musicSetting.edit().add(new PositionComponent(x, y));
         musicSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         TextureRegionComponent trc = new TextureRegionComponent(musicOn ? atlas.findRegion(TextureStrings.SETTINGS_MUSIC_ON) : atlas.findRegion(TextureStrings.SETTINGS_MUSIC_OFF),
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
@@ -131,7 +132,7 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
         y = soundButtonPosY;
 
         Entity soundSetting = world.createEntity();
-        soundSetting.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
+        soundSetting.edit().add(new PositionComponent(x, y));
         soundSetting.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         trc = new TextureRegionComponent(soundOn ? atlas.findRegion(TextureStrings.SETTINGS_SOUND_ON) : atlas.findRegion(TextureStrings.SETTINGS_SOUND_OFF),
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
@@ -163,7 +164,7 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
         y = settingsButtonPosY;
 
         Entity goToSettings = world.createEntity();
-        goToSettings.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
+        goToSettings.edit().add(new PositionComponent(x, y));
         goToSettings.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.GO_TO_SETTINGS),
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);
@@ -186,7 +187,7 @@ public class MenuBackDropWorld extends com.bryjamin.wickedwizard.utils.AbstractG
         y = itemsButtonPosY;
 
         Entity goToItems = world.createEntity();
-        goToItems.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
+        goToItems.edit().add(new PositionComponent(x, y));
         goToItems.edit().add(new CollisionBoundComponent(new Rectangle(x,y, smallButtonSize, smallButtonSize)));
         trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.SETTINGS_ITEM),
                 smallButtonSize, smallButtonSize, TextureRegionComponent.PLAYER_LAYER_MIDDLE);

@@ -6,8 +6,9 @@ import com.artemis.Entity;
 import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 
 /**
  * Created by BB on 05/03/2017.
@@ -27,7 +28,7 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public EnemyCollisionSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent.class));
+        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, BlinkOnHitComponent.class));
     }
 
     @Override

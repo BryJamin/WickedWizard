@@ -84,8 +84,6 @@ public class FiringAISystem extends EntityProcessingSystem {
 
                 if(wc.timer.isFinished() && enemiesExist()){
 
-                    System.out.println("Inside");
-
                     wc.weapon.fire(world, e, x, y, firingAngleToNearestEnemyInRadians(x, y));
                     if(world.getMapper(AnimationStateComponent.class).has(e))
                         e.getComponent(AnimationStateComponent.class).queueAnimationState(AnimationStateComponent.FIRING);

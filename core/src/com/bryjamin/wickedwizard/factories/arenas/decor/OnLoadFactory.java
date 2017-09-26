@@ -7,8 +7,8 @@ import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChallengeTimerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
@@ -67,7 +67,7 @@ public class OnLoadFactory {
                 Entity timer = world.createEntity();
                 timer.edit().add(new PositionComponent(player.getComponent(CollisionBoundComponent.class).getCenterX(), player.getComponent(CollisionBoundComponent.class).getCenterY()));
                 timer.edit().add(new FollowPositionComponent(
-                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position,
+                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position,
                         player.getComponent(CollisionBoundComponent.class).bound.width / 2, Measure.units(10)));
 
                 timer.edit().add(new FadeComponent(false, 0.5f, true));

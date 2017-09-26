@@ -142,8 +142,6 @@ public class DeathScreenWorld {
 
                 int currentPosition = gameCreator.getPosition();
 
-                System.out.println("currentpostion is " + currentPosition);
-
                 for(int i = 0; i < gameCreator.gameLevels.size; i++){
 
 

@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -37,7 +38,7 @@ import java.util.Comparator;
 public class RenderingSystem extends EntitySystem {
 
     private ComponentMapper<PositionComponent> pm;
-    private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent> bm;
+    private ComponentMapper<BlinkOnHitComponent> bm;
     private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent> bulletm;
     private ComponentMapper<TextureRegionComponent> trm;
     private ComponentMapper<com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionBatchComponent> trbm;
@@ -108,18 +109,8 @@ public class RenderingSystem extends EntitySystem {
 
     @Override
     protected void processSystem() {
-
-      //  int count = 0;
-
-
-     /*   System.out.println("Gdx :" + Gdx.graphics.getWidth());
-
-        System.out.println(gameport.getScreenWidth());
-        System.out.println(gameport.getCamera().viewportWidth);
-*/
         for (int i = 0; orderedEntities.size() > i; i++) {
             if(process(orderedEntities.get(i))){
-                // count++;
             };
         }
 
@@ -133,7 +124,7 @@ public class RenderingSystem extends EntitySystem {
         boolean shaderOn = false;
 
         if(bm.has(e)){
-            shaderOn = bm.get(e).isHit && bm.get(e).blinktype == com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent.BLINKTYPE.CONSTANT;
+            shaderOn = bm.get(e).isHit && bm.get(e).blinktype == BlinkOnHitComponent.BLINKTYPE.CONSTANT;
         }
 
         if(shaderOn){

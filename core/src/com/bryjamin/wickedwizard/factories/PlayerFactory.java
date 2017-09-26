@@ -225,10 +225,10 @@ public class PlayerFactory extends AbstractFactory {
      * @param isLeft - Whether or not the wing is a left or right wing
      * @return - Returns a bag of components used to create an Entity
      */
-    public ComponentBag wings(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc, boolean isLeft){
+    public ComponentBag wings(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, PositionComponent pc, boolean isLeft){
 
         ComponentBag bag = new ComponentBag();
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(pc.getX(), pc.getY()));
+        bag.add(new PositionComponent(pc.getX(), pc.getY()));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(pc.position, isLeft ? Measure.units(4) : -Measure.units(4), -Measure.units(1)));
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(0);
@@ -283,7 +283,7 @@ public class PlayerFactory extends AbstractFactory {
 
 
         ComponentBag bag = new ComponentBag();
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
+        bag.add(new PositionComponent(x, y));
 
 
 
@@ -325,7 +325,7 @@ public class PlayerFactory extends AbstractFactory {
                 if(r != null && r.contains(targetX, targetY)) {
 
                     CollisionBoundComponent cbc = entity.getComponent(CollisionBoundComponent.class);
-                    com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = entity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+                    PositionComponent pc = entity.getComponent(PositionComponent.class);
                     cbc.bound.setCenter(r.getX() + r.getWidth() / 2, r.getY() + r.getHeight() / 2);
                     pc.position.set(cbc.bound.x, cbc.bound.y, pc.position.z);
 

@@ -9,6 +9,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -42,7 +43,7 @@ public class EnemyFactory extends AbstractFactory {
     private ComponentBag enemyBag(ComponentBag fillbag, float x, float y, float health, boolean loot, boolean deathAction){
         fillbag.add(new PositionComponent(x, y));
         fillbag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
-        fillbag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
+        fillbag.add(new BlinkOnHitComponent());
         fillbag.add(new EnemyComponent());
         if(loot) fillbag.add(new LootComponent());
         if(deathAction)  fillbag.add(new OnDeathActionComponent(defaultDeathAction()));

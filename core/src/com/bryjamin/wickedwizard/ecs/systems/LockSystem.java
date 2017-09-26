@@ -47,7 +47,6 @@ public class LockSystem extends EntitySystem {
 
 
     public void lockDoors(){
-        //System.out.println("lock door?");
         for(Entity e : this.getEntities()){
             LockComponent lc = lm.get(e);
             if(!lc.isLocked()) {

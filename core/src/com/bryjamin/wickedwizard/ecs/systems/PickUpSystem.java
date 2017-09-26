@@ -66,7 +66,7 @@ public class PickUpSystem extends EntityProcessingSystem {
 
         Entity itemHoverAffect = world.createEntity();
         itemHoverAffect.edit().add(new PositionComponent());
-        itemHoverAffect.edit().add(new FollowPositionComponent(player.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position,
+        itemHoverAffect.edit().add(new FollowPositionComponent(player.getComponent(PositionComponent.class).position,
                 0, pBound.bound.getHeight() + pBound.bound.getHeight() / 4));
         itemHoverAffect.edit().add(new TextureRegionComponent(world.getSystem(RenderingSystem.class).atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
                 Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR));

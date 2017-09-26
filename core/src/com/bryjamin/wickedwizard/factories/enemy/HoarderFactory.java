@@ -25,6 +25,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
@@ -79,7 +80,7 @@ public class HoarderFactory extends EnemyFactory {
 
         bag.add(new PositionComponent(x, y));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
+        bag.add(new BlinkOnHitComponent());
         bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix));
 
 

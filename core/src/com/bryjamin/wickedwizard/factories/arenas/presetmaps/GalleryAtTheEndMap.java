@@ -203,6 +203,10 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 arena.setWidth(MainGame.GAME_WIDTH * 2);
 
 
+                ComponentBag background = arena.createArenaBag();
+
+
+
                 ComponentBag setUp = arena.createArenaBag();
                 setUp.add(new DuringRoomLoadActionComponent(new Action() {
                     @Override

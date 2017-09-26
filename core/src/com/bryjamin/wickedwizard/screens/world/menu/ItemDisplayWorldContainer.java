@@ -150,7 +150,6 @@ public class ItemDisplayWorldContainer extends AbstractGestureDectector implemen
 
             allItems.removeAll(copyArray, true);
 
-            System.out.println(allItems.size);
 
         }
 

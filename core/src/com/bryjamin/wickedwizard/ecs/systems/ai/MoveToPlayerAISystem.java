@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 
@@ -18,7 +19,7 @@ import com.bryjamin.wickedwizard.utils.BulletMath;
  */
 public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
     ComponentMapper<AccelerantComponent> am;
@@ -26,7 +27,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public MoveToPlayerAISystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class,
+        super(Aspect.all(PositionComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class,
@@ -39,7 +40,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
         com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
 
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
+        PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
         AccelerantComponent ac = am.get(e);

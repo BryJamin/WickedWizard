@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector3;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 
 /**
@@ -18,7 +19,7 @@ import com.bryjamin.wickedwizard.utils.BulletMath;
 
 public class MoveToSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent> mtpm;
@@ -27,7 +28,7 @@ public class MoveToSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public MoveToSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class,
+        super(Aspect.all(PositionComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class,
@@ -40,7 +41,7 @@ public class MoveToSystem extends EntityProcessingSystem {
 
         Vector3 targetPosition = mtpm.get(e).moveToPosition;
 
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
+        PositionComponent pc = pm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
         com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
         AccelerantComponent ac = am.get(e);

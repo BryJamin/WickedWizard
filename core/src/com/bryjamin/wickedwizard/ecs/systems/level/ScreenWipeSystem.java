@@ -12,6 +12,7 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowCameraSystem;
@@ -173,7 +174,7 @@ public class ScreenWipeSystem extends BaseSystem {
         if(transition != Transition.NONE) {
 
             transitionEntity = world.createEntity();
-            transitionEntity.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent());
+            transitionEntity.edit().add(new PositionComponent());
             transitionEntity.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent());
             transitionEntity.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
 

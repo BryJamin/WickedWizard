@@ -1,7 +1,9 @@
 package com.bryjamin.wickedwizard.factories.enemy.bosses;
 
+import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -11,15 +13,21 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
@@ -159,7 +167,7 @@ public class BossAmalgama extends BossFactory {
 
         cac.add(bouceBackTaskConditionPair(0));
 
-        cac.add(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
+        cac.add(new Condition() {
 
             private Vector3 startPosition = new Vector3(x, y, 0);
 
@@ -169,7 +177,7 @@ public class BossAmalgama extends BossFactory {
             @Override
             public boolean condition(World world, Entity entity) {
 
-                com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent positionComponent = entity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+                PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
 
 
                 float distance = startPosition.dst(positionComponent.position);
@@ -234,9 +242,11 @@ public class BossAmalgama extends BossFactory {
     }
 
 
-
-
-
+    /**
+     * This is for if a Player Touches the boss, They are pushed back
+     * @param pushAngleInDegrees
+     * @return
+     */
     public Pair<Action, Condition> bouceBackTaskConditionPair(final float pushAngleInDegrees){
         return new Pair<Action, Condition>(
                 new Action() {
@@ -271,6 +281,7 @@ public class BossAmalgama extends BossFactory {
                     .bulletOffsets(0, Measure.units(5f), -Measure.units(5f), Measure.units(10f), -Measure.units(10f))
                     .fireRate(0.25f)
                     .intangible(true)
+                    .expireRange(Measure.units(200f))
                     .build();
             this.isLower = isLower;
         }
@@ -310,7 +321,7 @@ public class BossAmalgama extends BossFactory {
                     for(int j = 0; j < 4; j++) {
                         for (int i = 0; i < 9; i++) {
                             createBlock(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class),
-                                    e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX() + e.getComponent(CollisionBoundComponent.class).bound.getWidth() + (wallDistance + j * Measure.units(5f)) , Measure.units(10f) + Measure.units(i * 5), 180, new Color(0, 0, 0, 0));
+                                    e.getComponent(PositionComponent.class).getX() + e.getComponent(CollisionBoundComponent.class).bound.getWidth() + (wallDistance + j * Measure.units(5f)) , Measure.units(10f) + Measure.units(i * 5), 180, new Color(0, 0, 0, 0));
                         }
                     }
                 }
@@ -330,35 +341,34 @@ public class BossAmalgama extends BossFactory {
             float height = Measure.units(5f);
 
             Entity e = world.createEntity();
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x,y));
+            e.edit().add(new PositionComponent(x,y));
             e.edit().add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-            //e.edit().add(new EnemyComponent());
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent());
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
+            e.edit().add(new OnlyPlayerBulletsComponent());
+            e.edit().add(new BlinkOnHitComponent());
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(1));
             e.edit().add(new FadeComponent(true, 0.5f, false));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent(gibletBuilder.build()));
-
-            com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent c = new com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent();
-            pc.children.add(c);
-            e.edit().add(c);
+            e.edit().add(new OnDeathActionComponent(gibletBuilder.build()));
 
             TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), 0, 0,  Measure.units(5), Measure.units(5), TextureRegionComponent.PLAYER_LAYER_FAR);
             trc.DEFAULT = color;
             trc.color = color;
             e.edit().add(trc);
+           //e.edit().add(new ChildComponent(pc));
 
 
             ConditionalActionComponent cac = new ConditionalActionComponent();
             cac.add(bouceBackTaskConditionPair(pushAngle));
-            cac.add(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
+            cac.add(new Condition() {
                 @Override
                 public boolean condition(World world, Entity entity) {
-                    Entity parent = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindChildSystem.class).findParentEntity(entity.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent.class));
 
+                    IntBag intbag = world.getAspectSubscriptionManager().get(Aspect.all(BossComponent.class, CollisionBoundComponent.class)).getEntities();
 
-                    if (parent != null) {
-                        return parent.getComponent(CollisionBoundComponent.class).bound.overlaps(entity.getComponent(CollisionBoundComponent.class).bound);
+                    for(int i = 0; i < intbag.size(); i++){
+                        Entity boss = world.getEntity(intbag.get(i));
+                        if(boss.getComponent(CollisionBoundComponent.class).bound.overlaps(entity.getComponent(CollisionBoundComponent.class).bound)){
+                            return true;
+                        };
                     }
 
                     return false;
@@ -366,7 +376,7 @@ public class BossAmalgama extends BossFactory {
             }, new Action() {
                 @Override
                 public void performAction(World world, Entity e) {
-                    world.getSystem(com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem.class).kill(e);
+                    e.getComponent(HealthComponent.class).applyDamage(10000);
                 }
             });
 
@@ -431,15 +441,15 @@ public class BossAmalgama extends BossFactory {
                 public void performAction(World world, Entity e) {
 
                     if(switchbool) {
-                        sideLasers.createBeam(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),
-                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + Measure.units(12.5f));
-                        sideLasers.createBeam(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),
-                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + Measure.units(47.5f));
+                        sideLasers.createBeam(world, e.getComponent(PositionComponent.class).getX(),
+                                e.getComponent(PositionComponent.class).getY() + Measure.units(12.5f));
+                        sideLasers.createBeam(world, e.getComponent(PositionComponent.class).getX(),
+                                e.getComponent(PositionComponent.class).getY() + Measure.units(47.5f));
                         switchbool = !switchbool;
                     } else {
 
-                        centerLasers.createBeam(world, e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),
-                                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY() + Measure.units(22.5f));
+                        centerLasers.createBeam(world, e.getComponent(PositionComponent.class).getX(),
+                                e.getComponent(PositionComponent.class).getY() + Measure.units(22.5f));
                         switchbool = !switchbool;
                     }
                 }
@@ -463,7 +473,8 @@ public class BossAmalgama extends BossFactory {
         public BulletSpreadPhase(){
             spreadWeapon = new com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol.PistolBuilder(assetManager)
                     .enemy(true)
-                    .color(ColorResource.GHOST_BULLET_COLOR)
+                    .color(new Color(ColorResource.GHOST_BULLET_COLOR))
+                    .expireRange(Measure.units(200f))
                     .intangible(true)
                     .angles(80, 60, 40, 20, 0, -20, -40, -60, -80)
                     .shotScale(2.5f)

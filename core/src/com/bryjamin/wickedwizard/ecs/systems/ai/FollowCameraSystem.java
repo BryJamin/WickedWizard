@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
+
 /**
  * Created by BB on 19/09/2017.
  */

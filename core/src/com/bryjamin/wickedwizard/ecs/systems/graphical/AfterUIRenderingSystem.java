@@ -197,10 +197,6 @@ public class AfterUIRenderingSystem extends EntitySystem {
                 CollisionBoundComponent cbc = cbm.get(e);
                 glyphLayout.setText(bmf, trfc.text);
 
-/*
-                System.out.println("layout height" + glyphLayout.height);
-                System.out.println("Bound height" + cbc.bound.height);*/
-
                 bmf.draw(batch, glyphLayout,
                         pc.getX() + CenterMath.offsetX(cbc.bound.getWidth(), glyphLayout.width) + trfc.offsetX,
                         pc.getY() + glyphLayout.height + CenterMath.offsetY(cbc.bound.getHeight(), glyphLayout.height) + trfc.offsetY);
