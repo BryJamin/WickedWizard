@@ -4,6 +4,13 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -12,31 +19,31 @@ import com.bryjamin.wickedwizard.utils.Measure;
 
 public class FrictionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent> mtm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
+    ComponentMapper<PlayerComponent> pm;
+    ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<MoveToComponent> mtm;
+    ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.PickUpComponent> pickUpm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent> glidem;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gravm;
+    ComponentMapper<GlideComponent> glidem;
+    ComponentMapper<GravityComponent> gravm;
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent> frictionMapper;
+    ComponentMapper<FrictionComponent> frictionMapper;
 
 
     @SuppressWarnings("unchecked")
     public FrictionSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class));
+        super(Aspect.all(FrictionComponent.class, VelocityComponent.class));
     }
 
     @Override
     protected void process(Entity e) {
 
         //PositionComponent pc = pm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
+        VelocityComponent vc = vm.get(e);
 
         if(canApplyFriction(e) || pm.has(e)) {
             //VelocityComponent vc = vm.get(e);
-            com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent fc = frictionMapper.get(e);
+            FrictionComponent fc = frictionMapper.get(e);
 
 
             float friction = Measure.units(7.5f);

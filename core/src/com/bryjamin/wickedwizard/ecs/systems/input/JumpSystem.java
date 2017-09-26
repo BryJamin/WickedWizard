@@ -5,6 +5,7 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent;
 import com.bryjamin.wickedwizard.utils.collider.Collider;
 
 /**
@@ -13,18 +14,18 @@ import com.bryjamin.wickedwizard.utils.collider.Collider;
 
 public class JumpSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent> jm;
+    ComponentMapper<JumpComponent> jm;
     ComponentMapper<CollisionBoundComponent> cbm;
 
     @SuppressWarnings("unchecked")
     public JumpSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent.class, CollisionBoundComponent.class));
+        super(Aspect.all(JumpComponent.class, CollisionBoundComponent.class));
     }
 
     @Override
     protected void process(Entity e) {
 
-        com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent jc = jm.get(e);
+        JumpComponent jc = jm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
 
         if(cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false)){

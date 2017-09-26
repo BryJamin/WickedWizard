@@ -5,14 +5,14 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.systems.EntityProcessingSystem;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
+import com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 
 import static com.bryjamin.wickedwizard.utils.collider.Collider.Collision.BOTTOM;
-import static com.bryjamin.wickedwizard.utils.collider.Collider.Collision.TOP;
 import static com.bryjamin.wickedwizard.utils.collider.Collider.Collision.LEFT;
 import static com.bryjamin.wickedwizard.utils.collider.Collider.Collision.RIGHT;
+import static com.bryjamin.wickedwizard.utils.collider.Collider.Collision.TOP;
 
 /**
  * Created by Home on 10/06/2017.

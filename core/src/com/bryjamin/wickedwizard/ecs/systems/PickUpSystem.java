@@ -8,6 +8,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -27,7 +28,7 @@ public class PickUpSystem extends EntityProcessingSystem {
     ComponentMapper<CollisionBoundComponent> cbm;
 
     public PickUpSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, CollisionBoundComponent.class));
+        super(Aspect.all(PlayerComponent.class, CollisionBoundComponent.class));
     }
 
     @Override

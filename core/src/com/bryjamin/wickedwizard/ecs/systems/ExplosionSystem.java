@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 
+
 /**
  * Created by Home on 23/05/2017.
  */

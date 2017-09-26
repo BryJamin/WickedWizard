@@ -9,6 +9,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.MinionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindChildSystem;
@@ -32,7 +33,7 @@ public class OnDeathSystem  extends BaseSystem {
     ComponentMapper<PositionComponent> pm;
     ComponentMapper<ParentComponent> parentm;
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent> playerm;
+    ComponentMapper<PlayerComponent> playerm;
     ComponentMapper<ChildComponent> cm;
 
     ComponentMapper<MinionComponent> mm;

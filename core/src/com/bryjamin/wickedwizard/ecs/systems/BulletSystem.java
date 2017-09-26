@@ -9,6 +9,7 @@ import com.artemis.utils.IntBag;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnHitActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 
@@ -55,14 +56,14 @@ public class BulletSystem extends EntityProcessingSystem {
             }
 
         } else if(fm.has(e)){
-            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class).one(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class) );
+            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(PlayerComponent.class).one(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class) );
             IntBag entityIds = subscription.getEntities();
             bulletScan(e, entityIds);
 
         }
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
-                CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class));
+                CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(EnemyComponent.class, PlayerComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class));
         IntBag entityIds = subscription.getEntities();
         bulletScan(e, entityIds);
 

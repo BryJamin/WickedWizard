@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
@@ -241,8 +242,8 @@ public class RenderingSystem extends EntitySystem {
 
     public float rendDirection(Entity e){
 
-        if(world.getMapper(com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.class).has(e)) {
-            if(world.getMapper(com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.class).get(e).getDirection() == Direction.LEFT){
+        if(world.getMapper(DirectionalComponent.class).has(e)) {
+            if(world.getMapper(DirectionalComponent.class).get(e).getDirection() == Direction.LEFT){
                 return -1;
             };
         }

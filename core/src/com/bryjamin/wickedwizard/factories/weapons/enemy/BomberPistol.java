@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -112,7 +113,7 @@ public class BomberPistol implements Weapon{
                 bomb.edit().add(c);
             }
 
-            bomb.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(BulletMath.velocityX(shotSpeedX, angleOfTravel),
+            bomb.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeedX, angleOfTravel),
                     BulletMath.velocityY(shotSpeedY, angleOfTravel)));
             //bullet.edit().remove(CollisionBoundComponent.class);
         }

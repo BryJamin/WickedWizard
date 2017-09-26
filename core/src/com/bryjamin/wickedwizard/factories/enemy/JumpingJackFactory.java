@@ -13,6 +13,8 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -68,7 +70,7 @@ public class JumpingJackFactory extends EnemyFactory{
                 width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? speed : -speed, 0));
+        bag.add(new VelocityComponent(startsRight ? speed : -speed, 0));
 
 
         PhaseComponent phaseComponent = new PhaseComponent();
@@ -89,14 +91,14 @@ public class JumpingJackFactory extends EnemyFactory{
         onCollisionActionComponent.left = new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = speed;
+                e.getComponent(VelocityComponent.class).velocity.x = speed;
             }
         };
 
         onCollisionActionComponent.right = new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = -speed;
+                e.getComponent(VelocityComponent.class).velocity.x = -speed;
             }
         };
 
@@ -115,10 +117,10 @@ public class JumpingJackFactory extends EnemyFactory{
 
         @Override
         public void performAction(World world, Entity e) {
-            com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+            VelocityComponent vc = e.getComponent(VelocityComponent.class);
             vc.velocity.y = jumpSpeed;
             vc.velocity.x = 0;
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+            e.edit().add(new GravityComponent());
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent(0));
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new JumpingJackWeapon(assetManager), 0.5f));
 
@@ -129,8 +131,8 @@ public class JumpingJackFactory extends EnemyFactory{
             e.edit().add(new ActionAfterTimeComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
                 @Override
                 public void performAction(World world, Entity e) {
-                    e.edit().remove(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
-                    com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                    e.edit().remove(new GravityComponent());
+                    VelocityComponent vc = e.getComponent(VelocityComponent.class);
                     vc.velocity.y = 0;
                     vc.velocity.x = startsRight ? vc.velocity.x = -speed : speed;
                 }
@@ -156,17 +158,17 @@ public class JumpingJackFactory extends EnemyFactory{
         @Override
         public void performAction(World world, Entity e) {
 
-            com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+            VelocityComponent vc = e.getComponent(VelocityComponent.class);
             vc.velocity.x = 0;
             vc.velocity.y = tiredjumpSpeed;
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+            e.edit().add(new GravityComponent());
             e.getComponent(AnimationStateComponent.class).setDefaultState(JUMPINGJACKTIREDANIMATION);
 
         }
 
         @Override
         public void cleanUpAction(World world, Entity e) {
-            e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class);
+            e.edit().remove(GravityComponent.class);
         }
     }
 

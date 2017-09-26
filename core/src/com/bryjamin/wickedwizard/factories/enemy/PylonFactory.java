@@ -18,6 +18,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -44,7 +45,7 @@ public class PylonFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(EnemyComponent.class, bag);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 

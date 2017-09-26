@@ -16,7 +16,9 @@ import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -233,8 +235,8 @@ public class BossAjir extends BossFactory {
         @Override
         public void performAction(World world, Entity e) {
 
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(random.nextBoolean() ? speed : -speed, 0));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+            e.edit().add(new VelocityComponent(random.nextBoolean() ? speed : -speed, 0));
+            e.edit().add(new BounceComponent());
 
             e.edit().add(new ActionAfterTimeComponent(new Action() {
 
@@ -306,8 +308,8 @@ public class BossAjir extends BossFactory {
         @Override
         public void cleanUpAction(World world, Entity e) {
             e.edit().remove(ActionAfterTimeComponent.class);
-            e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class);
-            e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+            e.edit().remove(BounceComponent.class);
+            e.edit().remove(VelocityComponent.class);
         }
 
 

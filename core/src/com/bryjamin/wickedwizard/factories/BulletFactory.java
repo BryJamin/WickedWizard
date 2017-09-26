@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -62,7 +63,7 @@ public class BulletFactory extends AbstractFactory {
         bag.add(new PositionComponent(cX, cY));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent());
         //bag.add(new ExpireComponent(10f)); //TODO Probably doesn't have to be this long (or delete bullets if they leave the room bounds)
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent(new Rectangle
+        bag.add(new CollisionBoundComponent(new Rectangle
                 (cX,cY, width, height)));
 
         TextureRegionComponent trc = new TextureRegionComponent(textureRegion, width, height, TextureRegionComponent.PLAYER_LAYER_FAR);

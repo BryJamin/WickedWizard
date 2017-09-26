@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -54,7 +55,7 @@ public class AmoebaFactory extends EnemyFactory {
         this.defaultEnemyBagNoLoot(bag, x, y, 1);
 
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+        bag.add(new VelocityComponent());
         bag.add(new MoveToPlayerComponent());
         bag.add(new AccelerantComponent(speed, speed));
         bag.add(new ExploderComponent());

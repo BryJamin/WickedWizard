@@ -6,8 +6,10 @@ import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.BulletFactory;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 
 /**
  * Created by Home on 11/06/2017.
@@ -41,8 +43,8 @@ public class CircleBlast implements Weapon {
             double angleOfTravel = angleInRadians + Math.toRadians(i);
 
             Bag<Component> bag = bf.basicEnemyBulletBag(x, y, size);
-            bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent((float) (speed * Math.cos(angleOfTravel)), (float) (speed * Math.sin(angleOfTravel))));
-            com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;
+            bag.add(new VelocityComponent((float) (speed * Math.cos(angleOfTravel)), (float) (speed * Math.sin(angleOfTravel))));
+            BagSearch.getObjectOfTypeClass(TextureRegionComponent.class, bag).layer = TextureRegionComponent.ENEMY_LAYER_FAR;
 
             Entity bullet = world.createEntity();
             for(Component c : bag){

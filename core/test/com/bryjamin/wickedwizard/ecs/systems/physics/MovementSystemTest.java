@@ -33,7 +33,7 @@ public class MovementSystemTest extends GameTest {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(0,0));
-        e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(100, 0));
+        e.edit().add(new VelocityComponent(100, 0));
 
         world.process();
 

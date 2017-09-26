@@ -25,6 +25,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
@@ -122,7 +123,7 @@ public class BossAmalgama extends BossFactory {
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, bodyWidth, bodyHeight), true));
 
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(speed, 0));
+        bag.add(new VelocityComponent(speed, 0));
 
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent());
@@ -186,7 +187,7 @@ public class BossAmalgama extends BossFactory {
                 startPosition.set(positionComponent.position);
 
                 //TODO A tiny bit not clean maybe add option to remove conditions upon fufillment
-                if(distanceTravelled > enrageDistance && entity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x != 0){
+                if(distanceTravelled > enrageDistance && entity.getComponent(VelocityComponent.class).velocity.x != 0){
                     return true;
                 }
 
@@ -196,7 +197,7 @@ public class BossAmalgama extends BossFactory {
 
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = 0;
+                e.getComponent(VelocityComponent.class).velocity.x = 0;
 
                 e.getComponent(PhaseComponent.class).getCurrentPhase().cleanUpAction(world , e);
                 e.edit().remove(PhaseComponent.class);
@@ -252,7 +253,7 @@ public class BossAmalgama extends BossFactory {
                 new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
                         vc.velocity.x = BulletMath.velocityX(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
                         vc.velocity.y = BulletMath.velocityY(Measure.units(50f), Math.toRadians(pushAngleInDegrees));
                     }

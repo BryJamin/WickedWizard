@@ -12,8 +12,10 @@ import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -85,8 +87,8 @@ public class TurretFactory extends EnemyFactory {
     public Bag<Component> movingSentry(float x, float y, boolean startsRight){
 
         Bag<Component> bag = fixedLockOnTurret(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
+        bag.add(new BounceComponent());
 
         return bag;
     }
@@ -142,8 +144,8 @@ public class TurretFactory extends EnemyFactory {
 
     public Bag<Component> movingHorizontalMultiSentry(float x, float y, boolean startsRight){
         ComponentBag bag = fixedMultiSentry(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
+        bag.add(new BounceComponent());
 
         return bag;
     }
@@ -151,8 +153,8 @@ public class TurretFactory extends EnemyFactory {
     public Bag<Component> movingVerticalMultiSentry(float x, float y, boolean startsUp){
 
         ComponentBag bag = fixedMultiSentry(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, startsUp ? turretSpeed : -turretSpeed));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(0, startsUp ? turretSpeed : -turretSpeed));
+        bag.add(new BounceComponent());
 
         return bag;
     }
@@ -188,8 +190,8 @@ public class TurretFactory extends EnemyFactory {
 
                 //TODO maybe improve this? should bp,bs just drop vertically and not be aimed?
 
-                newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = BulletMath.velocityY(Measure.units(75f), angleInRadians);
-                newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = BulletMath.velocityX(Measure.units(75f), angleInRadians);
+                newEntity.getComponent(VelocityComponent.class).velocity.y = BulletMath.velocityY(Measure.units(75f), angleInRadians);
+                newEntity.getComponent(VelocityComponent.class).velocity.x = BulletMath.velocityX(Measure.units(75f), angleInRadians);
             }
 
             @Override
@@ -210,16 +212,16 @@ public class TurretFactory extends EnemyFactory {
     public Bag<Component> movingFlyByBombSentry(float x, float y, boolean startsRight){
 
         ComponentBag bag = fixedFlyByBombSentry(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? turretSpeed : -turretSpeed, 0));
+        bag.add(new BounceComponent());
 
         return bag;
     }
 
     public Bag<Component> movingVerticalFlyByBombSentry(float x, float y, boolean startsUp){
         ComponentBag bag = fixedFlyByBombSentry(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, startsUp ? turretSpeed : -turretSpeed));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(0, startsUp ? turretSpeed : -turretSpeed));
+        bag.add(new BounceComponent());
 
         return bag;
     }
@@ -259,8 +261,8 @@ public class TurretFactory extends EnemyFactory {
 
     public ComponentBag movingPentaSentry(float x, float y, boolean startsRight, boolean startsUp){
         ComponentBag bag = fixedPentaSentry(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? upgradeSpeed : -upgradeSpeed, startsUp ? upgradeSpeed : -upgradeSpeed));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? upgradeSpeed : -upgradeSpeed, startsUp ? upgradeSpeed : -upgradeSpeed));
+        bag.add(new BounceComponent());
         return bag;
     }
 
@@ -298,8 +300,8 @@ public class TurretFactory extends EnemyFactory {
                     fc.airFriction = false;
                     newEntity.edit().add(fc);
                     //TODO maybe improve this? should bp,bs just drop vertically and not be aimed?
-                    newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = BulletMath.velocityY(Measure.units(75f), angleInRadians + Math.toRadians(i));
-                    newEntity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = BulletMath.velocityX(Measure.units(75f), angleInRadians + Math.toRadians(i));
+                    newEntity.getComponent(VelocityComponent.class).velocity.y = BulletMath.velocityY(Measure.units(75f), angleInRadians + Math.toRadians(i));
+                    newEntity.getComponent(VelocityComponent.class).velocity.x = BulletMath.velocityX(Measure.units(75f), angleInRadians + Math.toRadians(i));
 
                 }
             }
@@ -320,8 +322,8 @@ public class TurretFactory extends EnemyFactory {
 
     public ComponentBag movingFlyByDoubleBombSentry(float x, float y, boolean startsRight, boolean startsUp){
         ComponentBag bag = fixedFlyByDoubleBombSentry(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? upgradeSpeed : -upgradeSpeed, startsUp ? upgradeSpeed : -upgradeSpeed));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? upgradeSpeed : -upgradeSpeed, startsUp ? upgradeSpeed : -upgradeSpeed));
+        bag.add(new BounceComponent());
         return bag;
     }
 

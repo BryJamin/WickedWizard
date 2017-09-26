@@ -17,6 +17,8 @@ import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -92,8 +94,8 @@ public class BossAdoj extends BossFactory {
         animMap.put(AnimationStateComponent.FIRING, new Animation<TextureRegion>(0.025f / 1f, atlas.findRegions(TextureStrings.ADOJ_FIRING)));
         bag.add(new AnimationComponent(animMap));
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+        bag.add(new VelocityComponent());
+        bag.add(new GravityComponent());
 
         PhaseComponent pc = new PhaseComponent();
         OnTargetXCondition onTargetXCondition = new OnTargetXCondition();

@@ -11,7 +11,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.JumpComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.PlatformSystem;
@@ -86,7 +88,7 @@ public class PlayerInput extends InputAdapter {
 
         if (touchInput.y <= movementArea.y + movementArea.getHeight()) {
             movementInputPoll = pointer;
-            world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = false;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = false;
         } else if(firingInputPoll == null){
             firingInputPoll = pointer;
         }
@@ -143,7 +145,7 @@ public class PlayerInput extends InputAdapter {
 
                     if(!grapple) {
                         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-                        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
                         JumpComponent jc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
 
                         if (input.y > cbc.getCenterY()) {

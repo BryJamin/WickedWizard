@@ -15,11 +15,14 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -58,9 +61,9 @@ public class BlobFactory extends EnemyFactory {
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? speed : -speed, 0));
+        bag.add(new VelocityComponent(startsRight ? speed : -speed, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+        bag.add(new GravityComponent());
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
@@ -92,14 +95,14 @@ public class BlobFactory extends EnemyFactory {
 
     public Bag<Component> smallblobBag(float x, float y,  boolean startsRight){
         ComponentBag bag = blob(x,y,0.5f, Measure.units(30f), 2, startsRight, ColorResource.BLOB_GREEN);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.ExploderComponent());
         return bag;
     }
 
     public ComponentBag angrySmallBag(float x, float y, boolean startsRight){
         ComponentBag bag = blob(x,y,0.5f, Measure.units(45f), 3, startsRight, ColorResource.BLOB_RED);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(LootComponent.class, bag);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.ExploderComponent());
         return bag;
     }
@@ -110,14 +113,14 @@ public class BlobFactory extends EnemyFactory {
         onCollisionActionComponent.left = new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = speed;
+                e.getComponent(VelocityComponent.class).velocity.x = speed;
             }
         };
 
         onCollisionActionComponent.right = new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = -speed;
+                e.getComponent(VelocityComponent.class).velocity.x = -speed;
             }
         };
 
@@ -132,9 +135,9 @@ public class BlobFactory extends EnemyFactory {
 
         Bag<Component> bag = new Bag<Component>();
         bag.add(new PositionComponent(x,y));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, 0));
+        bag.add(new VelocityComponent(0, 0));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height), true));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+        bag.add(new GravityComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(1000));
         bag.add(new BlinkOnHitComponent());

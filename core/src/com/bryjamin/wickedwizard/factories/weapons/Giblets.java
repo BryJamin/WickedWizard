@@ -11,8 +11,10 @@ import com.bryjamin.wickedwizard.assets.Mix;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
@@ -143,7 +145,7 @@ public class Giblets extends AbstractFactory implements Action {
 
     }
 
-    public ComponentBag createGiblet(float x, float y, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc, float expiryTime, float size, Color color){
+    public ComponentBag createGiblet(float x, float y, VelocityComponent vc, float expiryTime, float size, Color color){
 
         ComponentBag bag = new ComponentBag();
 
@@ -155,7 +157,7 @@ public class Giblets extends AbstractFactory implements Action {
         bag.add(vc);
 
         if(!intangible) {
-            bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+            bag.add(new BounceComponent());
             bag.add(new CollisionBoundComponent(new Rectangle(cx, cy, size, size)));
         }
 
@@ -186,8 +188,8 @@ public class Giblets extends AbstractFactory implements Action {
             float angle = random.nextFloat() * 360;
             float vx = BulletMath.velocityX(speed, Math.toRadians(angle));
             float vy = BulletMath.velocityY(speed, Math.toRadians(angle));
-            bags.add(createGiblet(x, y, new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(vx, vy), expiryTime, size, colors[random.nextInt(colors.length)]));
-            bags.add(createGiblet(x, y, new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(-vx, -vy), expiryTime, size, colors[random.nextInt(colors.length)]));
+            bags.add(createGiblet(x, y, new VelocityComponent(vx, vy), expiryTime, size, colors[random.nextInt(colors.length)]));
+            bags.add(createGiblet(x, y, new VelocityComponent(-vx, -vy), expiryTime, size, colors[random.nextInt(colors.length)]));
         }
 
         return bags;

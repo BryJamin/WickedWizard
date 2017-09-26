@@ -502,7 +502,7 @@ public class TutorialFactory extends ArenaShellFactory {
         for(int i = 0; i < 5; i ++) {
             bag = decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50 + (i * 30)));
             arena.addEntity(bag);
-            arena.addEntity(createTutorialHighlight(com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
+            arena.addEntity(createTutorialHighlight(BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, bag).bound));
         }
 
         return arena;

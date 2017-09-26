@@ -24,6 +24,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -111,10 +112,10 @@ public class BossTheEnd extends BossFactory {
         y = y - mainBodyHeight / 2;
 
         ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, mainBodyHealth);
-        com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent.class, bag);
+        BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent.class, bag);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent());
 

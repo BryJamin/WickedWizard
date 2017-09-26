@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -80,7 +81,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(Viewport gameport) {
-        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, AnimationStateComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
         this.gameport = gameport;
         movementArea = new Rectangle(gameport.getCamera().position.x - gameport.getWorldWidth() / 2,
                 gameport.getCamera().position.y - gameport.getWorldHeight() / 2,
@@ -117,7 +118,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
 
         PositionComponent pc = pm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
+        VelocityComponent vc = vm.get(e);
         AccelerantComponent ac = am.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = wm.get(e);
@@ -125,7 +126,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         AnimationStateComponent asc = asm.get(e);
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent gc = gm.get(e);
+        GravityComponent gc = gm.get(e);
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
@@ -299,8 +300,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
             turnOffGlide();
 
-            world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = 0;
-            world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = 0;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.y = 0;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.x = 0;
 
         }
 
@@ -316,7 +317,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
         MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent velocityComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+        VelocityComponent velocityComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
         JumpComponent jumpComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
 
         if(mtc.hasTarget()){

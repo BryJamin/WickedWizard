@@ -5,9 +5,14 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.BulletMath;
+
+
 
 /**
  * Created by BB on 06/03/2017.
@@ -20,17 +25,17 @@ import com.bryjamin.wickedwizard.utils.BulletMath;
 public class MoveToPlayerAISystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
+    ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<AccelerantComponent> am;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gm;
+    ComponentMapper<GravityComponent> gm;
 
     @SuppressWarnings("unchecked")
     public MoveToPlayerAISystem() {
         super(Aspect.all(PositionComponent.class,
-                com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class,
+                VelocityComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent.class,
-                com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class,
+                CollisionBoundComponent.class,
                 AccelerantComponent.class));
     }
 
@@ -38,11 +43,11 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
+        CollisionBoundComponent pBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
         PositionComponent pc = pm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
+        VelocityComponent vc = vm.get(e);
+        CollisionBoundComponent cbc = cbm.get(e);
         AccelerantComponent ac = am.get(e);
 
         //TODO moveToPlayer method does not account for enemies with slow accelerations (they no longer slide) Update: Probably won't factor this in
@@ -77,7 +82,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
      * @param vc - The VelocityComponent of the entity
      * @param ac - The AccelerantComponent of the entity
      */
-    private void moveToPlayerWithGravityComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc, com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerCbc, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc, AccelerantComponent ac){
+    private void moveToPlayerWithGravityComponent(CollisionBoundComponent cbc, CollisionBoundComponent playerCbc, VelocityComponent vc, AccelerantComponent ac){
         if (cbc.getCenterX() > playerCbc.getCenterX()) {
             vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;
             if(cbc.getCenterX() - vc.velocity.x * world.delta < playerCbc.getCenterX()) vc.velocity.x = 0;
@@ -97,7 +102,7 @@ public class MoveToPlayerAISystem extends EntityProcessingSystem {
      * @param vc - The VelocityComponent of the entity
      * @param ac - The AccelerantComponent of the entity
      */
-    private void moveToPlayer(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc, com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerCbc, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc, AccelerantComponent ac){
+    private void moveToPlayer(CollisionBoundComponent cbc, CollisionBoundComponent playerCbc, VelocityComponent vc, AccelerantComponent ac){
 
 
         double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(), playerCbc.getCenterX(), playerCbc.getCenterY());

@@ -4,7 +4,12 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+
 
 /**
  * Created by Home on 11/03/2017.
@@ -12,16 +17,16 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 public class BounceCollisionSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent> playerm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent> bouncecm;
+    ComponentMapper<PlayerComponent> playerm;
+    ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<CollisionBoundComponent> cbm;
+    ComponentMapper<BounceComponent> bouncecm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.WallComponent> wm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent> bm;
 
     @SuppressWarnings("unchecked")
     public BounceCollisionSystem() {
-        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class, BounceComponent.class));
     }
 
 
@@ -34,9 +39,9 @@ public class BounceCollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent bc = bouncecm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
+        CollisionBoundComponent cbc = cbm.get(e);
+        BounceComponent bc = bouncecm.get(e);
+        VelocityComponent vc = vm.get(e);
         PositionComponent pc = pm.get(e);
 
 

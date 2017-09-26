@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -50,7 +53,7 @@ public class JigFactory extends EnemyFactory{
         this.defaultEnemyBag(bag, x,y,health);
 
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent(new Rectangle(x,y,width,height),
+        bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height),
                 new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(x,y,hitBoxWidth,hitBoxHeight),
                         com.bryjamin.wickedwizard.utils.CenterMath.offsetX(width, hitBoxWidth),
                         com.bryjamin.wickedwizard.utils.CenterMath.offsetY(height, hitBoxHeight)),
@@ -103,8 +106,8 @@ public class JigFactory extends EnemyFactory{
     public ComponentBag movingJig(float x, float y, boolean startsRight){
 
         ComponentBag bag = stationaryJig(x,y);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? speed : -speed, 0));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? speed : -speed, 0));
+        bag.add(new BounceComponent());
 
         return bag;
 

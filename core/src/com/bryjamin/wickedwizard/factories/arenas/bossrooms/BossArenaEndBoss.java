@@ -171,11 +171,14 @@ public class BossArenaEndBoss extends AbstractFactory {
         float width = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH * 3;
         float height = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT * 3;
 
+
         Entity e = world.createEntity();
+
         e.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
         e.edit().add(new PositionComponent(0, 0));
         e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                 new Color(Color.WHITE)));
+
         e.edit().add(new ExpireComponent(0.2f));
         return e;
     }

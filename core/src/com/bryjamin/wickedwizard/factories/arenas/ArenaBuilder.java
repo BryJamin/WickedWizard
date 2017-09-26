@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -297,7 +298,7 @@ public class ArenaBuilder {
                     new MapCoords(coordX, coordY - 1),
                     com.bryjamin.wickedwizard.utils.enums.Direction.DOWN);
 
-            com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
+            BagSearch.getObjectOfTypeClass(DoorComponent.class, bag).ignore = true;
 
             arena.addEntity(decorFactory.platform(Measure.units(40f) + posX, Measure.units(5f), Measure.units(20f)));
 

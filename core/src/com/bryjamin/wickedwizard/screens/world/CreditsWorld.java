@@ -16,6 +16,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -155,7 +156,7 @@ public class CreditsWorld {
         }, new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = 0;
+                e.getComponent(VelocityComponent.class).velocity.y = 0;
 
                 e.edit().add(new ActionAfterTimeComponent(new Action() {
                             @Override
@@ -257,7 +258,7 @@ public class CreditsWorld {
 
         e.edit().add(new ExpiryRangeComponent(pc.position, Measure.units(150f) + positionTrack));
 
-        e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, creditsSpeed));
+        e.edit().add(new VelocityComponent(0, creditsSpeed));
 
         return e;
     }
