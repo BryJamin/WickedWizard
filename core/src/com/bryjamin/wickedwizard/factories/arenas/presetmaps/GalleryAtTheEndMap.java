@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.AfterUIRenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
@@ -212,12 +213,14 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                     @Override
                     public void performAction(World world, Entity e) {
                         world.getSystem(UISystem.class).disable = true;
+                        world.getSystem(AfterUIRenderingSystem.class).disable = true;
 
                         Entity playerMover = world.createEntity();
                         playerMover.edit().add(new DisablePlayerInputComponent());
                         playerMover.edit().add(new ActionAfterTimeComponent(new Action() {
                             @Override
-                            public void performAction(World world, Entity e) {
+                            public void performAction(World world, Entity e){
+                                e.getComponent(ActionAfterTimeComponent.class).resetTime = 0f;
                                 world.getSystem(PlayerInputSystem.class).autoMove(Measure.units(5000));
                             }
                         }, 1f, true));

@@ -130,7 +130,7 @@ public class UnlockMessageWorld implements WorldContainer {
         final Array<Bag<ComponentBag>> bagArray = new Array<Bag<ComponentBag>>();
 
 
-        Array<String> unlockIdArray = new Array<String>(unlockIds);
+        Array<String> unlockIdArray = new Array<String>();
         //All Separated Since The Unlock Display Order is
 
         //Character -> Item -> Challenges
@@ -143,6 +143,8 @@ public class UnlockMessageWorld implements WorldContainer {
                 unlockIdArray.add(unlockId);
             }
         }
+
+        if(unlockIdArray.size <= 0) return false;
 
         for(String unlockId : unlockIdArray) createChallengeUnlockMessage(bagArray, unlockId);
         for(String unlockId : unlockIdArray) createItemUnlockMessage(bagArray, unlockId);
