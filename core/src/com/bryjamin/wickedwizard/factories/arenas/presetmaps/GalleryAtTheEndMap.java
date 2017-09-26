@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
-import com.bryjamin.wickedwizard.assets.PlayerIDs;
+import com.bryjamin.wickedwizard.assets.MusicStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
@@ -34,11 +34,10 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.MapCleaner;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
+import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.BrightWhiteSkin;
-import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
-import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -67,10 +66,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
     public ArenaMap endGameMap() {
 
         ArenaMap arenaMap = new ArenaMap(galleryGrappleStart().createArena(new MapCoords(0,0)),
-                galleryFirstRoom().createArena(new MapCoords(0,2)),
-                galleryCharacterUnlockRoom().createArena(new MapCoords(1, 2)),
-                galleryExitRoom().createArena(new MapCoords(2, 2)),
-                galleryTheOutSide().createArena(new MapCoords(3, 2))
+                galleryExitRoom().createArena(new MapCoords(0, 2)),
+                galleryTheOutSide().createArena(new MapCoords(1, 2))
                 );
 
         mapCleaner.cleanArenas(arenaMap.getRoomArray());
@@ -115,6 +112,8 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50f)));
                 arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
 
+                arena.addEntity(new OnLoadFactory().startMusicEntity(MusicStrings.BG_MAIN_MENU));
+
                 return arena;
             }
         };
@@ -139,60 +138,6 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 welcomeText.add(new PositionComponent(x, y));
                 welcomeText.add(new CollisionBoundComponent(new Rectangle(x, y, arena.getWidth(), Measure.units(5f))));
                 welcomeText.add(new TextureFontComponent(FontAssets.medium, MenuStrings.Gallery.WELCOME, arenaSkin.getWallTint()));
-
-
-                return arena;
-            }
-        };
-
-    }
-
-
-    private ArenaCreate galleryCharacterUnlockRoom(){
-
-
-        return new ArenaCreate() {
-            @Override
-            public Arena createArena(MapCoords defaultCoords) {
-
-                Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.NORMAL);
-
-
-                float x = 0;
-                float y = Measure.units(45f);
-
-
-
-                PlayerIDs.PlayableCharacter[] characterFixedArray = PlayerIDs.endGameUnlockAbleCharacters;
-
-
-                for(PlayerIDs.PlayableCharacter character : characterFixedArray) {
-                    if(!DataSave.isDataAvailable(character.getUnlockString())) {
-                       // characterArray.add(character);
-
-                        ComponentBag welcomeText = arena.createArenaBag();
-                        welcomeText.add(new PositionComponent(x, y));
-                        welcomeText.add(new CollisionBoundComponent(new Rectangle(x, y, arena.getWidth(), Measure.units(5f))));
-                        welcomeText.add(new TextureFontComponent(FontAssets.medium, character.getName() + MenuStrings.Gallery.CHARACTER_UNLOCK, arenaSkin.getWallTint()));
-
-
-                        ComponentBag bag = arena.createArenaBag();
-
-                        float characterSelectWidth = Measure.units(10f);
-                        float characterSelectHeight = Measure.units(10f);
-
-                        bag.add(new PositionComponent(CenterMath.offsetX(MainGame.GAME_WIDTH, (characterSelectWidth)), Measure.units(30f)));
-                        bag.add(new TextureRegionComponent(atlas.findRegion(character.getRegion()), Measure.units(10f), Measure.units(10f), TextureRegionComponent.BACKGROUND_LAYER_NEAR));
-
-
-                        DataSave.saveChallengeData(character.getUnlockString());
-
-
-                        break;
-
-
-                    }
-                }
 
 
                 return arena;
@@ -271,7 +216,6 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                             public void performAction(World world, Entity e) {
                                 world.getSystem(PlayerInputSystem.class).autoMove(Measure.units(5000));
                             }
-                        }, 0, true));
 
                     }
                 }));

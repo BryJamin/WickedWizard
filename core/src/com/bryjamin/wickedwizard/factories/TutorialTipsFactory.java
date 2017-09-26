@@ -30,6 +30,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
+import com.bryjamin.wickedwizard.factories.items.ItemResource;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -144,6 +145,33 @@ public class TutorialTipsFactory extends AbstractFactory {
     }
 
 
+    public Bag<ComponentBag> uiTips(Bag<ComponentBag> fillBag, Camera gamecam){
+
+        ParentComponent parentComponent = new ParentComponent();
+
+        fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(5), 0, titleY));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_1, 0, Measure.units(52.5f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_4, 0, Measure.units(47.5f)));
+
+        fillBag.add(defaultCenteredImage(new ComponentBag(), ItemResource.PickUp.moneyUp.getRegion().getLeft(), parentComponent, gamecam, Measure.units(5f), Measure.units(37.5f)));
+
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_2, 0, Measure.units(32.5f)));
+
+        fillBag.add(defaultCenteredImage(new ComponentBag(), ItemResource.PickUp.fullHealthUp.getRegion().getLeft(), parentComponent, gamecam, Measure.units(6f), Measure.units(23)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_3, 0, Measure.units(18)));
+
+        fillBag.add(tapToContinue(new ComponentBag(), parentComponent, Measure.units(0), Measure.units(5f), Measure.units(50f), Measure.units(10f)));
+
+        return fillBag;
+
+    }
+
+
+
+
+
     private ComponentBag blackBackground(ComponentBag fillBag, ParentComponent parentComponent, Camera gamecam){
 
 
@@ -166,7 +194,7 @@ public class TutorialTipsFactory extends AbstractFactory {
         fillBag.add(new PositionComponent());
         fillBag.add(new FollowCameraComponent());
         fillBag.add(new ChildComponent(parentComponent));
-        fillBag.add(new FadeComponent(false, 1f, false));
+        fillBag.add(new FadeComponent(false, 0.5f, false));
         fillBag.add(new UIComponent());
         fillBag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), gamecam.viewportWidth, gamecam.viewportHeight,
                 TextureRegionComponent.FOREGROUND_LAYER_NEAR,

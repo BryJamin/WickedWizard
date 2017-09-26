@@ -59,6 +59,11 @@ public class PlayerIDs {
     public static PlayableCharacter[] endGameUnlockAbleCharacters = {XI, TESS};
 
 
+    public static PlayableCharacter[] getAllCharacters(){
+        return new PlayableCharacter[]{LEAH, PHI, XI, TESS};
+    }
+
+
 
 
     public static class PlayableCharacter {

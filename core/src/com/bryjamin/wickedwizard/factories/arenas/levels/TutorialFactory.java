@@ -560,6 +560,19 @@ public class TutorialFactory extends ArenaShellFactory {
                     }
                 }));
 
+
+
+        bag = new ComponentBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(TipsMessageSystem.class).createTipsMessage(MenuStrings.Tutorial.UI_ID);
+                e.deleteFromWorld();
+            }
+        }));
+
+        arena.addEntity(bag);
+
         return arena;
 
 
@@ -604,52 +617,6 @@ public class TutorialFactory extends ArenaShellFactory {
         }));
 
         arena.addEntity(bag);
-
-
-
-
-/*        Rectangle textRectangle = new Rectangle(0, 0, MainGame.GAME_WIDTH, Measure.units(10f));
-
-        ComponentBag bag = new ComponentBag();
-        bag.add(new PositionComponent(0, Measure.units(45f)));
-        TextureFontComponent text = new TextureFontComponent(FontAssets.small, controllerTutorialTop, textColor);
-        text.layer = ENEMY_LAYER_MIDDLE;
-        bag.add(new CollisionBoundComponent(textRectangle));
-        bag.add(text);
-
-        arena.addEntity(bag);
-
-        float size = Measure.units(30f);
-
-        bag = new ComponentBag();
-        bag.add(new PositionComponent(CenterMath.offsetX(MainGame.GAME_WIDTH, size), Measure.units(22.5f)));
-        TextureRegionComponent region = new TextureRegionComponent(atlas.findRegion(TextureStrings.ICON_CONTROLLER), size, size, BACKGROUND_LAYER_MIDDLE);
-        bag.add(region);
-        arena.addEntity(bag);
-
-
-
-
-        bag = new ComponentBag();
-        bag.add(new PositionComponent(0, Measure.units(20f)));
-        text = new TextureFontComponent(FontAssets.small, controllerTutorialMiddle, textColor);
-        text.layer = ENEMY_LAYER_MIDDLE;
-        bag.add(new CollisionBoundComponent(textRectangle));
-        bag.add(text);
-
-        arena.addEntity(bag);
-
-
-        bag = new ComponentBag();
-        bag.add(new PositionComponent(0, Measure.units(15f)));
-        text = new TextureFontComponent(FontAssets.small, controllerTutorialBottom, textColor);
-        text.layer = ENEMY_LAYER_MIDDLE;
-        bag.add(new CollisionBoundComponent(textRectangle));
-        bag.add(text);
-
-        arena.addEntity(bag);*/
-
-
 
         return arena;
 

@@ -76,6 +76,7 @@ public class MenuStrings {
 
     public static final String ITEM_UNLOCKED = "New Item Unlocked";
     public static final String CHALLENGE_UNLOCKED = "New Challenge Unlocked";
+    public static final String CHARACTER_UNLOCKED = "New Character Unlocked";
     public static final String ITEM_UNLOCKED_PLURAL = "New Items Unlocked";
     public static final String CHALLENGE_UNLOCKED_PLURAL = "New Challenges Unlocked";
 
@@ -170,6 +171,15 @@ public class MenuStrings {
         public static final String TWO_THUMBS_1 = "Both Thumbs Can Be Used At The Same Time";
         public static final String TWO_THUMBS_2 = "Move With One Thumb,";
         public static final String TWO_THUMBS_3 = "Jump And Shoot With The Other!";
+
+
+        public static final String UI_ID = "2a8f54f7-caa7-4854-9f45-6f84a9045c3f";
+        public static final String UI_1 = "The UI Is Located At The Top Of Your Screen";
+        public static final String UI_2 = "Gold Can Be Exchanged For Goods And Services";
+        public static final String UI_3 = "Don't Lose All Your Health. Or It's Game Over!";
+        public static final String UI_4 = "The MiniMap And Pause Button Are On The Top-Right";
+
+
     }
 
 

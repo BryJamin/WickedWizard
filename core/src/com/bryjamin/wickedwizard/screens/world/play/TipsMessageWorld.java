@@ -69,6 +69,7 @@ public class TipsMessageWorld implements WorldContainer {
         this.tipsMap.put(MenuStrings.Tutorial.DOUBLE_TAP_ID, tutorialTipsFactory.cancelHoverTips(new Bag<ComponentBag>(), gamecam));
         this.tipsMap.put(MenuStrings.Tutorial.AIMING_ID, tutorialTipsFactory.aimingTips(new Bag<ComponentBag>(), gamecam));
         this.tipsMap.put(MenuStrings.Tutorial.TWO_THUMBS_ID, tutorialTipsFactory.twoThumbsTips(new Bag<ComponentBag>(), gamecam));
+        this.tipsMap.put(MenuStrings.Tutorial.UI_ID, tutorialTipsFactory.uiTips(new Bag<ComponentBag>(), gamecam));
 
     }
 

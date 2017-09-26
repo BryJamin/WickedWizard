@@ -422,6 +422,33 @@ public class PlayScreen extends AbstractScreen {
     public class PlayScreenGestures extends AbstractGestureDectector {
 
         @Override
+        public boolean touchDown(float x, float y, int pointer, int button) {
+            touchInput = gameport.unproject(touchInput.set(x, y, 0));
+
+            switch (state){
+
+                case ARE_YOU_SURE:
+                    areYouSureWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+                case DEATH:
+                    deathScreenWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+                case PAUSE:
+                    pauseWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+                case UNLOCK:
+                    unlockMessageWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+                case TIPS:
+                    tipsMessageWorld.getWorld().getSystem(ActionOnTouchSystem.class).touch(touchInput.x, touchInput.y);
+                    break;
+
+            }
+
+            return true;
+        }
+/*
+        @Override
         public boolean tap(float x, float y, int count, int button) {
 
             touchInput = gameport.unproject(touchInput.set(x, y, 0));
@@ -447,7 +474,7 @@ public class PlayScreen extends AbstractScreen {
             }
 
             return true;
-        }
+        }*/
 
 
 
