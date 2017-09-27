@@ -39,6 +39,23 @@ public class PortalRooms extends ArenaShellFactory {
     }
 
 
+    /**
+     * This is the arena placed inside of the main level map, that is used to teleport to a boss map.
+     * @param mapCoords - Mapcoords of the arena
+     * @param btc - The boss teleporter component that holds the link to another map.
+     * @return - Returns the arena
+     */
+    public final Arena allDoorsPortalArena(MapCoords mapCoords, BossTeleporterComponent btc){
+
+        Arena arena = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.BOSS);
+        arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
+        arena.addEntity(portalFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
+
+        arena.addEntity(onLoadSetBossTeleComponentOffsets(btc, Measure.units(25f), 0));
+
+        return arena;
+    }
+
 
 
     public Arena portalRoomToBossLeftDoor(MapCoords defaultCoords, BossTeleporterComponent btc){
@@ -148,6 +165,30 @@ public class PortalRooms extends ArenaShellFactory {
         return arena;
     }
 
+
+    public Arena portalRoomToBossBottomDoor(MapCoords defaultCoords, BossTeleporterComponent btc){
+
+
+        Arena arena =  new ArenaBuilder(assetManager, arenaSkin, Arena.ArenaType.BOSS)
+                .addSection(new ArenaBuilder.Section(defaultCoords,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.FULL,
+                        ArenaBuilder.wall.DOOR)).buildArena();
+
+
+
+        float wallWidth = Measure.units(10f);
+
+        arena.addEntity(decorFactory.wallBag(Measure.units(15f), Measure.units(10f), wallWidth, arena.getHeight()));
+        arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(15f) - wallWidth, Measure.units(10f), wallWidth, arena.getHeight()));
+
+        arena.addEntity(onLoadSetBossTeleComponentOffsets(btc, 0, -Measure.units(15f)));
+
+        arena.addEntity(portalPosition(arena.getWidth() / 2, arena.getHeight() / 2 + Measure.units(5f), btc));
+
+        return arena;
+    }
 
 
 

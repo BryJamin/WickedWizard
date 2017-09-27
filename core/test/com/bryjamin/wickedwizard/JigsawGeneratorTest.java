@@ -17,6 +17,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class JigsawGeneratorTest extends GameTest {
 
+    private static final float repeats = 20000;
+
 
     @Test
     public void testGenerateJigsawLevel1() throws Exception {
@@ -36,7 +38,7 @@ public class JigsawGeneratorTest extends GameTest {
         //TODO needs to look into using omni rooms if number of rooms is not the same as entered into /
         //TODO the generator.
 
-        for(int i = 0; i < 20000; i++) {
+        for(int i = 0; i < repeats; i++) {
 
             Random random = new Random();
 
@@ -54,58 +56,28 @@ public class JigsawGeneratorTest extends GameTest {
 
             Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
-
-/*            OrderedSet<DoorComponent> dcs = jg.createAvaliableDoorSet(arenas);
-
-            System.out.println("Avaliable doors are + " + dcs.size);
-
-            for(DoorComponent dc : dcs){
-                System.out.println("Exit is " + dc.exit);
-                System.out.println("Does it link to something? " + jg.findDoorWithinFoundRoom(dc, arenas));
-            }*/
-
-            boolean bossRoom = false;
-
-            for (Arena a : arenas) {
-/*                System.out.println(a.arenaType);
-                for(MapCoords mc : a.cotainingCoords){
-                    System.out.println(mc);
-                }*/
-                if (a.arenaType == Arena.ArenaType.BOSS) {
-                    bossRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(bossRoom);
-
-
-            boolean itemRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.ITEM) {
-                    itemRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(itemRoom);
-
-            boolean shopRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.SHOP) {
-                    shopRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(shopRoom);
+            assertSpecialRoomsExist(arenas);
 
             System.out.println(i);
 
+            assertAllDoors(arenas);
+
+
         }
 
+
+    }
+
+
+    /**
+     * Checks if number of doors for all arenas is greater than zero.
+     * As a room with no doors generated with no exit, so it's doors were removed
+     * @param arenas - Arenas that will be checked
+     */
+    public void assertAllDoors(Array<Arena> arenas){
+        for(int i = 0; i < arenas.size; i++) {
+            assertTrue(arenas.get(i).getDoors().size > 0);
+        }
 
     }
 
@@ -124,7 +96,7 @@ public class JigsawGeneratorTest extends GameTest {
 
         //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
 
-        for(int i = 0; i < 20000; i++) {
+        for(int i = 0; i < repeats; i++) {
 
             Random random = new Random();
 
@@ -139,40 +111,9 @@ public class JigsawGeneratorTest extends GameTest {
 
             Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
-            boolean bossRoom = false;
+            assertSpecialRoomsExist(arenas);
 
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.BOSS) {
-                    bossRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(bossRoom);
-
-
-            boolean itemRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.ITEM) {
-                    itemRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(itemRoom);
-
-            boolean shopRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.SHOP) {
-                    shopRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(shopRoom);
-
+            assertAllDoors(arenas);
             System.out.println(i);
 
         }
@@ -195,7 +136,7 @@ public class JigsawGeneratorTest extends GameTest {
 
         //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
 
-        for(int i = 0; i < 20000; i++) {
+        for(int i = 0; i < repeats; i++) {
 
             Random random = new Random();
 
@@ -212,44 +153,9 @@ public class JigsawGeneratorTest extends GameTest {
 
             Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
-            boolean bossRoom = false;
+            assertSpecialRoomsExist(arenas);
 
-            for (Arena a : arenas) {
-/*                System.out.println(a.arenaType);
-                for(MapCoords mc : a.cotainingCoords){
-                    System.out.println(mc);
-                }*/
-                if (a.arenaType == Arena.ArenaType.BOSS) {
-                    bossRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(bossRoom);
-
-
-            boolean itemRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.ITEM) {
-                    itemRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(itemRoom);
-
-            boolean shopRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.SHOP) {
-                    shopRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(shopRoom);
-
+            assertAllDoors(arenas);
             System.out.println(i);
 
         }
@@ -274,7 +180,7 @@ public class JigsawGeneratorTest extends GameTest {
 
         //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
 
-        for(int i = 0; i < 20000; i++) {
+        for(int i = 0; i < repeats; i++) {
 
             Random random = new Random();
 
@@ -292,45 +198,9 @@ public class JigsawGeneratorTest extends GameTest {
 
             System.out.println("Number of rooms is " + numberOfRooms);
 
+            assertSpecialRoomsExist(arenas);
 
-            boolean bossRoom = false;
-
-            for (Arena a : arenas) {
-/*                System.out.println(a.arenaType);
-                for(MapCoords mc : a.cotainingCoords){
-                    System.out.println(mc);
-                }*/
-                if (a.arenaType == Arena.ArenaType.BOSS) {
-                    bossRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(bossRoom);
-
-
-            boolean itemRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.ITEM) {
-                    itemRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(itemRoom);
-
-            boolean shopRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.SHOP) {
-                    shopRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(shopRoom);
-
+            assertAllDoors(arenas);
             System.out.println(i);
 
         }
@@ -356,13 +226,13 @@ public class JigsawGeneratorTest extends GameTest {
 
         //TODO Check if numbers of rooms is equal or greater than the rooms inserted.
 
-        for(int i = 0; i < 20000; i++) {
+        for(int i = 0; i < repeats; i++) {
 
             Random random = new Random();
 
-            int numberOfRooms = random.nextInt(95) + 5;
+            //Level 5 rooms are not friendly with smaller generation sizes
 
-
+            int numberOfRooms = random.nextInt(94) + 6;
 
 
             JigsawGenerator jg = new com.bryjamin.wickedwizard.factories.arenas.levels.PresetGenerators().level5Configuration(assetManager, new com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin(), random)
@@ -375,47 +245,56 @@ public class JigsawGeneratorTest extends GameTest {
 
             Array<Arena> arenas = jg.getStartingMap().getRoomArray();
 
-            boolean bossRoom = false;
+            assertSpecialRoomsExist(arenas);
 
-            for (Arena a : arenas) {
-/*                System.out.println(a.arenaType);
-                for(MapCoords mc : a.cotainingCoords){
-                    System.out.println(mc);
-                }*/
-                if (a.arenaType == Arena.ArenaType.BOSS) {
-                    bossRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(bossRoom);
-
-
-            boolean itemRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.ITEM) {
-                    itemRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(itemRoom);
-
-            boolean shopRoom = false;
-
-            for (Arena a : arenas) {
-                if (a.arenaType == Arena.ArenaType.SHOP) {
-                    shopRoom = true;
-                    break;
-                }
-            }
-
-            assertTrue(shopRoom);
-
+            assertAllDoors(arenas);
             System.out.println(i);
 
         }
+
+
+    }
+
+
+
+    public void assertSpecialRoomsExist(Array<Arena> arenas){
+
+        boolean bossRoom = false;
+
+        for (Arena a : arenas) {
+            if (a.arenaType == Arena.ArenaType.BOSS) {
+                bossRoom = true;
+                break;
+            }
+        }
+
+        assertTrue(bossRoom);
+
+
+        boolean itemRoom = false;
+
+        for (Arena a : arenas) {
+            if (a.arenaType == Arena.ArenaType.ITEM) {
+                itemRoom = true;
+                break;
+            }
+        }
+
+        assertTrue(itemRoom);
+
+        boolean shopRoom = false;
+
+        for (Arena a : arenas) {
+            if (a.arenaType == Arena.ArenaType.SHOP) {
+                shopRoom = true;
+                break;
+            }
+        }
+
+        assertTrue(shopRoom);
+
+
+
 
 
     }

@@ -8,6 +8,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetrooms.ItemArenaFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetrooms.PortalRooms;
@@ -47,6 +48,8 @@ public class JigsawGenerator {
 
     private com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin arenaSkin;
 
+    private ArenaShellFactory arenaShellFactory;
+
     private Array<ArenaCreate> arenaGens;
     private Array<BossMapCreate> bossMapGens;
 
@@ -79,6 +82,8 @@ public class JigsawGenerator {
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.mapCleaner = new MapCleaner(decorFactory);
 
+        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
+
 
         this.randomizerArenaFactory = new RandomizerArenaFactory(assetManager, arenaSkin);
 
@@ -87,7 +92,7 @@ public class JigsawGenerator {
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.RIGHTMOST_DISTANCE_DOORS, 20));
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 20));
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LOWEST_Y, 20));
-        //typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(null, 200));
+        typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(null, 20));
 
         this.typeOfSort = typeOfSortRoller.roll();
     }
@@ -394,8 +399,49 @@ public class JigsawGenerator {
 
         portalRooms.shuffle();
 
+        Arena tempRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(), Arena.ArenaType.BOSS);
+       // Arena tempRoom = new PortalRooms(assetManager, arenaSkin).portalRoomToBossCeilingDoor(new MapCoords(), btc);
+
+        if(placeRoomUsingDoorsInOrder(tempRoom, doorComponentArray, createUnavaliableMapCoords(placedArenas), random)){
+            //placedArenas.add(tempRoom);
+            mapCleaner.cleanArena(tempRoom, placedArenas);
+
+
+            MapCoords mapCoords = tempRoom.getStartingCoords();
+
+            Arena portalRoom = new PortalRooms(assetManager, arenaSkin).allDoorsPortalArena(mapCoords, btc);
+
+            System.out.println(tempRoom.getDoors().first().exit);
+
+            switch (tempRoom.getDoors().first().exit){
+                case RIGHT:
+                    portalRoom =  new PortalRooms(assetManager, arenaSkin).portalRoomToBossRightDoor(mapCoords, btc);
+                    break;
+                case LEFT:
+                    portalRoom =  new PortalRooms(assetManager, arenaSkin).portalRoomToBossLeftDoor(mapCoords, btc);
+                    break;
+                case UP:
+                    portalRoom = new PortalRooms(assetManager, arenaSkin).portalRoomToBossCeilingDoor(mapCoords, btc);
+                    break;
+                case DOWN:
+                    portalRoom = new PortalRooms(assetManager, arenaSkin).portalRoomToBossBottomDoor(mapCoords, btc);
+                    break;
+            }
+
+            placedArenas.add(portalRoom);
+
+            return true;
+
+        }
+
+        return false;
+
+/*
         for(Arena portalRoom : portalRooms) {
             if (placeRoomUsingDoorsInOrder(portalRoom, doorComponentArray, createUnavaliableMapCoords(placedArenas), random)) {
+                mapCleaner.cleanArena(portalRoom, placedArenas);
+
+
                 placedArenas.add(portalRoom);
 
                 //TODO portalroom.getDoor (Place that door into portal rooms to generate a room), Place that room in placedarenas
@@ -405,6 +451,7 @@ public class JigsawGenerator {
             }
         }
         return false;
+*/
 
     }
 
