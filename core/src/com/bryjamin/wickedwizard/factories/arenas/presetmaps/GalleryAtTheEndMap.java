@@ -24,12 +24,14 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.ecs.systems.level.BossDefeatUnlockSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.MapCleaner;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
@@ -167,9 +169,19 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 arena.addEntity(decorFactory.wallBag(arena.getWidth(), Measure.units(0), arena.getWidth() * 5, Measure.units(10f)));
 
 
-                ComponentBag lock = new ComponentBag();
+                ComponentBag lock = arena.createArenaBag();
                 lock.add(new EnemyComponent());
-                arena.addEntity(lock);
+
+
+                ComponentBag itemUnlockBag = arena.createArenaBag();
+                itemUnlockBag.add(new ActionAfterTimeComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(BossDefeatUnlockSystem.class).createUnlocksFromId(ChallengesResource.LEVEL_5_COMPLETE);
+                    }
+                }));
+
+
 
 
                 ComponentBag background = arena.createArenaBag();

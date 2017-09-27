@@ -146,9 +146,13 @@ public class UnlockMessageWorld implements WorldContainer {
 
         if(unlockIdArray.size <= 0) return false;
 
+        System.out.println(unlockIdArray.contains(PlayerIDs.XI_UNLOCK_STRING, false));
+
         for(String unlockId : unlockIdArray) createChallengeUnlockMessage(bagArray, unlockId);
         for(String unlockId : unlockIdArray) createItemUnlockMessage(bagArray, unlockId);
         for(String unlockId : unlockIdArray) createCharacterUnlockMessage(bagArray, unlockId);
+
+        System.out.println(bagArray.size);
 
         if(bagArray.size <= 0) return false;
 

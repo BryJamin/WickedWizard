@@ -11,7 +11,6 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.adventure.AdventureUnlocks;
-import com.bryjamin.wickedwizard.screens.DataSave;
 
 /**
  * Created by BB on 18/09/2017.
@@ -55,37 +54,12 @@ public class BossDefeatUnlockSystem extends EntitySystem {
 
             if(gameCreator.getGameType() == GameCreator.GameType.ADVENTURE) {
 
-
-                //ITEM UNLOCKS
-
                 String id = gameCreator.getCurrentLevel().id;
-                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(id);
 
+                //This is simply because The End Boss unlocks happen once you leave the gallery, not when you beat the boss
+                if(id.equals(ChallengesResource.LEVEL_5_COMPLETE)) return;
 
-                //ITEMS UNLOCKS FROM CHARACTERS
-
-                String s = AdventureUnlocks.getUnlock(
-                        world.getSystem(FindPlayerSystem.class).getPlayerComponent(PlayerComponent.class).id,
-                        id);
-
-                if(s != null) world.getSystem(UnlockMessageSystem.class).createUnlockMessage(s);
-
-
-
-                //ADDITIONAL CHARACTER UNLOCKS FOR COMPLETING LEVEL 5
-
-                if(id.equals(ChallengesResource.LEVEL_5_COMPLETE)){
-
-                    PlayerIDs.PlayableCharacter[] characterFixedArray = PlayerIDs.endGameUnlockAbleCharacters;
-
-                    for(PlayerIDs.PlayableCharacter character : characterFixedArray) {
-                        if(!DataSave.isDataAvailable(character.getUnlockString())) {
-                            DataSave.saveChallengeData(character.getUnlockString());
-                            world.getSystem(UnlockMessageSystem.class).createUnlockMessage(character.getUnlockString());
-                            break;
-                        }
-                    }
-                }
+                createUnlocksFromId(id);
             }
 
             isProcessing = false;
@@ -93,4 +67,37 @@ public class BossDefeatUnlockSystem extends EntitySystem {
 
 
     }
+
+
+
+    public void createUnlocksFromId(String id){
+
+
+        //ITEM UNLOCKS
+        world.getSystem(UnlockMessageSystem.class).createUnlockMessage(id);
+
+
+        //ITEMS UNLOCKS FROM CHARACTERS
+        String s = AdventureUnlocks.getUnlock(
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(PlayerComponent.class).id,
+                id);
+
+        if(s != null) world.getSystem(UnlockMessageSystem.class).createUnlockMessage(s);
+
+
+        //ADDITIONAL CHARACTER UNLOCKS FOR COMPLETING LEVEL 5
+        if(id.equals(ChallengesResource.LEVEL_5_COMPLETE)){
+
+            PlayerIDs.PlayableCharacter[] characterFixedArray = PlayerIDs.endGameUnlockAbleCharacters;
+
+            for(PlayerIDs.PlayableCharacter character : characterFixedArray) {
+                world.getSystem(UnlockMessageSystem.class).createUnlockMessage(character.getUnlockString());
+                break;
+            }
+        }
+
+    }
+
+
+
 }
