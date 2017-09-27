@@ -87,7 +87,7 @@ public class JigsawGenerator {
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.RIGHTMOST_DISTANCE_DOORS, 20));
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 20));
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LOWEST_Y, 20));
-        typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(null, 200));
+        //typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(null, 200));
 
         this.typeOfSort = typeOfSortRoller.roll();
     }
@@ -379,6 +379,8 @@ public class JigsawGenerator {
         return false;
     }
 
+
+    //TODO Change to generate a roombased on the room found
     public boolean placeBossRoom(BossTeleporterComponent btc, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
         Array<DoorComponent> doorComponentArray = avaliableDoors.orderedItems();
@@ -395,6 +397,9 @@ public class JigsawGenerator {
         for(Arena portalRoom : portalRooms) {
             if (placeRoomUsingDoorsInOrder(portalRoom, doorComponentArray, createUnavaliableMapCoords(placedArenas), random)) {
                 placedArenas.add(portalRoom);
+
+                //TODO portalroom.getDoor (Place that door into portal rooms to generate a room), Place that room in placedarenas
+
                 mapCleaner.cleanArena(portalRoom, placedArenas);
                 return true;
             }
@@ -410,7 +415,13 @@ public class JigsawGenerator {
         if(typeOfSort == null){
             adc.shuffle();
         } else {
-            adc.sort(typeOfSort);
+
+            int i = rand.nextInt(100);
+            if(i <= 40){
+                adc.sort(typeOfSort);
+            } else {
+                adc.shuffle();
+            }
         }
 
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
