@@ -218,7 +218,9 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        new BossArenaEndBoss(assetManager, arenaSkin).endStartingRoom().createArena(new MapCoords(1, 0)));
+                        new BossArenaEndBoss(assetManager, arenaSkin)
+                                .endBossStartingRoom(new GalleryAtTheEndMap(assetManager).galleryMap())
+                                .createArena(new MapCoords(1, 0)));
             }
         };
     }

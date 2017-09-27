@@ -253,7 +253,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                 new ItemArenaFactory(assetManager, Level.FIVE.getArenaSkin()).createBossRushItemRoom(new MapCoords(22, -1)),
 
 
-                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(challengeLayout.getChallengeID())).createArena(new MapCoords(23, -1))
+                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endBossStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(challengeLayout.getChallengeID())).createArena(new MapCoords(23, -1))
 
         );
 
@@ -315,7 +315,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
                 new BossRoomAmalgama(assetManager, Level.FIVE.getArenaSkin()).amalgamaArena().createArena(new MapCoords(8, -1)),
 
-                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(challengeLayout.getChallengeID())).createArena(new MapCoords(14, -1))
+                new BossArenaEndBoss(assetManager, Level.FIVE.getArenaSkin()).endBossStartingRoom(new GalleryAtTheEndMap(assetManager).endBossRushMap(challengeLayout.getChallengeID())).createArena(new MapCoords(14, -1))
 
         );
 

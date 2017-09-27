@@ -101,19 +101,80 @@ public class MenuStrings {
     public static class Death {
 
 
-        public static final String[] ADVENTURE_LEVEL_1_FLAVOR_TEXT = {
+        public static final String[] ADVENTURE_FLAVOR_TEXT = {
                 "You Have to Start Somewhere",
                 "Keep Going!",
+                "Always the next time",
+                "Welp, that happened",
+                //"The Music Must Be Getting To You",
+                "Ouch",
+                "Ow",
+                "That looked painful",
+                "That looked like it hurt",
+                "Good try",
+                "Game Over"};
+
+/*
+
+        public static final String[] ADVENTURE_FLAVOR_TEXT = {
+                "You Have to Start Somewhere",
+                "Keep Going!",
+                "Always the next time",
                 "Welp, that happened",
                 "You were probably really close",
                 "Ouch",
                 "Ow",
                 "That looked painful",
-                "Oh no! You got hit too much...",
+                "That looked like it hurt",
                 "Did I miss anything? Oh.",
                 "Good try, I guess",
                 "Game Over"};
 
+
+        public static final String[] ADVENTURE_FLAVOR_TEXT = {
+                "You Have to Start Somewhere",
+                "Keep Going!",
+                "Always the next time",
+                "Welp, that happened",
+                "You were probably really close",
+                "Ouch",
+                "Ow",
+                "That looked painful",
+                "That looked like it hurt",
+                "Did I miss anything? Oh.",
+                "Good try, I guess",
+                "Game Over"};
+
+
+        public static final String[] ADVENTURE_FLAVOR_TEXT = {
+                "You Have to Start Somewhere",
+                "Keep Going!",
+                "Always the next time",
+                "Welp, that happened",
+                "You were probably really close",
+                "Ouch",
+                "Ow",
+                "That looked painful",
+                "That looked like it hurt",
+                "Did I miss anything? Oh.",
+                "Good try, I guess",
+                "Game Over"};
+
+
+        public static final String[] ADVENTURE_FLAVOR_TEXT = {
+                "You Have to Start Somewhere",
+                "Keep Going!",
+                "Always the next time",
+                "Welp, that happened",
+                "You were probably really close",
+                "Ouch",
+                "Ow",
+                "That looked painful",
+                "That looked like it hurt",
+                "Did I miss anything? Oh.",
+                "Good try, I guess",
+                "Game Over"};
+*/
 
         public static final String[] CHALLENGE_FLAVOR_TEXT = {
                 "Challenge Failed",

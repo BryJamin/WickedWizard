@@ -6,6 +6,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.bryjamin.wickedwizard.factories.BackgroundFactory;
+import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
@@ -39,8 +41,10 @@ public class ArenaBuilder {
     private AssetManager assetManager;
     private TextureAtlas atlas;
     private ArenaSkin arenaSkin;
-    private com.bryjamin.wickedwizard.factories.BackgroundFactory bf = new com.bryjamin.wickedwizard.factories.BackgroundFactory();
-    private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
+    private BackgroundFactory bf = new BackgroundFactory();
+    private DecorFactory decorFactory;
+
+    private boolean isSafe = true;
 
     public ArenaBuilder(AssetManager assetManager, ArenaSkin arenaSkin, Arena.ArenaType arenaType, Section... sections){
         this.assetManager = assetManager;
@@ -55,6 +59,22 @@ public class ArenaBuilder {
 
     public ArenaBuilder addSection(Section s){
         sections.add(s);
+        return this;
+    }
+
+
+    /**
+     * Sets whether the Builder is 'Safe' or not. In this context this checks if there walls are built offscreen
+     * To protect the player from falling off. E.G If You choose not to build a LEFT wall, a player still can't fall
+     * out of bounds.
+     *
+     * In One Case (The Credits), This Safety is not required.
+     *
+     * @param val
+     * @return
+     */
+    public ArenaBuilder isSafe(boolean val){
+        this.isSafe = val;
         return this;
     }
 
@@ -139,17 +159,19 @@ public class ArenaBuilder {
             }
 
 
-            if(isLeftMostWall(arena, posX)){
-                arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
-            }
+            if(isSafe) {
+                if (isLeftMostWall(arena, posX)) {
+                    arena.addEntity(decorFactory.wallBag(0 + posX - WALLWIDTH * 4, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
+                }
 
-            if(isRightMostWall(arena, posX)){
-                arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
-            }
+                if (isRightMostWall(arena, posX)) {
+                    arena.addEntity(decorFactory.wallBag(SECTION_WIDTH + posX, 0 + posY, WALLWIDTH * 4, SECTION_HEIGHT, arenaSkin));
+                }
 
 
-            if(isCeiling(arena, posY)){
-                arena.addEntity(decorFactory.wallBag(0 + posX,  SECTION_HEIGHT + posY, SECTION_WIDTH, WALLWIDTH * 4, arenaSkin));
+                if (isCeiling(arena, posY)) {
+                    arena.addEntity(decorFactory.wallBag(0 + posX, SECTION_HEIGHT + posY, SECTION_WIDTH, WALLWIDTH * 4, arenaSkin));
+                }
             }
 
 

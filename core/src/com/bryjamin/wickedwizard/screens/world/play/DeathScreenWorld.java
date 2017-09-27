@@ -36,6 +36,7 @@ import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.screens.world.AdventureWorld;
 import com.bryjamin.wickedwizard.utils.CenterMath;
+import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.TableMath;
 
@@ -70,6 +71,8 @@ public class DeathScreenWorld {
 
     private static final float youAreHereIconsStartY = Measure.units(40);
 
+    private static final float squareSize = Measure.units(5f);
+    private static final float squareGap = Measure.units(0.5f);
 
 
     private static final float itemTitleY = Measure.units(22.5f);
@@ -118,125 +121,16 @@ public class DeathScreenWorld {
 
             case ADVENTURE:
 
-                Entity title = world.createEntity();
-                title.edit().add(new PositionComponent());
-                title.edit().add(new FollowCameraComponent(0, adventureTitleY));
-                title.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gameport.getCamera().viewportWidth, Measure.units(10f))));
-                title.edit().add(new FadeComponent(true, screenFadeTime, false));
-                title.edit().add(new TextureFontComponent(FontAssets.medium,
-                        MenuStrings.Death.ADVENTURE_LEVEL_1_FLAVOR_TEXT[MathUtils.random.nextInt(MenuStrings.Death.ADVENTURE_LEVEL_1_FLAVOR_TEXT.length)],
-                        new Color(Color.WHITE)));
+                //TITLE
+                createDeathScreenAdventureTitle(world);
 
-
-
-
-                GameCreator gameCreator = adventureWorld.getGameCreator();
-
-
-                int maxColumns =  (gameCreator.gameLevels.size * 3) - 2;
-
-                float size = Measure.units(5f);
-                float gap = Measure.units(0.5f);
-
-                float startX = CenterMath.offsetX(gameport.getCamera().viewportWidth, (size * maxColumns) + (gap * (maxColumns - 1)));
-
-                int currentPosition = gameCreator.getPosition();
-
-                for(int i = 0; i < gameCreator.gameLevels.size; i++){
-
-
-                    float x = TableMath.getXPos(startX, i * 3, maxColumns, size, gap);
-                    float y = youAreHereIconsStartY;
-
-                    Entity square = world.createEntity();
-                    square.edit().add(new PositionComponent());
-                    square.edit().add(new FadeComponent(true, screenFadeTime, false));
-                    square.edit().add(new FollowCameraComponent(x, y));
-                    square.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.BACKGROUND_LAYER_NEAR,
-                    i < currentPosition ? new Color(Color.WHITE) : new Color(0.5f, 0.5f, 0.5f, 1)
-                    ));
-
-
-                    if(i != gameCreator.gameLevels.size - 1) {
-
-                        for (int j = 1; j <= 2; j++) {
-
-                            float x2 = TableMath.getXPos(startX, (i * 3) + j, maxColumns, size, gap) + CenterMath.offsetX(size, size / 2);
-                            float y2 = y + CenterMath.offsetY(size, size / 2);
-
-                            Color color = (i < currentPosition) ? new Color(Color.WHITE) : new Color(0.5f, 0.5f, 0.5f, 1);
-
-                            Entity smallSquare = world.createEntity();
-                            smallSquare.edit().add(new PositionComponent());
-                            smallSquare.edit().add(new FadeComponent(true, screenFadeTime, false));
-                            smallSquare.edit().add(new FollowCameraComponent(x2, y2));
-                            smallSquare.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size / 2, size / 2, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
-                                    color));
-
-
-                        }
-
-                    }
-
-
-                    if(i == currentPosition){
-
-                        Entity flashingSqaure = world.createEntity();
-                        flashingSqaure.edit().add(new PositionComponent());
-                        flashingSqaure.edit().add(new FadeComponent(true, screenFadeTime, false));
-                        flashingSqaure.edit().add(new FollowCameraComponent(x, y));
-                        flashingSqaure.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
-                                new Color(Color.WHITE)));
-                        flashingSqaure.edit().add(new ActionAfterTimeComponent(new Action() {
-
-                            boolean bool = true;
-
-                            @Override
-                            public void performAction(World world, Entity e) {
-
-                                e.edit().remove(FadeComponent.class);
-
-                                e.getComponent(ActionAfterTimeComponent.class).resetTime = 1.0f;
-                                e.getComponent(ActionAfterTimeComponent.class).timeUntilAction = 0f;
-
-                                e.getComponent(ActionAfterTimeComponent.class).action = new Action() {
-                                    @Override
-                                    public void performAction(World world, Entity e) {
-                                        TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
-                                        trc.color.a = bool ? 0 : 1;
-                                        bool = !bool;
-                                    }
-                                };
-                            }
-                        }, screenFadeTime, true));
-
-
-
-                        Entity flashingSqaureText = world.createEntity();
-                        flashingSqaureText.edit().add(new PositionComponent());
-                        flashingSqaureText.edit().add(new FadeComponent(true, screenFadeTime, false));
-                        flashingSqaureText.edit().add(new FollowCameraComponent(x + CenterMath.offsetX(size, gameport.getCamera().viewportWidth), y - Measure.units(7.5f)));
-                        flashingSqaureText.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, gameport.getCamera().viewportWidth, Measure.units(10f))));
-                        flashingSqaureText.edit().add(new TextureFontComponent(FontAssets.small, MenuStrings.Death.YOU_REACHED_HERE, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
-                                new Color(Color.WHITE)));
-
-
-
-                    }
-
-                }
-
-
+                //YOU ARE HERE SQUARES
+                createYouReachedHereSquares(adventureWorld.getGameCreator());
 
                 //Items Collected
-
                 createItemStatisticSection(world);
 
-                //END
-
-
-
-
+                //TAP TO EXIT
                 Entity exit = world.createEntity();
                 exit.edit().add(new PositionComponent());
                 exit.edit().add(new FadeComponent(true, screenFadeTime, false));
@@ -282,6 +176,110 @@ public class DeathScreenWorld {
                 game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
             }
         };
+    }
+
+
+
+    public Entity createSquare(World world, float size, float x, float y, Color color){
+
+        Entity square = world.createEntity();
+        square.edit().add(new PositionComponent());
+        square.edit().add(new FadeComponent(true, screenFadeTime, false));
+        square.edit().add(new FollowCameraComponent(x, y));
+        square.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), size, size, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
+                color));
+
+        return square;
+
+
+    }
+
+    public void createDeathScreenAdventureTitle(World world){
+
+        Entity title = world.createEntity();
+        title.edit().add(new PositionComponent());
+        title.edit().add(new FollowCameraComponent(0, adventureTitleY));
+        title.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gameport.getCamera().viewportWidth, Measure.units(10f))));
+        title.edit().add(new FadeComponent(true, screenFadeTime, false));
+        title.edit().add(new TextureFontComponent(FontAssets.medium,
+                MenuStrings.Death.ADVENTURE_FLAVOR_TEXT[MathUtils.random.nextInt(MenuStrings.Death.ADVENTURE_FLAVOR_TEXT.length)],
+                new Color(Color.WHITE)));
+
+
+    }
+
+
+
+    public void createYouReachedHereSquares(GameCreator gameCreator){
+
+        int maxColumns =  (gameCreator.gameLevels.size * 3) - 2;
+
+        float startX = CenterMath.offsetX(gameport.getCamera().viewportWidth, (squareSize * maxColumns) + (squareGap * (maxColumns - 1)));
+
+        int currentPosition = gameCreator.getPosition();
+
+        for(int i = 0; i < gameCreator.gameLevels.size; i++){
+
+            float x = TableMath.getXPos(startX, i * 3, maxColumns, squareSize, squareGap);
+            float y = youAreHereIconsStartY;
+
+            Color squareColor = i < currentPosition ? new Color(Color.WHITE) : new Color(0.5f, 0.5f, 0.5f, 1);
+            createSquare(world, squareSize, x, y, squareColor);
+
+            if(i != gameCreator.gameLevels.size - 1) {
+
+                for (int j = 1; j <= 2; j++) {
+
+                    float x2 = TableMath.getXPos(startX, (i * 3) + j, maxColumns, squareSize, squareGap) + CenterMath.offsetX(squareSize, squareSize / 2);
+                    float y2 = y + CenterMath.offsetY(squareSize, squareSize / 2);
+
+                    Color color = (i < currentPosition) ? new Color(Color.WHITE) : new Color(0.5f, 0.5f, 0.5f, 1);
+                    createSquare(world, squareSize / 2, x2, y2, color);
+                }
+
+            }
+
+
+            if(i == currentPosition){
+
+                Entity flashingSqaure = createSquare(world, squareSize, x, y, new Color(Color.WHITE));
+                flashingSqaure.edit().add(new ActionAfterTimeComponent(new Action() {
+
+
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        e.edit().remove(FadeComponent.class);
+                        e.getComponent(ActionAfterTimeComponent.class).resetTime = 1.0f;
+                        e.getComponent(ActionAfterTimeComponent.class).action = new Action() {
+
+                            boolean bool = true;
+
+                            @Override
+                            public void performAction(World world, Entity e) {
+                                TextureRegionComponent trc = e.getComponent(TextureRegionComponent.class);
+                                trc.color.a = bool ? 0 : 1;
+                                bool = !bool;
+                            }
+                        };
+                    }
+                }, screenFadeTime, true));
+
+
+                Entity flashingSqaureText = world.createEntity();
+                flashingSqaureText.edit().add(new PositionComponent());
+                flashingSqaureText.edit().add(new FadeComponent(true, screenFadeTime, false));
+                flashingSqaureText.edit().add(new FollowCameraComponent(x + CenterMath.offsetX(squareSize, gameport.getCamera().viewportWidth), y - Measure.units(7.5f)));
+                flashingSqaureText.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, gameport.getCamera().viewportWidth, Measure.units(10f))));
+                flashingSqaureText.edit().add(new TextureFontComponent(FontAssets.small, MenuStrings.Death.YOU_REACHED_HERE, TextureRegionComponent.ENEMY_LAYER_MIDDLE,
+                        new Color(Color.WHITE)));
+
+
+
+            }
+
+        }
+
+
     }
 
 
@@ -431,8 +429,7 @@ public class DeathScreenWorld {
 
 
     public void process(float delta){
-        world.setDelta(delta < 0.030f ? delta : 0.030f);
-        world.process();
+        GameDelta.delta(world, delta);
     }
 
 

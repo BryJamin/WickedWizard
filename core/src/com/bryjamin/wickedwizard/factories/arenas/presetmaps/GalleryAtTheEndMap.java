@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.MusicStrings;
@@ -64,7 +65,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
 
 
-    public ArenaMap endGameMap() {
+    public ArenaMap galleryMap() {
 
         ArenaMap arenaMap = new ArenaMap(galleryGrappleStart().createArena(new MapCoords(0,0)),
                 galleryTheOutSide().createArena(new MapCoords(0, 4))
@@ -128,6 +129,11 @@ public class GalleryAtTheEndMap extends AbstractFactory {
     }
 
 
+    /**
+     * Arena That Displays the Outside of the labyrinth, where the player loses input control and the player
+     * character walks off screen.
+     * @return
+     */
     private ArenaCreate galleryTheOutSide(){
 
 
@@ -152,6 +158,7 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE,
                                 ArenaBuilder.wall.NONE))
+                        .isSafe(false)
                         .buildArena();
 
                 arena.setWidth(MainGame.GAME_WIDTH);
@@ -163,7 +170,6 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                 ComponentBag lock = new ComponentBag();
                 lock.add(new EnemyComponent());
                 arena.addEntity(lock);
-
 
 
                 ComponentBag background = arena.createArenaBag();
@@ -188,10 +194,13 @@ public class GalleryAtTheEndMap extends AbstractFactory {
                         Entity playerMover = world.createEntity();
                         playerMover.edit().add(new DisablePlayerInputComponent());
                         playerMover.edit().add(new ActionAfterTimeComponent(new Action() {
+
+                            float destination = MathUtils.random.nextBoolean() ? Measure.units(5000) : -Measure.units(5000);
+
                             @Override
                             public void performAction(World world, Entity e){
                                 e.getComponent(ActionAfterTimeComponent.class).resetTime = 0f;
-                                world.getSystem(PlayerInputSystem.class).autoMove(Measure.units(5000), -0.3f);
+                                world.getSystem(PlayerInputSystem.class).autoMove(destination, -0.3f);
                             }
                         }, characterPauseTime, true));
 
