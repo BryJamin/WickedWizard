@@ -138,9 +138,9 @@ public class BossMaps extends AbstractFactory {
             public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
-                        new MapCoords(3, -1),
+                        new MapCoords(3, 0),
                         btc,
-                        new BossRoomGiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, -1)));
+                        new BossRoomGiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, 0)));
             }
         };
     }

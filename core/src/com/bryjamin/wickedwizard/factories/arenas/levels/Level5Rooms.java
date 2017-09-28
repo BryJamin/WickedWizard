@@ -12,6 +12,7 @@ import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -273,7 +274,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
 
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(3f))
                         .speedInDegrees(1f)
                         .numberOfOrbitals(12)
@@ -384,7 +385,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .buildArena();
 
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(20f))
                         .numberOfOrbitals(7)
                         .expiryTime(1)
@@ -394,7 +395,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         lb.build()));
 
                 arena.addEntity(beamTurretFactory.timedLaserChain(Measure.units(35f), Measure.units(160), 6, 4f,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager).build()));
+                        new LaserOrbitalTask.LaserBuilder(assetManager).build()));
 
 
                 arena.addEntity(decorFactory.grapplePointBag(Measure.units(20f), Measure.units(50f)));
@@ -523,7 +524,7 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                                 chestsAreLeft ? ArenaBuilder.wall.DOOR : ArenaBuilder.wall.FULL))
                         .buildArena();
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .chargeTime(0.5f)
                         .numberOfOrbitals(5)
                         .angles(270)
@@ -956,12 +957,12 @@ public class Level5Rooms extends AbstractFactory implements ArenaRepostiory{
                         .buildArena();
 
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(5f))
                         .numberOfOrbitals(6)
                         .angles(0);
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder empty = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                LaserOrbitalTask.LaserBuilder empty = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(5f));
 
                 for(int i = 0; i < 5; i++) {

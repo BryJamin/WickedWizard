@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.bryjamin.wickedwizard.factories.enemy.TurretFactory;
 import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
+import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -309,7 +310,7 @@ public class Level3Rooms extends AbstractFactory implements ArenaRepostiory {
                         Measure.units(145f),
                         Measure.units(25f),
                         2,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                        new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(5f))
                         .speedInDegrees(random.nextBoolean() ? 1f : -1f)
                         .numberOfOrbitals(10)

@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.MultiPistol;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -121,7 +122,7 @@ public class KugelDuscheFactory extends EnemyFactory {
 
         bag.add(trc);
 
-        bag.add(new ActionAfterTimeComponent(new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+        bag.add(new ActionAfterTimeComponent(new LaserOrbitalTask.LaserBuilder(assetManager)
                 .orbitalAndIntervalSize(Measure.units(5f))
                 .speedInDegrees(isLeft ? 1.25f : -1.25f)
                 .numberOfOrbitals(16)

@@ -37,7 +37,6 @@ import com.bryjamin.wickedwizard.factories.arenas.levels.AllArenaStore;
 import com.bryjamin.wickedwizard.factories.arenas.levels.TutorialFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
-import com.bryjamin.wickedwizard.factories.arenas.skins.DarkGraySkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.LightGraySkin;
 import com.bryjamin.wickedwizard.screens.world.AdventureWorld;
 import com.bryjamin.wickedwizard.screens.world.AreYouSureWorld;
@@ -107,38 +106,44 @@ public class PlayScreen extends AbstractScreen {
                 break;
             case BOSS:
 
-                ArenaMap bossMap;
-                try{
-
-                    bossMap = new BossMaps(game.assetManager, playScreenConfig.id != 8 ? new LightGraySkin() : new DarkGraySkin()).getBossMapsArray().get(playScreenConfig.id);
-
-                } catch (IndexOutOfBoundsException e) {
-                    e.printStackTrace();
-                    bossMap = new BossMaps(game.assetManager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent());
-                }
-
                 String unlockId = ChallengesResource.TUTORIAL_COMPLETE;
 
                 switch (playScreenConfig.id){
                     case 0:
                     case 1:
+                        arenaSkin = Level.ONE.getArenaSkin();
                         unlockId = ChallengesResource.LEVEL_1_COMPLETE;
                         break;
                     case 2:
                     case 3:
+                        arenaSkin = Level.TWO.getArenaSkin();
                         unlockId = ChallengesResource.LEVEL_2_COMPLETE;
                         break;
                     case 4:
                     case 5:
+                        arenaSkin = Level.THREE.getArenaSkin();
                         unlockId = ChallengesResource.LEVEL_3_COMPLETE;
                         break;
                     case 6:
                     case 7:
+                        arenaSkin = Level.FOUR.getArenaSkin();
                         unlockId = ChallengesResource.LEVEL_4_COMPLETE;
                         break;
                     case 8:
+                        arenaSkin = Level.FIVE.getArenaSkin();
                         unlockId = ChallengesResource.LEVEL_5_COMPLETE;
                         break;
+                }
+
+
+                ArenaMap bossMap;
+                try{
+
+                    bossMap = new BossMaps(game.assetManager, arenaSkin).getBossMapsArray().get(playScreenConfig.id);
+
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                    bossMap = new BossMaps(game.assetManager, arenaSkin).blobbaMapCreate().createBossMap(new BossTeleporterComponent());
                 }
 
                 gameCreator = new GameCreator(GameCreator.GameType.ADVENTURE, new GameCreator.LevelCreator(new JigsawGeneratorConfig(game.assetManager, random)

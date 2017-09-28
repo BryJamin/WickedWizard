@@ -160,7 +160,7 @@ public class BossAmalgama extends BossFactory {
         phaseComponent.addPhase(quadShotGap, emptyTask());
         phaseComponent.addPhase(quadShotPhaseTime, new BulletHurdlePhase(false));
         //empty phase to add some spawnTime between hurdles
-        //phaseComponent.addPhase(0.2f,emptyTask());
+        //phaseComponent.addPhase(0.2f,startToSpin());
         bag.add(phaseComponent);
 
 

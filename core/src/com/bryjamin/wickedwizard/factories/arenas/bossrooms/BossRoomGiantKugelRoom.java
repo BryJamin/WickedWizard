@@ -6,6 +6,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.factories.enemy.bosses.BossKugelDusc;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -54,22 +55,17 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
                                 ArenaBuilder.wall.NONE)).buildArena();
 
 
-                arena.addEntity(new com.bryjamin.wickedwizard.factories.enemy.bosses.BossKugelDusc(assetManager).giantKugelDusche(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(10f)));
+                arena.addEntity(new BossKugelDusc(assetManager).giantKugelDusche(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(10f)));
 
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(50f)));
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(80f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(40f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(75f)));
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(50f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(35f), Measure.units(80f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(30f), Measure.units(40f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(30f), Measure.units(75f)));
 
-
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(50f), Measure.units(100)));
-
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(100f)));
-
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(55), Measure.units(100f)));
-
-                arena.arenaType = Arena.ArenaType.TRAP;
+                float width = Measure.units(125f);
+                //arena.addEntity(decorFactory.wallBag(CenterMath.offsetX(arena.getWidth(), width), arena.getHeight() - Measure.units(25f), width, Measure.units(5f)));
+                arena.addEntity(decorFactory.platform(Measure.units(0), arena.getHeight() - Measure.units(30f), arena.getWidth()));
 
                 return arena;
             }
