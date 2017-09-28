@@ -22,6 +22,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
@@ -40,6 +41,7 @@ public class RoomTransitionSystem extends EntitySystem {
     private ComponentMapper<PositionComponent> pm;
     private ComponentMapper<VelocityComponent> vm;
     private ComponentMapper<GravityComponent> gm;
+    private ComponentMapper<GrappleableComponent> grappleablem;
     private ComponentMapper<CollisionBoundComponent> cbm;
     private ComponentMapper<DoorComponent> dm;
     private ComponentMapper<MoveToComponent> mtm;
@@ -148,7 +150,7 @@ public class RoomTransitionSystem extends EntitySystem {
                     break;
                 case UP:
                     playerPosition.position.x = doorBoundary.getCenterX();
-                    playerPosition.position.y = doorBoundary.bound.getY() - playerBoundary.bound.getHeight();;
+                    playerPosition.position.y = doorBoundary.bound.getY() - playerBoundary.bound.getHeight() * 1.5f;
                     playerVelocity.velocity.y = (playerVelocity.velocity.y > 0) ? 0 : playerVelocity.velocity.y;
                     break;
                 case DOWN:
@@ -268,7 +270,7 @@ public class RoomTransitionSystem extends EntitySystem {
                 e.edit().add(c);
             }
 
-            if(dm.has(e)){
+            if(dm.has(e) && !grappleablem.has(e)){
                 placePlayerAfterTransition(dm.get(e),
                         cbm.get(e),
                         world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class),
