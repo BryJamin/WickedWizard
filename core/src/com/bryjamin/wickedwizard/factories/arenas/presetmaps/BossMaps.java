@@ -20,8 +20,8 @@ import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.factories.chests.AltarFactory;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
-import com.bryjamin.wickedwizard.factories.items.ItemFactory;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
@@ -38,7 +38,7 @@ public class BossMaps extends AbstractFactory {
     private ChestFactory chestFactory;
     private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
     private PortalFactory portalFactory;
-    private ItemFactory itemFactory;
+    private AltarFactory altarFactory;
 
     ArenaSkin arenaSkin;
 
@@ -49,7 +49,7 @@ public class BossMaps extends AbstractFactory {
         //this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin);
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.portalFactory = new PortalFactory(assetManager);
-        this.itemFactory = new ItemFactory(assetManager);
+        this.altarFactory = new AltarFactory(assetManager);
         this.arenaSkin = arenaSkin;
     }
 
@@ -96,7 +96,7 @@ public class BossMaps extends AbstractFactory {
 
 
         exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
-        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint(), ItemType.BOSS));
+        exitArena.addEntity(altarFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint(), ItemType.BOSS));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
 
         return exitArena;

@@ -27,11 +27,15 @@ import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
+import com.bryjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory;
+import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
 import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
 import com.bryjamin.wickedwizard.factories.arenas.presetrooms.ItemArenaFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.factories.chests.AltarFactory;
+import com.bryjamin.wickedwizard.factories.items.ItemFactory;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -54,20 +58,21 @@ public class Rank5ChallengeMaps extends AbstractFactory {
                     com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps.TUTORIAL_SPEEDRUN_TIMER + 5f;
 
 
-    private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;
-    private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
-    private com.bryjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory beamTurretFactory;
-    private com.bryjamin.wickedwizard.factories.items.ItemFactory itemFactory;
+    private ArenaShellFactory arenaShellFactory;
+    private DecorFactory decorFactory;
+    private BeamTurretFactory beamTurretFactory;
+    private ItemFactory itemFactory;
+    private AltarFactory altarFactory;
     private ArenaEnemyPlacementFactory arenaEnemyPlacementFactory;
 
     private ArenaSkin arenaSkin = Level.FIVE.getArenaSkin();
 
     private Random random;
 
-    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps rank1ChallengeMaps;
-    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank2ChallengeMaps rank2ChallengeMaps;
-    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank3ChallengeMaps rank3ChallengeMaps;
-    private com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank4ChallengeMaps rank4ChallengeMaps;
+    private Rank1ChallengeMaps rank1ChallengeMaps;
+    private Rank2ChallengeMaps rank2ChallengeMaps;
+    private Rank3ChallengeMaps rank3ChallengeMaps;
+    private Rank4ChallengeMaps rank4ChallengeMaps;
 
 
     public Rank5ChallengeMaps(AssetManager assetManager, Random random) {
@@ -76,6 +81,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.itemFactory = new com.bryjamin.wickedwizard.factories.items.ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
+        this.altarFactory = new AltarFactory(assetManager);
         this.beamTurretFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory(assetManager, arenaSkin);
         this.random = random;
         this.rank1ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps(assetManager, random);
@@ -291,7 +297,7 @@ public class Rank5ChallengeMaps extends AbstractFactory {
 
 
         Arena iWishYouWell = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(0, 0), Arena.ArenaType.NORMAL);
-        iWishYouWell.addEntity(itemFactory.createPresetItemAltarBag(Measure.units(42.5f),
+        iWishYouWell.addEntity(altarFactory.createPresetItemAltarBag(Measure.units(42.5f),
                 Measure.units(10f), arenaSkin.getWallTint(), new com.bryjamin.wickedwizard.factories.items.passives.luck.ItemIWishYouWell()));
 
         ArenaMap arenaMap = new ArenaMap(startingArena,

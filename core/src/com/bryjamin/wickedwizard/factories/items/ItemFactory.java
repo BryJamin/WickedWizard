@@ -1,10 +1,7 @@
 package com.bryjamin.wickedwizard.factories.items;
 
-import com.artemis.Aspect;
 import com.artemis.Entity;
-import com.artemis.EntitySubscription;
 import com.artemis.World;
-import com.artemis.utils.IntBag;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,23 +11,19 @@ import com.bryjamin.wickedwizard.assets.ColorResource;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.CurrencyComponent;
-import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.OffScreenPickUpComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
-import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
@@ -45,7 +38,6 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.LuckSystem;
-import com.bryjamin.wickedwizard.ecs.systems.PickUpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
@@ -58,11 +50,10 @@ import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
-import com.bryjamin.wickedwizard.utils.collider.HitBox;
-import com.bryjamin.wickedwizard.utils.enums.ItemType;
 
 import java.util.Random;
 
+import static com.bryjamin.wickedwizard.factories.items.ItemInteractionTasks.buyItem;
 
 
 /**
@@ -70,11 +61,6 @@ import java.util.Random;
  */
 
 public class ItemFactory extends AbstractFactory {
-
-    private static final float altarWidth = Measure.units(15f);
-    private static final float altarHeight = Measure.units(15f);
-    private static final float altarItemWidth = Measure.units(5f);
-    private static final float altarItemHeight = Measure.units(5f);
 
 
     private static final float width = Measure.units(10f);
@@ -173,113 +159,6 @@ public class ItemFactory extends AbstractFactory {
         }, 0.5f));
 
         return bag;
-    }
-
-
-    private ComponentBag altarItemTexture(Item item, ParentComponent pc, FollowPositionComponent followPositionComponent){
-
-        ComponentBag bag = new ComponentBag();
-
-        bag.add(new PositionComponent());
-        bag.add(new TextureRegionComponent(atlas.findRegion(item.getValues().getRegion().getLeft(), item.getValues().getRegion().getRight()),
-                Measure.units(5), Measure.units(5),
-                TextureRegionComponent.ENEMY_LAYER_FAR,
-                item.getValues().getTextureColor()));
-        bag.add(followPositionComponent);
-        ChildComponent c = new ChildComponent(pc);
-        bag.add(c);
-
-        return bag;
-
-
-    }
-
-    public ComponentBag createCenteredItemAltarBag(float x, float y, Color color, ItemType... itemTypes){
-
-        x = x - altarWidth / 2;
-        y = y - altarHeight / 2;
-
-        return createItemAltarBag(x, y, color, itemTypes);
-    }
-
-
-    private ComponentBag emptyAltar(float x, float y, Color color){
-
-
-        ComponentBag altarBag = new ComponentBag();
-
-        altarBag.add(new ParentComponent());
-        altarBag.add(new PositionComponent(x,y));
-        altarBag.add(new AltarComponent());
-        altarBag.add(new VelocityComponent());
-        altarBag.add(new GravityComponent());
-
-        Rectangle bound = new Rectangle(new Rectangle(x,y, altarWidth, altarHeight / 3));
-        altarBag.add(new CollisionBoundComponent(bound));
-        altarBag.add(new ProximityTriggerAIComponent(activeAltar(), new HitBox(bound)));
-        altarBag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.ALTAR), altarWidth, altarHeight,
-                TextureRegionComponent.PLAYER_LAYER_FAR, new Color(color)));
-
-        return altarBag;
-
-    }
-
-
-
-
-    public ComponentBag createItemAltarBag(float x, float y, Color color, final ItemType... itemTypes){
-
-        ComponentBag altarBag = emptyAltar(x, y, color);
-
-        altarBag.add(new DuringRoomLoadActionComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-
-                Item altarItem = world.getSystem(ChangeLevelSystem.class).getJigsawGenerator().getItemStore().generateRoomItem(itemTypes);
-
-                e.getComponent(AltarComponent.class).pickUp = altarItem;
-
-                BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(altarItem, e.getComponent(ParentComponent.class),
-                        new FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
-
-                e.edit().remove(DuringRoomLoadActionComponent.class);
-
-            }
-        }));
-
-        return  altarBag;
-    }
-
-
-
-    public ComponentBag createCenteredPresetItemAltarBag(float x, float y, Color color, Item item){
-        x = x - altarWidth / 2;
-        y = y - altarHeight / 2;
-        return createPresetItemAltarBag(x, y, color, item);
-    }
-
-
-    public ComponentBag createPresetItemAltarBag(float x, float y, Color color, final Item item){
-
-        ComponentBag altarBag = emptyAltar(x, y, color);
-
-        altarBag.add(new DuringRoomLoadActionComponent(new Action() {
-
-            @Override
-            public void performAction(World world, Entity e) {
-
-                e.getComponent(AltarComponent.class).pickUp = item;
-
-                BagToEntity.bagToEntity(world.createEntity(), altarItemTexture(item, e.getComponent(ParentComponent.class),
-                        new FollowPositionComponent(e.getComponent(PositionComponent.class).position, CenterMath.offsetX(altarWidth, altarItemWidth), Measure.units(5f))));
-
-                e.edit().remove(DuringRoomLoadActionComponent.class);
-
-            }
-        }));
-
-        return altarBag;
     }
 
 
@@ -405,7 +284,7 @@ public class ItemFactory extends AbstractFactory {
                 TextureRegionComponent.ENEMY_LAYER_FAR, pickUp.getValues().getTextureColor()));
         shopItemTexture.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
         shopItemTexture.add(new AltarComponent(pickUp));
-        shopItemTexture.add(new ActionOnTouchComponent(buyItem()));
+        shopItemTexture.add(new ActionOnTouchComponent(ItemInteractionTasks.buyItem()));
         shopItemTexture.add(new CurrencyComponent(money));
         shopItemTexture.add(pc);
 
@@ -546,97 +425,6 @@ public class ItemFactory extends AbstractFactory {
 
     }
 
-
-
-
-
-
-    private Action buyItem(){
-        return new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                CurrencyComponent playerMoney = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CurrencyComponent.class);
-                CurrencyComponent itemPrice = e.getComponent(CurrencyComponent.class);
-
-
-                if(playerMoney.money - itemPrice.money >= 0) {
-
-                    AltarComponent ac = e.getComponent(AltarComponent.class);
-
-                    //TODO if item do this
-                    if(ac.pickUp instanceof Item) {
-                        activeAltar().performAction(world, e);
-                    } else {
-                        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(PlayerComponent.class));
-                        IntBag entityIds = subscription.getEntities();
-
-                        for (int i = 0; i < entityIds.size(); i++) {
-                            Entity player = world.getEntity(entityIds.get(i));
-                            if(!ac.pickUp.applyEffect(world, player)) return;
-                        }
-                    }
-
-                    playerMoney.money -= itemPrice.money;
-
-                    if (world.getMapper(ParentComponent.class).has(e)) {
-                        world.getSystem(OnDeathSystem.class).killChildComponentsIgnoreOnDeath(world.getMapper(ParentComponent.class).get(e));
-                    }
-
-
-                    e.deleteFromWorld();
-                }
-
-            }
-
-        };
-    }
-
-
-
-    private Task activeAltar (){
-
-        return new Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                AltarComponent ac = e.getComponent(AltarComponent.class);
-
-                if(ac.pickUp instanceof Item) {
-
-                    Item item = (Item) ac.pickUp;
-
-                    if (ac.hasItem) {
-
-                        Entity player = world.getSystem(FindPlayerSystem.class).getPlayerEntity();
-                        item.applyEffect(world, player);
-                        player.getComponent(StatComponent.class).collectedItems.add(item);
-
-
-                        world.getSystem(PickUpSystem.class).itemOverHead(player, item);
-                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem.class).createItemBanner(item.getValues().getName(),
-                                item.getValues().getDescription(),
-                                Measure.units(52.5f));
-
-                        ac.hasItem = false;
-                        if (world.getMapper(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).has(e)) {
-                            world.getSystem(com.bryjamin.wickedwizard.ecs.systems.FindChildSystem.class).findChildEntity(e.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).children.first()).deleteFromWorld();
-                        }
-
-                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem.class).playRandomSound(SoundFileStrings.itemPickUpMegaMix);
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void cleanUpAction(World world, Entity e) {
-            }
-        };
-
-
-    }
 
 
 
