@@ -411,8 +411,6 @@ public class JigsawGenerator {
 
             Arena portalRoom = new PortalRooms(assetManager, arenaSkin).allDoorsPortalArena(mapCoords, btc);
 
-            System.out.println(tempRoom.getDoors().first().exit);
-
             switch (tempRoom.getDoors().first().exit){
                 case RIGHT:
                     portalRoom =  new PortalRooms(assetManager, arenaSkin).portalRoomToBossRightDoor(mapCoords, btc);
