@@ -16,6 +16,7 @@ public class PreferenceStrings {
 
 
     public final static String SETTINGS_GUIDELINE = "settings_guideline";
+    public final static String SETTINGS_AUTOFIRE = "settings_autofire";
 
 
 

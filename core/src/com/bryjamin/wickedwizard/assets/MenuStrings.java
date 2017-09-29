@@ -37,8 +37,10 @@ public class MenuStrings {
     public static final String COMPLETED = "Completed";
 
     public static final String SETTINGS_GUIDELINE_ON = "White Line On";
-
     public static final String SETTINGS_GUIDELINE_OFF = "White Line Off";
+
+    public static final String SETTINGS_AUTOFIRE_ON = "Auto Fire On";
+    public static final String SETTINGS_AUTOFIRE_OFF = "Auto Fire Off";
 
     public static final String STATS = "Stats";
 

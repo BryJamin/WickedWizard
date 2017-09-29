@@ -348,7 +348,7 @@ public class AdventureWorld extends InputAdapter {
                         new CameraSystem(gameport),
                         new CameraShakeSystem(gameport),
                         new FollowCameraSystem(gameport.getCamera()),
-                        new FiringAISystem(),
+                        new FiringAISystem(gameport),
                         new FadeSystem(), //Applies any fade before render
                         new ColorChangeSystem(),
                         new RenderingSystem(batch, assetManager, gameport),

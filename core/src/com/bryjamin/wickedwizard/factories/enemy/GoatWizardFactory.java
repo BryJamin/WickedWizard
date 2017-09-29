@@ -17,6 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -188,7 +189,8 @@ public class GoatWizardFactory extends EnemyFactory {
             Entity e = world.createEntity();
             e.edit().add(new PositionComponent(x, y));
             e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, Measure.units(5), Measure.units(5)), true));
-            e.edit().add(new EnemyComponent());
+            e.edit().add(new OnlyPlayerBulletsComponent());
+            //e.edit().add(new EnemyComponent());
             e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new BlinkOnHitComponent());
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(3));

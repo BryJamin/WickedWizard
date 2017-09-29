@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
+import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.AdditionalWeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
@@ -35,6 +36,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FiringAISystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -78,6 +80,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public boolean hasStartedFiring = false;
 
+    public boolean isAutoFire = false;
+
 
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(Viewport gameport) {
@@ -88,6 +92,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                 MainGame.GAME_WIDTH, Measure.units(10f));
 
         playerInput = new PlayerInput(world, gameport, movementArea, this);
+
+        this.isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
     }
 
 
@@ -106,6 +112,46 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         for(Entity e : this.getEntities()){
             movePlayer(targetX, cbm.get(e).getCenterX(), am.get(e), vm.get(e), speedMultiplier);
         }
+    }
+
+    public void updateWeapons(WeaponComponent wc, AdditionalWeaponComponent adc){
+        if (wc.timer.isFinished()) {
+            wc.timer.reset(wc.weapon.getBaseFireRate());
+        }
+
+        for (WeaponComponent weaponComponent : adc.additionalWeapons) {
+            if (weaponComponent.timer.isFinished()) {
+                weaponComponent.timer.reset(weaponComponent.weapon.getBaseFireRate());
+            }
+        }
+
+        wc.timer.update(world.getDelta());
+
+        for (WeaponComponent weaponComponent : adc.additionalWeapons) {
+            weaponComponent.timer.update(world.getDelta());
+        }
+
+        //The purpose for the delay reset is for enemies/companies that react to player fire to have a chance to see that the player has fired
+
+    }
+
+    public void fireWeapons(WeaponComponent wc, AdditionalWeaponComponent adc, AnimationStateComponent asc, Entity e, float x, float y, double angleOfTravelInRadians){
+
+        if (wc.timer.isFinished()) {
+            hasStartedFiring = true;
+            asc.queueAnimationState(AnimationStateComponent.FIRING);
+            wc.weapon.fire(world, e, x, y, angleOfTravelInRadians);
+        }
+
+        for (WeaponComponent weaponComponent : adc.additionalWeapons) {
+            if (weaponComponent.timer.isFinished()) {
+                hasStartedFiring = true;
+                asc.queueAnimationState(AnimationStateComponent.FIRING);
+                weaponComponent.weapon.fire(world, e, x, y, angleOfTravelInRadians);
+            }
+        }
+
+
     }
 
     @Override
@@ -131,7 +177,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         MoveToComponent mtc = mtm.get(e);
 
 
-
+        System.out.println(isAutoFire);
 
         if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
             turnOffGlide();
@@ -166,57 +212,44 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
                 if (Gdx.input.isTouched(playerInput.firingInputPoll)) {
 
-
-                    //The purpose for the delay reset is for enemies/companies that react to player fire to have a chance to see that the player has fired
-                    if(wc.timer.isFinished()){
-                        wc.timer.reset(wc.weapon.getBaseFireRate());
-                    }
-
-                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
-                        if (weaponComponent.timer.isFinished()) {
-                            weaponComponent.timer.reset(weaponComponent.weapon.getBaseFireRate());
-                        }
-                    }
-
-
-                    wc.timer.update(world.getDelta());
-
-                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
-                        weaponComponent.timer.update(world.getDelta());
-                    }
-
+                    updateWeapons(wc, adc);
 
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.firingInputPoll), Gdx.input.getY(playerInput.firingInputPoll), 0);
                     gameport.unproject(input);
-                    float x = pc.getX() + (cbc.bound.getWidth() / 2);
-                    float y = pc.getY() + (cbc.bound.getHeight() / 2);
+                    float x = cbc.getCenterX();
+                    float y = cbc.getCenterY();
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
-                    if(hasStartedFiring) {
-                        if(dm.has(e)){
+                    if (hasStartedFiring) {
+                        if (dm.has(e)) {
                             setDirectionOfPlayerUsingFiringAngle(dm.get(e), angleOfTravel, DirectionalComponent.PRIORITY.HIGHEST);
                         }
                     }
 
 
-                    if (wc.timer.isFinished()) {
-                        hasStartedFiring = true;
-                        asc.queueAnimationState(AnimationStateComponent.FIRING);
-                        wc.weapon.fire(world,e, x, y, angleOfTravel);
-                    }
-
-                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
-                        if (weaponComponent.timer.isFinished()) {
-                            hasStartedFiring = true;
-                            asc.queueAnimationState(AnimationStateComponent.FIRING);
-                            weaponComponent.weapon.fire(world,e, x, y, angleOfTravel);
-                        }
-                    }
-
+                    fireWeapons(wc, adc, asc, e, x, y, angleOfTravel);
 
                 } else {
                     playerInput.firingInputPoll = null;
                 }
+
+            } else if(isAutoFire && world.getSystem(FiringAISystem.class).enemiesExist()) {
+
+                updateWeapons(wc, adc);
+
+                float x = cbc.getCenterX();
+                float y = cbc.getCenterY();
+
+                double angleOfTravel = world.getSystem(FiringAISystem.class).firingAngleToNearestEnemyInRadians(x, y);
+
+                if (hasStartedFiring) {
+                    if (dm.has(e)) {
+                        setDirectionOfPlayerUsingFiringAngle(dm.get(e), angleOfTravel, DirectionalComponent.PRIORITY.HIGHEST);
+                    }
+                }
+
+                fireWeapons(wc, adc, asc, e, x, y, angleOfTravel);
+
             } else {
 
                 hasStartedFiring = false;

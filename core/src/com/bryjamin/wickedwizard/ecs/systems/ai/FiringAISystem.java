@@ -7,6 +7,8 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
@@ -14,6 +16,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 
 /**
@@ -38,10 +41,14 @@ public class FiringAISystem extends EntityProcessingSystem {
     private Vector2 start = new Vector2();
     private Vector2 end = new Vector2();
 
+
+    private Viewport gameport;
+
     @SuppressWarnings("unchecked")
-    public FiringAISystem() {
+    public FiringAISystem(Viewport gameport) {
         super(Aspect.all(PositionComponent.class, WeaponComponent.class, FiringAIComponent.class));
-        enemyTargets = Aspect.all(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class, CollisionBoundComponent.class);
+        enemyTargets = Aspect.all(EnemyComponent.class, HealthComponent.class, CollisionBoundComponent.class);
+        this.gameport = gameport;
     }
 
     @Override
@@ -121,16 +128,22 @@ public class FiringAISystem extends EntityProcessingSystem {
     }
 
 
-    private boolean enemiesExist(){
+    public boolean enemiesExist(){
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(enemyTargets);
         IntBag entityIds = subscription.getEntities();
+
+        for(int i = 0; i < entityIds.size(); i++){
+            if(!CameraSystem.isOnCamera(cbm.get(entityIds.get(i)).bound, gameport.getCamera())){
+                entityIds.remove(i);
+            };
+        }
 
         return entityIds.size() > 0;
     }
 
 
 
-    private double firingAngleToNearestEnemyInRadians(float x, float y){
+    public double firingAngleToNearestEnemyInRadians(float x, float y){
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(enemyTargets);
         IntBag entityIds = subscription.getEntities();
