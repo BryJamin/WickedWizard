@@ -145,13 +145,38 @@ public class TutorialTipsFactory extends AbstractFactory {
     }
 
 
-    public Bag<ComponentBag> uiTips(Bag<ComponentBag> fillBag, Camera gamecam){
+    public Bag<ComponentBag> autoFire(Bag<ComponentBag> fillBag, Camera gamecam){
 
         ParentComponent parentComponent = new ParentComponent();
 
         fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
         fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(5), 0, titleY));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_1, 0, Measure.units(52.5f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_4, 0, Measure.units(47.5f)));
+
+        fillBag.add(defaultCenteredImage(new ComponentBag(), ItemResource.PickUp.moneyUp.getRegion().getLeft(), parentComponent, gamecam, Measure.units(5f), Measure.units(37.5f)));
+
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_2, 0, Measure.units(32.5f)));
+
+        fillBag.add(defaultCenteredImage(new ComponentBag(), ItemResource.PickUp.fullHealthUp.getRegion().getLeft(), parentComponent, gamecam, Measure.units(6f), Measure.units(23)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_3, 0, Measure.units(18)));
+
+        fillBag.add(tapToContinue(new ComponentBag(), parentComponent, Measure.units(0), Measure.units(5f), Measure.units(50f), Measure.units(10f)));
+
+        return fillBag;
+
+    }
+
+
+
+    public Bag<ComponentBag> uiTips(Bag<ComponentBag> fillBag, Camera gamecam){
+
+        ParentComponent parentComponent = new ParentComponent();
+
+        fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.liaTips(6), 0, titleY));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_1, 0, Measure.units(52.5f)));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.UI_4, 0, Measure.units(47.5f)));
 
