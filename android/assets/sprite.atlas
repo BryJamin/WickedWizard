@@ -6,2289 +6,2289 @@ filter: Nearest,Nearest
 repeat: none
 amoeba
   rotate: false
-  xy: 1117, 1843
+  xy: 329, 1779
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 amoeba
   rotate: false
-  xy: 1183, 1843
+  xy: 263, 1647
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 amoeba
   rotate: false
-  xy: 1249, 1843
+  xy: 329, 1713
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 amoeba
   rotate: false
-  xy: 1315, 1843
+  xy: 395, 1779
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 amoeba
   rotate: false
-  xy: 1381, 1843
+  xy: 263, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 backgrounds/center_sqaure
   rotate: false
-  xy: 395, 1449
+  xy: 329, 1251
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 backgrounds/checkered_block
   rotate: false
-  xy: 461, 1515
+  xy: 395, 1317
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 backgrounds/menu_backdrop
   rotate: false
-  xy: 1385, 1777
+  xy: 923, 1251
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 black_block
   rotate: false
-  xy: 263, 1779
+  xy: 329, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/switch
   rotate: false
-  xy: 263, 1779
+  xy: 329, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 6
+  index: 7
 enemy/switch
   rotate: false
-  xy: 263, 1779
+  xy: 329, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 enemy/switch
   rotate: false
-  xy: 263, 1779
+  xy: 329, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 7
+  index: 6
 block
   rotate: false
-  xy: 395, 1779
+  xy: 263, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 decor/block_door
   rotate: false
-  xy: 395, 1779
+  xy: 263, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 8
 blocklarge
   rotate: false
-  xy: 389, 1911
+  xy: 649, 1911
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 0
 blocktiny
   rotate: false
-  xy: 1, 8
+  xy: 1, 12
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: 0
 bomb
   rotate: false
-  xy: 593, 1779
+  xy: 263, 1251
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 bomb
   rotate: false
-  xy: 263, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-chest
-  rotate: false
-  xy: 527, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-chest
-  rotate: false
-  xy: 527, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-chest
-  rotate: false
-  xy: 593, 1647
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-chest
-  rotate: false
-  xy: 593, 1647
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-chest
-  rotate: false
-  xy: 659, 1713
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-chevron
-  rotate: false
-  xy: 725, 1779
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-chevron
-  rotate: false
-  xy: 263, 1251
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-chevron
-  rotate: false
   xy: 329, 1317
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
-chevron
+  index: 1
+chest
   rotate: false
-  xy: 395, 1383
+  xy: 461, 1383
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+chest
+  rotate: false
+  xy: 461, 1383
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+chest
+  rotate: false
+  xy: 527, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+chest
+  rotate: false
+  xy: 527, 1449
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
-chevron
+chest
   rotate: false
-  xy: 461, 1449
+  xy: 593, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 chevron
   rotate: false
-  xy: 527, 1515
+  xy: 659, 1581
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+chevron
+  rotate: false
+  xy: 725, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+chevron
+  rotate: false
+  xy: 791, 1713
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+chevron
+  rotate: false
+  xy: 857, 1779
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+chevron
+  rotate: false
+  xy: 263, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+chevron
+  rotate: false
+  xy: 329, 1185
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 chevron
   rotate: false
-  xy: 593, 1581
+  xy: 395, 1251
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 chevron
   rotate: false
-  xy: 659, 1647
+  xy: 461, 1317
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 7
 chevron
   rotate: false
-  xy: 725, 1713
+  xy: 527, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 8
 chevron
   rotate: false
-  xy: 329, 1251
+  xy: 593, 1449
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 9
 chevron
   rotate: false
-  xy: 395, 1317
+  xy: 659, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 10
 chevron
   rotate: false
-  xy: 395, 1317
+  xy: 659, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 13
 chevron
   rotate: false
-  xy: 395, 1317
+  xy: 659, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 12
 chevron
   rotate: false
-  xy: 395, 1317
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 11
-chevron
-  rotate: false
-  xy: 395, 1317
+  xy: 659, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 14
+chevron
+  rotate: false
+  xy: 659, 1515
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 11
 decor/altar
-  rotate: false
-  xy: 199, 1057
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-decor/block_door
-  rotate: false
-  xy: 263, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/pylon_spawning
-  rotate: false
-  xy: 263, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/pylon_spawning
-  rotate: false
-  xy: 263, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/block_door
-  rotate: false
-  xy: 329, 1647
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/block_door
-  rotate: false
-  xy: 395, 1713
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-decor/block_door
-  rotate: false
-  xy: 461, 1779
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-decor/block_door
-  rotate: false
-  xy: 263, 1515
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-decor/block_door
-  rotate: false
-  xy: 329, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-decor/block_door
-  rotate: false
-  xy: 395, 1647
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 6
-decor/block_door
-  rotate: false
-  xy: 461, 1713
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 7
-decor/grapple
-  rotate: false
-  xy: 519, 1911
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 0
-decor/lock_block
-  rotate: false
-  xy: 1319, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-decor/mine
-  rotate: false
-  xy: 989, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-decor/mine
-  rotate: false
-  xy: 1055, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/spike_wall
-  rotate: false
-  xy: 1781, 1249
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-decor/turret
-  rotate: false
-  xy: 265, 987
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-decor/turret
-  rotate: false
-  xy: 331, 1053
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-decor/turret
-  rotate: false
-  xy: 397, 1119
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-decor/turret
-  rotate: false
-  xy: 463, 1185
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-decor/turret
-  rotate: false
-  xy: 265, 921
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-decor/turret
-  rotate: false
-  xy: 331, 987
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-decor/turret
-  rotate: false
-  xy: 397, 1053
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 6
-decor/turret
-  rotate: false
-  xy: 463, 1119
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 7
-decor/turret
-  rotate: false
-  xy: 529, 1185
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 8
-decor/turret
-  rotate: false
-  xy: 265, 855
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 9
-decor/turret
-  rotate: false
-  xy: 331, 921
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 10
-decor/turret
-  rotate: false
-  xy: 397, 987
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 11
-decor/turret
-  rotate: false
-  xy: 463, 1053
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 12
-decor/turret
-  rotate: false
-  xy: 529, 1119
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 13
-decor/turret
-  rotate: false
-  xy: 595, 1185
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 14
-decor/turret
-  rotate: false
-  xy: 265, 789
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 15
-enemy/air_mine
-  rotate: false
-  xy: 133, 331
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/air_mine
-  rotate: false
-  xy: 133, 265
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/alurm
-  rotate: false
-  xy: 199, 991
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/alurm
-  rotate: false
-  xy: 199, 991
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/alurm
-  rotate: false
-  xy: 199, 991
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/alurm
-  rotate: false
-  xy: 199, 925
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/alurm_firing
-  rotate: false
-  xy: 199, 859
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/alurm_firing
-  rotate: false
-  xy: 199, 793
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/alurm_firing
-  rotate: false
-  xy: 199, 727
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/alurm_firing
-  rotate: false
-  xy: 199, 661
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/blob
-  rotate: false
-  xy: 263, 1713
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/blob
-  rotate: false
-  xy: 329, 1779
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/blob
-  rotate: false
-  xy: 329, 1779
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/blob
-  rotate: false
-  xy: 263, 1647
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/blob
-  rotate: false
-  xy: 329, 1713
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/boss/adoj
-  rotate: false
-  xy: 133, 661
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/adoj
-  rotate: false
-  xy: 133, 661
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/adoj_firing
-  rotate: false
-  xy: 133, 661
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/boss/adoj_firing
-  rotate: false
-  xy: 133, 661
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/adoj
-  rotate: false
-  xy: 133, 595
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/adoj
-  rotate: false
-  xy: 133, 595
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/boss/adoj
-  rotate: false
-  xy: 133, 529
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/boss/adoj_firing
-  rotate: false
-  xy: 133, 463
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/adoj_firing
-  rotate: false
-  xy: 133, 397
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/ajir
-  rotate: false
-  xy: 133, 199
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/ajir_firing
-  rotate: false
-  xy: 133, 199
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/boss/ajir_firing
-  rotate: false
-  xy: 133, 199
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/ajir
-  rotate: false
-  xy: 133, 133
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/ajir
-  rotate: false
-  xy: 133, 133
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/boss/ajir
-  rotate: false
-  xy: 133, 67
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/ajir_firing
-  rotate: false
-  xy: 133, 67
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/ajir_firing
-  rotate: false
-  xy: 199, 1123
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/amalgama
-  rotate: false
-  xy: 199, 595
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/amalgama
-  rotate: false
-  xy: 199, 529
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/amalgama
-  rotate: false
-  xy: 199, 463
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/amalgama_blue
-  rotate: false
-  xy: 199, 397
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/amalgama_blue
-  rotate: false
-  xy: 199, 331
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/amalgama_blue
   rotate: false
   xy: 199, 265
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
-enemy/boss/amalgama_green
-  rotate: false
-  xy: 199, 199
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 0
-enemy/boss/amalgama_green
-  rotate: false
-  xy: 199, 133
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/amalgama_green
-  rotate: false
-  xy: 199, 67
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/amalgama_red
-  rotate: false
-  xy: 133, 1
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/amalgama_red
-  rotate: false
-  xy: 199, 1
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/amalgama_red
-  rotate: false
-  xy: 853, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/amalgama_yellow
-  rotate: false
-  xy: 919, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/amalgama_yellow
-  rotate: false
-  xy: 985, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/amalgama_yellow
-  rotate: false
-  xy: 1051, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/biggablobba
-  rotate: false
-  xy: 1579, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/biggablobba
-  rotate: false
-  xy: 1645, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/biggablobba
-  rotate: false
-  xy: 1711, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/biggablobba
-  rotate: false
-  xy: 1777, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/boss/biggablobba
-  rotate: false
-  xy: 1843, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/boss/biggablobba
-  rotate: false
-  xy: 1909, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-enemy/boss/biggablobba
-  rotate: false
-  xy: 1975, 1843
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 6
-enemy/boss/end_hand
-  rotate: false
-  xy: 659, 1515
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/end_hand_firing
-  rotate: false
-  xy: 659, 1515
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/end_hand
-  rotate: false
-  xy: 725, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/end_hand
-  rotate: false
-  xy: 461, 1251
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/end_hand
-  rotate: false
-  xy: 527, 1317
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/boss/end_hand_charging
-  rotate: false
-  xy: 593, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/end_hand_firing
-  rotate: false
-  xy: 593, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/end_hand_charging
-  rotate: false
-  xy: 659, 1449
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/end_hand_charging
-  rotate: false
-  xy: 725, 1515
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/end_hand_firing
-  rotate: false
-  xy: 527, 1251
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/wraith_cowl_mad
-  rotate: false
-  xy: 397, 855
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/boss/wraith_cowl_mad
-  rotate: false
-  xy: 463, 921
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/wraith_cowl_mad
-  rotate: false
-  xy: 529, 987
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/boss/wraith_cowl_mad
-  rotate: false
-  xy: 595, 1053
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/boss/wraith_cowl_sad
-  rotate: false
-  xy: 661, 1119
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/boss/wraith_cowl_sad
-  rotate: false
-  xy: 265, 657
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/bouncer
+decor/block_door
   rotate: false
   xy: 329, 1449
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-enemy/bouncer
+enemy/pylon_spawning
+  rotate: false
+  xy: 329, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/pylon_spawning
+  rotate: false
+  xy: 329, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+decor/block_door
   rotate: false
   xy: 395, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-enemy/bouncer
+decor/block_door
   rotate: false
   xy: 461, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
-enemy/bouncer
+decor/block_door
   rotate: false
   xy: 527, 1647
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
-enemy/bouncer_laser
+decor/block_door
   rotate: false
   xy: 593, 1713
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
-enemy/bouncer_laser
+  index: 4
+decor/block_door
   rotate: false
   xy: 659, 1779
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
-enemy/bouncer_laser
+  index: 5
+decor/block_door
   rotate: false
   xy: 263, 1317
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
-enemy/bouncer_laser
+  index: 6
+decor/block_door
   rotate: false
   xy: 329, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
-enemy/cowl
-  rotate: false
-  xy: 461, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/cowl_firing
-  rotate: false
-  xy: 461, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/cowl
-  rotate: false
-  xy: 527, 1449
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/cowl
-  rotate: false
-  xy: 593, 1515
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/cowl
-  rotate: false
-  xy: 659, 1581
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/cowl
-  rotate: false
-  xy: 725, 1647
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/cowl
-  rotate: false
-  xy: 395, 1251
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-enemy/cowl
-  rotate: false
-  xy: 461, 1317
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 6
-enemy/cowl_firing
-  rotate: false
-  xy: 527, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/cowl_firing
-  rotate: false
-  xy: 593, 1449
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/flyby
-  rotate: false
-  xy: 593, 1317
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/flyby
-  rotate: false
-  xy: 659, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/flyby
-  rotate: false
-  xy: 725, 1449
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/flyby_double
-  rotate: false
-  xy: 593, 1251
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/flyby_double
-  rotate: false
-  xy: 659, 1317
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/flyby_double
-  rotate: false
-  xy: 725, 1383
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/flyby_double_firing
-  rotate: false
-  xy: 659, 1251
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/flyby_double_firing
-  rotate: false
-  xy: 725, 1317
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/flyby_double_firing
-  rotate: false
-  xy: 725, 1251
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/flyby_firing
-  rotate: false
-  xy: 791, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/flyby_firing
-  rotate: false
-  xy: 791, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/flyby_firing
-  rotate: false
-  xy: 857, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/goat_wizard
-  rotate: false
-  xy: 791, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/goat_wizard_firing
-  rotate: false
-  xy: 791, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/goat_wizard
-  rotate: false
-  xy: 857, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/goat_wizard
-  rotate: false
-  xy: 923, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/goat_wizard
-  rotate: false
-  xy: 791, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/goat_wizard_firing
-  rotate: false
-  xy: 857, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/goat_wizard_firing
-  rotate: false
-  xy: 923, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/hoarder
-  rotate: false
-  xy: 1055, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/hoarder
-  rotate: false
-  xy: 1055, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/hoarder
-  rotate: false
-  xy: 1055, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/hoarder
-  rotate: false
-  xy: 791, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/jig_firing
-  rotate: false
-  xy: 1055, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/jig_firing
-  rotate: false
-  xy: 1121, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/jig_firing
-  rotate: false
-  xy: 1121, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/jig_firing
-  rotate: false
-  xy: 791, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/jig_firing
-  rotate: false
-  xy: 857, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/jumping_jack
-  rotate: false
-  xy: 923, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/jumping_jack
-  rotate: false
-  xy: 923, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/jumping_jack
-  rotate: false
-  xy: 989, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/jumping_jack
-  rotate: false
-  xy: 989, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/jumping_jack
-  rotate: false
-  xy: 1055, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/jumping_jack
-  rotate: false
-  xy: 1055, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-enemy/jumping_jack_tired
-  rotate: false
-  xy: 1121, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/jumping_jack_tired
-  rotate: false
-  xy: 1187, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/jumping_jack_tired
-  rotate: false
-  xy: 791, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/jumping_jack_tired
-  rotate: false
-  xy: 791, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/knight
-  rotate: false
-  xy: 923, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/knight_firing
-  rotate: false
-  xy: 923, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/knight
-  rotate: false
-  xy: 989, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/knight
-  rotate: false
-  xy: 1055, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/knight
-  rotate: false
-  xy: 1121, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/knight_firing
-  rotate: false
-  xy: 1187, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/knight_firing
-  rotate: false
-  xy: 1253, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/kugel_laser
-  rotate: false
-  xy: 1121, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/kugel_laser
-  rotate: false
-  xy: 1187, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/laserus
-  rotate: false
-  xy: 1253, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/laserus_firing
-  rotate: false
-  xy: 1253, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/laserus
-  rotate: false
-  xy: 1319, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/laserus
-  rotate: false
-  xy: 923, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/laserus
-  rotate: false
-  xy: 989, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/laserus
-  rotate: false
-  xy: 1055, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/laserus_firing
-  rotate: false
-  xy: 1121, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/laserus_firing
-  rotate: false
-  xy: 1187, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/modon
-  rotate: false
-  xy: 1121, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/modon
-  rotate: false
-  xy: 1187, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/modon_jump
-  rotate: false
-  xy: 1187, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/modon
-  rotate: false
-  xy: 1253, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/modon_jump
-  rotate: false
-  xy: 1253, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/modon_jump
-  rotate: false
-  xy: 1253, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/modon_jump
-  rotate: false
-  xy: 1253, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/modon_heavy
-  rotate: false
-  xy: 1319, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/modon_heavy
-  rotate: false
-  xy: 1385, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/modon_heavy_in_air
-  rotate: false
-  xy: 1385, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/modon_heavy_in_air
-  rotate: false
-  xy: 1385, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/modon_heavy_jump
-  rotate: false
-  xy: 1385, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/modon_heavy
-  rotate: false
-  xy: 1451, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/modon_heavy_jump
-  rotate: false
-  xy: 1451, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/modon_heavy_jump
-  rotate: false
-  xy: 1451, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/modon_heavy_jump
-  rotate: false
-  xy: 1451, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/modon_heavy_in_air
-  rotate: false
-  xy: 1055, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/modon_heavy_in_air
-  rotate: false
-  xy: 1055, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/modon_heavy_jump
-  rotate: false
-  xy: 1121, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/modon_jump
-  rotate: false
-  xy: 1187, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/mr_boomy_detonate
-  rotate: false
-  xy: 1253, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/mr_boomy_forward
-  rotate: false
-  xy: 1253, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/mr_boomy_detonate
-  rotate: false
-  xy: 1319, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/mr_boomy_detonate
-  rotate: false
-  xy: 1385, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/mr_boomy_forward
-  rotate: false
-  xy: 1385, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/mr_boomy_forward
-  rotate: false
-  xy: 1451, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/mr_boomy_side
-  rotate: false
-  xy: 1517, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/mr_boomy_side
-  rotate: false
-  xy: 1517, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/mr_boomy_side
-  rotate: false
-  xy: 1121, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/mr_boomy_side
-  rotate: false
-  xy: 1187, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/penta_sentry
-  rotate: false
-  xy: 1583, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/penta_sentry
-  rotate: false
-  xy: 1187, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/penta_sentry
-  rotate: false
-  xy: 1253, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/penta_sentry_firing
-  rotate: false
-  xy: 1319, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/penta_sentry_firing
-  rotate: false
-  xy: 1385, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/penta_sentry_firing
-  rotate: false
-  xy: 1451, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/pylon_charging
-  rotate: false
-  xy: 1583, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/pylon_spawning
-  rotate: false
-  xy: 1583, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 15
-enemy/pylon_charging
-  rotate: false
-  xy: 1649, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/pylon_charging
-  rotate: false
-  xy: 1715, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/pylon_charging
-  rotate: false
-  xy: 1319, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/pylon_charging
-  rotate: false
-  xy: 1385, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/pylon_charging
-  rotate: false
-  xy: 1385, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-enemy/pylon_spawning
-  rotate: false
-  xy: 1451, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/pylon_spawning
-  rotate: false
-  xy: 1517, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/pylon_spawning
-  rotate: false
-  xy: 1583, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/pylon_spawning
-  rotate: false
-  xy: 1649, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-enemy/pylon_spawning
-  rotate: false
-  xy: 1715, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 6
-enemy/pylon_spawning
-  rotate: false
-  xy: 1781, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 7
-enemy/pylon_spawning
+decor/grapple
   rotate: false
-  xy: 1385, 1315
-  size: 64, 64
-  orig: 64, 64
+  xy: 779, 1911
+  size: 128, 128
+  orig: 128, 128
   offset: 0, 0
-  index: 8
-enemy/pylon_spawning
+  index: 0
+decor/lock_block
   rotate: false
-  xy: 1451, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 9
-enemy/pylon_spawning
-  rotate: false
-  xy: 1517, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 10
-enemy/pylon_spawning
-  rotate: false
-  xy: 1583, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 11
-enemy/pylon_spawning
-  rotate: false
-  xy: 1649, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 12
-enemy/pylon_spawning
-  rotate: false
-  xy: 1715, 1645
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 13
-enemy/pylon_spawning
-  rotate: false
-  xy: 1781, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 14
-enemy/sentry
-  rotate: false
-  xy: 1451, 1315
+  xy: 857, 1185
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-enemy/sentry
+decor/mine
   rotate: false
-  xy: 1451, 1315
+  xy: 989, 1317
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+decor/mine
+  rotate: false
+  xy: 725, 987
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-enemy/sentry
+decor/spike_wall
   rotate: false
-  xy: 1517, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/sentry
-  rotate: false
-  xy: 1517, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 3
-enemy/sentry
-  rotate: false
-  xy: 1583, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 4
-enemy/sentry
-  rotate: false
-  xy: 1649, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 5
-enemy/sentry
-  rotate: false
-  xy: 1715, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 6
-enemy/sentry
-  rotate: false
-  xy: 1715, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 7
-enemy/sentry_firing
-  rotate: false
-  xy: 1781, 1645
+  xy: 1253, 1117
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-enemy/sentry_firing
-  rotate: false
-  xy: 1847, 1711
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/sentry_firing
-  rotate: false
-  xy: 1913, 1777
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/sentry_tri
-  rotate: false
-  xy: 1517, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/sentry_tri
-  rotate: false
-  xy: 1517, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/sentry_tri
-  rotate: false
-  xy: 1583, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/sentry_tri_firing
-  rotate: false
-  xy: 1649, 1447
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/sentry_tri_firing
+decor/turret
   rotate: false
   xy: 1715, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
-enemy/sentry_tri_firing
+  index: 0
+decor/turret
   rotate: false
   xy: 1781, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
-enemy/silverhead_charging
+  index: 1
+decor/turret
   rotate: false
-  xy: 1715, 1447
+  xy: 1847, 1645
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
-enemy/silverhead_hiding
+  index: 2
+decor/turret
   rotate: false
-  xy: 1715, 1447
+  xy: 1913, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+decor/turret
+  rotate: false
+  xy: 1319, 1051
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
-enemy/silverhead_charging
+decor/turret
+  rotate: false
+  xy: 1385, 1117
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+decor/turret
+  rotate: false
+  xy: 1451, 1183
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+decor/turret
+  rotate: false
+  xy: 1517, 1249
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+decor/turret
+  rotate: false
+  xy: 1583, 1315
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 8
+decor/turret
+  rotate: false
+  xy: 1649, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 9
+decor/turret
+  rotate: false
+  xy: 1715, 1447
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 10
+decor/turret
   rotate: false
   xy: 1781, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
-enemy/silverhead_charging
+  index: 11
+decor/turret
   rotate: false
   xy: 1847, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
-enemy/silverhead_charging
+  index: 12
+decor/turret
   rotate: false
   xy: 1913, 1645
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 3
-enemy/silverhead_charging
+  index: 13
+decor/turret
   rotate: false
-  xy: 1649, 1315
+  xy: 1385, 1051
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 14
+decor/turret
+  rotate: false
+  xy: 1451, 1117
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 15
+enemy/air_mine
+  rotate: false
+  xy: 199, 661
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/air_mine
+  rotate: false
+  xy: 199, 595
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/alurm
+  rotate: false
+  xy: 199, 199
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/alurm
+  rotate: false
+  xy: 199, 199
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/alurm
+  rotate: false
+  xy: 199, 199
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/alurm
+  rotate: false
+  xy: 199, 133
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/alurm_firing
+  rotate: false
+  xy: 199, 67
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/alurm_firing
+  rotate: false
+  xy: 133, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/alurm_firing
+  rotate: false
+  xy: 199, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/alurm_firing
+  rotate: false
+  xy: 1117, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/blob
+  rotate: false
+  xy: 395, 1581
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/blob
+  rotate: false
+  xy: 461, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/blob
+  rotate: false
+  xy: 461, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/blob
+  rotate: false
+  xy: 527, 1713
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/blob
+  rotate: false
+  xy: 593, 1779
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
-enemy/silverhead_charging
+enemy/boss/adoj
   rotate: false
-  xy: 1715, 1381
+  xy: 133, 133
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/adoj
+  rotate: false
+  xy: 133, 133
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/adoj_firing
+  rotate: false
+  xy: 133, 133
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/boss/adoj_firing
+  rotate: false
+  xy: 133, 133
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/adoj
+  rotate: false
+  xy: 133, 67
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/adoj
+  rotate: false
+  xy: 133, 67
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/boss/adoj
+  rotate: false
+  xy: 199, 859
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/boss/adoj_firing
+  rotate: false
+  xy: 199, 793
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/adoj_firing
+  rotate: false
+  xy: 199, 727
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/ajir
+  rotate: false
+  xy: 199, 529
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/ajir_firing
+  rotate: false
+  xy: 199, 529
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/boss/ajir_firing
+  rotate: false
+  xy: 199, 529
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/ajir
+  rotate: false
+  xy: 199, 463
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/ajir
+  rotate: false
+  xy: 199, 463
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/boss/ajir
+  rotate: false
+  xy: 199, 397
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/ajir_firing
+  rotate: false
+  xy: 199, 397
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/ajir_firing
+  rotate: false
+  xy: 199, 331
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/amalgama
+  rotate: false
+  xy: 1183, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/amalgama
+  rotate: false
+  xy: 1249, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/amalgama
+  rotate: false
+  xy: 1315, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/amalgama_blue
+  rotate: false
+  xy: 1381, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/amalgama_blue
+  rotate: false
+  xy: 1447, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/amalgama_blue
+  rotate: false
+  xy: 1513, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/amalgama_green
+  rotate: false
+  xy: 1579, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/amalgama_green
+  rotate: false
+  xy: 1645, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/amalgama_green
+  rotate: false
+  xy: 1711, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/amalgama_red
+  rotate: false
+  xy: 1777, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/amalgama_red
+  rotate: false
+  xy: 1843, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/amalgama_red
+  rotate: false
+  xy: 1909, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/amalgama_yellow
+  rotate: false
+  xy: 1975, 1843
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/amalgama_yellow
+  rotate: false
+  xy: 263, 1779
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/amalgama_yellow
+  rotate: false
+  xy: 263, 1713
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/biggablobba
+  rotate: false
+  xy: 461, 1779
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/biggablobba
+  rotate: false
+  xy: 263, 1515
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/biggablobba
+  rotate: false
+  xy: 329, 1581
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/biggablobba
+  rotate: false
+  xy: 395, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/boss/biggablobba
+  rotate: false
+  xy: 461, 1713
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/boss/biggablobba
+  rotate: false
+  xy: 527, 1779
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
-enemy/silverhead_charging
+enemy/boss/biggablobba
   rotate: false
-  xy: 1781, 1447
+  xy: 263, 1449
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
-enemy/silverhead_charging
+enemy/boss/end_hand
   rotate: false
-  xy: 1847, 1513
+  xy: 593, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 7
-enemy/silverhead_charging
+  index: 0
+enemy/boss/end_hand_firing
   rotate: false
-  xy: 1913, 1579
+  xy: 593, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 8
-enemy/silverhead_hiding
+  index: 2
+enemy/boss/end_hand
+  rotate: false
+  xy: 659, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/end_hand
+  rotate: false
+  xy: 725, 1515
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/end_hand
+  rotate: false
+  xy: 791, 1581
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/boss/end_hand_charging
+  rotate: false
+  xy: 857, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/end_hand_firing
+  rotate: false
+  xy: 857, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/end_hand_charging
+  rotate: false
+  xy: 923, 1713
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/end_hand_charging
+  rotate: false
+  xy: 989, 1779
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/end_hand_firing
+  rotate: false
+  xy: 263, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/wraith_cowl_mad
+  rotate: false
+  xy: 1517, 1117
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/wraith_cowl_mad
+  rotate: false
+  xy: 1583, 1183
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/boss/wraith_cowl_mad
+  rotate: false
+  xy: 1649, 1249
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/boss/wraith_cowl_mad
   rotate: false
   xy: 1715, 1315
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 0
-enemy/silverhead_standing
-  rotate: false
-  xy: 1715, 1315
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/silverhead_hiding
+  index: 3
+enemy/boss/wraith_cowl_sad
   rotate: false
   xy: 1781, 1381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-enemy/silverhead_hiding
+enemy/boss/wraith_cowl_sad
   rotate: false
   xy: 1847, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 2
-enemy/silverhead_hiding
+  index: 3
+enemy/bouncer
   rotate: false
-  xy: 1913, 1513
+  xy: 395, 1383
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/bouncer
+  rotate: false
+  xy: 461, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/bouncer
+  rotate: false
+  xy: 527, 1515
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/bouncer
+  rotate: false
+  xy: 593, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
-enemy/silverhead_standing
+enemy/bouncer_laser
   rotate: false
-  xy: 1781, 1315
+  xy: 659, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/bouncer_laser
+  rotate: false
+  xy: 725, 1713
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-enemy/silverhead_standing
+enemy/bouncer_laser
   rotate: false
-  xy: 1781, 1315
+  xy: 791, 1779
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/bouncer_laser
+  rotate: false
+  xy: 263, 1185
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
-enemy/silverhead_standing
+enemy/cowl
   rotate: false
-  xy: 1847, 1381
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 2
-enemy/snake
-  rotate: false
-  xy: 1913, 1447
+  xy: 725, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-enemy/snake
+enemy/cowl_firing
   rotate: false
-  xy: 1847, 1315
+  xy: 725, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-enemy/snake
+enemy/cowl
   rotate: false
-  xy: 1913, 1381
+  xy: 791, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/cowl
+  rotate: false
+  xy: 857, 1713
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
-enemy/snake_black
+enemy/cowl
   rotate: false
-  xy: 1913, 1315
+  xy: 923, 1779
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/cowl
+  rotate: false
+  xy: 263, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/cowl
+  rotate: false
+  xy: 329, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+enemy/cowl
+  rotate: false
+  xy: 395, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+enemy/cowl_firing
+  rotate: false
+  xy: 461, 1251
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-enemy/snake_black
+enemy/cowl_firing
   rotate: false
-  xy: 791, 1249
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 1
-enemy/snake_black
-  rotate: false
-  xy: 857, 1249
+  xy: 527, 1317
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
-enemy/snake_greenish
+enemy/flyby
   rotate: false
-  xy: 923, 1249
+  xy: 329, 1053
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
-enemy/snake_greenish
+enemy/flyby
   rotate: false
-  xy: 989, 1249
+  xy: 395, 1119
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
-enemy/snake_greenish
+enemy/flyby
+  rotate: false
+  xy: 461, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/flyby_double
+  rotate: false
+  xy: 527, 1251
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/flyby_double
+  rotate: false
+  xy: 593, 1317
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/flyby_double
+  rotate: false
+  xy: 659, 1383
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/flyby_double_firing
+  rotate: false
+  xy: 725, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/flyby_double_firing
+  rotate: false
+  xy: 791, 1515
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/flyby_double_firing
+  rotate: false
+  xy: 857, 1581
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/flyby_firing
+  rotate: false
+  xy: 923, 1647
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/flyby_firing
+  rotate: false
+  xy: 989, 1713
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/flyby_firing
+  rotate: false
+  xy: 329, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/goat_wizard
+  rotate: false
+  xy: 395, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/goat_wizard_firing
+  rotate: false
+  xy: 395, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/goat_wizard
+  rotate: false
+  xy: 461, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/goat_wizard
+  rotate: false
+  xy: 527, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/goat_wizard
+  rotate: false
+  xy: 593, 1251
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/goat_wizard_firing
+  rotate: false
+  xy: 659, 1317
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/goat_wizard_firing
+  rotate: false
+  xy: 725, 1383
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/hoarder
+  rotate: false
+  xy: 461, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/hoarder
+  rotate: false
+  xy: 461, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/hoarder
+  rotate: false
+  xy: 461, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/hoarder
+  rotate: false
+  xy: 527, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/jig_firing
+  rotate: false
+  xy: 791, 1383
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/jig_firing
+  rotate: false
+  xy: 857, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/jig_firing
+  rotate: false
+  xy: 857, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/jig_firing
+  rotate: false
+  xy: 923, 1515
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/jig_firing
+  rotate: false
+  xy: 989, 1581
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/jumping_jack
+  rotate: false
+  xy: 461, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/jumping_jack
+  rotate: false
+  xy: 461, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/jumping_jack
+  rotate: false
+  xy: 527, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/jumping_jack
+  rotate: false
+  xy: 527, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/jumping_jack
+  rotate: false
+  xy: 593, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/jumping_jack
+  rotate: false
+  xy: 593, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+enemy/jumping_jack_tired
+  rotate: false
+  xy: 659, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/jumping_jack_tired
+  rotate: false
+  xy: 725, 1251
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/jumping_jack_tired
+  rotate: false
+  xy: 791, 1317
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/jumping_jack_tired
+  rotate: false
+  xy: 791, 1317
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/knight
+  rotate: false
+  xy: 923, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/knight_firing
+  rotate: false
+  xy: 923, 1449
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/knight
+  rotate: false
+  xy: 989, 1515
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/knight
+  rotate: false
+  xy: 527, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/knight
+  rotate: false
+  xy: 593, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/knight_firing
+  rotate: false
+  xy: 659, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/knight_firing
+  rotate: false
+  xy: 725, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/kugel_laser
+  rotate: false
+  xy: 593, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/kugel_laser
+  rotate: false
+  xy: 659, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/laserus
+  rotate: false
+  xy: 725, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/laserus_firing
+  rotate: false
+  xy: 725, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/laserus
+  rotate: false
+  xy: 791, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/laserus
+  rotate: false
+  xy: 857, 1251
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/laserus
+  rotate: false
+  xy: 923, 1317
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/laserus
+  rotate: false
+  xy: 989, 1383
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/laserus_firing
+  rotate: false
+  xy: 659, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/laserus_firing
+  rotate: false
+  xy: 725, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/modon
+  rotate: false
+  xy: 791, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/modon
+  rotate: false
+  xy: 857, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/modon_jump
+  rotate: false
+  xy: 857, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/modon
+  rotate: false
+  xy: 923, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/modon_jump
+  rotate: false
+  xy: 923, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/modon_jump
+  rotate: false
+  xy: 923, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/modon_jump
+  rotate: false
+  xy: 923, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/modon_heavy
+  rotate: false
+  xy: 989, 1251
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/modon_heavy
+  rotate: false
+  xy: 791, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/modon_heavy_in_air
+  rotate: false
+  xy: 791, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/modon_heavy_in_air
+  rotate: false
+  xy: 791, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/modon_heavy_jump
+  rotate: false
+  xy: 791, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/modon_heavy
+  rotate: false
+  xy: 857, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/modon_heavy_jump
+  rotate: false
+  xy: 857, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/modon_heavy_jump
+  rotate: false
+  xy: 857, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/modon_heavy_jump
+  rotate: false
+  xy: 857, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/modon_heavy_in_air
+  rotate: false
+  xy: 923, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/modon_heavy_in_air
+  rotate: false
+  xy: 923, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/modon_heavy_jump
+  rotate: false
+  xy: 989, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/modon_jump
+  rotate: false
+  xy: 857, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/mr_boomy_detonate
+  rotate: false
+  xy: 923, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/mr_boomy_forward
+  rotate: false
+  xy: 923, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/mr_boomy_detonate
+  rotate: false
+  xy: 989, 1119
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/mr_boomy_detonate
+  rotate: false
+  xy: 923, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/mr_boomy_forward
+  rotate: false
+  xy: 923, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/mr_boomy_forward
+  rotate: false
+  xy: 989, 1053
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/mr_boomy_side
+  rotate: false
+  xy: 989, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/mr_boomy_side
+  rotate: false
+  xy: 989, 987
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/mr_boomy_side
+  rotate: false
+  xy: 1055, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/mr_boomy_side
+  rotate: false
+  xy: 1055, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/penta_sentry
+  rotate: false
+  xy: 1121, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/penta_sentry
+  rotate: false
+  xy: 1187, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/penta_sentry
+  rotate: false
+  xy: 1253, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/penta_sentry_firing
+  rotate: false
+  xy: 1055, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/penta_sentry_firing
+  rotate: false
+  xy: 1121, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/penta_sentry_firing
+  rotate: false
+  xy: 1187, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/pylon_charging
+  rotate: false
+  xy: 1055, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/pylon_spawning
+  rotate: false
+  xy: 1055, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 15
+enemy/pylon_charging
+  rotate: false
+  xy: 1121, 1447
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/pylon_charging
+  rotate: false
+  xy: 1187, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/pylon_charging
+  rotate: false
+  xy: 1253, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/pylon_charging
+  rotate: false
+  xy: 1319, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/pylon_charging
+  rotate: false
+  xy: 1319, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+enemy/pylon_spawning
+  rotate: false
+  xy: 1385, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/pylon_spawning
+  rotate: false
+  xy: 1451, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/pylon_spawning
+  rotate: false
+  xy: 1055, 1315
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/pylon_spawning
+  rotate: false
+  xy: 1121, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+enemy/pylon_spawning
+  rotate: false
+  xy: 1187, 1447
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+enemy/pylon_spawning
+  rotate: false
+  xy: 1253, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+enemy/pylon_spawning
+  rotate: false
+  xy: 1319, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 8
+enemy/pylon_spawning
+  rotate: false
+  xy: 1385, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 9
+enemy/pylon_spawning
+  rotate: false
+  xy: 1451, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 10
+enemy/pylon_spawning
+  rotate: false
+  xy: 1517, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 11
+enemy/pylon_spawning
   rotate: false
   xy: 1055, 1249
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
+  index: 12
+enemy/pylon_spawning
+  rotate: false
+  xy: 1121, 1315
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 13
+enemy/pylon_spawning
+  rotate: false
+  xy: 1187, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 14
+enemy/sentry
+  rotate: false
+  xy: 1319, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/sentry
+  rotate: false
+  xy: 1319, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/sentry
+  rotate: false
+  xy: 1385, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/sentry
+  rotate: false
+  xy: 1385, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/sentry
+  rotate: false
+  xy: 1451, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/sentry
+  rotate: false
+  xy: 1517, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+enemy/sentry
+  rotate: false
+  xy: 1583, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+enemy/sentry
+  rotate: false
+  xy: 1583, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+enemy/sentry_firing
+  rotate: false
+  xy: 1055, 1183
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/sentry_firing
+  rotate: false
+  xy: 1121, 1249
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/sentry_firing
+  rotate: false
+  xy: 1187, 1315
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/sentry_tri
+  rotate: false
+  xy: 1253, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/sentry_tri
+  rotate: false
+  xy: 1253, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/sentry_tri
+  rotate: false
+  xy: 1319, 1447
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/sentry_tri_firing
+  rotate: false
+  xy: 1385, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/sentry_tri_firing
+  rotate: false
+  xy: 1451, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/sentry_tri_firing
+  rotate: false
+  xy: 1517, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/silverhead_charging
+  rotate: false
+  xy: 1187, 1249
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/silverhead_hiding
+  rotate: false
+  xy: 1187, 1249
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/silverhead_charging
+  rotate: false
+  xy: 1253, 1315
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/silverhead_charging
+  rotate: false
+  xy: 1319, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/silverhead_charging
+  rotate: false
+  xy: 1385, 1447
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/silverhead_charging
+  rotate: false
+  xy: 1451, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 4
+enemy/silverhead_charging
+  rotate: false
+  xy: 1517, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 5
+enemy/silverhead_charging
+  rotate: false
+  xy: 1583, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 6
+enemy/silverhead_charging
+  rotate: false
+  xy: 1649, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 7
+enemy/silverhead_charging
+  rotate: false
+  xy: 1715, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 8
+enemy/silverhead_hiding
+  rotate: false
+  xy: 1055, 1051
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/silverhead_standing
+  rotate: false
+  xy: 1055, 1051
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/silverhead_hiding
+  rotate: false
+  xy: 1121, 1117
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/silverhead_hiding
+  rotate: false
+  xy: 1187, 1183
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/silverhead_hiding
+  rotate: false
+  xy: 1253, 1249
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/silverhead_standing
+  rotate: false
+  xy: 1319, 1315
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/silverhead_standing
+  rotate: false
+  xy: 1319, 1315
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+enemy/silverhead_standing
+  rotate: false
+  xy: 1385, 1381
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/snake
+  rotate: false
+  xy: 1451, 1447
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/snake
+  rotate: false
+  xy: 1517, 1513
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/snake
+  rotate: false
+  xy: 1583, 1579
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/snake_black
+  rotate: false
+  xy: 1649, 1645
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/snake_black
+  rotate: false
+  xy: 1715, 1711
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/snake_black
+  rotate: false
+  xy: 1781, 1777
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+enemy/snake_greenish
+  rotate: false
+  xy: 1121, 1051
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/snake_greenish
+  rotate: false
+  xy: 1187, 1117
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+enemy/snake_greenish
+  rotate: false
+  xy: 1253, 1183
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
   index: 2
 enemy/switch
   rotate: false
-  xy: 1847, 1249
+  xy: 1319, 1183
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/switch
   rotate: false
-  xy: 1913, 1249
+  xy: 1385, 1249
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/switch
   rotate: false
-  xy: 1979, 1777
+  xy: 1451, 1315
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/switch
   rotate: false
-  xy: 1979, 1711
+  xy: 1517, 1381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 enemy/switch
   rotate: false
-  xy: 1979, 1645
+  xy: 1583, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 enemy/wanda_firing
   rotate: false
-  xy: 331, 855
+  xy: 1517, 1183
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/wanda_standing
   rotate: false
-  xy: 331, 855
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-enemy/wanda_standing
-  rotate: false
-  xy: 331, 855
+  xy: 1517, 1183
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
+enemy/wanda_standing
+  rotate: false
+  xy: 1517, 1183
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
 enemy/wanda_firing
   rotate: false
-  xy: 397, 921
+  xy: 1583, 1249
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/wanda_firing
   rotate: false
-  xy: 463, 987
+  xy: 1649, 1315
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 enemy/wanda_standing
   rotate: false
-  xy: 529, 1053
+  xy: 1715, 1381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 enemy/wanda_standing
   rotate: false
-  xy: 529, 1053
+  xy: 1715, 1381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 gold
   rotate: false
-  xy: 989, 1777
+  xy: 791, 1449
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 grapple
   rotate: false
-  xy: 791, 1513
+  xy: 857, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2314,51 +2314,79 @@ icons/aiming_tip
   orig: 128, 128
   offset: 0, 0
   index: 2
-icons/controller
+icons/autofire_tips
+  rotate: false
+  xy: 389, 1911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 0
+icons/autofire_tips
   rotate: false
   xy: 1, 1393
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
-  index: 0
-icons/hover_tips
-  rotate: false
-  xy: 857, 1513
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
-icons/hover_tips
-  rotate: false
-  xy: 923, 1579
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
   index: 1
-icons/two_thumbs_tips
+icons/autofire_tips
+  rotate: false
+  xy: 519, 1911
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 2
+icons/autofire_tips
   rotate: false
   xy: 1, 1263
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
+  index: 3
+icons/controller
+  rotate: false
+  xy: 1, 1133
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 0
+icons/hover_tips
+  rotate: false
+  xy: 593, 1185
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+icons/hover_tips
+  rotate: false
+  xy: 659, 1251
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+icons/two_thumbs_tips
+  rotate: false
+  xy: 1, 1003
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
   index: 0
 icons/two_thumbs_tips
   rotate: false
-  xy: 649, 1911
+  xy: 909, 1911
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 1
 icons/two_thumbs_tips
   rotate: false
-  xy: 1, 1133
+  xy: 1, 873
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 2
 icons/two_thumbs_tips
   rotate: false
-  xy: 779, 1911
+  xy: 1039, 1911
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
@@ -2386,14 +2414,14 @@ item/AbstractLeaf
   index: 0
 item/Ace
   rotate: false
-  xy: 1, 1067
+  xy: 1, 807
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/AimAssist
   rotate: false
-  xy: 909, 1975
+  xy: 1169, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2414,7 +2442,7 @@ item/ArmorUp
   index: 0
 item/BigShot
   rotate: false
-  xy: 975, 1975
+  xy: 1235, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2435,14 +2463,14 @@ item/BlockOfEnergy
   index: 0
 item/BlueEyeGems
   rotate: false
-  xy: 1, 935
+  xy: 1, 675
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/BookOfXi
   rotate: false
-  xy: 1041, 1975
+  xy: 1301, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2463,14 +2491,14 @@ item/Bubble
   index: 0
 item/BuckShot
   rotate: false
-  xy: 1, 869
+  xy: 1, 609
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/CannonCube
   rotate: false
-  xy: 1107, 1975
+  xy: 1367, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2505,14 +2533,14 @@ item/Disappointment
   index: 0
 item/DullFeather
   rotate: false
-  xy: 1, 737
+  xy: 1, 477
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Elasticity
   rotate: false
-  xy: 1239, 1975
+  xy: 1499, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2533,14 +2561,14 @@ item/EquivalentExchange
   index: 0
 item/ErraticFire
   rotate: false
-  xy: 1, 671
+  xy: 1, 411
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/EyesOfAmalgama
   rotate: false
-  xy: 1305, 1975
+  xy: 1565, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2561,7 +2589,7 @@ item/FocusShot
   index: 0
 item/ForgottenScarab
   rotate: false
-  xy: 1, 605
+  xy: 1, 345
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -2582,840 +2610,840 @@ item/GoldenScope
   index: 0
 item/HealingTonic
   rotate: false
-  xy: 1437, 1975
+  xy: 1697, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/HealingTonicPlus
   rotate: false
-  xy: 1, 539
+  xy: 1, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/HealthUp
   rotate: false
-  xy: 1, 473
+  xy: 131, 1123
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/HotStep
   rotate: false
-  xy: 1503, 1975
+  xy: 853, 1845
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Hypertrophy
   rotate: false
-  xy: 1, 407
+  xy: 1, 213
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/IWishYouWell
   rotate: false
-  xy: 1569, 1975
+  xy: 1763, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/IronBody
   rotate: false
-  xy: 1, 341
+  xy: 131, 1057
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/IronFragment
   rotate: false
-  xy: 1635, 1975
+  xy: 919, 1845
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/JadeScarab
   rotate: false
-  xy: 1, 275
+  xy: 1, 147
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/KeenEye
   rotate: false
-  xy: 1701, 1975
+  xy: 1829, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LabyrinthCodex
   rotate: false
-  xy: 1, 209
+  xy: 131, 991
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LaserScope
   rotate: false
-  xy: 1767, 1975
+  xy: 985, 1845
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LeafCutter
   rotate: false
-  xy: 1, 143
+  xy: 1, 81
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LeahsScarf
   rotate: false
-  xy: 1833, 1975
+  xy: 1895, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LensLessMagnifyingGlass
   rotate: false
-  xy: 1, 77
+  xy: 131, 925
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LostLettersRangeFireRate
   rotate: false
-  xy: 1, 11
+  xy: 1, 15
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LostLettersShotSpeedAccuracy
   rotate: false
-  xy: 1965, 1975
+  xy: 1961, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LuckPlusTen
   rotate: false
-  xy: 67, 1067
+  xy: 67, 807
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LuckyRoll
   rotate: false
-  xy: 67, 1001
+  xy: 67, 741
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/LuckyShot
   rotate: false
-  xy: 67, 935
+  xy: 67, 675
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Medicine
   rotate: false
-  xy: 67, 869
+  xy: 67, 609
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/MiniCatapult
   rotate: false
-  xy: 67, 737
+  xy: 67, 477
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/MiniShot
   rotate: false
-  xy: 67, 671
+  xy: 67, 411
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/MiniTrebuchet
   rotate: false
-  xy: 67, 605
+  xy: 67, 345
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/MinorAccelerant
   rotate: false
-  xy: 67, 539
+  xy: 67, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Momentum
   rotate: false
-  xy: 67, 473
+  xy: 67, 213
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/NeatCube
   rotate: false
-  xy: 67, 143
+  xy: 1235, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/PatternedOpal
   rotate: false
-  xy: 67, 77
+  xy: 1301, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/PersonalBubble
   rotate: false
-  xy: 67, 11
+  xy: 1367, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/PhisScarf
   rotate: false
-  xy: 909, 1909
+  xy: 1433, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/PodShot
   rotate: false
-  xy: 975, 1909
+  xy: 1499, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/PurpleHeart
   rotate: false
-  xy: 1041, 1909
+  xy: 1565, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Quadonometry
   rotate: false
-  xy: 1107, 1909
+  xy: 1631, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/QuickStep
   rotate: false
-  xy: 1173, 1909
+  xy: 1697, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Quickness
   rotate: false
-  xy: 1239, 1909
+  xy: 1763, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/RunedFragment
   rotate: false
-  xy: 1305, 1909
+  xy: 1829, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SarcasticLion
   rotate: false
-  xy: 1371, 1909
+  xy: 1895, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Scope
   rotate: false
-  xy: 1437, 1909
+  xy: 1961, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SecondWind
   rotate: false
-  xy: 1503, 1909
+  xy: 197, 1717
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SharpShootersDiary
   rotate: false
-  xy: 1569, 1909
+  xy: 197, 1651
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/ShinyFeather
   rotate: false
-  xy: 1635, 1909
+  xy: 197, 1585
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SmoulderingEmber
   rotate: false
-  xy: 1767, 1909
+  xy: 197, 1453
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SmoulderingHelm
   rotate: false
-  xy: 1833, 1909
+  xy: 197, 1387
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SootheNote
   rotate: false
-  xy: 1899, 1909
+  xy: 197, 1321
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SquareBuckler
   rotate: false
-  xy: 1965, 1909
+  xy: 197, 1255
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Stability
   rotate: false
-  xy: 197, 1717
+  xy: 197, 1189
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/StatueOfAdoj
   rotate: false
-  xy: 197, 1651
+  xy: 197, 1123
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/StatueOfAjir
   rotate: false
-  xy: 197, 1585
+  xy: 197, 1057
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SteppingStones
   rotate: false
-  xy: 197, 1519
+  xy: 197, 991
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/SwiftShot
   rotate: false
-  xy: 197, 1453
+  xy: 197, 925
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/TacticalKnitwear
   rotate: false
-  xy: 197, 1387
+  xy: 133, 859
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/Tesseract
   rotate: false
-  xy: 197, 1255
+  xy: 133, 727
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/TesssScarf
   rotate: false
-  xy: 197, 1189
+  xy: 133, 661
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/ThreeLeafClover
   rotate: false
-  xy: 133, 1123
+  xy: 133, 595
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/VitaminC
   rotate: false
-  xy: 133, 1057
+  xy: 133, 529
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/WandasScarf
   rotate: false
-  xy: 133, 991
+  xy: 133, 463
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/WhiteGoggles
   rotate: false
-  xy: 133, 925
+  xy: 133, 397
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/WideLens
   rotate: false
-  xy: 133, 859
+  xy: 133, 331
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/XisOldScarf
   rotate: false
-  xy: 133, 727
+  xy: 133, 199
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/armor
   rotate: false
-  xy: 1447, 1843
+  xy: 329, 1647
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/AutoRockets
   rotate: false
-  xy: 1, 1001
+  xy: 1, 741
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/CrownOfBiggaBlobba
   rotate: false
-  xy: 1, 803
+  xy: 1, 543
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/DangerDetector
   rotate: false
-  xy: 1173, 1975
+  xy: 1433, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/GhastlyWail
   rotate: false
-  xy: 1371, 1975
+  xy: 1631, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/boss/wraith_cowl_sad
   rotate: false
-  xy: 1371, 1975
+  xy: 1631, 1975
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 0
+enemy/boss/wraith_cowl_sad
+  rotate: false
+  xy: 1631, 1975
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
-enemy/boss/wraith_cowl_sad
-  rotate: false
-  xy: 1371, 1975
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: 0
 item/companion/LiasCrown
   rotate: false
-  xy: 1899, 1975
+  xy: 1051, 1845
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/MegaSideCannons
   rotate: false
-  xy: 67, 803
+  xy: 67, 543
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/MyVeryOwnStalker
   rotate: false
-  xy: 67, 407
+  xy: 67, 147
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/MyVeryOwnStalker
   rotate: false
-  xy: 67, 341
+  xy: 67, 81
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 item/companion/MyVeryOwnStalker
   rotate: false
-  xy: 67, 275
+  xy: 67, 15
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 item/companion/MyVeryOwnStalker
   rotate: false
-  xy: 67, 209
+  xy: 1169, 1909
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 item/companion/SideCannons
   rotate: false
-  xy: 1701, 1909
+  xy: 197, 1519
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/TesserWreck
   rotate: false
-  xy: 197, 1321
+  xy: 133, 793
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/companion/XisGlare
   rotate: false
-  xy: 133, 793
+  xy: 133, 265
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/heart
   rotate: false
-  xy: 857, 1579
+  xy: 923, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 item/heart
   rotate: false
-  xy: 923, 1645
+  xy: 989, 1647
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 item/heart
   rotate: false
-  xy: 989, 1711
+  xy: 395, 987
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 key
   rotate: false
-  xy: 857, 1381
+  xy: 857, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 kugel
   rotate: false
-  xy: 857, 1315
+  xy: 791, 1251
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 enemy/kugel_laser
   rotate: false
-  xy: 857, 1315
+  xy: 791, 1251
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 kugel
   rotate: false
-  xy: 923, 1381
+  xy: 857, 1317
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 kugel
   rotate: false
-  xy: 989, 1447
+  xy: 923, 1383
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 kugel
   rotate: false
-  xy: 1055, 1513
+  xy: 989, 1449
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 pause
   rotate: false
-  xy: 1517, 1711
+  xy: 1055, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 platform
   rotate: false
-  xy: 1517, 1579
+  xy: 1385, 1777
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/block_firing
   rotate: false
-  xy: 527, 1779
+  xy: 395, 1449
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/block_firing
   rotate: false
-  xy: 263, 1449
+  xy: 461, 1515
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/block_firing
   rotate: false
-  xy: 329, 1515
+  xy: 527, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/block_walk
   rotate: false
-  xy: 329, 1515
+  xy: 527, 1581
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/block_firing
   rotate: false
-  xy: 395, 1581
+  xy: 593, 1647
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 player/block_walk
   rotate: false
-  xy: 395, 1581
+  xy: 593, 1647
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/block_portrait
   rotate: false
-  xy: 461, 1647
+  xy: 659, 1713
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/block_walk
   rotate: false
-  xy: 527, 1713
+  xy: 725, 1779
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/phi_firing
   rotate: false
-  xy: 1517, 1645
+  xy: 1253, 1711
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/phi_firing
   rotate: false
-  xy: 1583, 1711
+  xy: 1319, 1777
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/phi_firing
   rotate: false
-  xy: 1649, 1777
+  xy: 1055, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/phi_firing
   rotate: false
-  xy: 1649, 1777
+  xy: 1055, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 player/phi_portrait
   rotate: false
-  xy: 1253, 1315
+  xy: 1121, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/phi_walk
   rotate: false
-  xy: 1319, 1381
+  xy: 1187, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/phi_walk
   rotate: false
-  xy: 1385, 1447
+  xy: 1253, 1645
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/phi_walk
   rotate: false
-  xy: 1451, 1513
+  xy: 1319, 1711
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/tess_firing
   rotate: false
-  xy: 265, 1185
+  xy: 1319, 1117
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/tess_firing
   rotate: false
-  xy: 265, 1119
+  xy: 1385, 1183
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/tess_firing
   rotate: false
-  xy: 331, 1185
+  xy: 1451, 1249
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/tess_walk
   rotate: false
-  xy: 331, 1185
+  xy: 1451, 1249
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/tess_firing
   rotate: false
-  xy: 265, 1053
+  xy: 1517, 1315
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 player/tess_walk
   rotate: false
-  xy: 265, 1053
+  xy: 1517, 1315
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/tess_portrait
   rotate: false
-  xy: 331, 1119
+  xy: 1583, 1381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/tess_walk
   rotate: false
-  xy: 397, 1185
+  xy: 1649, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/xi_firing
   rotate: false
-  xy: 331, 723
+  xy: 1913, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/xi_firing
   rotate: false
-  xy: 397, 789
+  xy: 1517, 1051
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/xi_firing
   rotate: false
-  xy: 463, 855
+  xy: 1583, 1117
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 player/xi_walk
   rotate: false
-  xy: 463, 855
+  xy: 1583, 1117
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/xi_firing
   rotate: false
-  xy: 529, 921
+  xy: 1649, 1183
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 player/xi_walk
   rotate: false
-  xy: 529, 921
+  xy: 1649, 1183
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 player/xi_portrait
   rotate: false
-  xy: 595, 987
+  xy: 1715, 1249
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 player/xi_walk
   rotate: false
-  xy: 661, 1053
+  xy: 1781, 1315
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 settings/arrow
   rotate: false
-  xy: 1513, 1843
+  xy: 395, 1713
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 settings/item
   rotate: false
-  xy: 989, 1645
+  xy: 725, 1317
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -3429,238 +3457,238 @@ settings/lia_logo
   index: 0
 settings/lock
   rotate: false
-  xy: 1253, 1645
+  xy: 791, 1119
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 settings/music
   rotate: false
-  xy: 1253, 1447
+  xy: 1121, 1777
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 settings/music
   rotate: false
-  xy: 1319, 1513
+  xy: 1055, 1645
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 settings/music
   rotate: false
-  xy: 1385, 1579
+  xy: 1121, 1711
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 settings/music_off
   rotate: false
-  xy: 1451, 1645
+  xy: 1187, 1777
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 settings/question_mark
   rotate: false
-  xy: 1847, 1777
+  xy: 1253, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 settings/settings_goto
   rotate: false
-  xy: 1847, 1645
+  xy: 1583, 1711
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 settings/sound
   rotate: false
-  xy: 1121, 1249
+  xy: 1319, 1249
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 settings/sound_off
   rotate: false
-  xy: 1187, 1249
+  xy: 1385, 1315
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 shopkeeper
   rotate: false
-  xy: 1913, 1711
+  xy: 1649, 1777
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 shopkeeper
   rotate: false
-  xy: 1583, 1315
+  xy: 1055, 1117
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 shopkeeper
   rotate: false
-  xy: 1583, 1315
+  xy: 1055, 1117
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 shopkeeper
   rotate: false
-  xy: 1649, 1381
+  xy: 1121, 1183
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 spawner
   rotate: false
-  xy: 1253, 1249
+  xy: 1451, 1381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 spawner
   rotate: false
-  xy: 1253, 1249
+  xy: 1451, 1381
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 spawner
   rotate: false
-  xy: 1319, 1249
+  xy: 1517, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 spawner
   rotate: false
-  xy: 1385, 1249
+  xy: 1583, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 spawner
   rotate: false
-  xy: 1451, 1249
+  xy: 1649, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 spawner
   rotate: false
-  xy: 1517, 1249
+  xy: 1715, 1645
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 spawner
   rotate: false
-  xy: 1583, 1249
+  xy: 1781, 1711
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 6
 spawner
   rotate: false
-  xy: 1649, 1249
+  xy: 1847, 1777
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 7
 spawner
   rotate: false
-  xy: 1715, 1249
+  xy: 1187, 1051
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 8
 teleporter
   rotate: false
-  xy: 1979, 1579
+  xy: 1649, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 teleporter
   rotate: false
-  xy: 1979, 1513
+  xy: 1715, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 teleporter
   rotate: false
-  xy: 1979, 1447
+  xy: 1781, 1645
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 teleporter
   rotate: false
-  xy: 1979, 1381
+  xy: 1847, 1711
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 3
 teleporter
   rotate: false
-  xy: 1979, 1315
+  xy: 1913, 1777
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 teleporter
   rotate: false
-  xy: 1979, 1249
+  xy: 1253, 1051
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 wings
   rotate: false
-  xy: 595, 1119
+  xy: 1781, 1447
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 0
 wings
   rotate: false
-  xy: 661, 1185
+  xy: 1847, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 wings
   rotate: false
-  xy: 661, 1185
+  xy: 1847, 1513
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 5
 wings
   rotate: false
-  xy: 265, 723
+  xy: 1913, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 wings
   rotate: false
-  xy: 265, 723
+  xy: 1913, 1579
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 4
 wings
   rotate: false
-  xy: 331, 789
+  xy: 1451, 1051
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

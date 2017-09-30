@@ -74,6 +74,7 @@ public class TextureStrings {
     public static final String ICON_HOVER = "icons/hover_tips";
     public static final String ICON_AIMING = "icons/aiming_tip";
     public static final String ICON_THUMBS = "icons/two_thumbs_tips";
+    public static final String ICON_AUTOFIRE = "icons/autofire_tips";
 
 
     public static final String LOCKBOX = "decor/lock_block";
@@ -228,6 +229,7 @@ public class TextureStrings {
     //AJIR
     public static final String AJIR = "enemy/boss/ajir";
     public static final String AJIR_FIRING = "enemy/boss/ajir_firing";
+
 
     //AMALGAMA
     public static final String AMALGAMA_RED_EYE = "enemy/boss/amalgama_red";

@@ -10,7 +10,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
-
+import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
 
 /**
@@ -44,7 +44,9 @@ public class EnemyCollisionSystem extends EntityProcessingSystem {
         for (int i = 0; i < entityIds.size(); i++) {
             if (cbm.has(entityIds.get(i))) {
 
-                for (com.bryjamin.wickedwizard.utils.collider.HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
+                if(cbm.get(entityIds.get(i)).hitBoxDisabled) continue;
+
+                for (HitBox hb : cbm.get(entityIds.get(i)).hitBoxes)
                     if (cbm.get(e).bound.overlaps(hb.hitbox)) {
                         healthMapper.get(e).applyDamage(enemyDamage);
                         if(exploderMapper.has(entityIds.get(i))){

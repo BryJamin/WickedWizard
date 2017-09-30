@@ -124,6 +124,18 @@ public class GalleryAtTheEndMap extends AbstractFactory {
 
                 arena.addEntity(new OnLoadFactory().startMusicEntity(MusicStrings.BG_MAIN_MENU));
 
+
+
+                ComponentBag setUp = arena.createArenaBag();
+                setUp.add(new DuringRoomLoadActionComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        world.getSystem(UISystem.class).disable = true;
+                        world.getSystem(AfterUIRenderingSystem.class).disable = true;
+                    }
+                }));
+
+
                 return arena;
             }
         };

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FiringAIComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
@@ -47,7 +48,7 @@ public class FiringAISystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     public FiringAISystem(Viewport gameport) {
         super(Aspect.all(PositionComponent.class, WeaponComponent.class, FiringAIComponent.class));
-        enemyTargets = Aspect.all(EnemyComponent.class, HealthComponent.class, CollisionBoundComponent.class);
+        enemyTargets = Aspect.one(EnemyComponent.class, ArenaLockComponent.class).all(HealthComponent.class, CollisionBoundComponent.class);
         this.gameport = gameport;
     }
 
@@ -133,7 +134,7 @@ public class FiringAISystem extends EntityProcessingSystem {
         IntBag entityIds = subscription.getEntities();
 
         for(int i = 0; i < entityIds.size(); i++){
-            if(!CameraSystem.isOnCamera(cbm.get(entityIds.get(i)).bound, gameport.getCamera())){
+            if(!CameraSystem.isOnCamera(cbm.get(entityIds.get(i)).bound, gameport.getCamera()) || cbm.get(entityIds.get(i)).hitBoxDisabled){
                 entityIds.remove(i);
             };
         }

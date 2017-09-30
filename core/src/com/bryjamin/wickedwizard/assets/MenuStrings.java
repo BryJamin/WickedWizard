@@ -235,12 +235,13 @@ public class MenuStrings {
         public static final String TWO_THUMBS_2 = "Move With One Thumb,";
         public static final String TWO_THUMBS_3 = "Jump And Shoot With The Other!";
 
-        public static final String AUTO_FIRE_ID = "2a8f54f7-caa7-4854-9f45-6f84a9045c3f";
-        public static final String AUTO_FIRE_1 = "Would You Like To Turn On Auto Fire Mode?";
-        public static final String AUTO_FIRE_2 = "This Mode Is For Players Who Find Shooting And Moving At The Same Time Too Difficult";
-        public static final String AUTO_FIRE_3 = "In Auto Fire Mode If An ENEMY Is On Screen Your Character Will Shoot Toward It Automatically";
-        public static final String AUTO_FIRE_4 = "You Can Take Over Shooting Manually At Any Time For More Precise Shooting";
+        public static final String AUTO_FIRE_ID = "5e92328a-0464-41c5-a076-0c7ef835dc39";
+        public static final String AUTO_FIRE_1 = "Auto Fire Mode";
+        public static final String AUTO_FIRE_2 = "In Auto Fire Mode";
+        public static final String AUTO_FIRE_3 = "Your Character Will Automatically SHOOT At The Nearest ENEMY";
+        public static final String AUTO_FIRE_4 = "You Can Manually Take Over Shooting At Any Time";
         public static final String AUTO_FIRE_5 = "Turn On Auto Fire Mode?";
+        public static final String AUTO_FIRE_6 = "(This Setting Can Be Changed Later In The SETTINGS Menu)";
 
 
 

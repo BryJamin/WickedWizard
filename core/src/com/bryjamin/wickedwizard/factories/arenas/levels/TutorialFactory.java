@@ -5,7 +5,6 @@ import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -132,6 +131,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
 
         Gdx.app.getPreferences(PreferenceStrings.SETTINGS).putBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true).flush();
+        Gdx.app.getPreferences(PreferenceStrings.SETTINGS).putBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, false).flush();
 
 
         Arena startingArena = groundMovementTutorial(new MapCoords(0,0));
@@ -147,11 +147,11 @@ public class TutorialFactory extends ArenaShellFactory {
         placedArenas.add(enemyTurtorial(new MapCoords(6,0)));
         placedArenas.add(enemyTutorialPart2(new MapCoords(7,0)));
         placedArenas.add(movingEnemyTurtorial(new MapCoords(8,0)));
-        placedArenas.add(bulletTutorial(new MapCoords(9, 0)));
-        placedArenas.add(platformTutorial(new MapCoords(10,0)));
-        placedArenas.add(grappleTutorial(new MapCoords(11,0)));
-        placedArenas.add(grappleJumpTutorial(new MapCoords(11, 3)));
-        placedArenas.add(movingEnemyTurtorialPart2(new MapCoords(11, 5)));
+        placedArenas.add(movingEnemyTurtorialPart2(new MapCoords(9, 0)));
+        placedArenas.add(bulletTutorial(new MapCoords(10, 0)));
+        placedArenas.add(platformTutorial(new MapCoords(11,0)));
+        placedArenas.add(grappleTutorial(new MapCoords(12,0)));
+        placedArenas.add(grappleJumpTutorial(new MapCoords(12, 3)));
         placedArenas.add(guideLineTutorial(new MapCoords(12, 5)));
         placedArenas.add(endTutorial(new MapCoords(13,5)));
 
@@ -435,6 +435,16 @@ public class TutorialFactory extends ArenaShellFactory {
 
         threeGroundChevrons(arena);
 
+        bag = arena.createArenaBag();
+        bag.add(new ActionAfterTimeComponent(new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(TipsMessageSystem.class).createTipsMessage(MenuStrings.Tutorial.AUTO_FIRE_ID);
+                e.deleteFromWorld();
+            }
+        }));
+
+
         return arena;
 
     }
@@ -541,19 +551,10 @@ public class TutorialFactory extends ArenaShellFactory {
                             @Override
                             public void performAction(World world, Entity e) {
 
-
                                 MainGame game = world.getSystem(GameSystem.class).getGame();
-
-                                if(DataSave.isDataAvailable(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.TUTORIAL_COMPLETE)){
-                                    game.getScreen().dispose();
-                                    game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
-
-                                } else {
-                                    DataSave.saveChallengeData(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.TUTORIAL_COMPLETE);
-                                    Screen s = game.getScreen();
-                                    game.setScreen(new com.bryjamin.wickedwizard.screens.PlayScreen(game));
-                                    s.dispose();
-                                }
+                                DataSave.saveChallengeData(com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource.TUTORIAL_COMPLETE);
+                                game.getScreen().dispose();
+                                game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
 
                             }
                         });
@@ -701,17 +702,6 @@ public class TutorialFactory extends ArenaShellFactory {
         for(ComponentBag c : menuButtonBuilder.build().createButton(guideLineBool ? MenuStrings.ON : MenuStrings.OFF, CenterMath.offsetX(MainGame.GAME_WIDTH, width),  Measure.units(25f))){
             arena.addEntity(c);
         };
-
-
-
-/*        bag = new ComponentBag();
-        bag.add(new PositionComponent(0, Measure.units(15f)));
-        text = new TextureFontComponent(FontAssets.small, guideLineTutorialStringBottom, textColor);
-        text.layer = ENEMY_LAYER_MIDDLE;
-        bag.add(new CollisionBoundComponent(textRectangle));
-        bag.add(text);
-
-        arena.addEntity(bag);*/
 
 
         return arena;

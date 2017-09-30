@@ -324,7 +324,6 @@ public class AdventureWorld extends InputAdapter {
                         new FindPlayerSystem(player),
                         new GrapplePointSystem(),
                         new LockSystem(),
-                        new HealthSystem(),
                         new OnDeathSystem(),
                         new ProximitySystem(),
                         new FindChildSystem(),
@@ -341,7 +340,8 @@ public class AdventureWorld extends InputAdapter {
                         new SpawnerSystem(),
                         new GrappleSystem(),
                         new FrictionSystem(),
-                        new ConditionalActionSystem()
+                        new ConditionalActionSystem(),
+                        new HealthSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),

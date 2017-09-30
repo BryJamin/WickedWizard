@@ -80,7 +80,11 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public boolean hasStartedFiring = false;
 
-    public boolean isAutoFire = false;
+    public static boolean isAutoFire = false;
+
+    public static void updateAutoFireUsingPreferences(){
+        isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, false);
+    }
 
 
     @SuppressWarnings("unchecked")
@@ -93,7 +97,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
         playerInput = new PlayerInput(world, gameport, movementArea, this);
 
-        this.isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
+        isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
     }
 
 
@@ -176,9 +180,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
 
-
-        System.out.println(isAutoFire);
-
         if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
             turnOffGlide();
         }
@@ -194,8 +195,6 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         if (!playerInput.activeGrapple) {
 
             if (playerInput.movementInputPoll != null) {
-
-                //System.out.println("i AM MOVING THE PLAYER");
 
                 if (Gdx.input.isTouched(playerInput.movementInputPoll)) {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
