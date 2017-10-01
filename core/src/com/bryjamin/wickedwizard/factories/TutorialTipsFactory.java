@@ -140,7 +140,7 @@ public class TutorialTipsFactory extends AbstractFactory {
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.TWO_THUMBS_3, 0, Measure.units(17.5f)));
 
 
-        ComponentBag bag = defaultCenteredImage(new ComponentBag(), TextureStrings.ICON_THUMBS, parentComponent, gamecam, Measure.units(30f), Measure.units(22.5f));
+        ComponentBag bag = defaultCenteredImage(new ComponentBag(), TextureStrings.ICON_THUMBS, parentComponent, gamecam, Measure.units(30f), Measure.units(25f));
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.075f / 1f, atlas.findRegions(TextureStrings.ICON_THUMBS), Animation.PlayMode.LOOP));
@@ -162,14 +162,13 @@ public class TutorialTipsFactory extends AbstractFactory {
         fillBag.add(blackBackground(new ComponentBag(), parentComponent, gamecam));
         fillBag.add(whiteFlashBackground(new ComponentBag(), parentComponent, gamecam));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.medium, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_1, 0, titleY));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_2, 0, Measure.units(52.5f)));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_3, 0, Measure.units(47.5f)));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_4, 0, Measure.units(25f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_3, 0, Measure.units(52.5f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_4, 0, Measure.units(47.5f)));
         fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_5, 0, Measure.units(20f)));
-        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_6, 0, Measure.units(15f)));
+        fillBag.add(defaultText(new ComponentBag(), FontAssets.small, parentComponent, gamecam, MenuStrings.Tutorial.AUTO_FIRE_6, 0, Measure.units(2.5f)));
 
 
-        ComponentBag bag = defaultCenteredImage(new ComponentBag(), TextureStrings.ICON_AUTOFIRE, parentComponent, gamecam, Measure.units(30f), Measure.units(27.5f));
+        ComponentBag bag = defaultCenteredImage(new ComponentBag(), TextureStrings.ICON_AUTOFIRE, parentComponent, gamecam, Measure.units(30f), Measure.units(22.5f));
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();
         animMap.put(0, new Animation<TextureRegion>(0.075f / 1f, atlas.findRegions(TextureStrings.ICON_AUTOFIRE), Animation.PlayMode.LOOP));
@@ -208,7 +207,7 @@ public class TutorialTipsFactory extends AbstractFactory {
                     }
                 });
 
-        Bag<ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.YES, Measure.units(12.5f), Measure.units(0));
+        Bag<ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.YES, Measure.units(12.5f), Measure.units(5f));
 
 
         for(ComponentBag b : bags){
@@ -228,7 +227,7 @@ public class TutorialTipsFactory extends AbstractFactory {
                             world.getSystem(OnDeathSystem.class).kill(parent);
                         }
                     }
-                }).build().createButton(MenuStrings.NO, Measure.units(57.5f),  Measure.units(0));
+                }).build().createButton(MenuStrings.NO, Measure.units(57.5f),  Measure.units(5f));
 
         for(ComponentBag b : bags){
             b.add(new UIComponent());
