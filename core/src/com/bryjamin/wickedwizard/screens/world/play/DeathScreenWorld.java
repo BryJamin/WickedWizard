@@ -66,16 +66,16 @@ public class DeathScreenWorld {
     private static final float itemIconGap = Measure.units(2.5f);
 
     private static final float adventureTitleY = Measure.units(55f);
-    private static final float tapToRestartY = Measure.units(47.5f);
+    private static final float tapToRestartY = Measure.units(2.5f);
 
 
-    private static final float youAreHereIconsStartY = Measure.units(40);
+    private static final float youAreHereIconsStartY = Measure.units(47.5f);
 
     private static final float squareSize = Measure.units(5f);
     private static final float squareGap = Measure.units(0.5f);
 
 
-    private static final float itemTitleY = Measure.units(22.5f);
+    private static final float itemTitleY = Measure.units(32.5f);
     private static final float itemIconsStartY = itemTitleY - Measure.units(5);
 
 
@@ -133,13 +133,19 @@ public class DeathScreenWorld {
                 //TAP TO EXIT
                 Entity exit = world.createEntity();
                 exit.edit().add(new PositionComponent());
-                exit.edit().add(new FadeComponent(true, screenFadeTime, false));
+                //exit.edit().add(new FadeComponent(true, screenFadeTime, false));
                 exit.edit().add(new FollowCameraComponent(0, tapToRestartY));
                 exit.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gameport.getCamera().viewportWidth, Measure.units(10f))));
                 exit.edit().add(new TextureFontComponent(FontAssets.medium,
                         MenuStrings.Death.RESTART,
-                        new Color(Color.WHITE)));
-                exit.edit().add(new ActionOnTouchComponent(returnToMainMenu()));
+                        new Color(1,1,1,0)));
+                exit.edit().add(new ActionAfterTimeComponent(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        e.edit().add(new FadeComponent(true, 0.25f, false));
+                        e.edit().add(new ActionOnTouchComponent(returnToMainMenu()));
+                    }
+                }, screenFadeTime));
 
                 break;
 

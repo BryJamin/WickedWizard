@@ -57,15 +57,15 @@ public class BossRoomGiantKugelRoom extends AbstractFactory {
 
                 arena.addEntity(new BossKugelDusc(assetManager).giantKugelDusche(arena.getWidth() / 2, arena.getHeight() / 2 - Measure.units(10f)));
 
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(40f)));
-                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(75f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(35f)));
+                arena.addEntity(decorFactory.grapplePointBag(Measure.units(30f), Measure.units(70f)));
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(30f), Measure.units(40f)));
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(30f), Measure.units(75f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(30f), Measure.units(35f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() - Measure.units(30f), Measure.units(70f)));
 
                 float width = Measure.units(125f);
                 //arena.addEntity(decorFactory.wallBag(CenterMath.offsetX(arena.getWidth(), width), arena.getHeight() - Measure.units(25f), width, Measure.units(5f)));
-                arena.addEntity(decorFactory.platform(Measure.units(0), arena.getHeight() - Measure.units(30f), arena.getWidth()));
+                arena.addEntity(decorFactory.platform(Measure.units(0), arena.getHeight() - Measure.units(35f), arena.getWidth()));
 
                 return arena;
             }
