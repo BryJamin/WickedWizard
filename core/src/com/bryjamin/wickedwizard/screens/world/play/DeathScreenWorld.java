@@ -75,7 +75,7 @@ public class DeathScreenWorld {
     private static final float squareGap = Measure.units(0.5f);
 
 
-    private static final float itemTitleY = Measure.units(32.5f);
+    private static final float itemTitleY = Measure.units(30f);
     private static final float itemIconsStartY = itemTitleY - Measure.units(5);
 
 
@@ -295,7 +295,6 @@ public class DeathScreenWorld {
 
         Array<Item> itemArray = adventureWorld.getPlayerStats().collectedItems;
 
-        if(itemArray.size <= 0) return;
 
         Entity itemsText = world.createEntity();
         itemsText.edit().add(new PositionComponent());
@@ -305,6 +304,20 @@ public class DeathScreenWorld {
         itemsText.edit().add(new TextureFontComponent(FontAssets.medium,
                 MenuStrings.Death.ITEMS,
                 new Color(Color.WHITE)));
+
+        if(itemArray.size <= 0) {
+
+            Entity noItemsText = world.createEntity();
+            noItemsText.edit().add(new PositionComponent());
+            noItemsText.edit().add(new FollowCameraComponent(0, itemTitleY - Measure.units(10f)));
+            noItemsText.edit().add(new CollisionBoundComponent(new Rectangle(0,0, gameport.getCamera().viewportWidth, Measure.units(10f))));
+            noItemsText.edit().add(new FadeComponent(true, screenFadeTime, false));
+            noItemsText.edit().add(new TextureFontComponent(FontAssets.small,
+                    MenuStrings.Death.NO_FOUND_ITEMS,
+                    new Color(Color.WHITE)));
+
+            return;
+        }
 
 
         int maxColumns = (itemArray.size > 12) ? 12 : itemArray.size;

@@ -134,6 +134,8 @@ public class MenuStrings {
 
         public static final String ITEMS = "Items Found";
 
+        public static final String NO_FOUND_ITEMS = "(You Didn't Find Any Items)";
+
         public static final String RESTART = "Tap here to Restart";
 
         public static final String YOU_REACHED_HERE = "(You Reached Here)";
