@@ -3,7 +3,6 @@ package com.bryjamin.wickedwizard.factories;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -13,14 +12,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
-import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.DisablePlayerInputComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
-import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -31,17 +28,12 @@ import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
-import com.bryjamin.wickedwizard.ecs.systems.FindChildSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
-import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
-import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
-
-import static com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem.updateAutoFireUsingPreferences;
 
 /**
  * Created by BB on 24/09/2017.
@@ -155,7 +147,7 @@ public class TutorialTipsFactory extends AbstractFactory {
     }
 
 
-    public Bag<ComponentBag> autoFire(Bag<ComponentBag> fillBag, Camera gamecam){
+/*    public Bag<ComponentBag> autoFire(Bag<ComponentBag> fillBag, Camera gamecam){
 
         final ParentComponent parentComponent = new ParentComponent();
 
@@ -237,7 +229,7 @@ public class TutorialTipsFactory extends AbstractFactory {
 
         return fillBag;
 
-    }
+    }*/
 
 
 

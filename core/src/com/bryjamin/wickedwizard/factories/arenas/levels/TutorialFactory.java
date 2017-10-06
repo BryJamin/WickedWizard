@@ -415,6 +415,7 @@ public class TutorialFactory extends ArenaShellFactory {
 
         threeGroundChevrons(arena);
 
+/*
         bag = arena.createArenaBag();
         bag.add(new ActionAfterTimeComponent(new Action() {
             @Override
@@ -423,6 +424,7 @@ public class TutorialFactory extends ArenaShellFactory {
                 e.deleteFromWorld();
             }
         }));
+*/
 
 
         return arena;

@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
-import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.SoundFileStrings;
 import com.bryjamin.wickedwizard.ecs.components.AdditionalWeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
@@ -36,7 +35,6 @@ import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
-import com.bryjamin.wickedwizard.ecs.systems.ai.FiringAISystem;
 import com.bryjamin.wickedwizard.factories.PlayerFactory;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -80,11 +78,11 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public boolean hasStartedFiring = false;
 
-    public static boolean isAutoFire = false;
+   // public static boolean isAutoFire = false;
 
-    public static void updateAutoFireUsingPreferences(){
+/*    public static void updateAutoFireUsingPreferences(){
         isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, false);
-    }
+    }*/
 
 
     @SuppressWarnings("unchecked")
@@ -97,7 +95,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
         playerInput = new PlayerInput(world, gameport, movementArea, this);
 
-        isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
+        //isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
     }
 
 
@@ -232,7 +230,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     playerInput.firingInputPoll = null;
                 }
 
-            } else if(isAutoFire && world.getSystem(FiringAISystem.class).enemiesExist()) {
+            /*} else if(isAutoFire && world.getSystem(FiringAISystem.class).enemiesExist()) {
 
                 updateWeapons(wc, adc);
 
@@ -247,7 +245,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
                     }
                 }
 
-                fireWeapons(wc, adc, asc, e, x, y, angleOfTravel);
+                fireWeapons(wc, adc, asc, e, x, y, angleOfTravel);*/
 
             } else {
 

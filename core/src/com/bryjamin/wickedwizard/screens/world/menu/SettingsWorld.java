@@ -168,12 +168,13 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
                 .build()
                 .createButton(world,
                         bool? MenuStrings.SETTINGS_GUIDELINE_ON : MenuStrings.SETTINGS_GUIDELINE_OFF,
-                        gameport.getCamera().viewportWidth - buttonWidth - border,
+                        CenterMath.offsetX(com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, buttonWidth),
                         Measure.units(35f));
 
 
 
 
+/*
         bool = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
 
         Entity autoFire = menuButtonBuilder
@@ -190,6 +191,7 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
                         bool? MenuStrings.SETTINGS_AUTOFIRE_ON : MenuStrings.SETTINGS_AUTOFIRE_OFF,
                         border,
                         Measure.units(35f));
+*/
 
 
 
