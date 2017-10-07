@@ -12,6 +12,8 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
+import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
@@ -128,6 +130,18 @@ public class BossFactory extends AbstractFactory {
                 new Color(Color.WHITE)));
         flash.edit().add(new FadeComponent(true, 1.4f, 1));
         flash.edit().add(new ExpireComponent(4f));
+
+        flash.edit().add(new ConditionalActionComponent(new Condition() {
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return (world.getSystem(FindPlayerSystem.class).getPlayerComponent(HealthComponent.class).getAccumulatedDamage() > 0);
+            }
+        }, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(HealthComponent.class).clearDamage();
+            }
+        }));
 
         return flash;
     }
