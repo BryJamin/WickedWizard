@@ -107,7 +107,7 @@ public class CreditsWorld {
                 .width(skipWidth)
                 .height(skipHeight)
                 .foregroundColor(Color.WHITE)
-                .backgroundColor(Color.BLACK)
+                .backgroundColor(new Color(0,0,0,0))
                 .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
