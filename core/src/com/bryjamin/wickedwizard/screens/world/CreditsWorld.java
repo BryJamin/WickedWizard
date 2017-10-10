@@ -137,6 +137,7 @@ public class CreditsWorld {
         createCreditsPart("Johan (\"Flowy\") Almeflo", creditsSmallGap);
         createCreditsPart("Louis Hampton", creditsSmallGap);
         createCreditsPart("James O'Toole", creditsSmallGap);
+        createCreditsPart("Mohammedali (\"The First\") Dhanji", creditsSmallGap);
         createCreditsPart("Michelle Bryant", creditsSmallGap);
 
         createCreditsPart("Pete Colley", creditsSmallGap);

@@ -45,7 +45,7 @@ public class MenuStrings {
     public static final String STATS = "Stats";
 
     public static final String ITEMS = "Items";
-    public static final String TAP_AN_ITEM = "(Tap On An Item to See It's Description";
+    public static final String TAP_AN_ITEM = "(Tap On An Item to See It's Description)";
     public static final String UNIDENTIFIED_ITEM = "Unidentified Item";
     public static final String UNIDENTIFIED_ITEM_DESCRIPTION = "???";
 
