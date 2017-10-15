@@ -1,5 +1,6 @@
 package com.bryjamin.wickedwizard.utils.comparator;
 
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 
 import java.util.Comparator;
@@ -32,9 +33,9 @@ public class FarSort {
     };
 
 
-    public Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> DOOR_FAR_MAPCOORDS = new Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>() {
+    public Comparator<DoorComponent> DOOR_FAR_MAPCOORDS = new Comparator<DoorComponent>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc1, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc2) {
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
             return HIGHEST_TO_LOWEST_DIST.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
@@ -59,9 +60,9 @@ public class FarSort {
     };
 
 
-    public Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> LEFTMOST_DISTANCE_DOORS = new Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>() {
+    public Comparator<DoorComponent> LEFTMOST_DISTANCE_DOORS = new Comparator<DoorComponent>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc1, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc2) {
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
             return BIGGEST_Y_VALUE_SORT.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
@@ -77,9 +78,9 @@ public class FarSort {
     };
 
 
-    public Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> RIGHTMOST_DISTANCE_DOORS = new Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>() {
+    public Comparator<DoorComponent> RIGHTMOST_DISTANCE_DOORS = new Comparator<DoorComponent>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc1, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc2) {
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
             return RIGHTMOST_DISTANCE.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
@@ -96,9 +97,9 @@ public class FarSort {
     };
 
 
-    public Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> SORT_DOORS_BY_LARGEST_Y = new Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>() {
+    public Comparator<DoorComponent> SORT_DOORS_BY_LARGEST_Y = new Comparator<DoorComponent>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc1, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc2) {
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
             return BIGGEST_Y_VALUE_SORT.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
@@ -115,15 +116,15 @@ public class FarSort {
     };
 
 
-    public Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> SORT_DOORS_BY_LOWEST_Y = new Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>() {
+    public Comparator<DoorComponent> SORT_DOORS_BY_LOWEST_Y = new Comparator<DoorComponent>() {
         @Override
-        public int compare(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc1, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc2) {
+        public int compare(DoorComponent dc1, DoorComponent dc2) {
             return SORT_COORDS_BY_LOWEST_Y.compare(dc1.leaveCoords, dc2.leaveCoords);
         }
     };
 
 
-    public int compare(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent mapCoords, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent t1) {
+    public int compare(DoorComponent mapCoords, DoorComponent t1) {
         return 0;
     }
 

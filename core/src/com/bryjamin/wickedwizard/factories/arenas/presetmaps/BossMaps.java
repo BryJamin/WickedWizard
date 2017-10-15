@@ -20,8 +20,8 @@ import com.bryjamin.wickedwizard.factories.arenas.bossrooms.BossRoomWraithCowl;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.factories.chests.AltarFactory;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
-import com.bryjamin.wickedwizard.factories.items.ItemFactory;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.ItemType;
@@ -38,7 +38,7 @@ public class BossMaps extends AbstractFactory {
     private ChestFactory chestFactory;
     private com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory decorFactory;
     private PortalFactory portalFactory;
-    private ItemFactory itemFactory;
+    private AltarFactory altarFactory;
 
     ArenaSkin arenaSkin;
 
@@ -49,7 +49,7 @@ public class BossMaps extends AbstractFactory {
         //this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin);
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.portalFactory = new PortalFactory(assetManager);
-        this.itemFactory = new ItemFactory(assetManager);
+        this.altarFactory = new AltarFactory(assetManager);
         this.arenaSkin = arenaSkin;
     }
 
@@ -71,33 +71,13 @@ public class BossMaps extends AbstractFactory {
 
 
     /**
-     * This is the arena placed inside of the main level map, that is used to teleport to a boss map.
-     * @param mapCoords - Mapcoords of the arena
-     * @param btc - The boss teleporter component that holds the link to another map.
-     * @return - Returns the arena
-     */
-    public final Arena bossTeleportArena(MapCoords mapCoords, BossTeleporterComponent btc){
-
-        btc.offsetX = Measure.units(25f);
-
-        Arena bossRoom = new ArenaShellFactory(assetManager, arenaSkin).createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.BOSS);
-        bossRoom.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(30f), Measure.units(25f), Measure.units(5f)));
-        bossRoom.addEntity(portalFactory.mapPortal(Measure.units(17.5f), Measure.units(45f), btc));
-
-        return bossRoom;
-    }
-
-
-    /**
      * The starting room you are teleported to when you use a boss room teleporter
      * @param mapCoords - Map co-ordinates of the Arena
      * @param btc - The boss teleport component that holds the link to another map
      * @return - Returns the arena
      */
     public Arena bossMapStartingArena(MapCoords mapCoords, BossTeleporterComponent btc){
-
         btc.offsetY = -Measure.units(15f);
-
         Arena startingArena = arenaShellFactory.createOmniArenaHiddenGrapple(mapCoords, Arena.ArenaType.NORMAL);
         startingArena.addEntity(portalFactory.mapPortal(startingArena.getWidth() / 2, startingArena.getHeight() / 2 + Measure.units(5f), btc));
         return startingArena;
@@ -116,42 +96,8 @@ public class BossMaps extends AbstractFactory {
 
 
         exitArena.addEntity(portalFactory.levelPortal(Measure.units(80f), Measure.units(32.5f)));
-        exitArena.addEntity(itemFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint(), ItemType.BOSS));
+        exitArena.addEntity(altarFactory.createItemAltarBag(Measure.units(10f), Measure.units(35f), arenaSkin.getWallTint(), ItemType.BOSS));
         exitArena.addEntity(chestFactory.chestBag(Measure.units(45f), Measure.units(10f)));
-
-
-/*        ComponentBag bag = exitArena.createArenaBag();
-        bag.add(new ActionAfterTimeComponent(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-                GameCreator gameCreator = world.getSystem(ChangeLevelSystem.class).getGameCreator();
-
-                if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
-
-                    String id;
-
-                    switch (gameCreator.position){
-                        case 0:
-                        default: id = ChallengesResource.LEVEL_1_COMPLETE; break;
-                        case 1: id = ChallengesResource.LEVEL_2_COMPLETE; break;
-                        case 2: id = ChallengesResource.LEVEL_3_COMPLETE; break;
-                        case 3: id = ChallengesResource.LEVEL_4_COMPLETE; break;
-                        case 4: id = ChallengesResource.LEVEL_5_COMPLETE; break;
-                    }
-
-                    world.getSystem(UnlockMessageSystem.class).createUnlockMessage(id);
-
-                    String s = AdventureUnlocks.getUnlock(
-                            world.getSystem(FindPlayerSystem.class).getPlayerComponent(PlayerComponent.class).id,
-                            id);
-
-                    if(s != null) world.getSystem(UnlockMessageSystem.class).createUnlockMessage(s);
-                }
-                e.deleteFromWorld();
-            }
-        }));*/
-
 
         return exitArena;
     }
@@ -192,9 +138,9 @@ public class BossMaps extends AbstractFactory {
             public ArenaMap createBossMap(BossTeleporterComponent btc) {
                 return createABossMap(
                         new MapCoords(0, 0),
-                        new MapCoords(3, -1),
+                        new MapCoords(3, 0),
                         btc,
-                        new BossRoomGiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, -1)));
+                        new BossRoomGiantKugelRoom(assetManager, arenaSkin).giantKugelArena().createArena(new MapCoords(1, 0)));
             }
         };
     }
@@ -272,7 +218,9 @@ public class BossMaps extends AbstractFactory {
                         new MapCoords(0, 0),
                         new MapCoords(2, 0),
                         btc,
-                        new BossArenaEndBoss(assetManager, arenaSkin).endStartingRoom().createArena(new MapCoords(1, 0)));
+                        new BossArenaEndBoss(assetManager, arenaSkin)
+                                .endBossStartingRoom(new GalleryAtTheEndMap(assetManager).galleryMap())
+                                .createArena(new MapCoords(1, 0)));
             }
         };
     }

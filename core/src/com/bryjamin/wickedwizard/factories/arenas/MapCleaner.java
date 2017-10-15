@@ -34,7 +34,7 @@ public class MapCleaner {
 
     public void cleanArena(Arena a, Array<Arena> arenas){
         for(int j = a.getDoors().size - 1; j >=0; j--) {//for (DoorComponent dc : a.getDoors()) {
-            com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc = a.getDoors().get(j);
+            DoorComponent dc = a.getDoors().get(j);
             if (!findDoorWithinFoundRoom(dc, arenas)) {
                 replaceDoorWithWall(dc, a);
             }
@@ -60,9 +60,9 @@ public class MapCleaner {
 
 
 
+
     private Arena findRoom(MapCoords mc, Array<Arena> arenas){
         for(Arena a : arenas){
-            //System.out.println("Find room " + a.cotainingCoords.contains(mc, false));
             if(a.cotainingCoords.contains(mc, false)){
                 return a;
             }
@@ -74,7 +74,6 @@ public class MapCleaner {
 
     private boolean checkAdjacentDoorsContainCoordinates(Arena arena, MapCoords mapCoords){
         for(DoorComponent dc : arena.getDoors()){
-
             if(dc.leaveCoords.equals(mapCoords)){
                 return true;
             }

@@ -46,11 +46,11 @@ public class ChallengeMaps extends AbstractFactory {
         this.portalFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.PortalFactory(assetManager);
         this.itemFactory = new com.bryjamin.wickedwizard.factories.items.ItemFactory(assetManager);
         this.arenaEnemyPlacementFactory = new ArenaEnemyPlacementFactory(assetManager, arenaSkin, random);
-        this.rank1ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank1ChallengeMaps(assetManager, random);
-        this.rank2ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank2ChallengeMaps(assetManager, random);
-        this.rank3ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank3ChallengeMaps(assetManager, random);
-        this.rank4ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank4ChallengeMaps(assetManager, random);
-        this.rank5ChallengeMaps = new com.bryjamin.wickedwizard.factories.arenas.challenges.maps.Rank5ChallengeMaps(assetManager, random);
+        this.rank1ChallengeMaps = new Rank1ChallengeMaps(assetManager, random);
+        this.rank2ChallengeMaps = new Rank2ChallengeMaps(assetManager, random);
+        this.rank3ChallengeMaps = new Rank3ChallengeMaps(assetManager, random);
+        this.rank4ChallengeMaps = new Rank4ChallengeMaps(assetManager, random);
+        this.rank5ChallengeMaps = new Rank5ChallengeMaps(assetManager, random);
 
         this.random = random;
         setUpMap();

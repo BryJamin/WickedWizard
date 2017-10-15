@@ -36,7 +36,6 @@ public class ConditionalActionComponent extends Component {
         }
     }
 
-
     public ConditionalActionComponent(){
     }
 

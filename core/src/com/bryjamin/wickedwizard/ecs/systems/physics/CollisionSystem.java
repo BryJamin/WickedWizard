@@ -11,8 +11,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.EnemyOnlyWallComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.GrappleableComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
@@ -23,14 +28,14 @@ import com.bryjamin.wickedwizard.utils.collider.Collider;
  */
 public class CollisionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent> playerm;
+    ComponentMapper<PositionComponent> pm;
+    ComponentMapper<PlayerComponent> playerm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent> enemym;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
+    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<WallComponent> wm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent> bulletm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent> boucem;
+    ComponentMapper<BounceComponent> boucem;
     ComponentMapper<GrappleComponent> grapplem;
     ComponentMapper<MoveToComponent> mtm;
 
@@ -52,13 +57,13 @@ public class CollisionSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public  CollisionSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(IntangibleComponent.class));
         wall = Aspect.all(WallComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.HealthComponent.class);
         destructibleWalls = Aspect.all(WallComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class);
         enemyOnlyWalls = Aspect.all(CollisionBoundComponent.class, EnemyOnlyWallComponent.class);
 
         enemyBulletBlockWalls = Aspect.all(CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.object.BlockEnemyBulletComponent.class);
-        playerWalls = Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent.class, CollisionBoundComponent.class).exclude(GrappleableComponent.class);
+        playerWalls = Aspect.all(DoorComponent.class, CollisionBoundComponent.class).exclude(GrappleableComponent.class);
         platforms = Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent.class, CollisionBoundComponent.class);
 
 
@@ -77,8 +82,8 @@ public class CollisionSystem extends EntityProcessingSystem {
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
+        PositionComponent pc = pm.get(e);
+        VelocityComponent vc = vm.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         cbm.get(e).getRecentCollisions().clear();
 

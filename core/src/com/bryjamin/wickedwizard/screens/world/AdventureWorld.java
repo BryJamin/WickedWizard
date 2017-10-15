@@ -71,7 +71,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.HealthBarSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.MessageBannerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.TipsMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
@@ -82,7 +82,7 @@ import com.bryjamin.wickedwizard.ecs.systems.input.JumpSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.BossDefeatUnlockSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.InCombatSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.LevelItemSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
@@ -103,7 +103,6 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaGUI;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
-import com.bryjamin.wickedwizard.factories.arenas.PresetGames;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.ItemStore;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
@@ -111,6 +110,7 @@ import com.bryjamin.wickedwizard.screens.PlayScreen;
 import com.bryjamin.wickedwizard.screens.QuickSave;
 import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
+import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 import java.util.Random;
@@ -162,6 +162,10 @@ public class AdventureWorld extends InputAdapter {
         return player;
     }
 
+    public StatComponent getPlayerStats() {
+        return playerStats;
+    }
+
     public void setPlayer(ComponentBag player) {
         this.player = player;
         this.playerStats = BagSearch.getObjectOfTypeClass(StatComponent.class, player);
@@ -188,7 +192,7 @@ public class AdventureWorld extends InputAdapter {
 
         Arena startingArena = jigsawGenerator.getStartingRoom();
 
-        if(gameCreator.id.equals(PresetGames.DEFAULT_GAME_ID)) {
+        if(gameCreator.getGameType() == GameCreator.GameType.ADVENTURE) {
 
             if (QuickSave.doesQuickSaveExist()) {
 
@@ -269,18 +273,18 @@ public class AdventureWorld extends InputAdapter {
 
     public void createPauseButton(World world){
 
-        float width = Measure.units(4.5f);
-        float height = Measure.units(4.5f);
+        float width = Measure.units(5);
+        float height = Measure.units(5f);
 
         Entity pauseButton = world.createEntity();
         pauseButton.edit().add(new UIComponent());
         pauseButton.edit().add(new ActionOnTouchComponent(new Action() {
             @Override
             public void performAction(World world, Entity e) {
-                world.getSystem(EndGameSystem.class).pauseGame();
+                world.getSystem(GameSystem.class).pauseGame();
             }
         }));
-        pauseButton.edit().add(new FollowCameraComponent(Measure.units(30.5f), Measure.units(30.5f)));
+        pauseButton.edit().add(new FollowCameraComponent(Measure.units(87.5f), Measure.units(65f)));
         pauseButton.edit().add(new PositionComponent());
         pauseButton.edit().add(new CollisionBoundComponent(new Rectangle(0, 0, width, height)));
         pauseButton.edit().add(new UnpackableComponent());
@@ -320,7 +324,6 @@ public class AdventureWorld extends InputAdapter {
                         new FindPlayerSystem(player),
                         new GrapplePointSystem(),
                         new LockSystem(),
-                        new HealthSystem(),
                         new OnDeathSystem(),
                         new ProximitySystem(),
                         new FindChildSystem(),
@@ -334,18 +337,18 @@ public class AdventureWorld extends InputAdapter {
                         new JumpSystem(),
                         new DisablePlayerInputSystem(),
                         new PlayerInputSystem(gameport),
-                        new StateSystem(),
                         new SpawnerSystem(),
                         new GrappleSystem(),
                         new FrictionSystem(),
-                        new ConditionalActionSystem()
+                        new ConditionalActionSystem(),
+                        new HealthSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.LOW,
                         new DirectionalSystem(),
                         new CameraSystem(gameport),
                         new CameraShakeSystem(gameport),
                         new FollowCameraSystem(gameport.getCamera()),
-                        new FiringAISystem(),
+                        new FiringAISystem(gameport),
                         new FadeSystem(), //Applies any fade before render
                         new ColorChangeSystem(),
                         new RenderingSystem(batch, assetManager, gameport),
@@ -358,10 +361,11 @@ public class AdventureWorld extends InputAdapter {
                         new SoundSystem(assetManager),
                         new ChangeLevelSystem(gameCreator, jigsawGenerator),
                         new BossDefeatUnlockSystem(game, gameCreator),
+                        new TipsMessageSystem(game),
                         new UnlockMessageSystem(game),
                         new MapTeleportationSystem(jigsawGenerator.getMapTracker()),
                         new RoomTransitionSystem(jigsawGenerator.getStartingMap()),
-                        new EndGameSystem(game),
+                        new GameSystem(game),
                         new UISystem(game, gameport,
                                 new ArenaGUI(0, 0, jigsawGenerator.getStartingMap().getRoomArray(), jigsawGenerator.getStartingRoom(), atlas),
                                 BagSearch.getObjectOfTypeClass(StatComponent.class, player),
@@ -383,12 +387,7 @@ public class AdventureWorld extends InputAdapter {
         stats.fireRate = 99f;
         stats.speed = 0.5f;
         stats.luck = 99f;
-
-      //  stats.damage = 5;
-      //  stats.accuracy = 0;
-
         currencyComponent.money = 99;
-
     }
 
 
@@ -397,12 +396,6 @@ public class AdventureWorld extends InputAdapter {
     }
 
     public void process(float delta) {
-
-        if (delta < 0.02f) {
-            world.setDelta(delta);
-        } else {
-            world.setDelta(0.017f);
-        }
 
         if(playerStats.getHealth() <= 0 && !isGameOver){
             countDown = 1f;
@@ -423,7 +416,9 @@ public class AdventureWorld extends InputAdapter {
 
         }
 
-        world.process();
+        GameDelta.delta(world, delta);
+
+    //    world.process();
 
     }
 
@@ -433,7 +428,7 @@ public class AdventureWorld extends InputAdapter {
         world.getSystem(MusicSystem.class).pauseMusic();
 
         for (BaseSystem s : world.getSystems()) {
-            if (!(s instanceof RenderingSystem || s instanceof UISystem)) {
+            if (!(s instanceof RenderingSystem || s instanceof UISystem || s instanceof AfterUIRenderingSystem)) {
                 s.setEnabled(false);
             }
         }
@@ -450,6 +445,10 @@ public class AdventureWorld extends InputAdapter {
         }
     }
 
+
+    public GameCreator getGameCreator() {
+        return gameCreator;
+    }
 
     public boolean isGameOver() {
         return isGameOver;

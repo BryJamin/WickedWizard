@@ -23,13 +23,16 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
+
 
 /**
  * Created by Home on 01/08/2017.
@@ -79,7 +82,7 @@ public class HoarderFactory extends EnemyFactory {
 
         bag.add(new PositionComponent(x, y));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(health));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
+        bag.add(new BlinkOnHitComponent());
         bag.add(new SoundEmitterComponent(SoundFileStrings.spawningMix));
 
 
@@ -97,7 +100,7 @@ public class HoarderFactory extends EnemyFactory {
 
         bag.add(new FadeComponent(false, chestFadeOutTime, false));
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+        bag.add(new VelocityComponent());
         bag.add(new BounceComponent());
 
 
@@ -107,7 +110,7 @@ public class HoarderFactory extends EnemyFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                VelocityComponent vc = e.getComponent(VelocityComponent.class);
 
                 vc.velocity.y = MathUtils.random.nextBoolean() ? speed : -speed;
                 vc.velocity.x = MathUtils.random.nextBoolean() ? speed : -speed;
@@ -228,7 +231,7 @@ public class HoarderFactory extends EnemyFactory {
                 Entity chest = world.getEntity(bag.get(i));
                 chest.edit().remove(FadeComponent.class);
                 chest.edit().add(new FadeComponent(true,chestFadeInTime, false));
-                chest.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = chestReappearanceSpeed;
+                chest.getComponent(VelocityComponent.class).velocity.y = chestReappearanceSpeed;
                 chest.getComponent(CollisionBoundComponent.class).hitBoxDisabled = false;
             }
         }

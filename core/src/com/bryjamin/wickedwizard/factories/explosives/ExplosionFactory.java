@@ -50,6 +50,25 @@ public class ExplosionFactory extends AbstractFactory {
     }
 
 
+    public Action neutralExplosionTask(){
+        return new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+
+                BagToEntity.bagToEntity(world.createEntity(),
+                        bombExplosion(cbc.getCenterX(), cbc.getCenterY(), defaultExplosionSize, defaultExplosionSize, 1));
+
+                gibletBuilder.build()
+                        .performAction(world, e);
+
+            }
+        };
+    }
+
+
+
     public Action enemyExplosionTask(){
         return new Action() {
             @Override

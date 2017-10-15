@@ -11,6 +11,12 @@ import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
+import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -79,9 +85,9 @@ public class BiggaBlobbaBoss extends BossFactory {
     public ComponentBag biggaBlobbaBag(float x, float y){
 
         ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, health);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(0, 0));
+        bag.add(new VelocityComponent(0, 0));
 
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = new com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent(new Rectangle(x, y, width, height));
+        CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x, y, width, height));
         cbc.hitBoxes.add(new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(x, y, bottomWidth, bottomHeight)));
         cbc.hitBoxes.add(new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(x, y, bottomMidWidth, bottomMidHeight),
                 com.bryjamin.wickedwizard.utils.CenterMath.offsetX(width, bottomMidWidth), bottomHeight));
@@ -92,7 +98,7 @@ public class BiggaBlobbaBoss extends BossFactory {
 
 
         bag.add(cbc);
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+        bag.add(new GravityComponent());
         // bag.add(new AccelerantComponent(Measure.units(10), Measure.units(20f)));
         // bag.add(new MoveToPlayerComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent(0));
@@ -156,9 +162,9 @@ public class BiggaBlobbaBoss extends BossFactory {
         return new Task() {
             @Override
             public void performAction(World world, Entity e) {
-                com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
-                com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
-                com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
+                VelocityComponent vc = e.getComponent(VelocityComponent.class);
                 vc.velocity.x = cbc.getCenterX() > playerCbc.getCenterX() ? vc.velocity.x = -chargingSpeed : chargingSpeed;
                 e.getComponent(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.class).setDefaultState(CHARGINGANIMATION);
                 e.edit().add(blobOCAC(chargingSpeed));
@@ -182,13 +188,13 @@ public class BiggaBlobbaBoss extends BossFactory {
         public void performAction(World world, Entity e) {
             position.x = world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.RoomTransitionSystem.class).getCurrentArena().getWidth() / 2;
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent(position));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent(chargingSpeed, chargingSpeed));
+            e.edit().add(new AccelerantComponent(chargingSpeed, chargingSpeed));
         }
 
         @Override
         public void cleanUpAction(World world, Entity e) {
             e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent.class);
-            e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent.class);
+            e.edit().remove(AccelerantComponent.class);
         }
     }
 
@@ -204,16 +210,16 @@ public class BiggaBlobbaBoss extends BossFactory {
         return new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
-                e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = jumpTransitionVly;
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = 0;
+                e.edit().add(new BounceComponent());
+                e.getComponent(VelocityComponent.class).velocity.y = jumpTransitionVly;
+                e.getComponent(VelocityComponent.class).velocity.x = 0;
                 e.edit().add(blobbaOnCollisionActionGroundShake());
             }
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = 0;
-                e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class);
+                e.getComponent(VelocityComponent.class).velocity.y = 0;
+                e.edit().remove(BounceComponent.class);
                 e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent.class);
             }
         };
@@ -224,7 +230,7 @@ public class BiggaBlobbaBoss extends BossFactory {
             @Override
             public boolean condition(World world, Entity entity) {
                 return entity.getComponent(com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent.class).currentPhaseTime > time &&
-                        entity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class).getRecentCollisions().contains(com.bryjamin.wickedwizard.utils.collider.Collider.Collision.BOTTOM, true);
+                        entity.getComponent(CollisionBoundComponent.class).getRecentCollisions().contains(com.bryjamin.wickedwizard.utils.collider.Collider.Collision.BOTTOM, true);
             }
         };
     }
@@ -239,13 +245,13 @@ public class BiggaBlobbaBoss extends BossFactory {
                 e.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
-                        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
+                        CollisionBoundComponent pcbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+                        CollisionBoundComponent cbc = e.getComponent(CollisionBoundComponent.class);
 
                         boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
 
-                        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = isLeftOfPlayer ? jumpVlx : -jumpVlx;
-                        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = jumpVly;
+                        e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? jumpVlx : -jumpVlx;
+                        e.getComponent(VelocityComponent.class).velocity.y = jumpVly;
 
                         e.getComponent(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.class).queueAnimationState(com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent.FIRING);
 
@@ -256,7 +262,7 @@ public class BiggaBlobbaBoss extends BossFactory {
                 }, 0, 1.5f, true));
 
 
-                com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent fc = new com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent(true, false);
+                FrictionComponent fc = new FrictionComponent(true, false);
                 fc.airFriction = false;
                 e.edit().add(fc);
 
@@ -265,7 +271,7 @@ public class BiggaBlobbaBoss extends BossFactory {
             @Override
             public void cleanUpAction(World world, Entity e) {
                 e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent.class);
-                e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent.class);
+                e.edit().remove(FrictionComponent.class);
             }
         };
 
@@ -280,7 +286,7 @@ public class BiggaBlobbaBoss extends BossFactory {
             @Override
             public void performAction(World world, Entity e) {
 
-                if(e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class) == null) {
+                if(e.getComponent(BounceComponent.class) == null) {
                     e.edit().remove(com.bryjamin.wickedwizard.ecs.components.ai.OnCollisionActionComponent.class);
                 }
                 Entity shaker = world.createEntity();
@@ -302,14 +308,14 @@ public class BiggaBlobbaBoss extends BossFactory {
         onCollisionActionComponent.left = new com.bryjamin.wickedwizard.ecs.components.ai.Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = speed;
+                e.getComponent(VelocityComponent.class).velocity.x = speed;
             }
         };
 
         onCollisionActionComponent.right = new com.bryjamin.wickedwizard.ecs.components.ai.Action() {
             @Override
             public void performAction(World world, Entity e) {
-                e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = -speed;
+                e.getComponent(VelocityComponent.class).velocity.x = -speed;
             }
         };
 

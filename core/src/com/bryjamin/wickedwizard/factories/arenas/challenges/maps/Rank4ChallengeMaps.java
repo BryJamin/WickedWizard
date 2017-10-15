@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFacto
 import com.bryjamin.wickedwizard.factories.arenas.decor.OnLoadFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
+import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -84,10 +85,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -119,10 +117,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -175,10 +170,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -221,10 +213,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -303,7 +292,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
 
 
         arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f),2,
-                new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(4f))
                         .speedInDegrees(2f)
                         .numberOfOrbitals(15)
@@ -356,7 +345,7 @@ public class Rank4ChallengeMaps extends AbstractFactory {
         arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
 
         arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(90f), Measure.units(50f),4,
-                new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                new LaserOrbitalTask.LaserBuilder(assetManager)
                         .orbitalAndIntervalSize(Measure.units(15f))
                         .speedInDegrees(-0.225f)
                         .numberOfOrbitals(10)

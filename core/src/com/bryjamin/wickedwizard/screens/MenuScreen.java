@@ -30,7 +30,6 @@ import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
-import com.bryjamin.wickedwizard.ecs.systems.graphical.StateSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.CollisionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.GravitySystem;
@@ -221,7 +220,6 @@ public class MenuScreen extends AbstractScreen {
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new AnimationSystem(),
-                        new StateSystem(),
                         new CollisionSystem(),
                         new ActionOnTouchSystem(),
                         new GravitySystem())

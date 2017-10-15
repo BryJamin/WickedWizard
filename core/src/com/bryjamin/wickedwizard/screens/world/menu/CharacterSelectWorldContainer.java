@@ -62,7 +62,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
     private static final int maxColumns = 4;
     private static final int maxRows = 2;
 
-    private static final float startY = Measure.units(32.5f);
+    private static final float startY = Measure.units(33.5f);
     private static final float startX = CenterMath.offsetX(MainGame.GAME_WIDTH, (characterSelectWidth * maxColumns) + (characterSelectGap * (maxColumns - 1)));
 
     private World world;
@@ -129,9 +129,6 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
 
             float x = CenterMath.offsetX(gameport.getCamera().viewportWidth, characterSelectWidth);
             float y = startY;
-
-            System.out.println(gameport.getCamera().viewportWidth  + "   ::::");
-            System.out.println(x);
 
             Bag<ComponentBag> bagArray = new Bag<ComponentBag>();
 
@@ -204,7 +201,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
 
         traits.add(new PositionComponent(x, y - Measure.units(10f)));
         traits.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(10f), characterSelectWidth, Measure.units(5f))));
-        traits.add(new TextureFontComponent(FontAssets.small, "Trait: " + pc.getTraits()));
+        traits.add(new TextureFontComponent(FontAssets.small, MenuStrings.SELECT_A_CHARACTER_TRAITS + ": " + pc.getTraits()));
 
         bags.add(traits);
 
@@ -212,7 +209,7 @@ public class CharacterSelectWorldContainer extends AbstractGestureDectector impl
 
         synopsis.add(new PositionComponent(x, y - Measure.units(15f)));
         synopsis.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(15f), characterSelectWidth, Measure.units(5f))));
-        synopsis.add(new TextureFontComponent(FontAssets.small, "Personality: " + pc.getPersonality()));
+        synopsis.add(new TextureFontComponent(FontAssets.small, MenuStrings.SELECT_A_CHARACTER_PERSONALITY + ": " + pc.getPersonality()));
 
         bags.add(synopsis);
 

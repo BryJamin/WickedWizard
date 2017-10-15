@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.DuringRoomLoadActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.ChangeLevelSystem;
+import com.bryjamin.wickedwizard.factories.chests.AltarFactory;
 import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
 import com.bryjamin.wickedwizard.factories.items.PickUp;
@@ -86,6 +87,7 @@ public class LuckSystem extends BaseSystem {
 
 
     private ItemFactory itemFactory;
+    private AltarFactory altarFactory;
     private Random random;
 
 
@@ -93,6 +95,7 @@ public class LuckSystem extends BaseSystem {
         this.assetManager = assetManager;
         this.random = random;
         this.itemFactory = new ItemFactory(assetManager);
+        this.altarFactory = new AltarFactory(assetManager);
     }
 
 
@@ -321,7 +324,7 @@ public class LuckSystem extends BaseSystem {
                 onDeathActionComponent.action = new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        Entity itemAltar = BagToEntity.bagToEntity(world.createEntity(), itemFactory.createCenteredPresetItemAltarBag(
+                        Entity itemAltar = BagToEntity.bagToEntity(world.createEntity(), altarFactory.createCenteredPresetItemAltarBag(
                                 x,
                                 y,
                                 altarColor,

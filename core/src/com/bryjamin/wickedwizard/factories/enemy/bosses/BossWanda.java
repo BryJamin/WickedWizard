@@ -26,6 +26,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
@@ -40,6 +41,7 @@ import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 import java.util.Random;
+
 
 /**
  * Created by Home on 27/05/2017.
@@ -66,6 +68,9 @@ public class BossWanda extends BossFactory {
 
     private static final float firingPhaseTime = 2.5f;
 
+
+    private static final float health = 65;
+
     private Giblets.GibletBuilder gibletBuilder;
 
 
@@ -91,9 +96,9 @@ public class BossWanda extends BossFactory {
         y = y - height / 2;
 
 
-        ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, 75);
+        ComponentBag bag = defaultBossBag(new ComponentBag(), x , y, health);
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+        bag.add(new VelocityComponent());
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 
@@ -237,7 +242,7 @@ public class BossWanda extends BossFactory {
             //TODO make a harmless component or something
             e.getComponent(CollisionBoundComponent.class).hitBoxes.clear();
 
-            e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = random.nextBoolean() ? Measure.units(100f) : -Measure.units(100f);
+            e.getComponent(VelocityComponent.class).velocity.x = random.nextBoolean() ? Measure.units(100f) : -Measure.units(100f);
         }
 
         @Override
@@ -245,7 +250,7 @@ public class BossWanda extends BossFactory {
             //e.edit().remove(GravityComponent.class);
             e.edit().remove(FadeComponent.class);
             e.edit().remove(IntangibleComponent.class);
-            e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = 0;
+            e.getComponent(VelocityComponent.class).velocity.x = 0;
             e.getComponent(CollisionBoundComponent.class).hitBoxes.add(new com.bryjamin.wickedwizard.utils.collider.HitBox(e.getComponent(CollisionBoundComponent.class).bound));
         }
     }
@@ -351,7 +356,7 @@ public class BossWanda extends BossFactory {
             final float y = (float) (centerOfOrbit.y + (radius * Math.sin(Math.toRadians(startAngle)))) - size / 2;
 
             e.edit().add(new PositionComponent(x, y));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+            e.edit().add(new VelocityComponent());
             e.edit().add(new BulletComponent());
             e.edit().add(new EnemyComponent());
             e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, size, size), true));
@@ -369,7 +374,7 @@ public class BossWanda extends BossFactory {
             e.edit().add(new ActionAfterTimeComponent(new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
-                    com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                    VelocityComponent vc = e.getComponent(VelocityComponent.class);
                     vc.velocity.x = BulletMath.velocityX(Measure.units(80f), Math.toRadians(startAngle));
                     vc.velocity.y = BulletMath.velocityY(Measure.units(80f), Math.toRadians(startAngle));
 
@@ -426,7 +431,7 @@ public class BossWanda extends BossFactory {
             final float y = (float) (centerOfOrbit.y + (radius * Math.sin(Math.toRadians(startAngle)))) - size / 2;
 
             e.edit().add(new PositionComponent(x, y));
-            e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+            e.edit().add(new VelocityComponent());
             e.edit().add(new BulletComponent());
             e.edit().add(new EnemyComponent());
             e.edit().add(new CollisionBoundComponent(new Rectangle(x,y,size,size), true));
@@ -444,7 +449,7 @@ public class BossWanda extends BossFactory {
             e.edit().add(new ActionAfterTimeComponent(new Task() {
                 @Override
                 public void performAction(World world, Entity e) {
-                    com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                    VelocityComponent vc = e.getComponent(VelocityComponent.class);
                     vc.velocity.x = BulletMath.velocityX(Measure.units(125f), Math.toRadians(startAngle));
                     vc.velocity.y = BulletMath.velocityY(Measure.units(125f), Math.toRadians(startAngle));
                 }

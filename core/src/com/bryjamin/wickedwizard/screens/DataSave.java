@@ -73,13 +73,17 @@ public class DataSave {
     }
 
     public static void saveChallengeData(String id){
-        dataSaveStore.keyStoreBoolean.put(id, true);
-        saveData();
+        if(!dataSaveStore.keyStoreBoolean.containsKey(id)) {
+            dataSaveStore.keyStoreBoolean.put(id, true);
+            saveData();
+        }
     }
 
     public static void saveItemData(String id){
-        dataSaveStore.itemStoreBoolean.put(id, true);
-        saveData();
+        if(!dataSaveStore.itemStoreBoolean.containsKey(id)) {
+            dataSaveStore.itemStoreBoolean.put(id, true);
+            saveData();
+        }
     }
 
 

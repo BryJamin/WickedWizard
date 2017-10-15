@@ -17,6 +17,8 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.ColorChangeComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.BulletFactory;
@@ -189,7 +191,7 @@ public class MultiPistol implements Weapon {
                 .minSpeed(Measure.units(10f))
                 .maxSpeed(Measure.units(20f))
                 //.mixes(SoundFileStrings.queitExplosionMegaMix)
-                .colors(color)
+                .colors(new Color(color))
                 .intangible(true)
                 .expiryTime(0.2f)
                 .build();
@@ -217,14 +219,14 @@ public class MultiPistol implements Weapon {
 
                 bullet.getComponent(BulletComponent.class).damage = this.damage;
 
-                bullet.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(BulletMath.velocityX(shotSpeed, angleOfTravel),
+                bullet.edit().add(new VelocityComponent(BulletMath.velocityX(shotSpeed, angleOfTravel),
                         BulletMath.velocityY(shotSpeed, angleOfTravel)));
 
                 if (enemy) bullet.edit().add(new EnemyComponent());
 
                 if (friendly) bullet.edit().add(new FriendlyComponent());
 
-                if (gravity) bullet.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+                if (gravity) bullet.edit().add(new GravityComponent());
 
                 if (intangible) bullet.edit().add(new IntangibleComponent());
 

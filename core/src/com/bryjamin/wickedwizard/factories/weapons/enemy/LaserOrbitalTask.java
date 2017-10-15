@@ -27,6 +27,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 
+
 /**
  * Created by Home on 16/06/2017.
  */

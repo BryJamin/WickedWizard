@@ -5,7 +5,10 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
+
+
 
 /**
  * Created by BB on 07/04/2017.
@@ -20,18 +23,18 @@ import com.bryjamin.wickedwizard.utils.enums.Direction;
 
 public class DirectionalSystem extends EntitySystem {
 
-   static ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent> dm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+   static ComponentMapper<DirectionalComponent> dm;
+    ComponentMapper<PositionComponent> pm;
 
     public DirectionalSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.class));
+        super(Aspect.all(DirectionalComponent.class));
     }
 
     @Override
     protected void processSystem() {
 
         for(Entity e : this.getEntities()){
-            dm.get(e).priority = com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.LOWEST;
+            dm.get(e).priority = DirectionalComponent.PRIORITY.LOWEST;
         }
 
 

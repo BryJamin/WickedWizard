@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.audio.SoundEmitterComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.HazardComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -143,7 +144,7 @@ public class LaserBeam {
 
         Entity beam = world.createEntity();
 
-        beam.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
+        beam.edit().add(new PositionComponent(x, y));
         beam.edit().add(new CollisionBoundComponent(new Rectangle(x, y, chargingLaserWidth, chargingLaserHeight), true));
         //beam.edit().add(new HazardComponent());
         beam.edit().add(new FadeComponent(true, 0.5f, false, 0, 0.3f));
@@ -169,7 +170,7 @@ public class LaserBeam {
                 activeBeam.edit().add(new SoundEmitterComponent(SoundFileStrings.laserMix, 0.5f));
 
 
-                com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent oldPC = e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+                PositionComponent oldPC = e.getComponent(PositionComponent.class);
                 oldPC.position.set(useWidthAsCenter ? oldPC.getX() - (activeLaserWidth / 2 - chargingLaserWidth / 2) : oldPC.getX(),
                         useWidthAsCenter ? oldPC.getY() : oldPC.getY() - (activeLaserHeight / 2 - chargingLaserHeight / 2), 0);
                 activeBeam.edit().add(oldPC);

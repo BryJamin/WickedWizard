@@ -34,6 +34,8 @@ public class AnimationSystem extends EntityProcessingSystem {
         AnimationStateComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
 
+        sc.stateTime += world.delta;
+
         int state;
 
         if(sc.getStateQueue().size != 0) {
@@ -59,6 +61,7 @@ public class AnimationSystem extends EntityProcessingSystem {
         }
 
         if(ac.animations.containsKey(sc.getCurrentState())){
+
             trc.region = ac.animations.get(sc.getCurrentState()).getKeyFrame(sc.stateTime);
         }
     }

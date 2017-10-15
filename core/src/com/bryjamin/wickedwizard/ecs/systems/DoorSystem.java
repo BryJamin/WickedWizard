@@ -8,6 +8,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.LockComponent;
@@ -29,14 +30,14 @@ public class DoorSystem extends EntityProcessingSystem {
 
     @SuppressWarnings("unchecked")
     public DoorSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class));
+        super(Aspect.all(PlayerComponent.class));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     protected void process(Entity e) {
 
-        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent.class));
+        EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(DoorComponent.class));
         IntBag entityIds = subscription.getEntities();
 
 

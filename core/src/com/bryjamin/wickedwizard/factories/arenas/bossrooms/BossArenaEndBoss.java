@@ -10,6 +10,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.InCombatActionComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -21,7 +22,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
-import com.bryjamin.wickedwizard.factories.arenas.presetmaps.GalleryAtTheEndMap;
+import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.AllBlackSkin;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
@@ -58,21 +59,12 @@ public class BossArenaEndBoss extends AbstractFactory {
     }
 
 
+    public Task placePlayerAfterEndDefeat(final ArenaMap destinationMapAfterBossKill){
 
-    public ArenaMap theEndMapAdventureMode(final ArenaMap destinationMapAfterBossKill){
-
-        Arena arena = endArena().createArena(new MapCoords(0,0));
-
-        arena.createArenaBag().add(new InCombatActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
-            @Override
-            public void performAction(World world, Entity e) {
-
-            }
+        return new Task() {
 
             @Override
             public void cleanUpAction(World world, Entity e) {
-                //e.edit().remove(ConditionalActionComponent.class);
-
                 RoomTransitionSystem rts = world.getSystem(RoomTransitionSystem.class);
                 rts.packRoom(world, rts.getCurrentArena());
                 rts.setCurrentMap(destinationMapAfterBossKill);
@@ -82,17 +74,33 @@ public class BossArenaEndBoss extends AbstractFactory {
 
                 PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 pc.position.x = a.getWidth() / 2;
-                pc.position.y = a.getHeight() / 2;
+                pc.position.y = Measure.units(25f);
             }
-        }));
+
+            @Override
+            public void performAction(World world, Entity e) {
+            }
+        };
+
+    }
 
 
+
+
+    /**
+     * Map That holds the 'End' Boss. After the boss is defeated you are teleported to the Map Specified to the gallery once the boss has been killed
+     * @param destinationMapAfterBossKill - Map You Teleport to After The Ends Defeat
+     * @return - ArenaMap
+     */
+    public ArenaMap theEndMapAdventureMode(final ArenaMap destinationMapAfterBossKill){
+        Arena arena = endArena().createArena(new MapCoords(0,0));
+        arena.createArenaBag().add(new InCombatActionComponent(placePlayerAfterEndDefeat(destinationMapAfterBossKill)));
         return new ArenaMap(arena);
     }
 
 
-    public ArenaCreate endStartingRoom(final ArenaMap destinationMapAfterBossKill) {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate endBossStartingRoom(final ArenaMap destinationMapAfterBossKill) {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -131,14 +139,8 @@ public class BossArenaEndBoss extends AbstractFactory {
     }
 
 
-    public ArenaCreate endStartingRoom() {
-        return endStartingRoom(new GalleryAtTheEndMap(assetManager).endGameMap());
-    }
-
-
-
     public ArenaCreate endArena() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -168,14 +170,17 @@ public class BossArenaEndBoss extends AbstractFactory {
 
 
     public Entity createWhiteFlash(World world){
-        float width = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_WIDTH * 3;
-        float height = com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory.SECTION_HEIGHT * 3;
+        float width = ArenaShellFactory.SECTION_WIDTH * 3;
+        float height = ArenaShellFactory.SECTION_HEIGHT * 3;
+
 
         Entity e = world.createEntity();
+
         e.edit().add(new FollowPositionComponent(world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position, -width / 2, -height / 2));
         e.edit().add(new PositionComponent(0, 0));
         e.edit().add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK), width, height, TextureRegionComponent.FOREGROUND_LAYER_NEAR,
                 new Color(Color.WHITE)));
+
         e.edit().add(new ExpireComponent(0.2f));
         return e;
     }

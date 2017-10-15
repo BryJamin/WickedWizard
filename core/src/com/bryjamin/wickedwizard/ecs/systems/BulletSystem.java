@@ -7,9 +7,11 @@ import com.artemis.EntitySubscription;
 import com.artemis.systems.EntityProcessingSystem;
 import com.artemis.utils.IntBag;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnHitActionComponent;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 
 /**
  * Created by Home on 05/03/2017.
@@ -21,7 +23,7 @@ public class BulletSystem extends EntityProcessingSystem {
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.HealthComponent> hm;
     ComponentMapper<EnemyComponent> em;
     ComponentMapper<FriendlyComponent> fm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent> blinkMapper;
+    ComponentMapper<BlinkOnHitComponent> blinkMapper;
     ComponentMapper<OnHitActionComponent> onHitActionMapper;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent> bulm;
 
@@ -42,7 +44,7 @@ public class BulletSystem extends EntityProcessingSystem {
             if(pcbc.bound.overlaps(cbc.bound)){
 
 
-                com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent bc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent.class);
+                BlinkOnHitComponent bc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(BlinkOnHitComponent.class);
 
                 if(!bc.isHit) {
                     com.bryjamin.wickedwizard.ecs.components.HealthComponent hc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.HealthComponent.class);
@@ -54,14 +56,14 @@ public class BulletSystem extends EntityProcessingSystem {
             }
 
         } else if(fm.has(e)){
-            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class).one(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class) );
+            EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(PlayerComponent.class).one(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class) );
             IntBag entityIds = subscription.getEntities();
             bulletScan(e, entityIds);
 
         }
 
         EntitySubscription subscription = world.getAspectSubscriptionManager().get(Aspect.all(
-                CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(EnemyComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class));
+                CollisionBoundComponent.class, com.bryjamin.wickedwizard.ecs.components.HealthComponent.class).exclude(EnemyComponent.class, PlayerComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent.class));
         IntBag entityIds = subscription.getEntities();
         bulletScan(e, entityIds);
 
@@ -82,10 +84,9 @@ public class BulletSystem extends EntityProcessingSystem {
 
                     com.bryjamin.wickedwizard.ecs.components.HealthComponent hc = hm.get(entity);
 
-                    //System.out.println("Damage is " + bulm.get(bullet).damage);
                     hc.applyDamage(bulm.get(bullet).damage);
                     if(blinkMapper.has(entity)){
-                        com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent bc = blinkMapper.get(entityIds.get(i));
+                        BlinkOnHitComponent bc = blinkMapper.get(entityIds.get(i));
                         bc.isHit = true;
                     }
 

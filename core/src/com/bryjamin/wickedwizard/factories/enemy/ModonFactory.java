@@ -13,6 +13,8 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.graphics.CameraShakeComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.FrictionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
@@ -57,8 +59,8 @@ public class ModonFactory extends EnemyFactory{
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, health);
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+        bag.add(new GravityComponent());
+        bag.add(new VelocityComponent());
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 
@@ -114,8 +116,8 @@ public class ModonFactory extends EnemyFactory{
 
         boolean isLeftOfPlayer = (cbc.getCenterX() < pcbc.getCenterX());
 
-        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
-        e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = Measure.units(85);
+        e.getComponent(VelocityComponent.class).velocity.x = isLeftOfPlayer ? Measure.units(25f) : -Measure.units(25f);
+        e.getComponent(VelocityComponent.class).velocity.y = Measure.units(85);
 
     }
 
@@ -127,8 +129,8 @@ public class ModonFactory extends EnemyFactory{
 
         ComponentBag bag = this.defaultEnemyBag(new ComponentBag(), x, y, heavyHealth);
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+        bag.add(new GravityComponent());
+        bag.add(new VelocityComponent());
 
         bag.add(new CollisionBoundComponent(new Rectangle(x,y,width,height), true));
 

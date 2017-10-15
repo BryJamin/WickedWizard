@@ -13,6 +13,9 @@ import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
+import com.bryjamin.wickedwizard.screens.DataSave;
+import com.bryjamin.wickedwizard.screens.MenuScreen;
 import com.bryjamin.wickedwizard.screens.PlayScreenConfig;
 import com.bryjamin.wickedwizard.utils.GameDelta;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -104,6 +107,22 @@ public class DevModeMenuWorld implements com.bryjamin.wickedwizard.screens.world
                 .build()
                 .createButton(world,  isGod ? "GodMode on" : "GodMode off", Measure.units(5f), Measure.units(20));
 
+        if(!DataSave.isDataAvailable(ChallengesResource.TUTORIAL_COMPLETE)) {
+            Entity skipTutorial = menuButtonBuilder
+                    .action(new Action() {
+                        @Override
+                        public void performAction(World world, Entity e) {
+                                DataSave.saveChallengeData(ChallengesResource.TUTORIAL_COMPLETE);
+                                game.getScreen().dispose();
+                            MenuScreen menuScreen = new MenuScreen(game);
+                            MenuScreen.setMenuType(MenuScreen.MenuType.DEV);
+                            game.setScreen(menuScreen);
+
+                        }
+                    })
+                    .build()
+                    .createButton(world, "Skip Tutorial", Measure.units(70f), Measure.units(5f));
+        }
         createBossAndRoomSelectors();
 
     }

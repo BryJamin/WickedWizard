@@ -72,12 +72,12 @@ public class ChallengesResource {
 
         public static ChallengeLayout TUTORIAL_SPEEDRUN = new ChallengeLayout.ChallengeLayoutBuilder(tutorialSpeedRun)
                 .unlockString(ChallengesResource.LEVEL_1_COMPLETE)
-                .name("Leah's First Run")
+                .name("Lia's First Run")
                 .build();
 
         public static ChallengeLayout ARENA_SPEEDRUN = new ChallengeLayout.ChallengeLayoutBuilder(arenaSpeedRun)
                 .unlockString(ChallengesResource.LEVEL_1_COMPLETE)
-                .name("Leah's First Box Fight")
+                .name("Lia's First Box Fight")
                 .build();
 
         public static ChallengeLayout PERFECT_BLOBBA = new ChallengeLayout.ChallengeLayoutBuilder(perfectBlobba)

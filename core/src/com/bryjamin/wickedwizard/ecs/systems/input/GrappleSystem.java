@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.ecs.components.object.WallComponent;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.Collider;
 
+
 /**
  * Created by Home on 22/03/2017.
  */

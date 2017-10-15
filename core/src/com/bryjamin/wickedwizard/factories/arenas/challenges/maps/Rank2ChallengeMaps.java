@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
@@ -18,6 +19,7 @@ import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.levels.ReuseableRooms;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -83,10 +85,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -118,10 +117,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -173,11 +169,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
-
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
     }
 
@@ -213,10 +205,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -257,7 +246,7 @@ public class Rank2ChallengeMaps extends AbstractFactory {
 
         Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
         ComponentBag bag = arenaEnemyPlacementFactory.goatWizardFactory.goatWizard(arena.getWidth() / 2, Measure.units(40f), false, false);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(VelocityComponent.class, bag);
         arena.addEntity(bag);
         return arena;
 

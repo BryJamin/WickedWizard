@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 
+
 /**
  * Created by BB on 19/09/2017.
  */
@@ -29,7 +30,7 @@ public class FollowCameraSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
         PositionComponent pc = pm.get(e);
         FollowCameraComponent fc = fm.get(e);
-        pc.position.set(gamecam.position.x + fc.offsetX, gamecam.position.y + fc.offsetY, 0);
+        pc.position.set(gamecam.position.x + fc.offsetX - gamecam.viewportWidth / 2, gamecam.position.y + fc.offsetY - gamecam.viewportHeight / 2, 0);
     }
 
 }

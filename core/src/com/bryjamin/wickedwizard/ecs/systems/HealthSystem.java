@@ -8,6 +8,8 @@ import com.badlogic.gdx.Gdx;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.StatComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
@@ -18,10 +20,10 @@ import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 public class HealthSystem extends EntityProcessingSystem {
 
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.HealthComponent> hm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
+    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.StatComponent> sm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.audio.HitSoundComponent> hitSoundComponent;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent> pm;
+    ComponentMapper<PlayerComponent> pm;
 
     ComponentMapper<BlinkOnHitComponent> bm;
 

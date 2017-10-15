@@ -6,6 +6,7 @@ import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.factories.chests.AltarFactory;
 import com.bryjamin.wickedwizard.factories.items.ItemFactory;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -15,17 +16,19 @@ import com.bryjamin.wickedwizard.utils.enums.ItemType;
 public class ItemArenaFactory extends ArenaShellFactory {
 
     ItemFactory itemFactory;
+    AltarFactory altarFactory;
 
     public ItemArenaFactory(AssetManager assetManager, ArenaSkin arenaSkin) {
         super(assetManager, arenaSkin);
         this.itemFactory = new ItemFactory(assetManager);
+        this.altarFactory = new AltarFactory(assetManager);
         this.arenaSkin = arenaSkin; //new BrightWhiteSkin(atlas);
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, this.arenaSkin);
     }
 
 
     private ComponentBag altarPosition(float x, float y){
-        return itemFactory.createItemAltarBag(x, y, arenaSkin.getWallTint(), ItemType.ITEM);
+        return altarFactory.createItemAltarBag(x, y, arenaSkin.getWallTint(), ItemType.ITEM);
     }
 
 

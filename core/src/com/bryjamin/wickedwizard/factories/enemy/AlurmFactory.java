@@ -36,6 +36,8 @@ import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
+
+
 /**
  * Created by Home on 22/06/2017.
  */
@@ -187,9 +189,6 @@ public class AlurmFactory extends EnemyFactory {
                     VelocityComponent vc = e.getComponent(VelocityComponent.class);
                     vc.velocity.x = BulletMath.velocityX(Measure.units(62.5f), Math.toRadians(startAngle));
                     vc.velocity.y = BulletMath.velocityY(Measure.units(62.5f), Math.toRadians(startAngle));
-
-                    System.out.println("angle is :" + startAngle);
-
                 }
 
                 @Override

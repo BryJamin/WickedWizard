@@ -8,9 +8,10 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LinkComponent;
 import com.bryjamin.wickedwizard.ecs.components.object.DoorComponent;
 import com.bryjamin.wickedwizard.ecs.systems.level.ArenaMap;
+import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory;
-import com.bryjamin.wickedwizard.factories.arenas.presetmaps.BossMaps;
 import com.bryjamin.wickedwizard.factories.arenas.presetrooms.ItemArenaFactory;
+import com.bryjamin.wickedwizard.factories.arenas.presetrooms.PortalRooms;
 import com.bryjamin.wickedwizard.factories.arenas.presetrooms.RandomizerArenaFactory;
 import com.bryjamin.wickedwizard.factories.arenas.presetrooms.ShopFactory;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -47,6 +48,8 @@ public class JigsawGenerator {
 
     private com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin arenaSkin;
 
+    private ArenaShellFactory arenaShellFactory;
+
     private Array<ArenaCreate> arenaGens;
     private Array<BossMapCreate> bossMapGens;
 
@@ -59,7 +62,7 @@ public class JigsawGenerator {
 
 
     private com.bryjamin.wickedwizard.utils.WeightedRoll<Comparator<DoorComponent>> typeOfSortRoller;
-    private Comparator<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> typeOfSort;
+    private Comparator<DoorComponent> typeOfSort;
 
     public JigsawGenerator(JigsawGeneratorConfig jigsawGeneratorConfig){
         this.assetManager = jigsawGeneratorConfig.assetManager;
@@ -72,14 +75,14 @@ public class JigsawGenerator {
         this.setStartingMap(jigsawGeneratorConfig.startingMap);
         this.arenaGens = jigsawGeneratorConfig.arenaGens;
 
-
-        System.out.println(getStartingMap().getCurrentArena());
         this.farSort = new com.bryjamin.wickedwizard.utils.comparator.FarSort(getStartingMap().getCurrentArena().getStartingCoords());
         this.bossMapGens = jigsawGeneratorConfig.bossMapGens;
         this.arenaSkin = jigsawGeneratorConfig.level.getArenaSkin();
         this.level = jigsawGeneratorConfig.level;
         this.decorFactory = new com.bryjamin.wickedwizard.factories.arenas.decor.DecorFactory(assetManager, arenaSkin);
         this.mapCleaner = new MapCleaner(decorFactory);
+
+        this.arenaShellFactory = new ArenaShellFactory(assetManager, arenaSkin);
 
 
         this.randomizerArenaFactory = new RandomizerArenaFactory(assetManager, arenaSkin);
@@ -89,7 +92,7 @@ public class JigsawGenerator {
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.RIGHTMOST_DISTANCE_DOORS, 20));
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LARGEST_Y, 20));
         typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(farSort.SORT_DOORS_BY_LOWEST_Y, 20));
-        typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(null, 200));
+        typeOfSortRoller.addWeightedObject(new com.bryjamin.wickedwizard.utils.WeightedObject<Comparator<DoorComponent>>(null, 20));
 
         this.typeOfSort = typeOfSortRoller.roll();
     }
@@ -112,12 +115,12 @@ public class JigsawGenerator {
         return unavaliableMapCoords;
     }
 
-    public OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> createAvaliableDoorSet(Arena... arenas){
+    public OrderedSet<DoorComponent> createAvaliableDoorSet(Arena... arenas){
         return createAvaliableDoorSet(new Array<Arena>(arenas));
     }
 
-    public OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> createAvaliableDoorSet(Array<Arena> arenas){
-        OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoors = new OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
+    public OrderedSet<DoorComponent> createAvaliableDoorSet(Array<Arena> arenas){
+        OrderedSet<DoorComponent> avaliableDoors = new OrderedSet<DoorComponent>();
 
         Array<Arena> protectionFromIteratorError = new Array<Arena>();
         protectionFromIteratorError.addAll(arenas);
@@ -128,7 +131,7 @@ public class JigsawGenerator {
                     a.arenaType != Arena.ArenaType.ITEM &&
                     a.arenaType != Arena.ArenaType.SHOP) {
 
-                for (com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc : a.doors) {
+                for (DoorComponent dc : a.doors) {
                     if (findRoom(dc.leaveCoords, protectionFromIteratorError) == null) {
                         avaliableDoors.add(dc);
                     }
@@ -141,7 +144,7 @@ public class JigsawGenerator {
 
 
     public Array<Arena> generateMapAroundPresetPoints(Array<Arena> presetRooms, Array<ArenaCreate> arenaGenArray,
-                                                      OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet, int noOfRoomsPlaced){
+                                                      OrderedSet<DoorComponent> avaliableDoorsSet, int noOfRoomsPlaced){
 
         Array<Arena> placedArenas = new Array<Arena>();
         placedArenas.addAll(presetRooms);
@@ -168,7 +171,7 @@ public class JigsawGenerator {
                     Array<Arena> mockPlacedArenas = new Array<Arena>();
                     mockPlacedArenas.addAll(placedArenas);
 
-                    OrderedSet<DoorComponent> mockAvaliableDoorSet = new OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
+                    OrderedSet<DoorComponent> mockAvaliableDoorSet = new OrderedSet<DoorComponent>();
                     mockAvaliableDoorSet.addAll(mockAvaliableDoorSet);
 
                     boolean isAllDoorsUsed = true;
@@ -236,9 +239,9 @@ public class JigsawGenerator {
 
 
 
-    public boolean fillMandatoryDoor(Arena arena, com.bryjamin.wickedwizard.ecs.components.object.DoorComponent mandatoryDoor, Array<Arena> placedArenas, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoors){
+    public boolean fillMandatoryDoor(Arena arena, DoorComponent mandatoryDoor, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors){
 
-        OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> doors = new OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
+        OrderedSet<DoorComponent> doors = new OrderedSet<DoorComponent>();
         doors.add(mandatoryDoor);
 
         ObjectSet<MapCoords> unavaliableMapCoords = createUnavaliableMapCoords(placedArenas);
@@ -266,14 +269,14 @@ public class JigsawGenerator {
      * @param unavaliableMapCoords - co-ordinates that are unavailiable for an arena inside of
      * @param avaliableDoorsSet - Set of doors that are avaliable for arenas to be attached to.
      */
-    public void addArenaToMap(Arena roomToBePlaced, Array<Arena> placedArenas, ObjectSet<MapCoords> unavaliableMapCoords, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet) {
+    public void addArenaToMap(Arena roomToBePlaced, Array<Arena> placedArenas, ObjectSet<MapCoords> unavaliableMapCoords, OrderedSet<DoorComponent> avaliableDoorsSet) {
         placedArenas.add(roomToBePlaced);
         updateUnavaliableCoordsAndLeaveDoors(roomToBePlaced, unavaliableMapCoords, avaliableDoorsSet);
     }
 
-    public void updateUnavaliableCoordsAndLeaveDoors(Arena roomToBePlaced, ObjectSet<MapCoords> unavaliableMapCoords, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet){
+    public void updateUnavaliableCoordsAndLeaveDoors(Arena roomToBePlaced, ObjectSet<MapCoords> unavaliableMapCoords, OrderedSet<DoorComponent> avaliableDoorsSet){
         unavaliableMapCoords.addAll(roomToBePlaced.getCotainingCoords());
-        for (com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc : roomToBePlaced.getDoors()) {
+        for (DoorComponent dc : roomToBePlaced.getDoors()) {
             if(!unavaliableMapCoords.contains(dc.leaveCoords)) {
                 avaliableDoorsSet.add(dc);
             }
@@ -309,11 +312,7 @@ public class JigsawGenerator {
         LinkComponent teleportLink = new LinkComponent();
         BossTeleporterComponent btc = new BossTeleporterComponent(teleportLink);
 
-/*        for(DoorComponent dc : createAvaliableDoorSet(placedArenas)){
-            System.out.println(findRoom(dc.leaveCoords, placedArenas));
-        }*/
-
-        placeBossRoom(new BossMaps(assetManager, arenaSkin).bossTeleportArena(new MapCoords(), btc), placedArenas, createAvaliableDoorSet(placedArenas));
+        placeBossRoom(btc, placedArenas, createAvaliableDoorSet(placedArenas));
 
         startingMap = new ArenaMap(arenaMap.getCurrentArena(), placedArenas, new OrderedSet<Arena>(), new OrderedSet<Arena>());
         mapTracker.put(btc, startingMap);
@@ -360,7 +359,7 @@ public class JigsawGenerator {
     }
 
 
-    public boolean placeShopRoom(Array<Arena> placedArenas, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoors) {
+    public boolean placeShopRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
         Arena shopRoom = shopFactory.createShop(new MapCoords());
         if(placeRoomUsingDoorsRandomly(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
@@ -373,7 +372,7 @@ public class JigsawGenerator {
     }
 
 
-    public boolean placeRandomizerRoom(Array<Arena> placedArenas, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoors) {
+    public boolean placeRandomizerRoom(Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
         Arena shopRoom = randomizerArenaFactory.createRandomizerRoom(new MapCoords());
         if(placeRoomUsingDoorsRandomly(shopRoom, avaliableDoors, createUnavaliableMapCoords(placedArenas), random)){
@@ -385,46 +384,106 @@ public class JigsawGenerator {
         return false;
     }
 
-    public boolean placeBossRoom(Arena bossRoom, Array<Arena> placedArenas, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoors) {
 
+    //TODO Change to generate a roombased on the room found
+    public boolean placeBossRoom(BossTeleporterComponent btc, Array<Arena> placedArenas, OrderedSet<DoorComponent> avaliableDoors) {
 
-        Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> doorComponentArray = avaliableDoors.orderedItems();
+        Array<DoorComponent> doorComponentArray = avaliableDoors.orderedItems();
         doorComponentArray.sort(farSort.DOOR_FAR_MAPCOORDS);
 
-        if (placeRoomUsingDoorsInOrder(bossRoom,
-                doorComponentArray ,createUnavaliableMapCoords(placedArenas), random)) {
-            placedArenas.add(bossRoom);
+        Array<Arena> portalRooms = new Array<Arena>();
+        portalRooms.add(new PortalRooms(assetManager, arenaSkin).portalRoomToBossCeilingDoor(new MapCoords(), btc));
+        portalRooms.add(new PortalRooms(assetManager, arenaSkin).portalRoomToBossLeftDoor(new MapCoords(), btc));
+        portalRooms.add(new PortalRooms(assetManager, arenaSkin).portalRoomToBossPortalInCenter(new MapCoords(), btc));
+        portalRooms.add(new PortalRooms(assetManager, arenaSkin).portalRoomToBossRightDoor(new MapCoords(), btc));
+
+        portalRooms.shuffle();
+
+        Arena tempRoom = arenaShellFactory.createOmniArenaHiddenGrapple(new MapCoords(), Arena.ArenaType.BOSS);
+       // Arena tempRoom = new PortalRooms(assetManager, arenaSkin).portalRoomToBossCeilingDoor(new MapCoords(), btc);
+
+        if(placeRoomUsingDoorsInOrder(tempRoom, doorComponentArray, createUnavaliableMapCoords(placedArenas), random)){
+            //placedArenas.add(tempRoom);
+            mapCleaner.cleanArena(tempRoom, placedArenas);
+
+
+            MapCoords mapCoords = tempRoom.getStartingCoords();
+
+            Arena portalRoom = new PortalRooms(assetManager, arenaSkin).allDoorsPortalArena(mapCoords, btc);
+
+            switch (tempRoom.getDoors().first().exit){
+                case RIGHT:
+                    portalRoom =  new PortalRooms(assetManager, arenaSkin).portalRoomToBossRightDoor(mapCoords, btc);
+                    break;
+                case LEFT:
+                    portalRoom =  new PortalRooms(assetManager, arenaSkin).portalRoomToBossLeftDoor(mapCoords, btc);
+                    break;
+                case UP:
+                    portalRoom = new PortalRooms(assetManager, arenaSkin).portalRoomToBossCeilingDoor(mapCoords, btc);
+                    break;
+                case DOWN:
+                    portalRoom = new PortalRooms(assetManager, arenaSkin).portalRoomToBossBottomDoor(mapCoords, btc);
+                    break;
+            }
+
+            placedArenas.add(portalRoom);
 
             return true;
+
+        }
+
+        return false;
+
+/*
+        for(Arena portalRoom : portalRooms) {
+            if (placeRoomUsingDoorsInOrder(portalRoom, doorComponentArray, createUnavaliableMapCoords(placedArenas), random)) {
+                mapCleaner.cleanArena(portalRoom, placedArenas);
+
+
+                placedArenas.add(portalRoom);
+
+                //TODO portalroom.getDoor (Place that door into portal rooms to generate a room), Place that room in placedarenas
+
+                mapCleaner.cleanArena(portalRoom, placedArenas);
+                return true;
+            }
         }
         return false;
+*/
+
     }
 
 
-    public boolean placeRoomUsingDoors(Arena room, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
-        Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> adc = avaliableDoorsSet.orderedItems();
+    public boolean placeRoomUsingDoors(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+        Array<DoorComponent> adc = avaliableDoorsSet.orderedItems();
 
         if(typeOfSort == null){
             adc.shuffle();
         } else {
-            adc.sort(typeOfSort);
+
+            int i = rand.nextInt(100);
+            if(i <= 40){
+                adc.sort(typeOfSort);
+            } else {
+                adc.shuffle();
+            }
         }
 
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
 
     }
 
-    public boolean placeRoomUsingDoorsRandomly(Arena room, OrderedSet<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
-        Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> adc = avaliableDoorsSet.orderedItems();
+    public boolean placeRoomUsingDoorsRandomly(Arena room, OrderedSet<DoorComponent> avaliableDoorsSet, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+        Array<DoorComponent> adc = avaliableDoorsSet.orderedItems();
             adc.shuffle();
         return placeRoomUsingDoorsInOrder(room, adc, unavaliableMapCoords, rand);
 
     }
 
 
-    public boolean placeRoomUsingDoorsInOrder(Arena room, Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> availableDoorsArray, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
+    public boolean placeRoomUsingDoorsInOrder(Arena room, Array<DoorComponent> availableDoorsArray, ObjectSet<MapCoords> unavaliableMapCoords, Random rand){
 
-        Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> temporaryDoorsArray = new Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
+        Array<DoorComponent> temporaryDoorsArray = new Array<DoorComponent>();
         temporaryDoorsArray.addAll(availableDoorsArray);
 
         boolean roomPlaced = false;
@@ -436,7 +495,7 @@ public class JigsawGenerator {
             }
 
             //The available co-ordinates we can shift to.
-            com.bryjamin.wickedwizard.ecs.components.object.DoorComponent selectedAvaliableDoor = temporaryDoorsArray.first();
+            DoorComponent selectedAvaliableDoor = temporaryDoorsArray.first();
            // System.out.println("Array size is " + temporaryDoorsArray.size);
             temporaryDoorsArray.removeValue(selectedAvaliableDoor, false);
 
@@ -444,7 +503,7 @@ public class JigsawGenerator {
 
 
 
-            Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> linkableDoorsArray = createLinkableDoorsArray(selectedAvaliableDoor, room);
+            Array<DoorComponent> linkableDoorsArray = createLinkableDoorsArray(selectedAvaliableDoor, room);
 
             while(!roomPlaced && linkableDoorsArray.size > 0) {
                 if(linkableDoorsArray.size <= 0){
@@ -453,7 +512,7 @@ public class JigsawGenerator {
 
                 int linkableExitsSelector = rand.nextInt(linkableDoorsArray.size);
                 //The available co-ordinates we can shift to.
-                com.bryjamin.wickedwizard.ecs.components.object.DoorComponent selectedLinkableDoor = linkableDoorsArray.get(linkableExitsSelector);
+                DoorComponent selectedLinkableDoor = linkableDoorsArray.get(linkableExitsSelector);
 
                 linkableDoorsArray.removeIndex(linkableExitsSelector);
 
@@ -486,11 +545,11 @@ public class JigsawGenerator {
     }
 
 
-    private Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> createLinkableDoorsArray(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent selectedDoor, Arena arena){
+    private Array<DoorComponent> createLinkableDoorsArray(DoorComponent selectedDoor, Arena arena){
 
-        Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent> linkableDoorsArray = new Array<com.bryjamin.wickedwizard.ecs.components.object.DoorComponent>();
+        Array<DoorComponent> linkableDoorsArray = new Array<DoorComponent>();
 
-        for(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc : arena.getDoors()) {
+        for(DoorComponent dc : arena.getDoors()) {
 
 
 
@@ -571,7 +630,7 @@ public class JigsawGenerator {
             m.addY(diffY);
         }
 
-        for(com.bryjamin.wickedwizard.ecs.components.object.DoorComponent dc : a.getDoors()){
+        for(DoorComponent dc : a.getDoors()){
             dc.leaveCoords.add(diffX, diffY);
             dc.currentCoords.add(diffX, diffY);
         }

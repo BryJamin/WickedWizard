@@ -6,6 +6,7 @@ import com.artemis.EntitySystem;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 
+
 /**
  * Created by BB on 03/06/2017.
  *

@@ -135,8 +135,6 @@ public class ItemStore {
         }
 
 
-        System.out.println("After: " + itemOptionsArray.size);
-
     }
 
 
@@ -183,8 +181,6 @@ public class ItemStore {
     public String toString() {
 
         String s = "Items Avaliable are :";
-
-        System.out.println(itemOptionsArray.size);
 
         for(ItemOptions itemOption : this.itemOptionsArray){
             s = s + "\n" + itemOption.item.getValues().getName();

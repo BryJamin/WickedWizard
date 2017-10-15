@@ -88,10 +88,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -123,10 +120,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -185,10 +179,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }
@@ -234,10 +225,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
         JigsawGeneratorConfig jigsawGeneratorConfig = new JigsawGeneratorConfig(assetManager, random)
                 .startingMap(arenaMap);
 
-        GameCreator gameCreator = new GameCreator();
-        gameCreator.add(new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
-
-        return gameCreator;
+        return new GameCreator(GameCreator.GameType.CHALLENGE, new GameCreator.LevelCreator(jigsawGeneratorConfig, false));
 
 
     }

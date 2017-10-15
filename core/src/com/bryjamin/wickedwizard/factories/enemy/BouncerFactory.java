@@ -11,10 +11,13 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.BagToEntity;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -51,7 +54,7 @@ public class BouncerFactory extends EnemyFactory {
     public ComponentBag largeBouncer(float x, float y, boolean startsRight){
 
         ComponentBag bag = basicBouncer(x, y, width * 2, height * 2, speed / 2, startsRight);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
         bag.add(new LootComponent());
 
         bag.add(new OnDeathActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
@@ -92,8 +95,8 @@ public class BouncerFactory extends EnemyFactory {
                 0, 0, width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? speed : -speed,speed));
+        bag.add(new BounceComponent());
+        bag.add(new VelocityComponent(startsRight ? speed : -speed,speed));
 
         return bag;
     }
@@ -102,9 +105,9 @@ public class BouncerFactory extends EnemyFactory {
 
 
         ComponentBag bag = basicBouncer(x,y,width,height,speed, startsRight);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(TextureRegionComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(AnimationStateComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(AnimationComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(TextureRegionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(AnimationStateComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(AnimationComponent.class, bag);
 
         bag.add(new AnimationStateComponent(0));
         IntMap<Animation<TextureRegion>> animMap = new IntMap<Animation<TextureRegion>>();

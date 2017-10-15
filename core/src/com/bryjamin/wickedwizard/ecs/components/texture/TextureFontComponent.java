@@ -71,6 +71,7 @@ public class TextureFontComponent extends TextureRegionComponent {
 
     public TextureFontComponent(String font, String text, int layer, Color color){
         this.font = font;
+        this.layer = layer;
         this.text = text;
         this.color = color;
         this.DEFAULT = color;

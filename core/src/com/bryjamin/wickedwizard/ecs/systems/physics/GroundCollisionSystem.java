@@ -4,8 +4,11 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.utils.collider.Collider;
 
 /**
@@ -14,13 +17,13 @@ import com.bryjamin.wickedwizard.utils.collider.Collider;
 
 public class GroundCollisionSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
+    ComponentMapper<PositionComponent> pm;
+    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
 
     @SuppressWarnings("unchecked")
     public GroundCollisionSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, CollisionBoundComponent.class).exclude(com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent.class, IntangibleComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, CollisionBoundComponent.class).exclude(BounceComponent.class, IntangibleComponent.class));
     }
 
 
@@ -34,8 +37,8 @@ public class GroundCollisionSystem extends EntityProcessingSystem {
     protected void process(Entity e) {
 
         CollisionBoundComponent cbc = cbm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
+        VelocityComponent vc = vm.get(e);
+        PositionComponent pc = pm.get(e);
 
         boolean topOrBottom = cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) ||
                 cbc.getRecentCollisions().contains(Collider.Collision.TOP, false);

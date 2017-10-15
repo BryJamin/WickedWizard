@@ -3,6 +3,7 @@ package com.bryjamin.wickedwizard.factories.arenas.bossrooms;
 import com.badlogic.gdx.assets.AssetManager;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -21,8 +22,8 @@ public class BossRoomAmalgama extends com.bryjamin.wickedwizard.factories.Abstra
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate amalgamaArena() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate amalgamaArena() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

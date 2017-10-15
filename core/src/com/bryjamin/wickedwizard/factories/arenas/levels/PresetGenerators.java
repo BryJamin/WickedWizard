@@ -18,11 +18,18 @@ import java.util.Random;
 public class PresetGenerators {
 
     private static final int numberOfLevel1Rooms = 5;
-    //private static final int numberOfLevel1Rooms = 5;
     private static final int numberOfLevel2Rooms = 8;
     private static final int numberOfLevel3Rooms = 10;
     private static final int numberOfLevel4Rooms = 12;
     private static final int numberOfLevel5Rooms = 15;
+
+/*
+    private static final int numberOfLevel1Rooms = 0;
+    private static final int numberOfLevel2Rooms = 0;
+    private static final int numberOfLevel3Rooms = 0;
+    private static final int numberOfLevel4Rooms = 0;
+    private static final int numberOfLevel5Rooms = 0;
+*/
 
 
     public JigsawGeneratorConfig level1Configuration(AssetManager assetManager, Random random) {

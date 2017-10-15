@@ -20,6 +20,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
@@ -39,6 +40,7 @@ import com.bryjamin.wickedwizard.utils.collider.Collider;
 import com.bryjamin.wickedwizard.utils.collider.HitBox;
 
 import java.util.Random;
+
 
 /**
  * Created by Home on 02/07/2017.
@@ -96,7 +98,7 @@ public class MrBoomyBoss extends BossFactory {
                 new HitBox(new Rectangle(x,y,hitBoxWidth,hitBoxHeight),
                         CenterMath.offsetX(width, hitBoxWidth), CenterMath.offsetY(height, hitBoxHeight))));
         bag.add(new VelocityComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+        bag.add(new GravityComponent());
 
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.MR_BOOMY_FACING), width, height,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
@@ -152,7 +154,7 @@ public class MrBoomyBoss extends BossFactory {
             public void performAction(World world, Entity e) {
                 VelocityComponent vc = e.getComponent(VelocityComponent.class);
                 vc.velocity.y = jumpSpeed;
-                e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+                e.edit().add(new GravityComponent());
                 e.edit().add(new FiringAIComponent(0));
                 e.edit().add(new WeaponComponent(new AirBomberWeapon(assetManager), 0.5f));
 
@@ -164,7 +166,7 @@ public class MrBoomyBoss extends BossFactory {
 
                         VelocityComponent vc = e.getComponent(VelocityComponent.class);
                         vc.velocity.x = random.nextBoolean() ? vc.velocity.x = -speed : speed;
-                        e.edit().remove(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+                        e.edit().remove(new GravityComponent());
                         e.getComponent(VelocityComponent.class).velocity.y = 0;
                     }
 
@@ -194,7 +196,7 @@ public class MrBoomyBoss extends BossFactory {
                     e.edit().add(new ActionAfterTimeComponent(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+                        e.edit().add(new GravityComponent());
                         OnCollisionActionComponent ocac = new OnCollisionActionComponent();
                         ocac.bottom = new Action() {
                             @Override

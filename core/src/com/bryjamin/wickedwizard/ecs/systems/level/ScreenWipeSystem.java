@@ -12,9 +12,15 @@ import com.bryjamin.wickedwizard.assets.TextureStrings;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FollowCameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.AfterUIRenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem;
 
 /**
  * Created by Home on 30/05/2017.
@@ -128,10 +134,12 @@ public class ScreenWipeSystem extends BaseSystem {
                 for (BaseSystem s : world.getSystems()) {
                     if (!(s instanceof com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem) &&
                             !(s instanceof ScreenWipeSystem) &&
-                            !(s instanceof com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem) &&
+                            !(s instanceof AfterUIRenderingSystem) &&
+                            !(s instanceof FollowPositionSystem) &&
+                            !(s instanceof FollowCameraSystem) &&
                             !(s instanceof CameraSystem) &&
-                            !(s instanceof com.bryjamin.wickedwizard.ecs.systems.graphical.UISystem) &&
-                            !(s instanceof com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem)) {
+                            !(s instanceof UISystem) &&
+                            !(s instanceof FadeSystem)) {
                         s.setEnabled(false);
                     }
                 }
@@ -166,7 +174,7 @@ public class ScreenWipeSystem extends BaseSystem {
         if(transition != Transition.NONE) {
 
             transitionEntity = world.createEntity();
-            transitionEntity.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent());
+            transitionEntity.edit().add(new PositionComponent());
             transitionEntity.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent());
             transitionEntity.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
 

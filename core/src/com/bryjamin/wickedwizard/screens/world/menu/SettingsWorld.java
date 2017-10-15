@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bryjamin.wickedwizard.MainGame;
+import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
 import com.bryjamin.wickedwizard.assets.PreferenceStrings;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
@@ -17,6 +18,10 @@ import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.BoundsDrawingSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
+import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
+import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
 import com.bryjamin.wickedwizard.screens.DataSave;
 import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.screens.MenuScreen;
@@ -37,6 +42,8 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
 
     private static final float buttonWidth = Measure.units(30f);
     private static final float buttonHeight = Measure.units(10f);
+
+    private static final float border = Measure.units(17.5f);
 
     private static final Color buttonForeground = new Color(Color.BLACK);
     private static final Color buttonBackground = new Color(Color.WHITE);
@@ -69,15 +76,15 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
 
         WorldConfiguration config = new WorldConfigurationBuilder()
                 .with(WorldConfigurationBuilder.Priority.HIGHEST,
-                        new com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem()
+                        new MovementSystem()
                 )
                 .with(WorldConfigurationBuilder.Priority.HIGH,
                         new AnimationSystem(),
                         //new FindPlayerSystem(player),
-                        new com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem(),
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem())
+                        new ActionOnTouchSystem(),
+                        new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
-                        new com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem(game.batch, game.assetManager, gameport),
+                        new RenderingSystem(game.batch, game.assetManager, gameport),
                         new BoundsDrawingSystem()
                 )
                 .build();
@@ -99,7 +106,7 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
 
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        final MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(buttonForeground)
@@ -118,7 +125,8 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
                                             public void performAction(World world, Entity e) {
                                                 DataSave.clearData();
                                                 game.getScreen().dispose();
-                                                game.setScreen(new com.bryjamin.wickedwizard.screens.MenuScreen(game));
+                                                MenuScreen.setMenuType(MenuScreen.MenuType.MAIN);
+                                                game.setScreen(new MenuScreen(game));
                                             }
                                         },
                                         new Action() {
@@ -144,33 +152,55 @@ public class SettingsWorld extends com.bryjamin.wickedwizard.utils.AbstractGestu
 
 
 
-
-
-        menuButtonBuilder.action(new Action() {
-            @Override
-            public void performAction(World world, Entity e) {
-                boolean guideLineBool = !Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true);
-                Gdx.app.getPreferences(PreferenceStrings.SETTINGS).putBoolean(PreferenceStrings.SETTINGS_GUIDELINE, guideLineBool).flush();
-                e.getComponent(TextureFontComponent.class).text = guideLineBool ? MenuStrings.SETTINGS_GUIDELINE_ON : MenuStrings.SETTINGS_GUIDELINE_OFF;
-            }
-        });
-
+        //GUIDE LINE
 
         boolean bool = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true);
 
-        Entity guideLine = menuButtonBuilder.build().createButton(world,
-                bool? MenuStrings.SETTINGS_GUIDELINE_ON : MenuStrings.SETTINGS_GUIDELINE_OFF,
-                CenterMath.offsetX(com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, buttonWidth),
-                Measure.units(35f));
-
-
-
-        Entity backToMainMenu = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
-                .width(Measure.units(30f))
-                .height(Measure.units(10f))
-                .foregroundColor(new Color(Color.BLACK))
-                .backgroundColor(new Color(Color.WHITE))
+        Entity guideLine = menuButtonBuilder
                 .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        boolean guideLineBool = !Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_GUIDELINE, true);
+                        Gdx.app.getPreferences(PreferenceStrings.SETTINGS).putBoolean(PreferenceStrings.SETTINGS_GUIDELINE, guideLineBool).flush();
+                        e.getComponent(TextureFontComponent.class).text = guideLineBool ? MenuStrings.SETTINGS_GUIDELINE_ON : MenuStrings.SETTINGS_GUIDELINE_OFF;
+                    }
+                })
+                .build()
+                .createButton(world,
+                        bool? MenuStrings.SETTINGS_GUIDELINE_ON : MenuStrings.SETTINGS_GUIDELINE_OFF,
+                        CenterMath.offsetX(com.bryjamin.wickedwizard.MainGame.GAME_WIDTH, buttonWidth),
+                        Measure.units(35f));
+
+
+
+
+/*
+        bool = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
+
+        Entity autoFire = menuButtonBuilder
+                .action(new Action() {
+                    @Override
+                    public void performAction(World world, Entity e) {
+                        boolean bool = !Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
+                        Gdx.app.getPreferences(PreferenceStrings.SETTINGS).putBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, bool).flush();
+                        e.getComponent(TextureFontComponent.class).text = bool ? MenuStrings.SETTINGS_AUTOFIRE_ON : MenuStrings.SETTINGS_AUTOFIRE_OFF;
+                    }
+                })
+                .build()
+                .createButton(world,
+                        bool? MenuStrings.SETTINGS_AUTOFIRE_ON : MenuStrings.SETTINGS_AUTOFIRE_OFF,
+                        border,
+                        Measure.units(35f));
+*/
+
+
+
+
+
+
+
+        Entity backToMainMenu = menuButtonBuilder.
+                action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
                         MenuScreen.goBack();

@@ -16,12 +16,16 @@ import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChestComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.LootComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -63,12 +67,12 @@ public class ChestFactory extends AbstractFactory {
 
         bag.add(new PositionComponent(x, y));
         bag.add(new CollisionBoundComponent(new Rectangle(x, y, width, height), true));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent());
+        bag.add(new VelocityComponent());
         bag.add(new LootComponent(LootComponent.TYPE.CHEST, 7, 2));
         bag.add(new ChestComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent());
+        bag.add(new GravityComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(3));
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent());
+        bag.add(new BlinkOnHitComponent());
 
        // bag.add(new HitSoundComponent(SoundFileStrings.hitMegaMix));
 
@@ -103,7 +107,7 @@ public class ChestFactory extends AbstractFactory {
 
     public ComponentBag chestBag(float x, float y, OnDeathActionComponent odac) {
         ComponentBag bag = chestBag(x, y);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(OnDeathActionComponent.class, bag);
         bag.add(odac);
         return bag;
     }

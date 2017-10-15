@@ -8,6 +8,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
+import com.bryjamin.wickedwizard.factories.arenas.ArenaCreate;
 import com.bryjamin.wickedwizard.factories.arenas.decor.ArenaEnemyPlacementFactory;
 import com.bryjamin.wickedwizard.factories.arenas.decor.BeamTurretFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
@@ -15,6 +16,7 @@ import com.bryjamin.wickedwizard.factories.chests.ChestFactory;
 import com.bryjamin.wickedwizard.factories.enemy.SpawnerFactory;
 import com.bryjamin.wickedwizard.factories.explosives.BombFactory;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
+import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.bryjamin.wickedwizard.utils.MapCoords;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -49,12 +51,12 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     @Override
-    public Array<com.bryjamin.wickedwizard.factories.arenas.ArenaCreate> getAllArenas() {
+    public Array<ArenaCreate> getAllArenas() {
         return  getLevel4RoomArray();
     }
 
-    public Array<com.bryjamin.wickedwizard.factories.arenas.ArenaCreate> getLevel4RoomArray() {
-        Array<com.bryjamin.wickedwizard.factories.arenas.ArenaCreate> ag = new Array<com.bryjamin.wickedwizard.factories.arenas.ArenaCreate>();
+    public Array<ArenaCreate> getLevel4RoomArray() {
+        Array<ArenaCreate> ag = new Array<ArenaCreate>();
 
         ag.insert(0, room1LaserBouncers());
         ag.insert(1, room2FlyByAndPylons());
@@ -72,7 +74,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
         ag.insert(13, room14LargeBattleRoomWithEnemiesOnTopAndAMassiveLaser());
         ag.insert(14,room15SmallBattleRoomBlobAndLaser());
         ag.insert(15,room16SwitchAndLasers());
-        ag.insert(16,room17Height2SwitchAndLasers()); // Might need to refactor this one
+        ag.insert(16, room17Height2GrappleAndLasersThroughRoom()); // Might need to refactor this one
         ag.insert(17,room18SwitchsAndLasersAgain());
         ag.insert(18,room19GoatWizardAndKnight());
         ag.insert(19,room20AlurmAndFlyBy());
@@ -92,8 +94,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room1LaserBouncers() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room1LaserBouncers() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
@@ -105,8 +107,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room2FlyByAndPylons() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room2FlyByAndPylons() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
@@ -121,8 +123,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room3BouncersAndVerticalPylons() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room3BouncersAndVerticalPylons() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
@@ -136,8 +138,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room4FixedTriAndVerticalPylons() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room4FixedTriAndVerticalPylons() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
@@ -151,8 +153,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room5Alurm() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room5Alurm() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
@@ -164,8 +166,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room6Knight() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room6Knight() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, Arena.ArenaType.TRAP);
@@ -177,8 +179,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room72KnightsWidth2() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room72KnightsWidth2() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -205,8 +207,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room8LaserBouncersAndAWall() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room8LaserBouncersAndAWall() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -223,8 +225,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room9TrappedLaserBouncer() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room9TrappedLaserBouncer() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -246,8 +248,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room10Width4GrappleChallenge() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room10Width4GrappleChallenge() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -302,8 +304,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room11Width2STrapTwoKnights() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room11Width2STrapTwoKnights() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -345,8 +347,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room12TwoAlurmsOneChestOneKnight() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room12TwoAlurmsOneChestOneKnight() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
                 Arena arena = arenaShellFactory.createOmniArenaHiddenGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
@@ -371,8 +373,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room13largeBattleRoomWithArenaOnTopAndSpikeTreasureOnBottom(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room13largeBattleRoomWithArenaOnTopAndSpikeTreasureOnBottom(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -445,8 +447,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room14LargeBattleRoomWithEnemiesOnTopAndAMassiveLaser(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room14LargeBattleRoomWithEnemiesOnTopAndAMassiveLaser(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -482,7 +484,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.platform(0, Measure.units(65f), arena.getWidth()));
 
                 arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(90f), Measure.units(50f),4,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                        new LaserOrbitalTask.LaserBuilder(assetManager)
                                 .orbitalAndIntervalSize(Measure.units(15f))
                                 .speedInDegrees(random.nextBoolean() ? 0.225f : -0.225f)
                                 .numberOfOrbitals(10)
@@ -507,8 +509,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room15SmallBattleRoomBlobAndLaser(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room15SmallBattleRoomBlobAndLaser(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -517,7 +519,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 boolean isLeft = random.nextBoolean();
 
                 arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f),2,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                        new LaserOrbitalTask.LaserBuilder(assetManager)
                                 .orbitalAndIntervalSize(Measure.units(3f))
                                 .speedInDegrees(isLeft ? 0.6f : -0.6f)
                                 .numberOfOrbitals(20)
@@ -534,15 +536,15 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room16SwitchAndLasers(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room16SwitchAndLasers(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
                 arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f),2,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                        new LaserOrbitalTask.LaserBuilder(assetManager)
                                 .orbitalAndIntervalSize(Measure.units(2.5f))
                                 .speedInDegrees(random.nextBoolean() ? 1f : -1f)
                                 .numberOfOrbitals(25)
@@ -563,8 +565,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room17Height2SwitchAndLasers(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room17Height2GrappleAndLasersThroughRoom(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -577,45 +579,41 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 1),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.MANDATORYDOOR,
+                                ArenaBuilder.wall.MANDATORYGRAPPLE,
                                 ArenaBuilder.wall.NONE))
                         .buildArena();
 
 
-                int numberOfParts = 15;
+                int numberOfParts = 7;
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder laserBuilder = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
-                        .orbitalAndIntervalSize(Measure.units(2.5f))
+                LaserOrbitalTask.LaserBuilder laserBuilder = new LaserOrbitalTask.LaserBuilder(assetManager)
+                        .orbitalAndIntervalSize(Measure.units(5))
                         .speedInDegrees(0)
                         .numberOfOrbitals(numberOfParts)
                         .chargeTime(0.25f);
 
-                arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(30f), Measure.units(65f),2,
+                arena.addEntity(beamTurretFactory.laserChain(Measure.units(30f), Measure.units(65f),2,
                         laserBuilder.angles(180).build()));
 
-                arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(60f), Measure.units(65f),2,
+
+                arena.addEntity(beamTurretFactory.laserChain(Measure.units(60f), Measure.units(65f),2,
                         laserBuilder.angles(0).build()));
 
 
-                arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(30f), Measure.units(30f),2,
-                        laserBuilder.angles(180).build()));
+                laserBuilder.numberOfOrbitals(12).angles(90);
 
-                arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(60f), Measure.units(30f),2,
-                        laserBuilder.angles(0).build()));
+                arena.addEntity(beamTurretFactory.laserChain(Measure.units(30f), Measure.units(10f),2,
+                        laserBuilder.build()));
 
+                arena.addEntity(beamTurretFactory.laserChain(Measure.units(60f), Measure.units(10f),2,
+                        laserBuilder.build()));
 
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(5f), Measure.units(50), -90));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - Measure.units(10f), Measure.units(50), 90));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(10f), arena.getHeight() - Measure.units(35f), 180));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - Measure.units(15f),arena.getHeight() - Measure.units(35f), 180));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(Measure.units(32.5f), Measure.units(25f), 180));
-                arena.addEntity(arenaEnemyPlacementFactory.switchFactory.switchBag(arena.getWidth() - Measure.units(37.5f),Measure.units(25f), 180));
 
                 arena.addEntity(decorFactory.wallBag(Measure.units(5f), Measure.units(90f), Measure.units(15f), Measure.units(5f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth() - Measure.units(20f), Measure.units(90f), Measure.units(15f), Measure.units(5f)));
                 arena.addEntity(decorFactory.platform(Measure.units(20f), Measure.units(90f), Measure.units(60f)));
 
-                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(55f)));
+                arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(50f)));
 
                 return arena;
             }
@@ -626,15 +624,15 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     //TODO check
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room18SwitchsAndLasersAgain(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room18SwitchsAndLasersAgain(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
                 Arena arena = arenaShellFactory.createSmallArenaNoGrapple(defaultCoords, random.nextInt(4), Arena.ArenaType.TRAP);
 
                 arena.addEntity(beamTurretFactory.inCombatLaserChain(Measure.units(45f), Measure.units(25f),2,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                        new LaserOrbitalTask.LaserBuilder(assetManager)
                                 .orbitalAndIntervalSize(Measure.units(4f))
                                 .speedInDegrees(random.nextBoolean() ? 1f : -1f)
                                 .numberOfOrbitals(15)
@@ -662,8 +660,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room19GoatWizardAndKnight(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room19GoatWizardAndKnight(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -685,8 +683,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room20AlurmAndFlyBy(){
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room20AlurmAndFlyBy(){
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -705,8 +703,8 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room21LaserArenaWithIntermittantLasters() {
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+    public ArenaCreate room21LaserArenaWithIntermittantLasters() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -736,9 +734,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room22HorizontalThroughRoomLaserCentersAndEnemies() {
+    public ArenaCreate room22HorizontalThroughRoomLaserCentersAndEnemies() {
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -778,10 +776,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     //TODO add the chance of a booby trap chest
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room23HoarderWithLasers() {
+    public ArenaCreate room23HoarderWithLasers() {
 
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -832,10 +830,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
     //TODO add the chance of a booby trap chest
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room24LaserBouncerLaserTrapTreasure() {
+    public ArenaCreate room24LaserBouncerLaserTrapTreasure() {
 
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -878,10 +876,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
     }
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room25TreasureLaserFloorAndLockedChestMirror() {
+    public ArenaCreate room25TreasureLaserFloorAndLockedChestMirror() {
 
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -919,7 +917,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(leftwallPosX, 0, Measure.units(20f), Measure.units(10f)));
                 arena.addEntity(decorFactory.wallBag(rightTallWallPosX, 0, Measure.units(30f), Measure.units(25f)));
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .chargeTime(0.5f)
                         .numberOfOrbitals(20)
                         .angles(chestsAreLeft ? 180 : 0)
@@ -943,10 +941,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room26DoubleAlurmWithASqaureCenter() {
+    public ArenaCreate room26DoubleAlurmWithASqaureCenter() {
 
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -965,10 +963,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room27Width2GiantLaserSwitchInTheCenter() {
+    public ArenaCreate room27Width2GiantLaserSwitchInTheCenter() {
 
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -991,7 +989,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 arena.addEntity(decorFactory.wallBag(-Measure.units(5f), 0, Measure.units(5), Measure.units(70f)));
                 arena.addEntity(decorFactory.wallBag(arena.getWidth(), 0, Measure.units(5), Measure.units(70f)));
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder lb = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager)
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
                         .chargeTime(0.5f)
                         .numberOfOrbitals(20)
                         .angles(180, 0)
@@ -1015,10 +1013,10 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
     }
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room28Height3TwoGiantScenicLasers() {
+    public ArenaCreate room28Height3TwoGiantScenicLasers() {
 
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -1037,39 +1035,37 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                         .addSection(new ArenaBuilder.Section(new MapCoords(defaultCoords.getX(), defaultCoords.getY() + 2),
                                 ArenaBuilder.wall.FULL,
                                 ArenaBuilder.wall.FULL,
-                                ArenaBuilder.wall.MANDATORYDOOR,
+                                ArenaBuilder.wall.MANDATORYGRAPPLE,
                                 ArenaBuilder.wall.NONE))
                         .buildArena();
 
 
 
                 for(int i = 0; i < 4; i++){
-                    arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(40f + (i * 37.5f))));
+                    arena.addEntity(decorFactory.grapplePointBag(arena.getWidth() / 2, Measure.units(35f + (i * 32.5f))));
                 }
 
 
-                LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
-                        .chargingLaserHeight(Measure.units(200f))
-                        .chargingLaserWidth(Measure.units(18.5f))
-                        .chargingLaserTime(1f)
-                        .activeLaserHeight(Measure.units(200f))
-                        .activeLaserWidth(Measure.units(20f))
-                        .activeLaserTime(5f)
-                        .layer(TextureRegionComponent.ENEMY_LAYER_FAR)
-                        .build();
+                LaserOrbitalTask.LaserBuilder lb = new LaserOrbitalTask.LaserBuilder(assetManager)
+                        .chargeTime(0.5f)
+                        .numberOfOrbitals(20)
+                        .angles(90)
+                        .speedInDegrees(0)
+                        .orbitalAndIntervalSize(Measure.units(20f));
 
+                arena.addEntity(beamTurretFactory.laserChain(Measure.units(10f), -Measure.units(10f), 6,
+                        lb.build()));
 
-                arena.addEntity(beamTurretFactory.timedLaserBeam(Measure.units(10f), -Measure.units(10f), 6, 0, 3f, true,
-                        laserBeam));
+                arena.addEntity(beamTurretFactory.laserChain(arena.getWidth() - Measure.units(40f), -Measure.units(10f), 6,
+                        lb.build()));
 
-                arena.addEntity(beamTurretFactory.timedLaserBeam(arena.getWidth() - Measure.units(40f), -Measure.units(10f), 6, 0, 3f, true,
-                        laserBeam));
 
                 arena.addEntity(beamTurretFactory.laserChain(Measure.units(10f), arena.getHeight() - Measure.units(15f), 6,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager).build()));
+                        new LaserOrbitalTask.LaserBuilder(assetManager).build()));
 
                 arena.addEntity(beamTurretFactory.laserChain(arena.getWidth() - Measure.units(40f), arena.getHeight() - Measure.units(15f), 6,
-                        new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager).build()));
+                        new LaserOrbitalTask.LaserBuilder(assetManager).build()));
+
 
                 return arena;
             }
@@ -1079,9 +1075,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room29BoringHeight2TreasureRoomWithLasers() {
+    public ArenaCreate room29BoringHeight2TreasureRoomWithLasers() {
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 
@@ -1123,7 +1119,7 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
                 }
 
 
-                com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder empty = new com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask.LaserBuilder(assetManager);
+                LaserOrbitalTask.LaserBuilder empty = new LaserOrbitalTask.LaserBuilder(assetManager);
 
 
                 LaserBeam laserBeam = new LaserBeam.LaserBeamBuilder(assetManager)
@@ -1159,9 +1155,9 @@ public class Level4Rooms extends AbstractFactory implements ArenaRepostiory {
 
 
 
-    public com.bryjamin.wickedwizard.factories.arenas.ArenaCreate room30WidthTwoPylonsAndAlurms() {
+    public ArenaCreate room30WidthTwoPylonsAndAlurms() {
 
-        return new com.bryjamin.wickedwizard.factories.arenas.ArenaCreate() {
+        return new ArenaCreate() {
             @Override
             public Arena createArena(MapCoords defaultCoords) {
 

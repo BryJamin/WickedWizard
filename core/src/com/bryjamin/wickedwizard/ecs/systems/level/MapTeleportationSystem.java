@@ -13,10 +13,12 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.BossTeleporterCompon
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.PlayerInputSystem;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.JigsawGenerator;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 
 import java.util.HashMap;
 
@@ -109,15 +111,15 @@ public class MapTeleportationSystem extends EntitySystem {
 
         PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
         CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
         MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
         world.getSystem(PlayerInputSystem.class).turnOffGlide();
 
         for(Bag<Component> b : currentArena.getBagOfEntities()) {
-            if (com.bryjamin.wickedwizard.utils.BagSearch.contains(BossTeleporterComponent.class, b)  && com.bryjamin.wickedwizard.utils.BagSearch.contains(CollisionBoundComponent.class, b)) {
+            if (BagSearch.contains(BossTeleporterComponent.class, b)  && BagSearch.contains(CollisionBoundComponent.class, b)) {
 
-                BossTeleporterComponent btc = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(BossTeleporterComponent.class, b);
-                CollisionBoundComponent teleporterBound = com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, b);
+                BossTeleporterComponent btc = BagSearch.getObjectOfTypeClass(BossTeleporterComponent.class, b);
+                CollisionBoundComponent teleporterBound = BagSearch.getObjectOfTypeClass(CollisionBoundComponent.class, b);
                 cbc.bound.setCenter(
                         teleporterBound.getCenterX() + btc.offsetX,
                         teleporterBound.getCenterY() + btc.offsetY);
@@ -179,7 +181,7 @@ public class MapTeleportationSystem extends EntitySystem {
         PositionComponent player =  world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
         player.position.x = rts.getCurrentArena().getWidth() / 2;
         player.position.y = rts.getCurrentArena().getHeight() / 2;
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+        VelocityComponent vc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
         MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
         mtc.reset();
         vc.velocity.x = 0;

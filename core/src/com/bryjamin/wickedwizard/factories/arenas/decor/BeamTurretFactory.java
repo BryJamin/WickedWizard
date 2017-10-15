@@ -15,6 +15,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
 import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserBeam;
+import com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -34,7 +35,7 @@ public class BeamTurretFactory extends AbstractFactory {
         this.arenaSkin = arenaSkin;
     }
 
-    public ComponentBag laserChain(float x, float y, float scale, com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
+    public ComponentBag laserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
         float width = Measure.units(5f) * scale;
         float height = Measure.units(5f) * scale;
         ComponentBag bag = new ComponentBag();
@@ -48,7 +49,7 @@ public class BeamTurretFactory extends AbstractFactory {
 
 
 
-    public ComponentBag inCombatLaserChain(float x, float y, float scale, com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
+    public ComponentBag inCombatLaserChain(float x, float y, float scale, LaserOrbitalTask laserOrbitalTask){
         float width = Measure.units(5f) * scale;
         float height = Measure.units(5f) * scale;
         ComponentBag bag = new ComponentBag();
@@ -62,7 +63,7 @@ public class BeamTurretFactory extends AbstractFactory {
 
 
 
-    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat, boolean isInstant, com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
+    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat, boolean isInstant, LaserOrbitalTask laserOrbitalTask){
         float width = Measure.units(5f) * scale;
         float height = Measure.units(5f) * scale;
         ComponentBag bag = new ComponentBag();
@@ -75,12 +76,12 @@ public class BeamTurretFactory extends AbstractFactory {
     }
 
 
-    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat, com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
+    public ComponentBag timedLaserChain(float x, float y, float scale, float timeTillReapeat, LaserOrbitalTask laserOrbitalTask){
         return timedLaserChain(x,y,scale,timeTillReapeat, true, laserOrbitalTask);
     }
 
 
-    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final boolean isInstant, final com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
+    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final boolean isInstant, final LaserOrbitalTask laserOrbitalTask){
         float width = Measure.units(5f) * scale;
         float height = Measure.units(5f) * scale;
         ComponentBag bag = new ComponentBag();
@@ -103,7 +104,7 @@ public class BeamTurretFactory extends AbstractFactory {
         return bag;
     }
 
-    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final com.bryjamin.wickedwizard.factories.weapons.enemy.LaserOrbitalTask laserOrbitalTask){
+    public ComponentBag inCombatTimedLaserChain(float x, float y, float scale, final float timeTillReapeat, final LaserOrbitalTask laserOrbitalTask){
         return inCombatTimedLaserChain(x,y,scale,timeTillReapeat,true, laserOrbitalTask);
     }
 

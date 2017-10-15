@@ -19,7 +19,6 @@ public class DoorComponent extends Component {
 
 
     public Direction exit;
-    public Direction entry;
 
     public DoorComponent(){
 

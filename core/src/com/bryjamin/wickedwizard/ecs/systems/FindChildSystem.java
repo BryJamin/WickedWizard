@@ -7,6 +7,8 @@ import com.artemis.EntitySystem;
 import com.artemis.utils.IntBag;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
+
 
 /**
  * Created by Home on 17/04/2017.
@@ -15,7 +17,7 @@ import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 public class FindChildSystem extends EntitySystem {
 
     ComponentMapper<PositionComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
+    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
 
     @SuppressWarnings("unchecked")

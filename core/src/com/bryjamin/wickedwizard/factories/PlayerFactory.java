@@ -44,6 +44,7 @@ import com.bryjamin.wickedwizard.utils.BulletMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
 
+
 /**
  * Created by Home on 06/04/2017.
  */
@@ -225,10 +226,10 @@ public class PlayerFactory extends AbstractFactory {
      * @param isLeft - Whether or not the wing is a left or right wing
      * @return - Returns a bag of components used to create an Entity
      */
-    public ComponentBag wings(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc, boolean isLeft){
+    public ComponentBag wings(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc, PositionComponent pc, boolean isLeft){
 
         ComponentBag bag = new ComponentBag();
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(pc.getX(), pc.getY()));
+        bag.add(new PositionComponent(pc.getX(), pc.getY()));
         bag.add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(pc.position, isLeft ? Measure.units(4) : -Measure.units(4), -Measure.units(1)));
         AnimationStateComponent sc = new AnimationStateComponent();
         sc.setDefaultState(0);
@@ -283,13 +284,13 @@ public class PlayerFactory extends AbstractFactory {
 
 
         ComponentBag bag = new ComponentBag();
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent(x, y));
+        bag.add(new PositionComponent(x, y));
 
 
 
 
         //TODO I should switch this to the moveto component which should also use the way the moveToPlayerAI works
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(BulletMath.velocityX(Measure.units(200f), angle), BulletMath.velocityY(Measure.units(200f), angle)));
+        bag.add(new VelocityComponent(BulletMath.velocityX(Measure.units(200f), angle), BulletMath.velocityY(Measure.units(200f), angle)));
         bag.add(new CollisionBoundComponent(new Rectangle(x,y, width, height)));
 
         TextureRegionComponent trc = new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
@@ -325,7 +326,7 @@ public class PlayerFactory extends AbstractFactory {
                 if(r != null && r.contains(targetX, targetY)) {
 
                     CollisionBoundComponent cbc = entity.getComponent(CollisionBoundComponent.class);
-                    com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = entity.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+                    PositionComponent pc = entity.getComponent(PositionComponent.class);
                     cbc.bound.setCenter(r.getX() + r.getWidth() / 2, r.getY() + r.getHeight() / 2);
                     pc.position.set(cbc.bound.x, cbc.bound.y, pc.position.z);
 
@@ -339,7 +340,7 @@ public class PlayerFactory extends AbstractFactory {
         }, new com.bryjamin.wickedwizard.ecs.components.ai.Task() {
             @Override
             public void performAction(World world, Entity e) {
-                com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.MoveToComponent.class);
+                MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
 
                 CollisionBoundComponent cbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
 
@@ -359,9 +360,9 @@ public class PlayerFactory extends AbstractFactory {
 
                 world.getSystem(com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem.class).playRandomSound(com.bryjamin.wickedwizard.assets.SoundFileStrings.grappleFireMix);
 
-                world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class).ignoreGravity = true;
+                world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class).ignoreGravity = true;
 
-                e.edit().remove(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+                e.edit().remove(VelocityComponent.class);
 
                 e.edit().remove(ConditionalActionComponent.class);
 

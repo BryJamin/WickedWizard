@@ -18,13 +18,17 @@ import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
+import com.bryjamin.wickedwizard.ecs.components.texture.UIComponent;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.audio.MusicSystem;
-import com.bryjamin.wickedwizard.ecs.systems.level.EndGameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.GameSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem;
+import com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem;
 import com.bryjamin.wickedwizard.factories.AbstractFactory;
 import com.bryjamin.wickedwizard.factories.arenas.Arena;
 import com.bryjamin.wickedwizard.factories.arenas.ArenaBuilder;
 import com.bryjamin.wickedwizard.factories.arenas.skins.ArenaSkin;
+import com.bryjamin.wickedwizard.screens.MenuButton;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.MapCoords;
@@ -39,8 +43,8 @@ public class BreakRoom extends AbstractFactory {
     private ArenaSkin arenaSkin;
 
 
-    private static final float buttonWidth =  Measure.units(27.5f);
-    private static final float buttonHeight = Measure.units(20f);
+    private static final float buttonWidth = Measure.units(37.5f);
+    private static final float buttonHeight = Measure.units(10f);
 
     private static final float startY = Measure.units(25f);
 
@@ -71,6 +75,7 @@ public class BreakRoom extends AbstractFactory {
                 backScreen.edit().add(new PositionComponent());
                 backScreen.edit().add(new DisablePlayerInputComponent());
                 backScreen.edit().add(new MoveToPositionComponent());
+                backScreen.edit().add(new UIComponent());
                 backScreen.edit().add(new FollowPositionComponent(gamecam.position, -gamecam.viewportWidth / 2, -gamecam.viewportHeight / 2));
                 backScreen.edit().add(new TextureRegionComponent(assetManager.get(com.bryjamin.wickedwizard.assets.FileLocationStrings.spriteAtlas, TextureAtlas.class).findRegion(TextureStrings.BLOCK),
                         gamecam.viewportWidth, gamecam.viewportHeight,
@@ -95,7 +100,7 @@ public class BreakRoom extends AbstractFactory {
         arena.addEntity(componentBag);
 
 
-        com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder menuButtonBuilder = new com.bryjamin.wickedwizard.screens.MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
+        MenuButton.MenuButtonBuilder menuButtonBuilder = new MenuButton.MenuButtonBuilder(com.bryjamin.wickedwizard.assets.FontAssets.medium, atlas.findRegion(TextureStrings.BLOCK))
                 .width(buttonWidth)
                 .height(buttonHeight)
                 .foregroundColor(new Color(Color.BLACK))
@@ -106,16 +111,17 @@ public class BreakRoom extends AbstractFactory {
                         world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.class).startScreenWipe(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.Transition.FADE, new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
-                                world.getSystem(EndGameSystem.class).quickSaveAndBackToMenu();
+                                world.getSystem(GameSystem.class).quickSaveAndBackToMenu();
                             }
                         });
                     }
                 });
 
-        Bag<ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.BREAK, Measure.units(10f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
+        Bag<ComponentBag> bags = menuButtonBuilder.build().createButton(MenuStrings.BREAK, Measure.units(5f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
 
 
         for(ComponentBag bag : bags){
+            bag.add(new UIComponent());
             arena.addEntity(bag);
         }
 
@@ -123,19 +129,20 @@ public class BreakRoom extends AbstractFactory {
                 .action(new Action() {
                     @Override
                     public void performAction(World world, Entity e) {
-                        world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.class).startScreenWipe(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.Transition.FADE, new Action() {
+                        world.getSystem(ScreenWipeSystem.class).startScreenWipe(com.bryjamin.wickedwizard.ecs.systems.level.ScreenWipeSystem.Transition.FADE, new Action() {
                             @Override
                             public void performAction(World world, Entity e) {
-                                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.level.MapTeleportationSystem.class).createNewLevel();
+                                world.getSystem(MapTeleportationSystem.class).createNewLevel();
                                 for(BaseSystem s: world.getSystems()){
                                     s.setEnabled(true);
                                 }
                             }
                         });
                     }
-                }).build().createButton(MenuStrings.CONTINUE, Measure.units(62.5f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
+                }).build().createButton(MenuStrings.CONTINUE, Measure.units(57.5f), CenterMath.offsetY(arena.getHeight() - Measure.units(15f), buttonHeight) + Measure.units(10f));
 
         for(ComponentBag bag : bags){
+            bag.add(new UIComponent());
             arena.addEntity(bag);
         }
 

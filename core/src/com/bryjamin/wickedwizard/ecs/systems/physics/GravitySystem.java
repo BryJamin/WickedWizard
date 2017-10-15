@@ -5,6 +5,8 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.bryjamin.wickedwizard.ecs.components.movement.GlideComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.utils.Measure;
 
 /**
@@ -12,21 +14,21 @@ import com.bryjamin.wickedwizard.utils.Measure;
  */
 public class GravitySystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gm;
+    ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<GravityComponent> gm;
     ComponentMapper<GlideComponent> glidem;
 
     private static final float MAXGRAVITY = -Measure.units(110f);
 
     @SuppressWarnings("unchecked")
     public GravitySystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class));
+        super(Aspect.all(VelocityComponent.class, GravityComponent.class));
     }
 
     @Override
     protected void process(Entity e) {
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent gc = gm.get(e);
+        VelocityComponent vc = vm.get(e);
+        GravityComponent gc = gm.get(e);
 
         if(!gc.ignoreGravity) {
             if(glidem.has(e)) {

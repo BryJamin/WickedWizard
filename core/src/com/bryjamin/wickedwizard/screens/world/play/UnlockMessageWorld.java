@@ -17,11 +17,12 @@ import com.bryjamin.wickedwizard.MainGame;
 import com.bryjamin.wickedwizard.assets.FileLocationStrings;
 import com.bryjamin.wickedwizard.assets.FontAssets;
 import com.bryjamin.wickedwizard.assets.MenuStrings;
+import com.bryjamin.wickedwizard.assets.PlayerIDs;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
-import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionOnTouchComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.FollowCameraComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
@@ -31,6 +32,7 @@ import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureFontComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindChildSystem;
+import com.bryjamin.wickedwizard.ecs.systems.ai.FollowCameraSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.FollowPositionSystem;
 import com.bryjamin.wickedwizard.ecs.systems.ai.OnDeathSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.AnimationSystem;
@@ -40,6 +42,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.FadeSystem;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.RenderingSystem;
 import com.bryjamin.wickedwizard.ecs.systems.input.ActionOnTouchSystem;
 import com.bryjamin.wickedwizard.ecs.systems.physics.MovementSystem;
+import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengeLayout;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.items.Item;
 import com.bryjamin.wickedwizard.factories.items.ItemResource;
@@ -96,6 +99,7 @@ public class UnlockMessageWorld implements WorldContainer {
                         new FollowPositionSystem(),
                         new FadeSystem())
                 .with(WorldConfigurationBuilder.Priority.LOW,
+                        new FollowCameraSystem(gamecam),
                         new RenderingSystem(batch, manager, gameport),
                         new BoundsDrawingSystem()
                 )
@@ -125,15 +129,30 @@ public class UnlockMessageWorld implements WorldContainer {
 
         final Array<Bag<ComponentBag>> bagArray = new Array<Bag<ComponentBag>>();
 
-        for(String unlockId : unlockIds) {
-            //if(true){
+
+        Array<String> unlockIdArray = new Array<String>();
+        //All Separated Since The Unlock Display Order is
+
+        //Character -> Item -> Challenges
+
+        //Which means that are added to the array Challenges -> Item -> Character
+
+        for(String unlockId: unlockIds){
             if (!DataSave.isDataAvailable(unlockId)) {
                 DataSave.saveChallengeData(unlockId);
-                createChallengeUnlockMessage(bagArray, unlockId);
-                createItemUnlockMessage(bagArray, unlockId);
+                unlockIdArray.add(unlockId);
             }
         }
 
+        if(unlockIdArray.size <= 0) return false;
+
+        System.out.println(unlockIdArray.contains(PlayerIDs.XI_UNLOCK_STRING, false));
+
+        for(String unlockId : unlockIdArray) createChallengeUnlockMessage(bagArray, unlockId);
+        for(String unlockId : unlockIdArray) createItemUnlockMessage(bagArray, unlockId);
+        for(String unlockId : unlockIdArray) createCharacterUnlockMessage(bagArray, unlockId);
+
+        System.out.println(bagArray.size);
 
         if(bagArray.size <= 0) return false;
 
@@ -306,7 +325,7 @@ public class UnlockMessageWorld implements WorldContainer {
 
             ComponentBag unlockedItemBag = new ComponentBag();
 
-            float y = TableMath.getYPos(Measure.units(45f), i, maxColumns, iconGap, iconGap);
+            float y = TableMath.getYPosTopToBottom(Measure.units(45f), i, maxColumns, iconGap, iconGap);
 
             unlockedItemBag.add(new PositionComponent(x, y));
             unlockedItemBag.add(new CollisionBoundComponent(new Rectangle(x, y, gamecam.viewportWidth, Measure.units(10f))));
@@ -320,6 +339,59 @@ public class UnlockMessageWorld implements WorldContainer {
         bagArray.add(bagOfBags);
 
     }
+
+
+
+    public void createCharacterUnlockMessage(Array<Bag<ComponentBag>> bagArray, String unlockId){
+
+        Array<PlayerIDs.PlayableCharacter> unlockedCharacters = new Array<PlayerIDs.PlayableCharacter>();
+
+
+
+        for(PlayerIDs.PlayableCharacter i : PlayerIDs.getAllCharacters()){
+            if(i.getUnlockString().equals(unlockId)){
+                unlockedCharacters.add(i);
+            }
+        }
+
+        if(unlockedCharacters.size <= 0) return;
+
+        //ITEMS
+
+        float iconSize = Measure.units(12.5f);
+
+        float y = CenterMath.offsetY(gamecam.viewportHeight, iconSize) + Measure.units(5f);
+        float x = CenterMath.offsetX(gamecam.viewportWidth, iconSize);
+
+        for(int i = 0; i < unlockedCharacters.size; i++){
+
+            Bag<ComponentBag> bagOfBags = new Bag<ComponentBag>();
+            bagOfBags.add(createBackDrop());
+            bagOfBags.add(createTitle(MenuStrings.CHARACTER_UNLOCKED));
+
+            ComponentBag unlockedItemBag = new ComponentBag();
+
+            unlockedItemBag.add(new PositionComponent(x, y));
+            unlockedItemBag.add(new FollowCameraComponent(x, y));
+            unlockedItemBag.add(new TextureRegionComponent(atlas.findRegion(unlockedCharacters.get(i).getRegion()),
+                    iconSize, iconSize, TextureRegionComponent.ENEMY_LAYER_FAR));
+
+            bagOfBags.add(unlockedItemBag);
+
+
+            ComponentBag textBelow = new ComponentBag();
+            textBelow.add(new PositionComponent(x, y - Measure.units(7.5f)));
+            textBelow.add(new FollowCameraComponent(x, y - Measure.units(7.5f)));
+            textBelow.add(new TextureFontComponent(FontAssets.medium, "\"" + unlockedCharacters.get(i).getName() + "\""));
+            textBelow.add(new CollisionBoundComponent(new Rectangle(x, y - Measure.units(5f), iconSize, Measure.units(5f))));
+            bagOfBags.add(textBelow);
+
+            bagArray.add(bagOfBags);
+
+        }
+
+    }
+
 
 
 

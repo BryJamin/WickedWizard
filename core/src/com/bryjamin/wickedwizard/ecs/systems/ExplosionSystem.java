@@ -14,6 +14,7 @@ import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 
+
 /**
  * Created by Home on 23/05/2017.
  */
@@ -64,14 +65,10 @@ public class ExplosionSystem extends EntityProcessingSystem {
             int entity = entities.get(i);
 
             if(playerm.has(entity) && fm.has(explosionEntity)){
-
-                System.out.println("INSIDE");
                 continue;
             }
 
             if(enemym.has(entity) && enemym.has(explosionEntity)){
-
-                System.out.println("INSIDE");
                 continue;
             }
 
@@ -79,16 +76,11 @@ public class ExplosionSystem extends EntityProcessingSystem {
             HealthComponent hc = hm.get(entity);
 
             if(explosionBound.bound.overlaps(cbc.bound)){
-                System.out.println("Damage overlap is " + em.get(explosionEntity).damage);
                 hc.applyDamage(em.get(explosionEntity).damage);
             }
 
 
         }
-
-
-        System.out.println("Explosion Damage is " + em.get(explosionEntity).damage);
-
         explosionEntity.edit().remove(ExplosionComponent.class);
 
 

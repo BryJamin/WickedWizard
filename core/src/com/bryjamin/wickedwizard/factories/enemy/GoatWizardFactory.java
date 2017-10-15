@@ -17,11 +17,13 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.Task;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.BounceComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.OrbitComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.BlinkOnHitComponent;
@@ -32,6 +34,7 @@ import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.weapons.Giblets;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
+
 
 /**
  * Created by Home on 17/05/2017.
@@ -69,7 +72,7 @@ public class GoatWizardFactory extends EnemyFactory {
         ComponentBag bag = new ComponentBag();
         bag = defaultEnemyBag(bag, x, y, 15);
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(startsRight ? Measure.units(10f) : -Measure.units(10f), startsUp ? Measure.units(5f) : -Measure.units(5f)));
+        bag.add(new VelocityComponent(startsRight ? Measure.units(10f) : -Measure.units(10f), startsUp ? Measure.units(5f) : -Measure.units(5f)));
         bag.add(new BounceComponent());
 
 
@@ -148,7 +151,7 @@ public class GoatWizardFactory extends EnemyFactory {
                 isShield = false;
             } else {
 
-                com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent((float) (Measure.units(40) * Math.cos(angleInRadians)), (float) (Measure.units(40) * Math.sin(angleInRadians)));
+                VelocityComponent vc = new VelocityComponent((float) (Measure.units(40) * Math.cos(angleInRadians)), (float) (Measure.units(40) * Math.sin(angleInRadians)));
 
                 PositionComponent pc = e.getComponent(PositionComponent.class);
 
@@ -162,7 +165,7 @@ public class GoatWizardFactory extends EnemyFactory {
 
                     if(child == null) continue;
 
-                    child.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(vc));
+                    child.edit().add(new VelocityComponent(vc));
                     child.edit().add(new BulletComponent());
                     //child.edit().add(new IntangibleComponent());
                     //child.edit().add(new ExpiryRangeComponent(child.getComponent(PositionComponent.class).position, Measure.units(200f)));
@@ -186,7 +189,8 @@ public class GoatWizardFactory extends EnemyFactory {
             Entity e = world.createEntity();
             e.edit().add(new PositionComponent(x, y));
             e.edit().add(new CollisionBoundComponent(new Rectangle(x, y, Measure.units(5), Measure.units(5)), true));
-            e.edit().add(new EnemyComponent());
+            e.edit().add(new OnlyPlayerBulletsComponent());
+            //e.edit().add(new EnemyComponent());
             e.edit().add(new OrbitComponent(centerOfOrbit, radius, 2, startAngle, width / 2, height / 2));
             e.edit().add(new BlinkOnHitComponent());
             e.edit().add(new com.bryjamin.wickedwizard.ecs.components.HealthComponent(3));

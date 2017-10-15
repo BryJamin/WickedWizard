@@ -10,19 +10,27 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.bryjamin.wickedwizard.assets.TextureStrings;
+import com.bryjamin.wickedwizard.ecs.components.HealthComponent;
 import com.bryjamin.wickedwizard.ecs.components.Weapon;
 import com.bryjamin.wickedwizard.ecs.components.ai.Action;
 import com.bryjamin.wickedwizard.ecs.components.ai.ActionAfterTimeComponent;
+import com.bryjamin.wickedwizard.ecs.components.ai.Condition;
 import com.bryjamin.wickedwizard.ecs.components.ai.ConditionalActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ExpireComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.PhaseComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.UnpackableComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.AnimationStateComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.FadeComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.TextureRegionComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
+import com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem;
+import com.bryjamin.wickedwizard.utils.BagSearch;
 import com.bryjamin.wickedwizard.utils.CenterMath;
 import com.bryjamin.wickedwizard.utils.ComponentBag;
 import com.bryjamin.wickedwizard.utils.Measure;
@@ -43,7 +51,7 @@ public class BossTheEnd extends BossFactory {
 
     private static final float mainBodyHealth = 40;
 
-    private static final float handHealth = 40;
+    private static final float handHealth = 30;
 
     private static final float handsHeight = Measure.units(12f);
     private static final float handsWidth = Measure.units(12f);
@@ -93,6 +101,10 @@ public class BossTheEnd extends BossFactory {
     private static final float gatlingPhase = 5f;
 
 
+    private int regenerationNumber = 0;
+    private static final int maxRegenerations = 1;
+
+
 
 
     private static final Random random = new Random();
@@ -110,10 +122,10 @@ public class BossTheEnd extends BossFactory {
         y = y - mainBodyHeight / 2;
 
         ComponentBag bag = this.defaultBossBag(new ComponentBag(), x, y, mainBodyHealth);
-        com.bryjamin.wickedwizard.utils.BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent.class, bag);
-        com.bryjamin.wickedwizard.utils.BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent.class, bag);
+        BagSearch.getObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent.class, bag);
+        BagSearch.removeObjectOfTypeClass(com.bryjamin.wickedwizard.ecs.components.identifiers.EnemyComponent.class, bag);
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ArenaLockComponent());
         bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.OnlyPlayerBulletsComponent());
 
@@ -128,15 +140,19 @@ public class BossTheEnd extends BossFactory {
             }
         }));
 
-        bag.add(new CollisionBoundComponent(new Rectangle(x, y, mainBodyWidth, mainBodyHeight)));
+
+        CollisionBoundComponent cbc = new CollisionBoundComponent(new Rectangle(x, y, mainBodyWidth, mainBodyHeight), true);
+        cbc.hitBoxDisabled = true;
+
+        bag.add(cbc);
 
         bag.add(new TextureRegionComponent(atlas.findRegion(TextureStrings.BLOCK),
                 mainBodyWidth,
                 mainBodyHeight,
                 TextureRegionComponent.ENEMY_LAYER_MIDDLE));
 
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.IntangibleComponent());
-        bag.add(new com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent());
+        bag.add(new IntangibleComponent());
+        bag.add(new ParentComponent());
 
 
         bag.add(new ActionAfterTimeComponent(new Action() {
@@ -144,20 +160,20 @@ public class BossTheEnd extends BossFactory {
             public void performAction(World world, Entity e) {
 
                 CollisionBoundComponent playerCbc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
-                com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent playerPosition = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+                PositionComponent playerPosition = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                 CollisionBoundComponent endCbc = e.getComponent(CollisionBoundComponent.class);
 
 
                 playerCbc.setCenter(endCbc.getCenterX(), endCbc.getCenterY());
                 playerPosition.position.set(playerCbc.bound.x, playerCbc.bound.y, playerPosition.position.z);
 
-                e.edit().add(new com.bryjamin.wickedwizard.ecs.components.identifiers.BossComponent());
+                e.edit().add(new BossComponent());
 
                 e.edit().remove(ActionAfterTimeComponent.class);
                 e.edit().add(new ActionAfterTimeComponent(new SummonArms(), 0.5f));
 
 
-                world.getSystem(com.bryjamin.wickedwizard.ecs.systems.graphical.CameraSystem.class).snapCameraUpdate(playerCbc);
+                world.getSystem(CameraSystem.class).snapCameraUpdate(playerCbc);
 
             }
         }, 0, true));
@@ -168,26 +184,63 @@ public class BossTheEnd extends BossFactory {
 
 
 
-    private ConditionalActionComponent summonArmsConditional() {
+    public ConditionalActionComponent healthRegenerationConditional(){
 
-        return new ConditionalActionComponent(new com.bryjamin.wickedwizard.ecs.components.ai.Condition() {
+        return new ConditionalActionComponent(new Condition() {
             @Override
             public boolean condition(World world, Entity entity) {
-                return entity.getComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class).children.size <= 0;
+                HealthComponent hc = entity.getComponent(HealthComponent.class);
+                float health = hc.health - hc.getAccumulatedDamage();
+
+                if(health <= mainBodyHealth / 10){
+                    hc.clearDamage();
+                    return true;
+                }
+
+                return false;
             }
         }, new Action() {
             @Override
             public void performAction(World world, Entity e) {
+                e.edit().remove(ConditionalActionComponent.class);
+                new SummonArms().performAction(world, e);
+            }
+        });
+
+    }
+
+
+
+
+    public ConditionalActionComponent enableHitBoxConditional(){
+
+        return new ConditionalActionComponent(new Condition() {
+
+            @Override
+            public boolean condition(World world, Entity entity) {
+                return entity.getComponent(ParentComponent.class).children.size <= 0;
+            }
+        }, new Action() {
+            @Override
+            public void performAction(World world, Entity e) {
+
                 e.edit().remove(PhaseComponent.class);
 
                 e.edit().add(new FadeComponent(true, 0.5f, false, e.getComponent(TextureRegionComponent.class).color.a, 1));
 
-                e.getComponent(CollisionBoundComponent.class).hitBoxes.add(new com.bryjamin.wickedwizard.utils.collider.HitBox(new Rectangle(e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getX(),e.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).getY(), mainBodyWidth, mainBodyHeight)));
+                e.getComponent(CollisionBoundComponent.class).hitBoxDisabled = false;
+
                 e.edit().remove(ConditionalActionComponent.class);
-                e.edit().add(new ActionAfterTimeComponent(new SummonArms(), 10f));
+                if(regenerationNumber < maxRegenerations) {
+                    e.edit().add(healthRegenerationConditional());
+                }
+
+                regenerationNumber++;
             }
         });
+
     }
+
 
 
     private class SummonArms implements Action {
@@ -206,9 +259,9 @@ public class BossTheEnd extends BossFactory {
             phaseComponent.addPhase(fauxPhaseTime, new NextHand(random));
             e.edit().add(phaseComponent);
 
-            e.getComponent(CollisionBoundComponent.class).hitBoxes.clear();
+            e.getComponent(CollisionBoundComponent.class).hitBoxDisabled = true;
 
-            e.edit().add(summonArmsConditional());
+            e.edit().add(enableHitBoxConditional());
 
         }
     }
@@ -294,7 +347,7 @@ public class BossTheEnd extends BossFactory {
 
 
     private Entity createUpperLeftHand(World world, Entity parent){
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent parentPositionCompnent = parent.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+        PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, true);
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) - upperHandOffsetX, upperHandOffsetY));
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new EndDeathFromAboveLasers(assetManager, random)));
@@ -303,7 +356,7 @@ public class BossTheEnd extends BossFactory {
 
 
     private Entity createLowerLeftHand(World world, Entity parent){
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent parentPositionCompnent = parent.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+        PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, true);
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) - bottomHandOffsetX, bottomHandOffsetY));
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new LeftHandEndSplitterWeapon(assetManager)));
@@ -313,7 +366,7 @@ public class BossTheEnd extends BossFactory {
     }
 
     private Entity createUpperRightHand(World world, Entity parent){
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent parentPositionCompnent = parent.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+        PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, false);
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) + upperHandOffsetX, upperHandOffsetY));
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new EndGatlingGun(assetManager, random)));
@@ -322,7 +375,7 @@ public class BossTheEnd extends BossFactory {
     }
 
     private Entity createLowerRightHand(World world, Entity parent){
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent parentPositionCompnent = parent.getComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+        PositionComponent parentPositionCompnent = parent.getComponent(PositionComponent.class);
         Entity hand = createBaseHand(world, parent, false);
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.ai.FollowPositionComponent(parentPositionCompnent.position, CenterMath.offsetX(mainBodyWidth, handsWidth) + bottomHandOffsetX, bottomHandOffsetY));
         hand.edit().add(new com.bryjamin.wickedwizard.ecs.components.WeaponComponent(new EndLaserDance(assetManager, random)));

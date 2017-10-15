@@ -52,17 +52,11 @@ public class CameraShakeSystem extends EntitySystem {
 
         float y = MathUtils.random.nextFloat() * Measure.units(shakeIntensity) - Measure.units(shakeIntensity) / 2;
 
-
-      //  System.out.println(gamecam.position.x);
-
         gamecam.position.x += x;
         gamecam.position.y += y;
 
         gamecam.update();
 
-
-      //  System.out.println(gamecam.position.x);
-        //gamecam.position.add(x,0,0);
 
     }
 

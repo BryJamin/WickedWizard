@@ -9,23 +9,28 @@ import com.badlogic.gdx.utils.Queue;
 public class GameCreator {
 
 
-    public String id = "0";
+    //public String id = "0";
+
+    public enum GameType {
+        ADVENTURE, CHALLENGE, TUTORIAL
+    }
+
+    private GameType gameType;
 
     public Queue<LevelCreator> gameLevels = new Queue<LevelCreator>();
     public int position = 0;
 
 
-    public GameCreator(String id, LevelCreator... levelCreators){
-        this(levelCreators);
-        this.id = id;
-    }
-
-    public GameCreator(LevelCreator... levelCreators){
+    public GameCreator(GameType gameType, LevelCreator... levelCreators){
         for(LevelCreator l : levelCreators){
             gameLevels.addLast(l);
         }
+        this.gameType = gameType;
     }
 
+    public GameType getGameType() {
+        return gameType;
+    }
 
     public LevelCreator getNextLevel(){
         position++;
@@ -45,6 +50,11 @@ public class GameCreator {
         if(position <= 0) position = 0;
         if(position >= gameLevels.size) position = gameLevels.size - 1;
         this.position = position;
+    }
+
+
+    public int getPosition() {
+        return position;
     }
 
     public LevelCreator getAndSetLevel(int position){

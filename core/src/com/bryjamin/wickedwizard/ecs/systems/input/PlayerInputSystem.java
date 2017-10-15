@@ -21,6 +21,7 @@ import com.bryjamin.wickedwizard.ecs.components.WeaponComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ChildComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.GrappleComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent;
+import com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.WingComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
@@ -77,16 +78,24 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
     public boolean hasStartedFiring = false;
 
+   // public static boolean isAutoFire = false;
+
+/*    public static void updateAutoFireUsingPreferences(){
+        isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, false);
+    }*/
+
 
     @SuppressWarnings("unchecked")
     public PlayerInputSystem(Viewport gameport) {
-        super(Aspect.all(PositionComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class, com.bryjamin.wickedwizard.ecs.components.identifiers.PlayerComponent.class, AnimationStateComponent.class));
+        super(Aspect.all(PositionComponent.class, VelocityComponent.class, PlayerComponent.class, AnimationStateComponent.class));
         this.gameport = gameport;
         movementArea = new Rectangle(gameport.getCamera().position.x - gameport.getWorldWidth() / 2,
                 gameport.getCamera().position.y - gameport.getWorldHeight() / 2,
                 MainGame.GAME_WIDTH, Measure.units(10f));
 
         playerInput = new PlayerInput(world, gameport, movementArea, this);
+
+        //isAutoFire = Gdx.app.getPreferences(PreferenceStrings.SETTINGS).getBoolean(PreferenceStrings.SETTINGS_AUTOFIRE, true);
     }
 
 
@@ -95,16 +104,56 @@ public class PlayerInputSystem extends EntityProcessingSystem {
     }
 
 
-    public void movePlayer(float targetX, float currentPosition, AccelerantComponent ac, VelocityComponent vc, StatComponent sc){
-        ac.accelX = Measure.units(15f) * (1 + sc.speed);
-        ac.maxX = Measure.units(80f) * (1 + sc.speed);
+    public void movePlayer(float targetX, float currentPosition, AccelerantComponent ac, VelocityComponent vc, float speedMultiplier){
+        ac.accelX = Measure.units(15f) * (1 + speedMultiplier);
+        ac.maxX = Measure.units(80f) * (1 + speedMultiplier);
         GrappleSystem.moveTo(targetX, currentPosition, ac, vc);
     }
 
-    public void autoMove(float targetX){
+    public void autoMove(float targetX, float speedMultiplier){
         for(Entity e : this.getEntities()){
-            movePlayer(targetX, cbm.get(e).getCenterX(), am.get(e), vm.get(e), sm.get(e));
+            movePlayer(targetX, cbm.get(e).getCenterX(), am.get(e), vm.get(e), speedMultiplier);
         }
+    }
+
+    public void updateWeapons(WeaponComponent wc, AdditionalWeaponComponent adc){
+        if (wc.timer.isFinished()) {
+            wc.timer.reset(wc.weapon.getBaseFireRate());
+        }
+
+        for (WeaponComponent weaponComponent : adc.additionalWeapons) {
+            if (weaponComponent.timer.isFinished()) {
+                weaponComponent.timer.reset(weaponComponent.weapon.getBaseFireRate());
+            }
+        }
+
+        wc.timer.update(world.getDelta());
+
+        for (WeaponComponent weaponComponent : adc.additionalWeapons) {
+            weaponComponent.timer.update(world.getDelta());
+        }
+
+        //The purpose for the delay reset is for enemies/companies that react to player fire to have a chance to see that the player has fired
+
+    }
+
+    public void fireWeapons(WeaponComponent wc, AdditionalWeaponComponent adc, AnimationStateComponent asc, Entity e, float x, float y, double angleOfTravelInRadians){
+
+        if (wc.timer.isFinished()) {
+            hasStartedFiring = true;
+            asc.queueAnimationState(AnimationStateComponent.FIRING);
+            wc.weapon.fire(world, e, x, y, angleOfTravelInRadians);
+        }
+
+        for (WeaponComponent weaponComponent : adc.additionalWeapons) {
+            if (weaponComponent.timer.isFinished()) {
+                hasStartedFiring = true;
+                asc.queueAnimationState(AnimationStateComponent.FIRING);
+                weaponComponent.weapon.fire(world, e, x, y, angleOfTravelInRadians);
+            }
+        }
+
+
     }
 
     @Override
@@ -117,7 +166,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
 
         PositionComponent pc = pm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
+        VelocityComponent vc = vm.get(e);
         AccelerantComponent ac = am.get(e);
         CollisionBoundComponent cbc = cbm.get(e);
         com.bryjamin.wickedwizard.ecs.components.WeaponComponent wc = wm.get(e);
@@ -125,12 +174,9 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         AnimationStateComponent asc = asm.get(e);
         com.bryjamin.wickedwizard.ecs.components.StatComponent sc = sm.get(e);
         TextureRegionComponent trc = trm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent gc = gm.get(e);
+        GravityComponent gc = gm.get(e);
         GlideComponent glc = glm.get(e);
         MoveToComponent mtc = mtm.get(e);
-
-
-
 
         if (cbc.getRecentCollisions().contains(Collider.Collision.BOTTOM, false) && vc.velocity.y <= 0) {
             turnOffGlide();
@@ -148,13 +194,11 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
             if (playerInput.movementInputPoll != null) {
 
-                //System.out.println("i AM MOVING THE PLAYER");
-
                 if (Gdx.input.isTouched(playerInput.movementInputPoll)) {
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.movementInputPoll), Gdx.input.getY(playerInput.movementInputPoll), 0);
                     gameport.unproject(input);
                     if (input.y <= movementArea.y + movementArea.getHeight() && !mtc.hasTarget()) {
-                        movePlayer(input.x, cbc.getCenterX(), ac, vc, sc);
+                        movePlayer(input.x, cbc.getCenterX(), ac, vc, sc.speed);
                     }
                 } else {
                    playerInput.movementInputPoll = null;
@@ -165,57 +209,44 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
                 if (Gdx.input.isTouched(playerInput.firingInputPoll)) {
 
-
-                    //The purpose for the delay reset is for enemies/companies that react to player fire to have a chance to see that the player has fired
-                    if(wc.timer.isFinished()){
-                        wc.timer.reset(wc.weapon.getBaseFireRate());
-                    }
-
-                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
-                        if (weaponComponent.timer.isFinished()) {
-                            weaponComponent.timer.reset(weaponComponent.weapon.getBaseFireRate());
-                        }
-                    }
-
-
-                    wc.timer.update(world.getDelta());
-
-                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
-                        weaponComponent.timer.update(world.getDelta());
-                    }
-
+                    updateWeapons(wc, adc);
 
                     Vector3 input = new Vector3(Gdx.input.getX(playerInput.firingInputPoll), Gdx.input.getY(playerInput.firingInputPoll), 0);
                     gameport.unproject(input);
-                    float x = pc.getX() + (cbc.bound.getWidth() / 2);
-                    float y = pc.getY() + (cbc.bound.getHeight() / 2);
+                    float x = cbc.getCenterX();
+                    float y = cbc.getCenterY();
                     double angleOfTravel = (Math.atan2(input.y - y, input.x - x));
 
-                    if(hasStartedFiring) {
-                        if(dm.has(e)){
+                    if (hasStartedFiring) {
+                        if (dm.has(e)) {
                             setDirectionOfPlayerUsingFiringAngle(dm.get(e), angleOfTravel, DirectionalComponent.PRIORITY.HIGHEST);
                         }
                     }
 
 
-                    if (wc.timer.isFinished()) {
-                        hasStartedFiring = true;
-                        asc.queueAnimationState(AnimationStateComponent.FIRING);
-                        wc.weapon.fire(world,e, x, y, angleOfTravel);
-                    }
-
-                    for(WeaponComponent weaponComponent : adc.additionalWeapons){
-                        if (weaponComponent.timer.isFinished()) {
-                            hasStartedFiring = true;
-                            asc.queueAnimationState(AnimationStateComponent.FIRING);
-                            weaponComponent.weapon.fire(world,e, x, y, angleOfTravel);
-                        }
-                    }
-
+                    fireWeapons(wc, adc, asc, e, x, y, angleOfTravel);
 
                 } else {
                     playerInput.firingInputPoll = null;
                 }
+
+            /*} else if(isAutoFire && world.getSystem(FiringAISystem.class).enemiesExist()) {
+
+                updateWeapons(wc, adc);
+
+                float x = cbc.getCenterX();
+                float y = cbc.getCenterY();
+
+                double angleOfTravel = world.getSystem(FiringAISystem.class).firingAngleToNearestEnemyInRadians(x, y);
+
+                if (hasStartedFiring) {
+                    if (dm.has(e)) {
+                        setDirectionOfPlayerUsingFiringAngle(dm.get(e), angleOfTravel, DirectionalComponent.PRIORITY.HIGHEST);
+                    }
+                }
+
+                fireWeapons(wc, adc, asc, e, x, y, angleOfTravel);*/
+
             } else {
 
                 hasStartedFiring = false;
@@ -299,8 +330,8 @@ public class PlayerInputSystem extends EntityProcessingSystem {
 
             turnOffGlide();
 
-            world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.y = 0;
-            world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class).velocity.x = 0;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.y = 0;
+            world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class).velocity.x = 0;
 
         }
 
@@ -316,7 +347,7 @@ public class PlayerInputSystem extends EntityProcessingSystem {
         com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent parc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.identifiers.ParentComponent.class);
         GlideComponent glc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GlideComponent.class);
         MoveToComponent mtc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(MoveToComponent.class);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent velocityComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+        VelocityComponent velocityComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
         JumpComponent jumpComponent = world.getSystem(FindPlayerSystem.class).getPlayerComponent(JumpComponent.class);
 
         if(mtc.hasTarget()){

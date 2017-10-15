@@ -13,6 +13,7 @@ import com.bryjamin.wickedwizard.ecs.components.ai.ExpiryRangeComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.OnDeathActionComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.BulletComponent;
 import com.bryjamin.wickedwizard.ecs.components.identifiers.FriendlyComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.components.texture.ColorChangeComponent;
 import com.bryjamin.wickedwizard.ecs.systems.audio.SoundSystem;
 import com.bryjamin.wickedwizard.factories.BulletFactory;
@@ -64,7 +65,7 @@ public class PlayerPistol implements Weapon{
             bullet.edit().add(c);
         }
         bullet.edit().add(new FriendlyComponent());
-        bullet.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(
+        bullet.edit().add(new VelocityComponent(
                 (float) (Measure.units(100 + (playerStats.shotSpeed * shotSpeedMultiplier)) * Math.cos(angleInRadians)),
                 (float) (Measure.units(100 + (playerStats.shotSpeed * shotSpeedMultiplier)) * Math.sin(angleInRadians))));
 

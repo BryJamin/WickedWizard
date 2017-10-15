@@ -6,6 +6,10 @@ import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector3;
 import com.bryjamin.wickedwizard.ecs.components.movement.AccelerantComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.utils.BulletMath;
 
 /**
@@ -18,19 +22,19 @@ import com.bryjamin.wickedwizard.utils.BulletMath;
 
 public class MoveToSystem extends EntityProcessingSystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
+    ComponentMapper<PositionComponent> pm;
+    ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent> mtpm;
     ComponentMapper<AccelerantComponent> am;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gm;
+    ComponentMapper<GravityComponent> gm;
 
     @SuppressWarnings("unchecked")
     public MoveToSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class,
-                com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class,
+        super(Aspect.all(PositionComponent.class,
+                VelocityComponent.class,
                 com.bryjamin.wickedwizard.ecs.components.ai.MoveToPositionComponent.class,
-                com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class,
+                CollisionBoundComponent.class,
                 AccelerantComponent.class));
     }
 
@@ -40,9 +44,9 @@ public class MoveToSystem extends EntityProcessingSystem {
 
         Vector3 targetPosition = mtpm.get(e).moveToPosition;
 
-        com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = pm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
+        PositionComponent pc = pm.get(e);
+        VelocityComponent vc = vm.get(e);
+        CollisionBoundComponent cbc = cbm.get(e);
         AccelerantComponent ac = am.get(e);
 
 
@@ -85,7 +89,7 @@ public class MoveToSystem extends EntityProcessingSystem {
      * @param vc - The VelocityComponent of the entity
      * @param ac - The AccelerantComponent of the entity
      */
-    private void moveToPosition(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc, Vector3 targetPosition, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc, AccelerantComponent ac){
+    private void moveToPosition(CollisionBoundComponent cbc, Vector3 targetPosition, VelocityComponent vc, AccelerantComponent ac){
 
 
         double angleOfTravel = BulletMath.angleOfTravel(cbc.getCenterX(), cbc.getCenterY(),
@@ -116,7 +120,7 @@ public class MoveToSystem extends EntityProcessingSystem {
      * @param ac - The AccelerantComponent of the entity
      * @return -True if the entity has reached the target position
      */
-    private boolean moveToPositionWithGravity(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc, Vector3 targetPosition, com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc, AccelerantComponent ac){
+    private boolean moveToPositionWithGravity(CollisionBoundComponent cbc, Vector3 targetPosition, VelocityComponent vc, AccelerantComponent ac){
 
         if (cbc.getCenterX() > targetPosition.x) {
             vc.velocity.x  = (vc.velocity.x <= -ac.maxX) ? -ac.maxX : vc.velocity.x - ac.accelX;

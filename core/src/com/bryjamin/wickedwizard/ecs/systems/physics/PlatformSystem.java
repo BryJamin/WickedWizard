@@ -5,6 +5,11 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntitySystem;
 import com.badlogic.gdx.math.Rectangle;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.systems.FindPlayerSystem;
 import com.bryjamin.wickedwizard.utils.Measure;
 
@@ -14,12 +19,12 @@ import com.bryjamin.wickedwizard.utils.Measure;
 
 public class PlatformSystem extends EntitySystem {
 
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent> pm;
+    ComponentMapper<PositionComponent> pm;
     ComponentMapper<com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent> platm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent> gravm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent> dm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent> cbm;
+    ComponentMapper<GravityComponent> gravm;
+    ComponentMapper<DirectionalComponent> dm;
+    ComponentMapper<VelocityComponent> vm;
+    ComponentMapper<CollisionBoundComponent> cbm;
 
 
     private static float inputRadius = Measure.units(20f);
@@ -27,7 +32,7 @@ public class PlatformSystem extends EntitySystem {
 
     @SuppressWarnings("unchecked")
     public PlatformSystem() {
-        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent.class, com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class));
+        super(Aspect.all(com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent.class, CollisionBoundComponent.class));
     }
 
     @Override
@@ -36,12 +41,12 @@ public class PlatformSystem extends EntitySystem {
         //TODO change platform disabling to intead be on a timer. like two world.delta ticks
 
 
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
+        CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
 
         for(Entity e : this.getEntities()) {
 
-            com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
+            CollisionBoundComponent cbc = cbm.get(e);
             com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent platform = platm.get(e);
 
             if(platform.canPassThrough){
@@ -72,7 +77,7 @@ public class PlatformSystem extends EntitySystem {
                     playerVelocity.velocity.y = 0;
                     playerBound.bound.y = cbc.bound.y + cbc.bound.getHeight();
 
-                    com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class);
+                    PositionComponent pc = world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class);
                     pc.position.x = playerBound.bound.getX();
                     pc.position.y = playerBound.bound.getY();
 
@@ -85,9 +90,9 @@ public class PlatformSystem extends EntitySystem {
 
     public boolean fallThoughPlatform(float x, float y) {
 
-        com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent.class);
-        com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent.class);
-        com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent playerGravity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.GravityComponent.class);
+        CollisionBoundComponent playerBound = world.getSystem(FindPlayerSystem.class).getPlayerComponent(CollisionBoundComponent.class);
+        VelocityComponent playerVelocity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(VelocityComponent.class);
+        GravityComponent playerGravity = world.getSystem(FindPlayerSystem.class).getPlayerComponent(GravityComponent.class);
 
         //TODO make take in an input parameter and check whether or not to fall through the platform (Distance of like Measure.units 20f or something?
 
@@ -97,7 +102,7 @@ public class PlatformSystem extends EntitySystem {
 
         for(Entity e : this.getEntities()) {
 
-            com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent cbc = cbm.get(e);
+            CollisionBoundComponent cbc = cbm.get(e);
             com.bryjamin.wickedwizard.ecs.components.object.PlatformComponent platform = platm.get(e);
 
 
@@ -112,7 +117,7 @@ public class PlatformSystem extends EntitySystem {
 
                 if(c == com.bryjamin.wickedwizard.utils.collider.Collider.Collision.BOTTOM) {
                     platform.canPassThrough = true;
-                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent.class).position.y -= platformPushDown;
+                    world.getSystem(FindPlayerSystem.class).getPlayerComponent(PositionComponent.class).position.y -= platformPushDown;
                     return true;
                 }
 

@@ -4,9 +4,11 @@ import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.systems.EntityProcessingSystem;
-import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
 import com.bryjamin.wickedwizard.ecs.components.ai.ProximityTriggerAIComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.CollisionBoundComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 import com.bryjamin.wickedwizard.ecs.systems.graphical.DirectionalSystem;
 import com.bryjamin.wickedwizard.utils.enums.Direction;
 
@@ -16,8 +18,8 @@ import com.bryjamin.wickedwizard.utils.enums.Direction;
 public class MovementSystem extends EntityProcessingSystem {
 
     ComponentMapper<PositionComponent> pm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent> dm;
-    ComponentMapper<com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent> vm;
+    ComponentMapper<DirectionalComponent> dm;
+    ComponentMapper<VelocityComponent> vm;
     ComponentMapper<CollisionBoundComponent> cbm;
     ComponentMapper<ProximityTriggerAIComponent> ptam;
 
@@ -32,16 +34,16 @@ public class MovementSystem extends EntityProcessingSystem {
         PositionComponent pc = pm.get(e);
 
         if(vm.has(e)) {
-            com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent vc = vm.get(e);
+            VelocityComponent vc = vm.get(e);
             pc.position.add(vc.velocity.x * world.delta, vc.velocity.y * world.delta, 0);
 
         //    System.out.println("VelY is + " + vc.velocity.y);
 
             if(dm.has(e)) {
                 if (vc.velocity.x < 0)
-                    DirectionalSystem.changeDirection(e, Direction.LEFT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.LOW);
+                    DirectionalSystem.changeDirection(e, Direction.LEFT, DirectionalComponent.PRIORITY.LOW);
                 else if (vc.velocity.x > 0)
-                    DirectionalSystem.changeDirection(e, Direction.RIGHT, com.bryjamin.wickedwizard.ecs.components.movement.DirectionalComponent.PRIORITY.LOW);
+                    DirectionalSystem.changeDirection(e, Direction.RIGHT, DirectionalComponent.PRIORITY.LOW);
             }
 
         }

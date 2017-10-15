@@ -6,6 +6,7 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.bryjamin.wickedwizard.GameTest;
 import com.bryjamin.wickedwizard.ecs.components.movement.PositionComponent;
+import com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class MovementSystemTest extends GameTest {
 
         Entity e = world.createEntity();
         e.edit().add(new PositionComponent(0,0));
-        e.edit().add(new com.bryjamin.wickedwizard.ecs.components.movement.VelocityComponent(100, 0));
+        e.edit().add(new VelocityComponent(100, 0));
 
         world.process();
 
