@@ -36,8 +36,8 @@ import java.util.Random;
 public class Rank4ChallengeMaps extends AbstractFactory {
 
 
-    private static final float ARENA_SPEEDRUN_TIMER = 45f;
-    public static final float TIME_TRIAL_SPEEDRUN_TIMER = 52.5f;
+    private static final float ARENA_SPEEDRUN_TIMER = 70f;
+    public static final float TIME_TRIAL_SPEEDRUN_TIMER = 55f;
 
 
     private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;

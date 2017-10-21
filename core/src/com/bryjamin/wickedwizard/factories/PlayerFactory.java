@@ -175,7 +175,6 @@ public class PlayerFactory extends AbstractFactory {
             statComponent.maxHealth = 8;
             statComponent.setHealth(8);
             statComponent.damage -= PresetStatIncrease.minor;
-            statComponent.fireRate -= PresetStatIncrease.minor;
             statComponent.speed -= PresetStatIncrease.Speed.minor;
 
             aniMap.put(AnimationStateComponent.DEFAULT, new Animation<TextureRegion>(1 / 9f, atlas.findRegions(TextureStrings.PHI_WALK), Animation.PlayMode.LOOP));

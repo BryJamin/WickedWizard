@@ -11,6 +11,7 @@ import com.bryjamin.wickedwizard.ecs.systems.graphical.UnlockMessageSystem;
 import com.bryjamin.wickedwizard.factories.arenas.GameCreator;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.ChallengesResource;
 import com.bryjamin.wickedwizard.factories.arenas.challenges.adventure.AdventureUnlocks;
+import com.bryjamin.wickedwizard.screens.DataSave;
 
 /**
  * Created by BB on 18/09/2017.
@@ -91,6 +92,9 @@ public class BossDefeatUnlockSystem extends EntitySystem {
             PlayerIDs.PlayableCharacter[] characterFixedArray = PlayerIDs.endGameUnlockAbleCharacters;
 
             for(PlayerIDs.PlayableCharacter character : characterFixedArray) {
+
+                if(DataSave.isDataAvailable(character.getUnlockString())) continue;
+
                 world.getSystem(UnlockMessageSystem.class).createUnlockMessage(character.getUnlockString());
                 break;
             }

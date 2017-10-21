@@ -38,7 +38,7 @@ public class Rank3ChallengeMaps extends AbstractFactory {
 
 
     private static final float ARENA_SPEEDRUN_TIMER = 80f;
-    public static final float TIME_TRIAL_SPEEDRUN_TIMER = 27.5f;
+    public static final float TIME_TRIAL_SPEEDRUN_TIMER = 30f;
 
 
     private com.bryjamin.wickedwizard.factories.arenas.decor.ArenaShellFactory arenaShellFactory;

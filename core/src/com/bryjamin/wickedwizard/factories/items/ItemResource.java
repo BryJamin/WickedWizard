@@ -379,7 +379,7 @@ public class ItemResource {
 
 
         public static ItemLayout statueOfAjir = new ItemLayout.ItemValueBuilder("e45f39f3-4ea3-493d-b985-c02527b4167d")
-                .itemTypes(com.bryjamin.wickedwizard.utils.enums.ItemType.BOSS)
+                .itemTypes(ItemType.BOSS, ItemType.ITEM)
                 .region("item/StatueOfAjir")
                 .name("Statue Of Ajir")
                 .description("Too Lifelike")
